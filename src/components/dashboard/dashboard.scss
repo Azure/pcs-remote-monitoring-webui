@@ -1,0 +1,11 @@
+.widgets {
+	margin-bottom: 10px;
+}
+.widgets [class^=col-] {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: auto 5px;
+    background-color: #eee;
+    border: 1px solid #ddd;
+    height:300px;
+}
