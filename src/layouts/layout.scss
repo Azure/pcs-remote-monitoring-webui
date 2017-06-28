@@ -1,0 +1,21 @@
+
+.widgets.row-h1.row {
+    height: 100px;
+}
+
+.widgets.row-h2.row {
+    height: 200px;
+}
+
+.widgets.row-h3.row {
+    height: 300px;
+}
+
+.widgets [class^=col-] {
+    padding: 5px;
+    height: 100%;
+}
+
+.nested {
+    padding: 0px;
+}

@@ -3,8 +3,7 @@
 import React, { Component } from 'react';
 import { Nav, Navbar, NavDropdown, NavItem, MenuItem } from 'react-bootstrap';
 
-import Logo from './logo/logo.js';
-
+import Logo from './logo.js';
 
 class TopNav extends Component {
   render() {
@@ -12,7 +11,7 @@ class TopNav extends Component {
       <Navbar inverse collapseOnSelect fixedTop fluid>
         <Navbar.Header>
           <Navbar.Brand>
-            <Logo />
+            <div><Logo /></div>
           </Navbar.Brand>
           <Navbar.Brand>
             <div>Remote Monitoring</div>
@@ -21,8 +20,8 @@ class TopNav extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>
-            <NavDropdown eventKey={3} title="Configuration" id="basic-nav-dropdown">
-              <MenuItem eventKey={3.1}>Action</MenuItem>
+            <NavDropdown eventKey={3} title="Configuration" id="basic-nav-dropdown" >
+              <MenuItem eventKey={3.1}>Customize Solution</MenuItem>
               <MenuItem eventKey={3.2}>Another action</MenuItem>
               <MenuItem eventKey={3.3}>Something else here</MenuItem>
               <MenuItem divider />

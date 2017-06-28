@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Nav, NavItem } from 'react-bootstrap';
 
-import './leftnav.css';
+import './leftNav.css';
 
 class LeftNav extends Component {
   render() {
