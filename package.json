@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "chart.js": "^2.6.0",
     "jquery": "^3.2.1",
     "pubsub-js": "^1.5.7",
     "react": "^15.5.4",
