@@ -1,0 +1,13 @@
+// Copyright (c) Microsoft. All rights reserved
+
+.datagrid-color{
+  color: #000000;
+}
+.datagrid-container{
+  @extend .datagrid-color;
+  background-color: #ffffff;
+}
+.datagrid-body{
+  @extend .datagrid-color;
+  margin-top: 10px;
+}
