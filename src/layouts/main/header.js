@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { Nav, Navbar, NavDropdown, NavItem, MenuItem } from 'react-bootstrap';
 import CustomFlyout from '../../components/customFlyout/customFlyout';
+import CustomDialog from '../../components/customDialog/customDialog';
 
 import Logo from './logo.js';
 
@@ -11,6 +12,9 @@ class TopNav extends Component {
     switch (eventKey) {
       case 3.1:
         this.refs.customFlyout.show();
+        break;
+      case 3.2:
+        this.refs.customDialog.show();
         break;
       default:
         break;
@@ -33,11 +37,12 @@ class TopNav extends Component {
           <Nav pullRight>
             <NavDropdown eventKey={3} title="Configuration" id="basic-nav-dropdown" onSelect={this.selectHandler}>
               <MenuItem eventKey={3.1}>Customize Solution</MenuItem>
-              <MenuItem eventKey={3.2}>Another action</MenuItem>
+              <MenuItem eventKey={3.2}>Initialize Solution</MenuItem>
               <MenuItem eventKey={3.3}>Something else here</MenuItem>
               <MenuItem divider />
               <MenuItem eventKey={3.3}>Separated link</MenuItem>
               <CustomFlyout ref="customFlyout" />
+              <CustomDialog ref="customDialog" />
             </NavDropdown>
             <NavItem eventKey={1} href="#">Administrator</NavItem>
           </Nav>

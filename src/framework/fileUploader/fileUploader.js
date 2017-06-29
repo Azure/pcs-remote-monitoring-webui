@@ -48,7 +48,7 @@ export default class FileUploader extends React.Component{
     render() {
         return (
             <form>
-                <input ref="file" type="file" size="1" style={{display:'none'}} onChange={this.fileChanged} accept={this.options.acceptContentTypes} hidefocus />
+                <input ref="file" type="file" size="1" style={{display:'none'}} onChange={this.fileChanged} accept={this.options.acceptContentTypes} />
             </form>
         );
     }

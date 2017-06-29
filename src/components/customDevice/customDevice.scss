@@ -1,0 +1,12 @@
+﻿.custom-device {
+    height: 100%;
+}
+
+.custom-device-list {
+    height: calc(100% - 20px);
+    overflow-y: auto; 
+}
+
+.custom-device-input {
+    width: 40px;
+}
