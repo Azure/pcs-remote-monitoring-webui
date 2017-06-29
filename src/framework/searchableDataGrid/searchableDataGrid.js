@@ -2,7 +2,6 @@
 
 import React, {Component} from "react";
 import ReactDataGrid from "react-data-grid";
-import {ButtonToolbar, DropdownButton, MenuItem} from "react-bootstrap";
 import EventTopic from "../../common/eventtopic.js";
 import {debounce, isFunction} from "../../common/utils.js";
 import Config from "../../common/config";
@@ -134,7 +133,7 @@ class SearchableDataGrid extends Component {
 
     onEvent(topic, data, publisher) {
         this.setState({currentFilter: data}, () => {
-            this.getData(data);
+            this.getData(data[0]);
         });
     }
 
@@ -233,20 +232,6 @@ class SearchableDataGrid extends Component {
         });
     }
 
-    renderDropdownButton(menu, i) {
-        return (
-            <DropdownButton onSelect={(key) => {
-                this.setState({currentFilter: key});
-                this.getData(key)
-            }} bsStyle="default" title={menu.title} key={i} id={`dropdown-${i}`}>
-                { menu.items.map((item) => {
-                    return <MenuItem key={item.id} eventKey={item.id}>{item.text}</MenuItem>
-                })}
-            </DropdownButton>
-        );
-    }
-
-
     render() {
         const {Row} = ReactDataGrid;
         class RowRenderer extends Component{
@@ -286,13 +271,6 @@ class SearchableDataGrid extends Component {
             </div>
         }
 
-        let filterDropdowns = null;
-        if (this.props.filters) {
-            filterDropdowns = (
-                <ButtonToolbar>{this.props.filters.map(this.renderDropdownButton.bind(this))}</ButtonToolbar>
-            );
-        }
-
         const dataGrid = (
             <ReactDataGrid ref={grid => this.datagridObj = grid}
                            onGridSort={this.handleGridSort.bind(this)}
@@ -327,7 +305,6 @@ class SearchableDataGrid extends Component {
                 {this.state.originalRows.length > 0 ? (
                     <div>
                         {searchBox}
-                        {filterDropdowns}
                         <div className="datagrid-body">{dataGrid}</div>
                     </div>
                 ) : (
