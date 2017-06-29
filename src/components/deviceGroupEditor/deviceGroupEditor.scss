@@ -1,0 +1,37 @@
+.deviceGroupEditor-tile {
+    margin:5px;
+    color:#000000;
+    overflow-y: auto;
+}
+
+.deviceGroupEditor-label {
+    margin: 10px 0px 10px 0px;
+}
+
+.deviceGroupEditor-input {
+    width: 280px;
+}
+
+.deviceGroupEditor-table {
+    margin: 10px 0px 10px 0px;
+    min-height: 230px;
+    max-height: 230px;
+    overflow-Y: auto;
+}
+
+.deviceGroupEditor-table td {
+    padding: 5px 5px 0px 0px;
+}
+
+.deviceGroupEditor-controls {
+    padding: 5px 5px 0px 0px;
+}
+
+.deviceGroupEditor-warning {
+    color: red;
+    float: left;
+}
+
+.deviceGroupEditor-button {
+    float: right;
+}
