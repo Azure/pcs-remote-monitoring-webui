@@ -1,9 +1,16 @@
-.body {
-	margin-top:60px;
-	display: flex;
+.main {
+	height: 100%;
+	padding-top: 52px;
 }
+
+.mainbody {
+	display: flex;
+	height: 100%;
+}
+
 .content {
 	margin-left: 120px;
 	margin-right: 10px;
 	width: 100%;
+	overflow: auto;
 }

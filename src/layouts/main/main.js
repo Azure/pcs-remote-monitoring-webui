@@ -11,9 +11,9 @@ import './main.css';
 export default class Main extends Component {
     render() {
         return (
-            <div>
+            <div className="main">
                 <Header />
-                <div className="body">
+                <div className="mainbody">
                     <LeftNav />
                     <div className="content">
                         {this.props.children}
