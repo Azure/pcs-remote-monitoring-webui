@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { Modal } from 'react-bootstrap';
 import EventTopic from '../../common/eventtopic';
 import Http from "../../common/httpClient";
+import DeviceGroupEditor from "../../components/deviceGroupEditor/deviceGroupEditor";
 import './genericDropDownList.css';
 
 import $ from 'jquery';
@@ -117,12 +119,7 @@ class GenericDropDownList extends Component {
     }
 
     onNewItem() {
-        console.log("onNewItem");
-
-        // var dialog = LayoutManager.newDialog(this.props.newItem.dialog, null, null, { width: 800, height: 500 });
-        // dialog.closed = function () {
-        //     this.getItemList();
-        // }.bind(this);
+        this.setState({showModal: true});
     }
 
     onReloadRequest(topic, data, publisher) {
@@ -157,6 +154,14 @@ class GenericDropDownList extends Component {
                         this.props.newItem && <li key="_newItem"><a onClick={(e)=>this.onNewItem(e)}>{this.props.newItem.text}</a></li>
                     }
                 </ul>
+                {
+                    this.props.newItem && 
+                    <Modal ref='deviceGroupEditorModal' show={this.state.showModal} bsSize='large'>
+                        <Modal.Body>
+                            <DeviceGroupEditor onClose={()=>this.setState({showModal: false})}/>
+                        </Modal.Body>
+                    </Modal>
+                }
             </div>
         );
     }

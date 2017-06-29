@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import Config from "../../common/config";
 import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
 import CurveChart from '../../components/curveChart/curveChart';
 
@@ -13,7 +14,7 @@ class TelemetryWidget extends Component {
                     <div>
                         <GenericDropDownList
                             id="DeviceGroups"
-                            requestUrl={this.props.deviceGroupApiUrl}
+                            requestUrl={Config.deviceGroupApiUrl}
                             initialState={{
                                 "defaultText": "Choose devices"
                             }}
@@ -29,7 +30,7 @@ class TelemetryWidget extends Component {
                         <GenericDropDownList                            
                             id="TelemetryTypes"
                             multipleSelect={ true }
-                            requestUrl={this.props.telemetryTypeApiUrl}
+                            requestUrl={Config.telemetryTypeApiUrl}
                             initialState={{
                                 "defaultText": "Telemetry",
                                 "selectFirstItem": true,

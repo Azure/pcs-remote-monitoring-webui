@@ -44,23 +44,27 @@ class DeviceGroupEditor extends React.Component {
     }
 
     onFieldNameChange = (event, index) => {
-        this.state.clauses[index].Key = event.target.value;
-        this.setState({clauses: this.state.clauses});
+        var newClauses = this.state.clauses.slice();
+        newClauses[index].Key = event.target.value;
+        this.setState({clauses: newClauses});
     }
 
     onFieldValueChange = (event, index) => {
-        this.state.clauses[index].Value = event.target.value;
-        this.setState({clauses: this.state.clauses});
+        var newClauses = this.state.clauses.slice();
+        newClauses[index].Value = event.target.value;
+        this.setState({clauses: newClauses});
     }
 
     onOperatorChange = (event, index) => {
-        this.state.clauses[index].Operator = event.target.value;
-        this.setState({clauses: this.state.clauses});
+        var newClauses = this.state.clauses.slice();
+        newClauses[index].Operator = event.target.value;
+        this.setState({clauses: newClauses});
     }
 
     onTypeChange = (event, index) => {
-        this.state.clauses[index].Type = event.target.value;
-        this.setState({clauses: this.state.clauses});
+        var newClauses = this.state.clauses.slice();
+        newClauses[index].Type = event.target.value;
+        this.setState({clauses: newClauses});
     }
 
     cancel = () => {
