@@ -1,0 +1,16 @@
+﻿$titleHeight: 20px;
+
+.kpiChart {
+    height: 100%;
+    width: 100%;
+    margin: 5px;
+}
+
+.kpiChartTitle {
+    text-align: center;
+    height: $titleHeight;
+}
+
+.kpiChartArea {
+    height: calc(100% - #{$titleHeight});
+}
