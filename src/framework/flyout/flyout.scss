@@ -5,7 +5,9 @@
     transition-duration: 0.1s;
     transition-timing-function: ease;
     background-color: #f1f1f1;
-    z-index: 200;
+    border: 1px solid #dddddd;
+    z-index: 1001;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .flyout-panel-inner {
@@ -17,7 +19,7 @@
 
 .flyout-panel-header {
     font-size: 20px;
-    padding: 10px;
+    padding: 10px 10px 0px 10px;
 }
 
 .flyout-panel-body {
@@ -27,6 +29,13 @@
 }
 
 .flyout-panel-footer {
-    height:48px;
     padding: 10px 5px;
+}
+
+.flyout-closebtn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    cursor: pointer;
+    color: #666666;
 }

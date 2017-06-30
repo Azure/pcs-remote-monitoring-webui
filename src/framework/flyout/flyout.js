@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { Glyphicon } from 'react-bootstrap';
 
 import './flyout.css';
 
@@ -9,14 +10,16 @@ export default class flyout extends Component {
     constructor(props) {
         super(props)
         this.state = this.getInitialState();
-        this.handleClick = this.handleClick.bind(this);
     }
 
     getInitialState() {
         const position = this.props.position || "right";
+        const autoDismiss = this.props.autoDismiss === false ? false : true; 
         const width = this.props.width || 400;
         const state = {
             position: position,
+            autoDismiss: autoDismiss,
+            showCloseButton: this.props.showCloseButton,
             style: {
                 width: width,
                 transitionProperty: position,
@@ -42,18 +45,25 @@ export default class flyout extends Component {
         this.setState(this.getInitialState());
     }
 
-    handleClick(e) {
+    handleClick = (e) => {
         const dom = ReactDOM.findDOMNode(this.refs.component);
-        if (!dom.contains(e.target)) {
+        if (this.state.autoDismiss && !dom.contains(e.target)) {
             this.hide();
             e.preventDefault();
         }
+    }
+
+    handleCloseClick = (e) => {
+        this.hide();
     }
 
     render() {
         return (
             <Wrapper>
                 <div ref='component' className="flyout-panel" style={this.state.style} >
+                    { this.state.showCloseButton && 
+                        <span className="flyout-closebtn" onClick={this.handleCloseClick} ><Glyphicon glyph="remove" /></span>
+                    }
                     <div className="flyout-panel-inner" >
                         {this.props.children}
                     </div>
