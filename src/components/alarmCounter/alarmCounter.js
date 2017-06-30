@@ -35,7 +35,9 @@ class AlarmCounter extends Component {
         return (
             <div className="alarmCounter">
                 <div className="alarmCounterTitle"><label>{this.state.title}</label></div>
-                <div className="alarmCounterContent" style={{ color: this.state.color, backgroundColor: this.state.backgroundColor, fontSize: this.state.fontSize }}>{this.state.value}</div>
+                <div className="alarmCounterContent" style={{ color: this.state.color, backgroundColor: this.state.backgroundColor, fontSize: this.state.fontSize }}>
+                    <div>{this.state.value}</div>
+                </div>
             </div>
         );
     }

@@ -1,3 +1,5 @@
+$titleHeight: 20px;
+
 .alarmCounter {
     text-align: center;
     height: 100%;
@@ -7,10 +9,19 @@
 
 .alarmCounterTitle {
     text-align: center;
-    height: 20px;
+    height: $titleHeight;
+    margin: 5px;
 }
 
 .alarmCounterContent {
-    margin: 10px 1px 1px 2px;
-    font-weight: bold;
+    height: calc(100% - #{$titleHeight});
+    display: table;
+    width: 100%;
+
+    div {
+        font-weight: bold;
+        font-size: 1.7em;
+        display: table-cell;
+        vertical-align: middle;
+    }
 }
