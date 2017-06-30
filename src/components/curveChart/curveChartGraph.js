@@ -133,7 +133,7 @@ CurveChartGraph.prototype.update = function (url, deviceGroup, telemetries) {
     //Clear old and create new dataset
     this.config.data.datasets = [];
     this.config.data.labels = [];
-    this.legends.html = "";
+    this.legends.innerHTML = "";
     this.chart.update();
     if (this.timerId) {
         clearTimeout(this.timerId);

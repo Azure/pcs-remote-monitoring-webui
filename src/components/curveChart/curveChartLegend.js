@@ -61,8 +61,10 @@ CurveChartLegend.prototype.hide = function (legend, chart) {
     let index = legend.index();
     legend.toggleClass("strike");
     let curr = chart.data.datasets[index];
-    curr.hidden = !curr.hidden;
-    chart.update();
+    if (curr) {
+        curr.hidden = !curr.hidden;
+        chart.update();
+    }
 }
 
 CurveChartLegend.prototype.changeColor = function () {

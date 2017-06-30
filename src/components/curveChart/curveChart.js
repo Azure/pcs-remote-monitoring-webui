@@ -7,7 +7,7 @@ import Config from '../../common/config';
 import CurveChartGraph from './curveChartGraph';
 import "./curveChart.css";
 
-class WebControl extends Component {
+class CurveChart extends Component {
     constructor(props) {
         super(props);
         this.subscriptions = [];
@@ -78,4 +78,4 @@ class WebControl extends Component {
     }
 }
 
-export default WebControl;
+export default CurveChart;
