@@ -22,7 +22,8 @@ class TelemetryWidget extends Component {
                                 "text": "(new group)",
                                 "dialog": "deviceGroupEditor"
                             }}
-                            publishTopic="system.dashBoardDeviceGroup.selectionChanged">
+                            publishTopic="system.dashBoardDeviceGroup.selectionChanged"
+                            reloadRequestTopic="system.deviceGroup.changed">
                         </GenericDropDownList>
                     </div>
 

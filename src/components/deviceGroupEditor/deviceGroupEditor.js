@@ -79,6 +79,7 @@ class DeviceGroupEditor extends React.Component {
             Http.post(Config.uiConfigApiUrl + '/api/v1/devicegroups/' + this.state.groupName, this.state.clauses)
                 .then((data) => {
                     this.props.onClose();
+                    EventTopic.publish("system.deviceGroup.changed", null, this);
                 }).catch((err) => {
                     this.setState({ message: 'Failed to save device group due to: ' + err.message });
                 });
