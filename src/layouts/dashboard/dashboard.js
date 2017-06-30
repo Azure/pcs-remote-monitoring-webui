@@ -13,18 +13,16 @@ import './dashboard.css';
 class Dashboard extends Component {
   render() {
     return (
-      <div>
-        <Grid fluid>
-          <Row className="widgets row-h3">
-            <Col md={5}><DeviceMap/></Col>
-            <Col md={7}><TelemetryWidget></TelemetryWidget></Col>
-          </Row>
-          <Row className="widgets row-h3">
-            <Col md={7}><AlarmList/></Col>
-            <Col md={5}><SampleWidget/></Col>
-          </Row>
-        </Grid>
-      </div>
+      <Grid fluid className="layout">
+        <Row className="widgets row-h60-percent">
+          <Col md={5}><DeviceMap/></Col>
+          <Col md={7}><TelemetryWidget/></Col>
+        </Row>
+        <Row className="widgets row-h40-percent">
+          <Col md={7}><AlarmList/></Col>
+          <Col md={5}><SampleWidget></SampleWidget></Col>
+        </Row>
+      </Grid>
     );
   }
 }
