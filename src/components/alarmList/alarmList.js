@@ -21,7 +21,8 @@ class AlarmList extends Component {
     render() {
         return (
             <div ref="container" style={{height: "100%"}}>
-                <div ref="dropdown" style={{width: "10em"}}>
+                <h4 style={{display: "inline-block", marginRight: "1em"}}>Alarm Status</h4>
+                <div ref="dropdown" style={{width: "10em", display: "inline-block"}}>
                     <GenericDropDownList
                         id="AlarmTimeRange"
                         items={[
