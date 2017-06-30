@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React, {Component} from "react";
-import GenericDropDownList from "../../components/genericDropDownList/genericDropDownList";
-import SearchableDataGrid from "../../framework/searchableDataGrid/searchableDataGrid";
+import React, { Component } from 'react';
+import Config from '../../common/config'
+import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
+import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
 
 class AlarmList extends Component {
 
@@ -50,12 +51,12 @@ class AlarmList extends Component {
                     </GenericDropDownList>
                 </div>
                 <SearchableDataGrid
-                    datasource="api/v1/alarm/{timerange}"
+                    datasource={`${Config.solutionApiUrl}api/v1/alarm/{timerange}`}
                     multiSelect={false}
                     title=""
                     showLastUpdate={false}
                     urlSearchPattern="/\{timerange\}/i"
-                    eventDataKey="id"
+                    eventDataKey="0"
                     enableSearch={false}
                     autoLoad={true}
                     height={this.state.gridHeight}

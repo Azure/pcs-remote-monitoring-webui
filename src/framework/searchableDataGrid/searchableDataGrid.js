@@ -4,7 +4,6 @@ import React, {Component} from "react";
 import ReactDataGrid from "react-data-grid";
 import EventTopic from "../../common/eventtopic.js";
 import {debounce, isFunction} from "../../common/utils.js";
-import Config from "../../common/config";
 import httpClient from "../../common/httpClient";
 
 import "./searchableDataGrid.css";
@@ -134,7 +133,7 @@ class SearchableDataGrid extends Component {
 
     onEvent(topic, data, publisher) {
         this.setState({currentFilter: data}, () => {
-            this.getData(data[0]);
+            this.getData(data);
         });
     }
 
@@ -185,7 +184,7 @@ class SearchableDataGrid extends Component {
                 }
             }
 
-            this.dataReq = httpClient.get(Config.solutionApiUrl + '/' + normalizedUrl)
+            this.dataReq = httpClient.get(normalizedUrl)
                 .then((data) => {
                     this.setState({originalRows: data, rows: data, lastupdate: new Date()});
                     const itemIds = data.map(item => {

@@ -96,7 +96,7 @@ class DeviceDetail extends React.Component {
                  <Flyout ref="diagnosticFlyout">
                     <SearchableDataGrid
                         title="Diagnostics"
-                        datasource="api/v1/diagnostics/{deviceId}"
+                        datasource={`${Config.solutionApiUrl}api/v1/diagnostics/{deviceId}`}
                         urlSearchPattern="/\{deviceId\}/i"
                         topics={["system.device.diagnose"]}
                         eventDataKey="deviceId"
@@ -104,7 +104,7 @@ class DeviceDetail extends React.Component {
                         multiSelect={false}
                         enableSearch={false}
                         showLastUpdate={false}
-                    ></SearchableDataGrid>
+                    />
                     <div style={{"marginTop": "10px"}}>
                         <button className="btn btn-default" onClick={() => this.refs.diagnosticFlyout.hide()}>Cancel</button>
                     </div>
