@@ -1,15 +1,26 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React, { Component } from 'react';
-import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
-import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
+import React, {Component} from "react";
+import GenericDropDownList from "../../components/genericDropDownList/genericDropDownList";
+import SearchableDataGrid from "../../framework/searchableDataGrid/searchableDataGrid";
 
 class AlarmList extends Component {
 
+    constructor(props) {
+        super(props)
+        this.state = {
+            gridHeight: 200
+        }
+    }
+
+    componentDidMount() {
+        this.setState({gridHeight: this.refs.container.clientHeight - this.refs.dropdown.clientHeight - 10});
+    }
+
     render() {
         return (
-            <div style={{height: "100%"}}>
-                <div style={{width: "10em"}}>
+            <div ref="container" style={{height: "100%"}}>
+                <div ref="dropdown" style={{width: "10em"}}>
                     <GenericDropDownList
                         id="AlarmTimeRange"
                         items={[
@@ -35,7 +46,7 @@ class AlarmList extends Component {
                             "selectFirstItem": true
                         }}
                         publishTopic="system.dashboard.alarmTimerange.selected"
-                    >                
+                    >
                     </GenericDropDownList>
                 </div>
                 <SearchableDataGrid
@@ -47,6 +58,7 @@ class AlarmList extends Component {
                     eventDataKey="id"
                     enableSearch={false}
                     autoLoad={true}
+                    height={this.state.gridHeight}
                     topics={
                         [
                             "system.dashboard.alarmTimerange.selected"

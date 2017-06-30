@@ -29,8 +29,9 @@ class SearchableDataGrid extends Component {
         this.tokens = [];
     }
 
-    setProps(props) {
-        this.props = Object.assign({}, this.props, props);
+    componentWillReceiveProps(nextProps){
+        this.props = Object.assign({}, this.props, nextProps);
+        this.resize();
     }
 
     setDatasource(datasource) {
