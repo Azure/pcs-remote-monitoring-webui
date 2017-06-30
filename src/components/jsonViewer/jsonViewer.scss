@@ -4,8 +4,7 @@
 }
 
 .jsonViewer-content {
-    overflow-Y: auto;
-    white-space: pre-wrap;
+    overflow: auto;
     user-select: text;
     max-height: 600px;
 }

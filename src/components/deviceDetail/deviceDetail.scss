@@ -30,13 +30,20 @@
     background-color: #dddddd;
     font-size: 14px;
     font-weight: bold;
+    padding-left: 4px;
 }
 
 .deviceDetail-section-list {
     display: table-row;
+    list-style-type: none;
+}
+
+.deviceDetail-section-list li {
+    margin-left: 6px;
 }
 
 .deviceDetail-tabel {
+    table-layout: fixed;
     border-width: 1px;
     width: 100%;
 }
@@ -45,15 +52,12 @@
     background-color: #dddddd;
     font-size: 14px;
     font-weight: bold;
-    padding: 0px;
-}
-
-.deviceDetail-tabel tbody {
-    padding: 10px;
 }
 
 .deviceDetail-tabel td {
     padding: 4px;
+    overflow: hidden;
+    width: 50%;
 }
 
 .deviceDetail-buttons {
@@ -63,5 +67,6 @@
 .deviceDetail-curve-chart {
     width: 360px;
     height: 200px;
+    margin-top: 10px;
     overflow: hidden;
 }

@@ -2,7 +2,7 @@
 import Config from '../../common/config';
 import EventTopic, { Topics } from "../../common/eventtopic";
 import Http from '../../common/httpClient';
-import Flyout from '../../framework/flyout/flyout';
+import Flyout, { Header, Body } from '../../framework/flyout/flyout';
 import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
 import JsonViewer from '../jsonViewer/jsonViewer';
 import CurveChart from '../curveChart/curveChart';
@@ -57,16 +57,21 @@ class DeviceDetail extends React.Component {
         const properties = Object.keys(twin).filter(p => !methodPrefix.test(p))
             .slice(0, this.state.maxNumberOfProperties)
             .map(p =>
-                <tr><td><span title={p}>{p}</span></td><td style={{ padding: "4px" } }>{twin[p]}</td></tr>
+                <tr><td><span title={p}>{p}</span></td><td title={twin[p]} style={{ padding: "4px" } }>{twin[p]}</td></tr>
             );
 
         return (
             <div className="deviceDetail-tile">
+                <div>
+                    <label>
+                        {this.state.twin.DeviceId}
+                    </label>
+                </div>
                 <div className="deviceDetail-type">
                     <span className="deviceDetail-type-label">Type</span><span>Prototyping device</span>
                 </div>
                 <div className="deviceDetail-section">
-                    <p className="deviceDetail-section-label">Sensors</p>
+                    <div className="deviceDetail-section-label">Sensors</div>
                     <ul className="deviceDetail-section-list">
                         <li>Temperature</li>
                         <li>Humidity</li>
@@ -77,7 +82,7 @@ class DeviceDetail extends React.Component {
                     <CurveChart ref="curveChart"/>
                 </div>
                 <div className="deviceDetail-section">
-                    <p className="deviceDetail-section-label">Methods</p>
+                    <div className="deviceDetail-section-label">Methods</div>
                     <ul className="deviceDetail-section-list">{methods}</ul>
                 </div>
                 <div className="deviceDetail-section">
@@ -91,23 +96,33 @@ class DeviceDetail extends React.Component {
                     <button className="btn btn-default" onClick={this.onDiagnostics}>Diagnostics</button>
                 </div>
                  <Flyout ref="jsonEditorFlyout">
-                    <JsonViewer />
+                    <Header>
+                        Device Twin
+                    </Header>
+                    <Body>
+                        <JsonViewer />
+                    </Body>
                  </Flyout>
                  <Flyout ref="diagnosticFlyout">
-                    <SearchableDataGrid
-                        title="Diagnostics"
-                        datasource={`${Config.solutionApiUrl}api/v1/diagnostics/{deviceId}`}
-                        urlSearchPattern="/\{deviceId\}/i"
-                        topics={["system.device.diagnose"]}
-                        eventDataKey="deviceId"
-                        columns="Parameter:Key, Value:Value"
-                        multiSelect={false}
-                        enableSearch={false}
-                        showLastUpdate={false}
-                    />
-                    <div style={{"marginTop": "10px"}}>
-                        <button className="btn btn-default" onClick={() => this.refs.diagnosticFlyout.hide()}>Cancel</button>
-                    </div>
+                    <Header>
+                        Device Diagnostics
+                    </Header>
+                    <Body>
+                        <SearchableDataGrid
+                            title=""
+                            datasource={`${Config.solutionApiUrl}api/v1/diagnostics/{deviceId}`}
+                            urlSearchPattern="/\{deviceId\}/i"
+                            topics={["system.device.diagnose"]}
+                            eventDataKey="deviceId"
+                            columns="Parameter:Key, Value:Value"
+                            multiSelect={false}
+                            enableSearch={false}
+                            showLastUpdate={false}
+                        ></SearchableDataGrid>
+                        <div style={{"marginTop": "10px"}}>
+                            <button className="btn btn-default" onClick={() => this.refs.diagnosticFlyout.hide()}>Cancel</button>
+                        </div>
+                    </Body>
                 </Flyout>
             </div>
         );
