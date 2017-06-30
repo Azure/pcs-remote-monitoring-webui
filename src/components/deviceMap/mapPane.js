@@ -8,10 +8,9 @@ import allClear from './icon_status_all_clear.svg';
 import caution from './icon_status_caution.svg';
 import critical from './icon_status_critical.svg';
 
-let self = null;
 let mapApiKey = null;
-let map;
-let pinInfobox;
+let map = null;
+let pinInfobox = null;
 let boundsSet = false;
 let resources = {
     allClearStatusIcon: allClear,
@@ -22,7 +21,6 @@ let deviceData;
 let container;
 
 let init = function () {
-    self = this;
     getMapKey();
 }
 
@@ -35,7 +33,7 @@ let setData = function (settings) {
 let getMapKey = function () {
     Http.get(`${Config.solutionApiUrl}api/v1/mapApiKey`)
         .then((data) => {
-            self.mapApiKey = data.key;
+            mapApiKey = data.key;
             finishMap();
         }).catch((err) => {
             console.log(err);
@@ -44,7 +42,7 @@ let getMapKey = function () {
 
 let finishMap = function finishMap() {
     let options = {
-        credentials: self.mapApiKey,
+        credentials: mapApiKey,
         mapTypeId: window.Microsoft.Maps.MapTypeId.road,
         animate: false,
         enableSearchLogo: false,
@@ -54,21 +52,22 @@ let finishMap = function finishMap() {
     };
 
     // Initialize the map
-    self.map = new window.Microsoft.Maps.Map('#deviceMap', options);
+    map = new window.Microsoft.Maps.Map('#deviceMap', options);
 
     // Hide the infobox when the map is moved.
-    window.Microsoft.Maps.Events.addHandler(self.map, 'viewchange', hideInfobox);
+    window.Microsoft.Maps.Events.addHandler(map, 'viewchange', hideInfobox);
 }
 
 
-let onMapPinClicked = function () {
-    EventTopic.publish('system.map.selected', this);
-    let device = deviceData.filter((item) => {
-        return item.DeviceId === this.deviceId;
+let onMapPinClicked = function (e) {
+    setTimeout(() => {
+        let device = deviceData.filter((item) => {
+            return item.DeviceId === this.deviceId;
+        });
+        displayInfobox(this.deviceId, this.location);
+        container.showFlyout();
+        EventTopic.publish(Topics.system.device.selected, device[0], container);
     });
-    container.showFlyout();
-    EventTopic.publish(Topics.system.device.selected, device[0], container);
-    displayInfobox(this.deviceId, this.location);
 }
 
 
@@ -84,16 +83,16 @@ let displayInfobox = function (deviceId, location) {
         offset: new window.Microsoft.Maps.Point(horizOffset, 35),
         showPointer: false
     });
-    infobox.setMap(self.map);
+    infobox.setMap(map);
     $('.infobox-close').css('z-index', 1);
-    self.pinInfobox = infobox;
+    pinInfobox = infobox;
 }
 
 let hideInfobox = function (e) {
-    if (self.pinInfobox != null) {
-        self.pinInfobox.setOptions({ visible: false });
-        self.map.entities.remove(self.pinInfobox);
-        self.pinInfobox = null;
+    if (pinInfobox != null) {
+        pinInfobox.setOptions({ visible: false });
+        map.entities.remove(pinInfobox);
+        pinInfobox = null;
     }
 }
 
@@ -104,20 +103,20 @@ let setDeviceLocationData = function setDeviceLocationData(minLatitude, minLongi
     let pin;
     let pinOptions;
 
-    if (!self.map) {
+    if (!map) {
         return;
     }
 
     if (!boundsSet) {
-        mapOptions = self.map.getOptions();
+        mapOptions = map.getOptions();
         mapOptions.bounds =
             window.Microsoft.Maps.LocationRect.fromCorners(
                 new window.Microsoft.Maps.Location(maxLatitude, minLongitude),
                 new window.Microsoft.Maps.Location(minLatitude, maxLongitude));
-        self.map.setView(mapOptions);
+        map.setView(mapOptions);
     }
 
-    self.map.entities.clear();
+    map.entities.clear();
     if (deviceLocations) {
         for (i = 0; i < deviceLocations.length; ++i) {
             loc = new window.Microsoft.Maps.Location(deviceLocations[i].latitude, deviceLocations[i].longitude);
@@ -142,15 +141,15 @@ let setDeviceLocationData = function setDeviceLocationData(minLatitude, minLongi
 
             pin = new window.Microsoft.Maps.Pushpin(loc, pinOptions);
             window.Microsoft.Maps.Events.addHandler(pin, 'click', onMapPinClicked.bind({ deviceId: deviceLocations[i].deviceId, location: loc }));
-            self.map.entities.push(pin);
+            map.entities.push(pin);
         }
     }
 }
 
 var invokePinEvent = function invokePinEvent(id) {
     var i = 0, entity;
-    while (i < self.map.entities.getLength()) {
-        entity = self.map.entities.get(i);
+    while (i < map.entities.getLength()) {
+        entity = map.entities.get(i);
         if (entity.getId() === id)
             break;
         i += 1;

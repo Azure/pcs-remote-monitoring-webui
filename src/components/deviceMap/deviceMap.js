@@ -5,7 +5,7 @@ import MapPane from './mapPane';
 import Http from "../../common/httpClient"
 import Config from "../../common/config"
 import Flyout from '../../framework/flyout/flyout';
-//import DeviceDetail from '../deviceDetail/deviceDetail';
+import DeviceDetail from '../deviceDetail/deviceDetail';
 
 class DeviceMap extends Component {
     constructor(props) {
@@ -49,9 +49,9 @@ class DeviceMap extends Component {
     getDeviceData(data) {
         let Location = function (deviceId) {
             this.deviceId = deviceId;
-            this.latitude;
-            this.longitude;
-            this.status;
+            this.latitude = null;
+            this.longitude = null;
+            this.status = null;
         }
         let minLat;
         let maxLat;
@@ -114,6 +114,9 @@ class DeviceMap extends Component {
             <div style={{ width:"100%", height:"100%" }}>
                 <div id="deviceMap" className="dashboard_device_map">
                 </div>
+                <Flyout ref='flyout'>
+                    <DeviceDetail />
+                </Flyout>
             </div>
         );
     }
