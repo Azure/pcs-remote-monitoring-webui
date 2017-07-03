@@ -1,12 +1,12 @@
+$titleRowHeight:36px;
 .kpiRow {
-    height: 50%;
+    height: calc(50% - #{$titleRowHeight}/2);
 }
 
 .kpiWidget {
     height: 100%;
 }
 
-.kpiTitle {
-    font-size: 18px;
-    font-weight: bold;
+.kpiTitleRow{
+    height: $titleRowHeight;
 }
