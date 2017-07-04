@@ -11,3 +11,14 @@
   @extend .datagrid-color;
   margin-top: 10px;
 }
+.react-grid-Cell{
+  color: black;
+}
+.react-grid-Row--even .react-grid-Cell{
+  @extend .react-grid-Cell;
+  background: white;
+}
+.react-grid-Row--odd .react-grid-Cell{
+  @extend .react-grid-Cell;
+  background: lightgrey;
+}

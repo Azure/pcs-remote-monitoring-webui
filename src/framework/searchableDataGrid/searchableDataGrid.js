@@ -28,7 +28,7 @@ class SearchableDataGrid extends Component {
         this.tokens = [];
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         this.props = Object.assign({}, this.props, nextProps);
         this.resize();
     }
@@ -68,9 +68,10 @@ class SearchableDataGrid extends Component {
         this.setState({title: title});
     }
 
-    resize() {
+    resize = () => {
         if (this.container) {
-            let newClientHeight = this.props.height || this.container.parentElement.clientHeight || undefined;
+            let calcHeight = this.container.parentElement.clientHeight / this.rawHeight  * this.props.height;
+            let newClientHeight = calcHeight || this.container.parentElement.clientHeight || undefined;
             if (newClientHeight && this.state.title.length) {
                 newClientHeight -= 45;
             }
@@ -86,7 +87,7 @@ class SearchableDataGrid extends Component {
             this.setState({clientWidth: this.props.width || undefined});
             this.setState({clientHeight: newClientHeight});
         }
-    }
+    };
 
     getValueForKey(key, value) {
         if (typeof value === 'string') return value;
@@ -112,11 +113,32 @@ class SearchableDataGrid extends Component {
 
         this.filterRows = debounce(this.filterRows, 1000);
 
-        if(this.props.autoLoad){
+        if (this.props.autoLoad) {
             this.getData(this.props.initFilter);
         }
+        if(this.container){
+            this.rawHeight = this.container.parentElement.clientHeight;
+        }
         this.setColumns(this.props.columns.split(','));
+        this.hookWindowResize();
+        window.addEventListener("layoutResize", this.resize);
         this.resize();
+    }
+
+    hookWindowResize() {
+        (function () {
+            var isRunning = false;
+            window.addEventListener('resize', function () {
+                if (isRunning) {
+                    return;
+                }
+                isRunning = true;
+                requestAnimationFrame(function () {
+                    window.dispatchEvent(new CustomEvent('layoutResize'));
+                    isRunning = false;
+                });
+            });
+        })();
     }
 
     filterRows(event) {
@@ -233,28 +255,6 @@ class SearchableDataGrid extends Component {
     }
 
     render() {
-        const {Row} = ReactDataGrid;
-        class RowRenderer extends Component{
-
-            setScrollLeft(scrollBy) {
-                this.row.setScrollLeft(scrollBy);
-            }
-
-            getRowStyle() {
-                return {
-                    backgroundColor: this.getRowBackground()
-                };
-            }
-
-            getRowBackground() {
-                return this.props.idx % 2 ? 'gray' : 'white';
-            }
-
-            render() {
-                return (<div style={this.getRowStyle()}><Row ref={ node => this.row = node } {...this.props} /></div>);
-            }
-        };
-
         let title = null;
         if (this.state.title && this.state.title.length) {
             title = <p style={{fontSize: "24px"}}>{this.state.title}</p>
@@ -291,7 +291,6 @@ class SearchableDataGrid extends Component {
                            enableCellSelect={false}
                            enableRowSelect={this.state.multiSelect}
                            rowsCount={this.state.rows.length}
-                           rowRenderer={RowRenderer}
                            minHeight={this.state.clientHeight}
                            minWidth={this.state.clientWidth}/>
         );
