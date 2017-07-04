@@ -122,16 +122,39 @@ class GenericDropDownList extends Component {
         this.setState({showModal: true});
     }
 
+    onEditItem() {
+        this.setState({showModal: true});
+    }
+
     onReloadRequest(topic, data, publisher) {
         this.getItemList(data);
     }
 
     renderItem(item) {
         if (this.props.multipleSelect) {
-            return <li key={item.id}><a onClick={(e)=>this.onClickItem(e)} data-id={item.id}><input type="checkbox" checked={this.state.selectedIds.indexOf(item.id) >= 0} data-id={item.id}/> {item.text}</a></li>;
+            return (
+                <li key={item.id}>
+                    <a onClick={(e)=>this.onClickItem(e)} data-id={item.id}>
+                        <input type="checkbox" checked={this.state.selectedIds.indexOf(item.id) >= 0} data-id={item.id}/>
+                        {item.text}
+                        {this.props.editItem && this.renderEditItem()}
+                    </a>
+                </li>
+            );
         } else {
-            return <li key={item.id}><a onClick={(e)=>this.onClickItem(e)} data-id={item.id}>{item.text}</a></li>;
+            return (
+                <li key={item.id}>
+                    <a onClick={(e)=>this.onClickItem(e)} data-id={item.id}>
+                        {item.text}
+                        {this.props.editItem && this.renderEditItem()}
+                    </a>
+                </li>
+            );
         }
+    }
+
+    renderEditItem() {
+        return <span style={{float: "right", cursor: "pointer"}} onClick={(e)=>this.onEditItem(e)}>{this.props.editItem.text}</span>;
     }
 
     render() {
@@ -143,7 +166,7 @@ class GenericDropDownList extends Component {
                     {this.state.items.filter(item => this.state.selectedIds.indexOf(item.id) >= 0).map(item => item.text).join(", ") || this.props.initialState.defaultText}
                     <span className="caret"></span>
                 </button>
-                <ul className="dropdown-menu">
+                <ul className={"dropdown-menu " + (this.props.menuAlign === "right" ? "dropdown-menu-right" : "")}>
                     {
                         this.props.multipleSelect && this.props.selectAll && <li key="_selectAll"><a onClick={(e)=>this.onSelectAll(e)}><input type="checkbox" className="genericDropDownListItemSelectAll" checked={this.state.selectedIds.length === this.state.items.length} /> {this.props.selectAll.text}</a></li>
                     }

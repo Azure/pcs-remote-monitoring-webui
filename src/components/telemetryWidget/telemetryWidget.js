@@ -14,6 +14,7 @@ class TelemetryWidget extends Component {
                     <div>
                         <GenericDropDownList
                             id="DeviceGroups"
+                            menuAlign="right"
                             requestUrl={Config.deviceGroupApiUrl}
                             initialState={{
                                 "defaultText": "Choose devices"
@@ -30,6 +31,7 @@ class TelemetryWidget extends Component {
                     <div style={{marginTop: "1em"}}>
                         <GenericDropDownList                            
                             id="TelemetryTypes"
+                            menuAlign="right"
                             multipleSelect={ true }
                             requestUrl={Config.telemetryTypeApiUrl}
                             initialState={{
