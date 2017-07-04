@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import Config from '../../common/config'
+import { Topics } from '../../common/eventtopic';
 import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
 import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
 
@@ -47,7 +48,7 @@ class AlarmList extends Component {
                             "defaultText": "Choose time range",
                             "selectFirstItem": true
                         }}
-                        publishTopic="system.dashboard.alarmTimerange.selected"
+                        publishTopic={Topics.system.dashboard.alarmTimerage.selected}
                     >
                     </GenericDropDownList>
                 </div>
@@ -63,7 +64,7 @@ class AlarmList extends Component {
                     height={this.state.gridHeight}
                     topics={
                         [
-                            "system.dashboard.alarmTimerange.selected"
+                            Topics.system.dashboard.alarmTimerage.selected
                         ]
                     }
                     columns="RuleID:ruleId, Occurrences:occurrences, Description:description, Severity:severity, LastIncidentUtc:lastIncident, Status:status"

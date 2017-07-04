@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import EventTopic from '../../common/eventtopic';
+import EventTopic, { Topics } from '../../common/eventtopic';
 import Config from '../../common/config';
 import CurveChartGraph from './curveChartGraph';
 import "./curveChart.css";
@@ -23,7 +23,7 @@ class CurveChart extends Component {
         });
         this.CurveChartGraph.init();
 
-        let topics = ["system.dashBoardDeviceGroup.selectionChanged", "system.dahsBoardTelemetry.selectionChanged"];
+        let topics = [Topics.system.dashboard.deviceGroup.selectionChanged, Topics.system.dashboard.telemetry.selectionChanged];
         this.handleDropdownEvent(this.updateTelemetryByGroupId, this, topics)();
     }
 

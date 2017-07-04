@@ -112,7 +112,7 @@ class DeviceDetail extends React.Component {
                             title=""
                             datasource={`${Config.solutionApiUrl}api/v1/diagnostics/{deviceId}`}
                             urlSearchPattern="/\{deviceId\}/i"
-                            topics={["system.device.diagnose"]}
+                            topics={[Topics.system.device.diagnose]}
                             eventDataKey="deviceId"
                             columns="Parameter:Key, Value:Value"
                             multiSelect={false}

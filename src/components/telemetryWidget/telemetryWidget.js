@@ -2,8 +2,10 @@
 
 import React, { Component } from 'react';
 import Config from "../../common/config";
+import { Topics } from '../../common/eventtopic';
 import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
 import CurveChart from '../../components/curveChart/curveChart';
+
 
 class TelemetryWidget extends Component {
 
@@ -23,8 +25,8 @@ class TelemetryWidget extends Component {
                                 "text": "(new group)",
                                 "dialog": "deviceGroupEditor"
                             }}
-                            publishTopic="system.dashBoardDeviceGroup.selectionChanged"
-                            reloadRequestTopic="system.deviceGroup.changed">
+                            publishTopic={Topics.system.dashboard.deviceGroup.selectionChanged}
+                            reloadRequestTopic={Topics.system.dashboard.deviceGroup.changed}>
                         </GenericDropDownList>
                     </div>
 
@@ -42,8 +44,8 @@ class TelemetryWidget extends Component {
                             selectAll={{
                                 "text": "Select All"
                             }}
-                            publishTopic="system.dahsBoardTelemetry.selectionChanged"
-                            reloadRequestTopic="system.dashBoardDeviceGroup.selectionChanged">
+                            publishTopic={Topics.system.dashboard.telemetry.selectionChanged}
+                            reloadRequestTopic={Topics.system.dashboard.deviceGroup.selectionChanged}>
                         </GenericDropDownList>
                     </div>
                 </div>
