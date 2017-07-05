@@ -21,7 +21,7 @@ class DeviceDetail extends React.Component {
     }
 
     componentDidMount() {
-        this.subscriptions.push(EventTopic.subscribe(Topics.system.device.selected, (topic, data, publisher) => {
+        this.subscriptions.push(EventTopic.subscribe(Topics.device.selected, (topic, data, publisher) => {
             this.setState({ twin: data });
         }));
     }
@@ -78,7 +78,7 @@ class DeviceDetail extends React.Component {
                     </ul>
                 </div>
                 <div className="deviceDetail-curve-chart">
-                    <CurveChart deviceTopics={[Topics.system.device.selected]} />
+                    <CurveChart deviceTopics={[Topics.device.selected]} />
                 </div>
                 <div className="deviceDetail-section">
                     <div className="deviceDetail-section-label">Methods</div>

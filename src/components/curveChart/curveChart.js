@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import EventTopic, { Topics } from '../../common/eventtopic';
+import EventTopic from '../../common/eventtopic';
 import Config from '../../common/config';
 import CurveChartGraph from './curveChartGraph';
 import "./curveChart.css";
