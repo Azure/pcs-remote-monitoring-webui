@@ -23,7 +23,7 @@ class CurveChart extends Component {
         });
         this.CurveChartGraph.init();
 
-        let topics = [Topics.system.dashboard.deviceGroup.selectionChanged, Topics.system.dashboard.telemetry.selectionChanged];
+        let topics = [Topics.dashboard.deviceGroup.selected, Topics.dashboard.telemetryType.selected];
         this.handleDropdownEvent(this.updateTelemetryByGroupId, this, topics)();
     }
 

@@ -8,33 +8,30 @@
 import PubSub from 'pubsub-js'
 
 export const Topics = {
-    system: {
-        all: 'system',
-        dashboard: {
-            all: 'system.dashboard',
-            alarmTimerage: {
-                selected: "system.dashboard.alarmTimerange.selected"
-            },
-            deviceGroup: {
-                selectionChanged: "system.dashboard.deviceGroup.selectionChanged",
-                changed: "system.dashboard.deviceGroup.changed"
-            },
-            telemetry: {
-                selectionChanged: "system.dashboard.telemetry.selectionChanged"
-            }
+    dashboard: {
+        all: 'dashboard',
+        alarmTimerange: {
+            selected: 'dashboard.alarmTimerange.selected'   // timerange is selected from alarm dropdown list
         },
-        device: {
-            all: 'system.device',
-            diagnose: 'system.device.diagnose',
-            selected: 'system.device.selected',
-            twin: {
-                opened: 'system.device.twin.opened'
-            },
+        deviceGroup: {
+            selected: 'dashboard.deviceGroup.selected',     // deviceGroup is selected from deviceGroup dropdown list
+            changed: 'dashboard.deviceGroup.changed'        // deviceGroup is created or updated in deviceGroupEditor
         },
-        grid: {
-            itemSelected: 'system.grid.itemSelected',
-            itemsSelected: 'system.grid.itemsSelected'
+        telemetryType: {
+            selected: 'dashboard.telemetryType.selected'    // telemetryType is selected from telemetry type dropdown list
         }
+    },
+    device: {
+        all: 'device',
+        diagnose: 'device.diagnose',        // device is picked up for diagnose
+        selected: 'device.selected',        // device is selected from device map
+        twin: {
+            opened: 'device.twin.opened'    // device raw twin is opened for copy
+        },
+    },
+    grid: {
+        itemSelected: 'grid.itemSelected',
+        itemsSelected: 'grid.itemsSelected'
     }
 };
 

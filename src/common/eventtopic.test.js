@@ -19,25 +19,25 @@ describe('subscribe function', () => {
     });
 
     it('should return an unique id with prefix "uid_"', () => {
-        expect(EventTopic.subscribe(Topics.system.all, expect.anything())).toMatch(/uid_\d+/);
+        expect(EventTopic.subscribe(Topics.dashboard.all, expect.anything())).toMatch(/uid_\d+/);
         expect(EventTopic.subscribe('another', expect.anything())).toMatch(/uid_\d+/);
     });
 
     it('should capture specific topic', () => {
         let mockFn = jest.fn();
-        EventTopic.subscribe(Topics.system.all, mockFn);
-        EventTopic.publishSync(Topics.system.all, {'foo':'bar'}, null);
-        expect(mockFn).toBeCalledWith(Topics.system.all, {'foo': 'bar'}, null);
+        EventTopic.subscribe(Topics.dashboard.all, mockFn);
+        EventTopic.publishSync(Topics.dashboard.all, {'foo':'bar'}, null);
+        expect(mockFn).toBeCalledWith(Topics.dashboard.all, {'foo': 'bar'}, null);
     });
 
     it('should capture multiple topics', () => {
         let mockFn = jest.fn();
-        EventTopic.subscribe(Topics.system.all, mockFn);
-        EventTopic.publishSync(Topics.system.all, {'foo':'bar'}, null);
-        EventTopic.publishSync(Topics.system.device.all, {'deviceId': 123}, null);
+        EventTopic.subscribe(Topics.device.all, mockFn);
+        EventTopic.publishSync(Topics.device.all, {'foo':'bar'}, null);
+        EventTopic.publishSync(Topics.device.selected, {'deviceId': 123}, null);
         expect(mockFn).toHaveBeenCalledTimes(2);
-        expect(mockFn).toBeCalledWith(Topics.system.all, {'foo': 'bar'}, null);
-        expect(mockFn).toBeCalledWith(Topics.system.device.all, {'deviceId': 123}, null);
+        expect(mockFn).toBeCalledWith(Topics.device.all, {'foo': 'bar'}, null);
+        expect(mockFn).toBeCalledWith(Topics.device.selected, {'deviceId': 123}, null);
     });
 
 });
@@ -52,7 +52,7 @@ describe('publish function', () => {
     });
 
     it('should return true', () => {
-        expect(EventTopic.publish(Topics.system.all, expect.anything(), expect.anything())).toEqual(true);
+        expect(EventTopic.publish(Topics.device.all, expect.anything(), expect.anything())).toEqual(true);
         expect(EventTopic.publish('another', expect.anything(), expect.anything())).toEqual(true);
     });
 
@@ -65,7 +65,7 @@ describe('publishSync function', () => {
     });
 
     it('should return true', () => {
-        expect(EventTopic.publishSync(Topics.system.all, expect.anything(), expect.anything())).toEqual(true);
+        expect(EventTopic.publishSync(Topics.device.all, expect.anything(), expect.anything())).toEqual(true);
         expect(EventTopic.publishSync('another', expect.anything(), expect.anything())).toEqual(true);
     });
 
@@ -77,13 +77,13 @@ describe('unsubscribe function', () => {
         expect(() => EventTopic.unsubscribe()).not.toThrow();
         expect(() => EventTopic.unsubscribe(null)).not.toThrow();
         expect(() => EventTopic.unsubscribe('another')).not.toThrow();
-        expect(() => EventTopic.unsubscribe(Topics.system.all)).not.toThrow();
-        expect(() => EventTopic.unsubscribe([null, 'another', Topics.system])).not.toThrow();
+        expect(() => EventTopic.unsubscribe(Topics.device.all)).not.toThrow();
+        expect(() => EventTopic.unsubscribe([null, 'another', Topics.device])).not.toThrow();
     });
 
     it('should unsubscribe subscribed topics', () => {
         const mockCallback = jest.fn();
-        const uid = EventTopic.subscribe(Topics.system.all, mockCallback);
+        const uid = EventTopic.subscribe(Topics.device.all, mockCallback);
         expect(EventTopic.unsubscribe(uid)).toEqual(uid);
 
         const anotherId = EventTopic.unsubscribe('another'.mockCallback);
@@ -94,7 +94,7 @@ describe('unsubscribe function', () => {
 
 describe('clearSubscription function', () => {
     it('should clear specific topics successfully', () => {
-        expect(() => EventTopic.clearSubscriptions(Topics.system.all)).not.toThrow();
+        expect(() => EventTopic.clearSubscriptions(Topics.device.all)).not.toThrow();
         expect(() => EventTopic.clearSubscriptions('another')).not.toThrow();
     })
 });

@@ -66,7 +66,7 @@ let onMapPinClicked = function (e) {
         });
         displayInfobox(this.deviceId, this.location);
         container.showFlyout();
-        EventTopic.publish(Topics.system.device.selected, device[0], container);
+        EventTopic.publish(Topics.device.selected, device[0], container);
     });
 }
 

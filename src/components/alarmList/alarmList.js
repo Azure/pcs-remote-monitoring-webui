@@ -48,7 +48,7 @@ class AlarmList extends Component {
                             "defaultText": "Choose time range",
                             "selectFirstItem": true
                         }}
-                        publishTopic={Topics.system.dashboard.alarmTimerage.selected}
+                        publishTopic={Topics.dashboard.alarmTimerange.selected}
                     >
                     </GenericDropDownList>
                 </div>
@@ -64,7 +64,7 @@ class AlarmList extends Component {
                     height={this.state.gridHeight}
                     topics={
                         [
-                            Topics.system.dashboard.alarmTimerage.selected
+                            Topics.dashboard.alarmTimerange.selected
                         ]
                     }
                     columns="RuleID:ruleId, Occurrences:occurrences, Description:description, Severity:severity, LastIncidentUtc:lastIncident, Status:status"

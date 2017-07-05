@@ -25,8 +25,8 @@ class TelemetryWidget extends Component {
                                 "text": "(new group)",
                                 "dialog": "deviceGroupEditor"
                             }}
-                            publishTopic={Topics.system.dashboard.deviceGroup.selectionChanged}
-                            reloadRequestTopic={Topics.system.dashboard.deviceGroup.changed}>
+                            publishTopic={Topics.dashboard.deviceGroup.selected}
+                            reloadRequestTopic={Topics.dashboard.deviceGroup.changed}>
                         </GenericDropDownList>
                     </div>
 
@@ -44,8 +44,8 @@ class TelemetryWidget extends Component {
                             selectAll={{
                                 "text": "Select All"
                             }}
-                            publishTopic={Topics.system.dashboard.telemetry.selectionChanged}
-                            reloadRequestTopic={Topics.system.dashboard.deviceGroup.selectionChanged}>
+                            publishTopic={Topics.dashboard.telemetryType.selected}
+                            reloadRequestTopic={Topics.dashboard.deviceGroup.selected}>
                         </GenericDropDownList>
                     </div>
                 </div>

@@ -21,7 +21,7 @@ class DeviceDetail extends React.Component {
     }
 
     componentDidMount() {
-        this.subscriptions.push(EventTopic.subscribe(Topics.system.device.selected, (topic, data, publisher) => {
+        this.subscriptions.push(EventTopic.subscribe(Topics.device.selected, (topic, data, publisher) => {
             this.setState({ twin: data});
             this.refs.curveChart.updateTelemetryByDeviceId(data.DeviceId);
         }));
@@ -35,12 +35,12 @@ class DeviceDetail extends React.Component {
         this.refs.jsonEditorFlyout.show();
         Http.get(Config.iotHubManagerApiUrl + "/api/v1/rawtwin/" + this.state.twin.DeviceId)
             .then(function(data) {
-                EventTopic.publish(Topics.system.device.twin.opened, data, this);
+                EventTopic.publish(Topics.device.twin.opened, data, this);
             });
     }
 
     onDiagnostics = () => {
-        EventTopic.publish(Topics.system.device.diagnose, {deviceId: this.state.twin.DeviceId}, this)
+        EventTopic.publish(Topics.device.diagnose, {deviceId: this.state.twin.DeviceId}, this)
         this.refs.diagnosticFlyout.show();
     }
 
@@ -112,7 +112,7 @@ class DeviceDetail extends React.Component {
                             title=""
                             datasource={`${Config.solutionApiUrl}api/v1/diagnostics/{deviceId}`}
                             urlSearchPattern="/\{deviceId\}/i"
-                            topics={[Topics.system.device.diagnose]}
+                            topics={[Topics.device.diagnose]}
                             eventDataKey="deviceId"
                             columns="Parameter:Key, Value:Value"
                             multiSelect={false}

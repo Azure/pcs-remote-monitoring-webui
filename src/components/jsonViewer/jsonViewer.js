@@ -16,7 +16,7 @@ class JsonViewer extends React.Component {
     }
 
     componentDidMount() {
-        this.subscriptions.push(EventTopic.subscribe(Topics.system.device.twin.opened, (topic, data, publisher) => {
+        this.subscriptions.push(EventTopic.subscribe(Topics.device.twin.opened, (topic, data, publisher) => {
             this.setState({data: data});
         }));
     }
