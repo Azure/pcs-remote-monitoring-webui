@@ -22,9 +22,7 @@ class CurveChart extends Component {
             legends: ReactDOM.findDOMNode(this.refs.curveLegends)
         });
         this.CurveChartGraph.init();
-
-        let topics = [Topics.dashboard.deviceGroup.selected, Topics.dashboard.telemetryType.selected];
-        this.handleDropdownEvent(this.updateTelemetryByGroupId, this, topics)();
+        this.renderChart();
     }
 
     componentWillUnmount() {
@@ -33,32 +31,37 @@ class CurveChart extends Component {
         EventTopic.unsubscribe(this.subscriptions);
     }
 
+    renderChart() {
+        if (this.props.deviceTopics) {
+            this.handleEvent(this.updateTelemetryByDeviceId, this.props.deviceTopics);
+        } else if (this.props.deviceGroupTopics) {
+            this.handleEvent(this.updateTelemetryByGroupId, this.props.deviceGroupTopics);
+        }
+    }
+
     updateTelemetryByGroupId(deviceGroup, telemetries) {
-        if (deviceGroup.length > 0 && telemetries && telemetries.length > 0) {
-            var url = `${Config.solutionApiUrl}api/v1/telemetry/devicegroup/`;
+        if (deviceGroup && deviceGroup.length > 0 && telemetries && telemetries.length > 0) {
+            let url = `${Config.solutionApiUrl}api/v1/telemetry/devicegroup/`;
             this.CurveChartGraph.update(url, deviceGroup, telemetries);
         }
     }
 
-    updateTelemetryByDeviceId(deviceId) {
+    updateTelemetryByDeviceId(data) {
+        let deviceId = data.DeviceId;
         if (deviceId) {
             var url = `${Config.solutionApiUrl}api/v1/telemetry/device/`;
             this.CurveChartGraph.update(url, deviceId);
         }
     }
 
-    handleDropdownEvent(fn, scope, topics) {
-        var args = new Array(topics.length);
-        return function () {
-            topics.forEach((item, index) => {
-                ((i) => {
-                    scope.subscriptions.push(EventTopic.subscribe(item, (topic, data, publisher) => {
-                        args[i] = data;
-                        fn.apply(scope, args);
-                    }));
-                })(index);
-            });
-        }
+    handleEvent(fn, topics) {
+        let args = new Array(topics.length);
+        topics.forEach((item, index) => {
+            this.subscriptions.push(EventTopic.subscribe(item, (topic, data, publisher) => {
+                args[index] = data;
+                fn.apply(this, args);
+            }));
+        });
     }
 
     render() {

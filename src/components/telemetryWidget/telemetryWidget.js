@@ -11,8 +11,8 @@ class TelemetryWidget extends Component {
 
     render() {
         return (
-            <div style={{height: "100%"}}>                
-                <div style={{width: "10em", marginLeft: "1em", float: "right"}}>
+            <div style={{ height: "100%" }}>
+                <div style={{ width: "10em", marginLeft: "1em", float: "right" }}>
                     <div>
                         <GenericDropDownList
                             id="DeviceGroups"
@@ -30,8 +30,8 @@ class TelemetryWidget extends Component {
                         </GenericDropDownList>
                     </div>
 
-                    <div style={{marginTop: "1em"}}>
-                        <GenericDropDownList                            
+                    <div style={{ marginTop: "1em" }}>
+                        <GenericDropDownList
                             id="TelemetryTypes"
                             menuAlign="right"
                             multipleSelect={ true }
@@ -49,8 +49,8 @@ class TelemetryWidget extends Component {
                         </GenericDropDownList>
                     </div>
                 </div>
-                <div style={{width: "auto", height: "100%", float: "none", overflow: "hidden"}}>
-                    <CurveChart></CurveChart>
+                <div style={{ width: "auto", height: "100%", float: "none", overflow: "hidden" }}>
+                    <CurveChart deviceGroupTopics={["system.dashBoardDeviceGroup.selectionChanged", "system.dahsBoardTelemetry.selectionChanged"]}></CurveChart>
                 </div>
             </div>
         );

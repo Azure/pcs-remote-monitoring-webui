@@ -21,9 +21,8 @@ class DeviceDetail extends React.Component {
     }
 
     componentDidMount() {
-        this.subscriptions.push(EventTopic.subscribe(Topics.device.selected, (topic, data, publisher) => {
-            this.setState({ twin: data});
-            this.refs.curveChart.updateTelemetryByDeviceId(data.DeviceId);
+        this.subscriptions.push(EventTopic.subscribe(Topics.system.device.selected, (topic, data, publisher) => {
+            this.setState({ twin: data });
         }));
     }
 
@@ -57,7 +56,7 @@ class DeviceDetail extends React.Component {
         const properties = Object.keys(twin).filter(p => !methodPrefix.test(p))
             .slice(0, this.state.maxNumberOfProperties)
             .map(p =>
-                <tr><td><span title={p}>{p}</span></td><td title={twin[p]} style={{ padding: "4px" } }>{twin[p]}</td></tr>
+                <tr><td><span title={p}>{p}</span></td><td title={twin[p]} style={{ padding: "4px" }}>{twin[p]}</td></tr>
             );
 
         return (
@@ -79,7 +78,7 @@ class DeviceDetail extends React.Component {
                     </ul>
                 </div>
                 <div className="deviceDetail-curve-chart">
-                    <CurveChart ref="curveChart"/>
+                    <CurveChart deviceTopics={[Topics.system.device.selected]} />
                 </div>
                 <div className="deviceDetail-section">
                     <div className="deviceDetail-section-label">Methods</div>
@@ -95,15 +94,15 @@ class DeviceDetail extends React.Component {
                     <a href="#rawtwin" onClick={this.onViewRawTwin}><p>View raw device twin</p></a>
                     <button className="btn btn-default" onClick={this.onDiagnostics}>Diagnostics</button>
                 </div>
-                 <Flyout ref="jsonEditorFlyout">
+                <Flyout ref="jsonEditorFlyout">
                     <Header>
                         Device Twin
                     </Header>
                     <Body>
                         <JsonViewer />
                     </Body>
-                 </Flyout>
-                 <Flyout ref="diagnosticFlyout">
+                </Flyout>
+                <Flyout ref="diagnosticFlyout">
                     <Header>
                         Device Diagnostics
                     </Header>
@@ -119,7 +118,7 @@ class DeviceDetail extends React.Component {
                             enableSearch={false}
                             showLastUpdate={false}
                         ></SearchableDataGrid>
-                        <div style={{"marginTop": "10px"}}>
+                        <div style={{ "marginTop": "10px" }}>
                             <button className="btn btn-default" onClick={() => this.refs.diagnosticFlyout.hide()}>Cancel</button>
                         </div>
                     </Body>
