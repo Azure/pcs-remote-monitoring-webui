@@ -71,7 +71,7 @@ export default class CustomFlyout extends Component {
             <div>
                 <Modal show={this.state.show} onHide={this.close} >
                     <Modal.Header>
-                        <Modal.Title>Customize Your Solution....</Modal.Title>
+                        <Modal.Title>Customize Your Solution</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div style={{ display: this.state.step === 1 ? '' : 'none' }}>
@@ -82,7 +82,7 @@ export default class CustomFlyout extends Component {
                                     <Col md={6}><CustomLogo ref="customLogo" /></Col>
                                 </Row>
                                 <Row>
-                                    <Col md={6}><CustomDevice ref="customDevice" /></Col>
+                                    <Col md={12}><CustomDevice ref="customDevice" disabled={this.state.demo} /></Col>
                                 </Row>
                             </Grid>
                         </div>

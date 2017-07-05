@@ -7,6 +7,12 @@
     overflow-y: auto; 
 }
 
+.custom-device-item {
+    margin: 2px 0px;
+}
+
 .custom-device-input {
     width: 40px;
+    border: 1px solid #ccc;
+    text-align: right;
 }
