@@ -16,10 +16,13 @@
     "redux": "^3.7.0"
   },
   "devDependencies": {
+    "enzyme": "^2.9.1",
     "flow-bin": "^0.48.0",
+    "node-fetch": "^1.7.1",
     "node-sass-chokidar": "0.0.3",
     "npm-run-all": "^4.0.2",
-    "react-scripts": "1.0.7"
+    "react-scripts": "1.0.7",
+    "react-test-renderer": "^15.6.1"
   },
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
