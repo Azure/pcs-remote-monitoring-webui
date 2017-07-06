@@ -50,7 +50,7 @@ class TelemetryWidget extends Component {
                     </div>
                 </div>
                 <div style={{ width: "auto", height: "100%", float: "none", overflow: "hidden" }}>
-                    <CurveChart deviceGroupTopics={["system.dashBoardDeviceGroup.selectionChanged", "system.dahsBoardTelemetry.selectionChanged"]}></CurveChart>
+                    <CurveChart deviceGroupTopics={[Topics.dashboard.deviceGroup.selected, Topics.dashboard.telemetryType.selected]}></CurveChart>
                 </div>
             </div>
         );
