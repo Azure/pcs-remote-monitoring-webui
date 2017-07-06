@@ -17,7 +17,7 @@ class CurveChart extends Component {
         this.CurveChartGraph = new CurveChartGraph({
             loadDataUrlBase: '',
             refreshMilliseconds: 3000,
-            maxPointsNumber: 20,
+            maxPointsNumber: 100,
             chartControl: ReactDOM.findDOMNode(this.refs.curveChart),
             legends: ReactDOM.findDOMNode(this.refs.curveLegends)
         });

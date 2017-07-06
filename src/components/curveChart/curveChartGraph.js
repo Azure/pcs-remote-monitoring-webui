@@ -147,8 +147,9 @@ CurveChartGraph.prototype.update = function (url, deviceGroup, telemetries) {
                 backgroundColor: newColor,
                 borderColor: newColor,
                 data: [],
-                fill: false
-                // lineTension:0.1
+                fill: false,
+                lineTension: 0,
+                pointRadius: 0
             };
             this.config.data.datasets.push(newDataset);
         })
