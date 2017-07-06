@@ -1,4 +1,4 @@
-.flyout-panel {
+.flyoutPanel {
     position: absolute;
     top: 51px;
     bottom: 0px;
@@ -10,29 +10,29 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.flyout-panel-inner {
+.flyoutPanelInner {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.flyout-panel-header {
+.flyoutPanelHeader {
     font-size: 20px;
     padding: 10px 10px 0px 10px;
 }
 
-.flyout-panel-body {
+.flyoutPanelBody {
     overflow-y: auto;
     flex: 1;
     padding: 10px;
 }
 
-.flyout-panel-footer {
+.flyoutPanelFooter {
     padding: 10px 5px;
 }
 
-.flyout-closebtn {
+.flyoutCloseBtn {
     position: absolute;
     top: 2px;
     right: 2px;

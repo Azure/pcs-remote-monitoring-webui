@@ -58,7 +58,7 @@ export default class CustomLogo extends React.Component {
             <div>
                 <div><Button onClick={this.onUpload}>Upload</Button></div>
                 <div>
-                    <img className="custom-logo-img" src={this.state.img} alt="logo" />
+                    <img className="customLogoImg" src={this.state.img} alt="logo" />
                 </div>
                 <FileUploader ref="fileUploader" url={Config.uiConfigApiUrl + "api/v1/solution/logo"} onUploaded={this.onUploaded} />
             </div>

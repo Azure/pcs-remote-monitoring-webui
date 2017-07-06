@@ -1,17 +1,17 @@
-﻿.custom-device {
+﻿.customDevice {
     height: 100%;
 }
 
-.custom-device-list {
+.customDeviceList {
     height: calc(100% - 20px);
     overflow-y: auto; 
 }
 
-.custom-device-item {
+.customDeviceItem {
     margin: 2px 0px;
 }
 
-.custom-device-input {
+.customDeviceInput {
     width: 40px;
     border: 1px solid #ccc;
     text-align: right;

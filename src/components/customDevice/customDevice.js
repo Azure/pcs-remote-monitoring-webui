@@ -14,8 +14,8 @@ class DeviceInput extends React.Component {
 
     render() {
         return (
-            <div className="custom-device-item">
-                <input className="custom-device-input" value={this.props.device.count} onChange={this.handleChange} disabled={this.props.disabled}/>&nbsp;<span>{this.props.device.type}</span>
+            <div className="customDeviceItem">
+                <input className="customDeviceInput" value={this.props.device.count} onChange={this.handleChange} disabled={this.props.disabled}/>&nbsp;<span>{this.props.device.type}</span>
             </div>
         );
     }
@@ -76,9 +76,9 @@ export default class CustomDevice extends React.Component {
             <DeviceInput key={device.type} device={device} onChange={this.handleChange} disabled={this.props.disabled} />
         );
         return (
-            <div className="custom-device">
+            <div className="customDevice">
                 <span>Device Types:</span>
-                <div className="custom-device-list">
+                <div className="customDeviceList">
                     {items}
                 </div>
             </div>

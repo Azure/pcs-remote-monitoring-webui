@@ -60,11 +60,11 @@ export default class flyout extends Component {
     render() {
         return (
             <Wrapper>
-                <div ref='component' className="flyout-panel" style={this.state.style} >
+                <div ref='component' className="flyoutPanel" style={this.state.style} >
                     { this.state.showCloseButton && 
-                        <span className="flyout-closebtn" onClick={this.handleCloseClick} ><Glyphicon glyph="remove" /></span>
+                        <span className="flyoutCloseBtn" onClick={this.handleCloseClick} ><Glyphicon glyph="remove" /></span>
                     }
-                    <div className="flyout-panel-inner" >
+                    <div className="flyoutPanelInner" >
                         {this.props.children}
                     </div>
                 </div>
@@ -103,7 +103,7 @@ class Wrapper extends Component {
 export class Header extends Component {
     render() {
         return (
-            <div className="flyout-panel-header">{this.props.children}</div>
+            <div className="flyoutPanelHeader">{this.props.children}</div>
         );
     }
 }
@@ -111,7 +111,7 @@ export class Header extends Component {
 export class Body extends Component {
     render() {
         return (
-            <div className="flyout-panel-body">{this.props.children}</div>
+            <div className="flyoutPanelBody">{this.props.children}</div>
         );
     }
 }
@@ -119,7 +119,7 @@ export class Body extends Component {
 export class Footer extends Component {
     render() {
         return (
-            <div className="flyout-panel-footer">{this.props.children}</div>
+            <div className="flyoutPanelFooter">{this.props.children}</div>
         );
     }
 }

@@ -14,11 +14,11 @@ class Dashboard extends Component {
   render() {
     return (
       <Grid fluid className="layout">
-        <Row className="widgets row-h60-percent">
+        <Row className="widgets rowH60Percent">
           <Col md={5}><DeviceMap/></Col>
           <Col md={7}><TelemetryWidget/></Col>
         </Row>
-        <Row className="widgets row-h40-percent">
+        <Row className="widgets rowH40Percent">
           <Col md={7}><AlarmList/></Col>
           <Col md={5}><KpiWidget/></Col>
         </Row>
