@@ -36,10 +36,10 @@ class JsonViewer extends React.Component {
 
     render() {
         return (
-            <div className="jsonViewer-tile">
-                <pre ref="content" className="jsonViewer-content">{JSON.stringify(this.state.data, null, '  ')}</pre>
+            <div className="jsonViewerTile">
+                <pre ref="content" className="jsonViewerContent">{JSON.stringify(this.state.data, null, '  ')}</pre>
                 <div>
-                    <button className="btn btn-default jsonViewer-button"  onClick={this.onCopy}>Copy</button>
+                    <button className="btn btn-default jsonViewerButton"  onClick={this.onCopy}>Copy</button>
                 </div>
             </div>
         );

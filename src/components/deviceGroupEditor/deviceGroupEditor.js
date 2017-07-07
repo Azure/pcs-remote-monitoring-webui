@@ -130,12 +130,12 @@ class DeviceGroupEditor extends React.Component {
         });
 
         return (
-            <div className="deviceGroupEditor-tile">
-                <div className= "deviceGroupEditor-label">
+            <div className="deviceGroupEditorTile">
+                <div className= "deviceGroupEditorLabel">
                     <label>Group Name</label>
                     <input className="form-control" style={{ width: "500px" }} value={this.state.groupName} placeholder='An meaningful name, e.g. Factory1' onChange={this.onGroupNameChange} />
                 </div>
-                <div className="deviceGroupEditor-table">
+                <div className="deviceGroupEditorTable">
                     <table>
                         <thead>
                             <tr><td>Field</td><td>Operator</td><td>Value</td><td>Type</td></tr>
@@ -145,10 +145,10 @@ class DeviceGroupEditor extends React.Component {
                         </tbody>
                     </table>
                 </div>
-                <div className="deviceGroupEditor-controls">
-                    <p className="deviceGroupEditor-warning">{this.state.message}</p>
-                    <button className="btn btn-default deviceGroupEditor-button" onClick={this.save}>Save</button>
-                    <button className="btn btn-default deviceGroupEditor-button" style={{ marginRight:"10px" }} onClick={this.cancel}>Cancel</button>
+                <div className="deviceGroupEditorControls">
+                    <p className="deviceGroupEditorWarning">{this.state.message}</p>
+                    <button className="btn btn-default deviceGroupEditorButton" onClick={this.save}>Save</button>
+                    <button className="btn btn-default deviceGroupEditorButton" style={{ marginRight:"10px" }} onClick={this.cancel}>Cancel</button>
                 </div>
             </div>
         );

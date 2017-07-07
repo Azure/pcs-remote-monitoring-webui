@@ -60,37 +60,37 @@ class DeviceDetail extends React.Component {
             );
 
         return (
-            <div className="deviceDetail-tile">
+            <div className="deviceDetailTile">
                 <div>
                     <label>
                         {this.state.twin.DeviceId}
                     </label>
                 </div>
-                <div className="deviceDetail-type">
-                    <span className="deviceDetail-type-label">Type</span><span>Prototyping device</span>
+                <div className="deviceDetailType">
+                    <span className="deviceDetailTypeLabel">Type</span><span>Prototyping device</span>
                 </div>
-                <div className="deviceDetail-section">
-                    <div className="deviceDetail-section-label">Sensors</div>
-                    <ul className="deviceDetail-section-list">
+                <div className="deviceDetailSection">
+                    <div className="deviceDetailSectionLabel">Sensors</div>
+                    <ul className="deviceDetailSectionList">
                         <li>Temperature</li>
                         <li>Humidity</li>
                         <li>Vibration</li>
                     </ul>
                 </div>
-                <div className="deviceDetail-curve-chart">
+                <div className="deviceDetailCurveChart">
                     <CurveChart deviceTopics={[Topics.device.selected]} />
                 </div>
-                <div className="deviceDetail-section">
-                    <div className="deviceDetail-section-label">Methods</div>
-                    <ul className="deviceDetail-section-list">{methods}</ul>
+                <div className="deviceDetailSection">
+                    <div className="deviceDetailSectionLabel">Methods</div>
+                    <ul className="deviceDetailSectionList">{methods}</ul>
                 </div>
-                <div className="deviceDetail-section">
-                    <table className="deviceDetail-tabel">
+                <div className="deviceDetailSection">
+                    <table className="deviceDetailTable">
                         <thead><tr><td>Properties</td><td>Value</td></tr></thead>
                         <tbody>{properties}</tbody>
                     </table>
                 </div>
-                <div className="deviceDetail-buttons">
+                <div className="deviceDetailButtons">
                     <a href="#rawtwin" onClick={this.onViewRawTwin}><p>View raw device twin</p></a>
                     <button className="btn btn-default" onClick={this.onDiagnostics}>Diagnostics</button>
                 </div>

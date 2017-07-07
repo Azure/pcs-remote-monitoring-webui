@@ -1,18 +1,18 @@
-.deviceDetail-tile {
+.deviceDetailTile {
     background-color: #ffffff;
     color: #000000;
     height: 100%;
     overflow-Y: auto;
 }
 
-.deviceDetail-type {
+.deviceDetailType {
     font-size: 14px;
     border-style: solid;
     border-color: #000000;
     border-width: 1px;
 }
 
-.deviceDetail-type-label {
+.deviceDetailTypeLabel {
     font-weight: bold;
     margin-right: 10px;
     background: #000000;
@@ -20,51 +20,51 @@
     padding: 2px 10px 3px 10px;
 }
 
-.deviceDetail-section {
+.deviceDetailSection {
      border-style: none solid solid solid;
      border-color: #dddddd;
      margin-top: 10px;
 }
 
-.deviceDetail-section-label {
+.deviceDetailSectionLabel {
     background-color: #dddddd;
     font-size: 14px;
     font-weight: bold;
     padding-left: 4px;
 }
 
-.deviceDetail-section-list {
+.deviceDetailSectionList {
     display: table-row;
     list-style-type: none;
 }
 
-.deviceDetail-section-list li {
+.deviceDetailSectionList li {
     margin-left: 6px;
 }
 
-.deviceDetail-tabel {
+.deviceDetailTable {
     table-layout: fixed;
     border-width: 1px;
     width: 100%;
 }
 
-.deviceDetail-tabel thead {
+.deviceDetailTable thead {
     background-color: #dddddd;
     font-size: 14px;
     font-weight: bold;
 }
 
-.deviceDetail-tabel td {
+.deviceDetailTable td {
     padding: 4px;
     overflow: hidden;
     width: 50%;
 }
 
-.deviceDetail-buttons {
+.deviceDetailButtons {
     margin-top: 10px;
 }
 
-.deviceDetail-curve-chart {
+.deviceDetailCurveChart {
     width: 360px;
     height: 200px;
     margin-top: 10px;
