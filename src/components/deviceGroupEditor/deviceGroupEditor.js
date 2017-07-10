@@ -99,14 +99,14 @@ class DeviceGroupEditor extends React.Component {
         const dataTypes = ['Number', 'String', 'Boolean'];
         const rows = this.state.clauses.map((c, i) => {
              return (
-                <tr>
+                <tr key={i}>
                     <td>
                         <input className="form-control"  style={{ width: "280px" }} type="text" value={c.Key} placeholder='twin name, e.g. tags.location' onChange={ (event) => this.onFieldNameChange(event, i) } />
                     </td>
                     <td>
-                        <select key={i}  className="form-control" value={c.Operator} onChange={(event) => this.onOperatorChange(event, i) }>
+                        <select className="form-control" value={c.Operator} onChange={(event) => this.onOperatorChange(event, i) }>
                             {
-                                operators.map((o) => <option value={o.value} >{o.name}</option> )
+                                operators.map((o) => <option key={o.name} value={o.value} >{o.name}</option> )
                             }
                         </select>
                     </td>
@@ -114,10 +114,10 @@ class DeviceGroupEditor extends React.Component {
                         <input className="form-control" style={{ width: "280px" }} value={c.Value} onChange={ (event) => this.onFieldValueChange(event, i) }  />
                     </td>
                     <td>
-                        <select key={i} className="form-control" value={c.Type} onChange={(event) => this.onTypeChange(event, i) }>
+                        <select className="form-control" value={c.Type} onChange={(event) => this.onTypeChange(event, i) }>
                             {
                             dataTypes.map((type) =>
-                                <option value={type}>{type}</option>)
+                                <option key={type} value={type}>{type}</option>)
                             }
                         </select>
                     </td>

@@ -50,13 +50,13 @@ class DeviceDetail extends React.Component {
             .filter(m => methodPrefix.test(m))
             .map(m => {
                 return (
-                    <li>{m.match(methodPrefix)[1]}</li>
+                    <li key={m}>{m.match(methodPrefix)[1]}</li>
                 )
             });
         const properties = Object.keys(twin).filter(p => !methodPrefix.test(p))
             .slice(0, this.state.maxNumberOfProperties)
             .map(p =>
-                <tr><td><span title={p}>{p}</span></td><td title={twin[p]} style={{ padding: "4px" }}>{twin[p]}</td></tr>
+                <tr key={p}><td><span title={p}>{p}</span></td><td title={twin[p]} style={{ padding: "4px" }}>{twin[p]}</td></tr>
             );
 
         return (
