@@ -1,17 +1,17 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React, { Component } from 'react';
+import React from 'react';
 import { Modal } from 'react-bootstrap';
 import EventTopic from '../../common/eventtopic';
-import Http from "../../common/httpClient";
-import DeviceGroupEditor from "../../components/deviceGroupEditor/deviceGroupEditor";
+import Http from '../../common/httpClient';
+import DeviceGroupEditor from '../../components/deviceGroupEditor/deviceGroupEditor';
 import './genericDropDownList.css';
 
 import $ from 'jquery';
 window.jQuery = $;
 require('bootstrap');
 
-class GenericDropDownList extends Component {
+export default class GenericDropDownList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -26,7 +26,7 @@ class GenericDropDownList extends Component {
     componentDidMount() {
         this.subscriptions = [];
         if (this.props.reloadRequestTopic) {
-            this.subscriptions.push(EventTopic.subscribe(this.props.reloadRequestTopic, (topic, data, publisher)=>this.onReloadRequest(topic, data, publisher)));
+            this.subscriptions.push(EventTopic.subscribe(this.props.reloadRequestTopic, this.onReloadRequest));
         }
 
         this.getItemList();
@@ -40,12 +40,10 @@ class GenericDropDownList extends Component {
         if (this.props.requestUrl) {
             var url = this.props.requestUrl;
             if (query) {
-                url += "/" + query;
+                url += '/' + query;
             }
 
-            Http.get(url)
-                .then((data) => this.setItems(data))
-                .catch((err) => console.log(err));
+            Http.get(url).then((data) => this.setItems(data));
 
             this.setState({ loading: true });
         } else {
@@ -55,7 +53,7 @@ class GenericDropDownList extends Component {
 
     setItems(items) {
         // Normalize items to object array
-        items = items.map(item => typeof item === "object" ? item : { id: item, text: item, selected: false });
+        items = items.map(item => typeof item === 'object' ? item : { id: item, text: item, selected: false });
 
         // Get selected ids
         var selectedIds = [];
@@ -85,13 +83,12 @@ class GenericDropDownList extends Component {
         });
     }
 
-    onClickItem(item) {
+    onClickItem = (id) => {
         var selectedIds;
 
         if (this.props.multipleSelect) {
             selectedIds = this.state.selectedIds;
 
-            var id = item.target.dataset.id;
             var index = selectedIds.indexOf(id);
 
             if (index < 0) {
@@ -100,13 +97,13 @@ class GenericDropDownList extends Component {
                 selectedIds.splice(index, 1);
             }            
         } else {
-            selectedIds = [item.target.dataset.id];
+            selectedIds = [id];
         }
 
         this.setState({ selectedIds: selectedIds });
     }
 
-    onSelectAll() {
+    onSelectAll = () => {
         var selectedIds;
 
         if (this.state.selectedIds.length === this.state.items.length) {
@@ -118,15 +115,15 @@ class GenericDropDownList extends Component {
         this.setState({ selectedIds: selectedIds });
     }
 
-    onNewItem() {
+    onNewItem = () => {
         this.setState({showModal: true});
     }
 
-    onEditItem() {
+    onEditItem = () => {
         this.setState({showModal: true});
     }
 
-    onReloadRequest(topic, data, publisher) {
+    onReloadRequest = (topic, data) => {
         this.getItemList(data);
     }
 
@@ -134,9 +131,9 @@ class GenericDropDownList extends Component {
         if (this.props.multipleSelect) {
             return (
                 <li key={item.id}>
-                    <a onClick={(e)=>this.onClickItem(e)} data-id={item.id}>
-                        <input type="checkbox" checked={this.state.selectedIds.indexOf(item.id) >= 0} data-id={item.id}/>
-                        {item.text}
+                    <a onClick={()=>this.onClickItem(item.id)}>
+                        <input type="checkbox" checked={this.state.selectedIds.indexOf(item.id) >= 0}/>
+                        {' ' + item.text}
                         {this.props.editItem && this.renderEditItem()}
                     </a>
                 </li>
@@ -144,7 +141,7 @@ class GenericDropDownList extends Component {
         } else {
             return (
                 <li key={item.id}>
-                    <a onClick={(e)=>this.onClickItem(e)} data-id={item.id}>
+                    <a onClick={()=>this.onClickItem(item.id)}>
                         {item.text}
                         {this.props.editItem && this.renderEditItem()}
                     </a>
@@ -154,7 +151,11 @@ class GenericDropDownList extends Component {
     }
 
     renderEditItem() {
-        return <span style={{float: "right", cursor: "pointer"}} onClick={(e)=>this.onEditItem(e)}>{this.props.editItem.text}</span>;
+        return (
+            <span style={{float: 'right', cursor: 'pointer'}} onClick={this.onEditItem}>
+                {this.props.editItem.text}
+            </span>
+        );
     }
 
     render() {
@@ -162,19 +163,35 @@ class GenericDropDownList extends Component {
 
         return (
             <div className="dropdown">
-                <button className="btn btn-default btn-block dropdown-toggle genericDropDownListWrap" type="button" data-toggle="dropdown" disabled={this.state.loading} >
-                    {this.state.items.filter(item => this.state.selectedIds.indexOf(item.id) >= 0).map(item => item.text).join(", ") || this.props.initialState.defaultText}
+                <button className="btn btn-default btn-block dropdown-toggle genericDropDownListWrap"
+                    type="button"
+                    data-toggle="dropdown"
+                    disabled={this.state.loading} >
+                    {this.state.items.filter(item => this.state.selectedIds.indexOf(item.id) >= 0).map(item => item.text).join(', ') || this.props.initialState.defaultText}
                     <span className="caret"></span>
                 </button>
-                <ul className={"dropdown-menu " + (this.props.menuAlign === "right" ? "dropdown-menu-right" : "")}>
+                <ul className={'dropdown-menu ' + (this.props.menuAlign === 'right' ? 'dropdown-menu-right' : '')}>
                     {
-                        this.props.multipleSelect && this.props.selectAll && <li key="_selectAll"><a onClick={(e)=>this.onSelectAll(e)}><input type="checkbox" className="genericDropDownListItemSelectAll" checked={this.state.selectedIds.length === this.state.items.length} /> {this.props.selectAll.text}</a></li>
+                        this.props.multipleSelect && this.props.selectAll && 
+                        <li key="_selectAll">
+                            <a onClick={this.onSelectAll}>
+                                <input type="checkbox"
+                                    className="genericDropDownListItemSelectAll"
+                                    checked={this.state.selectedIds.length === this.state.items.length}/>
+                                {' ' + this.props.selectAll.text}
+                            </a>
+                        </li>
                     }
                     {
                         this.state.items && this.state.items.map((item)=>this.renderItem(item))
                     }
                     {
-                        this.props.newItem && <li key="_newItem"><a onClick={(e)=>this.onNewItem(e)}>{this.props.newItem.text}</a></li>
+                        this.props.newItem && 
+                        <li key="_newItem">
+                            <a onClick={this.onNewItem}>
+                                {this.props.newItem.text}
+                            </a>
+                        </li>
                     }
                 </ul>
                 {
@@ -189,5 +206,3 @@ class GenericDropDownList extends Component {
         );
     }
 }
-
-export default GenericDropDownList;

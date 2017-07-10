@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import Config from '../../common/config'
+import Config from '../../common/config';
 import { Topics } from '../../common/eventtopic';
 import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
 import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
@@ -28,25 +28,25 @@ class AlarmList extends Component {
                         id="AlarmTimeRange"
                         items={[
                             {
-                                "id": "P1M",
-                                "text": "Last 1 month"
+                                id: 'P1M',
+                                text: 'Last 1 month'
                             },
                             {
-                                "id": "P3M",
-                                "text": "Last 3 month"
+                                id: 'P3M',
+                                text: 'Last 3 month'
                             },
                             {
-                                "id": "P6M",
-                                "text": "Last 6 month"
+                                id: 'P6M',
+                                text: 'Last 6 month'
                             },
                             {
-                                "id": "P1Y",
-                                "text": "Last 1 year"
+                                id: 'P1Y',
+                                text: 'Last 1 year'
                             }
                         ]}
                         initialState={{
-                            "defaultText": "Choose time range",
-                            "selectFirstItem": true
+                            defaultText: 'Choose time range',
+                            selectFirstItem: true
                         }}
                         publishTopic={Topics.dashboard.alarmTimerange.selected}
                     >
