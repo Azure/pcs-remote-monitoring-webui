@@ -10,7 +10,7 @@ import Http from '../../common/httpClient';
 window.fetch = fetch;
 
 it('renders without crashing', () => {
-  const wrapper = mount(<CustomInfo />);
+  mount(<CustomInfo />);
 });
 
 it('contains NameInput and DescInput', () => {

@@ -72,8 +72,8 @@ export default class CustomDevice extends React.Component {
     };
 
     render() {
-        var items = this.state.devices.map((device) =>
-            <DeviceInput key={device.type} device={device} onChange={this.handleChange} disabled={this.props.disabled} />
+        const items = this.state.devices.map((device, idx) =>
+            <DeviceInput key={idx} device={device} onChange={this.handleChange} disabled={this.props.disabled} />
         );
         return (
             <div className="customDevice">
