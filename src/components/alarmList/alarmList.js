@@ -15,9 +15,31 @@ class AlarmList extends Component {
         }
     }
 
+    static hookWindowResize() {
+        (function () {
+            let isRunning = false;
+            window.addEventListener('resize', function () {
+                if (isRunning) {
+                    return;
+                }
+                isRunning = true;
+                requestAnimationFrame(function () {
+                    window.dispatchEvent(new CustomEvent('layoutResize'));
+                    isRunning = false;
+                });
+            });
+        })();
+    }
+
     componentDidMount() {
+        AlarmList.hookWindowResize();
+        window.addEventListener("layoutResize", this.resize);
         this.setState({gridHeight: this.refs.container.clientHeight - this.refs.dropdown.clientHeight - 10});
     }
+
+    resize = () => {
+        this.setState({gridHeight: this.refs.container.clientHeight - this.refs.dropdown.clientHeight - 10});
+    };
 
     render() {
         return (

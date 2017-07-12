@@ -22,74 +22,12 @@ class SearchableDataGrid extends Component {
             selectedIndexes: [],
             multiSelect: this.props.multiSelect || false,
             currentFilter: "",
-            clientHeight: 300,
         };
         this.container = null;
         this.tokens = [];
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.props = Object.assign({}, this.props, nextProps);
-        this.resize();
-    }
-
-    setDatasource(datasource) {
-        this.setState({datasource: datasource}, () => {
-            this.getData()
-        });
-
-    }
-
-    setMultiSelect(multiSelect) {
-        this.setState({multiSelect: multiSelect}, () => {
-            this.render();
-        });
-    }
-
-    setColumns(columns) {
-        var cols = [];
-        for (var key in columns) {
-            let nameTokenIdx = columns[key].indexOf(':');
-            var colDisplayName, colName;
-            if (nameTokenIdx > 0) {
-                colDisplayName = columns[key].slice(0, nameTokenIdx).trim();
-                colName = columns[key].slice(nameTokenIdx + 1, columns[key].length).trim();
-            }
-            else {
-                colDisplayName = columns[key].trim().slice(columns[key].lastIndexOf('.') + 1, columns[key].length);
-                colName = columns[key].trim()
-            }
-            cols.push({key: colName, name: colDisplayName, sortable: true, resizable: true});
-        }
-        this.setState({columns: cols});
-    }
-
-    setTitle(title) {
-        this.setState({title: title});
-    }
-
-    resize = () => {
-        if (this.container) {
-            let calcHeight = this.container.parentElement.clientHeight / this.rawHeight  * this.props.height;
-            let newClientHeight = calcHeight || this.container.parentElement.clientHeight || undefined;
-            if (newClientHeight && this.state.title.length) {
-                newClientHeight -= 45;
-            }
-            if (newClientHeight && this.props.showLastUpdate) {
-                newClientHeight -= 35
-            }
-            if (newClientHeight && this.props.enableSearch) {
-                newClientHeight -= 30
-            }
-            if (newClientHeight && this.props.filters) {
-                newClientHeight -= 55
-            }
-            this.setState({clientWidth: this.props.width || undefined});
-            this.setState({clientHeight: newClientHeight});
-        }
-    };
-
-    getValueForKey(key, value) {
+    static getValueForKey(key, value) {
         if (typeof value === 'string') return value;
 
         let keyTokens = key ? key.split('.') : key;
@@ -102,11 +40,70 @@ class SearchableDataGrid extends Component {
         return retval;
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.resize(nextProps);
+    }
+
+    setDatasource = (datasource) => {
+        this.setState({datasource: datasource}, () => {
+            this.getData()
+        });
+
+    };
+
+    setMultiSelect = (multiSelect) => {
+        this.setState({multiSelect: multiSelect}, () => {
+            this.render();
+        });
+    };
+
+    setColumns = (columns) => {
+        let cols = [];
+        for (let key of columns) {
+            let nameTokenIdx = key.indexOf(':');
+            let colDisplayName, colName;
+            if (nameTokenIdx > 0) {
+                colDisplayName = key.slice(0, nameTokenIdx).trim();
+                colName = key.slice(nameTokenIdx + 1, key.length).trim();
+            }
+            else {
+                colDisplayName = key.trim().slice(key.lastIndexOf('.') + 1, key.length);
+                colName = key.trim()
+            }
+            cols.push({key: colName, name: colDisplayName, sortable: true, resizable: true});
+        }
+        this.setState({columns: cols});
+    };
+
+    setTitle = (title) => {
+        this.setState({title: title});
+    };
+
+    resize = (props) => {
+        if (this.container) {
+            let newClientHeight = props.height || this.container.parentElement.clientHeight || undefined;
+            if (newClientHeight && this.state.title.length) {
+                newClientHeight -= 45;
+            }
+            if (newClientHeight && props.showLastUpdate) {
+                newClientHeight -= 35
+            }
+            if (newClientHeight && props.enableSearch) {
+                newClientHeight -= 30
+            }
+            if (newClientHeight && props.filters) {
+                newClientHeight -= 55
+            }
+            this.setState({clientWidth: props.width || undefined});
+            this.setState({clientHeight: newClientHeight});
+        }
+    };
+
     componentDidMount() {
         if (this.props.topics) {
             for (let interestingTopic of this.props.topics) {
                 this.tokens.push(EventTopic.subscribe(interestingTopic, (topic, data, publisher) => {
-                    this.onEvent(topic, this.getValueForKey(this.props.eventDataKey, data), publisher);
+                    this.onEvent(topic, SearchableDataGrid.getValueForKey(this.props.eventDataKey, data), publisher);
                 }));
             }
         }
@@ -116,62 +113,41 @@ class SearchableDataGrid extends Component {
         if (this.props.autoLoad) {
             this.getData(this.props.initFilter);
         }
-        if(this.container){
-            this.rawHeight = this.container.parentElement.clientHeight;
-        }
         this.setColumns(this.props.columns.split(','));
-        this.hookWindowResize();
-        window.addEventListener("layoutResize", this.resize);
-        this.resize();
+        this.resize(this.props);
     }
 
-    hookWindowResize() {
-        (function () {
-            var isRunning = false;
-            window.addEventListener('resize', function () {
-                if (isRunning) {
-                    return;
-                }
-                isRunning = true;
-                requestAnimationFrame(function () {
-                    window.dispatchEvent(new CustomEvent('layoutResize'));
-                    isRunning = false;
-                });
-            });
-        })();
-    }
-
-    filterRows(event) {
-        var filterdRows = this.state.originalRows.filter((row) => {
-            for (let key in row) {
-                if (row[key].toString().toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0) {
+    filterRows = (event) => {
+        let filterdRows = this.state.originalRows.filter((row) => {
+            for (let key of row) {
+                if (key.toString().toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0) {
                     return true
                 }
             }
             return false;
         });
         this.setState({rows: filterdRows});
-    }
+    };
 
-    onEvent(topic, data, publisher) {
+    onEvent = (topic, data, publisher) => {
         this.setState({currentFilter: data}, () => {
             this.getData(data);
         });
     }
 
-    refreshData() {
+    refreshData = () => {
         this.getData(this.state.currentFilter);
-    }
+    };
 
     componentWillUnmount() {
-        this.tokens.forEach((token) => EventTopic.unsubscribe(token));
+        EventTopic.unsubscribe(this.tokens);
     }
 
-    rowGetter(i) {
+    rowGetter = (i) => {
         return this.state.rows[i];
-    }
+    };
 
-    handleGridSort(sortColumn, sortDirection) {
+    handleGridSort = (sortColumn, sortDirection) => {
         const comparer = (a, b) => {
             if (sortDirection === 'ASC') {
                 return (a[sortColumn] > b[sortColumn]) ? 1 : -1;
@@ -183,9 +159,9 @@ class SearchableDataGrid extends Component {
         const rows = sortDirection === 'NONE' ? this.state.originalRows.slice(0) : this.state.rows.sort(comparer);
 
         this.setState({rows});
-    }
+    };
 
-    getData(filter) {
+    getData = (filter) => {
         if (this.state.datasource && this.state.datasource.length) {
 
             let normalizedUrl;
@@ -206,7 +182,7 @@ class SearchableDataGrid extends Component {
                 }
             }
 
-            this.dataReq = httpClient.get(normalizedUrl)
+            httpClient.get(normalizedUrl)
                 .then((data) => {
                     this.setState({originalRows: data, rows: data, lastupdate: new Date()});
                     const itemIds = data.map(item => {
@@ -220,9 +196,9 @@ class SearchableDataGrid extends Component {
                     console.error('failed to load data from server', err);
                 });
         }
-    }
+    };
 
-    onRowsSelected(rows) {
+    onRowsSelected = (rows) => {
         this.setState({selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))}, function () {
             const itemIds = this.state.selectedIndexes.map((i) => {
                 let idcol = this.props.idCol || Object.keys(this.state.rows[i])[0];
@@ -233,7 +209,7 @@ class SearchableDataGrid extends Component {
 
     }
 
-    onRowsDeselected(rows) {
+    onRowsDeselected = (rows) => {
         let rowIndexes = rows.map(r => r.rowIdx);
         this.setState({selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1)}, () => {
             const itemIds = this.state.selectedIndexes.map((i) => {
@@ -243,16 +219,16 @@ class SearchableDataGrid extends Component {
             EventTopic.publish(this.props.rowsSelectEvent || 'system.grid.itemsSelected.grid_' + this.props.idCol, itemIds, this);
         });
 
-    }
+    };
 
-    onRowClick(rowIdx, row) {
+    onRowClick = (rowIdx, row) => {
         let rows = this.state.rows;
         this.setState({rows}, () => {
             if (row) {
                 EventTopic.publish(this.props.rowClickEvent || 'system.grid.itemSelected.grid_' + this.props.idCol, row, this);
             }
         });
-    }
+    };
 
     render() {
         let title = null;
@@ -264,7 +240,7 @@ class SearchableDataGrid extends Component {
         if (this.props.enableSearch) {
             searchBox = <div className="input-group col-sm-4">
                 <input type="text" style={{maxWidth: '800px'}} className="form-control" aria-describedby="open-filter"
-                       placeholder="filter rows" onChange={this.filterRows.bind(this)}/>
+                       placeholder="filter rows" onChange={this.filterRows}/>
                 <span className="input-group-addon" id="open_filter">
                     <span className="glyphicon glyphicon-th" aria-hidden="true"/>
                 </span>
@@ -273,16 +249,16 @@ class SearchableDataGrid extends Component {
 
         const dataGrid = (
             <ReactDataGrid ref={grid => this.datagridObj = grid}
-                           onGridSort={this.handleGridSort.bind(this)}
+                           onGridSort={this.handleGridSort}
                            columns={this.state.columns}
-                           rowGetter={this.rowGetter.bind(this)}
-                           onRowClick={this.onRowClick.bind(this)}
+                           rowGetter={this.rowGetter}
+                           onRowClick={this.onRowClick}
                            rowSelection={
                                this.state.multiSelect ? {
                                    showCheckbox: this.state.multiSelect,
                                    enableShiftSelect: this.state.multiSelect,
-                                   onRowsSelected: this.onRowsSelected.bind(this),
-                                   onRowsDeselected: this.onRowsDeselected.bind(this),
+                                   onRowsSelected: this.onRowsSelected,
+                                   onRowsDeselected: this.onRowsDeselected,
                                    selectBy: {
                                        indexes: this.state.selectedIndexes
                                    }
@@ -310,11 +286,11 @@ class SearchableDataGrid extends Component {
                     <div className="datagrid-body">No data yet</div>
                 )}
                 {this.props.showLastUpdate && (this.state.lastupdate ?
-                    (<a href="#/refresh" onClick={this.refreshData.bind(this)}>
+                    (<a href="#/refresh" onClick={this.refreshData}>
                         Last update on {this.state.lastupdate.toLocaleString()} &nbsp;&nbsp;
                         <span className="glyphicon glyphicon-refresh"/>
                     </a>)
-                    : (<a href="#/refresh" onClick={this.refreshData.bind(this)}>
+                    : (<a href="#/refresh" onClick={this.refreshData}>
                         Click to refresh &nbsp;&nbsp;
                         <span className="glyphicon glyphicon-refresh"/>
                     </a>))}
