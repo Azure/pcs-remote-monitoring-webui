@@ -1,23 +1,30 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {Router, Route, IndexRoute, hashHistory} from 'react-router';
-import Main from './layouts/main/main.js';
-import Dashboard from './layouts/dashboard/dashboard.js';
-import registerServiceWorker from './registerServiceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Router, Route, IndexRoute, hashHistory } from "react-router";
+import { Provider } from "react-redux";
+import Main from "./layouts/main/main.js";
+import Dashboard from "./layouts/dashboard/dashboard.js";
+import registerServiceWorker from "./registerServiceWorker";
+import initialState from "./reducers/initialState";
+import configureStore from "./store/configureStore";
 
-import './index.css';
+import "./index.css";
 
-const app = document.getElementById('root');
+const app = document.getElementById("root");
+const store = configureStore(initialState);
 
 ReactDOM.render(
-	<Router history={hashHistory}>
-		<Route path="/" component={Main}>
-			<IndexRoute component={Dashboard}></IndexRoute>
-			<Route path="/dashboard" component={Dashboard}></Route>
-		</Route>
-	</Router>,
-app);
+  <Provider store={store}>
+    <Router history={hashHistory}>
+      <Route path="/" component={Main}>
+        <IndexRoute component={Dashboard} />
+        <Route path="/dashboard" component={Dashboard} />
+      </Route>
+    </Router>
+  </Provider>,
+  app
+);
 
 registerServiceWorker();

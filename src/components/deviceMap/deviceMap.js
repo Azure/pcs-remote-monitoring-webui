@@ -1,45 +1,43 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '../../actions';
 import MapPane from './mapPane';
-import Http from "../../common/httpClient"
-import Config from "../../common/config"
 import Flyout, { Header, Body } from '../../framework/flyout/flyout';
 import DeviceDetail from '../deviceDetail/deviceDetail';
+
 
 class DeviceMap extends Component {
     constructor(props) {
         super(props);
         window.loadMap = () => {
-            MapPane.init();
             this.showMap();
         }
+
     }
 
     componentDidMount() {
         this.createScript('https://www.bing.com/api/maps/mapcontrol?callback=loadMap');
     }
 
-    loadDeviceList(group) {
-        return Http.get(`${Config.solutionApiUrl}api/v1/devices/twin?filter=`);
-    }
-
     showMap() {
-        this.loadDeviceList()
-            .then((data) => {
-                MapPane.setData({
-                    deviceData: data,
-                    container: this
-                });
-                data = this.getDeviceData(data);
-                MapPane.setDeviceLocationData(
-                    data.minLat,
-                    data.minLong,
-                    data.maxLat,
-                    data.maxLong,
-                    data.locationList
-                );
-            });
+      const { devices, mapkey, actions } = this.props;
+      MapPane.init(mapkey);
+      MapPane.setData({
+          deviceData: devices,
+          container: this,
+          actions
+      });
+      let data = this.getDeviceData(devices);
+      MapPane.setDeviceLocationData(
+          data.minLat,
+          data.minLong,
+          data.maxLat,
+          data.maxLong,
+          data.locationList
+      );
     }
 
     showFlyout = () => {
@@ -61,7 +59,9 @@ class DeviceMap extends Component {
         let mapData = {};
         let longitudes = [];
         let latitudes = [];
-        let locationList =data.map(function (item, i) {
+        let locationList;
+        if (data && data.length) {
+          locationList =data.map(function (item, i) {
             let location = new Location(item.DeviceId);
             if (item.DeviceId.match(/10_/)) {
                 location.status = 1;
@@ -75,13 +75,14 @@ class DeviceMap extends Component {
             latitudes.push(latitude);
             longitudes.push(longitude);
             return location;
-        });
+          });
+        }
         minLat = Math.min.apply(null, latitudes);
         maxLat = Math.max.apply(null, latitudes);
         minLong = Math.min.apply(null, longitudes);
         maxLong = Math.max.apply(null, longitudes);
 
-        if (locationList.Count === 0) {
+        if (locationList && locationList.Count === 0) {
             minLat = 47.6;
             maxLat = 47.6;
             minLong = -122.3;
@@ -127,4 +128,10 @@ class DeviceMap extends Component {
     }
 }
 
-export default DeviceMap;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  }
+}
+
+export default connect(null, mapDispatchToProps)(DeviceMap);

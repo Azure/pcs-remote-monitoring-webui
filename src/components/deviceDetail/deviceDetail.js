@@ -1,4 +1,5 @@
-﻿import React from 'react';
+
+import React from 'react';
 import Config from '../../common/config';
 import EventTopic, { Topics } from "../../common/eventtopic";
 import Http from '../../common/httpClient';

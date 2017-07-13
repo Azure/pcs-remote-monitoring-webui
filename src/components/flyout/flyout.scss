@@ -1,0 +1,13 @@
+.flyoutWrapper {
+  position: absolute;
+  top: 51px;
+  right: 0px;
+  width: 30%;
+  bottom: 0px;
+  transition-duration: 0.1s;
+  transition-timing-function: ease;
+  background-color: #f1f1f1;
+  border: 1px solid #dddddd;
+  z-index: 1001;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
