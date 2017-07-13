@@ -38,7 +38,7 @@ export default class GenericDropDownList extends React.Component {
 
     getItemList(query) {
         if (this.props.requestUrl) {
-            var url = this.props.requestUrl;
+            let url = this.props.requestUrl;
             if (query) {
                 url += '/' + query;
             }
@@ -56,8 +56,8 @@ export default class GenericDropDownList extends React.Component {
         items = items.map(item => typeof item === 'object' ? item : { id: item, text: item, selected: false });
 
         // Get selected ids
-        var selectedIds = [];
-        var ids = items.map(item => item.id);
+        let selectedIds = [];
+        let ids = items.map(item => item.id);
 
         if (this.props.initialState.selectFirstItem && ids.length > 0) {
             // select the first item
@@ -84,12 +84,12 @@ export default class GenericDropDownList extends React.Component {
     }
 
     onClickItem = (id) => {
-        var selectedIds;
+        let selectedIds;
 
         if (this.props.multipleSelect) {
             selectedIds = this.state.selectedIds;
 
-            var index = selectedIds.indexOf(id);
+            let index = selectedIds.indexOf(id);
 
             if (index < 0) {
                 selectedIds.push(id);
@@ -104,7 +104,7 @@ export default class GenericDropDownList extends React.Component {
     }
 
     onSelectAll = () => {
-        var selectedIds;
+        let selectedIds;
 
         if (this.state.selectedIds.length === this.state.items.length) {
             selectedIds = [];
@@ -132,7 +132,7 @@ export default class GenericDropDownList extends React.Component {
             return (
                 <li key={item.id}>
                     <a onClick={()=>this.onClickItem(item.id)}>
-                        <input type="checkbox" checked={this.state.selectedIds.indexOf(item.id) >= 0}/>
+                        <input type="checkbox" checked={this.state.selectedIds.indexOf(item.id) >= 0} onChange={()=>{}}/>
                         {' ' + item.text}
                         {this.props.editItem && this.renderEditItem()}
                     </a>
@@ -177,7 +177,7 @@ export default class GenericDropDownList extends React.Component {
                             <a onClick={this.onSelectAll}>
                                 <input type="checkbox"
                                     className="genericDropDownListItemSelectAll"
-                                    checked={this.state.selectedIds.length === this.state.items.length}/>
+                                    checked={this.state.selectedIds.length === this.state.items.length} onChange={()=>{}}/>
                                 {' ' + this.props.selectAll.text}
                             </a>
                         </li>
