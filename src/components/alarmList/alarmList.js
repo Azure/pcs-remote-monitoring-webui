@@ -1,19 +1,34 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React, { Component } from 'react';
-import Config from '../../common/config';
-import { Topics } from '../../common/eventtopic';
-import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
-import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
+import React, {Component} from "react";
+import EventTopic, {Topics} from "../../common/eventtopic";
+import GenericDropDownList from "../../components/genericDropDownList/genericDropDownList";
+import SearchableDataGrid from "../../framework/searchableDataGrid/searchableDataGrid";
+import Config from "../../common/config";
+
+const DEFAULT_GRIDHEIGHT = 100;
 
 class AlarmList extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
-            gridHeight: 200
-        }
+            gridHeight: DEFAULT_GRIDHEIGHT,
+            columnDefs: this.createColumnDefs(),
+        };
     }
+
+    createColumnDefs = () => {
+        return [
+            {headerName: "RuleID", field: "ruleId", filter: "text"},
+            {headerName: "Occurrences", field: "occurrences", filter: "number"},
+            {headerName: "Description", field: "description", filter: "text"},
+            {headerName: "Severity", field: "severity", filter: "text"},
+            {headerName: "LastIncidentUtc", field: "lastIncident", filter: "date"},
+            {headerName: "Status", field: "status", filter: "text"}
+        ];
+    };
+
 
     static hookWindowResize() {
         (function () {
@@ -36,6 +51,16 @@ class AlarmList extends Component {
         window.addEventListener("layoutResize", this.resize);
         this.setState({gridHeight: this.refs.container.clientHeight - this.refs.dropdown.clientHeight - 10});
     }
+
+    componentWillUnmount() {
+        EventTopic.unsubscribe(this.tokens);
+    }
+
+    onEvent = (topic, data) => {
+        this.setState({currentFilter: data}, () => {
+            this.getData(data);
+        });
+    };
 
     resize = () => {
         this.setState({gridHeight: this.refs.container.clientHeight - this.refs.dropdown.clientHeight - 10});
@@ -75,23 +100,27 @@ class AlarmList extends Component {
                     </GenericDropDownList>
                 </div>
                 <SearchableDataGrid
-                    datasource={`${Config.solutionApiUrl}api/v1/alarm/{timerange}`}
-                    multiSelect={false}
-                    title=""
-                    showLastUpdate={false}
-                    urlSearchPattern="/\{timerange\}/i"
+                    // properties
+                    columnDefs={this.state.columnDefs}
+                    paginationAutoPageSize={true}
+                    pagination={true}
                     eventDataKey="0"
-                    enableSearch={false}
-                    autoLoad={true}
-                    height={this.state.gridHeight}
+                    datasource={`${Config.solutionApiUrl}api/v1/alarm/{timerange}`}
+                    urlSearchPattern="/\{timerange\}/i"
                     topics={
                         [
                             Topics.dashboard.alarmTimerange.selected
                         ]
                     }
-                    columns="RuleID:ruleId, Occurrences:occurrences, Description:description, Severity:severity, LastIncidentUtc:lastIncident, Status:status"
-                >
-                </SearchableDataGrid>
+                    enableSorting={true}
+                    enableSearch={false}
+                    enableFilter={true}
+                    rowSelection={'single'}
+                    autoLoad={true}
+                    multiSelect={false}
+                    title=""
+                    showLastUpdate={false}
+                />
             </div>
         );
     }

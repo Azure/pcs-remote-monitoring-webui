@@ -3,3 +3,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+button[disabled] {
+    color: gray;
+    cursor: not-allowed;
+}

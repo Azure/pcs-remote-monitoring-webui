@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft. All rights reserved
 
 import React, {Component} from "react";
-import ReactDataGrid from "react-data-grid";
 import EventTopic from "../../common/eventtopic.js";
 import {debounce, isFunction} from "../../common/utils.js";
 import httpClient from "../../common/httpClient";
+import {AgGridReact} from "ag-grid-react";
 
 import "./searchableDataGrid.css";
+import "../../../node_modules/ag-grid/dist/styles/ag-grid.css";
+import "../../../node_modules/ag-grid/dist/styles/theme-fresh.css";
 
 class SearchableDataGrid extends Component {
 
@@ -44,39 +46,14 @@ class SearchableDataGrid extends Component {
         this.resize(nextProps);
     }
 
-    setDatasource = (datasource) => {
-        this.setState({datasource: datasource}, () => {
-            this.getData()
-        });
-
-    };
-
-    setMultiSelect = (multiSelect) => {
-        this.setState({multiSelect: multiSelect}, () => {
-            this.render();
-        });
-    };
-
-    setColumns = (columns) => {
-        let cols = [];
-        for (let key of columns) {
-            let nameTokenIdx = key.indexOf(':');
-            let colDisplayName, colName;
-            if (nameTokenIdx > 0) {
-                colDisplayName = key.slice(0, nameTokenIdx).trim();
-                colName = key.slice(nameTokenIdx + 1, key.length).trim();
-            }
-            else {
-                colDisplayName = key.trim().slice(key.lastIndexOf('.') + 1, key.length);
-                colName = key.trim()
-            }
-            cols.push({key: colName, name: colDisplayName, sortable: true, resizable: true});
+    onGridReady = (params) => {
+        this.gridApi = params.api;
+        this.columnApi = params.columnApi;
+        if (isFunction(this.props.onGridReady)) {
+            this.props.onGridReady.call(this, params)
         }
-        this.setState({columns: cols});
-    };
 
-    setTitle = (title) => {
-        this.setState({title: title});
+        this.gridApi.sizeColumnsToFit();
     };
 
     resize = (props) => {
@@ -93,6 +70,9 @@ class SearchableDataGrid extends Component {
             }
             if (newClientHeight && props.filters) {
                 newClientHeight -= 55
+            }
+            if (newClientHeight && props.pagination) {
+                newClientHeight -= 30
             }
             this.setState({clientWidth: props.width || undefined});
             this.setState({clientHeight: newClientHeight});
@@ -113,7 +93,6 @@ class SearchableDataGrid extends Component {
         if (this.props.autoLoad) {
             this.getData(this.props.initFilter);
         }
-        this.setColumns(this.props.columns.split(','));
         this.resize(this.props);
     }
 
@@ -129,11 +108,11 @@ class SearchableDataGrid extends Component {
         this.setState({rows: filterdRows});
     };
 
-    onEvent = (topic, data, publisher) => {
+    onEvent = (topic, data) => {
         this.setState({currentFilter: data}, () => {
             this.getData(data);
         });
-    }
+    };
 
     refreshData = () => {
         this.getData(this.state.currentFilter);
@@ -207,7 +186,7 @@ class SearchableDataGrid extends Component {
             EventTopic.publish(this.props.rowsSelectEvent || 'system.grid.itemsSelected.grid_' + this.props.idCol, itemIds, this);
         });
 
-    }
+    };
 
     onRowsDeselected = (rows) => {
         let rowIndexes = rows.map(r => r.rowIdx);
@@ -238,44 +217,49 @@ class SearchableDataGrid extends Component {
 
         let searchBox = null;
         if (this.props.enableSearch) {
-            searchBox = <div className="input-group col-sm-4">
-                <input type="text" style={{maxWidth: '800px'}} className="form-control" aria-describedby="open-filter"
-                       placeholder="filter rows" onChange={this.filterRows}/>
-                <span className="input-group-addon" id="open_filter">
-                    <span className="glyphicon glyphicon-th" aria-hidden="true"/>
-                </span>
-            </div>
+            searchBox =
+                <div className="input-group col-sm-4">
+                    <input type="text" style={{maxWidth: '800px'}} className="form-control"
+                           aria-describedby="open-filter"
+                           placeholder="filter rows" onChange={this.filterRows}/>
+                    <span className="input-group-addon" id="open_filter">
+                        <span className="glyphicon glyphicon-th" aria-hidden="true"/>
+                    </span>
+                </div>;
         }
 
+        let containerStyle = {
+            height: this.state.clientHeight,
+            width: this.state.clientWidth
+        };
         const dataGrid = (
-            <ReactDataGrid ref={grid => this.datagridObj = grid}
-                           onGridSort={this.handleGridSort}
-                           columns={this.state.columns}
-                           rowGetter={this.rowGetter}
-                           onRowClick={this.onRowClick}
-                           rowSelection={
-                               this.state.multiSelect ? {
-                                   showCheckbox: this.state.multiSelect,
-                                   enableShiftSelect: this.state.multiSelect,
-                                   onRowsSelected: this.onRowsSelected,
-                                   onRowsDeselected: this.onRowsDeselected,
-                                   selectBy: {
-                                       indexes: this.state.selectedIndexes
-                                   }
-                               } : null
-                           }
-                           enableCellSelect={false}
-                           enableRowSelect={this.state.multiSelect}
-                           rowsCount={this.state.rows.length}
-                           minHeight={this.state.clientHeight}
-                           minWidth={this.state.clientWidth}/>
+            <div style={containerStyle} className="ag-fresh">
+                <AgGridReact
+                    {...this.props}
+                    // properties
+                    rowData={ this.props.rowData || this.state.rows}
+                    paginationAutoPageSize={true}
+                    pagination={true}
+                    // events
+                    onGridReady={this.onGridReady}
+
+                    onGridSort={this.handleGridSort}
+                    columns={this.state.columns}
+                    rowGetter={this.rowGetter}
+                    onRowClick={this.onRowClick}
+                    enableCellSelect={false}
+                    enableRowSelect={this.state.multiSelect}
+                    rowsCount={this.state.rows.length}
+                    minHeight={this.state.clientHeight}
+                    minWidth={this.state.clientWidth}>
+                </AgGridReact>
+            </div>
         );
 
         return (
             <div ref={(input) => {
                 this.container = input;
-            }}
-                 className="datagrid-container">
+            }} className="datagrid-container">
                 {title}
                 {this.state.originalRows.length > 0 ? (
                     <div>
@@ -286,18 +270,21 @@ class SearchableDataGrid extends Component {
                     <div className="datagrid-body">No data yet</div>
                 )}
                 {this.props.showLastUpdate && (this.state.lastupdate ?
-                    (<a href="#/refresh" onClick={this.refreshData}>
-                        Last update on {this.state.lastupdate.toLocaleString()} &nbsp;&nbsp;
-                        <span className="glyphicon glyphicon-refresh"/>
-                    </a>)
-                    : (<a href="#/refresh" onClick={this.refreshData}>
-                        Click to refresh &nbsp;&nbsp;
-                        <span className="glyphicon glyphicon-refresh"/>
-                    </a>))}
+                    (
+                        <a href="#/refresh" onClick={this.refreshData}>
+                            Last update on {this.state.lastupdate.toLocaleString()} &nbsp;&nbsp;
+                            <span className="glyphicon glyphicon-refresh"/>
+                        </a>
+                    ) : (
+                        <a href="#/refresh" onClick={this.refreshData}>
+                            Click to refresh &nbsp;&nbsp;
+                            <span className="glyphicon glyphicon-refresh"/>
+                        </a>
+                    ))}
             </div>
 
         );
     }
 }
 
-export default SearchableDataGrid;
+export default SearchableDataGrid
