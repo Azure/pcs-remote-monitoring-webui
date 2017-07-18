@@ -98,8 +98,8 @@ class SearchableDataGrid extends Component {
 
     filterRows = (event) => {
         let filterdRows = this.state.originalRows.filter((row) => {
-            for (let key of row) {
-                if (key.toString().toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0) {
+            for (let key in Object.keys(row) ) {
+                if (row[key].toString().toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0) {
                     return true
                 }
             }
