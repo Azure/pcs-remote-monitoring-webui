@@ -93,12 +93,23 @@ class SearchableDataGrid extends Component {
         if (this.props.autoLoad) {
             this.getData(this.props.initFilter);
         }
+        if (this.props.multiSelect) {
+            this.props.columnDefs.unshift({
+                headerName: "",
+                field: "",
+                headerCheckboxSelection: true,
+                headerCheckboxSelectionFilteredOnly: true,
+                checkboxSelection: true,
+                pinned: 'left',
+                width: 50
+            })
+        }
         this.resize(this.props);
     }
 
     filterRows = (event) => {
         let filterdRows = this.state.originalRows.filter((row) => {
-            for (let key in Object.keys(row) ) {
+            for (let key in Object.keys(row)) {
                 if (row[key].toString().toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0) {
                     return true
                 }
@@ -122,23 +133,6 @@ class SearchableDataGrid extends Component {
         EventTopic.unsubscribe(this.tokens);
     }
 
-    rowGetter = (i) => {
-        return this.state.rows[i];
-    };
-
-    handleGridSort = (sortColumn, sortDirection) => {
-        const comparer = (a, b) => {
-            if (sortDirection === 'ASC') {
-                return (a[sortColumn] > b[sortColumn]) ? 1 : -1;
-            } else if (sortDirection === 'DESC') {
-                return (a[sortColumn] < b[sortColumn]) ? 1 : -1;
-            }
-        };
-
-        const rows = sortDirection === 'NONE' ? this.state.originalRows.slice(0) : this.state.rows.sort(comparer);
-
-        this.setState({rows});
-    };
 
     getData = (filter) => {
         if (this.state.datasource && this.state.datasource.length) {
@@ -177,36 +171,13 @@ class SearchableDataGrid extends Component {
         }
     };
 
-    onRowsSelected = (rows) => {
-        this.setState({selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx))}, function () {
-            const itemIds = this.state.selectedIndexes.map((i) => {
-                let idcol = this.props.idCol || Object.keys(this.state.rows[i])[0];
-                return this.state.rows[i][idcol];
-            });
-            EventTopic.publish(this.props.rowsSelectEvent || 'system.grid.itemsSelected.grid_' + this.props.idCol, itemIds, this);
-        });
-
-    };
-
-    onRowsDeselected = (rows) => {
-        let rowIndexes = rows.map(r => r.rowIdx);
-        this.setState({selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1)}, () => {
-            const itemIds = this.state.selectedIndexes.map((i) => {
-                let idcol = this.props.idCol || Object.keys(this.state.rows[i])[0];
-                return this.state.rows[i][idcol];
-            });
-            EventTopic.publish(this.props.rowsSelectEvent || 'system.grid.itemsSelected.grid_' + this.props.idCol, itemIds, this);
-        });
-
-    };
-
-    onRowClick = (rowIdx, row) => {
-        let rows = this.state.rows;
-        this.setState({rows}, () => {
-            if (row) {
-                EventTopic.publish(this.props.rowClickEvent || 'system.grid.itemSelected.grid_' + this.props.idCol, row, this);
-            }
-        });
+    onRowSelectionChanged = () => {
+        let rows = this.gridApi.getSelectedRows();
+        if (rows.length === 1 && this.props.rowClickEvent) {
+            EventTopic.publish(this.props.rowClickEvent, rows[0], this);
+        } else if (this.props.rowClickEvent) {
+            EventTopic.publish(this.props.rowClickEvent, rows, this);
+        }
     };
 
     render() {
@@ -232,6 +203,7 @@ class SearchableDataGrid extends Component {
             height: this.state.clientHeight,
             width: this.state.clientWidth
         };
+
         const dataGrid = (
             <div style={containerStyle} className="ag-fresh">
                 <AgGridReact
@@ -239,19 +211,18 @@ class SearchableDataGrid extends Component {
                     // properties
                     rowData={ this.props.rowData || this.state.rows}
                     paginationAutoPageSize={true}
-                    pagination={true}
+                    pagination={typeof this.props.pagination === 'undefined'
+                                        ? true
+                                        : this.props.pagination}
                     // events
                     onGridReady={this.onGridReady}
-
-                    onGridSort={this.handleGridSort}
-                    columns={this.state.columns}
-                    rowGetter={this.rowGetter}
-                    onRowClick={this.onRowClick}
-                    enableCellSelect={false}
-                    enableRowSelect={this.state.multiSelect}
-                    rowsCount={this.state.rows.length}
-                    minHeight={this.state.clientHeight}
-                    minWidth={this.state.clientWidth}>
+                    rowSelection={this.props.multiSelect ? 'multiple' : 'single'}
+                    suppressRowClickSelection={!!this.props.multiSelect}
+                    onSelectionChanged={this.props.onSelectionChanged || this.onRowSelectionChanged}
+                    suppressFieldDotNotation={typeof this.props.suppressFieldDotNotation === 'undefined'
+                                                    ? true
+                                                    : this.props.suppressFieldDotNotation }
+                >
                 </AgGridReact>
             </div>
         );

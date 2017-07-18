@@ -115,7 +115,6 @@ class AlarmList extends Component {
                     enableSorting={true}
                     enableSearch={false}
                     enableFilter={true}
-                    rowSelection={'single'}
                     autoLoad={true}
                     multiSelect={false}
                     title=""
