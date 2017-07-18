@@ -1,0 +1,17 @@
+.region-header {
+  vertical-align: center;
+  height: 48px;
+  background-color: #242628;
+  padding: 15px 15px 15px 0px;
+  color: #afb9c3;
+  .more {
+    float: right;
+    font-size: 12px;
+  }
+  .device-location {
+    padding-left: 20px;
+  }
+}
+.map-container {
+  padding: 0px;
+}

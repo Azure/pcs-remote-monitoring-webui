@@ -6,10 +6,12 @@ import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 import TelemetryWidget from '../../components/telemetryWidget/telemetryWidget';
 import AlarmList from '../../components/alarmList/alarmList';
-import DeviceMap from '../../components/deviceMap/deviceMap';
 import KpiWidget from '../../components/kpiWidget/kpiWidget';
+import RegionDetails from '../../components/deviceMap/regionDetails.js';
 import Flyout from '../../components/flyout/flyout';
 import * as actions from '../../actions';
+import DeviceMap from '../../components/deviceMap/deviceMap.js';
+import lang from '../../common/lang';
 
 import '../layout.css';
 import './dashboard.css';
@@ -29,7 +31,6 @@ class Dashboard extends Component {
       onClose: actions.hideFlyout,
       content: flyout.content
     };
-
     const deviceMapProps = {
       devices: this.props.devices,
       mapkey: this.props.mapkey
@@ -37,10 +38,21 @@ class Dashboard extends Component {
 
     return (
       <Grid fluid className="layout">
-        <Row className="widgets rowH60Percent">
-          <Col md={5}>
-            <DeviceMap {...deviceMapProps} />
+        <Row className="">
+          <Col md={8}>
+            <div className="region-header row">
+              <span className="device-location">{lang.DASHBOARD.DEVICELOCATION}</span>
+              <span className="more">{lang.DASHBOARD.MORE}</span>
+            </div>
+            <Row className="device-map">
+              <RegionDetails />
+              <Col md={9} className="map-container">
+                <DeviceMap {...deviceMapProps} />
+              </Col>
+            </Row>
           </Col>
+        </Row>
+        <Row>
           <Col md={7}>
             <TelemetryWidget />
           </Col>

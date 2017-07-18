@@ -1,37 +1,37 @@
 .layout {
-    height: calc(100% - 20px);
-    margin: 10px 0px;
+  height: calc(100% - 20px);
+  margin: 10px 0px;
 }
 
 .widgets.rowH1.row {
-    height: 100px;
+  height: 100px;
 }
 
 .widgets.rowH2.row {
-    height: 200px;
+  height: 200px;
 }
 
 .widgets.rowH3.row {
-    height: 300px;
+  height: 300px;
 }
 
 .widgets.rowH40Percent.row {
-    height: 40%;
+  height: 40%;
 }
 
 .widgets.rowH50Percent.row {
-    height: 50%;
+  height: 50%;
 }
 
 .widgets.rowH60Percent.row {
-    height: 60%;
+  height: 100%;
 }
 
 .widgets [class^=col-] {
-    padding: 5px;
-    height: 100%;
+  padding: 5px;
+  height: 100%;
 }
 
 .nested {
-    padding: 0px;
+  padding: 0px;
 }

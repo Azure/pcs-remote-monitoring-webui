@@ -21,16 +21,41 @@ let actions;
 let init = function(mapApiKey) {
   let options = {
     credentials: mapApiKey,
-    mapTypeId: window.Microsoft.Maps.MapTypeId.road,
+    mapTypeId: window.Microsoft.Maps.MapTypeId.canvasDark,
+    showMapTypeSelector: false,
     animate: false,
     enableSearchLogo: false,
     enableClickableLogo: false,
     navigationBarMode: window.Microsoft.Maps.NavigationBarMode.minified,
-    bounds: window.Microsoft.Maps.LocationRect.fromEdges(71, -28, -55, 28)
+    showScalebar: false, // for the microsoft bing maps label removal
+    zoom: 3
   };
 
   // Initialize the map
   map = new window.Microsoft.Maps.Map('#deviceMap', options);
+  map.getZoomRange = function() {
+    return {
+      max: 14,
+      min: 2
+    };
+  };
+
+  // Forcibly set the zoom to our min/max whenever the view starts to change beyond them
+  var restrictZoom = function() {
+    if (map.getZoom() <= map.getZoomRange().min) {
+      map.setView({
+        zoom: map.getZoomRange().min,
+        animate: false
+      });
+    } else if (map.getZoom() >= map.getZoomRange().max) {
+      map.setView({
+        zoom: map.getZoomRange().max,
+        animate: false
+      });
+    }
+  };
+  // Attach a handler to the event that gets fired whenever the map's view is about to change
+  window.Microsoft.Maps.Events.addHandler(map, 'viewchangestart', restrictZoom);
 
   // Hide the infobox when the map is moved.
   window.Microsoft.Maps.Events.addHandler(map, 'viewchange', hideInfobox);
