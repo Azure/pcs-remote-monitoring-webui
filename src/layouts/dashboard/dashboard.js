@@ -8,8 +8,6 @@ import TelemetryWidget from '../../components/telemetryWidget/telemetryWidget';
 import AlarmList from '../../components/alarmList/alarmList';
 import DeviceMap from '../../components/deviceMap/deviceMap';
 import KpiWidget from '../../components/kpiWidget/kpiWidget';
-import SampleWidget from '../../components/sampleWidget/sampleWidget';
-import SampleWgtRedux from '../../components/sampleWidgetRedux/sampleWgtRedux';
 import Flyout from '../../components/flyout/flyout';
 import * as actions from '../../actions';
 
@@ -30,10 +28,6 @@ class Dashboard extends Component {
       show: flyout.show,
       onClose: actions.hideFlyout,
       content: flyout.content
-    };
-
-    const sampleWgtReduxProps = {
-      messages: this.props.messages
     };
 
     const deviceMapProps = {
@@ -57,14 +51,6 @@ class Dashboard extends Component {
           </Col>
           <Col md={5}>
             <KpiWidget />
-          </Col>
-        </Row>
-        <Row className="widgets row-h40-percent">
-          <Col md={7}>
-            <SampleWgtRedux {...sampleWgtReduxProps} />
-          </Col>
-          <Col md={5}>
-            <SampleWidget />
           </Col>
         </Row>
         <Flyout {...flyoutProp} />

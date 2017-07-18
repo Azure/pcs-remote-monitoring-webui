@@ -1,13 +1,38 @@
-.sidebar {
-	position: fixed;
-    top: 51px;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
-    padding: 20px;
-    padding-left: 0;
-    padding-right: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    border-right: 1px solid #eee;
+$primary-dark: #242628;
+$primary-color: #afb9c3;
+$hover-color: #ffffff;
+$hover-background-color: #1b1d1f;
+
+.leftNav {
+  background-color: $primary-dark;
+  color: $primary-color;
+
+  .sidebar {
+    width: 220px;
+  }
+
+  .nav > li > a:hover,
+  .nav > li > a:focus {
+    color: $hover-color !important;
+    background-color: $hover-background-color !important;
+    img {
+      opacity: 1;
+    }
+  }
+
+  a {
+    color: $primary-color !important;
+  }
+  img {
+    opacity: 0.7;
+  }
+
+  .hamburger {
+    padding: 14px;
+    &:hover {
+      img {
+        opacity: 1;
+      }
+    }
+  }
 }

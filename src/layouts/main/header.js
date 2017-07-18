@@ -19,14 +19,16 @@ class TopNav extends Component {
       default:
         break;
     }
-  }
+  };
 
   render() {
     return (
       <Navbar inverse collapseOnSelect fixedTop fluid>
         <Navbar.Header>
           <Navbar.Brand>
-            <div><Logo /></div>
+            <div>
+              <Logo />
+            </div>
           </Navbar.Brand>
           <Navbar.Brand>
             <div>Remote Monitoring</div>
@@ -35,7 +37,12 @@ class TopNav extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>
-            <NavDropdown eventKey={3} title="Configuration" id="basic-nav-dropdown" onSelect={this.selectHandler}>
+            <NavDropdown
+              eventKey={3}
+              title="Configuration"
+              id="basic-nav-dropdown"
+              onSelect={this.selectHandler}
+            >
               <MenuItem eventKey={3.1}>Customize Solution</MenuItem>
               <MenuItem eventKey={3.2}>Initialize Solution</MenuItem>
               <MenuItem eventKey={3.3}>Something else here</MenuItem>
@@ -44,7 +51,9 @@ class TopNav extends Component {
               <CustomFlyout ref="customFlyout" />
               <CustomDialog ref="customDialog" />
             </NavDropdown>
-            <NavItem eventKey={1} href="#">Administrator</NavItem>
+            <NavItem eventKey={1} href="#">
+              Administrator
+            </NavItem>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
