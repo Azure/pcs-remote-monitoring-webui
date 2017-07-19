@@ -28,6 +28,7 @@ export const Topics = {
         twin: {
             opened: 'device.twin.opened'    // device raw twin is opened for copy
         },
+        configAction:'device.configAction'  // change device configuration
     },
     grid: {
         itemSelected: 'grid.itemSelected',
