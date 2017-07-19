@@ -2,6 +2,8 @@
 
 import React, {Component} from "react";
 import EventTopic from "../../common/eventtopic.js";
+import Flyout, {Body, Header} from "../../framework/flyout/flyout";
+import ActionList from "../actionSelection/actionList";
 
 class ActOnDevice extends Component {
 
@@ -34,19 +36,43 @@ class ActOnDevice extends Component {
         this.setState({devices: data});
     };
 
+    onClick = () => {
+        this.refs.flyout.show();
+    };
+
     render() {
+        const flyout =(
+            <Flyout ref='flyout'>
+                <Header>
+                    Provision devices
+                </Header>
+                <Body>
+                    <ActionList/>
+                </Body>
+            </Flyout>
+        );
+
         if (!this.state.deviceCount) {
             return (
-                <button type="button" className="btn btn-default btn-block"
-                        onClick={this.props.onClick}>{this.state.buttonText}</button>
-            );
+                <div>
+                    <button type="button"
+                            className="btn btn-default btn-block"
+                            onClick={()=>{this.onClick()}}>{this.state.buttonText}
+                    </button>
+                    {flyout}
+                </div>
+            )
         } else {
             return (
-                <button type="button" className="btn btn-default btn-block"
-                        onClick={this.props.onClick}>{this.state.buttonText}{' (' + this.props.deviceCount + ')'}</button>
+                <div>
+                    <button type="button" className="btn btn-default btn-block"
+                            onClick={()=>{this.onClick()}}>
+                        {this.state.buttonText}{' (' + this.props.deviceCount + ')'}
+                    </button>
+                    {flyout}
+                </div>
             );
         }
-
     }
 }
 
