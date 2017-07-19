@@ -1,32 +1,28 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import EventTopic, { Topics } from '../../common/eventtopic';
-import { FormControl, Button } from 'react-bootstrap';
-import del from './delete.svg';
-import add from './add_black.svg';
-import "./deviceConfig.css"
+import { FormControl, Button, DropdownButton, MenuItem } from 'react-bootstrap'
+import del from './delete.svg'
+import add from './add_black.svg'
+import "./deviceOrganize.css"
 
-class DeviceConfig extends React.Component {
+class DeviceOrganize extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             devices: [],
             configProperties: [
-                { name: 'TelemetryInterval', value: 15 },
-                { name: 'TemperatureMeanValue', value: 70.0 }
+                { name: 'Building', value: 4.3, type: 'Number' },
+                { name: 'Floor', value: 1, type: 'Number' },
+                { name: 'Compus', value: 'Redmond', type: 'String' },
+                { name: 'IsNew', value: true, type: 'Boolean' },
             ],
         };
-    }
-
-    componentDidMount() {
-        EventTopic.subscribe(Topics.device.configAction, (topic, data, publisher) => {
-            this.setState({ devices: data });
-        });
+        this.dataTypes = ['Number', 'String', 'Boolean'];
     }
 
     onAdd() {
-        this.state.configProperties.push({ name: '', value: '' });
+        this.state.configProperties.push({ name: '', value: '', type: 'string' });
         this.setState({ configProperties: this.state.configProperties })
     }
 
@@ -57,17 +53,14 @@ class DeviceConfig extends React.Component {
 
     render() {
         return (
-            <div className="deviceConfig">
+            <div className="deviceOrganize">
                 <div>
-                    <label>Task Name</label>
-                    <FormControl type="text" value="Change property X" />
-                </div>
-                <div className="marginTop20">
-                    <label>Config Properties (properties.desired.config.*)</label>
                     <table>
                         <tr>
-                            <td>Name</td>
-                            <td>Value</td>
+                            <td><label>Name</label></td>
+                            <td><label>Value</label></td>
+                            <td><label>Type</label></td>
+                            <td></td>
                         </tr>
                         <tbody>
                             {
@@ -75,11 +68,19 @@ class DeviceConfig extends React.Component {
                                     <tr>
                                         <td><FormControl type="text" value={p.name} onChange={(event) => this.onFieldNameChange(event, i)} /></td>
                                         <td><FormControl type="text" value={p.value} onChange={(event) => this.onFieldValueChange(event, i)} /></td>
-                                        <td><span className="operation" title="Remove" onClick={() => this.onDelete(i)}><img alt="Remove" src={del} /></span></td>
+                                        <td>
+                                            <FormControl componentClass="select" value={p.type}>
+                                                {this.dataTypes.map((type) => {
+                                                    return <option value={type}>{type}</option>
+                                                })}
+                                            </FormControl>
+
+                                        </td>
+                                        <td><span className="operation" title="Remove" onClick={() => this.onDelete(i)}><img src={del} /></span></td>
                                     </tr>
                                 )
                             }
-                            <tr><td></td><td></td><td><span className="operation" title="Add" onClick={() => this.onAdd()}><img alt="Add" src={add} /></span></td></tr>
+                            <tr><td></td><td></td><td></td><td><span className="operation" title="Add" onClick={() => this.onAdd()}><img src={add} /></span></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -92,4 +93,4 @@ class DeviceConfig extends React.Component {
     }
 }
 
-export default DeviceConfig;
+export default DeviceOrganize;
