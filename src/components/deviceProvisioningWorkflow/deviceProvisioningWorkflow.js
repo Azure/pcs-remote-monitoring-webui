@@ -94,7 +94,7 @@ class DeviceProvisioningWorkflow extends React.Component {
         return (
             <div style={{ display: this.state.simulatedDevice ? "block" : "none" }}>
                 <h5>Device Types<br />Select an existing device type</h5>
-                <DropdownButton disabled={this.state.simulatedTypes.length === 0} title={this.state.selectedSimulatedType || "Chiller device type"}>
+                <DropdownButton id="dgDeviceTypes" disabled={this.state.simulatedTypes.length === 0} title={this.state.selectedSimulatedType || "Chiller device type"}>
                     {this.state.simulatedTypes.map((t) => {
                         return <MenuItem eventKey={t} onSelect={this.onClickSimulatedType}>{t}</MenuItem>
                     })}
@@ -109,9 +109,9 @@ class DeviceProvisioningWorkflow extends React.Component {
                 <h5>Authentication type</h5>
                 <FormGroup>
                     <ButtonGroup>
-                        <Button active={this.state.authenticationType === "symmetricKey" ? " active" : ""}
+                        <Button active={this.state.authenticationType === "symmetricKey" ? true : false}
                             onClick={this.onClickSymmetricKey}>Symmetric Key</Button>
-                        <Button active={this.state.authenticationType === "X509" ? " active" : ""}
+                        <Button active={this.state.authenticationType === "X509" ? true : false}
                             onClick={this.onClickX509}>X.509</Button>
                     </ButtonGroup>
                 </FormGroup>
@@ -128,7 +128,7 @@ class DeviceProvisioningWorkflow extends React.Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <Checkbox inline checked={this.state.generateDeviceKey} onClick={this.onClickGenerateDeviceKey}>
+                        <Checkbox inline defaultChecked={this.state.generateDeviceKey} onClick={this.onClickGenerateDeviceKey}>
                             Auto Generate Keys
                         </Checkbox>
                     </FormGroup>
@@ -152,7 +152,7 @@ class DeviceProvisioningWorkflow extends React.Component {
         return (
             <div style={{ display: this.state.provisionMethod === "manual" ? "block" : "none" }}>
                 <FormGroup>
-                    <Checkbox inline checked={this.state.simulatedDevice} onClick={this.onClickSimulatedDevice}>
+                    <Checkbox inline defaultChecked={this.state.simulatedDevice} onClick={this.onClickSimulatedDevice}>
                         Simulated devices(s)
                          </Checkbox>
                 </FormGroup>
@@ -168,7 +168,7 @@ class DeviceProvisioningWorkflow extends React.Component {
                 </FormGroup>
 
                 <FormGroup>
-                    <Checkbox inline check={this.state.generateDeviceId} onClick={this.onClickGenerateDeviceId} >
+                    <Checkbox inline defaultChecked={this.state.generateDeviceId} onClick={this.onClickGenerateDeviceId} >
                         Generate an ID for me
                          </Checkbox>
                 </FormGroup>
@@ -185,7 +185,7 @@ class DeviceProvisioningWorkflow extends React.Component {
             <div style={{ display: this.state.provisionMethod === "automatic" ? "block" : "none" }}>
                 <FormGroup>
                     <h5>DPS Tenant</h5>
-                    <DropdownButton title="New Tenant">
+                    <DropdownButton title="New Tenant" id="dgTenant">
                         <MenuItem eventKey="New Tenant">New Tenant</MenuItem>
                     </DropdownButton>
                 </FormGroup>
@@ -193,9 +193,9 @@ class DeviceProvisioningWorkflow extends React.Component {
                 <h5>Enrollment</h5>
                 <FormGroup>
                     <ButtonGroup>
-                        <Button active={this.state.enrollment === "individual" ? " active" : ""}
+                        <Button active={this.state.enrollment === "individual" ? true : false}
                             onClick={this.onClickIndividual}>Individual</Button>
-                        <Button active={this.state.enrollment === "group" ? " active" : ""}
+                        <Button active={this.state.enrollment === "group" ? true : false}
                             onClick={this.onClickGroup}>  Group</Button>
                     </ButtonGroup>
                 </FormGroup>

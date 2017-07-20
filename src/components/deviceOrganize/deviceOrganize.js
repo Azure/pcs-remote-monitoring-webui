@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import { FormControl, Button, DropdownButton, MenuItem } from 'react-bootstrap'
+import { FormControl, Button } from 'react-bootstrap'
 import del from './delete.svg'
 import add from './add_black.svg'
 import "./deviceOrganize.css"
@@ -56,31 +56,33 @@ class DeviceOrganize extends React.Component {
             <div className="deviceOrganize">
                 <div>
                     <table>
-                        <tr>
-                            <td><label>Name</label></td>
-                            <td><label>Value</label></td>
-                            <td><label>Type</label></td>
-                            <td></td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <td><label>Name</label></td>
+                                <td><label>Value</label></td>
+                                <td><label>Type</label></td>
+                                <td></td>
+                            </tr>
+                        </thead>
                         <tbody>
                             {
                                 this.state.configProperties.map((p, i) =>
-                                    <tr>
+                                    <tr key={i}>
                                         <td><FormControl type="text" value={p.name} onChange={(event) => this.onFieldNameChange(event, i)} /></td>
                                         <td><FormControl type="text" value={p.value} onChange={(event) => this.onFieldValueChange(event, i)} /></td>
                                         <td>
-                                            <FormControl componentClass="select" value={p.type}>
+                                            <FormControl componentClass="select" defaultValue={p.type}>
                                                 {this.dataTypes.map((type) => {
-                                                    return <option value={type}>{type}</option>
+                                                    return <option key={type} value={type}>{type}</option>
                                                 })}
                                             </FormControl>
 
                                         </td>
-                                        <td><span className="operation" title="Remove" onClick={() => this.onDelete(i)}><img src={del} /></span></td>
+                                        <td><span className="operation" title="Remove" onClick={() => this.onDelete(i)}><img alt="Remove" src={del} /></span></td>
                                     </tr>
                                 )
                             }
-                            <tr><td></td><td></td><td></td><td><span className="operation" title="Add" onClick={() => this.onAdd()}><img src={add} /></span></td></tr>
+                            <tr><td></td><td></td><td></td><td><span className="operation" title="Add" onClick={() => this.onAdd()}><img alt="Add" src={add} /></span></td></tr>
                         </tbody>
                     </table>
                 </div>

@@ -60,19 +60,21 @@ class DeviceConfig extends React.Component {
             <div className="deviceConfig">
                 <div>
                     <label>Task Name</label>
-                    <FormControl type="text" value="Change property X" />
+                    <FormControl type="text" defaultValue="Change property X" />
                 </div>
                 <div className="marginTop20">
                     <label>Config Properties (properties.desired.config.*)</label>
                     <table>
-                        <tr>
-                            <td>Name</td>
-                            <td>Value</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <td>Name</td>
+                                <td>Value</td>
+                            </tr>
+                        </thead>
                         <tbody>
                             {
                                 this.state.configProperties.map((p, i) =>
-                                    <tr>
+                                    <tr key={i}>
                                         <td><FormControl type="text" value={p.name} onChange={(event) => this.onFieldNameChange(event, i)} /></td>
                                         <td><FormControl type="text" value={p.value} onChange={(event) => this.onFieldValueChange(event, i)} /></td>
                                         <td><span className="operation" title="Remove" onClick={() => this.onDelete(i)}><img alt="Remove" src={del} /></span></td>
