@@ -2,16 +2,16 @@
 
 import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
-import AddDevice from '../../components/addDevice/addDevice';
+import DeviceList from '../../components/deviceList/deviceList';
+
 import '../layout.css';
 
 class Devices extends Component {
   render() {
     return (
       <Grid fluid className="layout">
-        <Row className="widgets">
-          <Col md={6}></Col>
-          <Col md={6}><AddDevice/></Col>
+        <Row className="widgets rowH100Percent">
+          <Col md={12}><DeviceList/></Col>
         </Row>
       </Grid>
     );

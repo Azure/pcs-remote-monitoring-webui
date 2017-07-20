@@ -52,9 +52,9 @@ class ActionList extends Component {
         return (
             <Row>
                 <ListGroup>
-                    <ListGroupItem href="#" onClick={()=>{this.openFlyout('configflyout')}}>Change device configuration</ListGroupItem>
-                    <ListGroupItem href="#" onClick={()=>{this.openFlyout('organizeflyout')}}>Organize my devices</ListGroupItem>
-                    <ListGroupItem href="#" onClick={()=>{this.openFlyout('scheduleflyout')}}>Schedule an action</ListGroupItem>
+                    <ListGroupItem onClick={()=>{this.openFlyout('configflyout')}}>Change device configuration</ListGroupItem>
+                    <ListGroupItem onClick={()=>{this.openFlyout('organizeflyout')}}>Organize my devices</ListGroupItem>
+                    <ListGroupItem onClick={()=>{this.openFlyout('scheduleflyout')}}>Schedule an action</ListGroupItem>
                 </ListGroup>
                 {configflyout}
                 {organizeflyout}

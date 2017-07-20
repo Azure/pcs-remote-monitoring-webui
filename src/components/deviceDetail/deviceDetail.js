@@ -114,7 +114,12 @@ class DeviceDetail extends React.Component {
                             urlSearchPattern="/\{deviceId\}/i"
                             topics={[Topics.device.diagnose]}
                             eventDataKey="deviceId"
-                            columns="Parameter:Key, Value:Value"
+                            columnDefs={[
+                                {headerName: "Parameter", field: "Key", filter: "text"},
+                                {headerName: "Value", field: "Value", filter: "text"}
+                            ]}
+                            height={300}
+                            pagination={false}
                             multiSelect={false}
                             enableSearch={false}
                             showLastUpdate={false}

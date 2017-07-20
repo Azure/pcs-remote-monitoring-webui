@@ -1,0 +1,27 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+.deviceListContainer {
+  height: 100%
+}
+
+.deviceListButtonBar {
+  position: absolute;
+  right: 5px;
+}
+
+.deviceListButton {
+  width: 10em;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.deviceListContainer {
+  .ag-fresh {
+    .ag-row-even.ag-row-selected {
+      background-color: #ffffff;
+    }
+    .ag-row-odd.ag-row-selected {
+      background-color: #f6f6f6;
+    }
+  }
+}

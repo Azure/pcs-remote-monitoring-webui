@@ -42,6 +42,22 @@ class SearchableDataGrid extends Component {
         return retval;
     }
 
+    static hookWindowResize() {
+        (function () {
+            let isRunning = false;
+            window.addEventListener('resize', function () {
+                if (isRunning) {
+                    return;
+                }
+                isRunning = true;
+                requestAnimationFrame(function () {
+                    window.dispatchEvent(new CustomEvent('layoutResize'));
+                    isRunning = false;
+                });
+            });
+        })();
+    }
+
     componentWillReceiveProps(nextProps) {
         this.resize(nextProps);
     }
@@ -104,12 +120,19 @@ class SearchableDataGrid extends Component {
                 width: 50
             })
         }
+       
+        SearchableDataGrid.hookWindowResize();
+        window.addEventListener("layoutResize", () => this.resize(this.props));
         this.resize(this.props);
+    }
+
+    selectAll() {
+        this.gridApi.selectAll();
     }
 
     filterRows = (event) => {
         let filterdRows = this.state.originalRows.filter((row) => {
-            for (let key in Object.keys(row)) {
+            for (let key in row) {
                 if (row[key].toString().toLowerCase().indexOf(event.target.value.toLowerCase()) >= 0) {
                     return true
                 }
@@ -171,14 +194,23 @@ class SearchableDataGrid extends Component {
         }
     };
 
-    onRowSelectionChanged = () => {
-        let rows = this.gridApi.getSelectedRows();
-        if (rows.length === 1 && this.props.rowClickEvent) {
-            EventTopic.publish(this.props.rowClickEvent, rows[0], this);
-        } else if (this.props.rowClickEvent) {
+    onRowSelectionChanged = (event) => {
+        const rows = this.gridApi.getSelectedRows();
+
+        if (this.props.rowClickEvent) {
             EventTopic.publish(this.props.rowClickEvent, rows, this);
         }
+
+        if (isFunction(this.props.onRowSelectionChanged)) {
+            this.props.onRowSelectionChanged(rows);
+        }
     };
+
+    onRowClicked = (event) => {
+        if (isFunction(this.props.onRowClicked)) {
+            this.props.onRowClicked(event.data);
+        }
+    }
 
     render() {
         let title = null;
@@ -209,6 +241,7 @@ class SearchableDataGrid extends Component {
                 <AgGridReact
                     {...this.props}
                     // properties
+                    enableColResize={true}
                     rowData={ this.props.rowData || this.state.rows}
                     paginationAutoPageSize={true}
                     pagination={typeof this.props.pagination === 'undefined'
@@ -218,7 +251,8 @@ class SearchableDataGrid extends Component {
                     onGridReady={this.onGridReady}
                     rowSelection={this.props.multiSelect ? 'multiple' : 'single'}
                     suppressRowClickSelection={!!this.props.multiSelect}
-                    onSelectionChanged={this.props.onSelectionChanged || this.onRowSelectionChanged}
+                    onSelectionChanged={this.onRowSelectionChanged}
+                    onRowClicked={this.onRowClicked}
                     suppressFieldDotNotation={typeof this.props.suppressFieldDotNotation === 'undefined'
                                                     ? true
                                                     : this.props.suppressFieldDotNotation }

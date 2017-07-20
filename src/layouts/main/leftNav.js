@@ -37,7 +37,7 @@ class LeftNav extends Component {
         name: 'Dashboard'
       },
       {
-        path: '#/',
+        path: '#/devices',
         icon: DevicesIcon,
         name: 'Devices'
       },
