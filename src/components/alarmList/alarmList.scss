@@ -1,0 +1,17 @@
+.alarm-list,
+.ag-dark {
+  background-color: #1b1d1f;
+  color: #afb9c3;
+  height: 100%;
+
+  .alarm-list-header {
+    display: inline-block;
+    background-color: #242628;
+    width: 100%;
+    height: 48px;
+  }
+  .alarm-dropdown {
+    display: inline-block;
+    float: right;
+  }
+}
