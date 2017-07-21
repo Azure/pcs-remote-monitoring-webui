@@ -4,13 +4,11 @@ $hover-color: #ffffff;
 $hover-background-color: #1b1d1f;
 
 .leftNav {
+  flex-shrink: 1;
   background-color: $primary-dark;
   color: $primary-color;
 
-  .sidebar {
-    width: 220px;
-  }
-
+  padding-top: 10px;
   .nav > li > a:hover,
   .nav > li > a:focus {
     color: $hover-color !important;
@@ -33,6 +31,16 @@ $hover-background-color: #1b1d1f;
       img {
         opacity: 1;
       }
+    }
+  }
+  .contoso {
+    color: #ffffff;
+    width: 15px;
+    margin-left: 7px;
+    display: inline;
+    .contoso-text {
+      display: inline-block;
+      margin-left: 10px;
     }
   }
 }

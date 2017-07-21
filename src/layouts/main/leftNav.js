@@ -7,6 +7,8 @@ import DashboardIcon from '../../assets/icons/Dashboard.svg';
 import MaintenanceIcon from '../../assets/icons/Maintenance.svg';
 import DevicesIcon from '../../assets/icons/Devices.svg';
 import RulesActionsIcon from '../../assets/icons/RulesActionsIcon.svg';
+import ContosoIcon from '../../assets/icons/Contoso.svg';
+import lang from '../../common/lang';
 
 import './leftNav.css';
 
@@ -68,6 +70,18 @@ class LeftNav extends Component {
 
     return (
       <div className="leftNav">
+        <div className="contoso">
+          <img
+            src={ContosoIcon}
+            className="contoso"
+            alt="ContosoIcon"
+            onClick={this.toggleNav}
+          />
+          {this.state.showAll &&
+            <div className="contoso-text">
+              {lang.DASHBOARD.CONTOSO}
+            </div>}
+        </div>
         <div className="hamburger">
           <img
             src={HamburgerIcon}

@@ -20,7 +20,9 @@ let actions;
 
 let init = function(mapApiKey) {
   let options = {
-    credentials: mapApiKey,
+    //Time being adding developer's keys.
+    credentials:
+      'AhDYdhgAYmHLSCQm9xFRo2PPMGPXKeLnsz6yczTOxVMZQPnNJBben3rpV7DvnL4e',
     mapTypeId: window.Microsoft.Maps.MapTypeId.canvasDark,
     showMapTypeSelector: false,
     animate: false,
@@ -35,7 +37,7 @@ let init = function(mapApiKey) {
   map = new window.Microsoft.Maps.Map('#deviceMap', options);
   map.getZoomRange = function() {
     return {
-      max: 14,
+      max: 24,
       min: 2
     };
   };

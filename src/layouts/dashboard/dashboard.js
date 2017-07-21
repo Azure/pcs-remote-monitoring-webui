@@ -38,11 +38,15 @@ class Dashboard extends Component {
 
     return (
       <Grid fluid className="layout">
-        <Row className="">
+        <Row>
           <Col md={8}>
             <div className="region-header row">
-              <span className="device-location">{lang.DASHBOARD.DEVICELOCATION}</span>
-              <span className="more">{lang.DASHBOARD.MORE}</span>
+              <span className="device-location">
+                {lang.DASHBOARD.DEVICELOCATION}
+              </span>
+              <span className="more">
+                {lang.DASHBOARD.MORE}
+              </span>
             </div>
             <Row className="device-map">
               <RegionDetails />
@@ -51,6 +55,9 @@ class Dashboard extends Component {
               </Col>
             </Row>
           </Col>
+          <Col md={4}>
+            <AlarmList />
+          </Col>
         </Row>
         <Row>
           <Col md={7}>
@@ -58,9 +65,6 @@ class Dashboard extends Component {
           </Col>
         </Row>
         <Row className="widgets rowH40Percent">
-          <Col md={7}>
-            <AlarmList />
-          </Col>
           <Col md={5}>
             <KpiWidget />
           </Col>

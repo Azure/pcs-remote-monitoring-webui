@@ -12,9 +12,9 @@ export default class Main extends Component {
   render() {
     return (
       <div className="main">
-        <Header />
+        <LeftNav />
         <div className="mainbody">
-          <LeftNav />
+          <Header />
           <div className="content">
             {this.props.children}
           </div>
