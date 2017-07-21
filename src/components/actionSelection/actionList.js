@@ -3,6 +3,8 @@
 import React, {Component} from "react";
 import Flyout, {Body, Header} from "../../framework/flyout/flyout";
 import {ListGroup, ListGroupItem, Row} from 'react-bootstrap';
+import DeviceConfig from '../deviceConfig/deviceConfig'
+import DeviceOrganize from '../deviceOrganize/deviceOrganize'
 
 class ActionList extends Component {
 
@@ -24,7 +26,7 @@ class ActionList extends Component {
                     Change device configuration
                 </Header>
                 <Body>
-                Change device configuration
+                    <DeviceConfig devices={this.props.devices}/>
                 </Body>
             </Flyout>
         );
@@ -34,7 +36,7 @@ class ActionList extends Component {
                     Organize my devices
                 </Header>
                 <Body>
-                Organize my devices
+                    <DeviceOrganize devices={this.props.devices}/>
                 </Body>
             </Flyout>
         );
@@ -44,7 +46,7 @@ class ActionList extends Component {
                     Schedule an action
                 </Header>
                 <Body>
-                Organize my devices
+                    Organize my devices
                 </Body>
             </Flyout>
         );

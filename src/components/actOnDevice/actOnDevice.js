@@ -18,7 +18,7 @@ class ActOnDevice extends Component {
                     Provision devices
                 </Header>
                 <Body>
-                    <ActionList/>
+                    <ActionList devices={this.props.devices}/>
                 </Body>
             </Flyout>
         );

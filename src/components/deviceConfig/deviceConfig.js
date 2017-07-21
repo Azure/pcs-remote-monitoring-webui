@@ -1,52 +1,45 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React from 'react';
-import EventTopic, { Topics } from '../../common/eventtopic';
-import { FormControl, Button } from 'react-bootstrap';
-import del from './delete.svg';
-import add from './add_black.svg';
-import "./deviceConfig.css"
+import React from "react";
+import {Button, FormControl} from "react-bootstrap";
+import del from "./delete.svg";
+import add from "./add_black.svg";
+import "./deviceConfig.css";
 
 class DeviceConfig extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            devices: [],
             configProperties: [
-                { name: 'TelemetryInterval', value: 15 },
-                { name: 'TemperatureMeanValue', value: 70.0 }
+                {name: 'TelemetryInterval', value: 15},
+                {name: 'TemperatureMeanValue', value: 70.0}
             ],
         };
     }
 
-    componentDidMount() {
-        EventTopic.subscribe(Topics.device.configAction, (topic, data, publisher) => {
-            this.setState({ devices: data });
-        });
-    }
 
     onAdd() {
-        this.state.configProperties.push({ name: '', value: '' });
-        this.setState({ configProperties: this.state.configProperties })
+        this.state.configProperties.push({name: '', value: ''});
+        this.setState({configProperties: this.state.configProperties})
     }
 
     onDelete(index) {
         setTimeout(() => {
             this.state.configProperties.splice(index, 1);
-            this.setState({ configProperties: this.state.configProperties });
+            this.setState({configProperties: this.state.configProperties});
         }, 0)
     }
 
     onFieldNameChange(event, index) {
         const properties = this.state.configProperties;
-        properties[index] = event.target.value
-        this.setState({ configProperties: properties });
+        properties[index] = event.target.value;
+        this.setState({configProperties: properties});
     }
 
     onFieldValueChange(event, index) {
         const properties = this.state.configProperties;
-        properties[index] = event.target.value
-        this.setState({ configProperties: properties });
+        properties[index] = event.target.value;
+        this.setState({configProperties: properties});
     }
 
     onConfirm() {
@@ -56,6 +49,7 @@ class DeviceConfig extends React.Component {
     }
 
     render() {
+        const deviceCount = this.props.devices && Array.isArray(this.props.devices) ? this.props.devices.length : 0;
         return (
             <div className="deviceConfig">
                 <div>
@@ -86,7 +80,7 @@ class DeviceConfig extends React.Component {
                     </table>
                 </div>
                 <div className="marginTop20">
-                    <label>Caution: You are scheduling an action that will affect {this.state.devices.length} devices.</label>
+                    <label>Caution: You are scheduling an action that will affect {deviceCount} devices.</label>
                     <Button className="btnConfirm" onClick={() => this.onConfirm()}>Confirm</Button>
                 </div>
             </div>
