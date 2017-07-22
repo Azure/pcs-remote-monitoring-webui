@@ -7,11 +7,17 @@ const deviceReducer = (state = initialState.dashboard.devices, action) => {
       return {
         ...state,
         devices: action.devices
-      }
+      };
+
+    case types.LOAD_DEVICES_GROUP_SUCCESS:
+      return {
+        ...state,
+        deviceGroup: action.deviceGroup
+      };
 
     default:
       return state;
   }
-}
+};
 
 export default deviceReducer;

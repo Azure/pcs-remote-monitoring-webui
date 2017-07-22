@@ -23,7 +23,6 @@ class LeftNav extends Component {
   }
 
   toggleNav() {
-    console.log('onclick');
     this.setState({ showAll: !this.state.showAll });
   }
 

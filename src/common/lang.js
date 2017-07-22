@@ -14,6 +14,9 @@ const lang = {
     AZUREPROJECTNAME: 'Azure Iot Suite Remote Monitoring',
     DASHBOARD: 'Dashboard',
     CONTOSO: 'Contoso'
+  },
+  TELEMETRY: {
+    OK: 'ok'
   }
 };
 export default lang;

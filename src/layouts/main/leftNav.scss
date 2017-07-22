@@ -30,6 +30,7 @@ $hover-background-color: #1b1d1f;
     &:hover {
       img {
         opacity: 1;
+        cursor: pointer;
       }
     }
   }

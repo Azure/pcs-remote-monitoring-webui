@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
-import TelemetryWidget from '../../components/telemetryWidget/telemetryWidget';
+import Telemetry from '../../components/telemetryWidget/telemetry';
 import AlarmList from '../../components/alarmList/alarmList';
 import KpiWidget from '../../components/kpiWidget/kpiWidget';
 import RegionDetails from '../../components/deviceMap/regionDetails.js';
@@ -22,6 +22,7 @@ class Dashboard extends Component {
     actions.loadMessages();
     actions.loadDevices();
     actions.loadMapkey();
+    actions.loadTelemetryByDeviceGroup();
   }
 
   render() {
@@ -59,13 +60,11 @@ class Dashboard extends Component {
             <AlarmList />
           </Col>
         </Row>
-        <Row>
-          <Col md={7}>
-            <TelemetryWidget />
-          </Col>
-        </Row>
         <Row className="widgets rowH40Percent">
-          <Col md={5}>
+          <Col md={8}>
+            <Telemetry />
+          </Col>
+          <Col md={4}>
             <KpiWidget />
           </Col>
         </Row>

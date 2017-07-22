@@ -9,3 +9,6 @@ export * from './deviceActions';
 
 // map
 export * from './mapActions';
+
+// telemetry
+export * from './telemetryActions';
