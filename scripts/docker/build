@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Note: use lowercase names for the Docker images
-DOCKER_IMAGE="azureiotpcs/remote-monitoring-webui:0.1-SNAPSHOT"
+DOCKER_IMAGE="azureiotpcs/remote-monitoring-webui"
 
 # Debug|Release
 CONFIGURATION=Release
@@ -9,6 +9,9 @@ CONFIGURATION=Release
 set -e
 APP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && cd .. && pwd )/"
 source "$APP_HOME/scripts/.functions.sh"
+
+# The version is stored in a file, to avoid hardcoding it in multiple places
+APP_VERSION=$(cat "$APP_HOME/version")
 
 compile() {
     cd $APP_HOME
@@ -30,7 +33,7 @@ build_docker_image() {
     cp scripts/docker/Dockerfile                 out/docker/
 
     cd out/docker/
-    docker build --tag "$DOCKER_IMAGE" --squash --compress --label "Tags=azure,iot,pcs,webui,react" .
+    docker build --tag "$DOCKER_IMAGE:$APP_VERSION" --squash --compress --label "Tags=azure,iot,pcs,webui,react" .
 }
 
 compile

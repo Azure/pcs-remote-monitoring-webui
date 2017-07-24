@@ -2,7 +2,7 @@
 setlocal
 
 :: Note: use lowercase names for the Docker images
-SET DOCKER_IMAGE="azureiotpcs/remote-monitoring-webui:0.1-SNAPSHOT"
+SET DOCKER_IMAGE="azureiotpcs/remote-monitoring-webui"
 
 :: Debug|Release
 SET CONFIGURATION=Release
@@ -11,6 +11,9 @@ SET CONFIGURATION=Release
 SET APP_HOME=%~dp0
 SET APP_HOME=%APP_HOME:~0,-16%
 cd %APP_HOME%
+
+:: The version is stored in a file, to avoid hardcoding it in multiple places
+set /P APP_VERSION=<%APP_HOME%/version
 
 :: Check dependencies
 docker version > NUL 2>&1
@@ -33,7 +36,7 @@ copy scripts\docker\.dockerignore               out\docker\
 copy scripts\docker\Dockerfile                  out\docker\
 
 cd out\docker\
-docker build --tag %DOCKER_IMAGE% --squash --compress --label "Tags=azure,iot,pcs,webui,react" .
+docker build --tag %DOCKER_IMAGE%:%APP_VERSION% --squash --compress --label "Tags=azure,iot,pcs,webui,react" .
 IF %ERRORLEVEL% NEQ 0 GOTO FAIL
 
 :: - - - - - - - - - - - - - -
