@@ -1,8 +1,12 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from "react";
-import { Button, FormControl } from "react-bootstrap";
+
+import {Button, FormControl} from "react-bootstrap";
+import {formatString} from "../../common/utils";
+import lang from "../../common/lang";
 import DeviceProperty from "../deviceProperty/deviceProperty";
+
 import "./deviceConfig.css";
 
 class DeviceConfig extends React.Component {
@@ -22,14 +26,14 @@ class DeviceConfig extends React.Component {
             <div className="deviceConfig">
                 <div>
                     <label>Task Name</label>
-                    <FormControl type="text" defaultValue="Change property X" />
+                    <FormControl type="text" defaultValue="Change property X"/>
                 </div>
                 <div className="marginTop20">
                     <label>Config Properties (properties.desired.config.*)</label>
                     <DeviceProperty configProperties={configProperties} />
                 </div>
                 <div className="marginTop20">
-                    <label>Caution: You are scheduling an action that will affect {deviceCount} devices.</label>
+                    <label>{formatString(lang.DEVICES.CAUTION, deviceCount)}</label>
                     <Button className="btnConfirm" onClick={() => this.onConfirm()}>Confirm</Button>
                 </div>
             </div>

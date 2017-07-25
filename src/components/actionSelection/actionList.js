@@ -5,6 +5,7 @@ import Flyout, {Body, Header} from "../../framework/flyout/flyout";
 import {ListGroup, ListGroupItem, Row} from 'react-bootstrap';
 import DeviceConfig from '../deviceConfig/deviceConfig'
 import DeviceOrganize from '../deviceOrganize/deviceOrganize'
+import DeviceSchedule from '../deviceSchedule/deviceSchedule'
 
 class ActionList extends Component {
 
@@ -46,7 +47,7 @@ class ActionList extends Component {
                     Schedule an action
                 </Header>
                 <Body>
-                    Organize my devices
+                    <DeviceSchedule devices={this.props.devices}/>
                 </Body>
             </Flyout>
         );

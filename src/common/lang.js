@@ -19,6 +19,7 @@ const lang = {
     OK: 'ok'
   },
   DEVICES: {
+    CAUTION: 'Caution: You are scheduling an action that will effect {0} devices.',
     DEVICEID: 'DeviceId',
     TYPE: 'Type',
     FIRMWAREVERSION: 'Firmware Version',

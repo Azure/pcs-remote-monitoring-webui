@@ -8,13 +8,10 @@ import Config from '../../common/config';
 
 import './alarmList.css';
 
-const DEFAULT_GRIDHEIGHT = 100;
-
 class AlarmList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gridHeight: DEFAULT_GRIDHEIGHT,
       columnDefs: this.createColumnDefs()
     };
   }
@@ -30,31 +27,6 @@ class AlarmList extends Component {
     ];
   };
 
-  static hookWindowResize() {
-    (function() {
-      let isRunning = false;
-      window.addEventListener('resize', function() {
-        if (isRunning) {
-          return;
-        }
-        isRunning = true;
-        requestAnimationFrame(function() {
-          window.dispatchEvent(new CustomEvent('layoutResize'));
-          isRunning = false;
-        });
-      });
-    })();
-  }
-
-  componentDidMount() {
-    AlarmList.hookWindowResize();
-    window.addEventListener('layoutResize', this.resize);
-    this.setState({
-      gridHeight:
-        this.refs.container.clientHeight - this.refs.dropdown.clientHeight - 10
-    });
-  }
-
   componentWillUnmount() {
     EventTopic.unsubscribe(this.tokens);
   }
@@ -62,13 +34,6 @@ class AlarmList extends Component {
   onEvent = (topic, data) => {
     this.setState({ currentFilter: data }, () => {
       this.getData(data);
-    });
-  };
-
-  resize = () => {
-    this.setState({
-      gridHeight:
-        this.refs.container.clientHeight - this.refs.dropdown.clientHeight - 10
     });
   };
 

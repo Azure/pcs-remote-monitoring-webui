@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { FormControl, Radio, Button, ControlLabel, FormGroup } from 'react-bootstrap';
+import {formatString} from "../../common/utils";
+import lang from "../../common/lang";
 
 import "./deviceSchedule.css"
 
@@ -21,6 +23,7 @@ class DeviceSchedule extends React.Component {
     }
 
     render() {
+        const deviceCount = this.props.devices && Array.isArray(this.props.devices) ? this.props.devices.length : 0;
         return (
             <div className="deviceSchedule">
                 <FormGroup>
@@ -40,7 +43,7 @@ class DeviceSchedule extends React.Component {
                     <FormControl type="datetime" />
                 </FormGroup>
                 <FormGroup>
-                    <ControlLabel>Caution: You are scheduling an action that will effect {this.state.devices.length} devices.</ControlLabel>
+                    <ControlLabel>{formatString(lang.DEVICES.CAUTION, deviceCount)}</ControlLabel>
                     <Button className="btnConfirm" onClick={() => this.onConfirm()}>Confirm</Button>
                 </FormGroup>
             </div>

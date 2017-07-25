@@ -87,9 +87,6 @@ class SearchableDataGrid extends Component {
       if (newClientHeight && props.filters) {
         newClientHeight -= 55;
       }
-      if (newClientHeight && props.pagination) {
-        newClientHeight -= 30;
-      }
       this.setState({ clientWidth: props.width || undefined });
       this.setState({ clientHeight: newClientHeight });
     }

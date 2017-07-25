@@ -2,7 +2,10 @@
 
 import React from 'react';
 import { Button } from 'react-bootstrap'
+import {formatString} from "../../common/utils";
+import lang from "../../common/lang";
 import DeviceProperty from "../deviceProperty/deviceProperty";
+
 import "./deviceOrganize.css"
 
 class DeviceOrganize extends React.Component {
@@ -26,7 +29,7 @@ class DeviceOrganize extends React.Component {
                     <DeviceProperty configProperties={configProperties} />
                 </div>
                 <div className="marginTop20">
-                    <label>Caution: You are scheduling an action that will affect {deviceCount} devices.</label>
+                    <label>{formatString(lang.DEVICES.CAUTION, deviceCount)}</label>
                     <Button className="btnConfirm" onClick={() => this.onConfirm()}>Confirm</Button>
                 </div>
             </div>
