@@ -17,6 +17,19 @@ const lang = {
   },
   TELEMETRY: {
     OK: 'ok'
+  },
+  DEVICES: {
+    DEVICEID: 'DeviceId',
+    TYPE: 'Type',
+    FIRMWAREVERSION: 'Firmware Version',
+    MANUFACTURER: 'Manufacturer',
+    MODELNUMBER: 'Model Number',
+    STATE: 'State',
+    SYNC: 'Sync',
+    DEVICEDETAIL: 'Device Detail',
+    ACTONDEVICES: 'Act on devices',
+    CHOOSEDEVICES: 'Choose devices',
+    NEWGROUP: '(new group)'
   }
 };
 export default lang;

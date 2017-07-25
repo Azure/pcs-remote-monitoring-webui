@@ -9,6 +9,8 @@ import Flyout, { Header, Body } from '../../framework/flyout/flyout';
 import DeviceDetail from '../deviceDetail/deviceDetail';
 import AddDevice from '../addDevice/addDevice';
 import ActOnDevice from '../actOnDevice/actOnDevice';
+import lang from '../../common/lang';
+
 import './deviceList.css';
 
 export default class DeviceList extends Component {
@@ -17,43 +19,38 @@ export default class DeviceList extends Component {
     this.state = {
       columnDefs: [
         {
-          headerName: 'DeviceId',
+          headerName: lang.DEVICES.DEVICEID,
           field: 'DeviceId',
           filter: 'text'
         },
         {
-          headerName: 'Type',
+          headerName: lang.DEVICES.TYPE,
           field: 'tags.deviceType',
           filter: 'text'
         },
         {
-          headerName: 'Firmware Version',
+          headerName: lang.DEVICES.FIRMWAREVERSION,
           field: 'reported.System.FirmwareVersion',
           filter: 'text'
         },
         {
-          headerName: 'Manufacturer',
+          headerName: lang.DEVICES.MANUFACTURER,
           field: 'reported.System.Manufacturer',
           filter: 'text'
         },
         {
-          headerName: 'ModelNumber',
+          headerName: lang.DEVICES.MODELNUMBER,
           field: 'reported.System.ModelNumber',
           filter: 'text'
         },
         {
-          headerName: 'State',
+          headerName: lang.DEVICES.STATE,
           field: 'tags.HubEnabledState',
           filter: 'text'
         },
         {
-          headerName: 'Location',
-          field: 'tags.location',
-          filter: 'text'
-        },
-        {
-          headerName: 'Building',
-          field: 'tags.Building',
+          headerName: lang.DEVICES.SYNC,
+          field: '',
           filter: 'text'
         }
       ]
@@ -87,10 +84,10 @@ export default class DeviceList extends Component {
               menuAlign="right"
               requestUrl={Config.deviceGroupApiUrl}
               initialState={{
-                defaultText: 'Choose devices'
+                defaultText: lang.DEVICES.CHOOSEDEVICES
               }}
               newItem={{
-                text: '(new group)',
+                text: 'lang.DEVICES.NEWGROUP',
                 dialog: 'deviceGroupEditor'
               }}
               publishTopic={Topics.dashboard.deviceGroup.selected}
@@ -100,7 +97,7 @@ export default class DeviceList extends Component {
           <div className="deviceListButton">
             <ActOnDevice
               ref="actOnDevice"
-              buttonText="Act on devices"
+              buttonText={lang.DEVICES.ACTONDEVICES}
               devices={this.state.devices}
             />
           </div>
@@ -127,7 +124,7 @@ export default class DeviceList extends Component {
           onRowDataChanged={this.onDataChanged}
         />
         <Flyout ref="flyout">
-          <Header>Device Detail</Header>
+          <Header>{lang.DEVICES.DEVICEDETAIL}</Header>
           <Body>
             <DeviceDetail />
           </Body>
