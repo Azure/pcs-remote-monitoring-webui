@@ -9,9 +9,9 @@ import Http from '../../common/httpClient';
 window.fetch = fetch;
 
 it('renders without crashing', async () => {
-  const devices = ["type1", "type2"];
+  const devices = ['type1', 'type2'];
   let loadingTask;
-  jest.spyOn(Http, "get").mockImplementationOnce(() => {
+  jest.spyOn(Http, 'get').mockImplementationOnce(() => {
     loadingTask = Promise.resolve(devices);
     return loadingTask;
   });
@@ -19,27 +19,27 @@ it('renders without crashing', async () => {
   await loadingTask;
 });
 
-
 it('submits data and the data should be matched with inputs', async () => {
-  let loadingTask;
-  jest.spyOn(Http, "get").mockImplementationOnce(() => {
-    loadingTask = Promise.resolve(["type1", "type2"]);
-    return loadingTask;
-  });
+  return await setTimeout(async () => {
+    let loadingTask;
+    jest.spyOn(Http, 'get').mockImplementationOnce(() => {
+      loadingTask = Promise.resolve(['type1', 'type2']);
+      return loadingTask;
+    });
 
-  jest.spyOn(Http, "post").mockImplementationOnce((url, data) => {
-    expect(data[0].count).toBe(10);
-    return Promise.resolve(null)
-  });
+    jest.spyOn(Http, 'post').mockImplementationOnce((url, data) => {
+      expect(data[0].count).toBe(10);
+      return Promise.resolve(null);
+    });
 
-  const wrapper = mount(<CustomDevice />);
-  await loadingTask;
-  wrapper.find('input').first().simulate('change', { target: { value: 10 } });
-  expect(wrapper.state().devices[0].count).toBe(10);
+    const wrapper = mount(<CustomDevice />);
+    await loadingTask;
+    wrapper.find('input').first().simulate('change', { target: { value: 10 } });
+    expect(wrapper.state().devices[0].count).toBe(10);
 
-  await wrapper.instance().submit();
+    await wrapper.instance().submit();
 
-  Http.get.mockRestore();
-  Http.post.mockRestore();
+    Http.get.mockRestore();
+    Http.post.mockRestore();
+  }, 10000);
 });
-

@@ -35,22 +35,22 @@ class LeftNav extends Component {
       {
         path: '#/dashboard',
         icon: DashboardIcon,
-        name: 'Dashboard'
+        name: lang.LEFTNAV.DASHBOARD
       },
       {
         path: '#/devices',
         icon: DevicesIcon,
-        name: 'Devices'
+        name: lang.LEFTNAV.DEVICES
       },
       {
         path: '#/',
         icon: RulesActionsIcon,
-        name: 'Rules & Actions'
+        name: lang.LEFTNAV.RULES_ACTIONS
       },
       {
         path: '#/',
         icon: MaintenanceIcon,
-        name: 'Maintenance'
+        name: lang.LEFTNAV.MAINTENANCE
       }
     ];
 

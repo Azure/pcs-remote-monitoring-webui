@@ -19,7 +19,8 @@ const lang = {
     OK: 'ok'
   },
   DEVICES: {
-    CAUTION: 'Caution: You are scheduling an action that will effect {0} devices.',
+    CAUTION:
+      'Caution: You are scheduling an action that will effect {0} devices.',
     DEVICEID: 'DeviceId',
     TYPE: 'Type',
     FIRMWAREVERSION: 'Firmware Version',
@@ -31,6 +32,12 @@ const lang = {
     ACTONDEVICES: 'Act on devices',
     CHOOSEDEVICES: 'Choose devices',
     NEWGROUP: '(new group)'
+  },
+  LEFTNAV: {
+    DASHBOARD: 'Dashboard',
+    DEVICES: 'Devices',
+    RULES_ACTIONS: 'Rules & Actions',
+    MAINTENANCE: 'Maintenance'
   }
 };
 export default lang;
