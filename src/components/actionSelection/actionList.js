@@ -6,6 +6,7 @@ import {ListGroup, ListGroupItem, Row} from 'react-bootstrap';
 import DeviceConfig from '../deviceConfig/deviceConfig'
 import DeviceOrganize from '../deviceOrganize/deviceOrganize'
 import DeviceSchedule from '../deviceSchedule/deviceSchedule'
+import lang from '../../common/lang'
 
 class ActionList extends Component {
 
@@ -24,7 +25,7 @@ class ActionList extends Component {
         const configflyout =(
             <Flyout ref='configflyout'>
                 <Header>
-                    Change device configuration
+                    {lang.DEVICES.CHANGEDEVICECONFIG}
                 </Header>
                 <Body>
                     <DeviceConfig devices={this.props.devices}/>
@@ -34,7 +35,7 @@ class ActionList extends Component {
         const organizeflyout =(
             <Flyout ref='organizeflyout'>
                 <Header>
-                    Organize my devices
+                    {lang.DEVICES.ORGANIZEMYDEVICE}
                 </Header>
                 <Body>
                     <DeviceOrganize devices={this.props.devices}/>
@@ -44,7 +45,7 @@ class ActionList extends Component {
         const scheduleflyout =(
             <Flyout ref='scheduleflyout'>
                 <Header>
-                    Schedule an action
+                    {lang.DEVICES.SCHEDULEANACTION}
                 </Header>
                 <Body>
                     <DeviceSchedule devices={this.props.devices}/>
@@ -55,9 +56,9 @@ class ActionList extends Component {
         return (
             <Row>
                 <ListGroup>
-                    <ListGroupItem onClick={()=>{this.openFlyout('configflyout')}}>Change device configuration</ListGroupItem>
-                    <ListGroupItem onClick={()=>{this.openFlyout('organizeflyout')}}>Organize my devices</ListGroupItem>
-                    <ListGroupItem onClick={()=>{this.openFlyout('scheduleflyout')}}>Schedule an action</ListGroupItem>
+                    <ListGroupItem onClick={()=>{this.openFlyout('configflyout')}}>{lang.DEVICES.CHANGEDEVICECONFIG}</ListGroupItem>
+                    <ListGroupItem onClick={()=>{this.openFlyout('organizeflyout')}}>{lang.DEVICES.ORGANIZEMYDEVICE}</ListGroupItem>
+                    <ListGroupItem onClick={()=>{this.openFlyout('scheduleflyout')}}>{lang.DEVICES.SCHEDULEANACTION}</ListGroupItem>
                 </ListGroup>
                 {configflyout}
                 {organizeflyout}

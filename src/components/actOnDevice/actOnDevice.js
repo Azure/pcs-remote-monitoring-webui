@@ -4,6 +4,7 @@ import React, {Component} from "react";
 import Flyout, {Body, Header} from "../../framework/flyout/flyout";
 import {Button} from 'react-bootstrap';
 import ActionList from "../actionSelection/actionList";
+import lang from "../../common/lang";
 
 class ActOnDevice extends Component {
 
@@ -15,7 +16,7 @@ class ActOnDevice extends Component {
         const flyout =(
             <Flyout ref='flyout'>
                 <Header>
-                    Provision devices
+                    {lang.DEVICES.ACTONDEVICES}
                 </Header>
                 <Body>
                     <ActionList devices={this.props.devices}/>
