@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft. All rights reserved.
+
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
@@ -11,6 +13,22 @@ const telemetryMap = [
   'Water level',
   'Movement'
 ];
+
+const loadTelemetryChartData = () => {
+  // TODO remove mock data
+  const columns = [
+    ['x', '2015-12-29', '2015-12-30', '2015-12-31'],
+    [`Elevator1`, 230, 300, 330],
+    [`Elevator2`, 190, 230, 200],
+    [`Elevator3`, 90, 130, 180]
+  ].map(arr =>
+    arr.map(e => (typeof e === 'number' ? Math.floor(Math.random() * e) : e))
+  );
+  return {
+    x: 'x',
+    columns
+  };
+};
 
 const validTelemetryType = telemetry =>
   telemetryMap.map(e => e.toUpperCase()).includes(telemetry.toUpperCase());
@@ -26,49 +44,41 @@ const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
     case types.SELECT_TELEMETRY_TYPE:
       let newOptions = Object.assign({}, state.radioBtnOptions);
       Object.keys(newOptions).forEach(key => {
-        if (action.key === key) {
-          newOptions[key].selected = true;
-        } else {
-          newOptions[key].selected = false;
-          newOptions[key].subMenu = false;
-        }
+        action.key === key
+          ? (newOptions[key].selected = true)
+          : (newOptions[key].selected = false);
       });
+      // TODO remove mock data
+      const data = loadTelemetryChartData();
       return {
         ...state,
-        radioBtnOptions: newOptions
-      };
-
-    case types.TOGGLE_TELEMETRY_TYPE_SUBMENU:
-      let nextOptions = Object.assign({}, state.radioBtnOptions);
-      Object.keys(nextOptions).forEach(key => {
-        if (action.key === key) {
-          nextOptions[key].subMenu = !nextOptions[key].subMenu;
-        } else {
-          nextOptions[key].subMenu = false;
+        radioBtnOptions: newOptions,
+        timeline: {
+          ...state.timeline,
+          chartConfig: {
+            ...state.timeline.chartConfig,
+            data
+          }
         }
-      });
-      return {
-        ...state
       };
 
     case types.LOAD_TELEMETRY_BY_DEVICEGROUP_SUCCESS:
       let radioBtnOptions = {};
       action.data.forEach(item => {
-        console.log(item);
         if (item.Body) {
           Object.keys(item.Body).forEach(telemetry => {
             if (validTelemetryType(telemetry)) {
               if (!radioBtnOptions[telemetry]) {
                 radioBtnOptions[telemetry] = {
                   selected: false,
-                  subMenu: false,
                   options: []
                 };
               }
               const option = {
                 DeviceId: item.DeviceId,
                 Time: item.Time,
-                telemetry
+                telemetry,
+                value: item.Body[telemetry]
               };
               radioBtnOptions[telemetry].options.push(option);
             }
@@ -80,10 +90,19 @@ const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
           radioBtnOptions[key].selected = true;
         }
       });
+      // TODO: remove mock data
+      const chartData = loadTelemetryChartData();
       return {
         ...state,
         telemetryByDeviceGroup: action.data,
-        radioBtnOptions
+        radioBtnOptions,
+        timeline: {
+          ...state.timeline,
+          chartConfig: {
+            ...state.timeline.chartConfig,
+            data: chartData
+          }
+        }
       };
 
     default:

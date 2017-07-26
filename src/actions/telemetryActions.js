@@ -23,13 +23,6 @@ export const selectTelemetryType = key => {
   };
 };
 
-export const toggleTelemetrySubMenu = key => {
-  return {
-    type: types.TOGGLE_TELEMETRY_TYPE_SUBMENU,
-    key
-  };
-};
-
 export const loadTelemetryTypes = () => {
   return dispatch => {
     return MockApi.getTelemetryTypes()

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft. All rights reserved.
+
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
@@ -19,6 +21,6 @@ const flyoutReducer = (state = initialState.flyout, action) => {
     default:
       return state;
   }
-}
+};
 
 export default flyoutReducer;

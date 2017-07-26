@@ -7,8 +7,12 @@ $hover-background-color: #1b1d1f;
   flex-shrink: 1;
   background-color: $primary-dark;
   color: $primary-color;
-
   padding-top: 10px;
+
+  .sidebar {
+    width: 150px;
+  }
+
   .nav > li > a:hover,
   .nav > li > a:focus {
     color: $hover-color !important;

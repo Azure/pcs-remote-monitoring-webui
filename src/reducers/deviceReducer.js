@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft. All rights reserved.
+
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 

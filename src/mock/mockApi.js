@@ -1,7 +1,7 @@
 import Http from '../common/httpClient';
 import Config from '../common/config';
 import telemetry from './telemetry';
-console.log('tele =>', telemetry);
+
 const messages = [
   {
     DeviceId: 'Elevator1',
