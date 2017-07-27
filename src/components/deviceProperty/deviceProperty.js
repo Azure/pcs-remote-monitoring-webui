@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { FormControl } from "react-bootstrap";
+import lang from '../../common/lang';
+
 import del from "./delete.svg";
 import add from "./add_black.svg";
 import "./deviceProperty.css";
@@ -55,9 +57,9 @@ export default class DeviceProperty extends React.Component {
             <table className="deviceProperty">
                 <thead>
                     <tr>
-                        <td>Name</td>
-                        <td>Value</td>
-                        <td>Type</td>
+                        <td>{lang.DEVICES.PROPERTYNAME}</td>
+                        <td>{lang.DEVICES.PROPERTYVALUE}</td>
+                        <td>{lang.DEVICES.PROPERTYTYPE}</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,11 +76,11 @@ export default class DeviceProperty extends React.Component {
                                     </FormControl>
 
                                 </td>
-                                <td><span className="operation" title="Remove" onClick={() => this.onDelete(i)}><img alt="Remove" src={del} /></span></td>
+                                <td><span className="operation" title={lang.DEVICES.DELETE} onClick={() => this.onDelete(i)}><img alt={lang.DEVICES.DELETE} src={del} /></span></td>
                             </tr>
                         )
                     }
-                    <tr><td></td><td></td><td></td><td><span className="operation" title="Add" onClick={() => this.onAdd()}><img alt="Add" src={add} /></span></td></tr>
+                    <tr><td></td><td></td><td></td><td><span className="operation" title={lang.DEVICES.ADD} onClick={() => this.onAdd()}><img alt={lang.DEVICES.ADD} src={add} /></span></td></tr>
                 </tbody>
             </table>
         );

@@ -2,8 +2,8 @@
 
 import React from "react";
 
-import {Button, FormControl} from "react-bootstrap";
-import {formatString} from "../../common/utils";
+import { Button, FormControl } from "react-bootstrap";
+import { formatString } from "../../common/utils";
 import lang from "../../common/lang";
 import DeviceProperty from "../deviceProperty/deviceProperty";
 
@@ -25,16 +25,16 @@ class DeviceConfig extends React.Component {
         return (
             <div className="deviceConfig">
                 <div>
-                    <label>Task Name</label>
-                    <FormControl type="text" defaultValue="Change property X"/>
+                    <label>{lang.DEVICES.TASKNAME}</label>
+                    <FormControl type="text" defaultValue="Change property X" />
                 </div>
                 <div className="marginTop20">
-                    <label>Config Properties (properties.desired.config.*)</label>
+                    <label>{lang.DEVICES.CONFIGPROPERTIES}</label>
                     <DeviceProperty configProperties={configProperties} />
                 </div>
                 <div className="marginTop20">
                     <label>{formatString(lang.DEVICES.CAUTION, deviceCount)}</label>
-                    <Button className="btnConfirm" onClick={() => this.onConfirm()}>Confirm</Button>
+                    <Button className="btnConfirm" onClick={() => this.onConfirm()}>{lang.DEVICES.CONFIRM}</Button>
                 </div>
             </div>
         );

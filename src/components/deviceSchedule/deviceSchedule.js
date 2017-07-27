@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { FormControl, Radio, Button, ControlLabel, FormGroup } from 'react-bootstrap';
-import {formatString} from "../../common/utils";
+import { formatString } from "../../common/utils";
 import lang from "../../common/lang";
 
 import "./deviceSchedule.css"
@@ -27,7 +27,7 @@ class DeviceSchedule extends React.Component {
         return (
             <div className="deviceSchedule">
                 <FormGroup>
-                    <ControlLabel>Available actions</ControlLabel>
+                    <ControlLabel>{lang.DEVICES.AVAILABLEACTIONS}</ControlLabel>
                     <FormControl componentClass="select">
                         {
                             this.methods.map((method) =>
@@ -37,14 +37,14 @@ class DeviceSchedule extends React.Component {
                     </FormControl>
                 </FormGroup>
                 <FormGroup>
-                    <ControlLabel>Select timeline</ControlLabel>
-                    <Radio name="timeOption" >Now</Radio>
-                    <Radio name="timeOption">Time window</Radio>
+                    <ControlLabel>{lang.DEVICES.SELECTTIMELINE}</ControlLabel>
+                    <Radio name="timeOption" >{lang.DEVICES.NOW}</Radio>
+                    <Radio name="timeOption">{lang.DEVICES.TIMEWINDOW}</Radio>
                     <FormControl type="datetime" />
                 </FormGroup>
                 <FormGroup>
                     <ControlLabel>{formatString(lang.DEVICES.CAUTION, deviceCount)}</ControlLabel>
-                    <Button className="btnConfirm" onClick={() => this.onConfirm()}>Confirm</Button>
+                    <Button className="btnConfirm" onClick={() => this.onConfirm()}>{lang.DEVICES.CONFIRM}</Button>
                 </FormGroup>
             </div>
         );

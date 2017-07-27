@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Button } from 'react-bootstrap'
-import {formatString} from "../../common/utils";
+import { formatString } from "../../common/utils";
 import lang from "../../common/lang";
 import DeviceProperty from "../deviceProperty/deviceProperty";
 
@@ -30,7 +30,7 @@ class DeviceOrganize extends React.Component {
                 </div>
                 <div className="marginTop20">
                     <label>{formatString(lang.DEVICES.CAUTION, deviceCount)}</label>
-                    <Button className="btnConfirm" onClick={() => this.onConfirm()}>Confirm</Button>
+                    <Button className="btnConfirm" onClick={() => this.onConfirm()}>{lang.DEVICES.CONFIRM}</Button>
                 </div>
             </div>
         );

@@ -4,6 +4,8 @@ import React from 'react';
 import Config from '../../common/config';
 import Http from '../../common/httpClient';
 import { DropdownButton, MenuItem, FormGroup, ButtonGroup, Button, FormControl, Checkbox } from 'react-bootstrap';
+import lang from '../../common/lang';
+
 import './deviceProvisioningWorkflow.css';
 
 
@@ -93,7 +95,7 @@ class DeviceProvisioningWorkflow extends React.Component {
     renderSimulatedSection() {
         return (
             <div style={{ display: this.state.simulatedDevice ? "block" : "none" }}>
-                <h5>Device Types<br />Select an existing device type</h5>
+                <h5>{lang.DEVICES.DEVICETYPES}<br />{lang.DEVICES.SELECTTYPE}</h5>
                 <DropdownButton id="dgDeviceTypes" disabled={this.state.simulatedTypes.length === 0} title={this.state.selectedSimulatedType || "Chiller device type"}>
                     {this.state.simulatedTypes.map((t) => {
                         return <MenuItem eventKey={t} onSelect={this.onClickSimulatedType}>{t}</MenuItem>
@@ -106,40 +108,40 @@ class DeviceProvisioningWorkflow extends React.Component {
     renderPhysicalSection() {
         return (
             <div style={{ display: this.state.simulatedDevice ? "none" : "block" }} >
-                <h5>Authentication type</h5>
+                <h5>{lang.DEVICES.AUTHENTICATIONTYPE}</h5>
                 <FormGroup>
                     <ButtonGroup>
                         <Button active={this.state.authenticationType === "symmetricKey" ? true : false}
-                            onClick={this.onClickSymmetricKey}>Symmetric Key</Button>
+                            onClick={this.onClickSymmetricKey}>{lang.DEVICES.SYMMETRICKEY}</Button>
                         <Button active={this.state.authenticationType === "X509" ? true : false}
-                            onClick={this.onClickX509}>X.509</Button>
+                            onClick={this.onClickX509}>{lang.DEVICES.X509}</Button>
                     </ButtonGroup>
                 </FormGroup>
 
                 <div style={{ display: this.state.authenticationType === "symmetricKey" ? "block" : "none" }} >
-                    <h5>Primary Key</h5>
+                    <h5>{lang.DEVICES.PRIMARYKEY}</h5>
                     <FormGroup>
                         <FormControl type="text" id="edtPrimaryKey" disabled={this.state.generateDeviceKey} />
                     </FormGroup>
 
-                    <h5>Secondary Key</h5>
+                    <h5>{lang.DEVICES.SECONDARYKEY}</h5>
                     <FormGroup>
                         <FormControl type="text" id="edtSecondaryKey" disabled={this.state.generateDeviceKey} />
                     </FormGroup>
 
                     <FormGroup>
                         <Checkbox inline defaultChecked={this.state.generateDeviceKey} onClick={this.onClickGenerateDeviceKey}>
-                            Auto Generate Keys
+                            {lang.DEVICES.AUTOGENERATEKEYS}
                         </Checkbox>
                     </FormGroup>
                 </div>
 
                 <div style={{ display: this.state.authenticationType === "X509" ? "block" : "none" }}>
-                    <h5>Primary thumbprint</h5>
+                    <h5> {lang.DEVICES.PRIMARYTHUMBPRINT}</h5>
                     <FormGroup>
                         <FormControl type="text" id="edtPrimaryThumbprint" />
                     </FormGroup>
-                    <h5>Secondary thumbprint</h5>
+                    <h5>{lang.DEVICES.SENCONDARYTHUMBPRINT}</h5>
                     <FormGroup>
                         <FormControl type="text" id="edtSecondaryThumbprint" />
                     </FormGroup>
@@ -153,24 +155,24 @@ class DeviceProvisioningWorkflow extends React.Component {
             <div style={{ display: this.state.provisionMethod === "manual" ? "block" : "none" }}>
                 <FormGroup>
                     <Checkbox inline defaultChecked={this.state.simulatedDevice} onClick={this.onClickSimulatedDevice}>
-                        Simulated devices(s)
-                         </Checkbox>
+                        {lang.DEVICES.SIMULATEDDEVICES}
+                    </Checkbox>
                 </FormGroup>
 
                 <FormGroup style={{ display: this.state.simulatedDevice ? "block" : "none" }}>
-                    <h5>Number of devices</h5>
+                    <h5> {lang.DEVICES.NUMBEROFDEVICES}</h5>
                     <FormControl type="text" id="edtTotalDevices" />
                 </FormGroup>
 
-                <h5>Device ID</h5>
+                <h5>{lang.DEVICES.NEWDEVICEID}</h5>
                 <FormGroup>
                     <FormControl type="text" id="edtDeviceID" disabled={this.state.generateDeviceId} />
                 </FormGroup>
 
                 <FormGroup>
                     <Checkbox inline defaultChecked={this.state.generateDeviceId} onClick={this.onClickGenerateDeviceId} >
-                        Generate an ID for me
-                         </Checkbox>
+                        {lang.DEVICES.GENERATEDEVICEID}
+                    </Checkbox>
                 </FormGroup>
 
                 {this.renderSimulatedSection()}
@@ -184,58 +186,58 @@ class DeviceProvisioningWorkflow extends React.Component {
         return (
             <div style={{ display: this.state.provisionMethod === "automatic" ? "block" : "none" }}>
                 <FormGroup>
-                    <h5>DPS Tenant</h5>
+                    <h5> {lang.DEVICES.DPSTENANT} </h5>
                     <DropdownButton title="New Tenant" id="dgTenant">
-                        <MenuItem eventKey="New Tenant">New Tenant</MenuItem>
+                        <MenuItem eventKey="New Tenant">{lang.DEVICES.NEWTENANT}</MenuItem>
                     </DropdownButton>
                 </FormGroup>
 
-                <h5>Enrollment</h5>
+                <h5>{lang.DEVICES.ENROLLMENT}</h5>
                 <FormGroup>
                     <ButtonGroup>
                         <Button active={this.state.enrollment === "individual" ? true : false}
-                            onClick={this.onClickIndividual}>Individual</Button>
+                            onClick={this.onClickIndividual}>{lang.DEVICES.INDIVIDUAL}</Button>
                         <Button active={this.state.enrollment === "group" ? true : false}
-                            onClick={this.onClickGroup}>  Group</Button>
+                            onClick={this.onClickGroup}>{lang.DEVICES.GROUP}  </Button>
                     </ButtonGroup>
                 </FormGroup>
 
                 <div style={{ display: this.state.enrollment === "individual" ? "block" : "none" }}>
                     <FormGroup>
-                        <h5>Device ID</h5>
+                        <h5>{lang.DEVICES.NEWDEVICEID}</h5>
                         <FormControl type="text" id="edtDPSDeviceID" />
                     </FormGroup>
                 </div>
 
                 <div style={{ display: this.state.enrollment === "group" ? "block" : "none" }}>
-                    <h5>Group Name</h5>
+                    <h5>{lang.DEVICES.GROUPNAME}</h5>
                     <FormGroup>
                         <FormControl type="text" id="edtDPSGroupName" />
                     </FormGroup>
 
-                    <h5>Secure storage type</h5>
+                    <h5>{lang.DEVICES.SECURESTORAGETYPE}</h5>
                     <FormGroup>
                         <FormControl type="text" id="edtDPSStorageType" />
                     </FormGroup>
 
-                    <h5>Relevant storage info</h5>
+                    <h5>{lang.DEVICES.RELEVANTSTORAGEINFO}</h5>
                     <FormGroup>
                         <FormControl type="text" id="edtDPSStorageInfo" />
                     </FormGroup>
                 </div>
 
-                <h5>Device configuration</h5>
+                <h5>{lang.DEVICES.DEVICECONFIGURATION}</h5>
                 <FormGroup>
                     <FormControl type="text" id="edtDPSDeviceConfiguration" />
                 </FormGroup>
 
-                <h5>Device organization</h5>
+                <h5>{lang.DEVICES.DEVICEORGANIZATION}</h5>
                 <FormGroup>
                     <FormControl type="text" id="edtDPSDeviceOrganization" />
                 </FormGroup>
 
                 <div style={{ display: this.state.enrollment === "group" ? "block" : "none" }}>
-                    <h5>Number of devices</h5>
+                    <h5>{lang.DEVICES.DEVICENUMBER}</h5>
                     <FormGroup>
                         <FormControl type="text" id="edtDPSTotalDevices" />
                     </FormGroup>
@@ -248,9 +250,9 @@ class DeviceProvisioningWorkflow extends React.Component {
         return (
             <div style={{ margin: "5px" }}>
                 <div>
-                    <h5 style={{ marginBottom: "2ex" }}>Select your provisioning method</h5>
-                    <Button style={{ width: "40%" }} onClick={this.onClickManual}>Manual</Button>
-                    <Button style={{ width: "40%", float: "right" }} onClick={this.onClickAutomatic}>Automatic</Button>
+                    <h5 style={{ marginBottom: "2ex" }}>{lang.DEVICES.SELECTMETHOD} </h5>
+                    <Button style={{ width: "40%" }} onClick={this.onClickManual}>{lang.DEVICES.MANUAL}</Button>
+                    <Button style={{ width: "40%", float: "right" }} onClick={this.onClickAutomatic}>{lang.DEVICES.AUTOMATIC}</Button>
                 </div>
 
                 {this.renderManualSection()}
@@ -259,7 +261,7 @@ class DeviceProvisioningWorkflow extends React.Component {
 
                 <div style={{ display: (this.state.provisionMethod === "manual" || this.state.provisionMethod === "automatic") ? "block" : "none" }}>
                     <Button style={{ float: "right" }} onClick={this.onClickCreateDevice}
-                        disabled={!this.isValid()}> Create device</Button>
+                        disabled={!this.isValid()}>{lang.DEVICES.CREATEDEVICE} </Button>
                 </div>
             </div>
         );

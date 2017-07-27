@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import Flyout, { Header, Body } from '../../framework/flyout/flyout';
 import { Button } from 'react-bootstrap';
 import DeviceProvisioningWorkflow from '../deviceProvisioningWorkflow/deviceProvisioningWorkflow';
+import lang from '../../common/lang';
 
 class AddDevice extends Component {
     onClick = () => {
@@ -18,10 +19,10 @@ class AddDevice extends Component {
     render() {
         return (
             <div className="addDevice">
-                <Button style={{ width: '10em' }} onClick={this.onClick}>Add Devices</Button>
+                <Button style={{ width: '10em' }} onClick={this.onClick}>{lang.DEVICES.ADDDEVICES}</Button>
                 <Flyout ref='flyout'>
                     <Header>
-                        Provision devices
+                        {lang.DEVICES.PROVISIONDEVICES}
                     </Header>
                     <Body>
                         <DeviceProvisioningWorkflow finishCallback={this.addDeviceCallback} />
