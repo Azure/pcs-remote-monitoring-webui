@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Config from '../../common/config';
 import EventTopic, { Topics } from "../../common/eventtopic";
 import Flyout, { Header, Body } from '../../framework/flyout/flyout';
 import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
