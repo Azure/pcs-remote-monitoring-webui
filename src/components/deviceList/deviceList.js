@@ -10,6 +10,7 @@ import DeviceDetail from '../deviceDetail/deviceDetail';
 import AddDevice from '../addDevice/addDevice';
 import ActOnDevice from '../actOnDevice/actOnDevice';
 import lang from '../../common/lang';
+import Http from '../../common/httpClient';
 
 import './deviceList.css';
 
@@ -20,38 +21,46 @@ export default class DeviceList extends Component {
       columnDefs: [
         {
           headerName: lang.DEVICES.DEVICEID,
-          field: 'DeviceId',
+          field: 'Id',
           filter: 'text'
         },
         {
           headerName: lang.DEVICES.TYPE,
-          field: 'tags.deviceType',
+          field: 'Twin.tags.deviceType',
           filter: 'text'
         },
         {
           headerName: lang.DEVICES.FIRMWAREVERSION,
-          field: 'reported.System.FirmwareVersion',
+          field: 'Twin.reportedProperties.System.FirmwareVersion',
           filter: 'text'
         },
         {
           headerName: lang.DEVICES.MANUFACTURER,
-          field: 'reported.System.Manufacturer',
+          field: 'Twin.reportedProperties.System.Manufacturer',
           filter: 'text'
         },
         {
           headerName: lang.DEVICES.MODELNUMBER,
-          field: 'reported.System.ModelNumber',
+          field: 'Twin.reportedProperties.System.ModelNumber',
           filter: 'text'
         },
         {
           headerName: lang.DEVICES.STATE,
-          field: 'tags.HubEnabledState',
-          filter: 'text'
+          field: 'Connected',
+          filter: 'text',
+          valueFormatter: (params) => {
+            return params.value ? lang.DEVICES.CONNECTED : lang.DEVICES.DISCONNECTED;
+          }
+        },
+        {
+          headerName: lang.DEVICES.ENABLED,
+          field: 'Enabled',
+          filter: 'boolean'
         },
         {
           headerName: lang.DEVICES.SYNC,
           field: '',
-          filter: 'text'
+          filter: 'boolean'
         }
       ]
     };
@@ -74,6 +83,16 @@ export default class DeviceList extends Component {
     });
   };
 
+  getData = async (filter, callback) => {
+    // TODO: wait for the global filter to be checked in and get selected device group from props
+    // TODO: Pass conditions to api
+    const url = `${Config.iotHubManagerApiUrl}devices`;
+    
+    Http.get(url).then(data => {
+      callback(data.items);
+    });
+  };
+
   render() {
     return (
       <div ref="container" className="deviceListContainer">
@@ -87,7 +106,7 @@ export default class DeviceList extends Component {
                 defaultText: lang.DEVICES.CHOOSEDEVICES
               }}
               newItem={{
-                text: 'lang.DEVICES.NEWGROUP',
+                text: lang.DEVICES.NEWGROUP,
                 dialog: 'deviceGroupEditor'
               }}
               publishTopic={Topics.dashboard.deviceGroup.selected}
@@ -107,7 +126,7 @@ export default class DeviceList extends Component {
         </div>
         <SearchableDataGrid
           ref="grid"
-          datasource={`${Config.solutionApiUrl}api/v1/devicegroups/{group}/devices/flattentwin`}
+          getData={this.getData}
           multiSelect={true}
           title=""
           showLastUpdate={true}
@@ -117,7 +136,7 @@ export default class DeviceList extends Component {
           autoLoad={true}
           topics={[Topics.dashboard.deviceGroup.selected]}
           columnDefs={this.state.columnDefs}
-          suppressFieldDotNotation={true}
+          pagination={false}
           onRowSelectionChanged={this.onRowSelectionChanged}
           onRowClicked={this.onRowClick}
           onGridReady={this.onDataChanged}

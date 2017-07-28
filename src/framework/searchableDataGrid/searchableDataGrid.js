@@ -135,20 +135,22 @@ class SearchableDataGrid extends Component {
 
   filterRows = event => {
     let filterdRows = this.state.originalRows.filter(row => {
-      for (let key in row) {
-        if (
-          row[key]
-            .toString()
-            .toLowerCase()
-            .indexOf(event.target.value.toLowerCase()) >= 0
-        ) {
-          return true;
-        }
-      }
-      return false;
+      return this.contains(row, event.target.value.toString().toLowerCase());
     });
     this.setState({ rows: filterdRows });
   };
+
+  contains (obj, value) {
+    return Object.keys(obj).some(key => {
+      const p = obj[key];
+      if(typeof p === "object") {
+        return this.contains(p, value);
+      }
+      else {
+        return p != null && p.toString().toLowerCase().indexOf(value) >= 0;
+      }
+    });
+  }
 
   onEvent = (topic, data) => {
     this.setState({ currentFilter: data }, () => {
@@ -165,7 +167,16 @@ class SearchableDataGrid extends Component {
   }
 
   getData = filter => {
-    if (this.state.datasource && this.state.datasource.length) {
+    if (isFunction(this.props.getData)) {
+      this.props.getData(filter, data => {
+        this.setState({
+            originalRows: data,
+            rows: data,
+            lastupdate: new Date()
+          });
+      });
+    }
+    else if (this.state.datasource && this.state.datasource.length) {
       let normalizedUrl;
 
       if (isFunction(this.state.datasource)) {
@@ -285,11 +296,6 @@ class SearchableDataGrid extends Component {
           suppressRowClickSelection={!!this.props.multiSelect}
           onSelectionChanged={this.onRowSelectionChanged}
           onRowClicked={this.onRowClicked}
-          suppressFieldDotNotation={
-            typeof this.props.suppressFieldDotNotation === 'undefined'
-              ? true
-              : this.props.suppressFieldDotNotation
-          }
         />
       </div>
     );

@@ -1,12 +1,11 @@
 
 import React from 'react';
-import Config from '../../common/config';
 import EventTopic, { Topics } from "../../common/eventtopic";
-import Http from '../../common/httpClient';
 import Flyout, { Header, Body } from '../../framework/flyout/flyout';
 import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
 import JsonViewer from '../jsonViewer/jsonViewer';
 import CurveChart from '../curveChart/curveChart';
+import lang from '../../common/lang';
 
 import './deviceDetail.css';
 
@@ -15,7 +14,7 @@ class DeviceDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            twin: props.twin || [],
+            twin: props.twin || null,
             maxNumberOfProperties: props.maxNumberOfProperties || 10
         };
         this.subscriptions = [];
@@ -23,7 +22,7 @@ class DeviceDetail extends React.Component {
 
     componentDidMount() {
         this.subscriptions.push(EventTopic.subscribe(Topics.device.selected, (topic, data, publisher) => {
-            this.setState({ twin: data });
+            this.setState({ twin: data.Twin });
         }));
     }
 
@@ -33,38 +32,47 @@ class DeviceDetail extends React.Component {
 
     onViewRawTwin = () => {
         this.refs.jsonEditorFlyout.show();
-        Http.get(Config.iotHubManagerApiUrl + "/api/v1/rawtwin/" + this.state.twin.DeviceId)
-            .then(function(data) {
-                EventTopic.publish(Topics.device.twin.opened, data, this);
-            });
+        EventTopic.publish(Topics.device.twin.opened, this.state.twin, this);
     }
 
     onDiagnostics = () => {
-        EventTopic.publish(Topics.device.diagnose, {deviceId: this.state.twin.DeviceId}, this)
+        EventTopic.publish(Topics.device.diagnose, {deviceId: this.state.twin.deviceId}, this)
         this.refs.diagnosticFlyout.show();
     }
 
     render() {
         const twin = this.state.twin;
-        const methodPrefix = /^reported\.SupportedMethods\.([^-]*)(--.*)?$/;
-        const methods = Object.keys(twin)
-            .filter(m => methodPrefix.test(m))
-            .map(m => {
-                return (
-                    <li key={m}>{m.match(methodPrefix)[1]}</li>
-                )
-            });
-        const properties = Object.keys(twin).filter(p => !methodPrefix.test(p))
-            .slice(0, this.state.maxNumberOfProperties)
-            .map(p =>
-                <tr key={p}><td><span title={p}>{p}</span></td><td title={twin[p]} style={{ padding: "4px" }}>{twin[p]}</td></tr>
-            );
+        let deviceId, methods, properties;
 
+        if (twin) {
+            const methodPrefix = /^([^-]*)(--.*)?$/;
+            deviceId = twin.DeviceId;
+            methods =  twin.reportedProperties.SupportedMethods ?
+                Object.keys(twin.reportedProperties.SupportedMethods)
+                .map(m => {
+                    return (
+                        <li key={m}>{m.match(methodPrefix)[1]}</li>
+                    )
+                }) : null;
+            const propertyDefs = [
+                {
+                    text: lang.DEVICES.FIRMWAREVERSION,
+                    value: twin.reportedProperties.System ? twin.reportedProperties.System.FirmwareVersion : null
+                },
+                {
+                    text: lang.DEVICES.MANUFACTURER,
+                    value: twin.reportedProperties.System ? twin.reportedProperties.System.Manufacturer : null
+                }
+            ];
+            properties = propertyDefs.map(p =>
+                    <tr key={p.text}><td><span title={p.text}>{p.text}</span></td><td title={p.value} style={{ padding: "4px" }}>{p.value}</td></tr>
+                );
+        }
         return (
             <div className="deviceDetailTile">
                 <div>
                     <label>
-                        {this.state.twin.DeviceId}
+                        {deviceId}
                     </label>
                 </div>
                 <div className="deviceDetailType">

@@ -47,7 +47,7 @@ class CurveChart extends Component {
     }
 
     updateTelemetryByDeviceId(data) {
-        let deviceId = data.DeviceId;
+        let deviceId = data.Id;
         if (deviceId) {
             var url = `${Config.solutionApiUrl}api/v1/telemetry/device/`;
             this.CurveChartGraph.update(url, deviceId);
