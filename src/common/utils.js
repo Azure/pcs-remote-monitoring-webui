@@ -19,18 +19,44 @@ export function debounce(fn, delay) {
 export function formatString(input, ...values) {
     const matchs = /{\d}/g.exec(input);
 
-    if (!matchs){
+    if (!matchs) {
         return input;
     }
 
     for (let i = 0; i < values.length; i++) {
-        let regex = new RegExp(`{[${i}]}`,'g');
+        let regex = new RegExp(`{[${i}]}`, 'g');
         input = input.replace(regex, values[i]);
     }
     return input;
 }
 
+export function formatDate(date) {
+    if (!date){
+        date = new Date();
+    }
+    if (typeof date === 'string' || typeof  date === 'number'){
+        date = new Date(date);
+    }
+    if (date instanceof Date) {
+        return `${date.getMonth()+1}-${date.getDate()}-${date.getFullYear()}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`;
+    }
+}
+
+export function getRandomString(length) {
+    let template = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    length = length || 10;
+    let retVal = '';
+    for (let i = 0; i < length; i++) {
+        let rnd = Math.floor(Math.random() * 61);
+        retVal = retVal.concat(template[rnd]);
+    }
+    return retVal
+}
+
 export default {
     isFunction,
-    debounce
+    debounce,
+    formatDate,
+    formatString,
+    getRandomString
 }

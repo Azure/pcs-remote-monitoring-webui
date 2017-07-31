@@ -80,6 +80,7 @@ const lang = {
     CHANGEDEVICECONFIG: 'Change device configuration',
     ORGANIZEMYDEVICE: 'Organize my devices',
     SCHEDULEANACTION: 'Schedule an action',
+    CHANGEPROPERTYX: 'ChangepropertyX',
     LASTACTIVITYTIME: 'Last activity time',
     LASTSTATUSUPDATEDTIME: 'Last status updated time'
   },

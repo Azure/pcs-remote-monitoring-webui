@@ -21,6 +21,13 @@ class ActionList extends Component {
         }
     };
 
+
+    closeFlyout = (name) => {
+        if (this.refs[name]){
+            this.refs[name].hide();
+        }
+    };
+
     render() {
         const configflyout =(
             <Flyout ref='configflyout'>
@@ -28,7 +35,9 @@ class ActionList extends Component {
                     {lang.DEVICES.CHANGEDEVICECONFIG}
                 </Header>
                 <Body>
-                    <DeviceConfig devices={this.props.devices}/>
+                    <DeviceConfig
+                        devices={this.props.devices}
+                        finishCallback={this.closeFlyout.bind(this,'configflyout')}/>
                 </Body>
             </Flyout>
         );
@@ -38,7 +47,9 @@ class ActionList extends Component {
                     {lang.DEVICES.ORGANIZEMYDEVICE}
                 </Header>
                 <Body>
-                    <DeviceOrganize devices={this.props.devices}/>
+                    <DeviceOrganize
+                        devices={this.props.devices}
+                        finishCallback={this.closeFlyout.bind(this,'organizeflyout')}/>
                 </Body>
             </Flyout>
         );
@@ -48,7 +59,9 @@ class ActionList extends Component {
                     {lang.DEVICES.SCHEDULEANACTION}
                 </Header>
                 <Body>
-                    <DeviceSchedule devices={this.props.devices}/>
+                    <DeviceSchedule
+                        devices={this.props.devices}
+                        finishCallback={this.closeFlyout.bind(this,'scheduleflyout')}/>
                 </Body>
             </Flyout>
         );
