@@ -1,6 +1,5 @@
 
 import React from 'react';
-import Config from '../../common/config';
 import EventTopic, { Topics } from "../../common/eventtopic";
 import Flyout, { Header, Body } from '../../framework/flyout/flyout';
 import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
@@ -23,7 +22,15 @@ class DeviceDetail extends React.Component {
 
     componentDidMount() {
         this.subscriptions.push(EventTopic.subscribe(Topics.device.selected, (topic, data, publisher) => {
-            this.setState({ twin: data.Twin });
+            this.setState({
+                twin: data.Twin,
+                diagnostics: [
+                    { Key: lang.DEVICES.CONNECTED, Value: data.Connected },
+                    { Key: lang.DEVICES.ENABLED, Value: data.Enabled },
+                    { Key: lang.DEVICES.LASTACTIVITYTIME, Value: data.LastActivity },
+                    { Key: lang.DEVICES.LASTSTATUSUPDATEDTIME, Value: data.LastStatusUpdated }
+                ]
+            });
         }));
     }
 
@@ -33,11 +40,9 @@ class DeviceDetail extends React.Component {
 
     onViewRawTwin = () => {
         this.refs.jsonEditorFlyout.show();
-        EventTopic.publish(Topics.device.twin.opened, this.state.twin, this);
     }
 
     onDiagnostics = () => {
-        EventTopic.publish(Topics.device.diagnose, {deviceId: this.state.twin.deviceId}, this)
         this.refs.diagnosticFlyout.show();
     }
 
@@ -48,13 +53,13 @@ class DeviceDetail extends React.Component {
         if (twin) {
             const methodPrefix = /^([^-]*)(--.*)?$/;
             deviceId = twin.DeviceId;
-            methods =  twin.reportedProperties.SupportedMethods ?
+            methods = twin.reportedProperties.SupportedMethods ?
                 Object.keys(twin.reportedProperties.SupportedMethods)
-                .map(m => {
-                    return (
-                        <li key={m}>{m.match(methodPrefix)[1]}</li>
-                    )
-                }) : null;
+                    .map(m => {
+                        return (
+                            <li key={m}>{m.match(methodPrefix)[1]}</li>
+                        )
+                    }) : null;
             const propertyDefs = [
                 {
                     text: lang.DEVICES.FIRMWAREVERSION,
@@ -66,8 +71,8 @@ class DeviceDetail extends React.Component {
                 }
             ];
             properties = propertyDefs.map(p =>
-                    <tr key={p.text}><td><span title={p.text}>{p.text}</span></td><td title={p.value} style={{ padding: "4px" }}>{p.value}</td></tr>
-                );
+                <tr key={p.text}><td><span title={p.text}>{p.text}</span></td><td title={p.value} style={{ padding: "4px" }}>{p.value}</td></tr>
+            );
         }
         return (
             <div className="deviceDetailTile">
@@ -109,7 +114,7 @@ class DeviceDetail extends React.Component {
                         Device Twin
                     </Header>
                     <Body>
-                        <JsonViewer />
+                        <JsonViewer data={this.state.twin} />
                     </Body>
                 </Flyout>
                 <Flyout ref="diagnosticFlyout">
@@ -119,13 +124,10 @@ class DeviceDetail extends React.Component {
                     <Body>
                         <SearchableDataGrid
                             title=""
-                            datasource={`${Config.solutionApiUrl}api/v1/diagnostics/{deviceId}`}
-                            urlSearchPattern="/\{deviceId\}/i"
-                            topics={[Topics.device.diagnose]}
-                            eventDataKey="deviceId"
+                            rowData={this.state.diagnostics}
                             columnDefs={[
-                                {headerName: "Parameter", field: "Key", filter: "text"},
-                                {headerName: "Value", field: "Value", filter: "text"}
+                                { headerName: "Parameter", field: "Key", filter: "text" },
+                                { headerName: "Value", field: "Value", filter: "text" }
                             ]}
                             height={300}
                             pagination={false}

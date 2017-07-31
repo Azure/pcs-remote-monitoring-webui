@@ -1,33 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import EventTopic, { Topics } from '../../common/eventtopic';
+
 
 import './jsonViewer.css';
 
 class JsonViewer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: {}
-    };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    this.subscriptions.push(
-      EventTopic.subscribe(
-        Topics.device.twin.opened,
-        (topic, data, publisher) => {
-          this.setState({ data: data });
-        }
-      )
-    );
-  }
-
-  componentWilUnmount() {
-    EventTopic.unsubscribe(this.subscriptions);
-  }
 
   onCopy = e => {
     window.getSelection().removeAllRanges();
@@ -42,7 +20,7 @@ class JsonViewer extends React.Component {
     return (
       <div className="jsonViewerTile">
         <pre ref="content" className="jsonViewerContent">
-          {JSON.stringify(this.state.data, null, '  ')}
+          {JSON.stringify(this.props.data, null, '  ')}
         </pre>
         <div>
           <button

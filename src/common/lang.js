@@ -79,7 +79,9 @@ const lang = {
     DELETE: 'Remove',
     CHANGEDEVICECONFIG: 'Change device configuration',
     ORGANIZEMYDEVICE: 'Organize my devices',
-    SCHEDULEANACTION: 'Schedule an action'
+    SCHEDULEANACTION: 'Schedule an action',
+    LASTACTIVITYTIME: 'Last activity time',
+    LASTSTATUSUPDATEDTIME: 'Last status updated time'
   },
   LEFTNAV: {
     DASHBOARD: 'Dashboard',

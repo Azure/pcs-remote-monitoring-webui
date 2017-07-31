@@ -22,7 +22,8 @@ class SearchableDataGrid extends Component {
       originalRows: [],
       selectedIndexes: [],
       multiSelect: this.props.multiSelect || false,
-      currentFilter: ''
+      currentFilter: '',
+      loading: false
     };
     this.container = null;
     this.tokens = [];
@@ -167,12 +168,14 @@ class SearchableDataGrid extends Component {
   }
 
   getData = filter => {
+    this.setState({ loading: true });
     if (isFunction(this.props.getData)) {
       this.props.getData(filter, data => {
         this.setState({
             originalRows: data,
             rows: data,
-            lastupdate: new Date()
+            lastupdate: new Date(),
+            loading: false
           });
       });
     }
@@ -216,7 +219,8 @@ class SearchableDataGrid extends Component {
             this
           );
           this.setState({
-            selectedIndexes: Object.keys(data).map(key => parseInt(key, 10))
+            selectedIndexes: Object.keys(data).map(key => parseInt(key, 10)),
+            loading: false
           });
         })
         .catch(err => {
@@ -308,7 +312,7 @@ class SearchableDataGrid extends Component {
         className="datagrid-container"
       >
         {title}
-        {this.state.originalRows.length > 0
+        {!this.state.loading
           ? <div>
               {searchBox}
               <div className="datagrid-body">
