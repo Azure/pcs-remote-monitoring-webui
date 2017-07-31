@@ -8,7 +8,6 @@ import lang from '../../common/lang';
 
 import './deviceProvisioningWorkflow.css';
 
-
 class DeviceProvisioningWorkflow extends React.Component {
     constructor(props) {
         super(props);
@@ -20,7 +19,16 @@ class DeviceProvisioningWorkflow extends React.Component {
             simulatedTypes: [],
             selectedSimulatedType: null,
             authenticationType: "symmetricKey",
-            enrollment: "individual"
+            enrollment: "individual",
+            data: {
+                device: {
+                    id: ""
+                },
+                simulation: {
+                    id: "",
+                    count: 0
+                }
+            }
         };
         this.tokens = [];
     }
@@ -30,8 +38,8 @@ class DeviceProvisioningWorkflow extends React.Component {
     }
 
     getSimulatedTypes() {
-        Http.get(`${Config.solutionApiUrl}api/v1/simulateddevice/types`).then((data) => {
-            this.setState({ simulatedTypes: data });
+        Http.get(`${Config.deviceSimulationApiUrl}DeviceTypes`).then((data) => {
+            this.setState({ simulatedTypes: data.Items });
         });
     }
 
@@ -56,6 +64,9 @@ class DeviceProvisioningWorkflow extends React.Component {
     }
 
     onClickSimulatedType = (eventKey) => {
+        const data = this.state.data;
+        data.simulation.id = eventKey;
+        this.setState({ data: data });
         this.setState({ selectedSimulatedType: eventKey });
     }
 
@@ -68,10 +79,66 @@ class DeviceProvisioningWorkflow extends React.Component {
     }
 
     onClickCreateDevice = () => {
-        console.log("CreateDevice");
         if (typeof this.props.finishCallback === "function") {
             this.props.finishCallback();
         }
+        if (this.state.provisionMethod === "manual") {
+            if (this.state.simulatedDevice) {
+                this.updateSimulation();
+            } else {
+                this.createDevice();
+            }
+        }
+    }
+
+    createDevice = () => {
+        Http.post(`${Config.iotHubManagerApiUrl}devices`, this.state.data.device).catch((err) => {
+            console.log(err);
+        });
+    }
+
+    updateSimulation = () => {
+        const id = "08a9e68c-9f4f-4456-8bb7-51178f437c41";
+        const deviceSimulationPath = "simulations";
+        Http.get(`${Config.deviceSimulationApiUrl}${deviceSimulationPath}`).then((data) => {
+            if (data.Items.length > 0) {
+                const item = data.Items[0]; //todo: there is only one item currently
+                let deviceTypes = item.DeviceTypes.filter((item, i) => {
+                    return item.Id === this.state.data.simulation.id;
+                });
+                if (deviceTypes.length > 0) {
+                    deviceTypes[0].Count += this.state.data.simulation.count;
+                } else {
+                    item.DeviceTypes.push(this.state.data.simulation);
+                }
+                return item;
+            } else {
+                return {
+                    "Etag": "",
+                    "Id": id,
+                    "Enabled": true,
+                    "DeviceTypes": [
+                        this.state.data.simulation
+                    ]
+                }
+            }
+        }).then((data) => {
+            return Http.put(`${Config.deviceSimulationApiUrl}${deviceSimulationPath}/${id}`, data)
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
+    onDeviceIdChange = (event) => {
+        const data = this.state.data;
+        data.device.Id = event.target.value;
+        this.setState({ data: data });
+    }
+
+    onDeviceNumberChange = (event) => {
+        const data = this.state.data;
+        data.simulation.count = parseInt(event.target.value, 10);
+        this.setState({ data: data });
     }
 
     onClickIndividual = () => {
@@ -97,8 +164,8 @@ class DeviceProvisioningWorkflow extends React.Component {
             <div style={{ display: this.state.simulatedDevice ? "block" : "none" }}>
                 <h5>{lang.DEVICES.DEVICETYPES}<br />{lang.DEVICES.SELECTTYPE}</h5>
                 <DropdownButton id="dgDeviceTypes" disabled={this.state.simulatedTypes.length === 0} title={this.state.selectedSimulatedType || "Chiller device type"}>
-                    {this.state.simulatedTypes.map((t) => {
-                        return <MenuItem eventKey={t} onSelect={this.onClickSimulatedType}>{t}</MenuItem>
+                    {this.state.simulatedTypes.map((t, index) => {
+                        return <MenuItem key={index} eventKey={t.Name} onSelect={this.onClickSimulatedType}>{t.Name}</MenuItem>
                     })}
                 </DropdownButton>
             </div>
@@ -161,12 +228,12 @@ class DeviceProvisioningWorkflow extends React.Component {
 
                 <FormGroup style={{ display: this.state.simulatedDevice ? "block" : "none" }}>
                     <h5> {lang.DEVICES.NUMBEROFDEVICES}</h5>
-                    <FormControl type="text" id="edtTotalDevices" />
+                    <FormControl type="text" id="edtTotalDevices" onChange={this.onDeviceNumberChange} />
                 </FormGroup>
 
                 <h5>{lang.DEVICES.NEWDEVICEID}</h5>
                 <FormGroup>
-                    <FormControl type="text" id="edtDeviceID" disabled={this.state.generateDeviceId} />
+                    <FormControl type="text" id="edtDeviceID" disabled={this.state.generateDeviceId} onChange={this.onDeviceIdChange} />
                 </FormGroup>
 
                 <FormGroup>

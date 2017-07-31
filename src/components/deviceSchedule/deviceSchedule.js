@@ -31,7 +31,7 @@ class DeviceSchedule extends React.Component {
                     <FormControl componentClass="select">
                         {
                             this.methods.map((method) =>
-                                <option value={method}>{method}</option>
+                                <option key={method} value={method}>{method}</option>
                             )
                         }
                     </FormControl>
