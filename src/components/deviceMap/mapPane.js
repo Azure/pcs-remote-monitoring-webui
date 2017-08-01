@@ -76,8 +76,9 @@ let onMapPinClicked = function(e) {
     });
     displayInfobox(this.deviceId, this.location);
     // container.showFlyout();
-    // TODO: dispatch an action to show flyout
-    actions.showFlyout(device[0]);
+    // TODO: creat flyout types
+    const flyoutConfig = { device: device[0], type: 'Device detail' };
+    actions.showFlyout({ ...flyoutConfig });
     EventTopic.publish(Topics.device.selected, device[0], container);
   });
 };

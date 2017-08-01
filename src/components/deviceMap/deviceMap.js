@@ -7,12 +7,15 @@ import * as actions from '../../actions';
 import MapPane from './mapPane';
 import Flyout, { Header, Body } from '../../framework/flyout/flyout';
 import DeviceDetail from '../deviceDetail/deviceDetail';
+import Spinner from '../spinner/spinner';
+
+import './deviceMap.css';
 
 class DeviceMap extends Component {
   constructor(props) {
     super(props);
-    window.loadMap = () => {
-      this.showMap();
+    this.state = {
+      loadingMap: true
     };
   }
 
@@ -22,8 +25,17 @@ class DeviceMap extends Component {
     );
   }
 
-  showMap() {
-    const { devices, mapkey, actions } = this.props;
+  componentWillReceiveProps(nextProps) {
+    const { devices } = nextProps;
+    if (devices && devices.length) {
+      this.setState({ loadingMap: false }, () => {
+        this.showMap(devices);
+      });
+    }
+  }
+
+  showMap(devices) {
+    const { mapkey, actions } = this.props;
     MapPane.init(mapkey);
     MapPane.setData({
       deviceData: devices,
@@ -74,16 +86,17 @@ class DeviceMap extends Component {
           item['reported.Device.Location.Latitude']);
         let longitude = (location.longitude =
           item['reported.Device.Location.Longitude']);
-        latitudes.push(latitude);
-        longitudes.push(longitude);
+        latitudes.push(Number(latitude));
+        longitudes.push(Number(longitude));
         return location;
       });
     }
-    minLat = Math.min.apply(null, latitudes);
-    maxLat = Math.max.apply(null, latitudes);
-    minLong = Math.min.apply(null, longitudes);
-    maxLong = Math.max.apply(null, longitudes);
+    minLat = Math.min.apply(null, latitudes.filter(e => !isNaN(e)));
+    maxLat = Math.max.apply(null, latitudes.filter(e => !isNaN(e)));
+    minLong = Math.min.apply(null, longitudes.filter(e => !isNaN(e)));
+    maxLong = Math.max.apply(null, longitudes.filter(e => !isNaN(e)));
 
+    // TODO: check mark validate data after API integration
     if (locationList && locationList.Count === 0) {
       minLat = 47.6;
       maxLat = 47.6;
@@ -115,6 +128,10 @@ class DeviceMap extends Component {
   render() {
     return (
       <div className="bing-map">
+        {this.state.loadingMap &&
+          <div className="loading-spinner">
+            <Spinner />
+          </div>}
         <div id="deviceMap" className="dashboard_device_map" />
         <Flyout ref="flyout">
           <Header>Device Detail</Header>
