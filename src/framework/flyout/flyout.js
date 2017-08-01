@@ -14,9 +14,10 @@ export default class flyout extends Component {
 
     getInitialState() {
         const position = this.props.position || "right";
-        const autoDismiss = this.props.autoDismiss === false ? false : true; 
+        const autoDismiss = this.props.autoDismiss !== false;
         const width = this.props.width || 400;
         const state = {
+            show: false,
             position: position,
             autoDismiss: autoDismiss,
             showCloseButton: this.props.showCloseButton,
@@ -36,6 +37,7 @@ export default class flyout extends Component {
         const state = this.state;
         state.style.display = 'block';
         state.style[this.state.position] = 0;
+        state.show = true;
         this.setState(state);
         document.addEventListener("click", this.handleClick);
     }
@@ -47,7 +49,7 @@ export default class flyout extends Component {
 
     handleClick = (e) => {
         const dom = ReactDOM.findDOMNode(this.refs.component);
-        if (this.state.autoDismiss && !dom.contains(e.target)) {
+        if (this.state.autoDismiss && dom && !dom.contains(e.target)) {
             this.hide();
             e.preventDefault();
         }
@@ -60,14 +62,16 @@ export default class flyout extends Component {
     render() {
         return (
             <Wrapper>
-                <div ref='component' className="flyoutPanel" style={this.state.style} >
-                    { this.state.showCloseButton && 
-                        <span className="flyoutCloseBtn" onClick={this.handleCloseClick} ><Glyphicon glyph="remove" /></span>
-                    }
-                    <div className="flyoutPanelInner" >
-                        {this.props.children}
+                {this.state.show &&
+                    <div ref='component' className="flyoutPanel" style={this.state.style} >
+                        {this.state.showCloseButton &&
+                            <span className="flyoutCloseBtn" onClick={this.handleCloseClick} ><Glyphicon glyph="remove" /></span>
+                        }
+                        <div className="flyoutPanelInner" >
+                            {this.props.children}
+                        </div>
                     </div>
-                </div>
+                }
             </Wrapper>
         );
     }
@@ -90,9 +94,14 @@ class Wrapper extends Component {
     }
 
     renderChildren() {
-        ReactDOM.render(
-            this.props.children,
-            this.container);
+        if (this.props.children) {
+            ReactDOM.render(
+                this.props.children,
+                this.container);
+        }
+        else {
+            ReactDOM.unmountComponentAtNode(this.container);
+        }
     }
 
     render() {
