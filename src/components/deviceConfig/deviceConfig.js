@@ -18,11 +18,6 @@ const DefaultExecutionTime = 0;
 
 class DeviceConfig extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.configProperties = []
-    }
-
     onConfirm() {
         if (this.props.devices && this.props.devices.length) {
             let ids = this.props.devices.map(device => {
@@ -30,7 +25,7 @@ class DeviceConfig extends React.Component {
             });
             let queryCondition = `deviceId in [${ids.toString()}]`;
             let configTwin = {};
-            this.configProperties.forEach(config => {
+            this.refs.deviceProperty.getProperty().forEach(config => {
                 configTwin[config.name] = config.value;
             });
             let payload = {
@@ -39,7 +34,7 @@ class DeviceConfig extends React.Component {
                 MaxExecutionTimeInSeconds: DefaultExecutionTime,
                 UpdateTwin: {
                     DesiredProperties: {
-                        conifg: configTwin
+                        config: configTwin
                     }
                 }
             };
@@ -62,7 +57,7 @@ class DeviceConfig extends React.Component {
             <div className="deviceConfig">
                 <div className="marginTop20">
                     <label>{lang.DEVICES.CONFIGPROPERTIES}</label>
-                    <DeviceProperty configProperties={this.configProperties}/>
+                    <DeviceProperty ref="deviceProperty" />
                 </div>
                 <div className="marginTop20">
                     <label>{formatString(lang.DEVICES.CAUTION, deviceCount)}</label>

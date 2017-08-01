@@ -15,11 +15,6 @@ const DeviceConifgRoute = 'Jobs';
 const DefaultExecutionTime = 0;
 
 class DeviceOrganize extends React.Component {
-    constructor(props) {
-        super(props);
-        this.configProperties = []
-
-    }
 
     onConfirm() {
         if (this.props.devices && this.props.devices.length) {
@@ -28,7 +23,7 @@ class DeviceOrganize extends React.Component {
             });
             let queryCondition = `deviceId in [${ids.toString()}]`;
             let tags = {};
-            this.configProperties.forEach(config => {
+            this.refs.deviceProperty.getProperty().forEach(config => {
                 tags[config.name] = config.value;
             });
             let payload = {
@@ -57,7 +52,7 @@ class DeviceOrganize extends React.Component {
         return (
             <div className="deviceOrganize">
                 <div>
-                    <DeviceProperty configProperties={this.configProperties} />
+                    <DeviceProperty ref="deviceProperty" />
                 </div>
                 <div className="marginTop20">
                     <label>{formatString(lang.DEVICES.CAUTION, deviceCount)}</label>

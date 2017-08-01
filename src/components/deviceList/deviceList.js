@@ -31,17 +31,17 @@ export default class DeviceList extends Component {
         },
         {
           headerName: lang.DEVICES.FIRMWAREVERSION,
-          field: 'Twin.reportedProperties.System.FirmwareVersion',
+          field: 'Twin.reportedProperties.FirmwareVersion',
           filter: 'text'
         },
         {
           headerName: lang.DEVICES.MANUFACTURER,
-          field: 'Twin.reportedProperties.System.Manufacturer',
+          field: 'Twin.reportedProperties.Manufacturer',
           filter: 'text'
         },
         {
           headerName: lang.DEVICES.MODELNUMBER,
-          field: 'Twin.reportedProperties.System.ModelNumber',
+          field: 'Twin.reportedProperties.ModelNumber',
           filter: 'text'
         },
         {

@@ -63,11 +63,11 @@ class DeviceDetail extends React.Component {
             const propertyDefs = [
                 {
                     text: lang.DEVICES.FIRMWAREVERSION,
-                    value: twin.reportedProperties.System ? twin.reportedProperties.System.FirmwareVersion : null
+                    value: twin.reportedProperties ? twin.reportedProperties.FirmwareVersion : null
                 },
                 {
                     text: lang.DEVICES.MANUFACTURER,
-                    value: twin.reportedProperties.System ? twin.reportedProperties.System.Manufacturer : null
+                    value: twin.reportedProperties ? twin.reportedProperties.Manufacturer : null
                 }
             ];
             properties = propertyDefs.map(p =>
