@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import {Button, FormControl} from 'react-bootstrap'
-import {formatDate, formatString, getRandomString, isFunction} from "../../common/utils";
+import {Button} from 'react-bootstrap'
+import {formatString, isFunction} from "../../common/utils";
+import * as uuid from "uuid/v4"
 import lang from "../../common/lang";
 import DeviceProperty from "../deviceProperty/deviceProperty";
 
@@ -16,22 +17,14 @@ const DefaultExecutionTime = 0;
 class DeviceOrganize extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            JobId: `${lang.DEVICES.CHANGEPROPERTYX}-${formatDate(Date())}-${getRandomString(4)}`,
-        };
-        this.configProperties = [
-            { name: 'Building', value: 4.3, type: 'Number' },
-            { name: 'Floor', value: 1, type: 'Number' },
-            { name: 'Compus', value: 'Redmond', type: 'String' },
-            { name: 'IsNew', value: true, type: 'Boolean' }
-        ]
+        this.configProperties = []
 
     }
 
     onConfirm() {
         if (this.props.devices && this.props.devices.length) {
             let ids = this.props.devices.map(device => {
-                return `'${device.DeviceId}'`
+                return `'${device.Twin.deviceId}'`
             });
             let queryCondition = `deviceId in [${ids.toString()}]`;
             let tags = {};
@@ -39,7 +32,7 @@ class DeviceOrganize extends React.Component {
                 tags[config.name] = config.value;
             });
             let payload = {
-                JobId: this.state.JobId,
+                JobId: uuid(),
                 QueryCondition: queryCondition,
                 MaxExecutionTimeInSeconds: DefaultExecutionTime,
                 UpdateTwin: {
@@ -59,18 +52,10 @@ class DeviceOrganize extends React.Component {
         }
     }
 
-    onJobIdChanged = (event) => {
-        this.setState({JobId: event.target.value});
-    };
-
     render() {
         const deviceCount = this.props.devices && Array.isArray(this.props.devices) ? this.props.devices.length : 0;
         return (
             <div className="deviceOrganize">
-                <div>
-                    <label>{lang.DEVICES.TASKNAME}</label>
-                    <FormControl type="text" value={this.state.JobId} onChange={this.onJobIdChanged}/>
-                </div>
                 <div>
                     <DeviceProperty configProperties={this.configProperties} />
                 </div>

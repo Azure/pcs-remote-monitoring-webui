@@ -13,7 +13,9 @@ export default class DeviceProperty extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            configProperties: this.props.configProperties
+            configProperties: this.props.configProperties && this.props.configProperties.length
+                ? this.props.configProperties
+                :[{name:'', value:'', type:''}]
         };
     }
 

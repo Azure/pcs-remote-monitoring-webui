@@ -2,7 +2,8 @@
 
 import React from "react";
 import {Button, ControlLabel, FormControl, FormGroup, Radio} from "react-bootstrap";
-import {formatDate, formatString, getRandomString, isFunction} from "../../common/utils";
+import {formatString, isFunction} from "../../common/utils";
+import * as uuid from "uuid/v4"
 import httpClient from "../../common/httpClient";
 import Config from "../../common/config";
 import lang from "../../common/lang";
@@ -17,15 +18,10 @@ class DeviceSchedule extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            JobId: `${lang.DEVICES.CHANGEPROPERTYX}-${formatDate(Date())}-${getRandomString(4)}`,
             selectedMethod: 'Reboot'
         };
         this.methods = ['Reboot', 'Deprovision', 'InitiateFirmwareUpdate', 'FactoryReset'];
     }
-
-    onJobIdChanged = (event) => {
-        this.setState({JobId: event.target.value});
-    };
 
     onSelect = (event) => {
         this.setState({selectedMethod: event.target.value})
@@ -34,11 +30,11 @@ class DeviceSchedule extends React.Component {
     onConfirm() {
         if (this.props.devices && this.props.devices.length) {
             let ids = this.props.devices.map(device => {
-                return `'${device.DeviceId}'`
+                return `'${device.Twin.deviceId}'`
             });
             let queryCondition = `deviceId in [${ids.toString()}]`;
             let payload = {
-                JobId: this.state.JobId,
+                JobId: uuid(),
                 QueryCondition: queryCondition,
                 MaxExecutionTimeInSeconds: DefaultExecutionTime,
                 MethodParameter: {
@@ -62,10 +58,6 @@ class DeviceSchedule extends React.Component {
         const deviceCount = this.props.devices && Array.isArray(this.props.devices) ? this.props.devices.length : 0;
         return (
             <div className="deviceSchedule">
-                <FormGroup>
-                    <ControlLabel>{lang.DEVICES.TASKNAME}</ControlLabel>
-                    <FormControl type="text" value={this.state.JobId} onChange={this.onJobIdChanged}/>
-                </FormGroup>
                 <FormGroup>
                     <ControlLabel>{lang.DEVICES.AVAILABLEACTIONS}</ControlLabel>
                     <FormControl componentClass="select" onChange={this.onSelect}>

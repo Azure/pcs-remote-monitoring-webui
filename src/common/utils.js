@@ -38,7 +38,7 @@ export function formatDate(date) {
         date = new Date(date);
     }
     if (date instanceof Date) {
-        return `${date.getMonth()+1}-${date.getDate()}-${date.getFullYear()}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`;
+        return `${date.getMonth()+1}${date.getDate()}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}`;
     }
 }
 
