@@ -12,3 +12,6 @@ export * from './mapActions';
 
 // telemetry
 export * from './telemetryActions';
+
+//Filter
+export * from './filterActions';

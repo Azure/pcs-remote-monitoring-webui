@@ -6,7 +6,8 @@ const lang = {
     WARNINGS: 'Warnings',
     TOTAL: 'Total',
     ONLINE: 'Online',
-    OFFLINE: 'Offline'
+    OFFLINE: 'Offline',
+    ALLDEVICES: 'All Devices'
   },
   DASHBOARD: {
     DEVICELOCATION: 'Device Location',

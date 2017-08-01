@@ -6,13 +6,15 @@ import messageReducer from './messageReducer';
 import deviceReducer from './deviceReducer';
 import mapReducer from './mapReducer';
 import telemetryReducer from './telemetryReducer';
+import filterReducer from './filterReducer';
 
 const rootReducer = combineReducers({
   flyoutReducer,
   messageReducer,
   deviceReducer,
   mapReducer,
-  telemetryReducer
+  telemetryReducer,
+  filterReducer
 });
 
 export default rootReducer;

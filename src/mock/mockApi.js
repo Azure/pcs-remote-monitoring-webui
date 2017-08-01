@@ -1,6 +1,7 @@
 import Http from '../common/httpClient';
 import Config from '../common/config';
 import telemetry from './telemetry';
+import UiConfigApi from './UiConfigApi';
 
 const messages = [
   {
@@ -63,6 +64,14 @@ class MockApi {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(telemetry);
+      }, 0);
+    });
+  }
+  static getRegionByDisplayName() {
+    // TODO switch to UiConfigApi service return Http.get(`http://localhost:9004/v1/devicesgroups"`);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(UiConfigApi);
       }, 0);
     });
   }

@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 export default {
+  filter: {
+    deviceGroups: []
+  },
   dashboard: {
     map: {},
     telemetry: {

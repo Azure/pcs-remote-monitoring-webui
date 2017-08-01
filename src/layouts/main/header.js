@@ -5,6 +5,7 @@ import Setting from '../../assets/icons/Setting.svg';
 import './header.css';
 import ProfileImage from '../../assets/icons/ProfileImage.png';
 import lang from '../../common/lang';
+import TopNavFilter from '../../components/TopNavFilter/TopNavFilter.js';
 
 class TopNav extends Component {
   selectHandler = (eventKey, event) => {
@@ -39,6 +40,7 @@ class TopNav extends Component {
             />
           </span>
         </div>
+        <TopNavFilter />
       </div>
     );
   }
