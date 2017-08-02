@@ -2,7 +2,7 @@
 setlocal
 
 :: Note: use lowercase names for the Docker images
-SET DOCKER_IMAGE="azureiotpcs/remote-monitoring-webui"
+SET DOCKER_IMAGE="azureiotpcs/pcs-remote-monitoring-webui"
 
 :: Debug|Release
 SET CONFIGURATION=Release

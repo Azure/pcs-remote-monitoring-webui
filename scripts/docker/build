@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Note: use lowercase names for the Docker images
-DOCKER_IMAGE="azureiotpcs/remote-monitoring-webui"
+DOCKER_IMAGE="azureiotpcs/pcs-remote-monitoring-webui"
 
 # Debug|Release
 CONFIGURATION=Release
