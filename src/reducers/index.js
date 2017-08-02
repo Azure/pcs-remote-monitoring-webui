@@ -7,6 +7,7 @@ import deviceReducer from './deviceReducer';
 import mapReducer from './mapReducer';
 import telemetryReducer from './telemetryReducer';
 import filterReducer from './filterReducer';
+import kpiReducer from './kpiReducer';
 
 const rootReducer = combineReducers({
   flyoutReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   deviceReducer,
   mapReducer,
   telemetryReducer,
-  filterReducer
+  filterReducer,
+  kpiReducer
 });
 
 export default rootReducer;

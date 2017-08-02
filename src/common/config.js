@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
-
 const Config = {
+  STATUS_CODES: {
+    CRITICAL: 'critical',
+    WARNING: 'warning'
+  },
   solutionApiUrl: process.env.REACT_APP_UICONFIG_WEBSERVICE_URL,
   uiConfigApiUrl: process.env.REACT_APP_UICONFIG_WEBSERVICE_URL,
   deviceSimulationApiUrl: process.env.REACT_APP_DEVICESIMULATION_WEBSERVICE_URL,
@@ -10,5 +13,4 @@ const Config = {
   telemetryTypeApiUrl:
     process.env.REACT_APP_UICONFIG_WEBSERVICE_URL + 'api/v1/telemetrytypes'
 };
-
 export default Config;

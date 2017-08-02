@@ -13,5 +13,8 @@ export * from './mapActions';
 // telemetry
 export * from './telemetryActions';
 
-//Filter
+// filter
 export * from './filterActions';
+
+// kpi
+export * from './kpiActions';

@@ -2,6 +2,11 @@ import Http from '../common/httpClient';
 import Config from '../common/config';
 import telemetry from './telemetry';
 import UiConfigApi from './UiConfigApi';
+import alarmList from './alarms';
+import deviceList from './deviceList';
+
+console.log('alarms', alarmList);
+console.log('telemetry', telemetry);
 
 const messages = [
   {
@@ -44,7 +49,11 @@ class MockApi {
   }
 
   static getAllDevices() {
-    return Http.get(`${Config.solutionApiUrl}api/v1/devices/twin?filter=`);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(deviceList);
+      }, 0);
+    });
   }
 
   static getMapKey() {
@@ -60,18 +69,26 @@ class MockApi {
   }
 
   static getTelemetryByDeviceGroup() {
-    // TODO switch to telemetry service return Http.get(`http://localhost:9004/v1/messages/`);
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(telemetry);
       }, 0);
     });
   }
+
   static getRegionByDisplayName() {
     // TODO switch to UiConfigApi service return Http.get(`http://localhost:9004/v1/devicesgroups"`);
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(UiConfigApi);
+      }, 0);
+    });
+  }
+
+  static getAlarmList() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(alarmList);
       }, 0);
     });
   }

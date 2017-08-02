@@ -1,26 +1,17 @@
 // Copyright (c) Microsoft. All rights reserved.
-
 import $ from 'jquery';
+import * as clusterIcons from './clusterIcons';
 import EventTopic, { Topics } from '../../common/eventtopic';
-import allClear from './icon_status_all_clear.svg';
-import caution from './icon_status_caution.svg';
-import critical from './icon_status_critical.svg';
+import Config from '../../common/config';
 
 let map = null;
 let pinInfobox = null;
 let boundsSet = false;
-let resources = {
-  allClearStatusIcon: allClear,
-  cautionStatusIcon: caution,
-  criticalStatusIcon: critical
-};
 let deviceData;
 let container;
 let actions;
-
 let init = function(mapApiKey) {
   let options = {
-    //Time being adding developer's keys.
     credentials:
       'AhDYdhgAYmHLSCQm9xFRo2PPMGPXKeLnsz6yczTOxVMZQPnNJBben3rpV7DvnL4e',
     mapTypeId: window.Microsoft.Maps.MapTypeId.canvasDark,
@@ -29,10 +20,8 @@ let init = function(mapApiKey) {
     enableSearchLogo: false,
     enableClickableLogo: false,
     navigationBarMode: window.Microsoft.Maps.NavigationBarMode.minified,
-    showScalebar: false, // for the microsoft bing maps label removal
-    zoom: 3
+    showScalebar: false // for the Microsoft Bing maps label removal
   };
-
   // Initialize the map
   map = new window.Microsoft.Maps.Map('#deviceMap', options);
   map.getZoomRange = function() {
@@ -41,7 +30,6 @@ let init = function(mapApiKey) {
       min: 2
     };
   };
-
   // Forcibly set the zoom to our min/max whenever the view starts to change beyond them
   var restrictZoom = function() {
     if (map.getZoom() <= map.getZoomRange().min) {
@@ -72,7 +60,7 @@ let setData = function(settings) {
 let onMapPinClicked = function(e) {
   setTimeout(() => {
     let device = deviceData.filter(item => {
-      return item.DeviceId === this.deviceId;
+      return item.Id === this.deviceId;
     });
     displayInfobox(this.deviceId, this.location);
     // container.showFlyout();
@@ -134,6 +122,7 @@ let setDeviceLocationData = function setDeviceLocationData(
   }
 
   map.entities.clear();
+  let allPins = [];
   if (deviceLocations) {
     for (i = 0; i < deviceLocations.length; ++i) {
       loc = new window.Microsoft.Maps.Location(
@@ -142,24 +131,17 @@ let setDeviceLocationData = function setDeviceLocationData(
       );
 
       pinOptions = {
-        zIndex: deviceLocations[i].status
+        zIndex: deviceLocations[i].status,
+        icon: clusterIcons.defaultIcon(
+          deviceLocations[i].Severity,
+          deviceData[i].Connected
+        )
       };
-
-      switch (deviceLocations[i].status) {
-        case 1:
-          pinOptions.icon = resources.cautionStatusIcon;
-          break;
-
-        case 2:
-          pinOptions.icon = resources.criticalStatusIcon;
-          break;
-
-        default:
-          pinOptions.icon = resources.allClearStatusIcon;
-          break;
-      }
-
       pin = new window.Microsoft.Maps.Pushpin(loc, pinOptions);
+      pin.__customData = {
+        Severity: deviceLocations[i].Severity,
+        Connected: deviceData[i].Connected
+      };
       window.Microsoft.Maps.Events.addHandler(
         pin,
         'click',
@@ -168,9 +150,67 @@ let setDeviceLocationData = function setDeviceLocationData(
           location: loc
         })
       );
-      map.entities.push(pin);
+      allPins.push(pin);
     }
+    window.Microsoft.Maps.loadModule('Microsoft.Maps.Clustering', function() {
+      //Create a ClusterLayer with options and add it to the map.
+      let clusterLayer = new window.Microsoft.Maps.ClusterLayer(allPins, {
+        clusteredPinCallback: createCustomClusteredPin,
+        gridSize: 80
+      });
+      map.layers.insert(clusterLayer);
+    });
   }
+};
+
+const createCustomClusteredPin = cluster => {
+  //Define variables for minimum cluster radius, and how wide the outline area of the circle should be.
+  var minRadius = 12;
+  const containedPushpins = cluster.containedPushpins;
+  //Get the number of pushpins in the cluster
+  var clusterSize = containedPushpins.length;
+
+  //Calculate the radius of the cluster based on the number of pushpins in the cluster, using a logarithmic scale.
+  var radius = Math.log(clusterSize) / Math.log(10) * 5 + minRadius;
+
+  const allSeverities = containedPushpins.map(pushpin => {
+    const customData = pushpin.__customData;
+    return customData.Severity ? customData.Severity : 'none';
+  });
+
+  const allOnline = containedPushpins.every(pushpin => {
+    const customData = pushpin.__customData;
+    return customData.Connected;
+  });
+
+  let chosenSeverity = 'none';
+  if (allSeverities.indexOf(Config.STATUS_CODES.CRITICAL) !== -1) {
+    chosenSeverity = Config.STATUS_CODES.CRITICAL;
+  } else if (allSeverities.indexOf(Config.STATUS_CODES.WARNING) !== -1) {
+    chosenSeverity = Config.STATUS_CODES.WARNING;
+  }
+  let icon;
+  if (chosenSeverity === Config.STATUS_CODES.WARNING && allOnline) {
+    icon = clusterIcons.onlineWarn(radius, clusterSize);
+  } else if (chosenSeverity === Config.STATUS_CODES.CRITICAL && allOnline) {
+    icon = clusterIcons.onlineAlarm(radius, clusterSize);
+  } else if (allOnline) {
+    icon = clusterIcons.online(radius, clusterSize);
+  } else if (chosenSeverity === Config.STATUS_CODES.WARNING) {
+    icon = clusterIcons.offlineWarn(radius, clusterSize);
+  } else if (chosenSeverity === Config.STATUS_CODES.CRITICAL) {
+    icon = clusterIcons.offlineAlarm(radius, clusterSize);
+  } else {
+    icon = clusterIcons.offline(radius, clusterSize);
+  }
+
+  //Customize the clustered pushpin using the generated SVG and anchor on its center.
+  cluster.setOptions({
+    icon: icon,
+    color: 'rgb(255,0,0)',
+    anchor: new window.Microsoft.Maps.Point(radius, radius),
+    textOffset: new window.Microsoft.Maps.Point(-999, -999) //Remove the default text label
+  });
 };
 
 var invokePinEvent = function invokePinEvent(id) {

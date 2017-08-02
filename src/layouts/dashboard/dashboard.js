@@ -23,6 +23,7 @@ class Dashboard extends Component {
     actions.loadDevices();
     actions.loadMapkey();
     actions.loadTelemetryByDeviceGroup();
+    actions.loadAlarmList();
   }
 
   render() {
@@ -33,7 +34,9 @@ class Dashboard extends Component {
       content: flyout.content
     };
     const deviceMapProps = {
+      alarmList: this.props.alarmList,
       devices: this.props.devices,
+      telemetryByDeviceGroup: this.props.telemetryByDeviceGroup,
       mapkey: this.props.mapkey
     };
 
@@ -50,7 +53,7 @@ class Dashboard extends Component {
               </span>
             </div>
             <Row className="device-map">
-              <RegionDetails />
+              <RegionDetails {...this.props} />
               <Col md={9} className="map-container">
                 <DeviceMap {...deviceMapProps} />
               </Col>
@@ -77,9 +80,11 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
   return {
     flyout: state.flyoutReducer,
+    telemetryByDeviceGroup: state.telemetryReducer.telemetryByDeviceGroup,
     messages: state.messageReducer.messages,
     devices: state.deviceReducer.devices,
-    mapkey: state.mapReducer.mapkey
+    mapkey: state.mapReducer.mapkey,
+    alarmList: state.kpiReducer.alarmList
   };
 };
 

@@ -3,9 +3,41 @@ import { connect } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
 import lang from '../../common/lang';
 import './regionDetails.css';
+import Config from '../../common/config';
 
 class RegionDetails extends Component {
   render() {
+    const regionDetailsProps = {
+      onlineDevicesCount: 0,
+      offlineDevicesCount: 0,
+      totalAlarmDeviceCount: 0,
+      totalWarningsDeviceCount: 0
+    };
+    if (this.props.devices) {
+      regionDetailsProps.onlineDevicesCount = this.props.devices.items.filter(
+        item => {
+          return item.Connected;
+        }
+      ).length;
+      regionDetailsProps.offlineDevicesCount = this.props.devices.items.filter(
+        item => {
+          return !item.Connected;
+        }
+      ).length;
+    }
+    if (this.props.alarmList) {
+      regionDetailsProps.totalAlarmDeviceCount = this.props.alarmList.filter(
+        item => {
+          return item.Severity === Config.STATUS_CODES.CRITICAL;
+        }
+      ).length;
+      regionDetailsProps.totalWarningsDeviceCount = this.props.alarmList.filter(
+        item => {
+          return item.Severity === Config.STATUS_CODES.WARNING;
+        }
+      ).length;
+    }
+
     let deviceGroups = this.props.filterReducer.deviceGroups || [];
     let selectedDeviceGroupId = this.props.filterReducer.selectedDeviceGroupId;
     let selectedDeviceGroupName = '';
@@ -21,15 +53,17 @@ class RegionDetails extends Component {
     return (
       <Col md={3} className="device-location-conatiner">
         <div className="region-container">
-          <h1 className="region">
+          <h3>
             {selectedDeviceGroupName}
-          </h1>
+          </h3>
           <div className="device-subheading">
             {lang.REGIONDETAILS.DEVICES}
           </div>
           <Row className="alarm-warning-container">
             <Col md={5} className="total-alarms-container">
-              <div className="total-alarms">10</div>
+              <div className="total-alarms">
+                {regionDetailsProps.totalAlarmDeviceCount}
+              </div>
               <svg className=" total triangle">
                 <polygon points="25,2.5 48.5,49.8 2.5,49.8" fill="#fc540a" />
               </svg>
@@ -38,7 +72,9 @@ class RegionDetails extends Component {
               </div>
             </Col>
             <Col md={6} className=" total-alarms-container warnings-container">
-              <div className=" total-alarms total-warnings">30</div>
+              <div className=" total-alarms total-warnings">
+                {regionDetailsProps.totalWarningsDeviceCount}
+              </div>
               <svg className="triangle rectangle">
                 <rect width="8" height="8" fill="#FDE870" />
               </svg>
@@ -49,19 +85,26 @@ class RegionDetails extends Component {
           </Row>
           <Row>
             <Col md={4} className="total-container">
-              <div className="total">40</div>
+              <div className="total">
+                {regionDetailsProps.onlineDevicesCount +
+                  regionDetailsProps.offlineDevicesCount}
+              </div>
               <div className="warnings">
                 {lang.REGIONDETAILS.TOTAL}
               </div>
             </Col>
             <Col md={4} className="total-container total-online-container">
-              <div className="total-online">25</div>
+              <div className="total-online">
+                {regionDetailsProps.onlineDevicesCount}
+              </div>
               <div className="online">
                 {lang.REGIONDETAILS.ONLINE}
               </div>
             </Col>
             <Col md={4} className="total-container total-offline-container">
-              <div className="total-offline">15</div>
+              <div className="total-offline">
+                {regionDetailsProps.offlineDevicesCount}
+              </div>
               <div className="offline">
                 {lang.REGIONDETAILS.OFFLINE}
               </div>

@@ -14,6 +14,9 @@ import './deviceMap.css';
 class DeviceMap extends Component {
   constructor(props) {
     super(props);
+    window.loadMap = () => {
+      this.showMap();
+    };
     this.state = {
       loadingMap: true
     };
@@ -25,24 +28,44 @@ class DeviceMap extends Component {
     );
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { devices } = nextProps;
-    if (devices && devices.length) {
-      this.setState({ loadingMap: false }, () => {
-        this.showMap(devices);
+  applyLocationAndAlarmToDevices() {
+    const { devices, alarmList, telemetryByDeviceGroup } = this.props;
+    devices.items.forEach(device => {
+      telemetryByDeviceGroup.forEach(telemetryGroup => {
+        if (device.Id === telemetryGroup.DeviceId) {
+          device.latitude = telemetryGroup.Body.latitude;
+          device.longitude = telemetryGroup.Body.longitude;
+        }
       });
-    }
+      alarmList.forEach(alarm => {
+        if (device.Id === alarm.Id) {
+          device.Severity = alarm.Severity;
+        }
+      });
+    });
   }
 
-  showMap(devices) {
-    const { mapkey, actions } = this.props;
+  componentWillReceiveProps(nextProps) {
+    if (
+      !nextProps.devices ||
+      !nextProps.telemetryByDeviceGroup ||
+      !nextProps.alarmList
+    ) {
+      return;
+    }
+    this.setState({ loadingMap: false });
+  }
+
+  showMap() {
+    const { devices, mapkey, actions } = this.props;
+    this.applyLocationAndAlarmToDevices();
     MapPane.init(mapkey);
     MapPane.setData({
-      deviceData: devices,
+      deviceData: devices.items,
       container: this,
       actions
     });
-    let data = this.getDeviceData(devices);
+    let data = this.getDeviceData(devices.items);
     MapPane.setDeviceLocationData(
       data.minLat,
       data.minLong,
@@ -62,6 +85,7 @@ class DeviceMap extends Component {
       this.latitude = null;
       this.longitude = null;
       this.status = null;
+      this.Severity = null;
     };
     let minLat;
     let maxLat;
@@ -74,20 +98,21 @@ class DeviceMap extends Component {
     let locationList;
     if (data && data.length) {
       locationList = data.map(function(item, i) {
-        let location = new Location(item.DeviceId);
-        if (item.DeviceId.match(/10_/)) {
+        let location = new Location(item.Id);
+        if (item.Id.match(/10_/)) {
           location.status = 1;
-        } else if (item.DeviceId.match(/6_/)) {
+        } else if (item.Id.match(/6_/)) {
           location.status = 2;
         } else {
           location.status = 0;
         }
-        let latitude = (location.latitude =
-          item['reported.Device.Location.Latitude']);
-        let longitude = (location.longitude =
-          item['reported.Device.Location.Longitude']);
+
+        location.Severity = item.Severity;
+        let latitude = (location.latitude = item.latitude);
+        let longitude = (location.longitude = item.longitude);
         latitudes.push(Number(latitude));
         longitudes.push(Number(longitude));
+
         return location;
       });
     }

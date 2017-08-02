@@ -31,6 +31,7 @@ export default {
       }
     },
     devices: {},
+    kpi: {},
     messages: []
   },
   flyout: {

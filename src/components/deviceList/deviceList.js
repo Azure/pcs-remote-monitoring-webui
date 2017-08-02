@@ -143,7 +143,9 @@ export default class DeviceList extends Component {
           onRowDataChanged={this.onDataChanged}
         />
         <Flyout ref="flyout">
-          <Header>{lang.DEVICES.DEVICEDETAIL}</Header>
+          <Header>
+            {lang.DEVICES.DEVICEDETAIL}
+          </Header>
           <Body>
             <DeviceDetail />
           </Body>
