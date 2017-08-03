@@ -5,9 +5,6 @@ import UiConfigApi from './UiConfigApi';
 import alarmList from './alarms';
 import deviceList from './deviceList';
 
-console.log('alarms', alarmList);
-console.log('telemetry', telemetry);
-
 const messages = [
   {
     DeviceId: 'Elevator1',

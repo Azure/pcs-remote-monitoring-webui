@@ -62,11 +62,11 @@ const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
         }
       };
 
-    case types.LOAD_TELEMETRY_BY_DEVICEGROUP_SUCCESS:
+    case types.LOAD_TELEMETRY_MESSAGES_SUCCESS:
       let radioBtnOptions = {};
       action.data.forEach(item => {
-        if (item.Body) {
-          Object.keys(item.Body).forEach(telemetry => {
+        if (item.Data) {
+          Object.keys(item.Data).forEach(telemetry => {
             if (validTelemetryType(telemetry)) {
               if (!radioBtnOptions[telemetry]) {
                 radioBtnOptions[telemetry] = {
@@ -78,7 +78,7 @@ const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
                 DeviceId: item.DeviceId,
                 Time: item.Time,
                 telemetry,
-                value: item.Body[telemetry]
+                value: item.Data[telemetry]
               };
               radioBtnOptions[telemetry].options.push(option);
             }

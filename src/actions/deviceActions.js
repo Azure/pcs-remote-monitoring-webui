@@ -1,6 +1,6 @@
 import * as types from './actionTypes';
 import { loadFailed } from './ajaxStatusActions';
-import MockApi from '../mock/mockApi';
+import ApiService from '../common/apiService';
 
 export const loadDeviceSuccess = devices => {
   return {
@@ -18,7 +18,7 @@ export const loadDeviceGroupSuccess = deviceGroup => {
 
 export const loadDevices = () => {
   return dispatch => {
-    return MockApi.getAllDevices()
+    return ApiService.getAllDevices()
       .then(data => {
         dispatch(loadDeviceSuccess(data));
       })
@@ -31,7 +31,7 @@ export const loadDevices = () => {
 
 export const loadDeviceGroup = () => {
   return dispatch => {
-    return MockApi.getDeviceGroup()
+    return ApiService.getDeviceGroup()
       .then(devices => {
         dispatch(loadDeviceGroupSuccess(devices));
       })

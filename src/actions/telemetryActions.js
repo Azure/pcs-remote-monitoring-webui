@@ -1,5 +1,6 @@
 import * as types from './actionTypes';
 import { loadFailed } from './ajaxStatusActions';
+import ApiService from '../common/apiService';
 import MockApi from '../mock/mockApi';
 
 export const loadTelemetryTypesSuccess = data => {
@@ -9,9 +10,9 @@ export const loadTelemetryTypesSuccess = data => {
   };
 };
 
-export const loadTelemetrByDeviceGroupSuccess = data => {
+export const loadTelemetrMessagesSuccess = data => {
   return {
-    type: types.LOAD_TELEMETRY_BY_DEVICEGROUP_SUCCESS,
+    type: types.LOAD_TELEMETRY_MESSAGES_SUCCESS,
     data
   };
 };
@@ -36,11 +37,11 @@ export const loadTelemetryTypes = () => {
   };
 };
 
-export const loadTelemetryByDeviceGroup = deviceGroup => {
+export const loadTelemetryMessages = deviceGroup => {
   return dispatch => {
-    return MockApi.getTelemetryByDeviceGroup(deviceGroup)
+    return ApiService.getTelemetryMessages(deviceGroup)
       .then(data => {
-        dispatch(loadTelemetrByDeviceGroupSuccess(data.Items));
+        dispatch(loadTelemetrMessagesSuccess(data.Items));
       })
       .catch(error => {
         dispatch(loadFailed(error));

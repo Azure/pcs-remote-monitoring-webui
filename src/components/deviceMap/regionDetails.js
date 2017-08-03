@@ -28,12 +28,12 @@ class RegionDetails extends Component {
     if (this.props.alarmList) {
       regionDetailsProps.totalAlarmDeviceCount = this.props.alarmList.filter(
         item => {
-          return item.Severity === Config.STATUS_CODES.CRITICAL;
+          return item.Rule.Severity === Config.STATUS_CODES.CRITICAL;
         }
       ).length;
       regionDetailsProps.totalWarningsDeviceCount = this.props.alarmList.filter(
         item => {
-          return item.Severity === Config.STATUS_CODES.WARNING;
+          return item.Rule.Severity === Config.STATUS_CODES.WARNING;
         }
       ).length;
     }

@@ -30,19 +30,21 @@ class DeviceMap extends Component {
 
   applyLocationAndAlarmToDevices() {
     const { devices, alarmList, telemetryByDeviceGroup } = this.props;
-    devices.items.forEach(device => {
-      telemetryByDeviceGroup.forEach(telemetryGroup => {
-        if (device.Id === telemetryGroup.DeviceId) {
-          device.latitude = telemetryGroup.Body.latitude;
-          device.longitude = telemetryGroup.Body.longitude;
-        }
+    if (devices && telemetryByDeviceGroup && alarmList) {
+      devices.items.forEach(device => {
+        telemetryByDeviceGroup.forEach(telemetryGroup => {
+          if (device.Id === telemetryGroup.DeviceId) {
+            device.latitude = telemetryGroup.Body.latitude;
+            device.longitude = telemetryGroup.Body.longitude;
+          }
+        });
+        alarmList.forEach(alarm => {
+          if (device.Id === alarm.Id) {
+            device.Severity = alarm.Severity;
+          }
+        });
       });
-      alarmList.forEach(alarm => {
-        if (device.Id === alarm.Id) {
-          device.Severity = alarm.Severity;
-        }
-      });
-    });
+    }
   }
 
   componentWillReceiveProps(nextProps) {

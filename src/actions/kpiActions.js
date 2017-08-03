@@ -1,6 +1,6 @@
 import * as types from './actionTypes';
 import { loadFailed } from './ajaxStatusActions';
-import MockApi from '../mock/mockApi';
+import ApiService from '../common/apiService';
 
 export const loadAlarmListSuccess = data => {
   return {
@@ -11,7 +11,7 @@ export const loadAlarmListSuccess = data => {
 
 export const loadAlarmList = () => {
   return dispatch => {
-    return MockApi.getAlarmList()
+    return ApiService.getAlarmList()
       .then(data => {
         dispatch(loadAlarmListSuccess(data));
       })

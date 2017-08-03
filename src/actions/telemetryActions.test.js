@@ -11,13 +11,23 @@ const store = mockStore({
   dashboard: {}
 });
 
+const mockResponse = (status, statusText, response) => {
+  return new window.Response(response, {
+    status: status,
+    statusText: statusText,
+    headers: {
+      'Content-type': 'application/json'
+    }
+  });
+};
+
 describe('actions', () => {
   it('should create an action to load messages', () => {
     const data = [
       {
         DeviceId: 'Elevator1',
         Time: '2017-01-14T05:39:45+00:00',
-        Body: {
+        Data: {
           temperature: '74',
           t_unit: 'F',
           humidity: '41',
@@ -34,12 +44,17 @@ describe('actions', () => {
   });
 
   it('calls request and success actions if the fetch response was successful', () => {
-    return store.dispatch(actions.loadTelemetryByDeviceGroup()).then(data => {
+    window.fetch = jest
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve(mockResponse(200, null, '[{}]'))
+      );
+    return store.dispatch(actions.loadTelemetryMessages()).then(data => {
       const expectedActions = store.getActions();
       expect(expectedActions.length).toBe(1);
 
       expect(expectedActions[0].type).toEqual(
-        types.LOAD_TELEMETRY_BY_DEVICEGROUP_SUCCESS
+        types.LOAD_TELEMETRY_MESSAGES_SUCCESS
       );
     });
   });

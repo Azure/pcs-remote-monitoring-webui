@@ -19,11 +19,9 @@ import './dashboard.css';
 class Dashboard extends Component {
   componentDidMount() {
     const { actions } = this.props;
-    actions.loadMessages();
     actions.loadDevices();
-    actions.loadMapkey();
-    actions.loadTelemetryByDeviceGroup();
     actions.loadAlarmList();
+    actions.loadTelemetryMessages();
   }
 
   render() {
@@ -81,7 +79,6 @@ const mapStateToProps = state => {
   return {
     flyout: state.flyoutReducer,
     telemetryByDeviceGroup: state.telemetryReducer.telemetryByDeviceGroup,
-    messages: state.messageReducer.messages,
     devices: state.deviceReducer.devices,
     mapkey: state.mapReducer.mapkey,
     alarmList: state.kpiReducer.alarmList
