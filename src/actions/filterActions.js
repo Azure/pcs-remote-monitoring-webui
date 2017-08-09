@@ -1,10 +1,10 @@
 import * as types from './actionTypes';
 import { loadFailed } from './ajaxStatusActions';
-import MockApi from '../mock/mockApi';
+import ApiService from '../common/apiService';
 
 export const getRegionByDisplayName = deviceGroup => {
   return dispatch => {
-    return MockApi.getRegionByDisplayName(deviceGroup)
+    return ApiService.getRegionByDisplayName(deviceGroup)
       .then(data => {
         //Creating the action inline for readability purposes
         dispatch({

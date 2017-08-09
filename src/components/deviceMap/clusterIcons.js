@@ -54,7 +54,7 @@ function offline(radius, clusterSize) {
     radius * 2,
     '">',
     '<rect width="24" height="24" style="fill:rgb(175,185,195);stroke-width:1;stroke:rgb(0,0,0)" />',
-    '<text x="6" y="18" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
+    '<text x="10" y="14" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
       clusterSize +
       '</text>',
     '</svg>'
@@ -91,57 +91,75 @@ function offlineWarn(radius, clusterSize) {
   ].join('');
 }
 
-const defaultIcon = function(severity, isConnected) {
+const defaultIcon = function(severity, isConnected, deviceId) {
+  // Design requirements is to show 10chars for the default text length and ... appended at last
+  if (deviceId.length > Config.STATUS_CODES.DEFAULTPUSHPINTEXTLENGTH) {
+    deviceId =
+      deviceId.substring(0, Config.STATUS_CODES.DEFAULTPUSHPINTEXTLENGTH) +
+      '...';
+  }
   let svgAlarm = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
-    '<path transform="translate(7,3) scale(0.9,0.9)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
+    '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
       'style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(0,0,0)"/>',
-    '<polygon points="23,0 29,10.6 17,11" fill="#fc540a" transform="translate(64-1)"/>',
-    '<text x="48" y="14" text-anchor="middle" alignment-baseline="central" ' +
-      'font-size="12" style="fill:black;stroke-width:1">XS-1001</text>',
+    '<polygon points="23,0 29,10.6 17,11" fill="#fc540a" transform="translate(48)"/>',
+    '<text x="40" y="11" text-anchor="middle" alignment-baseline="central" ' +
+      'font-size="10" style="fill:black;stroke-width:1">' +
+      deviceId +
+      '</text>',
     '</svg>'
   ].join('');
   let svgWarn = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
-    '<path transform="translate(7,3) scale(0.9,0.9)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
+    '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
       'style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(0,0,0)"/>',
     '<rect width="10" x="82" y="0" height="10" fill="#FDE870" />',
-    '<text x="48" y="14" text-anchor="middle" alignment-baseline="central" ' +
-      'font-size="12" style="fill:black;stroke-width:1">XS-1001</text>',
+    '<text x="40" y="10" text-anchor="middle" alignment-baseline="central" ' +
+      'font-size="11" style="fill:black;stroke-width:1">' +
+      deviceId +
+      '</text>',
     '</svg>'
   ].join('');
   let svg = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
-    '<path transform="translate(7,3) scale(0.9,0.9)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
+    '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
       'style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(0,0,0)"/>',
-    '<text x="48" y="14" text-anchor="middle" alignment-baseline="central" ' +
-      'font-size="12" style="fill:black;stroke-width:1">XS-1001</text>',
+    '<text x="40" y="10" text-anchor="middle" alignment-baseline="central" ' +
+      'font-size="11" style="fill:black;stroke-width:1">' +
+      deviceId +
+      '</text>',
     '</svg>'
   ].join('');
   let svgOfflineAlarm = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
-    '<path transform="translate(7,3) scale(0.9,0.9)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
+    '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
       'style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(0,0,0)"/>',
     '<polygon points="23,0 29,10.6 17,11" fill="#fc540a" transform="translate(64-1)"/>',
-    '<text x="48" y="14" text-anchor="middle" alignment-baseline="central" ' +
-      'font-size="12" style="fill:black;stroke-width:1">XS-1001</text>',
+    '<text x="40" y="10" text-anchor="middle" alignment-baseline="central" ' +
+      'font-size="11" style="fill:black;stroke-width:1">' +
+      deviceId +
+      '</text>',
     '</svg>'
   ].join('');
   let svgOfflinewarn = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
-    '<path transform="translate(7,3) scale(0.9,0.9)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
+    '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
       'style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(0,0,0)"/>',
     '<rect width="10" x="82" y="0" height="10" fill="#FDE870" />',
-    '<text x="48" y="14" text-anchor="middle" alignment-baseline="central" ' +
-      'font-size="12" style="fill:black;stroke-width:1">XS-1001</text>',
+    '<text x="48" y="9" text-anchor="middle" alignment-baseline="central" ' +
+      'font-size="11" style="fill:black;stroke-width:1">' +
+      deviceId +
+      '</text>',
     '</svg>'
   ].join('');
   let svgOffline = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
-    '<path transform="translate(7,3) scale(0.9,0.9)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
+    '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
       'style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(0,0,0)"/>',
-    '<text x="48" y="14" text-anchor="middle" alignment-baseline="central" ' +
-      'font-size="12" style="fill:black;stroke-width:1">XS-1001</text>',
+    '<text x="41" y="10" text-anchor="middle" alignment-baseline="central" ' +
+      'font-size="11" style="fill:black;stroke-width:1">' +
+      deviceId +
+      '</text>',
     '</svg>'
   ].join('');
 

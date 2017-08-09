@@ -4,3 +4,25 @@
   justify-content: center;
   height: 90%;
 }
+.bing-map {
+  height: 356px;
+  margin-left: -15px;
+}
+.dashboard_device_map {
+  margin-left: -15px; //columns have negative margins
+  margin-right: -15px;
+}
+.region-header {
+  margin-left: -10px;
+  height: 48px;
+  background-color: #242628;
+  padding: 15px 15px 15px 0px;
+  color: #afb9c3;
+  .more {
+    float: right;
+    font-size: 12px;
+  }
+  .device-location {
+    padding-left: 20px;
+  }
+}

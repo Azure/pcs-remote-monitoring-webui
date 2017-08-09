@@ -37,9 +37,24 @@ export const loadTelemetryTypes = () => {
   };
 };
 
-export const loadTelemetryMessages = deviceGroup => {
+//for all telemetry messages
+export const loadTelemetryMessages = deviceList => {
   return dispatch => {
-    return ApiService.getTelemetryMessages(deviceGroup)
+    return ApiService.loadTelemetryMessages(deviceList)
+      .then(data => {
+        dispatch(loadTelemetrMessagesSuccess(data.Items));
+      })
+      .catch(error => {
+        dispatch(loadFailed(error));
+        throw error;
+      });
+  };
+};
+
+// telemetryMessages based on the deviceId's
+export const loadTelemetryMessagesByDeviceIds = deviceList => {
+  return dispatch => {
+    return ApiService.loadTelemetryMessages(deviceList)
       .then(data => {
         dispatch(loadTelemetrMessagesSuccess(data.Items));
       })

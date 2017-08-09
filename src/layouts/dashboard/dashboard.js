@@ -7,11 +7,9 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import Telemetry from '../../components/telemetryWidget/telemetry';
 import AlarmList from '../../components/alarmList/alarmList';
 import KpiWidget from '../../components/kpiWidget/kpiWidget';
-import RegionDetails from '../../components/deviceMap/regionDetails.js';
 import Flyout from '../../components/flyout/flyout';
 import * as actions from '../../actions';
 import DeviceMap from '../../components/deviceMap/deviceMap.js';
-import lang from '../../common/lang';
 
 import '../layout.css';
 import './dashboard.css';
@@ -19,9 +17,10 @@ import './dashboard.css';
 class Dashboard extends Component {
   componentDidMount() {
     const { actions } = this.props;
-    actions.loadDevices();
+    actions.loadDevicesByTelemetryMessages();
     actions.loadAlarmList();
-    actions.loadTelemetryMessages();
+    actions.loadMapkey();
+    actions.loadDevices();
   }
 
   render() {
@@ -42,20 +41,7 @@ class Dashboard extends Component {
       <Grid fluid className="layout">
         <Row>
           <Col md={8}>
-            <div className="region-header row">
-              <span className="device-location">
-                {lang.DASHBOARD.DEVICELOCATION}
-              </span>
-              <span className="more">
-                {lang.DASHBOARD.MORE}
-              </span>
-            </div>
-            <Row className="device-map">
-              <RegionDetails {...this.props} />
-              <Col md={9} className="map-container">
-                <DeviceMap {...deviceMapProps} />
-              </Col>
-            </Row>
+            <DeviceMap {...deviceMapProps} />
           </Col>
           <Col md={4}>
             <AlarmList />

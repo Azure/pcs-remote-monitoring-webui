@@ -49,10 +49,9 @@ class RegionDetails extends Component {
     if (!selectedDeviceGroupName) {
       selectedDeviceGroupName = lang.REGIONDETAILS.ALLDEVICES;
     }
-    // TODO: Replace with values from service
     return (
       <Col md={3} className="device-location-conatiner">
-        <div className="region-container">
+        <div>
           <h3>
             {selectedDeviceGroupName}
           </h3>

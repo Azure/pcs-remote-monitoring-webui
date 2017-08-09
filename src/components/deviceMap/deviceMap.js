@@ -8,6 +8,9 @@ import MapPane from './mapPane';
 import Flyout, { Header, Body } from '../../framework/flyout/flyout';
 import DeviceDetail from '../deviceDetail/deviceDetail';
 import Spinner from '../spinner/spinner';
+import RegionDetails from '../../components/deviceMap/regionDetails.js';
+import { Row, Col } from 'react-bootstrap';
+import lang from '../../common/lang';
 
 import './deviceMap.css';
 
@@ -18,7 +21,8 @@ class DeviceMap extends Component {
       this.showMap();
     };
     this.state = {
-      loadingMap: true
+      loadingMap: true,
+      mapCallbackComplete: false
     };
   }
 
@@ -33,9 +37,13 @@ class DeviceMap extends Component {
     if (devices && telemetryByDeviceGroup && alarmList) {
       devices.items.forEach(device => {
         telemetryByDeviceGroup.forEach(telemetryGroup => {
+          /**
+          Bing Map renders the devices only if the devices have longitude and latitude.
+          If not we are not showing the devices on Map (all devices don't have the longitude and latitude).
+          */
           if (device.Id === telemetryGroup.DeviceId) {
-            device.latitude = telemetryGroup.Body.latitude;
-            device.longitude = telemetryGroup.Body.longitude;
+            device.latitude = telemetryGroup.Data.latitude;
+            device.longitude = telemetryGroup.Data.longitude;
           }
         });
         alarmList.forEach(alarm => {
@@ -53,13 +61,29 @@ class DeviceMap extends Component {
       !nextProps.telemetryByDeviceGroup ||
       !nextProps.alarmList
     ) {
+      //the data is not loaded yet, return !
       return;
+    }
+    //This is a flag that means map callback is complete
+    if (this.state.mapCallbackComplete) {
+      setTimeout(() => window.loadMap());
     }
     this.setState({ loadingMap: false });
   }
 
   showMap() {
-    const { devices, mapkey, actions } = this.props;
+    this.setState({ mapCallbackComplete: true });
+    const {
+      devices,
+      telemetryByDeviceGroup,
+      alarmList,
+      mapkey,
+      actions
+    } = this.props;
+    if (!devices || !telemetryByDeviceGroup || !alarmList) {
+      return;
+    }
+    //If control reaches here, that means map is loaded and also the data is also loaded.
     this.applyLocationAndAlarmToDevices();
     MapPane.init(mapkey);
     MapPane.setData({
@@ -154,18 +178,35 @@ class DeviceMap extends Component {
 
   render() {
     return (
-      <div className="bing-map">
-        {this.state.loadingMap &&
-          <div className="loading-spinner">
-            <Spinner />
-          </div>}
-        <div id="deviceMap" className="dashboard_device_map" />
-        <Flyout ref="flyout">
-          <Header>Device Detail</Header>
-          <Body>
-            <DeviceDetail />
-          </Body>
-        </Flyout>
+      <div>
+        <Row>
+          <Col md={12}>
+            <div className="region-header row">
+              <span className="device-location">
+                {lang.DASHBOARD.DEVICELOCATION}
+              </span>
+              <span className="more">
+                {lang.DASHBOARD.MORE}
+              </span>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <RegionDetails {...this.props} />
+          <Col md={9} className="bing-map">
+            {this.state.loadingMap &&
+              <div className="loading-spinner">
+                <Spinner />
+              </div>}
+            <div id="deviceMap" className="dashboard_device_map" />
+            <Flyout ref="flyout">
+              <Header>Device Detail</Header>
+              <Body>
+                <DeviceDetail />
+              </Body>
+            </Flyout>
+          </Col>
+        </Row>
       </div>
     );
   }

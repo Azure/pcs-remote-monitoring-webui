@@ -20,6 +20,7 @@ let init = function(mapApiKey) {
     enableSearchLogo: false,
     enableClickableLogo: false,
     navigationBarMode: window.Microsoft.Maps.NavigationBarMode.minified,
+    backgroundColor: window.Microsoft.Maps.Color.fromHex('#000000'), //for changing the background color
     showScalebar: false // for the Microsoft Bing maps label removal
   };
   // Initialize the map
@@ -124,7 +125,14 @@ let setDeviceLocationData = function setDeviceLocationData(
   map.entities.clear();
   let allPins = [];
   if (deviceLocations) {
+    /**
+    Bing Map renders the devices only if the devices have longitude and latitude.
+    If not we are not showing the devices on Map (all devices don't have the longitude and latitude).
+    */
     for (i = 0; i < deviceLocations.length; ++i) {
+      if (!deviceLocations[i].latitude || !deviceLocations[i].longitude) {
+        continue;
+      }
       loc = new window.Microsoft.Maps.Location(
         deviceLocations[i].latitude,
         deviceLocations[i].longitude
@@ -134,7 +142,8 @@ let setDeviceLocationData = function setDeviceLocationData(
         zIndex: deviceLocations[i].status,
         icon: clusterIcons.defaultIcon(
           deviceLocations[i].Severity,
-          deviceData[i].Connected
+          deviceData[i].Connected,
+          deviceLocations[i].deviceId
         )
       };
       pin = new window.Microsoft.Maps.Pushpin(loc, pinOptions);
