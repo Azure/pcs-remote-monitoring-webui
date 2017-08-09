@@ -11,20 +11,27 @@ export default {
         chartConfig: {
           bindto: '#timeline',
           data: {
-            x: 'x',
-            columns: []
+            json: [],
+            xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+            keys: {
+              x: 'Time',
+              value: []
+            }
           },
           axis: {
             x: {
               type: 'timeseries',
               tick: {
-                rotate: 0,
-                format: '%Y-%m-%d'
+                rotate: 65,
+                format: '%Y-%m-%dT%H:%M:%S'
               }
             }
           },
           zoom: {
             enabled: true
+          },
+          line: {
+            connectNull: true
           }
         },
         chartId: 'timeline'

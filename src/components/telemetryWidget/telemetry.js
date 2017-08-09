@@ -45,7 +45,7 @@ class Telemetry extends Component {
             checked={radioBtnOptions[key].selected}
             key={index}
           >
-            {key} [{radioBtnOptions[key].options.length}]
+            {key} [{radioBtnOptions[key].deviceNames.length}]
           </Radio>
         )
       : null;

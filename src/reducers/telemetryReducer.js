@@ -3,35 +3,8 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
-const telemetryMap = [
-  'Temperature',
-  'Humidity',
-  'Vibration',
-  'Light',
-  'Sound',
-  'Motion',
-  'Water level',
-  'Movement'
-];
-
-const loadTelemetryChartData = () => {
-  // TODO remove mock data
-  const columns = [
-    ['x', '2015-12-29', '2015-12-30', '2015-12-31'],
-    [`Elevator1`, 230, 300, 330],
-    [`Elevator2`, 190, 230, 200],
-    [`Elevator3`, 90, 130, 180]
-  ].map(arr =>
-    arr.map(e => (typeof e === 'number' ? Math.floor(Math.random() * e) : e))
-  );
-  return {
-    x: 'x',
-    columns
-  };
-};
-
-const validTelemetryType = telemetry =>
-  telemetryMap.map(e => e.toUpperCase()).includes(telemetry.toUpperCase());
+const validTelemetryType = (telemetry, telemetryTypes) =>
+  telemetryTypes.map(e => e.toUpperCase()).includes(telemetry.toUpperCase());
 
 const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
   switch (action.type) {
@@ -48,8 +21,6 @@ const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
           ? (newOptions[key].selected = true)
           : (newOptions[key].selected = false);
       });
-      // TODO remove mock data
-      const data = loadTelemetryChartData();
       return {
         ...state,
         radioBtnOptions: newOptions,
@@ -57,30 +28,48 @@ const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
           ...state.timeline,
           chartConfig: {
             ...state.timeline.chartConfig,
-            data
+            data: {
+              ...state.timeline.chartConfig.data,
+              json: newOptions[action.key].chartData,
+              keys: {
+                ...state.timeline.chartConfig.data.keys,
+                value: newOptions[action.key].deviceNames
+              }
+            }
           }
         }
       };
 
     case types.LOAD_TELEMETRY_MESSAGES_SUCCESS:
       let radioBtnOptions = {};
-      action.data.forEach(item => {
+      let chartDataSelected = [];
+      let displayNames = [];
+      const telemetrytypes = action.data.Properties.filter(
+        e => !e.includes('_')
+      );
+      action.data.Items.forEach(item => {
         if (item.Data) {
           Object.keys(item.Data).forEach(telemetry => {
-            if (validTelemetryType(telemetry)) {
+            if (validTelemetryType(telemetry, telemetrytypes)) {
               if (!radioBtnOptions[telemetry]) {
                 radioBtnOptions[telemetry] = {
                   selected: false,
-                  options: []
+                  chartData: [],
+                  deviceNames: []
                 };
               }
-              const option = {
-                DeviceId: item.DeviceId,
-                Time: item.Time,
-                telemetry,
-                value: item.Data[telemetry]
-              };
-              radioBtnOptions[telemetry].options.push(option);
+              const option = {};
+              const deviceName = item.DeviceId.split('.').join('_');
+              option[deviceName] = item.Data[telemetry];
+              option['Time'] = new Date(item.Time).toISOString();
+              radioBtnOptions[telemetry].chartData.push(option);
+              if (
+                radioBtnOptions[telemetry].deviceNames.every(
+                  e => e !== deviceName
+                )
+              ) {
+                radioBtnOptions[telemetry].deviceNames.push(deviceName);
+              }
             }
           });
         }
@@ -88,10 +77,10 @@ const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
       Object.keys(radioBtnOptions).sort().forEach((key, index) => {
         if (!index) {
           radioBtnOptions[key].selected = true;
+          chartDataSelected = [].concat(radioBtnOptions[key].chartData);
+          displayNames = [].concat(radioBtnOptions[key].deviceNames);
         }
       });
-      // TODO: remove mock data
-      const chartData = loadTelemetryChartData();
       return {
         ...state,
         telemetryByDeviceGroup: action.data,
@@ -100,7 +89,14 @@ const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
           ...state.timeline,
           chartConfig: {
             ...state.timeline.chartConfig,
-            data: chartData
+            data: {
+              ...state.timeline.chartConfig.data,
+              json: chartDataSelected,
+              keys: {
+                ...state.timeline.chartConfig.data.keys,
+                value: displayNames
+              }
+            }
           }
         }
       };

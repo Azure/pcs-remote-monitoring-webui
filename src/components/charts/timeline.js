@@ -20,8 +20,8 @@ class Timeline extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { columns } = nextProps.chartConfig.data;
-    this.switchChart({ columns, unload: true });
+    const { data } = nextProps.chartConfig;
+    this.switchChart({ ...data });
   }
 
   render() {

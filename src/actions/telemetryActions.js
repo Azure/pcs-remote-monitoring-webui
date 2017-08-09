@@ -1,7 +1,6 @@
 import * as types from './actionTypes';
 import { loadFailed } from './ajaxStatusActions';
 import ApiService from '../common/apiService';
-import MockApi from '../mock/mockApi';
 
 export const loadTelemetryTypesSuccess = data => {
   return {
@@ -26,9 +25,9 @@ export const selectTelemetryType = key => {
 
 export const loadTelemetryTypes = () => {
   return dispatch => {
-    return MockApi.getTelemetryTypes()
+    return ApiService.getTelemetryMessages()
       .then(data => {
-        dispatch(loadTelemetryTypesSuccess(data));
+        dispatch(loadTelemetryTypesSuccess(data.Properties));
       })
       .catch(error => {
         dispatch(loadFailed(error));
@@ -56,7 +55,7 @@ export const loadTelemetryMessagesByDeviceIds = deviceList => {
   return dispatch => {
     return ApiService.loadTelemetryMessages(deviceList)
       .then(data => {
-        dispatch(loadTelemetrMessagesSuccess(data.Items));
+        dispatch(loadTelemetrMessagesSuccess(data));
       })
       .catch(error => {
         dispatch(loadFailed(error));
