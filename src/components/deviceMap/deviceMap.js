@@ -36,7 +36,7 @@ class DeviceMap extends Component {
     const { devices, alarmList, telemetryByDeviceGroup } = this.props;
     if (devices && telemetryByDeviceGroup && alarmList) {
       devices.items.forEach(device => {
-        telemetryByDeviceGroup.forEach(telemetryGroup => {
+        telemetryByDeviceGroup.Items.forEach(telemetryGroup => {
           /**
           Bing Map renders the devices only if the devices have longitude and latitude.
           If not we are not showing the devices on Map (all devices don't have the longitude and latitude).
