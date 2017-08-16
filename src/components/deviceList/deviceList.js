@@ -1,20 +1,24 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Config from '../../common/config';
-import EventTopic, { Topics } from '../../common/eventtopic';
+import { Topics } from '../../common/eventtopic';
+import Flyout from '../flyout/flyout';
 import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
 import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
-import Flyout, { Header, Body } from '../../framework/flyout/flyout';
-import DeviceDetail from '../deviceDetail/deviceDetail';
+// import Flyout, { Header, Body } from '../../framework/flyout/flyout';
+// import DeviceDetail from '../deviceDetail/deviceDetail';
 import AddDevice from '../addDevice/addDevice';
 import ActOnDevice from '../actOnDevice/actOnDevice';
 import lang from '../../common/lang';
 import Http from '../../common/httpClient';
+import * as actions from '../../actions';
 
 import './deviceList.css';
 
-export default class DeviceList extends Component {
+export class DeviceList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -48,8 +52,10 @@ export default class DeviceList extends Component {
           headerName: lang.DEVICES.STATE,
           field: 'Connected',
           filter: 'text',
-          valueFormatter: (params) => {
-            return params.value ? lang.DEVICES.CONNECTED : lang.DEVICES.DISCONNECTED;
+          valueFormatter: params => {
+            return params.value
+              ? lang.DEVICES.CONNECTED
+              : lang.DEVICES.DISCONNECTED;
           }
         },
         {
@@ -71,10 +77,14 @@ export default class DeviceList extends Component {
   };
 
   onRowClick = row => {
-    setTimeout(() => {
-      this.refs.flyout.show();
-      EventTopic.publish(Topics.device.selected, row, this);
-    });
+    const { actions } = this.props;
+    const flyoutConfig = { device: row, type: 'Device detail' };
+    actions.showFlyout({ ...flyoutConfig });
+    //TODO port flyout action
+    // setTimeout(() => {
+    //   this.refs.flyout.show();
+    //   EventTopic.publish(Topics.device.selected, row, this);
+    // });
   };
 
   onRowSelectionChanged = rows => {
@@ -87,13 +97,19 @@ export default class DeviceList extends Component {
     // TODO: wait for the global filter to be checked in and get selected device group from props
     // TODO: Pass conditions to api
     const url = `${Config.iotHubManagerApiUrl}devices`;
-    
+
     Http.get(url).then(data => {
       callback(data.items);
     });
   };
 
   render() {
+    const { flyout, actions } = this.props;
+    const flyoutProp = {
+      show: flyout.show,
+      onClose: actions.hideFlyout,
+      content: flyout.content
+    };
     return (
       <div ref="container" className="deviceListContainer">
         <div className="deviceListButtonBar">
@@ -142,15 +158,25 @@ export default class DeviceList extends Component {
           onGridReady={this.onDataChanged}
           onRowDataChanged={this.onDataChanged}
         />
-        <Flyout ref="flyout">
-          <Header>
-            {lang.DEVICES.DEVICEDETAIL}
-          </Header>
-          <Body>
-            <DeviceDetail />
-          </Body>
-        </Flyout>
+        <Flyout {...flyoutProp} />
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    flyout: state.flyoutReducer,
+    telemetryByDeviceGroup: state.telemetryReducer.telemetryByDeviceGroup,
+    devices: state.deviceReducer.devices,
+    alarmList: state.kpiReducer.alarmList
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeviceList);

@@ -1,4 +1,6 @@
-.flyoutWrapper {
+// Copyright (c) Microsoft. All rights reserved.
+
+.flyout-wrapper {
   position: absolute;
   top: 51px;
   right: 0px;
@@ -6,8 +8,32 @@
   bottom: 0px;
   transition-duration: 0.1s;
   transition-timing-function: ease;
-  background-color: #f1f1f1;
-  border: 1px solid #dddddd;
+  background-color: #1b1d1f;
+  color: #afb9c3;
+  padding: 0 16px;
   z-index: 1001;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.flyout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #454a4e;
+  height: 48px;
+  span {
+    margin-left: 10px;
+  }
+}
+
+.flyout-footer {
+  float: right;
+  margin-top: 32px;
+  padding: 8px;
+  background-color: #242628;
+  cursor: pointer;
+  &:hover {
+    color: #ffffff;
+    background-color: #454a4e;
+  }
 }

@@ -20,7 +20,8 @@ const lang = {
     OK: 'ok'
   },
   DEVICES: {
-    CAUTION: 'Caution: You are scheduling an action that will effect {0} devices.',
+    CAUTION:
+      'Caution: You are scheduling an action that will effect {0} devices.',
     DEVICEID: 'DeviceId',
     TYPE: 'Type',
     FIRMWAREVERSION: 'Firmware Version',
@@ -89,6 +90,34 @@ const lang = {
     DEVICES: 'Devices',
     RULES_ACTIONS: 'Rules & Actions',
     MAINTENANCE: 'Maintenance'
+  },
+  DEVICE_DETAIL: {
+    TELEMETRY: 'Telemetry',
+    TAGS: 'Tags',
+    TAGS_DESCRIPTION: 'Tags applied to device',
+    SIMULATED: 'Simulated',
+    PHYSICAL: 'Physical',
+    CONNECTED: 'Connected',
+    DISCONNECTED: 'Diconnected',
+    KEY: 'KEY',
+    VALUE: 'VALUE',
+    METHODS: 'Methods',
+    METHODS_DESCRIPTION: 'All methods available for device',
+    PROPERTIES: 'Properties',
+    PROPERTIES_DESCRIPTION: 'Selected Properties on devices',
+    DIAGNOSTICS: 'Diagnostics',
+    DIAGNOSTICS_DESCRIPTION: 'Diagnostic information from device',
+    COPY_TO_CLIPBOARD: 'Copy all properties to clipboard',
+    COPY_TO_CLIPBOARD_DESCRIPTION:
+      'Copy a list of all properties and methods associated',
+    LOCATION: 'Location',
+    FIRMWARE: 'Firmware',
+    DEVICETYPE: 'DeviceType',
+    STATUS: 'Status',
+    LAST_MSG: 'Last message',
+    MESSAGE: 'Message',
+    CLICK_TO_SHOW: 'Click here to see raw message',
+    SYNC: 'Syncing'
   }
 };
 export default lang;

@@ -13,6 +13,14 @@ class ApiService {
     return Http.get(`${Config.telemetryApiUrl_new}messages?devices=${csvIds}`);
   }
 
+  static getLastTelemetryMessage(deviceId) {
+    return Http.get(
+      `${Config.telemetryApiUrl_new}messages?order=desc&limit=1&devices=${encodeURIComponent(
+        deviceId
+      )}`
+    );
+  }
+
   static loadTelemetryMessages() {
     return Http.get(`${Config.telemetryApiUrl_new}messages?order=desc`);
   }

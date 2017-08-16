@@ -1,0 +1,43 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+.device-detail-flyout {
+  height: 85%;
+  overflow-x: hidden;
+
+  .device-detail-tile {
+    padding-top: 16px;
+    .device-detail {
+      display: flex;
+      .device-icon {
+        margin-right: 32px;
+        max-width: 100px;
+      }
+      .device-name {
+        font-size: large;
+      }
+      .device-status {
+        font-size: x-small;
+      }
+    }
+  }
+
+  td,
+  th {
+    padding: 0 5px;
+  }
+}
+
+// customize scroll bar for webkit based browser
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #1b1d1f;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  background-color: #1b1d1f;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #232528;
+}

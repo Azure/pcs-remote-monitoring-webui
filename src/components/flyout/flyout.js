@@ -1,34 +1,52 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import { Button } from 'react-bootstrap';
-import { Header, Body, Footer } from '../../framework/flyout/flyout';
+import CloseIcon from '../../assets/icons/X.svg';
+import FullWidthIcon from '../../assets/icons/FullWidth.svg';
+import DeviceDetailFlyout from './deviceDetailFlyout';
 
 import './flyout.css';
 
-/*
-*  Functional components focus on how things look.
-*  In most cases, it won't worry about state.
-*  Its receive data and actions from container/parent component.
-*/
+const getFlyout = (content, onClose) => {
+  switch (content.type) {
+    case 'Device detail':
+      return <DeviceDetailFlyout content={content} onClose={onClose} />;
 
-const Flyout = ({show, content, onClose}) => {
-  return show ? (
-      <div className="flyoutWrapper">
-        <Header>
-            <h1>DeviceId: {content.DeviceId}</h1>
-        </Header>
-        <Body>
-            <p>Time: {content.Time}</p>
-            <p>Body: {content.Body}</p>
-        </Body>
-        <Footer>
-            <Button
-              bsStyle="primary"
-              onClick={onClose}>Close</Button>
-        </Footer>
+    default:
+      return null;
+  }
+};
+
+const Flyout = ({ show, content, onClose }) => {
+  const iconStyle = {
+    height: 16,
+    width: 16
+  };
+  return show
+    ? <div className="flyout-wrapper">
+        <div className="flyout-header">
+          <div>
+            {content.type}
+          </div>
+          <div>
+            <span>
+              <img
+                src={FullWidthIcon}
+                {...iconStyle}
+                alt={`${FullWidthIcon}`}
+              />
+            </span>
+            <span onClick={onClose}>
+              <img src={CloseIcon} {...iconStyle} alt={`${CloseIcon}`} />
+            </span>
+          </div>
+        </div>
+        {getFlyout(content, onClose)}
+        <div className="flyout-footer">
+          <div onClick={onClose}>Cancel</div>
+        </div>
       </div>
-  ) : null;
-}
+    : null;
+};
 
 export default Flyout;
