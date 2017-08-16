@@ -80,11 +80,11 @@ class DeviceDetailFlyout extends Component {
     ).map((key, index) => {
       if (
         key === lang.DEVICE_DETAIL.DEVICETYPE &&
-        reportedProperties[key].Name !== ''
+        reportedProperties[key] !== ''
       ) {
         if (
           desiredProperties[key] &&
-          desiredProperties[key].Name !== reportedProperties[key].Name
+          desiredProperties[key] !== reportedProperties[key]
         ) {
           return (
             <tr key={index}>
@@ -92,10 +92,10 @@ class DeviceDetailFlyout extends Component {
                 {key}
               </td>
               <td>
-                {reportedProperties[key].Name}
+                {reportedProperties[key]}
               </td>
               <td>
-                `${lang.DEVICE_DETAIL.SYNC} ${reportedProperties[key].Name}`
+                `${lang.DEVICE_DETAIL.SYNC} ${reportedProperties[key]}`
               </td>
             </tr>
           );
@@ -106,7 +106,7 @@ class DeviceDetailFlyout extends Component {
               {key}
             </td>
             <td>
-              {reportedProperties[key].Name}
+              {reportedProperties[key]}
             </td>
           </tr>
         );
@@ -145,7 +145,7 @@ class DeviceDetailFlyout extends Component {
           );
         }
       }
-      if (key === 'Firmware' && reportedProperties[key]) {
+      if (key === lang.DEVICE_DETAIL.FIRMWARE && reportedProperties[key]) {
         const deviceFirmware = reportedProperties[key];
         if (
           desiredProperties[key] &&

@@ -112,7 +112,7 @@ const lang = {
       'Copy a list of all properties and methods associated',
     LOCATION: 'Location',
     FIRMWARE: 'Firmware',
-    DEVICETYPE: 'DeviceType',
+    DEVICETYPE: 'Type',
     STATUS: 'Status',
     LAST_MSG: 'Last message',
     MESSAGE: 'Message',
