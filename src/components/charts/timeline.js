@@ -2,26 +2,54 @@
 
 import React, { Component } from 'react';
 import C3 from 'c3';
+import moment from 'moment';
+import Config from '../../common/config';
+
 import './chart.css';
 
 class Timeline extends Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     this.state = {
-      timeline: C3.generate({ ...this.props.chartConfig })
+      timeline: {}
     };
   }
 
-  switchChart(newProps) {
-    this.state.timeline.load({ ...newProps, unload: true });
+  componentDidMount() {
+    this.setState({ timeline: C3.generate({ ...this.props.chartConfig }) });
+  }
+
+  switchChart(props) {
+    this.state.timeline.load({ ...props, unload: true });
   }
 
   updateChart(props) {
-    this.state.timeline.load.flow({ ...props, duration: 1500 });
+    const startTime = moment()
+      .subtract(Config.INTERVALS.TELEMETRY_SLIDE_WINDOW, 'minutes')
+      .toISOString();
+    this.state.timeline.flow({
+      ...props,
+      duration: Config.INTERVALS.TELEMETRY_FLOW_DURATION,
+      to: startTime
+    });
   }
 
   componentWillReceiveProps(nextProps) {
     const { data } = nextProps.chartConfig;
-    this.switchChart({ ...data });
+    if (
+      !data ||
+      !data.json ||
+      !data.json.length ||
+      !nextProps.selectedTelemetry
+    ) {
+      return;
+    }
+    if (this.props.selectedTelemetry === nextProps.selectedTelemetry) {
+      this.updateChart(data);
+    }
+    if (this.props.selectedTelemetry !== nextProps.selectedTelemetry) {
+      this.switchChart(data);
+    }
   }
 
   render() {

@@ -9,6 +9,13 @@ export const loadTelemetryTypesSuccess = data => {
   };
 };
 
+export const updateTelemetrMessagesSuccess = data => {
+  return {
+    type: types.UPDATE_TELEMETRY_TYPES_SUCCESS,
+    data
+  };
+};
+
 export const loadTelemetrMessagesSuccess = data => {
   return {
     type: types.LOAD_TELEMETRY_MESSAGES_SUCCESS,
@@ -41,7 +48,7 @@ export const loadTelemetryMessages = deviceList => {
   return dispatch => {
     return ApiService.loadTelemetryMessages(deviceList)
       .then(data => {
-        dispatch(loadTelemetrMessagesSuccess(data.Items));
+        dispatch(loadTelemetrMessagesSuccess(data));
       })
       .catch(error => {
         dispatch(loadFailed(error));
@@ -55,7 +62,22 @@ export const loadTelemetryMessagesByDeviceIds = deviceList => {
   return dispatch => {
     return ApiService.loadTelemetryMessages(deviceList)
       .then(data => {
+        // TODO: using the same action ??
         dispatch(loadTelemetrMessagesSuccess(data));
+      })
+      .catch(error => {
+        dispatch(loadFailed(error));
+        throw error;
+      });
+  };
+};
+
+// telemetryMessages for last 1 minute
+export const loadTelemetryMessagesP1M = deviceList => {
+  return dispatch => {
+    return ApiService.getTelemetryMessagesP1M(deviceList)
+      .then(data => {
+        dispatch(updateTelemetrMessagesSuccess(data));
       })
       .catch(error => {
         dispatch(loadFailed(error));

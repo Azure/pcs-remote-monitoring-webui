@@ -5,8 +5,21 @@
   color: #afb9c3;
   .telemetry-panel-heading {
     background-color: #242628;
-    padding: 15px;
+    padding: 5px;
     height: 48px;
+  }
+  .telemetry-header {
+    display: flex;
+    justify-content: space-between;
+    .pause-button {
+      border-radius: 25px;
+      color: #afb9c3;
+      background: #1b1d1f;
+      padding: 5px 10px 5px 10px;
+      &:hover {
+        background-color: #333;
+      }
+    }
   }
   label.radio-inline {
     margin-left: 29px;

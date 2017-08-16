@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { Panel, Row, Radio } from 'react-bootstrap';
 import Timeline from '../charts/timeline';
 import * as actions from '../../actions';
+import Config from '../../common/config';
 
 import './telemetry.css';
 
@@ -13,8 +14,38 @@ class Telemetry extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      pause: false
+    };
+
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.toggleTelemetryOption = this.toggleTelemetryOption.bind(this);
+    this.toggleTimer = this.toggleTimer.bind(this);
+  }
+
+  componentDidMount() {
+    const { actions, devices } = this.props;
+    this.timerID = setInterval(
+      () => actions.loadTelemetryMessagesP1M(devices),
+      Config.INTERVALS.TELEMETRY_UPDATE_INTERVAL
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  toggleTimer() {
+    if (this.timerID) {
+      clearInterval(this.timerID);
+      this.timerID = 0;
+    } else {
+      this.timerID = setInterval(
+        () => this.props.actions.loadTelemetryMessagesP1M(),
+        2500
+      );
+    }
+    this.setState({ pause: !this.state.pause });
   }
 
   handleOptionChange(key) {
@@ -28,7 +59,7 @@ class Telemetry extends Component {
   }
 
   render() {
-    const { radioBtnOptions } = this.props;
+    const { radioBtnOptions, timeline } = this.props;
     const selectedColor = '#ffffff';
     const unselectedColor = '#afb9c3';
     const telemetryRadioBtnGroup = radioBtnOptions
@@ -49,14 +80,31 @@ class Telemetry extends Component {
           </Radio>
         )
       : null;
-
+    const timelineConfig = {
+      ...timeline,
+      chartId: this.props.chartId,
+      chartConfig: {
+        ...timeline.chartConfig,
+        bindto: `#${this.props.chartId}`
+      }
+    };
+    // TODO: change the pause button per UX
+    const panelHeader = (
+      <div className="telemetry-header">
+        <h4>Telemetry</h4>
+        <button className="pause-button" onClick={this.toggleTimer}>
+          {this.state.pause ? 'pause' : 'flowing'}
+        </button>
+      </div>
+    );
     return (
-      <Panel header="Telemetry" bsClass="telemetry-panel">
+      <Panel header={panelHeader} bsClass="telemetry-panel">
         <Row>
           {telemetryRadioBtnGroup}
         </Row>
-        <Timeline {...this.props.timeline} />
-        <Row />
+        <Row>
+          <Timeline {...timelineConfig} />
+        </Row>
       </Panel>
     );
   }

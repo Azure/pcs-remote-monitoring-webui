@@ -9,7 +9,7 @@ export default {
     telemetry: {
       timeline: {
         chartConfig: {
-          bindto: '#timeline',
+          bindto: '',
           data: {
             json: [],
             xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
@@ -33,8 +33,7 @@ export default {
           line: {
             connectNull: true
           }
-        },
-        chartId: 'timeline'
+        }
       }
     },
     devices: {},

@@ -49,7 +49,7 @@ class Dashboard extends Component {
         </Row>
         <Row className="widgets rowH40Percent">
           <Col md={8}>
-            <Telemetry />
+            <Telemetry chartId="telemetry_chart" />
           </Col>
           <Col md={4}>
             <KpiWidget />

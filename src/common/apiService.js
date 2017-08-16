@@ -14,7 +14,13 @@ class ApiService {
   }
 
   static loadTelemetryMessages() {
-    return Http.get(`${Config.telemetryApiUrl_new}messages`);
+    return Http.get(`${Config.telemetryApiUrl_new}messages?order=desc`);
+  }
+
+  static getTelemetryMessagesP1M() {
+    return Http.get(
+      `${Config.telemetryApiUrl_new}messages?from=NOW-PT1M&to=NOW&order=desc`
+    );
   }
 
   static getAlarmList() {
