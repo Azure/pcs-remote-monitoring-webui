@@ -94,7 +94,7 @@ class AlarmList extends Component {
           paginationAutoPageSize={true}
           pagination={true}
           eventDataKey="0"
-          datasource={`${Config.telemetryApiUrl_new}alarmsbyrule?from=NOW-{timerange}&to=NOW${devicesListParam}`}
+          datasource={`${Config.telemetryApiUrl}alarmsbyrule?from=NOW-{timerange}&to=NOW${devicesListParam}`}
           dataFormatter={this.dataFormatter}
           urlSearchPattern="/\{timerange\}/i"
           topics={[Topics.dashboard.alarmTimerange.selected]}
