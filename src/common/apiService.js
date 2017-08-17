@@ -32,11 +32,31 @@ class ApiService {
   }
 
   static getAlarmList() {
-    return Http.get(`${Config.telemetryApiUrl}alarmsbyrule`);
+    return Http.get(`${Config.telemetryApiUrl}alarmsbyrule`); 
+  }
+
+  /**
+   * Get list of alarms aggregated by rule
+   * @param params An object containing API parameters
+   *    "from": The ISO8601 format start of the time window for the query.
+   *    "to": The ISO8601 format end of the time window for the query.
+   *    "order": Whether to sort the result from the oldest (asc) or the most recent (desc)
+   *    "skip": How many records to skip, used to paginate through the global list of alarms
+   *    "limit": How many records to return, used to paginate through the global list of alarms
+   *    "devices": A filter used to request alarms for specific devices
+   */
+  static getAlarmsByRule(params = {}) {
+    return Http.get(`${Config.telemetryApiUrl}alarmsbyrule?${ApiService.serializeParamObject(params)}`);
   }
 
   static getRegionByDisplayName() {
     return Http.get(`${Config.uiConfigApiUrl}devicegroups`);
+  }
+
+  static serializeParamObject(params) {
+    return Object.keys(params)
+      .map(param => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
+      .join('&');
   }
 }
 

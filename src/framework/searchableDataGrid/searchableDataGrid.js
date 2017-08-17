@@ -17,6 +17,7 @@ class SearchableDataGrid extends Component {
     this.state = {
       title: this.props.title || '',
       datasource: this.props.datasource || '/api/v1/events/',
+      dataFormatter: this.props.dataFormatter || undefined,
       columns: [],
       rows: [],
       originalRows: [],
@@ -74,6 +75,11 @@ class SearchableDataGrid extends Component {
 
   resize = props => {
     if (this.container) {
+      /* 
+        TODO (stpryor): If props change, render will be called again. 
+        If the height is not provided, the parentElement height will be used.
+        This causes the height to grow with each props change for now reason.
+      */
       let newClientHeight =
         props.height || this.container.parentElement.clientHeight || undefined;
       if (newClientHeight && this.state.title.length) {
@@ -203,12 +209,13 @@ class SearchableDataGrid extends Component {
       httpClient
         .get(normalizedUrl)
         .then(data => {
+          let formattedData = this.state.dataFormatter ? this.state.dataFormatter(data) : data;
           this.setState({
-            originalRows: data,
-            rows: data,
+            originalRows: formattedData,
+            rows: formattedData,
             lastupdate: new Date()
           });
-          const itemIds = data.map(item => {
+          const itemIds = formattedData.map(item => {
             let idcol = this.props.idCol || Object.keys(item)[0];
             return item[idcol];
           });
@@ -219,7 +226,7 @@ class SearchableDataGrid extends Component {
             this
           );
           this.setState({
-            selectedIndexes: Object.keys(data).map(key => parseInt(key, 10)),
+            selectedIndexes: Object.keys(formattedData).map(key => parseInt(key, 10)),
             loading: false
           });
         })
