@@ -24,7 +24,8 @@ const Config = {
   uiConfigApiUrl: `${baseURL}uiconfig/v1/`,
   deviceSimulationApiUrl: `${baseURL}devicesimulation/v1/`,
   iotHubManagerApiUrl: `${baseURL}iothubmanager/v1/`,
-  telemetryApiUrl: `${baseURL}devicetelemetry/v1/`
+  telemetryApiUrl: `${baseURL}devicetelemetry/v1/`,
+  msTelemetryApiRefreshInterval: 2
 };
 
 export default Config;

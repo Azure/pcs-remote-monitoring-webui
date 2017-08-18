@@ -42,10 +42,6 @@ class MockApi {
     });
   }
 
-  static getMapKey() {
-    return Http.get(`${Config.solutionApiUrl}api/v1/mapApiKey`);
-  }
-
   static getTelemetryTypes() {
     return Http.get(`${Config.telemetryTypeApiUrl}`);
   }

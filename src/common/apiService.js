@@ -1,9 +1,36 @@
+// Copyright (c) Microsoft. All rights reserved.
+
 import Http from './httpClient';
 import Config from './config';
 
 class ApiService {
+  static getAllMessages() {
+    return Http.get(`${Config.telemetryApiUrl}messages`);
+  }
+
   static getAllDevices() {
-    return Http.get(`${Config.iotHubManagerApiUrl}/devices`);
+    return Http.get(`${Config.iotHubManagerApiUrl}devices`);
+  }
+  static getDevicesForGroup(selectedGroupConditions) {
+    const encodedParam = encodeURIComponent(
+      JSON.stringify(selectedGroupConditions)
+    );
+    return Http.get(
+      `${Config.iotHubManagerApiUrl}devices?query=${encodedParam}`
+    );
+  }
+
+  static getAlarmsList(from, to, deviceIds) {
+    return Http.get(
+      `${Config.telemetryApiUrl}alarms?devices=${deviceIds}&from=` +
+        encodeURIComponent(from) +
+        '&to=' +
+        encodeURIComponent(to)
+    );
+  }
+
+  static getAlarmsListForDeviceMap(deviceIds) {
+    return Http.get(`${Config.telemetryApiUrl}alarms?devices=${deviceIds}`);
   }
 
   static loadTelemetryMessagesByDeviceIds(deviceIds) {
@@ -28,6 +55,15 @@ class ApiService {
   static getTelemetryMessagesP1M() {
     return Http.get(
       `${Config.telemetryApiUrl}messages?from=NOW-PT1M&to=NOW&order=desc`
+    );
+  }
+
+  static getAlarmsByRuleForKpi(from, to, deviceIds) {
+    return Http.get(
+      `${Config.telemetryApiUrl}alarmsbyrule?devices=${deviceIds}&Order=desc&from=` +
+        encodeURIComponent(from) +
+        '&to=' +
+        encodeURIComponent(to)
     );
   }
 

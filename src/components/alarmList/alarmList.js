@@ -22,7 +22,11 @@ class AlarmList extends Component {
       { headerName: 'Rule Name', field: 'ruleId', filter: 'text' },
       { headerName: 'Severity', field: 'severity', filter: 'text' },
       { headerName: 'Created', field: 'created', filter: 'date' },
-      { headerName: 'Open Occurrences', field: 'occurrences', filter: 'number' },
+      {
+        headerName: 'Open Occurrences',
+        field: 'occurrences',
+        filter: 'number'
+      },
       { headerName: 'Description', field: 'description', filter: 'text' },
       { headerName: 'Status', field: 'status', filter: 'text' }
     ];
@@ -46,13 +50,15 @@ class AlarmList extends Component {
         occurrences: item.Count,
         description: item.Rule.Description,
         severity: item.Rule.Severity,
-        status: item.Status,
+        status: item.Status
       };
     });
   }
 
   render() {
-    const devicesList = this.props.devices.map(id => encodeURIComponent(id)).join(',');
+    const devicesList = this.props.devices
+      .map(id => encodeURIComponent(id))
+      .join(',');
     const devicesListParam = devicesList ? `&devices=${devicesList}` : '';
     return (
       <div ref="container" className="alarm-list">
@@ -113,11 +119,13 @@ class AlarmList extends Component {
 }
 
 const mapStateToProps = state => {
-  const devices = state.deviceReducer.devices && state.deviceReducer.devices.items ? state.deviceReducer.devices.items : [];
+  const devices =
+    state.deviceReducer.devices && state.deviceReducer.devices.items
+      ? state.deviceReducer.devices.items
+      : [];
   return {
-    devices: devices.map(device => device.Id),
+    devices: devices.map(device => device.Id)
   };
 };
 
 export default connect(mapStateToProps, undefined)(AlarmList);
-

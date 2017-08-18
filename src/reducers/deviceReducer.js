@@ -11,6 +11,12 @@ const deviceReducer = (state = initialState.dashboard.devices, action) => {
         devices: action.devices
       };
 
+    case types.LOAD_DEVICE_TELEMETRY_SUCCESS:
+      return {
+        ...state,
+        alarmsList: action.data.Items
+      };
+
     case types.LOAD_DEVICES_GROUP_SUCCESS:
       return {
         ...state,

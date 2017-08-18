@@ -110,6 +110,20 @@ const lang = {
     RULES_ACTIONS: 'Rules & Actions',
     MAINTENANCE: 'Maintenance'
   },
+  KPI: {
+    CURRENTDAY: 'Current day',
+    LASTDAY: 'Last day',
+    CURRENTWEEK: 'Current week',
+    LASTWEEK: 'Last week',
+    CURRENTMONTH: 'Current month',
+    LASTMONTH: 'Last month',
+    CRITICAL: 'critical',
+    CRITICALALARM: 'Critical Alarm',
+    ALARMBYDEVICETYPE: 'Alarm by device type',
+    SYSTEMKPI: 'System KPIs',
+    TOPRULESTRIGGERED: 'Top rules triggered',
+    TIMERANGE: 'TIME RANGE'
+  },
   DEVICE_DETAIL: {
     TELEMETRY: 'Telemetry',
     TAGS: 'Tags',

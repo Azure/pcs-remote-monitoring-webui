@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft. All rights reserved.
+
 import * as types from './actionTypes';
 import MockApi from '../mock/mockApi';
 

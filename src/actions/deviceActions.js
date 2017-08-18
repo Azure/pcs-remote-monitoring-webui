@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft. All rights reserved.
+
 import * as types from './actionTypes';
 import { loadFailed } from './ajaxStatusActions';
 import ApiService from '../common/apiService';
@@ -27,7 +29,24 @@ export const loadDevicesByTelemetryMessages = () => {
           dispatch(
             telemetryActions.loadTelemetryMessagesByDeviceIds(deviceIds)
           );
+          dispatch(loadDeviceMapAlaramsList(deviceIds));
         }
+      })
+      .catch(error => {
+        dispatch(loadFailed(error));
+        throw error;
+      });
+  };
+};
+
+export const loadDeviceMapAlaramsList = deviceIds => {
+  return dispatch => {
+    ApiService.getAlarmsListForDeviceMap(deviceIds.join(','))
+      .then(data => {
+        dispatch({
+          type: types.LOAD_DEVICE_TELEMETRY_SUCCESS,
+          data: data
+        });
       })
       .catch(error => {
         dispatch(loadFailed(error));

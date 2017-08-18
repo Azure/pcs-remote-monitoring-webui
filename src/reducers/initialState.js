@@ -37,7 +37,10 @@ export default {
       }
     },
     devices: {},
-    kpi: {},
+    kpi: {
+      chartDataFetchComplete: false,
+      alarmsList: []
+    },
     messages: []
   },
   flyout: {

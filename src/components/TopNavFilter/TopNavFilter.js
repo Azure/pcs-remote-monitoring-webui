@@ -1,10 +1,15 @@
+// Copyright (c) Microsoft. All rights reserved.
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../actions/actionTypes';
 import Filter from '../../assets/icons/Filter.svg';
+import * as actionTypes from '../../actions/actionTypes';
 import Lang from '../../common/lang';
 import ManageFilters from '../../assets/icons/ManageFilters.svg';
-import { getRegionByDisplayName } from '../../actions/filterActions';
+import {
+  getRegionByDisplayName,
+  loadRegionSpecificDevices
+} from '../../actions/filterActions';
 import './TopNavFilter.css';
 import Select from 'react-select';
 
@@ -23,7 +28,7 @@ class TopNavFilter extends Component {
     this.setState({
       selectedGroupId: newValue
     });
-    this.props.deviceGroupChanged(newValue);
+    this.props.deviceGroupChanged(newValue, this.props.deviceGroups);
   }
 
   render() {
@@ -72,6 +77,18 @@ const mapDispatchToProps = dispatch => ({
   loadRegions: () => {
     dispatch(getRegionByDisplayName());
   },
+
+  deviceGroupChanged: (selectedGroupId, deviceGroups) => {
+    let selectedGroupConditions;
+    deviceGroups.some(group => {
+      if (group.id === selectedGroupId) {
+        selectedGroupConditions = group.conditions;
+        return true;
+      }
+      return false;
+    });
+    dispatch(loadRegionSpecificDevices(selectedGroupConditions));
+  },
   showManageFiltersFlyout: deviceGroups => {
     dispatch({
       type: actionTypes.FLYOUT_SHOW,
@@ -79,12 +96,6 @@ const mapDispatchToProps = dispatch => ({
         type: 'Manage Filters',
         deviceGroups
       }
-    });
-  },
-  deviceGroupChanged: selectedGroupId => {
-    dispatch({
-      type: actionTypes.DEVICE_GROUP_CHANGED,
-      selectedGroupId
     });
   }
 });

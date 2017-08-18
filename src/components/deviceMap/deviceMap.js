@@ -42,10 +42,20 @@ class DeviceMap extends Component {
           If not we are not showing the devices on Map (all devices don't have the longitude and latitude).
           */
           if (device.Id === telemetryGroup.DeviceId) {
-            device.latitude = telemetryGroup.Data.latitude;
-            device.longitude = telemetryGroup.Data.longitude;
+            if (
+              telemetryGroup.Data &&
+              telemetryGroup.Data.latitude &&
+              telemetryGroup.Data.longitude
+            ) {
+              device.latitude = telemetryGroup.Data.latitude;
+              device.longitude = telemetryGroup.Data.longitude;
+            } else if (device.Twin && device.Twin.reportedProperties) {
+              device.latitude = device.Twin.reportedProperties.Latitude;
+              device.longitude = device.Twin.reportedProperties.Longitude;
+            }
           }
         });
+
         alarmList.forEach(alarm => {
           if (device.Id === alarm.Id) {
             device.Severity = alarm.Rule.Severity;

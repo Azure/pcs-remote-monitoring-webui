@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft. All rights reserved.
+
 import Config from '../../common/config';
 
 function onlineWarn(radius, clusterSize) {
@@ -7,7 +9,7 @@ function onlineWarn(radius, clusterSize) {
     '" height="',
     radius * 2,
     '">',
-    '<rect width="24" x="0" y="5" height="24" style="fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)" />',
+    '<rect width="24" x="0" y="5" height="24" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(175,185,195)" />',
     '<rect width="8" x="18" y="0" height="8" fill="#FDE870" />',
     '<text x="10" y="18" text-anchor="middle" alignment-baseline="central" font-size="12" style="fill:black">' +
       clusterSize +
@@ -23,7 +25,7 @@ function onlineAlarm(radius, clusterSize) {
     '" height="',
     radius * 2,
     '">',
-    '<rect width="24" height="24"  x="0" y="7" style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(0,0,0)" />',
+    '<rect width="24" height="24"  x="0" y="7" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(175,185,195)" />',
     '<polygon points="23,0 29,10.6 17,11" fill="#fc540a" />',
     '<text x="12" y="20" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
       clusterSize +
@@ -39,7 +41,7 @@ function online(radius, clusterSize) {
     '" height="',
     radius * 2,
     '">',
-    '<rect width="24" height="24" style="fill:rgb(255,255,255);stroke-width:1;stroke:rgb(0,0,0)" />',
+    '<rect width="24" height="24" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(175,185,195)" />',
     '<text x="10" y="12" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
       clusterSize +
       '</text>',
@@ -53,8 +55,8 @@ function offline(radius, clusterSize) {
     '" height="',
     radius * 2,
     '">',
-    '<rect width="24" height="24" style="fill:rgb(175,185,195);stroke-width:1;stroke:rgb(0,0,0)" />',
-    '<text x="10" y="14" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
+    '<rect width="24" height="24" style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(255,255,255)" />',
+    '<text x="10" y="12" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
       clusterSize +
       '</text>',
     '</svg>'
@@ -67,7 +69,7 @@ function offlineAlarm(radius, clusterSize) {
     '" height="',
     radius * 2,
     '">',
-    '<rect width="24" height="24" x="0" y="7" style="fill:rgb(175,185,195);stroke-width:1;stroke:rgb(0,0,0)" />',
+    '<rect width="24" height="24" x="0" y="7" style="fill:rgb(175,185,195);stroke-width:2;stroke:rgb(255,255,255)" />',
     '<polygon points="23,0 29,10.6 17,11" fill="#fc540a" />',
     '<text x="12" y="20" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
       clusterSize +
@@ -82,9 +84,9 @@ function offlineWarn(radius, clusterSize) {
     '" height="',
     radius * 2,
     '">',
-    '<rect width="24" x="0" y="5" height="24" style="fill:rgb(175,185,195);stroke-width:1;stroke:rgb(0,0,0)" />',
+    '<rect width="24" x="0" y="5" height="24" style="fill:rgb(175,185,195);stroke-width:2;stroke:rgb(255,255,255)" />',
     '<rect width="8" x="18" y="0" height="8" fill="#FDE870" />',
-    '<text x="10" y="18" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
+    '<text x="10" y="20" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
       clusterSize +
       '</text>',
     '</svg>'
@@ -101,9 +103,9 @@ const defaultIcon = function(severity, isConnected, deviceId) {
   let svgAlarm = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
     '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
-      'style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(0,0,0)"/>',
+      'style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(132, 129, 129)"/>',
     '<polygon points="23,0 29,10.6 17,11" fill="#fc540a" transform="translate(48)"/>',
-    '<text x="40" y="11" text-anchor="middle" alignment-baseline="central" ' +
+    '<text x="40" y="10" text-anchor="middle" alignment-baseline="central" ' +
       'font-size="10" style="fill:black;stroke-width:1">' +
       deviceId +
       '</text>',
@@ -112,7 +114,7 @@ const defaultIcon = function(severity, isConnected, deviceId) {
   let svgWarn = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
     '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
-      'style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(0,0,0)"/>',
+      'style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(132, 129, 129)"/>',
     '<rect width="10" x="82" y="0" height="10" fill="#FDE870" />',
     '<text x="40" y="10" text-anchor="middle" alignment-baseline="central" ' +
       'font-size="11" style="fill:black;stroke-width:1">' +
@@ -123,7 +125,7 @@ const defaultIcon = function(severity, isConnected, deviceId) {
   let svg = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
     '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
-      'style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(0,0,0)"/>',
+      'style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(132, 129, 129)"/>',
     '<text x="40" y="10" text-anchor="middle" alignment-baseline="central" ' +
       'font-size="11" style="fill:black;stroke-width:1">' +
       deviceId +
@@ -133,7 +135,7 @@ const defaultIcon = function(severity, isConnected, deviceId) {
   let svgOfflineAlarm = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
     '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
-      'style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(0,0,0)"/>',
+      'style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(132, 129, 129)"/>',
     '<polygon points="23,0 29,10.6 17,11" fill="#fc540a" transform="translate(64-1)"/>',
     '<text x="40" y="10" text-anchor="middle" alignment-baseline="central" ' +
       'font-size="11" style="fill:black;stroke-width:1">' +
@@ -144,9 +146,9 @@ const defaultIcon = function(severity, isConnected, deviceId) {
   let svgOfflinewarn = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
     '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
-      'style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(0,0,0)"/>',
-    '<rect width="10" x="82" y="0" height="10" fill="#FDE870" />',
-    '<text x="48" y="9" text-anchor="middle" alignment-baseline="central" ' +
+      'style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(132, 129, 129)"/>',
+    '<rect width="10" x="65" y="0" height="10" fill="#FDE870" />',
+    '<text x="41" y="10" text-anchor="middle" alignment-baseline="central" ' +
       'font-size="11" style="fill:black;stroke-width:1">' +
       deviceId +
       '</text>',
@@ -155,7 +157,7 @@ const defaultIcon = function(severity, isConnected, deviceId) {
   let svgOffline = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
     '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
-      'style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(0,0,0)"/>',
+      'style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(132, 129, 129)"/>',
     '<text x="41" y="10" text-anchor="middle" alignment-baseline="central" ' +
       'font-size="11" style="fill:black;stroke-width:1">' +
       deviceId +
@@ -167,14 +169,14 @@ const defaultIcon = function(severity, isConnected, deviceId) {
     return svgAlarm;
   } else if (severity === Config.STATUS_CODES.WARNING && isConnected) {
     return svgWarn;
-  } else if (isConnected) {
-    return svg;
-  } else if (!isConnected) {
-    return svgOffline;
   } else if (severity === Config.STATUS_CODES.WARNING && !isConnected) {
     return svgOfflinewarn;
   } else if (severity === Config.STATUS_CODES.CRITICAL && !isConnected) {
     return svgOfflineAlarm;
+  } else if (!isConnected) {
+    return svgOffline;
+  } else if (isConnected) {
+    return svg;
   }
 };
 

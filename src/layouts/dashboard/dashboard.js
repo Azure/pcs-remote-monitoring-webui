@@ -18,8 +18,6 @@ class Dashboard extends Component {
   componentDidMount() {
     const { actions } = this.props;
     actions.loadDevicesByTelemetryMessages();
-    actions.loadAlarmList();
-    actions.loadMapkey();
     actions.loadDevices();
   }
 
@@ -67,7 +65,7 @@ const mapStateToProps = state => {
     telemetryByDeviceGroup: state.telemetryReducer.telemetryByDeviceGroup,
     devices: state.deviceReducer.devices,
     mapkey: state.mapReducer.mapkey,
-    alarmList: state.kpiReducer.alarmList
+    alarmList: state.deviceReducer.alarmsList
   };
 };
 
