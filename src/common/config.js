@@ -6,6 +6,14 @@ const Config = {
   STATUS_CODES: {
     CRITICAL: 'critical',
     WARNING: 'warning',
+    EQ: 'Equals',
+    GT: 'Greater than',
+    LT: 'Less than',
+    GE: 'Greater than/equal',
+    LE: 'Less than/equal',
+    BRACKET: 'In',
+    OPENBRACKET: 'Starts with',
+    CLOSEBRACKET: 'Ends with',
     DEFAULTPUSHPINTEXTLENGTH: 10
   },
   INTERVALS: {

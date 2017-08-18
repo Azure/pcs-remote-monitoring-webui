@@ -4,6 +4,7 @@ import React from 'react';
 import CloseIcon from '../../assets/icons/X.svg';
 import FullWidthIcon from '../../assets/icons/FullWidth.svg';
 import DeviceDetailFlyout from './deviceDetailFlyout';
+import ManageFiltersFlyout from './manageFiltersFlyout';
 
 import './flyout.css';
 
@@ -11,6 +12,9 @@ const getFlyout = (content, onClose) => {
   switch (content.type) {
     case 'Device detail':
       return <DeviceDetailFlyout content={content} onClose={onClose} />;
+
+    case 'Manage Filters':
+      return <ManageFiltersFlyout content={content} onClose={onClose} />;
 
     default:
       return null;

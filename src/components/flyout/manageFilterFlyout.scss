@@ -1,0 +1,165 @@
+.manage-filter-container {
+  height: 550px;
+  overflow: auto;
+  .create-filter {
+    padding: 10px 0px 10px 16px;
+    cursor: pointer;
+    .add-icon {
+      padding-right: 5px;
+      cursor: pointer;
+    }
+  }
+  .headers-for-deviceGroups {
+    padding: 10px 24px 10px 16px;
+    .actions {
+      float: right;
+      padding-right: 10px;
+    }
+  }
+  .groupname-icons {
+    padding: 5px 24px 5px 16px;
+    font-size: 12px;
+    margin: 0px 5px 8px 5px;
+    background-color: #1b1d1f;
+    .edit-delete-icons {
+      float: right;
+      .edit-icon {
+        padding-right: 10px;
+      }
+    }
+  }
+}
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 2px !important;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 2px !important;
+  -webkit-box-shadow: inset 0 0 6px rgba(175, 185, 195, 0.6);
+}
+.editable-filters {
+  font-size: 10px !important;
+  background-color: #1b1d1f;
+  padding: 5px 0px 15px 20px;
+  margin: -7px 3px 12px 6px;
+}
+input {
+  background-color: #1b1d1f;
+}
+
+.label-names {
+  font-size: 10px;
+  padding: 10px 0px 5px 0px;
+}
+.add-condition {
+  border: none;
+  background-color: #1b1d1f;
+  display: inline-block;
+}
+.conditions-wrapper {
+  display: inline-block;
+}
+.cancel-button {
+  background-color: #1b1d1f;
+  border: none;
+  height: 32px;
+  padding: 5px 16px 5px 16px;
+  margin-left: 5px;
+  font-size: 12px;
+  &:hover {
+    background-color: #afb9c3;
+    color: #1b1d1f;
+  }
+  .cancel-icon {
+    width: 14px;
+    padding-right: 2px;
+    &:hover {
+      color: #1b1d1f;
+    }
+  }
+}
+.buttons-group {
+  padding-bottom: 25px;
+  .save-delete-cancel-buttons {
+    float: right;
+  }
+}
+
+.save {
+  background-color: #1b1d1f;
+  border: none;
+  height: 32px;
+  padding: 5px 16px 5px 16px;
+  margin-left: 5px;
+  font-size: 12px;
+  &:hover {
+    background-color: #afb9c3;
+    color: #1b1d1f;
+  }
+}
+.delete-filter {
+  background-color: #1b1d1f;
+  border: none;
+  height: 32px;
+  padding: 5px 16px 5px 16px;
+  margin-left: 5px;
+  font-size: 12px;
+  padding-left: 5px;
+  &:hover {
+    background-color: #afb9c3;
+    color: #1b1d1f;
+  }
+}
+.apply-icon {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.edit-icon,
+.delete-icon {
+  cursor: pointer;
+}
+.error-msg {
+  color: red;
+}
+.style-manage {
+  font-size: 10 !important;
+  border: 1px solid #454a4e !important;
+  padding: 3px 3px 3px 8px !important;
+  height: 30px !important;
+  width: 280px !important;
+}
+.conditions-wrapper {
+  .Select-control {
+    background-color: #1b1d1f;
+    font-size: 10 !important;
+    border: 1px solid #454a4e !important;
+    padding: 0px 3px 0px 8px !important;
+    margin-bottom: 2px;
+    vertical-align: middle !important;
+    height: 10px;
+  }
+  .Select {
+    width: 280px !important;
+  }
+  .Select-menu-outer {
+    border: 1px solid #afb9c3 !important;
+    width: 280px;
+    margin-left: 1px !important;
+    height: 70px !important;
+    margin-top: 10px !important;
+  }
+  .Select-clear {
+    display: none;
+  }
+}
+.Remove-icon {
+  height: 2px;
+  width: 12px;
+}
+.cancel-icon {
+  height: 12px;
+}

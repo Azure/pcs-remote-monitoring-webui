@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../actions/actionTypes';
 import Filter from '../../assets/icons/Filter.svg';
+import Lang from '../../common/lang';
+import ManageFilters from '../../assets/icons/ManageFilters.svg';
 import { getRegionByDisplayName } from '../../actions/filterActions';
 import './TopNavFilter.css';
 import Select from 'react-select';
@@ -46,6 +48,21 @@ class TopNavFilter extends Component {
             searchable={true}
           />
         </span>
+        <span
+          onClick={this.props.showManageFiltersFlyout.bind(
+            this,
+            this.props.deviceGroups
+          )}
+          className="manage-filter-header"
+        >
+          <img
+            className="manage-filters-icon"
+            src={ManageFilters}
+            alt="ManageFilters"
+            height="12px"
+          />
+          {Lang.FILTER.MANAGEFILTER}
+        </span>
       </div>
     );
   }
@@ -54,6 +71,15 @@ class TopNavFilter extends Component {
 const mapDispatchToProps = dispatch => ({
   loadRegions: () => {
     dispatch(getRegionByDisplayName());
+  },
+  showManageFiltersFlyout: deviceGroups => {
+    dispatch({
+      type: actionTypes.FLYOUT_SHOW,
+      content: {
+        type: 'Manage Filters',
+        deviceGroups
+      }
+    });
   },
   deviceGroupChanged: selectedGroupId => {
     dispatch({

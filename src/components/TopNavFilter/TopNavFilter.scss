@@ -2,6 +2,16 @@
   width: 33px;
   padding: 1px 0px 45px 17px;
 }
+.manage-filter-header {
+  color: #afb9c3;
+  padding-right: 50px;
+  float: right;
+  padding-top: 15px;
+  cursor: pointer;
+}
+.manage-filters-icon {
+  padding-right: 8px;
+}
 .top-nav-filters {
   display: inline-block;
   width: 195px;
@@ -65,8 +75,7 @@
   bottom: 0;
   color: #afb9c3;
   left: 0;
-  line-height: 34px;
-  padding: 4px 10px 0px 10px;
+  padding: 10px 10px 0px 10px;
   position: absolute;
   right: 0;
   top: 0;
@@ -227,12 +236,12 @@
     width: 8px;
   }
   ::-webkit-scrollbar-track {
-    -webkit-box-shadow: rgb(58, 62, 67);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
   }
   ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    -webkit-box-shadow: rgb(58, 62, 67);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   }
 }
 .Select-menu {

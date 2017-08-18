@@ -6,7 +6,6 @@ import Config from '../../common/config';
 
 let map = null;
 let pinInfobox = null;
-let boundsSet = false;
 let deviceData;
 let container;
 let actions;
@@ -106,20 +105,10 @@ let setDeviceLocationData = function setDeviceLocationData(
 ) {
   let i;
   let loc;
-  let mapOptions;
   let pin;
   let pinOptions;
   if (!map) {
     return;
-  }
-
-  if (!boundsSet) {
-    mapOptions = map.getOptions();
-    mapOptions.bounds = window.Microsoft.Maps.LocationRect.fromCorners(
-      new window.Microsoft.Maps.Location(maxLatitude, minLongitude),
-      new window.Microsoft.Maps.Location(minLatitude, maxLongitude)
-    );
-    map.setView(mapOptions);
   }
 
   map.entities.clear();

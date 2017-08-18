@@ -16,6 +16,25 @@ const lang = {
     DASHBOARD: 'Dashboard',
     CONTOSO: 'Contoso'
   },
+  FILTER: {
+    MANAGEFILTER: 'Manage Filters',
+    FILTERNAME: 'Filter Name',
+    ENTERNAMEFORFILTER: 'Enter name for filter',
+    FILTERNAMECANNOTBEEMPTY: 'Filter Name cannot be empty',
+    ENTERREPORTED: 'Enter reported or desired property,tag',
+    FIELD: 'Field',
+    OPERATOR: 'Operator',
+    EQUALS: '= Equals',
+    VALUE: 'Value',
+    ENTERFILTERVALUE: 'Enter filter value',
+    VALUECANNOTBEEMPTY: 'Value cannot be empty',
+    REMOVECONDITIONS: 'Remove Conditions',
+    ADDCONDITIONS: 'Add Conditions',
+    CANCEL: 'Cancel',
+    CREATEFILTER: 'Create Filter',
+    FILTERS: 'Filters',
+    ACTIONS: 'Actions'
+  },
   TELEMETRY: {
     OK: 'ok'
   },

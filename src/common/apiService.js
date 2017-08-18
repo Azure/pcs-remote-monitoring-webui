@@ -32,7 +32,7 @@ class ApiService {
   }
 
   static getAlarmList() {
-    return Http.get(`${Config.telemetryApiUrl}alarmsbyrule`); 
+    return Http.get(`${Config.telemetryApiUrl}alarmsbyrule`);
   }
 
   /**
@@ -46,16 +46,53 @@ class ApiService {
    *    "devices": A filter used to request alarms for specific devices
    */
   static getAlarmsByRule(params = {}) {
-    return Http.get(`${Config.telemetryApiUrl}alarmsbyrule?${ApiService.serializeParamObject(params)}`);
+    return Http.get(
+      `${Config.telemetryApiUrl}alarmsbyrule?${ApiService.serializeParamObject(
+        params
+      )}`
+    );
   }
 
   static getRegionByDisplayName() {
     return Http.get(`${Config.uiConfigApiUrl}devicegroups`);
   }
 
+  static updateManageFiltersFlyout(group) {
+    if (!group) {
+      throw new Error('expected valid group object');
+    }
+    const data = {};
+    data.id = group.id;
+    data.displayName = group.displayName;
+    data.conditions = group.conditions;
+    data.eTag = group.eTag;
+    return Http.put(`${Config.uiConfigApiUrl}devicegroups/${group.id}`, data);
+  }
+
+  static postManageFiltersFlyout(group) {
+    if (!group) {
+      throw new Error('expected valid group object');
+    }
+    const data = {};
+    data.id = group.id;
+    data.displayName = group.displayName;
+    data.conditions = group.conditions;
+    return Http.post(`${Config.uiConfigApiUrl}devicegroups`, data);
+  }
+
+  static deleteManageFiltersFlyout(group) {
+    if (!group) {
+      throw new Error('expected valid group object');
+    }
+    return Http.delete(`${Config.uiConfigApiUrl}devicegroups/${group.id}`);
+  }
+
   static serializeParamObject(params) {
     return Object.keys(params)
-      .map(param => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
+      .map(
+        param =>
+          `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`
+      )
       .join('&');
   }
 }
