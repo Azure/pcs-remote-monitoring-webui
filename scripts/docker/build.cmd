@@ -19,21 +19,20 @@ set /P APP_VERSION=<%APP_HOME%/version
 docker version > NUL 2>&1
 IF %ERRORLEVEL% NEQ 0 GOTO MISSING_DOCKER
 
-:: Restore packages and build the application
-call npm install
-IF %ERRORLEVEL% NEQ 0 GOTO FAIL
-call npm run build
-IF %ERRORLEVEL% NEQ 0 GOTO FAIL
-
 :: Build the container image
 rmdir /s /q out\docker
 
+mkdir out/docker/src
 mkdir out/docker/build
 
-xcopy /s build\*       out\docker\build\
+xcopy /s src\*       out\docker\src\
+xcopy /s public\*    out\docker\public\
+copy package.json    out\docker\
 
 copy scripts\docker\.dockerignore               out\docker\
 copy scripts\docker\Dockerfile                  out\docker\
+copy scripts\docker\run.sh                      out\docker\
+copy scripts\docker\nginx.conf                  out\docker\
 
 cd out\docker\
 docker build --tag %DOCKER_IMAGE%:%APP_VERSION% --squash --compress --label "Tags=azure,iot,pcs,webui,react" .
