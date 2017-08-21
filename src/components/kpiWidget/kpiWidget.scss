@@ -38,7 +38,7 @@ $titleRowHeight: 36px;
     display: none;
   }
   .Select--single > .Select-control .Select-value {
-    padding: 0px 0px 0px 10px;
+    padding: 7px 0px 0px 10px;
   }
 }
 .top-rules {
@@ -77,4 +77,9 @@ $titleRowHeight: 36px;
   font-size: 16px;
   margin-left: 40px;
   color: #afb9c3;
+  width: 100px;
+}
+.delta-down {
+  width: 12px;
+  margin-right: 3px;
 }

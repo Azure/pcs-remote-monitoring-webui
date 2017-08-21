@@ -1,13 +1,27 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Chart from './generateChart';
 import { Col } from 'react-bootstrap';
+import DeltaDown from '../../assets/icons/DeltaDown.svg';
+import DeltaUp from '../../assets/icons/DeltaUp.svg';
 import Lang from '../../common/lang';
+import { getNonFunctionalProps } from '../../common/utils';
 import './kpiWidget.css';
+import _ from 'lodash';
 
-class LineChart extends PureComponent {
+class LineChart extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    let nonFunctionalNextProps = _.omit(getNonFunctionalProps(nextProps), [
+      'chartDataFetchComplete'
+    ]);
+    let nonFunctionalThisProps = _.omit(getNonFunctionalProps(this.props), [
+      'chartDataFetchComplete'
+    ]);
+    let result = !_.isEqual(nonFunctionalNextProps, nonFunctionalThisProps);
+    return result;
+  }
   componentWillUpdate(nextProps) {
     this.lineChart = {
       chartConfig: {
@@ -45,6 +59,25 @@ class LineChart extends PureComponent {
           {Lang.KPI.CRITICALALARM}
         </div>
         <div className="percentage-critical">
+          {typeof this.props.criticalAlarmCountLast !== 'undefined' &&
+          typeof this.props.criticalAlarmCount !== 'undefined' &&
+          this.props.criticalAlarmCountLast !== this.props.criticalAlarmCount
+            ? <img
+                className="delta-down"
+                src={
+                  this.props.criticalAlarmCountLast >
+                  this.props.criticalAlarmCount
+                    ? DeltaDown
+                    : DeltaUp
+                }
+                alt={
+                  this.props.criticalAlarmCountLast >
+                  this.props.criticalAlarmCount
+                    ? `${DeltaDown}`
+                    : `${DeltaUp}`
+                }
+              />
+            : null}
           {this.props.percentChange}%
         </div>
         {this.props.lineChartData && this.props.lineChartData.length
@@ -99,7 +132,9 @@ const mapStateToProps = state => {
 
   return {
     lineChartData: lineChartData,
-    percentChange
+    percentChange,
+    criticalAlarmCountLast,
+    criticalAlarmCount
   };
 };
 

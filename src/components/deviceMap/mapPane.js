@@ -20,7 +20,8 @@ let init = function(mapApiKey) {
     enableClickableLogo: false,
     navigationBarMode: window.Microsoft.Maps.NavigationBarMode.minified,
     backgroundColor: window.Microsoft.Maps.Color.fromHex('#000000'), //for changing the background color
-    showScalebar: false // for the Microsoft Bing maps label removal
+    showScalebar: false, // for the Microsoft Bing maps label removal
+    zoom: 3
   };
   // Initialize the map
   map = new window.Microsoft.Maps.Map('#deviceMap', options);

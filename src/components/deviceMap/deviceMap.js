@@ -11,6 +11,8 @@ import Spinner from '../spinner/spinner';
 import RegionDetails from '../../components/deviceMap/regionDetails.js';
 import { Row, Col } from 'react-bootstrap';
 import lang from '../../common/lang';
+import _ from 'lodash';
+import { getNonFunctionalProps } from '../../common/utils';
 
 import './deviceMap.css';
 
@@ -24,6 +26,22 @@ class DeviceMap extends Component {
       loadingMap: true,
       mapCallbackComplete: false
     };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    let nonFunctionalNextProps = _.omit(getNonFunctionalProps(nextProps), [
+      'actions'
+    ]);
+    let nonFunctionalThisProps = _.omit(getNonFunctionalProps(this.props), [
+      'actions'
+    ]);
+    const propsNotEqual = !_.isEqual(
+      nonFunctionalNextProps,
+      nonFunctionalThisProps
+    );
+    const stateNotequal = !_.isEqual(this.state, nextState);
+    let result = propsNotEqual || stateNotequal;
+    return result;
   }
 
   componentDidMount() {
@@ -93,6 +111,7 @@ class DeviceMap extends Component {
     if (!devices || !telemetryByDeviceGroup || !alarmList) {
       return;
     }
+
     //If control reaches here, that means map is loaded and also the data is also loaded.
     this.applyLocationAndAlarmToDevices();
     MapPane.init(mapkey);

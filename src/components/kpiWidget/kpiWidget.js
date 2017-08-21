@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { refreshAllChartData } from '../../actions/kpiActions';
 import PieChartGraph from './pieChartGraph';
@@ -8,10 +8,12 @@ import BarChart from './barChart';
 import { Grid, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
 import './kpiWidget.css';
+import { getNonFunctionalProps } from '../../common/utils';
 import Config from '../../common/config';
 import Lang from '../../common/lang';
+import _ from 'lodash';
 
-class KpiWidget extends PureComponent {
+class KpiWidget extends Component {
   constructor() {
     super();
     this.state = {
@@ -31,6 +33,19 @@ class KpiWidget extends PureComponent {
         label: Lang.KPI.LASTMONTH
       }
     ];
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    let nonFunctionalNextProps = _.omit(getNonFunctionalProps(nextProps), [
+      'chartDataFetchComplete'
+    ]);
+    let nonFunctionalThisProps = _.omit(getNonFunctionalProps(this.props), [
+      'chartDataFetchComplete'
+    ]);
+    let result =
+      !_.isEqual(nonFunctionalNextProps, nonFunctionalThisProps) ||
+      !_.isEqual(this.state, nextState);
+    return result;
   }
 
   scheduleAutoUpdate() {

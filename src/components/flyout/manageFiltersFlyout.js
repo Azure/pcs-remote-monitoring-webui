@@ -20,19 +20,8 @@ import {
 class ManageFiltersFlyout extends React.Component {
   constructor() {
     super();
-    this.operatorTextMap = {
-      EQ: Config.STATUS_CODES.EQ,
-      GT: Config.STATUS_CODES.GT,
-      LT: Config.STATUS_CODES.LT,
-      GE: Config.STATUS_CODES.GT,
-      LE: Config.STATUS_CODES.LE,
-      '[]': Config.STATUS_CODES.BRACKET,
-      '[': Config.STATUS_CODES.OPENBRACKET,
-      ']': Config.STATUS_CODES.CLOSEBRACKET
-    };
     this.state = {
       allFields: [],
-      allOperators: [],
       editingState: {},
       showCreateFilter: false
     };
@@ -130,10 +119,41 @@ class ManageFiltersFlyout extends React.Component {
    * object to prefill the form with the device group specific data.
    */
   getFilterComponent(newFilterFlag, formChanged, group) {
-    let operatorOptions = (this.state.allOperators || []).map(op => ({
-      value: op,
-      label: this.operatorTextMap[op] || op
-    }));
+    let operatorOptions = [
+      {
+        value: 'EQ',
+        label: Config.STATUS_CODES.EQ
+      },
+      {
+        value: 'GT',
+        label: Config.STATUS_CODES.GT
+      },
+      {
+        value: 'LT',
+        label: Config.STATUS_CODES.LT
+      },
+      {
+        value: 'GE',
+        label: Config.STATUS_CODES.GT
+      },
+      {
+        value: 'LE',
+        label: Config.STATUS_CODES.LE
+      },
+      {
+        value: '[]',
+        label: Config.STATUS_CODES.BRACKET
+      },
+      {
+        value: '[',
+        label: Config.STATUS_CODES.OPENBRACKET
+      },
+      {
+        value: ']',
+        label: Config.STATUS_CODES.CLOSEBRACKET
+      }
+    ];
+
     let fieldOptions = (this.state.allFields || []).map(field => ({
       value: field,
       label: field

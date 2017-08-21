@@ -4,6 +4,15 @@ export function isFunction(value) {
   return typeof value === 'function';
 }
 
+export function getNonFunctionalProps(props) {
+  const nonFuncKeys = Object.keys(props).filter(key => !isFunction(props[key]));
+  const result = {};
+  nonFuncKeys.forEach(key => {
+    result[key] = props[key];
+  });
+  return result;
+}
+
 export function debounce(fn, delay) {
   var timer = null;
   return function() {

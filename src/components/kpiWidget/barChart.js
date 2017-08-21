@@ -1,13 +1,25 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Chart from './generateChart';
 import { Row, Col } from 'react-bootstrap';
 import './kpiWidget.css';
 import lang from '../../common/lang';
+import { getNonFunctionalProps } from '../../common/utils';
+import _ from 'lodash';
 
-class BarChart extends PureComponent {
+class BarChart extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    let nonFunctionalNextProps = _.omit(getNonFunctionalProps(nextProps), [
+      'chartDataFetchComplete'
+    ]);
+    let nonFunctionalThisProps = _.omit(getNonFunctionalProps(this.props), [
+      'chartDataFetchComplete'
+    ]);
+    let result = !_.isEqual(nonFunctionalNextProps, nonFunctionalThisProps);
+    return result;
+  }
   componentWillUpdate(nextProps) {
     this.barChart = {
       chartConfig: {
