@@ -3,9 +3,9 @@
 import React, { Component } from 'react';
 import Setting from '../../assets/icons/Setting.svg';
 import './header.css';
-import ProfileImage from '../../assets/icons/ProfileImage.png';
 import lang from '../../common/lang';
 import TopNavFilter from '../../components/TopNavFilter/TopNavFilter.js';
+import Profile from './profile.js';
 
 class TopNav extends Component {
   selectHandler = (eventKey, event) => {
@@ -33,12 +33,8 @@ class TopNav extends Component {
           </span>
           <span>
             <img className="settings" src={Setting} alt="Setting" />
-            <img
-              className="top-nav-icon"
-              src={ProfileImage}
-              alt="ProfileImage"
-            />
           </span>
+          <Profile />
         </div>
         <TopNavFilter />
       </div>

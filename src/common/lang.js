@@ -110,6 +110,9 @@ const lang = {
     RULES_ACTIONS: 'Rules & Actions',
     MAINTENANCE: 'Maintenance'
   },
+  NAVIGATION: {
+    SWITCHUSER: 'Switch to another user'
+  },
   KPI: {
     CURRENTDAY: 'Current day',
     LASTDAY: 'Last day',

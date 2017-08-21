@@ -25,6 +25,7 @@ const Config = {
   deviceSimulationApiUrl: `${baseURL}devicesimulation/v1/`,
   iotHubManagerApiUrl: `${baseURL}iothubmanager/v1/`,
   telemetryApiUrl: `${baseURL}devicetelemetry/v1/`,
+  authApiUrl: `${baseURL}auth/v1`,
   msTelemetryApiRefreshInterval: 2
 };
 
