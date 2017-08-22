@@ -2,7 +2,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { Router, Route, IndexRoute, browserHistory } from "react-router";
+import { Router, Route, IndexRoute, hashHistory } from "react-router";
 import { Provider } from "react-redux";
 import Main from "./layouts/main/main.js";
 import Dashboard from "./layouts/dashboard/dashboard.js";
@@ -21,7 +21,7 @@ oauth2client.onLoad();
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={browserHistory}>
+    <Router history={hashHistory}>
       <Route path="/" component={Main}>
         <IndexRoute component={Dashboard} />
         <Route path="/dashboard" component={Dashboard} />

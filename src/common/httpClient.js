@@ -39,32 +39,34 @@ function _delete(url, options) {
 }
 
 function ajax(url, options) {
-    oauth2client.getToken(token => {
-        options = options || {};
-        options.headers = options.headers || {};
-        options.headers["Authorization"] = 'Bearer ' + token;
-    });
+  oauth2client.getToken(token => {
+    if (token) {
+      options = options || {};
+      options.headers = options.headers || {};
+      options.headers["Authorization"] = 'Bearer ' + token;
+    }
+  });
 
-    return fetch(url, options)
-       .then(response => {
-           if (response.ok) {
-               return response;
-           }
-           else if (response.status === 401) {
-               console.info('Unauthorized request: ' + response.url);
-               oauth2client.login();
-               return response;
-           } 
-           else {
-               var error = new Error(response.statusText)
-               error.response = response
-               throw error;
-           }
-       });
+  return fetch(url, options)
+    .then(response => {
+      if (response.ok) {
+        return response;
+      }
+      else if (response.status === 401) {
+        console.info('Unauthorized request: ' + response.url);
+        oauth2client.login();
+        return response;
+      } 
+      else {
+        var error = new Error(response.statusText)
+        error.response = response
+        throw error;
+      }
+    });
 }
 
 function getJson(response) {
-    return response.status !== 204 && response.status !== 401 ? response.json() : null;
+  return response.status !== 204 && response.status !== 401 ? response.json() : null;
 }
 
 function setJsonPayload(options, data) {
