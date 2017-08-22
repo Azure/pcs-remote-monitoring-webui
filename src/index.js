@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import Main from "./layouts/main/main.js";
 import Dashboard from "./layouts/dashboard/dashboard.js";
 import Devices from "./layouts/devices/devices.js";
+import RulesActions from "./layouts/rulesActions/rulesActions";
 import registerServiceWorker from "./registerServiceWorker";
 import initialState from "./reducers/initialState";
 import configureStore from "./store/configureStore";
@@ -25,7 +26,8 @@ ReactDOM.render(
       <Route path="/" component={Main}>
         <IndexRoute component={Dashboard} />
         <Route path="/dashboard" component={Dashboard} />
-        <Route path="/devices" component={Devices}></Route>
+        <Route path="/devices" component={Devices}/>
+        <Route path="/rulesActions" component={RulesActions}/>
       </Route>
     </Router>
   </Provider>,

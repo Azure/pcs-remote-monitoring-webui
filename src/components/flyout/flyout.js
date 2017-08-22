@@ -7,6 +7,7 @@ import DeviceDetailFlyout from './deviceDetailFlyout';
 import ManageFiltersFlyout from './manageFiltersFlyout';
 
 import './flyout.css';
+import RuleOverviewFlyout from "../ruleOverview/ruleOverview";
 
 const getFlyout = (content, onClose) => {
   switch (content.type) {
@@ -15,6 +16,9 @@ const getFlyout = (content, onClose) => {
 
     case 'Manage Filters':
       return <ManageFiltersFlyout content={content} onClose={onClose} />;
+
+    case 'Rule Detail':
+      return <RuleOverviewFlyout content={content} onClose={onClose} />;
 
     default:
       return null;

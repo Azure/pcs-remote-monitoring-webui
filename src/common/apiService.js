@@ -34,7 +34,7 @@ class ApiService {
   }
 
   static loadTelemetryMessagesByDeviceIds(deviceIds) {
-    var csvIds = deviceIds.reduce((prevStr, id) => {
+    const csvIds = deviceIds.reduce((prevStr, id) => {
       return (prevStr ? prevStr + ',' : '') + encodeURIComponent(id);
     });
     return Http.get(`${Config.telemetryApiUrl}messages?devices=${csvIds}`);
@@ -69,6 +69,18 @@ class ApiService {
 
   static getAlarmList() {
     return Http.get(`${Config.telemetryApiUrl}alarmsbyrule`);
+  }
+
+  static getRuleList(){
+    return Http.get(`${Config.telemetryApiUrl}rules`);
+  }
+
+  static updateRule(id, rule){
+    return Http.put(`${Config.telemetryApiUrl}rules/${id}`,rule);
+  }
+
+  static deleteRule(id){
+    return Http.delete(`${Config.telemetryApiUrl}rules/${id}`);
   }
 
   /**

@@ -43,7 +43,7 @@ class LeftNav extends Component {
         name: lang.LEFTNAV.DEVICES
       },
       {
-        path: '#/',
+        path: '#/rulesActions',
         icon: RulesActionsIcon,
         name: lang.LEFTNAV.RULES_ACTIONS
       },

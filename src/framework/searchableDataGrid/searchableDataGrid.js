@@ -9,6 +9,9 @@ import { AgGridReact } from 'ag-grid-react';
 import './searchableDataGrid.css';
 import '../../../node_modules/ag-grid/dist/styles/ag-grid.css';
 import '../../../node_modules/ag-grid/dist/styles/theme-dark.css';
+import lang from "../../common/lang";
+
+const CheckBoxSize = 44;
 
 class SearchableDataGrid extends Component {
   constructor(props) {
@@ -127,7 +130,7 @@ class SearchableDataGrid extends Component {
         headerCheckboxSelectionFilteredOnly: true,
         checkboxSelection: true,
         pinned: 'left',
-        width: 50
+        width: CheckBoxSize
       });
     }
 
@@ -319,25 +322,38 @@ class SearchableDataGrid extends Component {
         className="datagrid-container"
       >
         {title}
-        {!this.state.loading
+
+        <div className="clearfix"/>
+        {
+          !this.state.loading
           ? <div>
               {searchBox}
               <div className="datagrid-body">
                 {dataGrid}
               </div>
             </div>
-          : <div className="loader">loading</div>}
-        {this.props.showLastUpdate &&
-          (this.state.lastupdate
-            ? <a href="#/refresh" onClick={this.refreshData}>
-                Last update on {this.state.lastupdate.toLocaleString()}{' '}
-                &nbsp;&nbsp;
-                <span className="glyphicon glyphicon-refresh" />
-              </a>
-            : <a href="#/refresh" onClick={this.refreshData}>
-                Click to refresh &nbsp;&nbsp;
-                <span className="glyphicon glyphicon-refresh" />
-              </a>)}
+          : <div className="loader">{lang.SEARCHGRID.LOADING}</div>
+        }
+        {
+            this.props.showLastUpdate &&
+            (this.state.lastupdate
+                ? <div className="refresh" onClick={this.refreshData}>
+                  <div className="refresh-label">
+                      {lang.SEARCHGRID.LASTREFRESHED}
+                  </div>
+                  <div className="refresh-data">
+                      {this.state.lastupdate.toLocaleString()}
+                  </div>
+                  <div className="refresh-icon icon-sm" />
+                </div>
+                : <div className="refresh" onClick={this.refreshData}>
+                  <div className="refresh-label">
+                      {lang.SEARCHGRID.CLICKTOREFRESH}
+                  </div>
+                  <div className="refresh-icon icon-sm" />
+                </div>)
+        }
+
       </div>
     );
   }

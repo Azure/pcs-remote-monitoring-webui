@@ -104,6 +104,37 @@ const lang = {
     LASTACTIVITYTIME: 'Last activity time',
     LASTSTATUSUPDATEDTIME: 'Last status updated time'
   },
+  RULESACTIONS: {
+    RULENAME: 'Rule name',
+    DESCRIPTION: 'Description',
+    SEVERITY: 'Severity',
+    SOURCE: 'Source',
+    NOOFDEVICES: 'NO. Devices',
+    TRIGGER: 'Trigger',
+    LASTTRIGGER: 'Last Trigger',
+    ACTIONS: 'Actions',
+    MORE: 'More',
+    NOTIFICATIONTYPE: 'Notification Type',
+    STATUS: 'Status',
+    ENABLED: 'Enabled',
+    DISABLED: 'Disabled',
+    ENABLE: 'Enable',
+    DISABLE: 'Disable',
+    NEWRULE: 'New rule',
+    EDIT: 'Edit',
+    DELETE: 'Delete',
+    DELETERULES: 'Delete Rules and Actions',
+    RULESWILLBEDELETED: 'Caution: {0} Rules will be deleted and cannot be restored, please confirm',
+    CANCEL: 'Cancel',
+    CONFIRM: 'Confirm',
+    RULEDETAIL:'Rule Detail',
+    EFFECTEDDEVICES: 'devices effected by this rule',
+    CHANGESTATUS:'Change'
+  },
+  FLYOUT:{
+    SAVE: 'Save',
+    CANCEL: 'Cancel'
+  },
   LEFTNAV: {
     DASHBOARD: 'Dashboard',
     DEVICES: 'Devices',
@@ -112,6 +143,11 @@ const lang = {
   },
   NAVIGATION: {
     SWITCHUSER: 'Switch to another user'
+  },
+  SEARCHGRID: {
+    CLICKTOREFRESH: 'Click to refresh',
+    LASTREFRESHED: 'last refreshed',
+    LOADING: 'Loading'
   },
   KPI: {
     CURRENTDAY: 'Current day',

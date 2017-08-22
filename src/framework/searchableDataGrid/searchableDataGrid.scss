@@ -3,21 +3,26 @@
 .datagrid-color {
   color: #afb9c3;
 }
+
 .datagrid-container {
   @extend .datagrid-color;
-  background-color: #1b1d1f;
+  background-color: #121416;;
 }
+
 .datagrid-body {
   @extend .datagrid-color;
   margin-top: 10px;
 }
+
 .react-grid-Cell {
   color: black;
 }
+
 .react-grid-Row--even .react-grid-Cell {
   @extend .react-grid-Cell;
   background: white;
 }
+
 .react-grid-Row--odd .react-grid-Cell {
   @extend .react-grid-Cell;
   background: #eeeeee;
@@ -44,6 +49,43 @@
   @extend .ag-body-viewport;
 }
 
+.datagrid-container {
+  .refresh {
+    position: absolute;
+    bottom: 15px;
+    right: 24px;
+    height: 25px;
+    font-size: 12pt;
+    color: #AFB9C3;
+    text-decoration: none;
+    text-transform: uppercase;
+    margin-right: 8px;
+    cursor: pointer;
+    .refresh-label, .refresh-data, .refresh-icon {
+      margin-right: 16px;
+      display: inline-block;
+    }
+    .refresh-data {
+      line-height: 25px;
+      text-transform: none;
+      font-size: 10pt;
+      color: #FFFFFF;
+    }
+    .refresh-icon {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      background: url("../../assets/icons/Refresh.svg") no-repeat center;
+      background-size: contain;
+    }
+
+    .icon-sm {
+      width: 14pt;
+      height: 14pt;
+    }
+  }
+}
+
 span.ag-paging-row-summary-panel {
   width: inherit !important;
 }
@@ -61,6 +103,7 @@ span.ag-paging-row-summary-panel {
   width: 1em;
   height: 4em;
 }
+
 .loader {
   color: #f7f7f7;
   text-indent: -9999em;
@@ -73,20 +116,24 @@ span.ag-paging-row-summary-panel {
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
 }
+
 .loader:before,
 .loader:after {
   position: absolute;
   top: 0;
   content: '';
 }
+
 .loader:before {
   left: -1.5em;
   -webkit-animation-delay: -0.32s;
   animation-delay: -0.32s;
 }
+
 .loader:after {
   left: 1.5em;
 }
+
 @-webkit-keyframes load1 {
   0%,
   80%,
@@ -99,6 +146,7 @@ span.ag-paging-row-summary-panel {
     height: 5em;
   }
 }
+
 @keyframes load1 {
   0%,
   80%,

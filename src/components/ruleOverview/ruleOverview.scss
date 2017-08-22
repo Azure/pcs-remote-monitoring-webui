@@ -1,0 +1,141 @@
+@mixin labelHeight {
+  line-height: 40px;
+  height: 48px ;
+}
+
+.rule-overview-flyout{
+  height: 80%;
+  .rule-overview-body{
+    overflow: scroll;
+    overflow-scrolling: auto;
+    height: 100%;
+    .overview-item{
+      margin: 20px 0;
+      .title{
+        @include labelHeight;
+        font-size: 14pt;
+        color: #FFF;
+        vertical-align: middle;
+        text-align: left;
+      }
+
+      .description{
+        @include labelHeight;
+        font-size: 12pt;
+        color: #afb9c3;
+        vertical-align: middle;
+        text-align: left;
+      }
+
+      .divider{
+        margin: 20px 0;
+        border-bottom: solid #414649 2px;
+      }
+
+      .toggle-button{
+        float: right;
+        position: relative;
+        .icon{
+          display: inline-block;
+          color: #AFB9C3;
+          height: 14pt;
+          width: 14pt;
+          margin: 0 4px;
+        }
+
+        .text{
+          @include labelHeight;
+          display: inline-block;
+          margin: 0 2px;
+          vertical-align: middle;
+          color: #FFF;
+        }
+
+        .text-disable{
+          @extend .text;
+          color: #afb9c3;
+          text-transform: uppercase;
+        }
+
+        .icon-enabled{
+          @extend .icon;
+          background: url("../../assets/icons/Enabled.svg") no-repeat center;
+          background-size: contain;
+        }
+        .icon-disabled{
+          @extend .icon;
+          background: url("../../assets/icons/Disabled.svg") no-repeat center;
+          background-size: contain;
+        }
+        .icon-enable{
+          @extend .icon;
+          cursor: pointer;
+          width: 18pt;
+          background: url("../../assets/icons/Enable_toggle.svg") no-repeat center;
+          background-size: auto;
+          transition: background 500ms ease;
+        }
+        .icon-disable{
+          @extend .icon;
+          cursor: pointer;
+          width: 18pt;
+          background: url("../../assets/icons/DISABLE_toggle.svg") no-repeat center;
+          background-size: auto;
+          transition: background 500ms ease;
+        }
+      }
+
+      .effectNumber{
+        margin-top: 10px;
+        .count{
+          font-size: 24pt;
+          color: #FFF;
+        }
+        .text{
+          @extend .description
+        }
+      }
+    }
+  }
+
+  .button{
+    color: #FFF;
+    background-color: #121416;
+    border: none;
+    margin: 0 20px;
+    transition: background-color 500ms ease, color 500ms ease;
+    font-size: 14pt;
+    float: right;
+  }
+
+  .button::before{
+    content: '';
+    background-size: contain;
+    display: inline-block;
+    color: #AFB9C3;
+    height: 12pt;
+    width: 12pt;
+    margin: 0 8px;
+    transition: filter 500ms ease;
+  }
+
+  .button-cancel:before{
+    background: url("../../assets/icons/X.svg")center no-repeat;
+
+  }
+  .button-save::before{
+    background: url("../../assets/icons/Edit.svg") center no-repeat;
+  }
+
+  .button:hover{
+    color: #000;
+    background-color: #afb9c3;
+  }
+
+  .button-cancel:hover::before ,.button-save:hover::before{
+    filter: invert(100%) ;
+  }
+
+}
+
+
