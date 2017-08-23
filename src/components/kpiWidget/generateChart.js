@@ -27,7 +27,13 @@ class Chart extends PureComponent {
   }
 
   createChart() {
-    this.chartInstance = C3.generate({ ...this.props.chartConfig });
+    if (
+      this.props.chartConfig &&
+      this.props.chartConfig.data &&
+      this.props.chartConfig.data.columns
+    ) {
+      this.chartInstance = C3.generate({ ...this.props.chartConfig });
+    }
   }
 
   render() {

@@ -19,7 +19,7 @@ class TopNavFilter extends Component {
   constructor() {
     super();
     this.state = {
-      selectedGroupId: 17
+      selectedGroupId: 0 // On intial load we show 'All dveices' as the group filter and set id as 0.
     };
   }
   componentDidMount() {
@@ -47,6 +47,7 @@ class TopNavFilter extends Component {
         label: group.displayName
       };
     });
+    options = [{ value: 0, label: 'All Devices' }].concat(options);
     return (
       <div className="fliter-wrapper">
         <img className="filter" src={Filter} alt="Filter" />
@@ -96,7 +97,10 @@ const mapDispatchToProps = dispatch => ({
       return false;
     });
     dispatch(
-      loadRegionSpecificDevices(selectedGroupConditions, selectedGroupId)
+      loadRegionSpecificDevices(
+        selectedGroupConditions ? selectedGroupConditions : [],
+        selectedGroupId
+      )
     );
   },
   showManageFiltersFlyout: deviceGroups => {

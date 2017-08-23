@@ -20,6 +20,9 @@ export const refreshAllChartData = (
   return (dispatch, getState) => {
     const currentState = getState();
     const devices = currentState.deviceReducer.devices;
+    if (!devices) {
+      return;
+    }
     const deviceIdsCsv = devices.items.map(device => device.Id).join(',');
     dispatch({
       type: types.KPI_REFRESH_CHART_DATA_START

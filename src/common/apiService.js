@@ -30,7 +30,9 @@ class ApiService {
   }
 
   static getAlarmsListForDeviceMap(deviceIds) {
-    return Http.get(`${Config.telemetryApiUrl}alarms?devices=${deviceIds}`);
+    return Http.get(
+      `${Config.telemetryApiUrl}alarms?devices=${deviceIds}&from=NOW-PT30M&to=NOW`
+    );
   }
 
   static loadTelemetryMessagesByDeviceIds(deviceIds) {

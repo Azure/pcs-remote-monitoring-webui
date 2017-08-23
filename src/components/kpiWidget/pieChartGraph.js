@@ -60,7 +60,8 @@ class PieChartGraph extends Component {
             <div className="pie-header">
               {Lang.KPI.ALARMBYDEVICETYPE}
             </div>
-            {this.props.pieChartData
+            {typeof this.props.pieChartData !== 'undefined' &&
+            typeof this.props.pieChartData.chartConfig !== 'undefined'
               ? <Chart
                   chartConfig={pieChart.chartConfig}
                   chartId={pieChart.chartId}
@@ -92,11 +93,10 @@ const mapStateToProps = state => {
   devices.forEach(device => {
     if (
       !deviceIdVsDeviceName[device.Id] &&
-      device.Twin &&
-      device.Twin.reportedProperties &&
-      device.Twin.reportedProperties.Type
+      device.reportedProperties &&
+      device.reportedProperties.Type
     ) {
-      deviceIdVsDeviceName[device.Id] = device.Twin.reportedProperties.Type;
+      deviceIdVsDeviceName[device.Id] = device.reportedProperties.Type;
     }
   });
   alarms.forEach(device => {

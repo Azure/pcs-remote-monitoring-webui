@@ -68,7 +68,9 @@ class BarChart extends Component {
       <div>
         <Row>
           <Col md={12} className="bar-chart">
-            {this.props.chartData && this.props.chartData.length
+            {typeof this.props.chartData !== undefined &&
+            this.props.chartData.length &&
+            typeof this.props.chartData.chartConfig !== undefined
               ? <Chart
                   chartConfig={barChart.chartConfig}
                   chartId={barChart.chartId}

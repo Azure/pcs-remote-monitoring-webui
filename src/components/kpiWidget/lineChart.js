@@ -80,7 +80,9 @@ class LineChart extends Component {
             : null}
           {this.props.percentChange}%
         </div>
-        {this.props.lineChartData && this.props.lineChartData.length
+        {typeof this.props.lineChartData !== 'undefined' &&
+        this.props.lineChartData.length &&
+        typeof this.props.lineChartData.chartConfig !== 'undefined'
           ? <Chart
               chartConfig={lineChart.chartConfig}
               chartId={lineChart.chartId}
