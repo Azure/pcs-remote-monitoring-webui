@@ -14,7 +14,18 @@ const lang = {
     MORE: 'MORE',
     AZUREPROJECTNAME: 'Azure Iot Suite Remote Monitoring',
     DASHBOARD: 'Dashboard',
-    CONTOSO: 'Contoso'
+    CONTOSO: 'Contoso',
+    ALARMSTATUS: 'System Alarms',
+    ALARMLIST: {
+      COLUMNDEFS: {
+        RULENAME: 'Rule Name',
+        SEVERITY: 'Severity',
+        CREATED: 'Created',
+        OPENOCCURRENCES: 'Open Occurrences',
+        DESCRIPTION: 'Description',
+        STATUS: 'Status'
+      }
+    }
   },
   FILTER: {
     MANAGEFILTER: 'Manage Filters',
@@ -142,6 +153,13 @@ const lang = {
     DEVICES: 'Devices',
     RULES_ACTIONS: 'Rules & Actions',
     MAINTENANCE: 'Maintenance'
+  },
+  FORMS: {
+    LASTHOUR: 'Last hour',
+    LASTDAY: 'Last day',
+    LASTWEEK: 'Last week',
+    LASTMONTH: 'Last month',
+    CHOOSETIMERANGE: 'Choose time range'
   },
   NAVIGATION: {
     SWITCHUSER: 'Switch to another user'

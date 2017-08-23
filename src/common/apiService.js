@@ -87,6 +87,7 @@ class ApiService {
 
   /**
    * Get list of alarms aggregated by rule
+   * 
    * @param params An object containing API parameters
    *    "from": The ISO8601 format start of the time window for the query.
    *    "to": The ISO8601 format end of the time window for the query.
@@ -139,10 +140,7 @@ class ApiService {
 
   static serializeParamObject(params) {
     return Object.keys(params)
-      .map(
-        param =>
-          `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`
-      )
+      .map(param => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
       .join('&');
   }
 }

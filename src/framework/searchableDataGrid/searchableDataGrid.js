@@ -81,7 +81,7 @@ class SearchableDataGrid extends Component {
       /* 
         TODO (stpryor): If props change, render will be called again. 
         If the height is not provided, the parentElement height will be used.
-        This causes the height to grow with each props change for now reason.
+        This causes the height to grow with each props change for no reason.
       */
       let newClientHeight =
         props.height || this.container.parentElement.clientHeight || undefined;
@@ -313,7 +313,7 @@ class SearchableDataGrid extends Component {
         />
       </div>
     );
-
+    const isLoading = this.props.loading === undefined ? this.state.loading: this.props.loading;
     return (
       <div
         ref={input => {
@@ -322,10 +322,8 @@ class SearchableDataGrid extends Component {
         className="datagrid-container"
       >
         {title}
-
         <div className="clearfix"/>
-        {
-          !this.state.loading
+        {!isLoading
           ? <div>
               {searchBox}
               <div className="datagrid-body">

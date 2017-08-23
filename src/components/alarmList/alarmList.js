@@ -2,10 +2,11 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import EventTopic, { Topics } from '../../common/eventtopic';
-import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
 import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
-import Config from '../../common/config';
+import lang from '../../common/lang';
+import Select from 'react-select';
+import ApiService from '../../common/apiService';
+import Rx from 'rxjs';
 
 import './alarmList.css';
 
@@ -13,34 +14,46 @@ class AlarmList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columnDefs: this.createColumnDefs()
+      columnDefs: this.createColumnDefs(),
+      timerange: 'PT1H',
+      rowData: [],
+      loading: false,
+      deviceIdList: ''
     };
+    this.subscriptions = [];
   }
 
   createColumnDefs = () => {
+    let columnDefs = lang.DASHBOARD.ALARMLIST.COLUMNDEFS;
     return [
-      { headerName: 'Rule Name', field: 'ruleId', filter: 'text' },
-      { headerName: 'Severity', field: 'severity', filter: 'text' },
-      { headerName: 'Created', field: 'created', filter: 'date' },
-      {
-        headerName: 'Open Occurrences',
-        field: 'occurrences',
-        filter: 'number'
-      },
-      { headerName: 'Description', field: 'description', filter: 'text' },
-      { headerName: 'Status', field: 'status', filter: 'text' }
+      { headerName: columnDefs.RULENAME, field: 'ruleId', filter: 'text' },
+      { headerName: columnDefs.SEVERITY, field: 'severity', filter: 'text' },
+      { headerName: columnDefs.CREATED, field: 'created', filter: 'date' },
+      { headerName: columnDefs.OPENOCCURRENCES, field: 'occurrences', filter: 'number' },
+      { headerName: columnDefs.DESCRIPTION, field: 'description', filter: 'text' },
+      { headerName: columnDefs.STATUS, field: 'status', filter: 'text' }
     ];
   };
 
-  componentWillUnmount() {
-    EventTopic.unsubscribe(this.tokens);
+  componentDidMount() {
+    // Initialize the grid
+    this.getData();
+    this.subscriptions.push(
+      Rx.Observable.interval(2000).subscribe(_ => this.getData(false))
+    );
   }
 
-  onEvent = (topic, data) => {
-    this.setState({ currentFilter: data }, () => {
-      this.getData(data);
-    });
-  };
+  componentWillUnmount() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // If the device list changes, reload the list data
+    const newDeviceIdList = this.generateDeviceIdList(nextProps.devices);
+    if (this.state.deviceIdList !== newDeviceIdList) {
+      this.setState({ deviceIdList: newDeviceIdList }, () => this.getData());
+    }
+  }
 
   dataFormatter(data) {
     return data.Items.map(item => {
@@ -55,64 +68,85 @@ class AlarmList extends Component {
     });
   }
 
+  onTimeRangeChange(selectedOption) {
+    if (!selectedOption) return;
+    this.setState({ timerange: selectedOption.value }, () => this.getData());
+  }
+
+  generateDeviceIdList(devices) {
+    return devices.map(id => encodeURIComponent(id)).join(',');
+  }
+
+  getData(showLoading = true) {
+    // If no device list is provided, do not initialize the alarm list
+    // since the device group has not been selected
+    if (!this.state.deviceIdList) return;
+    if (showLoading) this.setState({ loading: true });
+    Rx.Observable.fromPromise(
+      ApiService.getAlarmsByRule({
+          from: `NOW-${this.state.timerange}`,
+          to: 'NOW',
+          devices: this.state.deviceIdList
+        })
+    ).subscribe(
+      data => this.setState({ 
+        rowData: this.dataFormatter(data),
+        loading: false
+      }),
+      err => this.setState({ loading: false })
+    );
+  };
+
   render() {
-    const devicesList = this.props.devices
-      .map(id => encodeURIComponent(id))
-      .join(',');
-    const devicesListParam = devicesList ? `&devices=${devicesList}` : '';
     return (
       <div ref="container" className="alarm-list">
         <div className="alarm-list-header">
-          <span>Alarm Status</span>
+          <span>{lang.DASHBOARD.ALARMSTATUS}</span>
           <div ref="dropdown" className="alarm-dropdown">
-            <GenericDropDownList
-              ref="dropdown"
-              id="AlarmTimeRange"
-              items={[
+            <Select
+              value={this.state.timerange}
+              onChange={this.onTimeRangeChange.bind(this)}
+              searchable={false}
+              options={[
                 {
-                  id: 'PT1H',
-                  text: 'Last hour'
+                  value: 'PT1H',
+                  label: lang.FORMS.LASTHOUR
                 },
                 {
-                  id: 'P1D',
-                  text: 'Last day'
+                  value: 'P1D',
+                  label: lang.FORMS.LASTDAY
                 },
                 {
-                  id: 'P1W',
-                  text: 'Last week'
+                  value: 'P1W',
+                  label: lang.FORMS.LASTWEEK
                 },
                 {
-                  id: 'P1M',
-                  text: 'Last month'
+                  value: 'P1M',
+                  label: lang.FORMS.LASTMONTH
                 }
               ]}
-              initialState={{
-                defaultText: 'Choose time range',
-                selectFirstItem: true
-              }}
-              publishTopic={Topics.dashboard.alarmTimerange.selected}
-            />
+              />
           </div>
         </div>
-        <SearchableDataGrid
-          // properties
-          columnDefs={this.state.columnDefs}
-          paginationAutoPageSize={true}
-          pagination={true}
-          eventDataKey="0"
-          datasource={`${Config.telemetryApiUrl}alarmsbyrule?from=NOW-{timerange}&to=NOW${devicesListParam}`}
-          dataFormatter={this.dataFormatter}
-          urlSearchPattern="/\{timerange\}/i"
-          topics={[Topics.dashboard.alarmTimerange.selected]}
-          enableSorting={true}
-          enableSearch={false}
-          enableFilter={true}
-          autoLoad={true}
-          multiSelect={false}
-          title=""
-          height={400}
-          showLastUpdate={false}
-        />
+        <div className="grid-container">
+          <SearchableDataGrid
+            // properties
+            columnDefs={this.state.columnDefs}
+            paginationAutoPageSize={true}
+            suppressScrollOnNewData={true}
+            pagination={false}
+            rowData={this.state.rowData}
+            loading={this.state.loading}
+            enableSorting={false}
+            enableSearch={false}
+            enableFilter={false}
+            autoLoad={false}
+            multiSelect={false}
+            title=""
+            height={400}
+            showLastUpdate={false}
+          />
+        </div>
       </div>
     );
   }
