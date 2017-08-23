@@ -7,7 +7,7 @@ import DeviceDetailFlyout from './deviceDetailFlyout';
 import ManageFiltersFlyout from './manageFiltersFlyout';
 
 import './flyout.css';
-import RuleOverviewFlyout from "../ruleOverview/ruleOverview";
+import RuleOverviewFlyout from '../ruleOverview/ruleOverview';
 
 const getFlyout = (content, onClose) => {
   switch (content.type) {

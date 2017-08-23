@@ -7,7 +7,6 @@ import * as actions from '../../actions';
 import MapPane from './mapPane';
 import Flyout, { Header, Body } from '../../framework/flyout/flyout';
 import DeviceDetail from '../deviceDetail/deviceDetail';
-import Spinner from '../spinner/spinner';
 import RegionDetails from '../../components/deviceMap/regionDetails.js';
 import { Row, Col } from 'react-bootstrap';
 import lang from '../../common/lang';
@@ -20,7 +19,7 @@ class DeviceMap extends Component {
   constructor(props) {
     super(props);
     window.loadMap = () => {
-      this.showMap();
+      MapPane.init();
     };
     this.state = {
       loadingMap: true,
@@ -50,39 +49,6 @@ class DeviceMap extends Component {
     );
   }
 
-  applyLocationAndAlarmToDevices() {
-    const { devices, alarmList, telemetryByDeviceGroup } = this.props;
-    if (devices && telemetryByDeviceGroup && alarmList) {
-      devices.items.forEach(device => {
-        telemetryByDeviceGroup.Items.forEach(telemetryGroup => {
-          /**
-          Bing Map renders the devices only if the devices have longitude and latitude.
-          If not we are not showing the devices on Map (all devices don't have the longitude and latitude).
-          */
-          if (device.Id === telemetryGroup.DeviceId) {
-            if (
-              telemetryGroup.Data &&
-              telemetryGroup.Data.latitude &&
-              telemetryGroup.Data.longitude
-            ) {
-              device.latitude = telemetryGroup.Data.latitude;
-              device.longitude = telemetryGroup.Data.longitude;
-            } else if (device.Twin && device.Twin.reportedProperties) {
-              device.latitude = device.Twin.reportedProperties.Latitude;
-              device.longitude = device.Twin.reportedProperties.Longitude;
-            }
-          }
-        });
-
-        alarmList.forEach(alarm => {
-          if (device.Id === alarm.Id) {
-            device.Severity = alarm.Rule.Severity;
-          }
-        });
-      });
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     if (
       !nextProps.devices ||
@@ -92,29 +58,45 @@ class DeviceMap extends Component {
       //the data is not loaded yet, return !
       return;
     }
-    //This is a flag that means map callback is complete
-    if (this.state.mapCallbackComplete) {
-      setTimeout(() => window.loadMap());
-    }
-    this.setState({ loadingMap: false });
+    this.showMap(nextProps);
   }
 
-  showMap() {
+  showMap(props) {
     this.setState({ mapCallbackComplete: true });
-    const {
-      devices,
-      telemetryByDeviceGroup,
-      alarmList,
-      mapkey,
-      actions
-    } = this.props;
+    const { devices, telemetryByDeviceGroup, alarmList, actions } = props;
+
     if (!devices || !telemetryByDeviceGroup || !alarmList) {
       return;
     }
 
     //If control reaches here, that means map is loaded and also the data is also loaded.
-    this.applyLocationAndAlarmToDevices();
-    MapPane.init(mapkey);
+    devices.items.forEach(device => {
+      telemetryByDeviceGroup.Items.forEach(telemetryGroup => {
+        /**
+        Bing Map renders the devices only if the devices have longitude and latitude.
+        If not we are not showing the devices on Map (all devices don't have the longitude and latitude).
+        */
+        if (device.Id === telemetryGroup.DeviceId) {
+          if (
+            telemetryGroup.Data &&
+            telemetryGroup.Data.latitude &&
+            telemetryGroup.Data.longitude
+          ) {
+            device.latitude = telemetryGroup.Data.latitude;
+            device.longitude = telemetryGroup.Data.longitude;
+          } else if (device.reportedProperties) {
+            device.latitude = device.reportedProperties.Latitude;
+            device.longitude = device.reportedProperties.Longitude;
+          }
+        }
+      });
+
+      alarmList.forEach(alarm => {
+        if (device.Id === alarm.Id) {
+          device.Severity = alarm.Rule.Severity;
+        }
+      });
+    });
     MapPane.setData({
       deviceData: devices.items,
       container: this,
@@ -223,10 +205,6 @@ class DeviceMap extends Component {
         <Row>
           <RegionDetails {...this.props} />
           <Col md={9} className="bing-map">
-            {this.state.loadingMap &&
-              <div className="loading-spinner">
-                <Spinner />
-              </div>}
             <div id="deviceMap" className="dashboard_device_map" />
             <Flyout ref="flyout">
               <Header>Device Detail</Header>

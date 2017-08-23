@@ -175,3 +175,9 @@ input {
 .cancel-icon {
   height: 12px;
 }
+.save-delete-cancel-buttons {
+  .loading-spinner {
+    margin-right: 30px !important;
+    display: inline-block;
+  }
+}

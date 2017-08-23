@@ -95,7 +95,9 @@ const mapDispatchToProps = dispatch => ({
       }
       return false;
     });
-    dispatch(loadRegionSpecificDevices(selectedGroupConditions));
+    dispatch(
+      loadRegionSpecificDevices(selectedGroupConditions, selectedGroupId)
+    );
   },
   showManageFiltersFlyout: deviceGroups => {
     dispatch({

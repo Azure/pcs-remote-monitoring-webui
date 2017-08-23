@@ -55,7 +55,7 @@ const filterReducer = (state = initialState.filter, action) => {
     case types.DEVICE_GROUP_CHANGED:
       return {
         ...state,
-        selectedDeviceGroupId: action.selectedGroupId
+        selectedDeviceGroupId: action.data
       };
     default:
       return state;

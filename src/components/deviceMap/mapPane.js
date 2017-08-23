@@ -113,6 +113,7 @@ let setDeviceLocationData = function setDeviceLocationData(
   }
 
   map.entities.clear();
+  map.layers.clear();
   let allPins = [];
   if (deviceLocations) {
     /**
@@ -157,6 +158,7 @@ let setDeviceLocationData = function setDeviceLocationData(
         clusteredPinCallback: createCustomClusteredPin,
         gridSize: 80
       });
+
       map.layers.insert(clusterLayer);
     });
   }

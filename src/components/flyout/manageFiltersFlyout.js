@@ -10,6 +10,7 @@ import CancelX from '../../assets/icons/CancelX.svg';
 import Remove from '../../assets/icons/Remove.svg';
 import Select from 'react-select';
 import Config from '../../common/config';
+import Spinner from '../spinner/spinner';
 import lang from '../../common/lang';
 import './manageFilterFlyout.css';
 import {
@@ -57,6 +58,14 @@ class ManageFiltersFlyout extends React.Component {
       ]
     };
     this.props.content.deviceGroups = [newGroupObj, ...deviceGroups];
+    const editingState = this.state.editingState;
+    this.props.content.deviceGroups.forEach(group => {
+      if (!editingState[group.id]) {
+        editingState[group.id] = {};
+      }
+      editingState[group.id].showEdit = false;
+      editingState[group.id].saveInProgress = false;
+    });
   }
 
   processFieldValues() {
@@ -114,6 +123,17 @@ class ManageFiltersFlyout extends React.Component {
     });
   }
 
+  checkIfGroupNameExists(groupName, groupId) {
+    const { content } = this.props;
+    const deviceGroups = content.deviceGroups || [];
+    return (
+      deviceGroups.length > 0 &&
+      deviceGroups.some(
+        group => group.displayName === groupName && group.id !== groupId
+      )
+    );
+  }
+
   /**
    * This function will render the filter form. It optionally takes a group
    * object to prefill the form with the device group specific data.
@@ -168,11 +188,16 @@ class ManageFiltersFlyout extends React.Component {
             </div>
             <input
               onChange={evt => {
-                this.setEditingState(group.id, { formChanged: true });
-                group.displayName = evt.target.value;
-                if (group.displayName.trim() === '') {
-                  this.setEditingState(group.id, { emptyName: true });
-                }
+                group.displayName = evt.target.value || '';
+                const editingState = {
+                  formChanged: true
+                };
+                editingState.isDuplicate = this.checkIfGroupNameExists(
+                  group.displayName,
+                  group.id
+                );
+                editingState.emptyName = group.displayName.trim() === '';
+                this.setEditingState(group.id, editingState);
               }}
               type="text"
               value={group && group.displayName}
@@ -180,6 +205,11 @@ class ManageFiltersFlyout extends React.Component {
               placeholder={lang.FILTER.ENTERNAMEFORFILTER}
             />
           </label>
+          {(this.state.editingState[group.id] || {}).isDuplicate
+            ? <div className="error-msg">
+                {lang.FILTER.GROUPNAMEALREADYEXISTS}
+              </div>
+            : null}
           {(this.state.editingState[group.id] || {}).emptyName
             ? <div className="error-msg">
                 {lang.FILTER.FILTERNAMECANNOTBEEMPTY}
@@ -239,11 +269,15 @@ class ManageFiltersFlyout extends React.Component {
                     </div>
                     <input
                       onChange={evt => {
-                        this.setEditingState(group.id, { formChanged: true });
-                        cond.value = evt.target.value;
-                        if (cond.value.trim() === '') {
-                          this.setEditingState(group.id, { emptyValue: true });
-                        }
+                        const editingState = {
+                          formChanged: true,
+                          valuesEditingState: {}
+                        };
+                        cond.value = evt.target.value || '';
+                        editingState.valuesEditingState[idx] = {
+                          emptyValue: cond.value.trim() === ''
+                        };
+                        this.setEditingState(group.id, editingState);
                       }}
                       type="text"
                       value={cond.value}
@@ -252,7 +286,7 @@ class ManageFiltersFlyout extends React.Component {
                     />
                   </label>
 
-                  {(this.state.editingState[group.id] || {}).emptyValue
+                  {this.checkIfConditionValueIsEmpty(group.id, idx)
                     ? <div className="error-msg">
                         {lang.FILTER.VALUECANNOTBEEMPTY}
                       </div>
@@ -290,10 +324,27 @@ class ManageFiltersFlyout extends React.Component {
         </div>
         <div className="buttons-group">
           <div className="save-delete-cancel-buttons">
+            {(this.state.editingState[group.id] || {}).saveInProgress
+              ? <span className="loading-spinner">
+                  <Spinner />
+                </span>
+              : null}
             <button
               onClick={() => {
+                const editingState = this.state.editingState[group.id] || {};
+                if (
+                  editingState.emptyName ||
+                  editingState.isDuplicate ||
+                  !group.displayName
+                ) {
+                  //do not save
+                  return;
+                }
+                if (group.conditions.some(cond => !cond.value)) {
+                  return;
+                }
+                this.setEditingState(group.id, { saveInProgress: true });
                 this.props.saveOrUpdateFilter(formChanged, group);
-                this.setEditingState(group.id, { showEdit: false });
               }}
               className={newFilterFlag ? 'save' : 'delete-filter'}
             >
@@ -307,7 +358,10 @@ class ManageFiltersFlyout extends React.Component {
             </button>
             <button
               onClick={() => {
-                this.setEditingState(group.id, { showEdit: false });
+                this.setEditingState(group.id, {
+                  showEdit: false,
+                  formChanged: false
+                });
                 if (group.id !== 0) {
                   this.restoreFilter(group.id);
                 } else {
@@ -327,6 +381,13 @@ class ManageFiltersFlyout extends React.Component {
     );
   }
 
+  checkIfConditionValueIsEmpty(groupId, idx) {
+    const editingState = this.state.editingState[groupId] || {};
+    const valuesEditingState =
+      (editingState.valuesEditingState || {})[idx] || {};
+    return valuesEditingState.emptyValue;
+  }
+
   /**
    * On this component state, we maintain a editingState object for each device groupId
    * that contains a boolean called 'showEdit' to control the hiding/showing of
@@ -338,9 +399,18 @@ class ManageFiltersFlyout extends React.Component {
       ...prevEditingState
     };
     tempEditingState[groupId] = tempEditingState[groupId] || {};
+    let tempValuesEditingState = {};
+    if (tempEditingState[groupId].valuesEditingState) {
+      tempValuesEditingState = tempEditingState[groupId].valuesEditingState;
+      tempValuesEditingState = {
+        ...tempValuesEditingState,
+        ...newState.valuesEditingState
+      };
+    }
     tempEditingState[groupId] = {
       ...tempEditingState[groupId],
-      ...newState
+      ...newState,
+      valuesEditingState: tempValuesEditingState
     };
     this.setState({
       editingState: tempEditingState
@@ -437,5 +507,4 @@ const mapDispatchToProps = dispatch => ({
     }
   }
 });
-
 export default connect(null, mapDispatchToProps)(ManageFiltersFlyout);

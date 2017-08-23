@@ -23,11 +23,11 @@ export const getRegionByDisplayName = deviceGroup => {
   };
 };
 
-export const loadRegionSpecificDevices = selectedGroupConditions => {
+export const loadRegionSpecificDevices = (selectedGroupConditions, groupId) => {
   return dispatch => {
     dispatch({
       type: types.DEVICE_GROUP_CHANGED,
-      selectedGroupConditions
+      data: groupId
     });
     ApiService.getDevicesForGroup(selectedGroupConditions)
       .then(data => {

@@ -33,7 +33,8 @@ const lang = {
     CANCEL: 'Cancel',
     CREATEFILTER: 'Create Filter',
     FILTERS: 'Filters',
-    ACTIONS: 'Actions'
+    ACTIONS: 'Actions',
+    GROUPNAMEALREADYEXISTS: 'Group name already exists'
   },
   TELEMETRY: {
     OK: 'ok'
@@ -124,14 +125,15 @@ const lang = {
     EDIT: 'Edit',
     DELETE: 'Delete',
     DELETERULES: 'Delete Rules and Actions',
-    RULESWILLBEDELETED: 'Caution: {0} Rules will be deleted and cannot be restored, please confirm',
+    RULESWILLBEDELETED:
+      'Caution: {0} Rules will be deleted and cannot be restored, please confirm',
     CANCEL: 'Cancel',
     CONFIRM: 'Confirm',
-    RULEDETAIL:'Rule Detail',
+    RULEDETAIL: 'Rule Detail',
     EFFECTEDDEVICES: 'devices effected by this rule',
-    CHANGESTATUS:'Change'
+    CHANGESTATUS: 'Change'
   },
-  FLYOUT:{
+  FLYOUT: {
     SAVE: 'Save',
     CANCEL: 'Cancel'
   },

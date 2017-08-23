@@ -71,15 +71,15 @@ class ApiService {
     return Http.get(`${Config.telemetryApiUrl}alarmsbyrule`);
   }
 
-  static getRuleList(){
+  static getRuleList() {
     return Http.get(`${Config.telemetryApiUrl}rules`);
   }
 
-  static updateRule(id, rule){
-    return Http.put(`${Config.telemetryApiUrl}rules/${id}`,rule);
+  static updateRule(id, rule) {
+    return Http.put(`${Config.telemetryApiUrl}rules/${id}`, rule);
   }
 
-  static deleteRule(id){
+  static deleteRule(id) {
     return Http.delete(`${Config.telemetryApiUrl}rules/${id}`);
   }
 
