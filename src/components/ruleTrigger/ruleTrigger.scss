@@ -1,0 +1,36 @@
+.ruleReadTrigger table > thead > tr > td, .ruleTrigger table > thead > tr > td {
+    color: #afb9c3;
+}
+
+.ruleTrigger {
+    table {
+        border-collapse: separate;
+        border-spacing: 0px 5px;
+        color: white;
+
+        thead > tr > td, tbody > tr > td {
+            border: 0;
+            padding: 6px;
+        }
+
+        tbody > tr {
+            background-color: #1B1D1F;
+
+            td {
+                border: 0;
+
+                input, select {
+                    border: 1px #646A71 solid;
+                    background-color: #1B1D1F;
+                    width: 100%;
+                }
+
+                img {
+                    height: 15px;
+                    margin-right: 10px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

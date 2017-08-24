@@ -143,6 +143,10 @@ class ApiService {
       .map(param => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
       .join('&');
   }
+
+  static createRule(rule){
+    return Http.post(`${Config.telemetryApiUrl}rules`, rule);
+  }
 }
 
 export default ApiService;

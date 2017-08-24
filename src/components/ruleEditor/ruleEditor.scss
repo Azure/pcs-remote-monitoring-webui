@@ -1,0 +1,73 @@
+.ruleEditor {
+    margin: 5px;
+    height: calc(100% - 20px);
+
+    .ruleEditorMain {
+        height: calc(100% - 120px);
+        overflow-y: auto;
+        color: white;
+
+        label {
+            font-weight: normal;
+        }
+
+        .editIcon {
+            float: right;
+            margin-right: 20px;
+
+            img {
+                height: 15px;
+                margin-left: 10px;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .helpText {
+        color: #afb9c3;
+        display: block;
+        margin-top: 2px;
+        margin-bottom: 5px;
+        font-size: 12px;
+    }
+
+    .ruleTip {
+        position: relative;
+
+        .helpText {
+            position: absolute;
+            bottom: 0;
+            left: 30px;
+        }
+    }
+
+    .deviceNum {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .ruleEditorBtns {
+
+        .btnToolBar {
+            float: right;
+            margin-top: 20px;
+
+            .ruleEditorBtn {
+                background-color: #242628;
+                display: inline-block;
+                padding: 6px 12px;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+                cursor: pointer;
+                border: 1px solid transparent;
+                margin-left: 15px;
+            }
+
+            .ruleEditorBtn:hover{
+                background-color: #AEB8C3;
+                color: white;
+            }
+        }
+    }
+}

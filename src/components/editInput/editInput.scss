@@ -1,0 +1,13 @@
+.editInput {
+    input:not([type="radio"]), textarea, select {
+        border: 1px #646A71 solid;
+        background-color: #1B1D1F;
+        width: 100%;
+        color: #afb9c3;
+    }
+
+    label {
+        color: #afb9c3;
+        display: block;
+    }
+}
