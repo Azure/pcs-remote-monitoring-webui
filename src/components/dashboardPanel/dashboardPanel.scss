@@ -1,0 +1,34 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+$padding: 15px;
+
+.dashboard-panel {
+  display: flex;
+  flex-flow: column wrap;
+  background: #1b1d1f;
+  color: #fff;
+
+  > .panel-header-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #242628;
+    padding: $padding;
+
+    > .panel-header {
+      flex-grow: 1;
+      color: #fff;
+    }
+
+    > .panel-actions-container {
+      > .Select {
+        width: 150px;
+      }
+    }
+  }
+
+  > .panel-contents{
+    padding: 0px $padding;
+  }
+}

@@ -3,11 +3,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Panel, Row, Radio } from 'react-bootstrap';
+import { Row, Radio } from 'react-bootstrap';
 import Timeline from '../charts/timeline';
 import * as actions from '../../actions';
 import Config from '../../common/config';
-
+import DashboardPanel from '../dashboardPanel/dashboardPanel';
 import './telemetry.css';
 
 class Telemetry extends Component {
@@ -88,24 +88,21 @@ class Telemetry extends Component {
         bindto: `#${this.props.chartId}`
       }
     };
-    // TODO: change the pause button per UX
-    const panelHeader = (
-      <div className="telemetry-header">
-        <h4>Telemetry</h4>
-        <button className="pause-button" onClick={this.toggleTimer}>
-          {this.state.pause ? 'pause' : 'flowing'}
-        </button>
-      </div>
-    );
     return (
-      <Panel header={panelHeader} bsClass="telemetry-panel">
+      <DashboardPanel 
+          title={'Telemetry'}
+          actions={
+            <button className="pause-button" onClick={this.toggleTimer}>
+              {this.state.pause ? 'pause' : 'flowing'}
+            </button>
+          }>
         <Row>
           {telemetryRadioBtnGroup}
         </Row>
         <Row>
           <Timeline {...timelineConfig} />
         </Row>
-      </Panel>
+      </DashboardPanel>
     );
   }
 }

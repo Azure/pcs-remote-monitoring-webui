@@ -112,11 +112,12 @@ class ApiService {
     if (!group) {
       throw new Error('expected valid group object');
     }
-    const data = {};
-    data.id = group.id;
-    data.displayName = group.displayName;
-    data.conditions = group.conditions;
-    data.eTag = group.eTag;
+    const data = {
+      id: group.id,
+      displayName: group.displayName,
+      conditions: group.conditions,
+      eTag: group.eTag
+    };
     return Http.put(`${Config.uiConfigApiUrl}devicegroups/${group.id}`, data);
   }
 
@@ -124,10 +125,11 @@ class ApiService {
     if (!group) {
       throw new Error('expected valid group object');
     }
-    const data = {};
-    data.id = group.id;
-    data.displayName = group.displayName;
-    data.conditions = group.conditions;
+    const data = {
+      id: group.id,
+      displayName: group.displayName,
+      conditions: group.conditions
+    };
     return Http.post(`${Config.uiConfigApiUrl}devicegroups`, data);
   }
 

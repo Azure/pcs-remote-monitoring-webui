@@ -10,6 +10,7 @@ import DeviceDetail from '../deviceDetail/deviceDetail';
 import RegionDetails from '../../components/deviceMap/regionDetails.js';
 import { Row, Col } from 'react-bootstrap';
 import lang from '../../common/lang';
+import DashboardPanel from '../dashboardPanel/dashboardPanel';
 import _ from 'lodash';
 import { getNonFunctionalProps } from '../../common/utils';
 
@@ -189,19 +190,7 @@ class DeviceMap extends Component {
 
   render() {
     return (
-      <div>
-        <Row>
-          <Col md={12}>
-            <div className="region-header row">
-              <span className="device-location">
-                {lang.DASHBOARD.DEVICELOCATION}
-              </span>
-              <span className="more">
-                {lang.DASHBOARD.MORE}
-              </span>
-            </div>
-          </Col>
-        </Row>
+      <DashboardPanel title={lang.DASHBOARD.DEVICELOCATION}>
         <Row>
           <RegionDetails {...this.props} />
           <Col md={9} className="bing-map">
@@ -214,7 +203,7 @@ class DeviceMap extends Component {
             </Flyout>
           </Col>
         </Row>
-      </div>
+      </DashboardPanel>
     );
   }
 }

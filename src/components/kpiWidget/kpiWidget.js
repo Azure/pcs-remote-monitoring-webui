@@ -7,11 +7,13 @@ import PieChartGraph from './pieChartGraph';
 import BarChart from './barChart';
 import { Grid, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
-import './kpiWidget.css';
-import { getNonFunctionalProps } from '../../common/utils';
 import Config from '../../common/config';
 import Lang from '../../common/lang';
+import DashboardPanel from '../dashboardPanel/dashboardPanel';
+import { getNonFunctionalProps } from '../../common/utils';
 import _ from 'lodash';
+
+import './kpiWidget.css';
 
 class KpiWidget extends Component {
   constructor() {
@@ -80,46 +82,42 @@ class KpiWidget extends Component {
   }
   render() {
     return (
-      <Grid fluid className="kpiWidget">
-        <Row>
-          <Col md={12} className="kpiTitleRow">
-            <div>
-              {Lang.KPI.SYSTEMKPI}
-            </div>
-          </Col>
-        </Row>
-        <div className="kpi-container">
-          <Row>
-            <Col md={12}>
-              <div className="top-rules">
-                {Lang.KPI.TOPRULESTRIGGERED}
-              </div>
-              <div className="time-range">
+        <DashboardPanel
+            className="kpi-widget"
+            title={Lang.KPI.SYSTEMKPI}
+            actions={
                 <Select
-                  className="kpi-filters"
-                  autofocus
-                  options={this.options}
-                  value={this.state.selectedValue}
-                  onChange={this.updateValue.bind(this)}
-                  simpleValue
-                  searchable={false}
-                  placeholder="{Lang.KPI.TIMERANGE}"
-                />
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <BarChart timeCode={this.state.selectedValue} />
-            </Col>
-          </Row>
-          <Row className="kpiRow">
-            <Col md={12}>
-              <PieChartGraph />
-            </Col>
-          </Row>
-        </div>
-      </Grid>
+                        className="kpi-filters"
+                        autofocus
+                        options={this.options}
+                        value={this.state.selectedValue}
+                        onChange={this.updateValue.bind(this)}
+                        simpleValue
+                        searchable={false}
+                        clearable={false}
+                        placeholder="{Lang.KPI.TIMERANGE}"
+                    />
+            }>
+          <Grid fluid className="kpiWidget">
+            <div className="kpi-container">
+              <Row>
+                  <Col md={12} className="top-rules">
+                      {Lang.KPI.TOPRULESTRIGGERED}
+                  </Col>
+              </Row>
+              <Row>
+                  <Col md={12}>
+                      <BarChart timeCode={this.state.selectedValue} />
+                  </Col>
+              </Row>
+              <Row className="kpiRow">
+                  <Col md={12}>
+                      <PieChartGraph />
+                  </Col>
+              </Row>
+            </div>
+          </Grid>
+        </DashboardPanel>
     );
   }
 }

@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
 import lang from '../../common/lang';
 import Select from 'react-select';
 import ApiService from '../../common/apiService';
 import Rx from 'rxjs';
+import DashboardPanel from '../dashboardPanel/dashboardPanel';
 
 import './alarmList.css';
 
@@ -21,6 +21,7 @@ class AlarmList extends Component {
       deviceIdList: ''
     };
     this.subscriptions = [];
+    this.errorSubject = new Rx.Subject();
   }
 
   createColumnDefs = () => {
@@ -36,10 +37,12 @@ class AlarmList extends Component {
   };
 
   componentDidMount() {
-    // Initialize the grid
-    this.getData();
+    // Initialize the grid and start refreshing
     this.subscriptions.push(
-      Rx.Observable.interval(2000).subscribe(_ => this.getData(false))
+      Rx.Observable.interval(2000)
+        .startWith(-1)
+        .takeUntil(this.errorSubject)
+        .subscribe((cnt) => this.getData(cnt < 0))
     );
   }
 
@@ -93,44 +96,46 @@ class AlarmList extends Component {
         rowData: this.dataFormatter(data),
         loading: false
       }),
-      err => this.setState({ loading: false })
+      err => {
+        this.setState({ loading: false });
+        this.errorSubject.next(undefined);
+      }
     );
   };
 
   render() {
     return (
-      <div ref="container" className="alarm-list">
-        <div className="alarm-list-header">
-          <span>{lang.DASHBOARD.ALARMSTATUS}</span>
-          <div ref="dropdown" className="alarm-dropdown">
-            <Select
-              value={this.state.timerange}
-              onChange={this.onTimeRangeChange.bind(this)}
-              searchable={false}
-              options={[
-                {
-                  value: 'PT1H',
-                  label: lang.FORMS.LASTHOUR
-                },
-                {
-                  value: 'P1D',
-                  label: lang.FORMS.LASTDAY
-                },
-                {
-                  value: 'P1W',
-                  label: lang.FORMS.LASTWEEK
-                },
-                {
-                  value: 'P1M',
-                  label: lang.FORMS.LASTMONTH
-                }
-              ]}
-              />
-          </div>
-        </div>
+      <DashboardPanel
+        className="alarm-list"
+        title={lang.DASHBOARD.ALARMSTATUS}
+        actions={
+          <Select
+            value={this.state.timerange}
+            onChange={this.onTimeRangeChange.bind(this)}
+            searchable={false}
+            clearable={false}
+            options={[
+              {
+                value: 'PT1H',
+                label: lang.FORMS.LASTHOUR
+              },
+              {
+                value: 'P1D',
+                label: lang.FORMS.LASTDAY
+              },
+              {
+                value: 'P1W',
+                label: lang.FORMS.LASTWEEK
+              },
+              {
+                value: 'P1M',
+                label: lang.FORMS.LASTMONTH
+              }
+            ]}
+          />
+        }>
         <div className="grid-container">
           <SearchableDataGrid
-            // properties
             columnDefs={this.state.columnDefs}
             paginationAutoPageSize={true}
             suppressScrollOnNewData={true}
@@ -143,23 +148,13 @@ class AlarmList extends Component {
             autoLoad={false}
             multiSelect={false}
             title=""
-            height={400}
+            height={300}
             showLastUpdate={false}
           />
         </div>
-      </div>
+      </DashboardPanel>
     );
   }
 }
 
-const mapStateToProps = state => {
-  const devices =
-    state.deviceReducer.devices && state.deviceReducer.devices.items
-      ? state.deviceReducer.devices.items
-      : [];
-  return {
-    devices: devices.map(device => device.Id)
-  };
-};
-
-export default connect(mapStateToProps, undefined)(AlarmList);
+export default AlarmList;

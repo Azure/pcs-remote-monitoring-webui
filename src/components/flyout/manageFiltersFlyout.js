@@ -12,7 +12,9 @@ import Select from 'react-select';
 import Config from '../../common/config';
 import Spinner from '../spinner/spinner';
 import lang from '../../common/lang';
+
 import './manageFilterFlyout.css';
+
 import {
   saveOrUpdateFilter,
   deleteFilter

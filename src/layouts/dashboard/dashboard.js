@@ -35,6 +35,11 @@ class Dashboard extends Component {
       mapkey: this.props.mapkey
     };
 
+    const devicesList = this.props.devices && this.props.devices.items ? this.props.devices.items : [];
+    const alarmListProps = {
+      devices: devicesList.map(device => device.Id)
+    };
+
     return (
       <Grid fluid className="layout">
         <Row>
@@ -42,10 +47,10 @@ class Dashboard extends Component {
             <DeviceMap {...deviceMapProps} />
           </Col>
           <Col md={4}>
-            <AlarmList />
+            <AlarmList {...alarmListProps} />
           </Col>
         </Row>
-        <Row className="widgets rowH40Percent">
+        <Row>
           <Col md={8}>
             <Telemetry chartId="telemetry_chart" />
           </Col>

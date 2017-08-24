@@ -323,7 +323,8 @@ class SearchableDataGrid extends Component {
       >
         {title}
         <div className="clearfix"/>
-        {!isLoading
+        {
+          !isLoading
           ? <div>
               {searchBox}
               <div className="datagrid-body">
