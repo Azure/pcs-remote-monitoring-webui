@@ -13,7 +13,7 @@ Web app for Azure IoT PCS Remote Monitoring Solution [dotnet](https://github.com
 
 ## Prerequisites
 ### Setup Node
-1. Install the [node.js](https://nodejs.org/)
+1. Install [node.js](https://nodejs.org/)
 2. For developement, you can use your preferred editor
    - [Visual Studio Code](https://code.visualstudio.com/)
    - [Atom](https://atom.io/)
