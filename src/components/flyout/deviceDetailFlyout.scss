@@ -25,6 +25,13 @@
   th {
     padding: 0 5px;
   }
+
+  .show-device-detail-message {
+    &:hover {
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
 }
 
 // customize scroll bar for webkit based browser

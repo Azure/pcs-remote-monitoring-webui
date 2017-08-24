@@ -169,7 +169,6 @@ const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
       displayNames = [].concat(
         (radioBtnOptions[currentSelectedTelemetry] || {}).deviceNames
       );
-      console.log(state, radioBtnOptions);
       return {
         ...state,
         telemetryByDeviceGroup: action.data,

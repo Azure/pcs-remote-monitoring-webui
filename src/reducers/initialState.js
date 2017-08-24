@@ -22,9 +22,14 @@ export default {
             x: {
               type: 'timeseries',
               tick: {
-                rotate: 65,
-                format: '%Y-%m-%dT%H:%M:%S'
+                rotate: 0,
+                format: '%H:%M:%S'
               }
+            }
+          },
+          tooltip: {
+            format: {
+              title: d => d
             }
           },
           zoom: {

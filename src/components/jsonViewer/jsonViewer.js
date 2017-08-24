@@ -2,11 +2,9 @@
 
 import React from 'react';
 
-
 import './jsonViewer.css';
 
 class JsonViewer extends React.Component {
-
   onCopy = e => {
     window.getSelection().removeAllRanges();
     const range = document.createRange();
@@ -22,14 +20,13 @@ class JsonViewer extends React.Component {
         <pre ref="content" className="jsonViewerContent">
           {JSON.stringify(this.props.data, null, '  ')}
         </pre>
-        <div>
+        {this.props.showButton &&
           <button
             className="btn btn-default jsonViewerButton"
             onClick={this.onCopy}
           >
             Copy
-          </button>
-        </div>
+          </button>}
       </div>
     );
   }

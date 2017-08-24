@@ -216,6 +216,7 @@ const lang = {
     PROPERTIES_DESCRIPTION: 'Selected Properties on devices',
     DIAGNOSTICS: 'Diagnostics',
     DIAGNOSTICS_DESCRIPTION: 'Diagnostic information from device',
+    COPY: 'COPY',
     COPY_TO_CLIPBOARD: 'Copy all properties to clipboard',
     COPY_TO_CLIPBOARD_DESCRIPTION:
       'Copy a list of all properties and methods associated',

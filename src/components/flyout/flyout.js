@@ -5,9 +5,9 @@ import CloseIcon from '../../assets/icons/X.svg';
 import FullWidthIcon from '../../assets/icons/FullWidth.svg';
 import DeviceDetailFlyout from './deviceDetailFlyout';
 import ManageFiltersFlyout from './manageFiltersFlyout';
+import RuleOverviewFlyout from '../ruleOverview/ruleOverview';
 
 import './flyout.css';
-import RuleOverviewFlyout from '../ruleOverview/ruleOverview';
 
 const getFlyout = (content, onClose) => {
   switch (content.type) {

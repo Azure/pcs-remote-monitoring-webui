@@ -14,8 +14,8 @@ it('renders without crashing', () => {
 });
 
 it('renders two div, one pre and one button', () => {
-  const wrapper = shallow(<JsonViewer />);
-  expect(wrapper.find('div')).toHaveLength(2);
+  const wrapper = shallow(<JsonViewer showButton={true} />);
+  expect(wrapper.find('div')).toHaveLength(1);
   expect(wrapper.find('pre')).toHaveLength(1);
   expect(wrapper.find('button')).toHaveLength(1);
 });

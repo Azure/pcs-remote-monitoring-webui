@@ -19,6 +19,10 @@ class Timeline extends Component {
     this.setState({ timeline: C3.generate({ ...this.props.chartConfig }) });
   }
 
+  destroyChart() {
+    this.state.timeline.load({ unload: true });
+  }
+
   switchChart(props) {
     this.state.timeline.load({ ...props, unload: true });
   }
@@ -35,6 +39,9 @@ class Timeline extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.destroy) {
+      this.destroyChart();
+    }
     const { data } = nextProps.chartConfig;
     if (
       !data ||
@@ -44,10 +51,17 @@ class Timeline extends Component {
     ) {
       return;
     }
-    if (this.props.selectedTelemetry === nextProps.selectedTelemetry) {
+
+    if (
+      this.props.selectedTelemetry === nextProps.selectedTelemetry &&
+      this.props.chartId === nextProps.chartId
+    ) {
       this.updateChart(data);
     }
-    if (this.props.selectedTelemetry !== nextProps.selectedTelemetry) {
+    if (
+      this.props.selectedTelemetry !== nextProps.selectedTelemetry ||
+      this.props.chartId !== nextProps.chartId
+    ) {
       this.switchChart(data);
     }
   }

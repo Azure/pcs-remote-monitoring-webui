@@ -1,14 +1,16 @@
 .jsonViewerTile {
-    margin:5px;
-    color:#000000;
-}
+  margin: 5px;
 
-.jsonViewerContent {
+  .jsonViewerContent {
     overflow: auto;
+    color: #afb9c3;
+    background-color: #121416;
     user-select: text;
-    max-height: 600px;
-}
+    max-height: 280px;
+    border: none;
+  }
 
-.jsonViewerButton {
-     float: left;
+  .jsonViewerButton {
+    float: left;
+  }
 }

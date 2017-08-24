@@ -42,9 +42,9 @@ class ApiService {
     return Http.get(`${Config.telemetryApiUrl}messages?devices=${csvIds}`);
   }
 
-  static getLastTelemetryMessage(deviceId) {
+  static getTelemetryMessageByDeviceIdP1M(deviceId) {
     return Http.get(
-      `${Config.telemetryApiUrl}messages?order=desc&limit=1&devices=${encodeURIComponent(
+      `${Config.telemetryApiUrl}messages?from=NOW-PT1M&to=NOW&order=desc&devices=${encodeURIComponent(
         deviceId
       )}`
     );

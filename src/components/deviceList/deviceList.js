@@ -5,11 +5,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from '../../common/config';
 import { Topics } from '../../common/eventtopic';
-import Flyout from '../flyout/flyout';
 import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
 import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
-// import Flyout, { Header, Body } from '../../framework/flyout/flyout';
-// import DeviceDetail from '../deviceDetail/deviceDetail';
 import AddDevice from '../addDevice/addDevice';
 import ActOnDevice from '../actOnDevice/actOnDevice';
 import lang from '../../common/lang';
@@ -80,11 +77,6 @@ export class DeviceList extends Component {
     const { actions } = this.props;
     const flyoutConfig = { device: row, type: 'Device detail' };
     actions.showFlyout({ ...flyoutConfig });
-    //TODO port flyout action
-    // setTimeout(() => {
-    //   this.refs.flyout.show();
-    //   EventTopic.publish(Topics.device.selected, row, this);
-    // });
   };
 
   onRowSelectionChanged = rows => {
@@ -104,12 +96,6 @@ export class DeviceList extends Component {
   };
 
   render() {
-    const { flyout, actions } = this.props;
-    const flyoutProp = {
-      show: flyout.show,
-      onClose: actions.hideFlyout,
-      content: flyout.content
-    };
     return (
       <div ref="container" className="deviceListContainer">
         <div className="deviceListButtonBar">
@@ -158,20 +144,10 @@ export class DeviceList extends Component {
           onGridReady={this.onDataChanged}
           onRowDataChanged={this.onDataChanged}
         />
-        <Flyout {...flyoutProp} />
       </div>
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    flyout: state.flyoutReducer,
-    telemetryByDeviceGroup: state.telemetryReducer.telemetryByDeviceGroup,
-    devices: state.deviceReducer.devices,
-    alarmList: state.kpiReducer.alarmList
-  };
-};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -179,4 +155,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DeviceList);
+export default connect(null, mapDispatchToProps)(DeviceList);

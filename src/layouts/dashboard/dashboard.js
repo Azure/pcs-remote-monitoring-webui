@@ -26,6 +26,7 @@ class Dashboard extends Component {
     const flyoutProp = {
       show: flyout.show,
       onClose: actions.hideFlyout,
+      telemetry: this.props.telemetryByDeviceGroup,
       content: flyout.content
     };
     const deviceMapProps = {

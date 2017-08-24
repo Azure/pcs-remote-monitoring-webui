@@ -1,13 +1,67 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { Radio } from 'react-bootstrap';
 import Drawer from './drawer';
 import JsonViewer from '../jsonViewer/jsonViewer';
 import DeviceIcon from '../../assets/icons/DeviceIcon1.svg';
 import lang from '../../common/lang';
 import ApiService from '../../common/apiService';
+import Timeline from '../charts/timeline';
 
 import './deviceDetailFlyout.css';
+
+const validTelemetryType = (telemetry, telemetryTypes) =>
+  telemetryTypes.map(e => e.toUpperCase()).includes(telemetry.toUpperCase());
+
+const loadTelemetry = (data, deviceId) => {
+  if (!data || !deviceId) return {};
+  let radioBtnOptions = {};
+  let chartDataSelected = [];
+  let displayNames = [];
+  let selectedTelemetry = '';
+  const telemetrytypes = data.Properties.filter(e => !e.includes('_'));
+  data.Items.filter(item => item.DeviceId === deviceId).forEach(item => {
+    if (item.Data) {
+      Object.keys(item.Data).forEach(telemetry => {
+        if (validTelemetryType(telemetry, telemetrytypes)) {
+          if (!radioBtnOptions[telemetry]) {
+            radioBtnOptions[telemetry] = {
+              selected: false,
+              chartData: [],
+              deviceNames: []
+            };
+          }
+          const option = {};
+          const deviceName = item.DeviceId.split('.').join('_');
+          option[deviceName] = item.Data[telemetry];
+          option['Time'] = new Date(item.Time).toISOString();
+          radioBtnOptions[telemetry].chartData.push(option);
+          if (
+            radioBtnOptions[telemetry].deviceNames.every(e => e !== deviceName)
+          ) {
+            radioBtnOptions[telemetry].deviceNames.push(deviceName);
+          }
+        }
+      });
+    }
+  });
+  Object.keys(radioBtnOptions).sort().forEach((key, index) => {
+    if (!index) {
+      radioBtnOptions[key].selected = true;
+      selectedTelemetry = key;
+      chartDataSelected = [].concat(radioBtnOptions[key].chartData);
+      displayNames = [].concat(radioBtnOptions[key].deviceNames);
+    }
+  });
+
+  return {
+    radioBtnOptions,
+    selectedTelemetry,
+    chartDataSelected,
+    displayNames
+  };
+};
 
 class DeviceDetailFlyout extends Component {
   constructor(props) {
@@ -15,18 +69,150 @@ class DeviceDetailFlyout extends Component {
     this.state = {
       rawMessage: {},
       lastMessageReceived: '',
-      showRawMessage: false
+      showRawMessage: false,
+      timeline: {
+        selectedTelemetry: '',
+        chartConfig: {
+          bindto: '#flyout_chart',
+          data: {
+            json: [],
+            xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+            keys: {
+              x: 'Time',
+              value: []
+            }
+          },
+          axis: {
+            x: {
+              type: 'timeseries',
+              tick: {
+                format: '%H:%M:%S'
+              }
+            }
+          },
+          tooltip: {
+            format: {
+              title: d => d
+            }
+          },
+          zoom: {
+            enabled: true
+          },
+          line: {
+            connectNull: true
+          }
+        },
+        chartId: 'flyout_chart'
+      }
     };
+
+    this.handleOptionChange = this.handleOptionChange.bind(this);
   }
 
   componentDidMount() {
-    const { content } = this.props;
-    ApiService.getLastTelemetryMessage(content.device.Id).then(data => {
+    const deviceId = this.props.content.device.Id;
+    ApiService.getTelemetryMessageByDeviceIdP1M(deviceId).then(data => {
+      const {
+        radioBtnOptions,
+        selectedTelemetry,
+        chartDataSelected,
+        displayNames
+      } = loadTelemetry(data, deviceId);
+      if (!radioBtnOptions || !selectedTelemetry || !chartDataSelected) {
+        return;
+      }
       this.setState({
-        rawMessage: data,
-        lastMessageReceived: ((data.Items || [])[0] || {}).Time || ''
+        rawMessage: (data.Items || [])[0],
+        lastMessageReceived: ((data.Items || [])[0] || {}).Time || '',
+        radioBtnOptions,
+        chartDataSelected,
+        timeline: {
+          ...this.state.timeline,
+          chartId: `${deviceId}_flyout_chart`,
+          selectedTelemetry: selectedTelemetry,
+          chartConfig: {
+            ...this.state.timeline.chartConfig,
+            bindto: `${deviceId}_flyout_chart`,
+            data: {
+              ...this.state.timeline.chartConfig.data,
+              json: chartDataSelected,
+              keys: {
+                value: displayNames,
+                x: 'Time'
+              }
+            }
+          }
+        }
       });
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const deviceId = ((nextProps.content || {}).device || {}).Id;
+    if (!deviceId) {
+      return;
+    }
+    if (deviceId !== this.props.content.device.Id) {
+      ApiService.getTelemetryMessageByDeviceIdP1M(
+        nextProps.content.device.Id
+      ).then(data => {
+        const {
+          radioBtnOptions,
+          selectedTelemetry,
+          chartDataSelected,
+          displayNames
+        } = loadTelemetry(data, nextProps.content.device.Id);
+        if (!radioBtnOptions || !selectedTelemetry || !chartDataSelected) {
+          this.setState({
+            radioBtnOptions: {},
+            chartDataSelected: [],
+            timeline: {
+              ...this.state.timeline,
+              destroy: true,
+              chartId: `${deviceId}_flyout_chart`,
+              selectedTelemetry: '',
+              chartConfig: {
+                ...this.state.timeline.chartConfig,
+                bindto: `${deviceId}_flyout_chart`,
+                data: {
+                  ...this.state.timeline.chartConfig.data,
+                  json: [],
+                  keys: {
+                    value: [],
+                    x: 'Time'
+                  }
+                }
+              }
+            }
+          });
+        } else {
+          this.setState({
+            rawMessage: (data.Items || [])[0],
+            lastMessageReceived: ((data.Items || [])[0] || {}).Time || '',
+            radioBtnOptions,
+            chartDataSelected,
+            timeline: {
+              ...this.state.timeline,
+              destroy: false,
+              chartId: `${deviceId}_flyout_chart`,
+              selectedTelemetry: selectedTelemetry,
+              chartConfig: {
+                ...this.state.timeline.chartConfig,
+                bindto: `${deviceId}_flyout_chart`,
+                data: {
+                  ...this.state.timeline.chartConfig.data,
+                  json: chartDataSelected,
+                  keys: {
+                    value: displayNames,
+                    x: 'Time'
+                  }
+                }
+              }
+            }
+          });
+        }
+      });
+    }
   }
 
   copyToClipboard = data => {
@@ -44,12 +230,60 @@ class DeviceDetailFlyout extends Component {
     });
   };
 
+  handleOptionChange(selectedKey) {
+    let newOptions = Object.assign({}, this.state.radioBtnOptions);
+    Object.keys(newOptions).forEach(key => {
+      newOptions[key].selected = selectedKey === key;
+    });
+    const newTimeline = Object.assign(
+      {},
+      {
+        ...this.state.timeline,
+        selectedTelemetry: selectedKey,
+        chartConfig: {
+          ...this.state.timeline.chartConfig,
+          data: {
+            ...this.state.timeline.chartConfig.data,
+            json: newOptions[selectedKey].chartData,
+            keys: {
+              ...this.state.timeline.chartConfig.data.key,
+              value: newOptions[selectedKey].deviceNames
+            }
+          }
+        }
+      }
+    );
+    this.setState({
+      radioBtnOptions: newOptions,
+      timeline: newTimeline
+    });
+  }
+
   render() {
     const { device } = this.props.content;
-    const { Twin } = device;
-    const { reportedProperties, tags, desiredProperties } = Twin;
+    const { radioBtnOptions } = this.state;
+    const { reportedProperties, tags, desiredProperties, isSimulated } = device;
     const { SupportedMethods } = reportedProperties;
-
+    const selectedColor = '#ffffff';
+    const unselectedColor = '#afb9c3';
+    const telemetryRadioBtnGroup = radioBtnOptions
+      ? Object.keys(radioBtnOptions).sort().map((key, index) =>
+          <Radio
+            onClick={() => this.handleOptionChange(key)}
+            name="flyoutRadioButtonGroup"
+            inline
+            style={{
+              color: radioBtnOptions[key].selected
+                ? selectedColor
+                : unselectedColor
+            }}
+            checked={radioBtnOptions[key].selected}
+            key={`${index}_${key}`}
+          >
+            {key}
+          </Radio>
+        )
+      : null;
     const deviceMethods = SupportedMethods
       ? SupportedMethods.split(',').map((item, index) =>
           <div key={index}>
@@ -64,13 +298,12 @@ class DeviceDetailFlyout extends Component {
               {item}
             </td>
             <td>
-              {device.Twin.tags[item]}
+              {tags[item]}
             </td>
           </tr>
         )
       : null;
     const deviceType = ((reportedProperties || {}).DeviceType || {}).Name || '';
-    const deviceSimulated = (Twin || {}).isSimulated || false;
     /*
      * 	Properties shown are: Location, Firmware Version, and Type
      */
@@ -194,7 +427,7 @@ class DeviceDetailFlyout extends Component {
               </div>
               <div className="device-status">
                 {deviceType}{' '}
-                {deviceSimulated
+                {isSimulated === 'Y'
                   ? lang.DEVICE_DETAIL.SIMULATED
                   : lang.DEVICE_DETAIL.PHYSICAL}
               </div>
@@ -208,7 +441,12 @@ class DeviceDetailFlyout extends Component {
           <div className="device-alarm-list">alarm list</div>
         </div>
         <Drawer toggle={true} title={lang.DEVICE_DETAIL.TELEMETRY}>
-          <p>add telemetry chart</p>
+          <div>
+            {telemetryRadioBtnGroup}
+          </div>
+          <div>
+            <Timeline {...this.state.timeline} />
+          </div>
         </Drawer>
         <Drawer
           toggle={true}
@@ -273,7 +511,9 @@ class DeviceDetailFlyout extends Component {
           description={lang.DEVICE_DETAIL.COPY_TO_CLIPBOARD_DESCRIPTION}
         >
           <div className="drawer-content">
-            <button onClick={() => this.copyToClipboard(Twin)}>COPY</button>
+            <button onClick={() => this.copyToClipboard(reportedProperties)}>
+              {lang.DEVICE_DETAIL.COPY}
+            </button>
           </div>
         </Drawer>
         <Drawer
@@ -314,14 +554,17 @@ class DeviceDetailFlyout extends Component {
                   <td>
                     {lang.DEVICE_DETAIL.MESSAGE}
                   </td>
-                  <td onClick={this.toggleShowRawMessage}>
+                  <td
+                    className="show-device-detail-message"
+                    onClick={this.toggleShowRawMessage}
+                  >
                     {lang.DEVICE_DETAIL.CLICK_TO_SHOW}
                   </td>
                 </tr>
               </tbody>
             </table>
             {this.state.showRawMessage &&
-              <JsonViewer data={this.state.rawMessage} />}
+              <JsonViewer showButton={false} data={this.state.rawMessage} />}
           </div>
         </Drawer>
       </div>
