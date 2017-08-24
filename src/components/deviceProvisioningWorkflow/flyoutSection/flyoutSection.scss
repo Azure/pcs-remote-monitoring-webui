@@ -1,0 +1,16 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+.pcs-flyout-section {
+    display: flex;
+    flex-flow: column wrap;
+
+    .pcs-header {
+        font-size: 16pt;
+        color: #FFF;
+        padding: 10px 10px 0px 10px;
+    }
+
+    .pcs-content {
+        padding: 10px;
+    }
+}

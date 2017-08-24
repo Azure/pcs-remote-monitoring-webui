@@ -1,9 +1,127 @@
-.dropdown-menu > li > span {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: normal;
-    line-height: 1.42857143;
-    color: #333;
-    white-space: nowrap;
+// Copyright (c) Microsoft. All rights reserved.
+
+.provision-workflow-container {
+
+    input, button {
+        outline: none;
+    }
+
+    .form-summary-container {
+        display: flex;
+        flex-flow: column wrap;
+        border-top: 1px solid #454A4E;
+        padding-top: 24px;
+        
+        .form-summary-header {
+            font-size: 14pt;
+            color: #fff;
+            padding-bottom: 16px;
+        }
+        
+        .form-summary-details {
+            font-size: 16pt;
+            color: #AFB9C3;
+            padding-bottom: 32px;
+
+            .device-cnt {
+                font-size: 48pt;
+                color: #FFF;
+            }
+        }
+        
+        .form-action-btns {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: flex-end;
+            padding: 8px 0px;
+
+            .pcs-btn {
+                display: flex;
+                flex-flow: row nowrap;
+                height: 30px;
+                font-size: 14px;
+                color: #FFF;
+                padding: 0px 16px;
+                background-color: transparent;
+                border: none;
+                margin-left: 28px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #B0B9C3;
+                }
+
+                &.primary {
+                    color: #454A4E;
+                    background-color: #B0B9C3;
+
+                    &:hover {
+                        background-color: #fff;
+                    }
+                }
+
+                &:disabled,
+                &.primary:disabled {
+                    background-color: transparent;
+                    color: #454A4E;
+                    cursor: auto;
+                }
+            }
+        }
+    }
+
+    .manual-auth-key-container {
+        display: flex;
+        flex-flow: column wrap;
+        margin-left: 33px;
+
+        label {
+            color: #AFB9C3;
+        }
+    }
+
+    .pcs-formgroup {
+        label {
+            font-weight: normal;
+        }
+
+        input[type=radio] {
+            margin-left: 10px;
+        }
+
+        input[type=text] {
+            border: 1px solid #3E4145;
+            padding: 2px 8px;
+            
+            $disabledFontColor: #3E4145;
+            &:disabled {
+                color: $disabledFontColor;
+            }
+
+            &:disabled::-webkit-input-placeholder {
+                color:$disabledFontColor;
+            }
+            
+            &:disabled::-moz-placeholder {
+                color:$disabledFontColor;
+            }
+            
+            &:disabled::-ms-placeholder {
+                color:$disabledFontColor;
+            }
+            
+            &:disabled::placeholder {
+                color:$disabledFontColor;
+            }
+
+            &.small {
+                width: 60px;
+            }
+        }
+
+        input[type=radio] + label,
+        input[type=radio] + input[type=text] {
+            margin-left: 10px;
+        }
+    }
 }
