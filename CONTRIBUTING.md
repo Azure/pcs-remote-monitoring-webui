@@ -26,9 +26,17 @@ includes the changes related to one issue.
 Any significant change should almost always be accompanied by tests. Look at
 the existing tests to see the testing approach and style used.
 
-Follow the project coding style, to ensure consistency and quick code reviews.
-For more information about the development workflow, have a look at
-[the development notes](DEVELOPMENT.md).
+## Code style
+Some quick notes about the project code style:
+
+1. Where reasonable, lines length is limited to 80 chars max, to help code
+   reviews and command line editors.
+2. Code blocks indentation with 4 spaces. The tab char should be avoided.
+3. Text files use Unix end of line format (LF).
+
+## Git setup for contributing to the solution
+
+### Commits
 
 Do your best to have clear commit messages for each change, in order to keep
 consistency throughout the project. Reference the issue number (#num). A good
@@ -36,6 +44,19 @@ commit message serves at least these purposes:
 * Speed up the pull request review process
 * Help future developers to understand the purpose of your code
 * Help the maintainer write release notes
+
+One-line messages are fine for small changes, but bigger changes should look
+like this:
+```
+$ git commit -m "A brief summary of the commit
+>
+> A paragraph describing what changed and its impact. Lorem ipsum dolor sit
+> amet consectetur adipiscing elit ligula, blandit diam cursus vitae potenti
+> egestas viverra volutpat sodales, etiam non pharetra hac sociosqu aenean
+> primis. Sodales fermentum cras scelerisque interdum cubilia molestie
+> convallis curabitur, augue habitasse per felis vitae parturient etiam nulla,
+> facilisi vehicula diam eleifend lacus natoque venenatis."
+```
 
 Finally, push the commits to your fork, submit a pull request, wait for the
 automated feedback from Travis CI, and follow the code review progress. The
