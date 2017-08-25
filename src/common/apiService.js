@@ -11,6 +11,7 @@ class ApiService {
   static getAllDevices() {
     return Http.get(`${Config.iotHubManagerApiUrl}devices`);
   }
+  
   static getDevicesForGroup(selectedGroupConditions) {
     const encodedParam = encodeURIComponent(
       JSON.stringify(selectedGroupConditions)

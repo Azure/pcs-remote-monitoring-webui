@@ -3,6 +3,8 @@
 import React from 'react';
 import FlyoutSection from './flyoutSection/flyoutSection'
 import Select from 'react-select';
+import DeviceSimulationService from '../../services/deviceSimulationService';
+import Rx from 'rxjs';
 
 import './deviceProvisioningWorkflow.css';
 
@@ -11,12 +13,13 @@ const initialState = {
   numDevices: 1,
   deviceIdType: 'custom',
   deviceIdPrefix: '',
-  deviceType: undefined,
+  deviceModel: undefined,
   authType: undefined,
   authKey: undefined,
   primaryKey: '',
   secondaryKey: '',
-  formIsValid: false
+  formIsValid: false,
+  deviceModels: []
 }
 
 /** 
@@ -34,6 +37,21 @@ class DeviceProvisioningWorkflow extends React.Component {
   }
 
   /**
+   * Makes a call to load the device models into the component state
+   */
+  componentDidMount() {
+    Rx.Observable
+      .fromPromise(DeviceSimulationService.getDevicemodels())
+      .map(models => models.map(model => ({ // Format the models list for the select component
+        value: model.Id,
+        label: model.Name
+      })))
+      .subscribe(
+        models => this.setState({ deviceModels: models })
+      );
+  }
+
+  /**
    * A generic handler method for updating state when an input changes
    * 
    * @param {Object} event - A DOM event object with the input change details
@@ -45,7 +63,11 @@ class DeviceProvisioningWorkflow extends React.Component {
     
     // If the device type is changed, reset to the initial state
     if (name === 'deviceTypeForm' && this.state.deviceTypeForm !== undefined && value !== this.state.deviceTypeForm) {
-      this.setState({ ...initialState, [name]: value } );
+      this.setState({ 
+        ...initialState, 
+        [name]: value, 
+        deviceModels: this.state.deviceModels // Keep any cached device models
+      } );
     } else { // Otherwise, change only the state value requested
       this.setState(
         { [name]: value }, // 1) Update the state
@@ -83,7 +105,7 @@ class DeviceProvisioningWorkflow extends React.Component {
   simulatedFormIsValid(state) {
     return (this.isInteger(state.numDevices) && state.numDevices > 0) // Validate number of devices
       && this.deviceIdIsValid(state) // Validate Device ID
-      && (!!state.deviceType); // Validate Device Type
+      && (!!state.deviceModel); // Validate Device Model
   }
 
   /**
@@ -213,24 +235,15 @@ class DeviceProvisioningWorkflow extends React.Component {
           </div>
         </FlyoutSection>
         { this.renderDeviceIdSection() }
-        <FlyoutSection header={'Device type'}>
+        <FlyoutSection header={'Device model'}>
           <Select
-            options={[
-              {
-                value: 'First option',
-                label: 'First option'
-              },
-              {
-                value: 'Second option',
-                label: 'Second option'
-              }
-            ]}
-            value={this.state.deviceType}
-            onChange={value => this.handleInputChange({ target: {name: 'deviceType', value: value }})}
+            options={this.state.deviceModels}
+            value={this.state.deviceModel}
+            onChange={value => this.handleInputChange({ target: {name: 'deviceModel', value: value }})}
             clearable={false}
             searchable={false}
             autosize={true}
-            placeholder={'Select existing device type'}
+            placeholder={this.state.deviceModels.length ? 'Select existing device type' : 'Loading...'}
           />
         </FlyoutSection>
         { this.renderFormSummary() }
