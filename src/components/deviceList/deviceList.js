@@ -27,22 +27,22 @@ export class DeviceList extends Component {
         },
         {
           headerName: lang.DEVICES.TYPE,
-          field: 'Twin.tags.deviceType',
+          field: 'Tags.deviceType',
           filter: 'text'
         },
         {
           headerName: lang.DEVICES.FIRMWAREVERSION,
-          field: 'Twin.reportedProperties.FirmwareVersion',
+          field: 'Properties.Reported.Firmware',
           filter: 'text'
         },
         {
           headerName: lang.DEVICES.MANUFACTURER,
-          field: 'Twin.reportedProperties.Manufacturer',
+          field: 'Properties.Reported.Manufacturer',
           filter: 'text'
         },
         {
           headerName: lang.DEVICES.MODELNUMBER,
-          field: 'Twin.reportedProperties.ModelNumber',
+          field: 'Properties.Reported.ModelNumber',
           filter: 'text'
         },
         {

@@ -262,8 +262,9 @@ class DeviceDetailFlyout extends Component {
   render() {
     const { device } = this.props.content;
     const { radioBtnOptions } = this.state;
-    const { reportedProperties, tags, desiredProperties, isSimulated } = device;
-    const { SupportedMethods } = reportedProperties;
+    const { Properties, Tags, IsSimulated } = device;
+    const { Reported, Desired } = Properties;
+    const { SupportedMethods } = Reported;
     const selectedColor = '#ffffff';
     const unselectedColor = '#afb9c3';
     const telemetryRadioBtnGroup = radioBtnOptions
@@ -291,33 +292,33 @@ class DeviceDetailFlyout extends Component {
           </div>
         )
       : null;
-    const deviceTags = tags
-      ? Object.keys(tags).map((item, index) =>
+    const deviceTags = Tags
+      ? Object.keys(Tags).map((item, index) =>
           <tr key={index}>
             <td>
               {item}
             </td>
             <td>
-              {tags[item]}
+              {Tags[item]}
             </td>
           </tr>
         )
       : null;
-    const deviceType = ((reportedProperties || {}).DeviceType || {}).Name || '';
+    const deviceType = ((Reported || {}).DeviceType || {}).Name || '';
     /*
      * 	Properties shown are: Location, Firmware Version, and Type
      */
     // TODO: confirm firmware obj structure
     const deviceProperties = Object.keys(
-      reportedProperties
+      Reported
     ).map((key, index) => {
       if (
         key === lang.DEVICE_DETAIL.DEVICETYPE &&
-        reportedProperties[key] !== ''
+        Reported[key] !== ''
       ) {
         if (
-          desiredProperties[key] &&
-          desiredProperties[key] !== reportedProperties[key]
+          Desired[key] &&
+          Desired[key] !== Reported[key]
         ) {
           return (
             <tr key={index}>
@@ -325,10 +326,10 @@ class DeviceDetailFlyout extends Component {
                 {key}
               </td>
               <td>
-                {reportedProperties[key]}
+                {Reported[key]}
               </td>
               <td>
-                `${lang.DEVICE_DETAIL.SYNC} ${reportedProperties[key]}`
+                `${lang.DEVICE_DETAIL.SYNC} ${Reported[key]}`
               </td>
             </tr>
           );
@@ -339,18 +340,18 @@ class DeviceDetailFlyout extends Component {
               {key}
             </td>
             <td>
-              {reportedProperties[key]}
+              {Reported[key]}
             </td>
           </tr>
         );
       }
-      if (key === lang.DEVICE_DETAIL.LOCATION && reportedProperties[key]) {
-        const deviceLocation = reportedProperties[key];
+      if (key === lang.DEVICE_DETAIL.LOCATION && Reported[key]) {
+        const deviceLocation = Reported[key];
         if (
-          desiredProperties[key] &&
-          desiredProperties[key] !== reportedProperties[key]
+          Desired[key] &&
+          Desired[key] !== Reported[key]
         ) {
-          const desiredLocation = desiredProperties[key];
+          const desiredLocation = Desired[key];
           return (
             <tr key={index}>
               <td>
@@ -378,13 +379,13 @@ class DeviceDetailFlyout extends Component {
           );
         }
       }
-      if (key === lang.DEVICE_DETAIL.FIRMWARE && reportedProperties[key]) {
-        const deviceFirmware = reportedProperties[key];
+      if (key === lang.DEVICE_DETAIL.FIRMWARE && Reported[key]) {
+        const deviceFirmware = Reported[key];
         if (
-          desiredProperties[key] &&
-          desiredProperties[key] !== reportedProperties[key]
+          Desired[key] &&
+          Desired[key] !== Reported[key]
         ) {
-          const desiredFirmware = desiredProperties[key];
+          const desiredFirmware = Desired[key];
           return (
             <tr key={index}>
               <td>
@@ -427,7 +428,7 @@ class DeviceDetailFlyout extends Component {
               </div>
               <div className="device-status">
                 {deviceType}{' '}
-                {isSimulated === 'Y'
+                {IsSimulated
                   ? lang.DEVICE_DETAIL.SIMULATED
                   : lang.DEVICE_DETAIL.PHYSICAL}
               </div>
@@ -511,7 +512,7 @@ class DeviceDetailFlyout extends Component {
           description={lang.DEVICE_DETAIL.COPY_TO_CLIPBOARD_DESCRIPTION}
         >
           <div className="drawer-content">
-            <button onClick={() => this.copyToClipboard(reportedProperties)}>
+            <button onClick={() => this.copyToClipboard(Reported)}>
               {lang.DEVICE_DETAIL.COPY}
             </button>
           </div>

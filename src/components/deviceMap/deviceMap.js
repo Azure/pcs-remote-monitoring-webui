@@ -85,9 +85,9 @@ class DeviceMap extends Component {
           ) {
             device.latitude = telemetryGroup.Data.latitude;
             device.longitude = telemetryGroup.Data.longitude;
-          } else if (device.reportedProperties) {
-            device.latitude = device.reportedProperties.Latitude;
-            device.longitude = device.reportedProperties.Longitude;
+          } else if (device.Properties.Reported) {
+            device.latitude = device.Properties.Reported.Latitude;
+            device.longitude = device.Properties.Reported.Longitude;
           }
         }
       });

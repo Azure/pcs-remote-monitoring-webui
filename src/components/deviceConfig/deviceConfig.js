@@ -21,7 +21,7 @@ class DeviceConfig extends React.Component {
     onConfirm() {
         if (this.props.devices && this.props.devices.length) {
             let ids = this.props.devices.map(device => {
-                return `'${device.Twin.deviceId}'`
+                return `'${device.Id}'`
             });
             let queryCondition = `deviceId in [${ids.toString()}]`;
             let configTwin = {};

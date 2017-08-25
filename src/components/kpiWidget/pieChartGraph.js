@@ -93,10 +93,10 @@ const mapStateToProps = state => {
   devices.forEach(device => {
     if (
       !deviceIdVsDeviceName[device.Id] &&
-      device.reportedProperties &&
-      device.reportedProperties.Type
+      device.Properties.Reported &&
+      device.Properties.Reported.Type
     ) {
-      deviceIdVsDeviceName[device.Id] = device.reportedProperties.Type;
+      deviceIdVsDeviceName[device.Id] = device.Properties.Reported.Type;
     }
   });
   alarms.forEach(device => {
