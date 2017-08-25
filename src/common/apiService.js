@@ -2,6 +2,24 @@
 
 import Http from './httpClient';
 import Config from './config';
+import _ from 'lodash';
+import { typeComputation } from './utils';
+
+function getGroupData(group) {
+  const data = {
+    id: group.id,
+    displayName: group.displayName,
+    eTag: group.eTag
+  };
+  data.conditions = _.cloneDeep(group.conditions) || [];
+  data.conditions.forEach(cond => {
+    if (cond.type === 'string') {
+      cond.value = '"' + cond.value + '"';
+    }
+    delete cond.type;
+  });
+  return data;
+}
 
 class ApiService {
   static getAllMessages() {
@@ -13,12 +31,8 @@ class ApiService {
   }
   
   static getDevicesForGroup(selectedGroupConditions) {
-    const encodedParam = encodeURIComponent(
-      JSON.stringify(selectedGroupConditions)
-    );
-    return Http.get(
-      `${Config.iotHubManagerApiUrl}devices?query=${encodedParam}`
-    );
+    const encodedParam = encodeURIComponent(JSON.stringify(selectedGroupConditions));
+    return Http.get(`${Config.iotHubManagerApiUrl}devices?query=${encodedParam}`);
   }
 
   static getAlarmsList(from, to, deviceIds) {
@@ -31,9 +45,7 @@ class ApiService {
   }
 
   static getAlarmsListForDeviceMap(deviceIds) {
-    return Http.get(
-      `${Config.telemetryApiUrl}alarms?devices=${deviceIds}&from=NOW-PT30M&to=NOW`
-    );
+    return Http.get(`${Config.telemetryApiUrl}alarms?devices=${deviceIds}&from=NOW-PT30M&to=NOW`);
   }
 
   static loadTelemetryMessagesByDeviceIds(deviceIds) {
@@ -45,9 +57,7 @@ class ApiService {
 
   static getTelemetryMessageByDeviceIdP1M(deviceId) {
     return Http.get(
-      `${Config.telemetryApiUrl}messages?from=NOW-PT1M&to=NOW&order=desc&devices=${encodeURIComponent(
-        deviceId
-      )}`
+      `${Config.telemetryApiUrl}messages?from=NOW-PT1M&to=NOW&order=desc&devices=${encodeURIComponent(deviceId)}`
     );
   }
 
@@ -56,9 +66,7 @@ class ApiService {
   }
 
   static getTelemetryMessagesP1M() {
-    return Http.get(
-      `${Config.telemetryApiUrl}messages?from=NOW-PT1M&to=NOW&order=desc`
-    );
+    return Http.get(`${Config.telemetryApiUrl}messages?from=NOW-PT1M&to=NOW&order=desc`);
   }
 
   static getAlarmsByRuleForKpi(from, to, deviceIds) {
@@ -88,7 +96,7 @@ class ApiService {
 
   /**
    * Get list of alarms aggregated by rule
-   * 
+   *
    * @param params An object containing API parameters
    *    "from": The ISO8601 format start of the time window for the query.
    *    "to": The ISO8601 format end of the time window for the query.
@@ -98,27 +106,27 @@ class ApiService {
    *    "devices": A filter used to request alarms for specific devices
    */
   static getAlarmsByRule(params = {}) {
-    return Http.get(
-      `${Config.telemetryApiUrl}alarmsbyrule?${ApiService.serializeParamObject(
-        params
-      )}`
-    );
+    return Http.get(`${Config.telemetryApiUrl}alarmsbyrule?${ApiService.serializeParamObject(params)}`);
   }
 
   static getRegionByDisplayName() {
-    return Http.get(`${Config.uiConfigApiUrl}devicegroups`);
+    return Http.get(`${Config.uiConfigApiUrl}devicegroups`).then(data => {
+      if (data && data.items) {
+        data.items.forEach(group => {
+          const conditions = group.conditions || [];
+          conditions.forEach(typeComputation)
+        });
+      }
+      return data;
+    });
   }
 
   static updateManageFiltersFlyout(group) {
     if (!group) {
       throw new Error('expected valid group object');
     }
-    const data = {
-      id: group.id,
-      displayName: group.displayName,
-      conditions: group.conditions,
-      eTag: group.eTag
-    };
+    const data = getGroupData(group);
+
     return Http.put(`${Config.uiConfigApiUrl}devicegroups/${group.id}`, data);
   }
 
@@ -126,11 +134,7 @@ class ApiService {
     if (!group) {
       throw new Error('expected valid group object');
     }
-    const data = {
-      id: group.id,
-      displayName: group.displayName,
-      conditions: group.conditions
-    };
+    const data = getGroupData(group);
     return Http.post(`${Config.uiConfigApiUrl}devicegroups`, data);
   }
 
@@ -147,7 +151,7 @@ class ApiService {
       .join('&');
   }
 
-  static createRule(rule){
+  static createRule(rule) {
     return Http.post(`${Config.telemetryApiUrl}rules`, rule);
   }
 }

@@ -45,7 +45,8 @@ const lang = {
     CREATEFILTER: 'Create Filter',
     FILTERS: 'Filters',
     ACTIONS: 'Actions',
-    GROUPNAMEALREADYEXISTS: 'Group name already exists'
+    GROUPNAMEALREADYEXISTS: 'Group name already exists',
+    TYPE: 'Type'
   },
   TELEMETRY: {
     OK: 'ok'

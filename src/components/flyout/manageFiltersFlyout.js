@@ -12,6 +12,7 @@ import Select from 'react-select';
 import Config from '../../common/config';
 import Spinner from '../spinner/spinner';
 import lang from '../../common/lang';
+import { typeComputation } from '../../common/utils';
 
 import './manageFilterFlyout.css';
 
@@ -19,6 +20,7 @@ import {
   saveOrUpdateFilter,
   deleteFilter
 } from '../../actions/manageFiltersFlyoutActions';
+
 
 class ManageFiltersFlyout extends React.Component {
   constructor() {
@@ -34,6 +36,7 @@ class ManageFiltersFlyout extends React.Component {
     this.saveDeviceGroups();
     this.processFieldValues();
     this.processOperatorValues();
+    this.typeFieldComputation();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -41,6 +44,7 @@ class ManageFiltersFlyout extends React.Component {
       this.saveDeviceGroups();
       this.processFieldValues();
       this.processOperatorValues();
+      this.typeFieldComputation();
     });
   }
 
@@ -106,6 +110,14 @@ class ManageFiltersFlyout extends React.Component {
     });
     this.setState({
       allOperators: operators
+    });
+  }
+
+  typeFieldComputation() {
+    const { content } = this.props;
+    const deviceGroups = content.deviceGroups || [];
+    deviceGroups.forEach(group => {
+      group.conditions.forEach(typeComputation);
     });
   }
 
@@ -175,6 +187,16 @@ class ManageFiltersFlyout extends React.Component {
         label: Config.STATUS_CODES.CLOSEBRACKET
       }
     ];
+    let typeOptions = [
+      {
+        value: 'int',
+        label: Config.STATUS_CODES.INT
+      },
+      {
+        value: 'string',
+        label: Config.STATUS_CODES.STRING
+      }
+    ];
 
     let fieldOptions = (this.state.allFields || []).map(field => ({
       value: field,
@@ -238,7 +260,7 @@ class ManageFiltersFlyout extends React.Component {
                       simpleValue
                       searchable={true}
                       placeholder={lang.FILTER.ENTERREPORTED}
-                      className="selectStyle-manage"
+                      className="select-style-manage"
                     />
                   </label>
                 </div>
@@ -259,7 +281,7 @@ class ManageFiltersFlyout extends React.Component {
                         simpleValue
                         searchable={true}
                         placeholder={lang.FILTER.EQUALS}
-                        className="selectStyle-manage"
+                        className="select-style-manage"
                       />
                     </div>
                   </label>
@@ -293,6 +315,26 @@ class ManageFiltersFlyout extends React.Component {
                         {lang.FILTER.VALUECANNOTBEEMPTY}
                       </div>
                     : null}
+                </div>
+                <div>
+                  <label>
+                    <div className="label-names">
+                      {lang.FILTER.TYPE}
+                    </div>
+                      <Select
+                        autofocus
+                        options={typeOptions}
+                        onChange={type => {
+                          cond.type = type;
+                          this.setEditingState(group.id, { formChanged: true });
+                        }}
+                        value={cond.type}
+                        simpleValue
+                        searchable={true}
+                        placeholder={lang.FILTER.TYPE}
+                        className="select-style-manage"
+                      />
+                  </label>
                 </div>
                 <button
                   onClick={() => {

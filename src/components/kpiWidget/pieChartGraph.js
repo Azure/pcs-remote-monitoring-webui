@@ -60,8 +60,7 @@ class PieChartGraph extends Component {
             <div className="pie-header">
               {Lang.KPI.ALARMBYDEVICETYPE}
             </div>
-            {typeof this.props.pieChartData !== 'undefined' &&
-            typeof this.props.pieChartData.chartConfig !== 'undefined'
+            {pieChart && pieChart.chartConfig
               ? <Chart
                   chartConfig={pieChart.chartConfig}
                   chartId={pieChart.chartId}

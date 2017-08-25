@@ -28,6 +28,8 @@ const Config = {
     GE: '>= Greater than/equal',
     LE: '<= Less than/equal',
     BRACKET: '[] In',
+    INT: 'int',
+    STRING: 'String',
     OPENBRACKET: '[ Starts with',
     CLOSEBRACKET: '] Ends with',
     DEFAULTPUSHPINTEXTLENGTH: 10

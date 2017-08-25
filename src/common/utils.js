@@ -4,6 +4,25 @@ export function isFunction(value) {
   return typeof value === 'function';
 }
 
+export function getBoundaryChars(str) {
+  const len = str.length;
+  const same = str.charAt(0) === str.charAt(len - 1);
+  return same ? str.charAt(0) : null;
+}
+
+export function typeComputation(cond){
+  if (
+    getBoundaryChars(cond.value) === '"' ||
+    getBoundaryChars(cond.value) === "'"
+  ) {
+    cond.type = 'string';
+    cond.value = cond.value.substring(1, cond.value.length - 1);
+  } else {
+    cond.type = 'int';
+  }
+
+}
+
 export function getNonFunctionalProps(props) {
   const nonFuncKeys = Object.keys(props).filter(key => !isFunction(props[key]));
   const result = {};
