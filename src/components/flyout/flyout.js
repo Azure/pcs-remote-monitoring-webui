@@ -6,6 +6,7 @@ import FullWidthIcon from '../../assets/icons/FullWidth.svg';
 import DeviceDetailFlyout from './deviceDetailFlyout';
 import ManageFiltersFlyout from './manageFiltersFlyout';
 import RuleOverviewFlyout from '../ruleOverview/ruleOverview';
+import DeviceScheduleFlyout from './deviceScheduleFlyout';
 
 import './flyout.css';
 
@@ -19,6 +20,9 @@ const getFlyout = (content, onClose) => {
 
     case 'Rule Detail':
       return <RuleOverviewFlyout content={content} onClose={onClose} />;
+
+    case 'Device Schedule':
+      return <DeviceScheduleFlyout content={content} onClose={onClose} />;
 
     default:
       return null;

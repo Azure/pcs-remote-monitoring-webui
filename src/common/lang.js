@@ -164,7 +164,9 @@ const lang = {
   },
   FLYOUT: {
     SAVE: 'Save',
-    CANCEL: 'Cancel'
+    CANCEL: 'Cancel',
+    APPLY: 'Apply',
+    APPLIED: 'Applied'
   },
   LEFTNAV: {
     DASHBOARD: 'Dashboard',
@@ -229,6 +231,19 @@ const lang = {
     MESSAGE: 'Message',
     CLICK_TO_SHOW: 'Click here to see raw message',
     SYNC: 'Syncing'
+  },
+  DEVICE_SCHEDULE: {
+    METHODS: 'Methods',
+    METHODS_DESCRIPTION: 'All methods available for deivce or group of devices',
+    SELECT_ONE: 'Select one',
+    SELECT_PLACEHOLDER: 'Select method',
+    JOB_NAME: 'Job Name',
+    JOB_NAME_INPUT_PLACEHOLDER: 'Enter job name',
+    FIRMWARE_URL: 'Firmware URI',
+    FIRMWARE_URL_INPUT_PLACEHOLDER: 'Enter firmware URI value',
+    METHODS_NOT_AVAILABLE: 'No available common methods.',
+    CHOOSE_NEW_DEVICES: 'Please choose devices with common methods',
+    FIRMWARE_OPTION: 'UpdateFirmware'
   }
 };
 export default lang;

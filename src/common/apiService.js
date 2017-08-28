@@ -147,12 +147,19 @@ class ApiService {
 
   static serializeParamObject(params) {
     return Object.keys(params)
-      .map(param => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
+      .map(
+        param =>
+          `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`
+      )
       .join('&');
   }
 
   static createRule(rule) {
     return Http.post(`${Config.telemetryApiUrl}rules`, rule);
+  }
+
+  static scheduleJobs(payload) {
+    return Http.post(`${Config.iotHubManagerApiUrl}jobs`, payload);
   }
 }
 
