@@ -1,1 +1,8 @@
 @import '../../../node_modules/c3/c3.css';
+
+.c3-tooltip {
+  .name,
+  .value {
+    color: #000;
+  }
+}
