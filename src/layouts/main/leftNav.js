@@ -56,13 +56,13 @@ class LeftNav extends Component {
 
     const navigation = this.state.showAll
       ? navItems.map((item, index) =>
-          <NavItem key={index} href={item.path}>
+          <NavItem key={index} href={item.path} onClick={this.props.onClick}>
             <img src={item.icon} {...iconStyle} alt={item.name} />
             {` ${item.name}`}
           </NavItem>
         )
       : navItems.map((item, index) =>
-          <NavItem key={index} href={item.path}>
+          <NavItem key={index} href={item.path} onClick={this.props.onClick}>
             <img src={item.icon} {...iconStyle} alt={item.name} />
           </NavItem>
         );

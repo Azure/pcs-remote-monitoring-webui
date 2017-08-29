@@ -7,7 +7,6 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import Telemetry from '../../components/telemetryWidget/telemetry';
 import AlarmList from '../../components/alarmList/alarmList';
 import KpiWidget from '../../components/kpiWidget/kpiWidget';
-import Flyout from '../../components/flyout/flyout';
 import * as actions from '../../actions';
 import DeviceMap from '../../components/deviceMap/deviceMap.js';
 
@@ -22,13 +21,6 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { flyout, actions } = this.props;
-    const flyoutProp = {
-      show: flyout.show,
-      onClose: actions.hideFlyout,
-      telemetry: this.props.telemetryByDeviceGroup,
-      content: flyout.content
-    };
     const deviceMapProps = {
       alarmList: this.props.alarmList,
       devices: this.props.devices,
@@ -59,7 +51,6 @@ class Dashboard extends Component {
             <KpiWidget />
           </Col>
         </Row>
-        <Flyout {...flyoutProp} />
       </Grid>
     );
   }
@@ -67,7 +58,6 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => {
   return {
-    flyout: state.flyoutReducer,
     telemetryByDeviceGroup: state.telemetryReducer.telemetryByDeviceGroup,
     devices: state.deviceReducer.devices,
     mapkey: state.mapReducer.mapkey,
