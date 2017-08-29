@@ -11,9 +11,16 @@ class Drawer extends Component {
     this.state = {
       showContent: this.props.toggle
     };
+
+    this.toggleHeader = this.toggleHeader.bind(this);
+  }
+
+  toggleHeader() {
+    this.setState({ showContent: !this.state.showContent });
   }
 
   render() {
+    const displayContent = this.state.showContent ? {} : { display: 'none' };
     const description = this.props.description
       ? <div className="drawer-description">
           {this.props.description}
@@ -21,17 +28,14 @@ class Drawer extends Component {
       : null;
     return (
       <div className="drawer-wrapper">
-        <div
-          className="drawer-header"
-          onClick={() => {
-            this.setState({ showContent: !this.state.showContent });
-          }}
-        >
+        <div className="drawer-header" onClick={this.toggleHeader}>
           {this.props.title}
           <img src={ChevronIcon} className="chevron-open" alt="ChevronIcon" />
         </div>
-        {this.state.showContent && description}
-        {this.state.showContent && this.props.children}
+        <div style={displayContent}>
+          {description}
+          {this.props.children}
+        </div>
       </div>
     );
   }

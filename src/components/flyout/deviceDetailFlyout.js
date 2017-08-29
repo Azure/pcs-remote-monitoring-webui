@@ -74,6 +74,10 @@ class DeviceDetailFlyout extends Component {
         selectedTelemetry: '',
         chartConfig: {
           bindto: '#flyout_chart',
+          size: {
+            height: 250,
+            width: 500
+          },
           data: {
             json: [],
             xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
@@ -263,7 +267,7 @@ class DeviceDetailFlyout extends Component {
     const { device } = this.props.content;
     const { radioBtnOptions } = this.state;
     const { Properties, Tags, IsSimulated } = device;
-    const { Reported, Desired } = Properties;
+    const { Reported, Desired } = Properties;
     const { SupportedMethods } = Reported;
     const selectedColor = '#ffffff';
     const unselectedColor = '#afb9c3';
@@ -309,17 +313,9 @@ class DeviceDetailFlyout extends Component {
      * 	Properties shown are: Location, Firmware Version, and Type
      */
     // TODO: confirm firmware obj structure
-    const deviceProperties = Object.keys(
-      Reported
-    ).map((key, index) => {
-      if (
-        key === lang.DEVICE_DETAIL.DEVICETYPE &&
-        Reported[key] !== ''
-      ) {
-        if (
-          Desired[key] &&
-          Desired[key] !== Reported[key]
-        ) {
+    const deviceProperties = Object.keys(Reported).map((key, index) => {
+      if (key === lang.DEVICE_DETAIL.DEVICETYPE && Reported[key] !== '') {
+        if (Desired[key] && Desired[key] !== Reported[key]) {
           return (
             <tr key={index}>
               <td>
@@ -347,10 +343,7 @@ class DeviceDetailFlyout extends Component {
       }
       if (key === lang.DEVICE_DETAIL.LOCATION && Reported[key]) {
         const deviceLocation = Reported[key];
-        if (
-          Desired[key] &&
-          Desired[key] !== Reported[key]
-        ) {
+        if (Desired[key] && Desired[key] !== Reported[key]) {
           const desiredLocation = Desired[key];
           return (
             <tr key={index}>
@@ -381,10 +374,7 @@ class DeviceDetailFlyout extends Component {
       }
       if (key === lang.DEVICE_DETAIL.FIRMWARE && Reported[key]) {
         const deviceFirmware = Reported[key];
-        if (
-          Desired[key] &&
-          Desired[key] !== Reported[key]
-        ) {
+        if (Desired[key] && Desired[key] !== Reported[key]) {
           const desiredFirmware = Desired[key];
           return (
             <tr key={index}>
