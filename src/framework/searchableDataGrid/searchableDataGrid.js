@@ -317,7 +317,7 @@ class SearchableDataGrid extends Component {
           onGridReady={this.onGridReady}
           rowSelection={this.props.multiSelect ? 'multiple' : 'single'}
           suppressRowClickSelection={!!this.props.multiSelect}
-          onSelectionChanged={this.onRowSelectionChanged}
+          onSelectionChanged={this.onRowSelectionChanged.bind(this)}
           onRowClicked={this.onRowClicked}
           onCellClicked={this.onCellClicked}
         />

@@ -1,0 +1,22 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+.add-device {
+  .device-tag-conditions {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .device-tag-flyout {
+    background-color: #000;
+  }
+
+  .tag-icon {
+    width: 16px;
+    margin-right: 3px;
+  }
+
+  .tag-name {
+    color: #ffffff;
+    cursor: pointer;
+  }
+}

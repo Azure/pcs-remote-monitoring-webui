@@ -12,6 +12,32 @@ const flyoutReducer = (state = initialState.flyout, action) => {
         content: action.content
       };
 
+    case types.DEVICE_LIST_ROW_SELECTION_CHANGED:
+      return {
+        ...state,
+        devices: action.data
+      };
+
+    case types.DEVICE_LIST_COMMON_TAGS_VALUE_CHANGED:
+      return {
+        ...state,
+        overiddenDeviceTagValues: action.data.newTagValueMap,
+        requestInProgress: true
+      };
+
+    case types.DEVICE_LIST_COMMON_TAGS_VALUE_CHANGED_SUCCESS: {
+      const devices = action.data.devices || [];
+      const deviceETags = { ...state.deviceETags };
+      devices.forEach(device => {
+        deviceETags[device.Id] = device.Etag;
+      });
+      return {
+        ...state,
+        deviceETags,
+        requestInProgress: false
+      };
+    }
+
     case types.FLYOUT_HIDE:
       return {
         ...state,

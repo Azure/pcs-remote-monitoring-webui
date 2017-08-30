@@ -29,7 +29,7 @@ class ApiService {
   static getAllDevices() {
     return Http.get(`${Config.iotHubManagerApiUrl}devices`);
   }
-  
+
   static getDevicesForGroup(selectedGroupConditions) {
     const encodedParam = encodeURIComponent(JSON.stringify(selectedGroupConditions));
     return Http.get(`${Config.iotHubManagerApiUrl}devices?query=${encodedParam}`);
@@ -114,7 +114,7 @@ class ApiService {
       if (data && data.items) {
         data.items.forEach(group => {
           const conditions = group.conditions || [];
-          conditions.forEach(typeComputation)
+          conditions.forEach(typeComputation);
         });
       }
       return data;
@@ -136,6 +136,22 @@ class ApiService {
     }
     const data = getGroupData(group);
     return Http.post(`${Config.uiConfigApiUrl}devicegroups`, data);
+  }
+
+  static updateDeviceTagValue(device, newTagValueMap) {
+    if (!device) {
+      throw new Error('expected valid group object');
+    }
+    const escapedId = encodeURIComponent(device.Id);
+    const data = {
+      Id: device.Id,
+      Etag: device.Etag,
+      tags: {
+        ...device.tags,
+        ...newTagValueMap
+      }
+    };
+    return Http.put(`${Config.iotHubManagerApiUrl}devices/${escapedId}`, data);
   }
 
   static deleteManageFiltersFlyout(group) {

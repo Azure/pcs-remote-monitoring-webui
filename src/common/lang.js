@@ -52,8 +52,7 @@ const lang = {
     OK: 'ok'
   },
   DEVICES: {
-    CAUTION:
-      'Caution: You are scheduling an action that will effect {0} devices.',
+    CAUTION: 'Caution: You are scheduling an action that will effect {0} devices.',
     DEVICEID: 'DeviceId',
     TYPE: 'Type',
     FIRMWAREVERSION: 'Firmware Version',
@@ -115,7 +114,10 @@ const lang = {
     ORGANIZEMYDEVICE: 'Organize my devices',
     SCHEDULEANACTION: 'Schedule an action',
     LASTACTIVITYTIME: 'Last activity time',
-    LASTSTATUSUPDATEDTIME: 'Last status updated time'
+    LASTSTATUSUPDATEDTIME: 'Last status updated time',
+    EFFECTED_DEVICES: 'Effected devices',
+    NO_AVAILABLE_COMMON_TAGS: 'No available common tags.',
+    PLEASE_CHOOSE_DEVICES_WITH_COMMON_TAGS: 'Please choose devices with common tags'
   },
   RULESACTIONS: {
     SOURCEHELP: 'Edit group of device on rule',
@@ -154,8 +156,7 @@ const lang = {
     EDIT: 'Edit',
     DELETE: 'Delete',
     DELETERULES: 'Delete Rules and Actions',
-    RULESWILLBEDELETED:
-      'Caution: {0} Rules will be deleted and cannot be restored, please confirm',
+    RULESWILLBEDELETED: 'Caution: {0} Rules will be deleted and cannot be restored, please confirm',
     CANCEL: 'Cancel',
     CONFIRM: 'Confirm',
     RULEDETAIL: 'Rule Detail',
@@ -224,8 +225,7 @@ const lang = {
     DIAGNOSTICS_DESCRIPTION: 'Diagnostic information from device',
     COPY: 'COPY',
     COPY_TO_CLIPBOARD: 'Copy all properties to clipboard',
-    COPY_TO_CLIPBOARD_DESCRIPTION:
-      'Copy a list of all properties and methods associated',
+    COPY_TO_CLIPBOARD_DESCRIPTION: 'Copy a list of all properties and methods associated',
     LOCATION: 'Location',
     FIRMWARE: 'Firmware',
     DEVICETYPE: 'Type',
@@ -233,7 +233,17 @@ const lang = {
     LAST_MSG: 'Last message',
     MESSAGE: 'Message',
     CLICK_TO_SHOW: 'Click here to see raw message',
-    SYNC: 'Syncing'
+    SYNC: 'Syncing',
+    TAGS_ON_SELECTED_DEVICES: 'Tags on selected devices',
+    TAGS_IN_COMMON_SELECTED_DEVICE: 'Tags in common selected device',
+    JOB_NAME: 'Job Name',
+    ADJUST_TAGS: 'Adjust Tags',
+    ADD_TAG: 'Add tag',
+    NAME: 'NAME',
+    TYPE: 'TYPE',
+    SUMMARY: 'Summary',
+    APPLY: 'Apply',
+    TAG: 'Tag'
   },
   DEVICE_SCHEDULE: {
     METHODS: 'Methods',

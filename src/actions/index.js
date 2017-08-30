@@ -1,5 +1,9 @@
+// Copyright (c) Microsoft. All rights reserved.
+
 // flyout
 export * from './flyoutActions';
+
+export * from './deviceListActions';
 
 // devices
 export * from './deviceActions';

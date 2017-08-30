@@ -8,6 +8,7 @@ import { Topics } from '../../common/eventtopic';
 import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
 import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
 import AddDevice from '../addDevice/addDevice';
+import DeviceTag from '../deviceTag/deviceTag';
 import ActOnDevice from '../actOnDevice/actOnDevice';
 import lang from '../../common/lang';
 import Http from '../../common/httpClient';
@@ -50,9 +51,7 @@ export class DeviceList extends Component {
           field: 'Connected',
           filter: 'text',
           valueFormatter: params => {
-            return params.value
-              ? lang.DEVICES.CONNECTED
-              : lang.DEVICES.DISCONNECTED;
+            return params.value ? lang.DEVICES.CONNECTED : lang.DEVICES.DISCONNECTED;
           }
         },
         {
@@ -83,6 +82,7 @@ export class DeviceList extends Component {
     this.setState({
       devices: rows
     });
+    this.props.actions.devicesSelectionChanged(rows);
   };
 
   getData = async (filter, callback) => {
@@ -97,9 +97,9 @@ export class DeviceList extends Component {
 
   render() {
     return (
-      <div ref="container" className="deviceListContainer">
-        <div className="deviceListButtonBar">
-          <div className="deviceListButton">
+      <div ref="container" className="device-list-container">
+        <div className="device-list-button-bar">
+          <div className="device-list-button">
             <GenericDropDownList
               id="DeviceGroups"
               menuAlign="right"
@@ -115,15 +115,14 @@ export class DeviceList extends Component {
               reloadRequestTopic={Topics.dashboard.deviceGroup.changed}
             />
           </div>
-          <div className="deviceListButton">
-            <ActOnDevice
-              ref="actOnDevice"
-              buttonText={lang.DEVICES.ACTONDEVICES}
-              devices={this.state.devices}
-            />
+          <div className="device-list-button">
+            <ActOnDevice ref="actOnDevice" buttonText={lang.DEVICES.ACTONDEVICES} devices={this.state.devices} />
           </div>
-          <div className="deviceListButton">
+          <div className="device-list-button">
             <AddDevice />
+          </div>
+          <div className="device-list-button">
+            <DeviceTag />
           </div>
         </div>
         <SearchableDataGrid

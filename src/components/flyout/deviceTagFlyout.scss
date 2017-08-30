@@ -1,0 +1,247 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+//TODO: Remove the fixed height for the scroll purpose once after the flyout css fixed
+.device-tag-flyout-container {
+  height: 500px;
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 2px !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 2px !important;
+    -webkit-box-shadow: inset 0 0 6px rgba(175, 185, 195, 0.6);
+  }
+
+  .sub-heading {
+    color: #ffffff;
+    font-size: 16px;
+    padding-top: 32px;
+    padding-bottom: 16px;
+  }
+
+  .sub-class-heading {
+    color: #afb9c3;
+    font-size: 14px;
+    padding-bottom: 5px;
+  }
+
+  .job-name-container {
+    margin-top: 24px;
+
+    input {
+      width: 248px !important;
+      height: 24px !important;
+    }
+  }
+
+  .style-manage {
+    font-size: 12px;
+    font-weight: normal;
+  }
+
+  .label-key {
+    color: #afb9c3;
+    font-size: 14px;
+    font-weight: normal;
+    margin-bottom: 16px;
+  }
+
+  .add-device-tag {
+    color: #afb9c3;
+    font-size: 14px;
+  }
+
+  .device-tag-conditions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+
+    .device-tag-conditions-header {
+      color: #afb9c3;
+      font-size: 12px;
+      width: 300px;
+    }
+  }
+
+  .device-tag-inner-conditions {
+    background-color: #1b1d1f;
+    margin-top: 16px;
+    width: 400px;
+
+    .add-icon-name-container {
+      margin-left: 5px;
+      padding-top: 10px;
+      height: 40px;
+
+      .add-icon {
+        width: 10px;
+        margin-right: 3px;
+        margin-bottom: 5px;
+      }
+
+      .add-device-tag {
+        font-size: 14px;
+      }
+    }
+
+    .all-conditions {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+
+      .condition-name,
+      .condition-value,
+      .condition-type {
+        margin-top: 16px;
+        margin-bottom: 10px;
+        background-color: #1b1d1f;
+        height: 40px;
+        padding: 10px;
+        color: #afb9c3;
+        font-size: 12px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 85px !important;
+        margin-right: 10px;
+        border: 1px solid #3e4145;
+        padding-left: 5px;
+
+        &:hover {
+          border: 1px solid #afb9c3;
+        }
+      }
+
+      .delete-icon {
+        margin-top: 28px;
+      }
+    }
+  }
+
+  .delete-icon {
+    height: 12px;
+  }
+
+  .summary-container {
+    margin-top: 24px;
+  }
+
+  .effective-devices {
+    margin-top: 24px;
+    color: #afb9c3;
+    font-size: 12px;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+
+    .pcs-btn,
+    pcs-btn primary {
+      height: 35px;
+      background-color: #121416;
+      border: none;
+      margin-right: 10px;
+
+      &:hover {
+        background-color: #afb9c3;
+        color: #1b1d1f;
+      }
+    }
+  }
+
+  .common-tags {
+    .name-value-type-for-existed-data {
+      display: flex;
+      justify-content: space-around;
+      height: 40px;
+      align-items: center;
+      margin-top: 16px;
+      width: 400px;
+      background-color: #1b1d1f;
+    }
+
+    .value-for-existed-data {
+      width: 85px !important;
+      border: none;
+
+      &:hover {
+        border-color: #3e4145;
+      }
+    }
+  }
+
+  .device-tag-type {
+    width: 80px;
+    height: 40px;
+    font-size: 12px;
+    display: inline-block;
+    vertical-align: center;
+    border: 1px solid #3e4145;
+    margin-top: 0px;
+    margin-top: 15px;
+
+    .Select-menu-outer {
+      border: 1px solid #afb9c3;
+      width: 80px;
+      margin-left: 5px;
+      padding-top: 3px;
+    }
+
+    .Select-clear-zone {
+      display: none;
+    }
+
+    .Select-arrow-zone {
+      padding-top: 0px;
+    }
+
+    .Select,
+    .Select div,
+    .Select input,
+    .Select span {
+      background-color: #1b1d1f;
+      color: #afb9c3;
+      font-weight: normal;
+      margin-top: 0px;
+    }
+
+    .Select--single > .Select-control .Select-value {
+      background-color: #1b1d1f;
+    }
+  }
+
+  .no-common-tags {
+    font-size: 14px;
+    margin-top: 20px;
+  }
+
+  .no-common-tags-sub-class {
+    font-size: 12px;
+    color: #afb9c3;
+  }
+
+  .effective-devices {
+    margin-bottom: 30px;
+    margin-top: 10px;
+
+    .no-effected-devices {
+      font-size: 48px;
+      padding-right: 5px;
+      color: #ffffff;
+    }
+
+    .effected-devices-name {
+      color: #afb9c3;
+      font-size: 14px;
+    }
+  }
+}

@@ -5,6 +5,7 @@ import CloseIcon from '../../assets/icons/X.svg';
 import FullWidthIcon from '../../assets/icons/FullWidth.svg';
 import DeviceDetailFlyout from './deviceDetailFlyout';
 import ManageFiltersFlyout from './manageFiltersFlyout';
+import DeviceTagFlyout from './deviceTagFlyout';
 import RuleOverviewFlyout from '../ruleOverview/ruleOverview';
 import DeviceScheduleFlyout from './deviceScheduleFlyout';
 import RuleEditor from '../ruleEditor/ruleEditor'
@@ -21,6 +22,9 @@ const getFlyout = (content, onClose) => {
 
     case 'Rule Detail':
       return <RuleOverviewFlyout content={content} onClose={onClose} />;
+
+    case 'Tag':
+      return <DeviceTagFlyout content={content} onClose={onClose} />;
 
     case 'Device Schedule':
         return <DeviceScheduleFlyout content={content} onClose={onClose} />;
@@ -45,11 +49,7 @@ const Flyout = ({ show, content, onClose }) => {
           </div>
           <div>
             <span>
-              <img
-                src={FullWidthIcon}
-                {...iconStyle}
-                alt={`${FullWidthIcon}`}
-              />
+              <img src={FullWidthIcon} {...iconStyle} alt={`${FullWidthIcon}`} />
             </span>
             <span onClick={onClose}>
               <img src={CloseIcon} {...iconStyle} alt={`${CloseIcon}`} />

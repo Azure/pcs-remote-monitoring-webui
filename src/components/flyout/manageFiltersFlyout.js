@@ -16,11 +16,7 @@ import { typeComputation } from '../../common/utils';
 
 import './manageFilterFlyout.css';
 
-import {
-  saveOrUpdateFilter,
-  deleteFilter
-} from '../../actions/manageFiltersFlyoutActions';
-
+import { saveOrUpdateFilter, deleteFilter } from '../../actions/manageFiltersFlyoutActions';
 
 class ManageFiltersFlyout extends React.Component {
   constructor() {
@@ -141,10 +137,7 @@ class ManageFiltersFlyout extends React.Component {
     const { content } = this.props;
     const deviceGroups = content.deviceGroups || [];
     return (
-      deviceGroups.length > 0 &&
-      deviceGroups.some(
-        group => group.displayName === groupName && group.id !== groupId
-      )
+      deviceGroups.length > 0 && deviceGroups.some(group => group.displayName === groupName && group.id !== groupId)
     );
   }
 
@@ -216,10 +209,7 @@ class ManageFiltersFlyout extends React.Component {
                 const editingState = {
                   formChanged: true
                 };
-                editingState.isDuplicate = this.checkIfGroupNameExists(
-                  group.displayName,
-                  group.id
-                );
+                editingState.isDuplicate = this.checkIfGroupNameExists(group.displayName, group.id);
                 editingState.emptyName = group.displayName.trim() === '';
                 this.setEditingState(group.id, editingState);
               }}
@@ -321,19 +311,19 @@ class ManageFiltersFlyout extends React.Component {
                     <div className="label-names">
                       {lang.FILTER.TYPE}
                     </div>
-                      <Select
-                        autofocus
-                        options={typeOptions}
-                        onChange={type => {
-                          cond.type = type;
-                          this.setEditingState(group.id, { formChanged: true });
-                        }}
-                        value={cond.type}
-                        simpleValue
-                        searchable={true}
-                        placeholder={lang.FILTER.TYPE}
-                        className="select-style-manage"
-                      />
+                    <Select
+                      autofocus
+                      options={typeOptions}
+                      onChange={type => {
+                        cond.type = type;
+                        this.setEditingState(group.id, { formChanged: true });
+                      }}
+                      value={cond.type}
+                      simpleValue
+                      searchable={true}
+                      placeholder={lang.FILTER.TYPE}
+                      className="select-style-manage"
+                    />
                   </label>
                 </div>
                 <button
@@ -362,7 +352,7 @@ class ManageFiltersFlyout extends React.Component {
             type="button"
             className="add-condition"
           >
-            <img src={Add} height="12" alt={`${Add}`} className="add-icon" />
+            <img src={Add} alt={`${Add}`} className="add-icon" />
             {lang.FILTER.ADDCONDITIONS}
           </button>
         </div>
@@ -376,11 +366,7 @@ class ManageFiltersFlyout extends React.Component {
             <button
               onClick={() => {
                 const editingState = this.state.editingState[group.id] || {};
-                if (
-                  editingState.emptyName ||
-                  editingState.isDuplicate ||
-                  !group.displayName
-                ) {
+                if (editingState.emptyName || editingState.isDuplicate || !group.displayName) {
                   //do not save
                   return;
                 }
@@ -394,7 +380,6 @@ class ManageFiltersFlyout extends React.Component {
             >
               <img
                 src={newFilterFlag ? Apply : formChanged ? Apply : Trash}
-                height="10"
                 alt={newFilterFlag ? `${Apply}` : `${Trash}`}
                 className="apply-icon"
               />
@@ -427,8 +412,7 @@ class ManageFiltersFlyout extends React.Component {
 
   checkIfConditionValueIsEmpty(groupId, idx) {
     const editingState = this.state.editingState[groupId] || {};
-    const valuesEditingState =
-      (editingState.valuesEditingState || {})[idx] || {};
+    const valuesEditingState = (editingState.valuesEditingState || {})[idx] || {};
     return valuesEditingState.emptyValue;
   }
 
@@ -468,19 +452,12 @@ class ManageFiltersFlyout extends React.Component {
     const newGroupObj = deviceGroups[0];
     return (
       <div className="manage-filter-container">
-        <div
-          onClick={() => this.setState({ showCreateFilter: true })}
-          className="create-filter"
-        >
-          <img src={Add} height="12" alt={`${Add}`} className="add-icon" />
+        <div onClick={() => this.setState({ showCreateFilter: true })} className="create-filter">
+          <img src={Add} alt={`${Add}`} className="add-icon" />
           {lang.FILTER.CREATEFILTER}
         </div>
         {showCreateFilter
-          ? this.getFilterComponent(
-              true,
-              editingState[0] && editingState[0].formChanged,
-              newGroupObj
-            )
+          ? this.getFilterComponent(true, editingState[0] && editingState[0].formChanged, newGroupObj)
           : null}
         <div className="headers-for-deviceGroups">
           <span className="filters-text">
@@ -501,37 +478,19 @@ class ManageFiltersFlyout extends React.Component {
                 <div className="groupname-icons">
                   {group.displayName}
                   <span
-                    onClick={() =>
-                      this.setEditingState(group.id, { showEdit: true })}
+                    onClick={() => this.setEditingState(group.id, { showEdit: true })}
                     className="edit-delete-icons"
                   >
-                    <span
-                      onClick={() =>
-                        this.setEditingState(group.id, { showEdit: true })}
-                    >
-                      <img
-                        src={EditPencil}
-                        height="12"
-                        alt={`${EditPencil}`}
-                        className="edit-icon"
-                      />
+                    <span onClick={() => this.setEditingState(group.id, { showEdit: true })}>
+                      <img src={EditPencil} alt={`${EditPencil}`} className="edit-icon" />
                     </span>
                     <span>
-                      <img
-                        src={Trash}
-                        height="12"
-                        alt={`${Trash}`}
-                        className="delete-icon"
-                      />
+                      <img src={Trash} alt={`${Trash}`} className="delete-icon" />
                     </span>
                   </span>
                 </div>
                 {currentEditingState.showEdit
-                  ? this.getFilterComponent(
-                      false,
-                      currentEditingState.formChanged,
-                      group
-                    )
+                  ? this.getFilterComponent(false, currentEditingState.formChanged, group)
                   : null}
               </div>
             );
