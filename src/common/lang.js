@@ -198,6 +198,7 @@ const lang = {
     LASTDAY: 'Last day',
     CURRENTWEEK: 'Current week',
     LASTWEEK: 'Last week',
+    LASTHOUR: 'Last hour',
     CURRENTMONTH: 'Current month',
     LASTMONTH: 'Last month',
     CRITICAL: 'critical',

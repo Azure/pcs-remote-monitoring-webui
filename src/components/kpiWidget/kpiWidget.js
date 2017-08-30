@@ -19,9 +19,16 @@ class KpiWidget extends Component {
   constructor() {
     super();
     this.state = {
-      selectedValue: 'D'
+      selectedValue: 'H'
     };
+
+    this.updateValue = this.updateValue.bind(this);
+
     this.options = [
+      {
+        value: 'H',
+        label: Lang.KPI.LASTHOUR
+      },
       {
         value: 'D',
         label: Lang.KPI.LASTDAY
@@ -38,16 +45,9 @@ class KpiWidget extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    let nonFunctionalNextProps = _.omit(getNonFunctionalProps(nextProps), [
-      'chartDataFetchComplete'
-    ]);
-    let nonFunctionalThisProps = _.omit(getNonFunctionalProps(this.props), [
-      'chartDataFetchComplete'
-    ]);
-    let result =
-      !_.isEqual(nonFunctionalNextProps, nonFunctionalThisProps) ||
-      !_.isEqual(this.state, nextState);
-    return result;
+    let nonFunctionalNextProps = _.omit(getNonFunctionalProps(nextProps), ['chartDataFetchComplete']);
+    let nonFunctionalThisProps = _.omit(getNonFunctionalProps(this.props), ['chartDataFetchComplete']);
+    return !_.isEqual(nonFunctionalNextProps, nonFunctionalThisProps) || !_.isEqual(this.state, nextState);
   }
 
   scheduleAutoUpdate() {
@@ -80,44 +80,46 @@ class KpiWidget extends Component {
     });
     this.props.intervalChanged(newValue);
   }
+
   render() {
     return (
-        <DashboardPanel
-            className="kpi-widget"
-            title={Lang.KPI.SYSTEMKPI}
-            actions={
-                <Select
-                        className="kpi-filters"
-                        autofocus
-                        options={this.options}
-                        value={this.state.selectedValue}
-                        onChange={this.updateValue.bind(this)}
-                        simpleValue
-                        searchable={false}
-                        clearable={false}
-                        placeholder="{Lang.KPI.TIMERANGE}"
-                    />
-            }>
-          <Grid fluid className="kpiWidget">
-            <div className="kpi-container">
-              <Row>
-                  <Col md={12} className="top-rules">
-                      {Lang.KPI.TOPRULESTRIGGERED}
-                  </Col>
-              </Row>
-              <Row>
-                  <Col md={12}>
-                      <BarChart timeCode={this.state.selectedValue} />
-                  </Col>
-              </Row>
-              <Row className="kpiRow">
-                  <Col md={12}>
-                      <PieChartGraph />
-                  </Col>
-              </Row>
-            </div>
-          </Grid>
-        </DashboardPanel>
+      <DashboardPanel
+        className="kpi-widget"
+        title={Lang.KPI.SYSTEMKPI}
+        actions={
+          <Select
+            className="kpi-filters"
+            autofocus
+            options={this.options}
+            value={this.state.selectedValue}
+            onChange={this.updateValue}
+            simpleValue
+            searchable={false}
+            clearable={false}
+            placeholder="{Lang.KPI.TIMERANGE}"
+          />
+        }
+      >
+        <Grid fluid className="kpi-widget">
+          <div className="kpi-container">
+            <Row>
+              <Col md={12} className="top-rules">
+                {Lang.KPI.TOPRULESTRIGGERED}
+              </Col>
+            </Row>
+            <Row>
+              <Col md={12}>
+                <BarChart timeCode={this.state.selectedValue} />
+              </Col>
+            </Row>
+            <Row className="kpi-row">
+              <Col md={12}>
+                <PieChartGraph />
+              </Col>
+            </Row>
+          </div>
+        </Grid>
+      </DashboardPanel>
     );
   }
 }
@@ -126,6 +128,11 @@ const mapDispatchToProps = dispatch => ({
   intervalChanged: timeCode => {
     let firstDurationFrom, secondDurationFrom, secondDurationTo;
     switch (timeCode) {
+      case 'H':
+        secondDurationTo = firstDurationFrom = 'NOW-PT1H';
+        secondDurationFrom = 'NOW-PT2H';
+        break;
+
       case 'D':
         secondDurationTo = firstDurationFrom = 'NOW-P1D';
         secondDurationFrom = 'NOW-P2D';
@@ -145,14 +152,7 @@ const mapDispatchToProps = dispatch => ({
         return null;
     }
 
-    dispatch(
-      refreshAllChartData(
-        firstDurationFrom,
-        'NOW',
-        secondDurationFrom,
-        secondDurationTo
-      )
-    );
+    dispatch(refreshAllChartData(firstDurationFrom, 'NOW', secondDurationFrom, secondDurationTo));
   }
 });
 
