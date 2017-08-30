@@ -27,12 +27,7 @@ Any significant change should almost always be accompanied by tests. Look at
 the existing tests to see the testing approach and style used.
 
 ## Code style
-Some quick notes about the project code style:
-
-1. Where reasonable, lines length is limited to 80 chars max, to help code
-   reviews and command line editors.
-2. Code blocks indentation with 4 spaces. The tab char should be avoided.
-3. Text files use Unix end of line format (LF).
+All contributions should follow our published [code guidelines](https://github.com/Azure/pcs-remote-monitoring-webui/wiki/Code-Guide). Please read it before making any submissions.
 
 ## Git setup for contributing to the solution
 
