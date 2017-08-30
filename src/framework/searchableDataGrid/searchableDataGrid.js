@@ -5,11 +5,11 @@ import EventTopic from '../../common/eventtopic.js';
 import { debounce, isFunction } from '../../common/utils.js';
 import httpClient from '../../common/httpClient';
 import { AgGridReact } from 'ag-grid-react';
-
+import Spinner from '../../components/spinner/spinner';
 import './searchableDataGrid.css';
 import '../../../node_modules/ag-grid/dist/styles/ag-grid.css';
 import '../../../node_modules/ag-grid/dist/styles/theme-dark.css';
-import lang from "../../common/lang";
+import lang from '../../common/lang';
 
 const CheckBoxSize = 44;
 
@@ -83,8 +83,7 @@ class SearchableDataGrid extends Component {
         If the height is not provided, the parentElement height will be used.
         This causes the height to grow with each props change for no reason.
       */
-      let newClientHeight =
-        props.height || this.container.parentElement.clientHeight || undefined;
+      let newClientHeight = props.height || this.container.parentElement.clientHeight || undefined;
       if (newClientHeight && this.state.title.length) {
         newClientHeight -= 45;
       }
@@ -107,11 +106,7 @@ class SearchableDataGrid extends Component {
       for (let interestingTopic of this.props.topics) {
         this.tokens.push(
           EventTopic.subscribe(interestingTopic, (topic, data, publisher) => {
-            this.onEvent(
-              topic,
-              SearchableDataGrid.getValueForKey(this.props.eventDataKey, data),
-              publisher
-            );
+            this.onEvent(topic, SearchableDataGrid.getValueForKey(this.props.eventDataKey, data), publisher);
           })
         );
       }
@@ -150,13 +145,12 @@ class SearchableDataGrid extends Component {
     this.setState({ rows: filterdRows });
   };
 
-  contains (obj, value) {
+  contains(obj, value) {
     return Object.keys(obj).some(key => {
       const p = obj[key];
-      if(typeof p === "object") {
+      if (typeof p === 'object') {
         return this.contains(p, value);
-      }
-      else {
+      } else {
         return p != null && p.toString().toLowerCase().indexOf(value) >= 0;
       }
     });
@@ -181,14 +175,13 @@ class SearchableDataGrid extends Component {
     if (isFunction(this.props.getData)) {
       this.props.getData(filter, data => {
         this.setState({
-            originalRows: data,
-            rows: data,
-            lastupdate: new Date(),
-            loading: false
-          });
+          originalRows: data,
+          rows: data,
+          lastupdate: new Date(),
+          loading: false
+        });
       });
-    }
-    else if (this.state.datasource && this.state.datasource.length) {
+    } else if (this.state.datasource && this.state.datasource.length) {
       let normalizedUrl;
 
       if (isFunction(this.state.datasource)) {
@@ -223,8 +216,7 @@ class SearchableDataGrid extends Component {
             return item[idcol];
           });
           EventTopic.publish(
-            this.props.rowsSelectEvent ||
-              'system.grid.itemsSelected.grid_' + this.props.idCol,
+            this.props.rowsSelectEvent || 'system.grid.itemsSelected.grid_' + this.props.idCol,
             itemIds,
             this
           );
@@ -308,11 +300,7 @@ class SearchableDataGrid extends Component {
           enableColResize={true}
           rowData={this.props.rowData || this.state.rows}
           paginationAutoPageSize={true}
-          pagination={
-            typeof this.props.pagination === 'undefined'
-              ? true
-              : this.props.pagination
-          }
+          pagination={typeof this.props.pagination === 'undefined' ? true : this.props.pagination}
           // events
           onGridReady={this.onGridReady}
           rowSelection={this.props.multiSelect ? 'multiple' : 'single'}
@@ -323,7 +311,7 @@ class SearchableDataGrid extends Component {
         />
       </div>
     );
-    const isLoading = this.props.loading === undefined ? this.state.loading: this.props.loading;
+    const isLoading = this.props.loading === undefined ? this.state.loading : this.props.loading;
     return (
       <div
         ref={input => {
@@ -332,37 +320,34 @@ class SearchableDataGrid extends Component {
         className="datagrid-container"
       >
         {title}
-        <div className="clearfix"/>
-        {
-          !isLoading
+        <div className="clearfix" />
+        {!isLoading
           ? <div>
               {searchBox}
               <div className="datagrid-body">
                 {dataGrid}
               </div>
             </div>
-          : <div className="loader">{lang.SEARCHGRID.LOADING}</div>
-        }
-        {
-            this.props.showLastUpdate &&
-            (this.state.lastupdate
-                ? <div className="refresh" onClick={this.refreshData}>
-                  <div className="refresh-label">
-                      {lang.SEARCHGRID.LASTREFRESHED}
-                  </div>
-                  <div className="refresh-data">
-                      {this.state.lastupdate.toLocaleString()}
-                  </div>
-                  <div className="refresh-icon icon-sm" />
+          : <div className="spinner-grid">
+              <Spinner />
+            </div>}
+        {this.props.showLastUpdate &&
+          (this.state.lastupdate
+            ? <div className="refresh" onClick={this.refreshData}>
+                <div className="refresh-label">
+                  {lang.SEARCHGRID.LASTREFRESHED}
                 </div>
-                : <div className="refresh" onClick={this.refreshData}>
-                  <div className="refresh-label">
-                      {lang.SEARCHGRID.CLICKTOREFRESH}
-                  </div>
-                  <div className="refresh-icon icon-sm" />
-                </div>)
-        }
-
+                <div className="refresh-data">
+                  {this.state.lastupdate.toLocaleString()}
+                </div>
+                <div className="refresh-icon icon-sm" />
+              </div>
+            : <div className="refresh" onClick={this.refreshData}>
+                <div className="refresh-label">
+                  {lang.SEARCHGRID.CLICKTOREFRESH}
+                </div>
+                <div className="refresh-icon icon-sm" />
+              </div>)}
       </div>
     );
   }
