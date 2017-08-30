@@ -4,27 +4,42 @@
 }
 
 .rule-overview-flyout{
-  height: 80%;
+  height: 70%;
+
+  .title{
+    font-size: 14pt;
+    color: #FFF;
+    vertical-align: middle;
+    text-align: left;
+    margin: 15px 0;
+  }
+
+  .description{
+    font-size: 12pt;
+    color: #afb9c3;
+    vertical-align: middle;
+    text-align: left;
+    margin: 5px 0;
+  }
+
   .rule-overview-body{
-    overflow: scroll;
     overflow-scrolling: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
     height: 100%;
+
     .overview-item{
       margin: 20px 0;
+
       .title{
+        @extend .title;
         @include labelHeight;
-        font-size: 14pt;
-        color: #FFF;
-        vertical-align: middle;
-        text-align: left;
+        margin: 0;
       }
 
       .description{
+        @extend .description;
         @include labelHeight;
-        font-size: 12pt;
-        color: #afb9c3;
-        vertical-align: middle;
-        text-align: left;
       }
 
       .divider{
@@ -88,10 +103,13 @@
       .effectNumber{
         margin-top: 10px;
         .count{
+          display: inline-block;
           font-size: 24pt;
           color: #FFF;
+          margin: 0 10px;
         }
         .text{
+          display: inline-block;
           @extend .description
         }
       }

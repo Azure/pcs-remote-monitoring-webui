@@ -160,7 +160,10 @@ const lang = {
     CONFIRM: 'Confirm',
     RULEDETAIL: 'Rule Detail',
     EFFECTEDDEVICES: 'devices effected by this rule',
-    CHANGESTATUS: 'Change'
+    CHANGESTATUS: 'Change Status',
+    COUNT: 'NO. Devices',
+    SUMMARY: 'Summary',
+    NOTE: 'Note: Any changes made to rules will only apply to future events on the affected devices.'
   },
   FLYOUT: {
     SAVE: 'Save',

@@ -78,8 +78,8 @@ class SearchableDataGrid extends Component {
 
   resize = props => {
     if (this.container) {
-      /* 
-        TODO (stpryor): If props change, render will be called again. 
+      /*
+        TODO (stpryor): If props change, render will be called again.
         If the height is not provided, the parentElement height will be used.
         This causes the height to grow with each props change for no reason.
       */
@@ -257,6 +257,15 @@ class SearchableDataGrid extends Component {
     }
   };
 
+  onCellClicked = event => {
+      if (isFunction(this.props.onCellClicked)) {
+          this.props.onCellClicked(event);
+      }
+      if(event.colDef.checkboxSelection){
+        event.node.setSelected(true);
+      }
+  };
+
   render() {
     let title = null;
     if (this.state.title && this.state.title.length) {
@@ -310,6 +319,7 @@ class SearchableDataGrid extends Component {
           suppressRowClickSelection={!!this.props.multiSelect}
           onSelectionChanged={this.onRowSelectionChanged}
           onRowClicked={this.onRowClicked}
+          onCellClicked={this.onCellClicked}
         />
       </div>
     );

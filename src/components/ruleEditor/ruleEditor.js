@@ -59,7 +59,7 @@ class RuleEditor extends React.Component {
                 Conditions: [
                 ]
             },
-            isEdit: content.rule ? false : true,
+            isEdit: content.rule ? (content.inEdit || false) : true,
             deviceCount: 0
         }
         this.getDeviceCount(this.state.rule.GroupId);

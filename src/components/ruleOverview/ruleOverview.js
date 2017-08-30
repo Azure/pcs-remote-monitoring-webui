@@ -43,11 +43,7 @@ export default class RuleOverviewFlyout extends Component {
             console.error(err);
         });
 
-        this.flyout.hide();
-    };
-
-    onCancel = () => {
-      this.props.onClose();
+        this.props.onClose();
     };
 
     componentWillReceiveProps(nextProps) {
@@ -87,9 +83,11 @@ export default class RuleOverviewFlyout extends Component {
                 <div className="rule-overview-body">
                 {overviewItems}
                 </div>
+                <div className="title">{lang.RULESACTIONS.SUMMARY} </div>
+                <div className="description"> {lang.RULESACTIONS.NOTE} </div>
                 <div className="rule-overview-footer">
                     <button className="button button-save" onClick={() => this.onSave()}>{lang.FLYOUT.SAVE} </button>
-                    <button className="button button-cancel" onClick={() => this.onCancel()}>{lang.FLYOUT.CANCEL} </button>
+                    <button className="button button-cancel" onClick={this.props.onClose}>{lang.FLYOUT.CANCEL} </button>
                 </div>
             </div>
         );

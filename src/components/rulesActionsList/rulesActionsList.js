@@ -3,17 +3,19 @@
 import React, {Component} from "react";
 import {Button, Modal} from "react-bootstrap";
 import lang from "../../common/lang";
-import Flyout from '../flyout/flyout';
+import Flyout from "../flyout/flyout";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import SeverityCellRenderer from "./severityCellRenderer";
 import SearchableDataGrid from "../../framework/searchableDataGrid/searchableDataGrid";
 import StatusCellRenderer from "./statusCellRenderer";
 import ActionCellRenderer from "./actionCellRenderer";
+import deviceCountCellRenderer from "./deviceCountCellRenderer";
 import ApiService from "../../common/apiService";
 import {formatString} from "../../common/utils";
-import * as actions from '../../actions';
+import * as actions from "../../actions";
 
 import "./rulesActionsList.css";
-import {bindActionCreators} from "redux";
-import {connect} from "react-redux";
 
 
 const RulesActionsHeaderHeight = 48;
@@ -37,7 +39,8 @@ class RulesActionsList extends Component {
             {
                 headerName: lang.RULESACTIONS.SEVERITY,
                 field: 'Severity',
-                filter: 'text'
+                filter: 'text',
+                cellRendererFramework: SeverityCellRenderer
             },
             {
                 headerName: lang.RULESACTIONS.SOURCE,
@@ -68,6 +71,10 @@ class RulesActionsList extends Component {
                 field: 'Enabled',
                 filter: 'text',
                 cellRendererFramework: StatusCellRenderer
+            },
+            {
+                headerName: lang.RULESACTIONS.COUNT,
+                cellRendererFramework: deviceCountCellRenderer,
             },
             {
                 headerName: lang.RULESACTIONS.ACTIONS,
@@ -112,8 +119,18 @@ class RulesActionsList extends Component {
     };
 
     newRule = () => {
-        // TODO: Refresh rule&actions list on flyout callback
-        this.ruleDetailFlyout.show();
+        const {actions} = this.props;
+        const flyoutConfig = {title: lang.RULESACTIONS.NEWRULE, type: 'New Rule'};
+        actions.showFlyout({...flyoutConfig});
+    };
+
+    onCellClicked = (event) => {
+        if (event.colDef.headerName !== lang.RULESACTIONS.ACTIONS) {
+            const {actions} = this.props;
+            actions.hideFlyout();
+            const flyoutConfig = {title: lang.RULESACTIONS.RULEDETAIL, type: 'New Rule', rule: event.data};
+            actions.showFlyout({...flyoutConfig});
+        }
     };
 
     cancelDelete = () => {
@@ -140,16 +157,22 @@ class RulesActionsList extends Component {
     };
 
     showToggleRules = () => {
-        const { actions } = this.props;
-        const flyoutConfig = { selectedRules: this.state.rulesActions, type: 'Rule Detail' };
-        actions.showFlyout({ ...flyoutConfig });
+        const {actions} = this.props;
+        const flyoutConfig = {selectedRules: this.state.rulesActions, type: 'Rule Detail'};
+        actions.showFlyout({...flyoutConfig});
+    };
+
+    onFlyoutClose = () => {
+        const {actions} = this.props;
+        actions.hideFlyout();
+        this.grid.refreshData();
     };
 
     render() {
-        const { flyout, actions } = this.props;
+        const {flyout} = this.props;
         const flyoutProp = {
             show: flyout.show,
-            onClose: actions.hideFlyout,
+            onClose: this.onFlyoutClose,
             content: flyout.content
         };
 
@@ -189,6 +212,7 @@ class RulesActionsList extends Component {
 
         return (
             <div ref="container" className="rulesActionsContainer">
+                <Flyout {...flyoutProp}/>
                 {actionButtonBar}
                 <div className="rulesActionsListContainer">
                     <SearchableDataGrid
@@ -207,8 +231,8 @@ class RulesActionsList extends Component {
                         columnDefs={this.columnDefs}
                         pagination={false}
                         onRowSelectionChanged={this.onRowSelectionChanged}
+                        onCellClicked={this.onCellClicked}
                     />
-                    <Flyout {...flyoutProp}/>
                 </div>
 
                 <Modal show={this.state.showConfirmModal}>

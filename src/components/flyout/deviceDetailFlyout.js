@@ -558,6 +558,9 @@ class DeviceDetailFlyout extends Component {
               <JsonViewer showButton={false} data={this.state.rawMessage} />}
           </div>
         </Drawer>
+        <div className="flyout-footer">
+          <div onClick={this.props.onClose}>Cancel</div>
+        </div>
       </div>
     );
   }

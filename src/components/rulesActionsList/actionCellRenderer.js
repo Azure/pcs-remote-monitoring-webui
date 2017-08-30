@@ -2,8 +2,12 @@
 
 import React from "react";
 import ApiService from "../../common/apiService";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import * as actions from "../../actions";
+import lang from "../../common/lang";
 
-export default class ActionCellRenderer extends React.Component {
+class ActionCellRenderer extends React.Component {
 
     constructor(props) {
         super(props);
@@ -19,8 +23,13 @@ export default class ActionCellRenderer extends React.Component {
         this.loading = false;
     }
 
-    onEdit = () => {
-        // TODO: open rule detail flyout in edit mode
+    onEdit = (event) => {
+        const {actions} = this.props;
+        actions.hideFlyout();
+        const flyoutConfig = {title: lang.RULESACTIONS.RULEDETAIL, type: 'New Rule', rule: this.state.cell.row, inEdit: true};
+        actions.showFlyout({...flyoutConfig});
+        event.stopPropagation();
+        event.nativeEvent.stopImmediatePropagation();
     };
 
     onToggle = () => {
@@ -64,3 +73,11 @@ export default class ActionCellRenderer extends React.Component {
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        actions: bindActionCreators(actions, dispatch)
+    };
+};
+
+export default connect(null, mapDispatchToProps)(ActionCellRenderer);

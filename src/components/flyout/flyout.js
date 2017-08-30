@@ -7,6 +7,7 @@ import DeviceDetailFlyout from './deviceDetailFlyout';
 import ManageFiltersFlyout from './manageFiltersFlyout';
 import RuleOverviewFlyout from '../ruleOverview/ruleOverview';
 import DeviceScheduleFlyout from './deviceScheduleFlyout';
+import RuleEditor from '../ruleEditor/ruleEditor'
 
 import './flyout.css';
 
@@ -22,8 +23,10 @@ const getFlyout = (content, onClose) => {
       return <RuleOverviewFlyout content={content} onClose={onClose} />;
 
     case 'Device Schedule':
-      return <DeviceScheduleFlyout content={content} onClose={onClose} />;
+        return <DeviceScheduleFlyout content={content} onClose={onClose} />;
 
+    case 'New Rule':
+      return <RuleEditor content ={content} onClose={onClose} />;
     default:
       return null;
   }
@@ -38,7 +41,7 @@ const Flyout = ({ show, content, onClose }) => {
     ? <div className="flyout-wrapper">
         <div className="flyout-header">
           <div>
-            {content.type}
+            {content.title || content.type}
           </div>
           <div>
             <span>
@@ -54,9 +57,6 @@ const Flyout = ({ show, content, onClose }) => {
           </div>
         </div>
         {getFlyout(content, onClose)}
-        <div className="flyout-footer">
-          <div onClick={onClose}>Cancel</div>
-        </div>
       </div>
     : null;
 };

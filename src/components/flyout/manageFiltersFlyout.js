@@ -537,6 +537,9 @@ class ManageFiltersFlyout extends React.Component {
             );
           })}
         </div>
+        <div className="flyout-footer">
+          <div onClick={this.props.onClose}>Cancel</div>
+        </div>
       </div>
     );
   }
