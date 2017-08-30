@@ -4,6 +4,7 @@ import React from 'react';
 import FlyoutSection from './flyoutSection/flyoutSection'
 import Select from 'react-select';
 import DeviceSimulationService from '../../services/deviceSimulationService';
+import IotHubManagerService from '../../services/iotHubManagerService';
 import Rx from 'rxjs';
 
 import './deviceProvisioningWorkflow.css';
@@ -35,7 +36,8 @@ const initialState = {
   primaryKey: '',
   secondaryKey: '',
   formIsValid: false,
-  deviceModels: []
+  deviceModels: [],
+  isLoading: false
 }
 
 /** 
@@ -50,6 +52,7 @@ class DeviceProvisioningWorkflow extends React.Component {
     super(props);
     this.state = initialState;
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.apply = this.apply.bind(this);
   }
 
   /**
@@ -68,6 +71,19 @@ class DeviceProvisioningWorkflow extends React.Component {
   }
 
   /**
+   * Resets the component state to the initial state
+   * 
+   * @param {Object} overrides - An object of any state values that to be persisted across a state reset
+   */
+  resetInitialState(overrides = {}) {
+    this.setState({ 
+      ...initialState, 
+      ...overrides,
+      deviceModels: this.state.deviceModels // Keep any cached device models
+    } );
+  }
+
+  /**
    * A generic handler method for updating state when an input changes
    * 
    * @param {Object} event - A DOM event object with the input change details
@@ -79,11 +95,7 @@ class DeviceProvisioningWorkflow extends React.Component {
     
     // If the device type is changed, reset to the initial state
     if (name === 'deviceTypeForm' && this.state.deviceTypeForm !== undefined && value !== this.state.deviceTypeForm) {
-      this.setState({ 
-        ...initialState, 
-        [name]: value, 
-        deviceModels: this.state.deviceModels // Keep any cached device models
-      } );
+      this.resetInitialState({ [name]: value });
     } else { // Otherwise, change only the state value requested
       this.setState(
         { [name]: value }, // 1) Update the state
@@ -140,7 +152,7 @@ class DeviceProvisioningWorkflow extends React.Component {
       // If authKey is manual, primaryKey and secondaryKey must also be selected,
       // otherwise auto is sufficient
       && (authKey === authKeyValues.AUTO 
-        || (authKey === authKeyValues.MANUAL && primaryKey &&secondaryKey));
+        || (authKey === authKeyValues.MANUAL && primaryKey && secondaryKey));
   }
 
   /**
@@ -162,6 +174,34 @@ class DeviceProvisioningWorkflow extends React.Component {
         isValid = false;
     }
     this.setState({ formIsValid : isValid });
+  }
+
+  /**
+   * Makes the service call to create a new physical device
+   */
+  createPhysicalDevice() {
+    const state = this.state;
+    this.setState({ isLoading: true });
+    Rx.Observable.fromPromise(
+      IotHubManagerService.createPhysicalDevice(state.deviceIdPrefix, state.primaryKey)
+    ).subscribe(
+      _ => this.resetInitialState({ deviceTypeForm: deviceTypeValues.PHYSICAL }),
+      err => console.error(err),
+      _ => this.setState({ isLoading: false })
+    );
+  }
+
+  /**
+   * Checks that the form is valid and selects the creation method for physical or simulated devices
+   */
+  apply() {
+    if (this.state.formIsValid) {
+      if (this.state.deviceTypeForm === deviceTypeValues.SIMULATED) {
+        // TODO (stpryor): Pending implementation from backend
+      } else if (this.state.deviceTypeForm === deviceTypeValues.PHYSICAL) {
+        this.createPhysicalDevice();
+      }
+    }
   }
 
   /**
@@ -230,7 +270,11 @@ class DeviceProvisioningWorkflow extends React.Component {
         </div>
         <div className="form-action-btns">
           <button className="pcs-btn">{'Cancel'}</button>
-          <button className="pcs-btn primary" disabled={!this.state.formIsValid}>{'Apply'}</button>
+          <button className="pcs-btn primary" 
+                  disabled={!this.state.formIsValid || this.state.isLoading} 
+                  onClick={this.apply}>
+            {this.state.isLoading ? 'Loading...': 'Apply'}
+          </button>
         </div>
       </div>
     );
