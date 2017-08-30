@@ -10,25 +10,23 @@ class IotHubManagerService {
 
   static ENDPOINT = Config.iotHubManagerApiUrl;
 
-  /**
-   * Creates a physical device
-   */
+  static AUTH_TYPE = {
+    Sas: 0,
+    SelfSigned: 1
+  };
 
    /**
    * Creates a physical device
    *
-   * @param {string} deviceId The id of the device
-   * @param {string} primaryAuthKey The primary authentication key
+   * @param {string} params Parameters for creating a new device
+   *    Id: The ID of the new device. Is auto generated if left empty
+   *    Authentication: An object containg auth parameters. Generates a symmetric key if left empty
+   *      AuthenticationType: Either symmetric or x509 auth (use the AUTH_TYPE enum)
+   *      PrimaryKey/PrimaryThumprint: The value for the primary key or thumprint
+   *      SecondaryKey/SecondaryThumbprint: The value for the secondary key or thumprint
    */
-  static createPhysicalDevice(deviceId, primaryAuthKey) {
-    return Http.post(
-      `${IotHubManagerService.ENDPOINT}devices`, 
-      { 
-        Id: deviceId,
-        AuthPrimaryKey: primaryAuthKey,
-        isSimulated: false 
-      }
-    );
+  static createPhysicalDevice(params) {
+    return Http.post(`${IotHubManagerService.ENDPOINT}devices`, { ...params, IsSimulated: false });
   }
 
 }

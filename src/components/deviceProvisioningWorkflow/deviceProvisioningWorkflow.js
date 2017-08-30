@@ -20,7 +20,12 @@ const deviceIdTypeValues = {
   CUSTOM: 'custom'
 };
 
-const authKeyValues = {
+const authTypes = {
+  SYMMETRIC: 'symmetric',
+  X509: 'x509'
+};
+
+const authValues = {
   AUTO: 'auto',
   MANUAL: 'manual'
 };
@@ -29,7 +34,7 @@ const initialState = {
   deviceTypeForm: undefined,
   numDevices: 1,
   deviceIdType: deviceIdTypeValues.CUSTOM,
-  deviceIdPrefix: '',
+  deviceId: '',
   deviceModel: undefined,
   authType: undefined,
   authKey: undefined,
@@ -87,8 +92,9 @@ class DeviceProvisioningWorkflow extends React.Component {
    * A generic handler method for updating state when an input changes
    * 
    * @param {Object} event - A DOM event object with the input change details
+   * @param {Object} extraState - An object with any updated state other than the input
    */
-  handleInputChange(event) {
+  handleInputChange(event, extraState = {}) {
     const target = event.target;
     const name = target.name;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -98,7 +104,7 @@ class DeviceProvisioningWorkflow extends React.Component {
       this.resetInitialState({ [name]: value });
     } else { // Otherwise, change only the state value requested
       this.setState(
-        { [name]: value }, // 1) Update the state
+        { ...extraState, [name]: value }, // 1) Update the state
         () => this.validateForm() // 2) Then validate the new state
       );
     }
@@ -121,8 +127,8 @@ class DeviceProvisioningWorkflow extends React.Component {
    * @returns Returns true if the device id is valid
    */
   deviceIdIsValid(state) {
-    const { deviceIdType, deviceIdPrefix } = state;
-    return (deviceIdType === deviceIdTypeValues.GENERATED || (deviceIdType === deviceIdTypeValues.CUSTOM && deviceIdPrefix.trim().length > 0));
+    const { deviceIdType, deviceId } = state;
+    return (deviceIdType === deviceIdTypeValues.GENERATED || (deviceIdType === deviceIdTypeValues.CUSTOM && deviceId.trim().length > 0));
   }
 
   /**
@@ -151,8 +157,8 @@ class DeviceProvisioningWorkflow extends React.Component {
       && !!authType // Validate auth type was selected
       // If authKey is manual, primaryKey and secondaryKey must also be selected,
       // otherwise auto is sufficient
-      && (authKey === authKeyValues.AUTO 
-        || (authKey === authKeyValues.MANUAL && primaryKey && secondaryKey));
+      && (authKey === authValues.AUTO 
+        || (authKey === authValues.MANUAL && primaryKey && secondaryKey));
   }
 
   /**
@@ -180,10 +186,26 @@ class DeviceProvisioningWorkflow extends React.Component {
    * Makes the service call to create a new physical device
    */
   createPhysicalDevice() {
-    const state = this.state;
+    const { deviceId, authType, authKey, primaryKey, secondaryKey } = this.state;
+    const authOptions = {};
+    if (authKey !== authValues.AUTO) {
+      if (authType === authTypes.SYMMETRIC) {
+        authOptions.AuthenticationType = IotHubManagerService.AUTH_TYPE.Sas;
+        authOptions.PrimaryKey = primaryKey;
+        authOptions.SecondaryKey = secondaryKey;
+      } else if (authType === authTypes.X509) {
+        authOptions.AuthenticationType = IotHubManagerService.AUTH_TYPE.SelfSigned;
+        authOptions.PrimaryThumbprint = primaryKey;
+        authOptions.SecondaryThumbprint = secondaryKey;
+      }
+    }
+
     this.setState({ isLoading: true });
     Rx.Observable.fromPromise(
-      IotHubManagerService.createPhysicalDevice(state.deviceIdPrefix, state.primaryKey)
+      IotHubManagerService.createPhysicalDevice({
+        Id: deviceId,
+        Authentication: authOptions
+      })
     ).subscribe(
       _ => this.resetInitialState({ deviceTypeForm: deviceTypeValues.PHYSICAL }),
       err => console.error(err),
@@ -221,7 +243,7 @@ class DeviceProvisioningWorkflow extends React.Component {
                 id={id}
                 value={item.value}
                 checked={this.state[radioGroupName] === item.value} 
-                onChange={this.handleInputChange} />
+                onChange={event => this.handleInputChange(event, item.extraState || {})} />
           <label htmlFor={id}>
             { item.label }
           </label>
@@ -236,6 +258,15 @@ class DeviceProvisioningWorkflow extends React.Component {
    * @returns Returns JSX for the device ID section
    */
   renderDeviceIdSection() {
+    const { deviceTypeForm } = this.state;
+    let placeholder, generatedLabel = '';
+    if (deviceTypeForm === deviceTypeValues.SIMULATED) {
+      placeholder = 'Enter device Id prefix...';
+      generatedLabel = 'System generated device IDs';
+    } else if (deviceTypeForm === deviceTypeValues.PHYSICAL) {
+      placeholder = 'Enter device Id...';
+      generatedLabel = 'System generated device ID';
+    }
     return (
       <FlyoutSection header={'Device ID'}>
         { 
@@ -243,13 +274,16 @@ class DeviceProvisioningWorkflow extends React.Component {
             { 
               value: deviceIdTypeValues.CUSTOM,
               label: <input type="text" 
-                name="deviceIdPrefix" 
-                placeholder={'Enter device Id prefix...'}
+                name="deviceId" 
+                placeholder={placeholder}
                 disabled={this.state.deviceIdType !== deviceIdTypeValues.CUSTOM}
-                value={this.state.deviceIdPrefix}
+                value={this.state.deviceId}
                 onChange={this.handleInputChange} />
             },
-            { value: deviceIdTypeValues.GENERATED, label: 'System generated device IDs' }
+            { 
+              value: deviceIdTypeValues.GENERATED, 
+              label: generatedLabel
+            }
           ]) 
         }
       </FlyoutSection>
@@ -320,6 +354,12 @@ class DeviceProvisioningWorkflow extends React.Component {
    * @returns Returns JSX for the physical device form
    */
   renderPhysicalForm() {
+    const authKeyOptions = [];
+    if (this.state.authType !== authTypes.X509) {
+      authKeyOptions.push({ value: authValues.AUTO, label: 'Auto generate keys' });
+    }
+    authKeyOptions.push({ value: authValues.MANUAL, label: 'Enter keys manually' });
+
     return (
       <div className="provision-device-form-container">
         <FlyoutSection header={'Number of devices'}>
@@ -331,33 +371,34 @@ class DeviceProvisioningWorkflow extends React.Component {
         <FlyoutSection header={'Authentication type'}>
           { 
             this.renderRadioInputGroup('authType', [
-              { value: 'symmetric', label: 'Symmetric Key' },
-              { value: 'x509', label: 'X.509' }
+              { value: authTypes.SYMMETRIC, label: 'Symmetric Key' },
+              { value: authTypes.X509, label: 'X.509', extraState: { authKey: authValues.MANUAL } }
             ]) 
           }
         </FlyoutSection>
         <FlyoutSection header={'Authentication key'}>
           { 
-            this.renderRadioInputGroup('authKey', [
-              { value: authKeyValues.AUTO, label: 'Auto generate keys' },
-              { value: authKeyValues.MANUAL, label: 'Enter keys manually' }
-            ]) 
+            this.renderRadioInputGroup('authKey', authKeyOptions) 
           }
           <div className="manual-auth-key-container pcs-formgroup">
-            <label htmlFor="primary-key-input">Primary Key</label>
+            <label htmlFor="primary-key-input">
+              {this.state.authType === authTypes.X509 ? 'Primary Thumbprint' : 'Primary Key'}
+            </label>
             <input type="text" 
                   id="primary-key-input"
                   name="primaryKey" 
-                  placeholder={'Enter your primary key here...'}
-                  disabled={this.state.authKey !== authKeyValues.MANUAL}
+                  placeholder={'Enter your key here...'}
+                  disabled={this.state.authKey !== authValues.MANUAL}
                   value={this.state.primaryKey}
                   onChange={this.handleInputChange} />
-            <label htmlFor="secondary-key-input">Secondary Key</label>
+            <label htmlFor="secondary-key-input">
+              {this.state.authType === authTypes.X509 ? 'Secondary Thumbprint' : 'Secondary Key'}
+            </label>
             <input type="text" 
                   id="secondary-key-input"
                   name="secondaryKey" 
-                  placeholder={'Enter your secondary key here...'}
-                  disabled={this.state.authKey !== authKeyValues.MANUAL}
+                  placeholder={'Enter your key here...'}
+                  disabled={this.state.authKey !== authValues.MANUAL}
                   value={this.state.secondary}
                   onChange={this.handleInputChange} />
           </div>
