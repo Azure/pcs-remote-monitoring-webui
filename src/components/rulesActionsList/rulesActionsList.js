@@ -3,7 +3,6 @@
 import React, {Component} from "react";
 import {Button, Modal} from "react-bootstrap";
 import lang from "../../common/lang";
-import Flyout from "../flyout/flyout";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import SeverityCellRenderer from "./severityCellRenderer";
@@ -11,6 +10,7 @@ import SearchableDataGrid from "../../framework/searchableDataGrid/searchableDat
 import StatusCellRenderer from "./statusCellRenderer";
 import deviceCountCellRenderer from "./deviceCountCellRenderer";
 import LastTriggerCellRenderer from "./lastTriggerCellRenderer";
+import DeviceSourceCellRenderer from "./deviceSourceCellRenderer";
 import ApiService from "../../common/apiService";
 import {formatString} from "../../common/utils";
 import * as actions from "../../actions";
@@ -43,9 +43,10 @@ class RulesActionsList extends Component {
                 cellRendererFramework: SeverityCellRenderer
             },
             {
-                headerName: lang.RULESACTIONS.SOURCE,
+                headerName: lang.RULESACTIONS.FILTER,
                 field: 'GroupId',
-                filter: 'text'
+                filter: 'text',
+                cellRendererFramework: DeviceSourceCellRenderer
             },
             {
                 headerName: lang.RULESACTIONS.TRIGGER,
@@ -145,7 +146,7 @@ class RulesActionsList extends Component {
     showEditRulesFlyout = () => {
         const {actions} = this.props;
         actions.hideFlyout();
-        const flyoutConfig = {title: lang.RULESACTIONS.RULEDETAIL, type: 'New Rule', rule: this.state.rulesActions[0], inEdit: true};
+        const flyoutConfig = {onClose: this.onFlyoutClose, title: lang.RULESACTIONS.RULEDETAIL, type: 'New Rule', rule: this.state.rulesActions[0], inEdit: true};
         actions.showFlyout({...flyoutConfig});
     };
 
@@ -163,7 +164,7 @@ class RulesActionsList extends Component {
 
     showToggleRules = () => {
         const {actions} = this.props;
-        const flyoutConfig = {selectedRules: this.state.rulesActions, type: 'Rule Detail'};
+        const flyoutConfig = {onClose: this.onFlyoutClose, selectedRules: this.state.rulesActions, type: 'Rule Detail'};
         actions.showFlyout({...flyoutConfig});
     };
 
@@ -174,13 +175,6 @@ class RulesActionsList extends Component {
     };
 
     render() {
-        const {flyout} = this.props;
-        const flyoutProp = {
-            show: flyout.show,
-            onClose: this.onFlyoutClose,
-            content: flyout.content
-        };
-
         let ActionButtons = {};
         ActionButtons.newRuleButton =
             <div className="button" onClick={this.newRule}>
@@ -217,7 +211,6 @@ class RulesActionsList extends Component {
 
         return (
             <div ref="container" className="rulesActionsContainer">
-                <Flyout {...flyoutProp}/>
                 {actionButtonBar}
                 <div className="rulesActionsListContainer">
                     <SearchableDataGrid
@@ -266,10 +259,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const mapStateToProps = state => {
-    return {
-        flyout: state.flyoutReducer,
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RulesActionsList);
+export default connect(null, mapDispatchToProps)(RulesActionsList);

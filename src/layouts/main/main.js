@@ -17,7 +17,7 @@ class Main extends Component {
     const { flyout, actions } = this.props;
     const flyoutProp = {
       show: flyout.show,
-      onClose: actions.hideFlyout,
+      onClose: (flyout.content && flyout.content.onClose)? flyout.content.onClose : actions.hideFlyout,
       content: flyout.content
     };
     return (

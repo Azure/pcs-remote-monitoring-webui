@@ -3,6 +3,7 @@
 import React from "react";
 import ApiService from "../../common/apiService";
 import {connect} from "react-redux";
+import Spinner from "../spinner/spinner";
 
 class LastTriggerCellRenderer extends React.Component {
 
@@ -11,7 +12,7 @@ class LastTriggerCellRenderer extends React.Component {
 
         this.state = {
             loading: true,
-            lastTrigger: null,
+            lastTrigger: '‐ ‐ ‐ ‐ ‐ ‐ ‐ ‐ ‐',
             cell: {
                 row: props.data,
                 col: props.colDef.headerName
@@ -20,36 +21,36 @@ class LastTriggerCellRenderer extends React.Component {
     }
 
     componentDidMount() {
-        let matchedGroup = this.props.deviceGroups.filter(group => group.id === this.state.cell.row.GroupId);
-        if (!matchedGroup.length) {
-            return;
+        if (this.props.data.DeviceCount !== undefined) {
+            if (this.props.data.DeviceCount === 0) {
+                this.setState({loading: false});
+            } else {
+                ApiService.getAlarmListByRule(
+                    this.state.cell.row.Id,
+                    {
+                        order: 'desc',
+                        devices: this.props.data.Devices.map(device => device.Id).toString()
+                    }
+                ).then(response => {
+                    if (response.Items && response.Items.length) {
+                        this.setState({
+                            loading: false,
+                            lastTrigger: Date.parse(response.Items[0].DateModified).toLocaleString()
+                        });
+                    }
+                    this.setState({loading: false});
+                }).catch(err => {
+                    console.log(err);
+                    this.setState({loading: false});
+                })
+            }
         }
-        ApiService.getDevicesForGroup(matchedGroup[0].conditions)
-            .then(response => {
-                if (response.items) {
-                    return ApiService.getAlarmListByRule(
-                        this.state.cell.row.Id,
-                        {
-                            order: 'desc',
-                            devices: response.items.map(device => device.Id).toString()
-                        }
-                    );
-                }
-            })
-            .then(response => {
-                if (response.Items && response.Items.length) {
-                    this.setState({lastTrigger: Date.parse(response.Items[0].DateModified).toLocaleString()});
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            })
     }
 
     render() {
         return (
-            this.state.loading || !this.state.lastTrigger
-                ? <div> ‐ ‐ ‐ ‐ ‐ ‐ ‐ ‐ ‐</div>
+            this.state.loading
+                ? <div><Spinner size='medium'/></div>
                 : <div> {this.state.lastTrigger} </div>
         )
     }

@@ -138,7 +138,7 @@ const lang = {
     RULENAME: 'Rule name',
     DESCRIPTION: 'Description',
     SEVERITY: 'Severity',
-    SOURCE: 'Source',
+    FILTER: 'Filter',
     NOOFDEVICES: 'NO. Devices',
     TRIGGER: 'Trigger',
     LASTTRIGGER: 'Last Trigger',

@@ -3,6 +3,7 @@
 import React from "react";
 import ApiService from "../../common/apiService";
 import {connect} from "react-redux";
+import Spinner from "../spinner/spinner";
 
 class DeviceCountCellRenderer extends React.Component {
 
@@ -20,7 +21,7 @@ class DeviceCountCellRenderer extends React.Component {
     }
 
     componentDidMount() {
-        if(!this.props.data.DeviceCount){
+        if(this.props.data.DeviceCount === undefined){
             let matchedGroup = this.props.deviceGroups.filter(group => group.id === this.state.cell.row.GroupId);
             if (!matchedGroup.length) {
                 this.setState({loading: false, count: 0});
@@ -30,8 +31,8 @@ class DeviceCountCellRenderer extends React.Component {
             ApiService.getDevicesForGroup(matchedGroup[0].conditions)
                 .then(response => {
                     if (response.items !== undefined) {
-                        this.setState({loading: false, count: response.items.length})
-                        this.props.node.setData(Object.assign({}, this.props.data, {DeviceCount: response.items.length}));
+                        this.setState({loading: false, count: response.items.length});
+                        this.props.node.setData(Object.assign({}, this.props.data, {Devices: response.items,  DeviceCount: response.items.length}));
                     }
                 })
                 .catch(err => {
@@ -44,7 +45,9 @@ class DeviceCountCellRenderer extends React.Component {
     render() {
         return (
             this.state.loading
-                ? <div className="cell-loading"/>
+                ? <div className="loading-spinner-cell">
+                    <Spinner size='medium'/>
+                </div>
                 : <div> {this.state.count} </div>
         )
     }
