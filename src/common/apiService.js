@@ -69,6 +69,22 @@ class ApiService {
     return Http.get(`${Config.telemetryApiUrl}messages?from=NOW-PT1M&to=NOW&order=desc`);
   }
 
+  /**
+   * Get list of telemetry messages
+   *
+   * @param params An object containing API parameters
+   *    "from": The ISO8601 format start of the time window for the query.
+   *    "to": The ISO8601 format end of the time window for the query.
+   *    "order": Whether to sort the result from the oldest (asc) or the most recent (desc)
+   *    "skip": How many records to skip, used to paginate through the global list of messages
+   *    "limit": How many records to return, used to paginate through the global list of messages
+   *    "devices": A filter used to request messages for specific devices
+   */
+  static getTelemetryMessages(params = {}) {
+    return Http.get(`${Config.telemetryApiUrl}messages?${ApiService.serializeParamObject(params)}`
+    );
+  }
+
   static getAlarmsByRuleForKpi(from, to, deviceIds) {
     return Http.get(
       `${Config.telemetryApiUrl}alarmsbyrule?devices=${deviceIds}&Order=desc&from=` +

@@ -20,7 +20,7 @@ class Timeline extends Component {
   }
 
   destroyChart() {
-    this.state.timeline.load({ unload: true });
+    this.state.timeline.unload();
   }
 
   switchChart(props) {
@@ -41,6 +41,7 @@ class Timeline extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.destroy) {
       this.destroyChart();
+      return;
     }
     const { data } = nextProps.chartConfig;
     if (
