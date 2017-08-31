@@ -5,12 +5,6 @@
   .create-filter {
     padding: 10px 0px 10px 16px;
     cursor: pointer;
-
-    .add-icon {
-      padding-right: 5px;
-      height: 12px;
-      cursor: pointer;
-    }
   }
 
   .headers-for-deviceGroups {
@@ -145,6 +139,7 @@ input {
 }
 
 .edit-icon,
+.add-icon,
 .delete-icon {
   cursor: pointer;
   height: 12px;

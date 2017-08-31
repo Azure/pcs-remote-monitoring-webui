@@ -11,13 +11,14 @@ let container;
 let actions;
 let init = function(mapApiKey) {
   let options = {
-    credentials:
-      'AhDYdhgAYmHLSCQm9xFRo2PPMGPXKeLnsz6yczTOxVMZQPnNJBben3rpV7DvnL4e',
+    credentials: 'AhDYdhgAYmHLSCQm9xFRo2PPMGPXKeLnsz6yczTOxVMZQPnNJBben3rpV7DvnL4e',
     mapTypeId: window.Microsoft.Maps.MapTypeId.canvasDark,
     showMapTypeSelector: false,
     animate: false,
     enableSearchLogo: false,
     enableClickableLogo: false,
+    showTrafficButton: false, //don't show the traffic icon
+    showTermsLink: false, // donot show terms link on Bing Map
     navigationBarMode: window.Microsoft.Maps.NavigationBarMode.minified,
     backgroundColor: window.Microsoft.Maps.Color.fromHex('#000000'), //for changing the background color
     showScalebar: false, // for the Microsoft Bing maps label removal
@@ -124,10 +125,7 @@ let setDeviceLocationData = function setDeviceLocationData(
       if (!deviceLocations[i].latitude || !deviceLocations[i].longitude) {
         continue;
       }
-      loc = new window.Microsoft.Maps.Location(
-        deviceLocations[i].latitude,
-        deviceLocations[i].longitude
-      );
+      loc = new window.Microsoft.Maps.Location(deviceLocations[i].latitude, deviceLocations[i].longitude);
 
       pinOptions = {
         zIndex: deviceLocations[i].status,
