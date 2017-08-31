@@ -35,6 +35,14 @@ const Config = {
     MULTIPLE: 'Multiple',
     FIRMWARE: 'Firmware'
   },
+
+ OPERATOR_OPTIONS: [
+    { value: "GreaterThan", label: "GreaterThan" }, 
+    { value: "GreaterThanOrEqual", label: "GreaterThanOrEqual" },
+    { value: "LessThan", label: "LessThan" },
+    { value: "Equals", label: "Equals" }
+  ],
+
   INTERVALS: {
     TELEMETRY_FLOW_DURATION: 1500,
     TELEMETRY_UPDATE_INTERVAL: 2500,

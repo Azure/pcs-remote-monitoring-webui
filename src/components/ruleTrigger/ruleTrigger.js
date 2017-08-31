@@ -3,6 +3,7 @@
 import React from "react";
 import { Table } from "react-bootstrap";
 import lang from "../../common/lang";
+import Config from '../../common/config';
 import EditInput from "../editInput/editInput";
 import del from "../../assets/icons/Delete.svg";
 import edit from "../../assets/icons/Edit.svg";
@@ -47,21 +48,23 @@ class RuleTrigger extends React.Component {
         }
     }
 
-    onNewFieldChange = (e) => {
+    onNewFieldChange = (field) => {
         const condition = this.state.condition;
-        condition.field = e.target.value;
+        condition.field = field;
         this.setState({ condition: condition });
+        this.addCondition();
     }
 
-    onNewOperatorChange = (e) => {
+    onNewOperatorChange = (operator) => {
         const condition = this.state.condition;
-        condition.operator = e.target.value;
+        condition.operator = operator;
         this.setState({ condition: condition });
+        this.addCondition();
     }
 
-    onNewValueChange = (e) => {
+    onNewValueChange = (value) => {
         const condition = this.state.condition;
-        condition.value = e.target.value;
+        condition.value = value;
         this.setState({ condition: condition });
     }
 
@@ -107,47 +110,43 @@ class RuleTrigger extends React.Component {
     }
 
     renderEditTrigger() {
+        const OperatorOptions = Config.OPERATOR_OPTIONS;
+
         return (
-            <div className="ruleTrigger">
-                <Table>
-                    <thead>
-                        <tr>
-                            <td>{lang.RULESACTIONS.TH_FIELD}</td>
-                            <td>{lang.RULESACTIONS.TH_OPERATOR}</td>
-                            <td>{lang.RULESACTIONS.TH_VALUE}</td>
-                            <td>{lang.RULESACTIONS.TH_ACTIONS}</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="text" value={this.state.condition.field} onBlur={this.addCondition} onChange={this.onNewFieldChange} /></td>
-                            <td><input type="text" value={this.state.condition.operator} onBlur={this.addCondition} onChange={this.onNewOperatorChange} /></td>
-                            <td><input type="text" value={this.state.condition.value} onBlur={this.addCondition} onChange={this.onNewValueChange} /></td>
-                            <td></td>
-                        </tr>
-                        {
-                            this.state.conditions.map((c, i) => {
-                                return <tr key={i}>
-                                    <td><EditInput type="text" isEdit={c.isEdit} value={c.Field} onChange={(value) => this.onFieldChange(value, i)} /></td>
-                                    <td><EditInput type="text" isEdit={c.isEdit} value={c.Operator} onChange={(value) => this.onOperatorChange(value, i)} /></td>
-                                    <td><EditInput type="text" isEdit={c.isEdit} value={c.Value} onChange={(value) => this.onValueChange(value, i)} /></td>
-                                    <td>
-                                        <img src={add} alt={lang.RULESACTIONS.IMGSAVE} style={{ display: c.isEdit ? "inline-block" : "none" }} onClick={() => this.onUpdateClick(i)} />
-                                        <img src={edit} alt={lang.RULESACTIONS.IMGEDIT} style={{ display: c.isEdit ? "none" : "inline-block" }} onClick={() => this.onEditClick(i)} />
-                                        <img src={del} alt={lang.RULESACTIONS.IMGDELETE} onClick={() => this.onDeleteClick(i)} />
-                                    </td>
-                                </tr>
-                            })
-                        }
-                    </tbody>
-                </Table>
+            <div className="rule-trigger">
+                <div>
+                    <div className="condition-head">{lang.RULESACTIONS.TH_FIELD}</div>
+                    <div className="condition-head">{lang.RULESACTIONS.TH_OPERATOR}</div>
+                    <div className="condition-head">{lang.RULESACTIONS.TH_VALUE}</div>
+                    <div className="condition-action">{lang.RULESACTIONS.TH_ACTIONS}</div>
+                </div>
+                <div className="condition-row">
+                    <div className="condition-field"><EditInput type="select" isEdit={true} value={this.state.condition.field} options={this.props.fields} onChange={(value) => this.onNewFieldChange(value)} /></div>
+                    <div className="condition-field"><EditInput type="select" isEdit={true} value={this.state.condition.operator} options={OperatorOptions} onChange={(value) => this.onNewOperatorChange(value)} /></div>
+                    <div className="condition-field"><EditInput type="text" isEdit={true} placeholder={lang.RULESACTIONS.ENTERVALUE} className="value" value={this.state.condition.value} onBlur={this.addCondition} onChange={(value) => this.onNewValueChange(value)} /></div>
+                    <div className="condition-action"></div>
+                </div>
+                {
+                    this.state.conditions.map((c, i) => {
+                        return <div className="condition-row" key={i}>
+                            <div className="condition-field"><EditInput type="select" isEdit={c.isEdit} value={c.Field} options={this.props.fields} onChange={(value) => this.onFieldChange(value, i)} /></div>
+                            <div className="condition-field"><EditInput type="select" isEdit={c.isEdit} value={c.Operator} options={OperatorOptions} onChange={(value) => this.onOperatorChange(value, i)} /></div>
+                            <div className="condition-field"><EditInput type="text" className="value" isEdit={c.isEdit} value={c.Value} onChange={(value) => this.onValueChange(value, i)} /></div>
+                            <div className="condition-action">
+                                <img src={add} alt={lang.RULESACTIONS.IMGSAVE} className={c.isEdit ? "img-show" : "img-hide"} onClick={() => this.onUpdateClick(i)} />
+                                <img src={edit} alt={lang.RULESACTIONS.IMGEDIT} className={c.isEdit ? "img-hide" : "img-show"} onClick={() => this.onEditClick(i)} />
+                                <img src={del} alt={lang.RULESACTIONS.IMGDELETE} onClick={() => this.onDeleteClick(i)} />
+                            </div>
+                        </div>
+                    })
+                }
             </div>
         );
     }
 
     renderReadOnlyTrigger() {
         return (
-            <div className="ruleReadTrigger">
+            <div className="rule-read-trigger">
                 <Table>
                     <thead>
                         <tr>

@@ -1,59 +1,90 @@
-.ruleEditor {
+// Copyright (c) Microsoft. All rights reserved.
+
+.rule-editor {
     margin: 5px;
     height: calc(100% - 20px);
 
-    .ruleEditorMain {
+    .rule-editor-body {
         height: calc(100% - 120px);
         overflow-y: auto;
         color: white;
+
+        .show {
+            display: block;
+        }
+
+        .hide {
+            display: none;
+        }
 
         label {
             font-weight: normal;
         }
 
-        .editIcon {
+        .edit-icon {
             float: right;
             margin-right: 20px;
+            cursor: pointer;
+        }
+
+        .icon {
+            height: 15px;
+            margin-left: 10px;
+            cursor: pointer;
+            margin-right: 5px;
+            float: left;
 
             img {
-                height: 15px;
-                margin-left: 10px;
-                cursor: pointer;
+                height: 100%;
             }
         }
-    }
 
-    .helpText {
-        color: #afb9c3;
-        display: block;
-        margin-top: 2px;
-        margin-bottom: 5px;
-        font-size: 12px;
-    }
+        .input {
+            width: 50%;
+        }
 
-    .ruleTip {
-        position: relative;
+        .textarea {
+            width: 70%;
+        }
 
-        .helpText {
-            position: absolute;
-            bottom: 0;
-            left: 30px;
+        .name-wrapper {
+            display: inline-block;
+            width: 50%;
+        }
+
+        .description, .help-text {
+            color: #afb9c3;
+        }
+
+        .help-text {
+            display: block;
+            margin-top: 2px;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .ruleTip {
+            position: relative;
+
+            .help-text {
+                display: inline-block;
+            }
+        }
+
+        .device-count {
+            font-size: 32px;
+            font-weight: 600;
+            margin-right: 5px;
         }
     }
 
-    .deviceNum {
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-    .ruleEditorBtns {
-
-        .btnToolBar {
+    .rule-editor-btns {
+        .btn-tool-bar {
             float: right;
             margin-top: 20px;
 
-            .ruleEditorBtn {
-                background-color: #242628;
+            .button {
+                background-color: transparent;
                 display: inline-block;
                 padding: 6px 12px;
                 text-align: center;
@@ -64,9 +95,14 @@
                 margin-left: 15px;
             }
 
-            .ruleEditorBtn:hover{
+            .button:hover {
                 background-color: #AEB8C3;
                 color: white;
+            }
+
+            .apply-icon, .cancel-icon {
+                height: 15px;
+                width: 15px;
             }
         }
     }

@@ -10,11 +10,18 @@ import RuleTrigger from "../ruleTrigger/ruleTrigger";
 import EditInput from "../editInput/editInput";
 import enabled from "../../assets/icons/EnableToggle.svg";
 import edit from "../../assets/icons/Edit.svg";
-import disabled from "../../assets/icons/Disabled.svg";
+import disabled from "../../assets/icons/DISABLE_toggle.svg";
+import critical from "../../assets/icons/Critical.svg";
+import info from "../../assets/icons/Info.svg";
+import warning from "../../assets/icons/Warning.svg";
 
 import "./ruleEditor.css";
 
-const Severity = [{ text: lang.RULESACTIONS.CRITICAL, value: "critical" }, { text: lang.RULESACTIONS.WARNING, value: "warning" }, { text: lang.RULESACTIONS.INFO, value: "info" }];
+const Severity = [
+    { text: lang.RULESACTIONS.CRITICAL, value: "critical", imgUrl: critical },
+    { text: lang.RULESACTIONS.WARNING, value: "warning", imgUrl: warning },
+    { text: lang.RULESACTIONS.INFO, value: "info", imgUrl: info }
+];
 
 class RuleEditImg extends React.Component {
     onHandleClick = () => {
@@ -23,8 +30,8 @@ class RuleEditImg extends React.Component {
 
     render() {
         return (
-            <div className="editIcon">
-                <span style={{ display: this.props.isEdit ? "none" : "inline-block" }}>{lang.RULESACTIONS.EDIT} <img alt={lang.RULESACTIONS.EDIT} src={edit} onClick={this.onHandleClick} /></span>
+            <div className={`edit-icon ${this.props.isEdit ? 'hide' : 'show'}`} onClick={this.onHandleClick}>
+                <span className="icon"><img alt={lang.RULESACTIONS.EDIT} src={edit} /></span><span>{lang.RULESACTIONS.EDIT}</span>
             </div>
         );
     }
@@ -32,14 +39,14 @@ class RuleEditImg extends React.Component {
 
 class RuleEnableImg extends React.Component {
     onHandleClick = () => {
-        this.props.onClick(!this.props.isDisabled);
+        this.props.onClick(!this.props.isEnabled);
     }
 
     render() {
-        const statusTxt = this.props.isDisabled ? lang.RULESACTIONS.DISABLED : lang.RULESACTIONS.ENABLED;
+        const statusTxt = this.props.isEnabled ? lang.RULESACTIONS.ENABLED : lang.RULESACTIONS.DISABLED;
         return (
-            <div className="editIcon">
-                <span style={{ display: this.props.isEdit ? "inline-block" : "none" }}>{statusTxt} <img alt={statusTxt} src={this.props.isDisabled ? disabled : enabled} onClick={this.onHandleClick} /></span>
+            <div>
+                <span className={`icon ${this.props.isEdit ? 'show' : 'hide'}`} onClick={this.onHandleClick}><img alt={statusTxt} src={this.props.isEnabled ? enabled : disabled} /></span><span>{statusTxt}</span>
             </div>
         );
     }
@@ -60,6 +67,7 @@ class RuleEditor extends React.Component {
                 ]
             },
             isEdit: content.rule ? (content.inEdit || false) : true,
+            conditionFields: [],
             deviceCount: 0
         }
         this.getDeviceCount(this.state.rule.GroupId);
@@ -100,31 +108,18 @@ class RuleEditor extends React.Component {
         this.getDeviceCount(groupId);
     }
 
-    onAlarmTextChange = (alarmText) => {
-        console.log(alarmText);
-    }
-
     onCreate() {
         this.getConditions();
-        this.closeFlyout();
-        ApiService.createRule(this.state.rule).catch((err) => {
-            console.log(err);
-        });
-    }
-
-    onUpdate() {
-        this.getConditions();
-        this.closeFlyout();
-        ApiService.updateRule(this.state.rule.Id, this.state.rule).catch((err) => {
-            console.log(err);
-        });
-    }
-
-    onDelete() {
-        this.closeFlyout();
-        ApiService.deleteRule(this.state.rule.Id).catch((err) => {
-            console.log(err);
-        });;
+        this.setState({ isEdit: false });
+        if (this.state.rule.Id) {
+            ApiService.updateRule(this.state.rule.Id, this.state.rule).catch((err) => {
+                console.error(err);
+            });
+        } else {
+            ApiService.createRule(this.state.rule).catch((err) => {
+                console.error(err);
+            });
+        }
     }
 
     onCancel() {
@@ -143,78 +138,87 @@ class RuleEditor extends React.Component {
         this.setState({ rule: rule });
     }
 
-    getDeviceGroups() {
-        const deviceGroups = this.props.deviceGroups || [];
-        const newGroupObj = {
-            id: 0,
-            displayName: 'Select...',
-            conditions: []
-        };
-        return [newGroupObj, ...deviceGroups];
-    }
-
     getDeviceCount(groupId) {
         this.props.deviceGroups.forEach(group => {
-            if (group.id === groupId) {
+            if (group.displayName === groupId) {
                 ApiService.getDevicesForGroup(group.conditions).then((data) => {
                     if (data && data.items) {
                         this.setState({ deviceCount: data.items.length });
+                        this.setState({ conditionFields: this.getConditionFields(data.items) });;
                     }
                 });
             }
         });
     }
 
+    getConditionFields(devices) {
+        const fields = [];
+        devices.forEach(device => {
+            const telemetry = device.Properties.Reported.Telemetry;
+            if (telemetry) {
+                Object.keys(telemetry).forEach((field) => {
+                    if (fields.indexOf(field) === -1) {
+                        fields.push({
+                            label: field,
+                            value: field
+                        });
+                    }
+                });
+            }
+        });
+        return fields;
+    }
+
     render() {
-        const deviceGroups = this.getDeviceGroups();
+        const deviceGroups = this.props.deviceGroups;
         let deviceGroupOptions = deviceGroups.map((group, idx) => {
             return {
-                value: group.id,
+                value: group.displayName,
                 label: group.displayName
             };
         });
+
         return (
-            <div className="ruleEditor">
-                <div className="ruleEditorMain">
+            <div className="rule-editor">
+                <div className="rule-editor-body">
                     <FormGroup>
-                        <EditInput style={{ width: "50%", display: "inline-block" }} type="text" value={this.state.rule.Name} isEdit={this.state.isEdit} onChange={this.onNameChange} />
+                        <div className="name-wrapper">
+                            <EditInput className="input" type="text" placeholder={lang.RULESACTIONS.ENTERRULENAME} value={this.state.rule.Name} isEdit={this.state.isEdit} onChange={this.onNameChange} />
+                        </div>
                         <RuleEditImg isEdit={this.state.isEdit} onClick={this.onEditClick} />
-                        <RuleEnableImg isEdit={this.state.isEdit} isDisabled={this.state.rule.Enabled} onClick={this.onEnableClick} />
                     </FormGroup>
                     <FormGroup>
-                        <EditInput type="textarea" value={this.state.rule.Description} isEdit={this.state.isEdit} onChange={this.onDescriptionChange} />
+                        <EditInput type="textarea" className="textarea" classForLabel="description" placeholder={lang.RULESACTIONS.ENTERRULEDISCRIPTION} value={this.state.rule.Description} isEdit={this.state.isEdit} onChange={this.onDescriptionChange} />
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>{lang.RULESACTIONS.SOURCE}</ControlLabel>
-                        <span className="helpText">{lang.RULESACTIONS.SOURCEHELP}</span>
-                        <EditInput type="select" options={deviceGroupOptions} value={this.state.rule.GroupId} isEdit={this.state.isEdit} onChange={this.onGroupIdChange} />
+                        <span className="help-text">{lang.RULESACTIONS.SOURCEHELP}</span>
+                        <EditInput type="select" className="input" placeholder={lang.RULESACTIONS.SELECTDEVICEGROUP} options={deviceGroupOptions} value={this.state.rule.GroupId} isEdit={this.state.isEdit} onChange={this.onGroupIdChange} />
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>{lang.RULESACTIONS.TRIGGER}</ControlLabel>
-                        <RuleTrigger conditions={this.state.rule.Conditions} isEdit={this.state.isEdit} ref="conditions" />
+                        <RuleTrigger fields={this.state.conditionFields} conditions={this.state.rule.Conditions} isEdit={this.state.isEdit} ref="conditions" />
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>{lang.RULESACTIONS.SEVERITYLEVEL}</ControlLabel>
                         <EditInput type="radio" options={Severity} value={this.state.rule.Severity} isEdit={this.state.isEdit} onChange={this.onSeverityLevelChange} />
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>{lang.RULESACTIONS.ALARMEVENT}</ControlLabel>
-                        <span className="helpText">{lang.RULESACTIONS.ALARMEVENTHELP}</span>
-                        <EditInput type="textarea" value={this.state.rule.Description} isEdit={this.state.isEdit} onChange={this.onAlarmTextChange} />
+                        <ControlLabel>{lang.RULESACTIONS.RULESTATUS}</ControlLabel>
+                        <RuleEnableImg isEdit={this.state.isEdit} isEnabled={this.state.rule.Enabled} onClick={this.onEnableClick} />
                     </FormGroup>
                     <FormGroup>
-                        <div className="ruleTip"><span className="deviceNum">{this.state.deviceCount}</span><span className="helpText">{lang.RULESACTIONS.DEVICECOUNT}</span></div>
+                        <ControlLabel>{lang.RULESACTIONS.SUMMARY}</ControlLabel>
+                        <div className="ruleTip"><span className="device-count">{this.state.deviceCount}</span><span className="help-text">{lang.RULESACTIONS.DEVICECOUNT}</span></div>
+                    </FormGroup>
+                    <FormGroup className={this.state.isEdit ? "show" : "hide"}>
+                        <div className="help-text">{lang.RULESACTIONS.NOTE}</div>
                     </FormGroup>
                 </div>
-                <div className="ruleEditorBtns" style={{ display: this.state.isEdit ? "block" : "none" }}>
-                    <ButtonToolbar className="btnToolBar" style={{ display: this.state.rule.Id ? "block" : "none" }}>
-                        <button className="ruleEditorBtn" onClick={() => this.onCancel()}>{lang.RULESACTIONS.CANCEL}</button>
-                        <button className="ruleEditorBtn" onClick={() => this.onUpdate()}>{lang.RULESACTIONS.UPDATE}</button>
-                        <button className="ruleEditorBtn" onClick={() => this.onDelete()}>{lang.RULESACTIONS.DELETE}</button>
-                    </ButtonToolbar>
-                    <ButtonToolbar className="btnToolBar" style={{ display: this.state.rule.Id ? "none" : "block" }}>
-                        <button className="ruleEditorBtn" onClick={() => this.onCancel()}>{lang.RULESACTIONS.CANCEL}</button>
-                        <button className="ruleEditorBtn" onClick={() => this.onCreate()}>{lang.RULESACTIONS.CREATE}</button>
+                <div className={`rule-editor-btns ${this.state.isEdit ? 'show' : 'hide'}`}>
+                    <ButtonToolbar className="btn-tool-bar">
+                        <button className="button" onClick={() => this.onCancel()}><img src="/static/media/CancelX.fe4be2c5.svg" alt="/static/media/CancelX.fe4be2c5.svg" className="cancel-icon" />{lang.RULESACTIONS.CANCEL}</button>
+                        <button className="button" onClick={() => this.onCreate()}><img src="/static/media/Apply.2f9ac34d.svg" height="10" alt="/static/media/Apply.2f9ac34d.svg" className="apply-icon" />{lang.RULESACTIONS.APPLY}</button>
                     </ButtonToolbar>
                 </div>
             </div>

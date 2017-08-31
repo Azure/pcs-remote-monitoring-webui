@@ -1,36 +1,75 @@
-.ruleReadTrigger table > thead > tr > td, .ruleTrigger table > thead > tr > td {
-    color: #afb9c3;
+// Copyright (c) Microsoft. All rights reserved.
+
+.rule-read-trigger {
+    table > thead > tr > td {
+        color: #afb9c3;
+    }
+
+    table > tbody > tr > td {
+        border-top: 1px solid #2B2E31 !important;
+    }
 }
 
-.ruleTrigger {
-    table {
-        border-collapse: separate;
-        border-spacing: 0px 5px;
-        color: white;
+.rule-trigger {
+    width: 100%;
 
-        thead > tr > td, tbody > tr > td {
-            border: 0;
-            padding: 6px;
+    .condition-row {
+        background-color: #1B1D1F;
+        margin-top: 10px;
+        clear: both;
+        height: 52px;
+    }
+
+    .condition-col {
+        float: left;
+        padding: 6px 3px;
+        color: #afb9c3;
+    }
+
+    .condition-head {
+        @extend .condition-col;
+        width: 28%;
+    }
+
+    .condition-field {
+        @extend .condition-col;
+        width: 28%;
+
+        .edit-input label {
+            color: white !important;
         }
 
-        tbody > tr {
+        input {
+            border: 1px solid #646A71;
             background-color: #1B1D1F;
-
-            td {
-                border: 0;
-
-                input, select {
-                    border: 1px #646A71 solid;
-                    background-color: #1B1D1F;
-                    width: 100%;
-                }
-
-                img {
-                    height: 15px;
-                    margin-right: 10px;
-                    cursor: pointer;
-                }
-            }
+            width: 100%;
         }
+
+        label, img {
+            margin-top: 12px;
+        }
+    }
+
+    .condition-action {
+        @extend .condition-col;
+        width: 14%;
+
+        img {
+            height: 15px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    }
+
+    .value {
+        height: 36px;
+    }
+
+    .img-show {
+        display: inline-block;
+    }
+
+    .img-hide {
+        display: none;
     }
 }
