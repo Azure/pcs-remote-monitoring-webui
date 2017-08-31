@@ -48,42 +48,40 @@
     @extend .ag-body-viewport;
   }
 
-  .datagrid-container {
-    .refresh {
-      position: absolute;
-      bottom: 15px;
-      right: 24px;
-      height: 25px;
-      font-size: 12pt;
-      color: #afb9c3;
-      text-decoration: none;
-      text-transform: uppercase;
-      margin-right: 8px;
-      cursor: pointer;
-      .refresh-label,
-      .refresh-data,
-      .refresh-icon {
-        margin-right: 16px;
-        display: inline-block;
-      }
-      .refresh-data {
-        line-height: 25px;
-        text-transform: none;
-        font-size: 10pt;
-        color: #ffffff;
-      }
-      .refresh-icon {
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
-        background: url("../../assets/icons/Refresh.svg") no-repeat center;
-        background-size: contain;
-      }
+  .refresh {
+    position: absolute;
+    bottom: 15px;
+    right: 24px;
+    height: 25px;
+    font-size: 12pt;
+    color: #afb9c3;
+    text-decoration: none;
+    text-transform: uppercase;
+    margin-right: 8px;
+    cursor: pointer;
+    .refresh-label,
+    .refresh-data,
+    .refresh-icon {
+      margin-right: 16px;
+      display: inline-block;
+    }
+    .refresh-data {
+      line-height: 25px;
+      text-transform: none;
+      font-size: 10pt;
+      color: #ffffff;
+    }
+    .refresh-icon {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      background: url("../../assets/icons/Refresh.svg") no-repeat center;
+      background-size: contain;
+    }
 
-      .icon-sm {
-        width: 14pt;
-        height: 14pt;
-      }
+    .icon-sm {
+      width: 14pt;
+      height: 14pt;
     }
   }
 

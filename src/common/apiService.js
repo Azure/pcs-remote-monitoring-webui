@@ -109,6 +109,10 @@ class ApiService {
     return Http.get(`${Config.telemetryApiUrl}alarmsbyrule?${ApiService.serializeParamObject(params)}`);
   }
 
+  static getAlarmListByRule(id, params = {}) {
+      return Http.get(`${Config.telemetryApiUrl}alarmsbyrule/${id}?${ApiService.serializeParamObject(params)}`);
+  }
+
   static getRegionByDisplayName() {
     return Http.get(`${Config.uiConfigApiUrl}devicegroups`).then(data => {
       if (data && data.items) {

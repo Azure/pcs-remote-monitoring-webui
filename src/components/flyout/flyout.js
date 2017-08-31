@@ -27,7 +27,7 @@ const getFlyout = (content, onClose) => {
       return <DeviceTagFlyout content={content} onClose={onClose} />;
 
     case 'Device Schedule':
-        return <DeviceScheduleFlyout content={content} onClose={onClose} />;
+      return <DeviceScheduleFlyout content={content} onClose={onClose} />;
 
     case 'New Rule':
       return <RuleEditor content ={content} onClose={onClose} />;

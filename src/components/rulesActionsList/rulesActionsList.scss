@@ -6,6 +6,8 @@
 
 .rulesActionsListContainer {
   order: 1;
+  flex-basis: 90%;
+  align-self: stretch;
   flex-grow: 9;
 }
 
@@ -70,7 +72,7 @@
     .enableDisable {
       @extend .button-icon;
       width: 16pt;
-      background: url("../../assets/icons/Enable_disable.svg") no-repeat center;
+      background: url("../../assets/icons/Change_status.svg") no-repeat center;
       background-size: contain;
     }
     .more {
@@ -273,6 +275,14 @@
         margin-left: 8px;
         text-transform: capitalize;
         font-size: 14pt;
+      }
+
+      .severityGroup-info {
+        display: inline-block;
+        background: url("../../assets/icons/Info.svg") no-repeat center;
+        background-size: contain;
+        width: 12pt;
+        height: 12pt;
       }
 
       .severityGroup-warning {

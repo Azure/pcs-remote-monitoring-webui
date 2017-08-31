@@ -169,7 +169,8 @@ const lang = {
     CHANGESTATUS: 'Change Status',
     COUNT: 'NO. Devices',
     SUMMARY: 'Summary',
-    NOTE: 'Note: Any changes made to rules will only apply to future events on the affected devices.'
+    NOTE: 'Note: Any changes made to rules will only apply to future events on the affected devices.',
+    ALARMLOG: 'Alarm log'
   },
   FLYOUT: {
     SAVE: 'Save',

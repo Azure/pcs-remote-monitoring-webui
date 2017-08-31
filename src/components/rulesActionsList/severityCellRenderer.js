@@ -11,6 +11,8 @@ export default class SeverityCellRenderer extends React.Component {
             severityClass = 'severityGroup-warning';
         } else if (this.props.value.toLowerCase() === 'critical') {
             severityClass = 'severityGroup-critical';
+        } else {
+            severityClass = 'severityGroup-info';
         }
         return (
             <div className="severityGroup ">

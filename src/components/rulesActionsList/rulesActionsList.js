@@ -9,8 +9,8 @@ import {connect} from "react-redux";
 import SeverityCellRenderer from "./severityCellRenderer";
 import SearchableDataGrid from "../../framework/searchableDataGrid/searchableDataGrid";
 import StatusCellRenderer from "./statusCellRenderer";
-import ActionCellRenderer from "./actionCellRenderer";
 import deviceCountCellRenderer from "./deviceCountCellRenderer";
+import LastTriggerCellRenderer from "./lastTriggerCellRenderer";
 import ApiService from "../../common/apiService";
 import {formatString} from "../../common/utils";
 import * as actions from "../../actions";
@@ -63,7 +63,7 @@ class RulesActionsList extends Component {
                 field: 'Action.Type',
                 filter: 'text',
                 valueFormatter: (params) => {
-                    return params.value || 'System Log'
+                    return params.value || lang.RULESACTIONS.ALARMLOG
                 }
             },
             {
@@ -77,8 +77,8 @@ class RulesActionsList extends Component {
                 cellRendererFramework: deviceCountCellRenderer,
             },
             {
-                headerName: lang.RULESACTIONS.ACTIONS,
-                cellRendererFramework: ActionCellRenderer
+                headerName: lang.RULESACTIONS.LASTTRIGGER,
+                cellRendererFramework: LastTriggerCellRenderer
             }
         ];
 
@@ -119,6 +119,7 @@ class RulesActionsList extends Component {
     };
 
     newRule = () => {
+        this.grid.gridApi.deselectAll();
         const {actions} = this.props;
         const flyoutConfig = {title: lang.RULESACTIONS.NEWRULE, type: 'New Rule'};
         actions.showFlyout({...flyoutConfig});
@@ -141,15 +142,19 @@ class RulesActionsList extends Component {
         this.setState({showConfirmModal: true})
     };
 
+    showEditRulesFlyout = () => {
+        const {actions} = this.props;
+        actions.hideFlyout();
+        const flyoutConfig = {title: lang.RULESACTIONS.RULEDETAIL, type: 'New Rule', rule: this.state.rulesActions[0], inEdit: true};
+        actions.showFlyout({...flyoutConfig});
+    };
+
     confirmDelete = () => {
         let promises = [];
         this.state.rulesActions.forEach(rule => {
             promises.push(ApiService.deleteRule(rule.Id));
         });
         Promise.all(promises)
-            .then(response => {
-                console.log(response);
-            })
             .catch(err => {
                 console.error(err);
             });
@@ -163,9 +168,9 @@ class RulesActionsList extends Component {
     };
 
     onFlyoutClose = () => {
+        this.grid.refreshData();
         const {actions} = this.props;
         actions.hideFlyout();
-        this.grid.refreshData();
     };
 
     render() {
@@ -194,7 +199,7 @@ class RulesActionsList extends Component {
                         className={this.state.showBoth ? 'enableDisable' : this.state.toggleButtonText.toLocaleLowerCase()}/>
                     <div className="button-text">{this.state.toggleButtonText}</div>
                 </div>;
-            if (!this.state.rulesActions.length > 1) {
+            if (this.state.rulesActions.length === 1) {
                 ActionButtons.editRulesButton =
                     <div className="button" onClick={this.showEditRulesFlyout}>
                         <div className="botton-icon edit"/>

@@ -38,7 +38,6 @@ export default class RuleOverviewFlyout extends Component {
         }
         Promise.all(promises).then(result => {
             // TODO:check return value is correct
-            console.log(result);
         }).catch(err => {
             console.error(err);
         });
