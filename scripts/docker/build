@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 
 # Note: use lowercase names for the Docker images
-DOCKER_IMAGE="azureiotpcs/pcs-remote-monitoring-webui"
-
-# Debug|Release
-CONFIGURATION=Release
+DOCKER_IMAGE="azureiotpcs/remote-monitoring-webui"
 
 set -e
 APP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && cd .. && pwd )/"
@@ -12,6 +9,20 @@ source "$APP_HOME/scripts/.functions.sh"
 
 # The version is stored in a file, to avoid hardcoding it in multiple places
 APP_VERSION=$(cat "$APP_HOME/version")
+
+# Whether to update the "latest" tag of the Docker image
+BUILD_LATEST="no"
+
+confirm_version() {
+    echo "Building version $APP_VERSION"
+    read -r -p "Do you want to update the 'latest' version too? [y/N] " response
+    response=${response,,} # tolower
+    if [[ $response =~ ^(no|n| ) ]] | [ -z $response ]; then
+        BUILD_LATEST="no"
+    else
+        BUILD_LATEST="yes"
+    fi
+}
 
 build_docker_image() {
     check_dependency_docker
@@ -29,14 +40,19 @@ build_docker_image() {
 
     cp scripts/docker/.dockerignore              out/docker/
     cp scripts/docker/Dockerfile                 out/docker/
-    cp scripts/docker/run.sh                     out/docker/
-    cp scripts/docker/nginx.conf                 out/docker/
+    cp scripts/docker/content/run.sh             out/docker/
+    cp scripts/docker/content/nginx.conf         out/docker/
 
     cd out/docker/
-    docker build --tag "$DOCKER_IMAGE:$APP_VERSION" --squash --compress --label "Tags=azure,iot,pcs,webui,react" .
+
+    if [[ $BUILD_LATEST == "no" ]]; then
+        docker build --squash --compress --label "Tags=azure,iot,suite,solution,pcs,webui,react" --tag "$DOCKER_IMAGE:$APP_VERSION" .
+    else
+        docker build --squash --compress --label "Tags=azure,iot,suite,solution,pcs,webui,react" --tag "$DOCKER_IMAGE:$APP_VERSION" --tag "$DOCKER_IMAGE:latest" .
+    fi
 }
 
-# compile
+confirm_version
 build_docker_image
 
 set +e

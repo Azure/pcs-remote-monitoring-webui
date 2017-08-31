@@ -1,12 +1,14 @@
 FROM node:6.3.1
 
-RUN apt-get update && \
-    apt-get install -y nginx
-
-COPY . /app
+COPY ./ /app
 WORKDIR /app
 
-RUN npm install
+RUN \
+    apt-get update && \
+    apt-get install -y nginx && \
+    npm install && \
+    npm run build && \
+    rm -fR node_modules src public package.json Dockerfile .dockerignore
 
 EXPOSE 80 443
 

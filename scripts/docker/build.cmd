@@ -2,10 +2,7 @@
 setlocal
 
 :: Note: use lowercase names for the Docker images
-SET DOCKER_IMAGE="azureiotpcs/pcs-remote-monitoring-webui"
-
-:: Debug|Release
-SET CONFIGURATION=Release
+SET DOCKER_IMAGE="azureiotpcs/remote-monitoring-webui"
 
 :: strlen("\scripts\docker\") => 16
 SET APP_HOME=%~dp0
@@ -31,11 +28,11 @@ copy package.json    out\docker\
 
 copy scripts\docker\.dockerignore               out\docker\
 copy scripts\docker\Dockerfile                  out\docker\
-copy scripts\docker\run.sh                      out\docker\
-copy scripts\docker\nginx.conf                  out\docker\
+copy scripts\docker\content\run.sh              out\docker\
+copy scripts\docker\content\nginx.conf          out\docker\
 
 cd out\docker\
-docker build --tag %DOCKER_IMAGE%:%APP_VERSION% --squash --compress --label "Tags=azure,iot,pcs,webui,react" .
+docker build --squash --compress --tag %DOCKER_IMAGE%:%APP_VERSION% --label "Tags=azure,iot,suite,solutions,pcs,webui,react" .
 IF %ERRORLEVEL% NEQ 0 GOTO FAIL
 
 :: - - - - - - - - - - - - - -

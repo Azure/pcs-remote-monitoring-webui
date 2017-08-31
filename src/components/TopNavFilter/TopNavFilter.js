@@ -27,7 +27,7 @@ class TopNavFilter extends Component {
 
     // Mock call to UI config service
     {
-      let url = Config.uiconfigApiUrl_new + '/devicegroups';
+      let url = Config.uiConfigApiUrl + '/devicegroups';
       Http.get(url);
     }
   }

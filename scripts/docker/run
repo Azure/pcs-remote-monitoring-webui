@@ -4,11 +4,13 @@
 DOCKER_IMAGE="azureiotpcs/remote-monitoring-webui"
 
 set -e
+
 APP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && cd .. && pwd )/"
 
 # The version is stored in a file, to avoid hardcoding it in multiple places
 APP_VERSION=$(cat "$APP_HOME/version")
 
-docker push $DOCKER_IMAGE:$APP_VERSION
+echo "Starting Remote Monitoring Web UI ..."
+docker run -it -p 10080:80 -p 10443:443 $DOCKER_IMAGE:$APP_VERSION
 
 set +e
