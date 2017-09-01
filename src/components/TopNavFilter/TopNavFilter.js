@@ -12,8 +12,6 @@ import {
 } from '../../actions/filterActions';
 import './TopNavFilter.css';
 import Select from 'react-select';
-import Http from '../../common/httpClient';
-import Config from '../../common/config';
 
 class TopNavFilter extends Component {
   constructor() {
@@ -24,12 +22,6 @@ class TopNavFilter extends Component {
   }
   componentDidMount() {
     this.props.loadRegions();
-
-    // Mock call to UI config service
-    {
-      let url = Config.uiConfigApiUrl + '/devicegroups';
-      Http.get(url);
-    }
   }
 
   updateValue(newValue) {

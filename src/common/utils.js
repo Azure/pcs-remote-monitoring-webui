@@ -5,6 +5,7 @@ export function isFunction(value) {
 }
 
 export function getBoundaryChars(str) {
+  if(!str) return;
   const len = str.length;
   const same = str.charAt(0) === str.charAt(len - 1);
   return same ? str.charAt(0) : null;

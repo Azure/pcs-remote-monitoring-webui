@@ -113,7 +113,7 @@ const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
         return { ...state };
       }
 
-      const currentSelectedTelemetry = state.timeline.selectedTelemetry;
+      const currentSelectedTelemetry = state.timeline.selectedTelemetry || Object.keys(state.radioBtnOptions || {}).sort()[0];
       let latestTimestamp = 0;
       telemetrytypes = action.data.Properties.filter(e => !e.includes('_'));
       action.data.Items.forEach(item => {
@@ -156,7 +156,7 @@ const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
       chartDataSelected = [].concat(
         (radioBtnOptions[currentSelectedTelemetry] || {}).chartData
       );
-      if (currentSelectedTelemetry) {
+      if (currentSelectedTelemetry && chartDataSelected.length) {
         latestTimestamp = getLatestTimestamp(
           state.radioBtnOptions[currentSelectedTelemetry].chartData
         );
@@ -175,6 +175,7 @@ const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
         radioBtnOptions,
         timeline: {
           ...state.timeline,
+          selectedTelemetry: currentSelectedTelemetry,
           chartConfig: {
             ...state.timeline.chartConfig,
             data: {
