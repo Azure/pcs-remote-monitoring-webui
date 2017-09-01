@@ -21,23 +21,21 @@ class DeviceCountCellRenderer extends React.Component {
     }
 
     componentDidMount() {
-        if(this.props.data.DeviceCount === undefined){
+        if(!this.props.data.apiCallStarted){
+            this.props.node.setData(Object.assign({}, this.props.data, {apiCallStarted: true}));
             let matchedGroup = this.props.deviceGroups.filter(group => group.id === this.state.cell.row.GroupId);
             if (!matchedGroup.length) {
-                this.setState({loading: false, count: 0});
-                this.props.node.setData(Object.assign({}, this.props.data, {DeviceCount: 0}));
+                this.props.node.setData(Object.assign({}, this.props.data, {apiCallStarted: true, DeviceCount: 0}));
                 return;
             }
             ApiService.getDevicesForGroup(matchedGroup[0].conditions)
                 .then(response => {
                     if (response.items !== undefined) {
-                        this.setState({loading: false, count: response.items.length});
-                        this.props.node.setData(Object.assign({}, this.props.data, {Devices: response.items,  DeviceCount: response.items.length}));
+                        this.props.node.setData(Object.assign({}, this.props.data, {apiCallStarted: true, Devices: response.items,  DeviceCount: response.items.length}));
                     }
                 })
                 .catch(err => {
-                    this.props.node.setData(Object.assign({}, this.props.data, {DeviceCount: 0}));
-                    this.setState({loading: false, count: 0})
+                    this.props.node.setData(Object.assign({}, this.props.data, {apiCallStarted: true, DeviceCount: 0}));
                 })
         }
     }
@@ -46,7 +44,7 @@ class DeviceCountCellRenderer extends React.Component {
         return (
             this.state.loading
                 ? <div className="loading-spinner-cell">
-                    <Spinner size='medium'/>
+                    <Spinner size='small'/>
                 </div>
                 : <div> {this.state.count} </div>
         )
