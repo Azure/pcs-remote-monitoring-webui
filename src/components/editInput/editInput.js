@@ -38,7 +38,7 @@ const RadioInput = ({ options, name, value, ...props }) => {
         <span>
             {
                 options.map((s, i) => {
-                    return <Radio key={i} value={s.value} name={name} checked={i === 0 || value === s.value} {...props}><span className="radio-img"><img alt={s.text} src={s.imgUrl} /></span>{s.text}</Radio>
+                    return <Radio key={i} value={s.value} name={name} checked={value === s.value} {...props}><span className="radio-img"><img alt={s.text} src={s.imgUrl} /></span>{s.text}</Radio>
                 })
 
             }
@@ -53,6 +53,18 @@ class EditInput extends React.Component {
 
     onSelectValueChange = (value) => {
         this.props.onChange(value);
+    }
+
+    getPropertyFromOptions(options, value, label) {
+        var property = "";
+        options.some((option) => {
+            if (value === option.value) {
+                property = option[label];
+                return true;
+            }
+            return false;
+        })
+        return property;
     }
 
     renderInput() {
@@ -72,18 +84,14 @@ class EditInput extends React.Component {
             }
         } else {
             if (type === "radio") {
-                var imgUrl = "";
-                this.props.options.some((option) => {
-                    if (this.props.value === option.value) {
-                        imgUrl = option.imgUrl;
-                        return true;
-                    }
-                    return false;
-                })
+                var imgUrl = this.getPropertyFromOptions(this.props.options, this.props.value, "imgUrl");
                 return <label title={this.props.value}><span className="radio-img"><img alt={this.props.value} src={imgUrl} /></span>{this.props.value}</label>
+            } else if (type === "select") {
+                var displayName = this.getPropertyFromOptions(this.props.options, this.props.value, "label");
+                return <label className={this.props.classForLabel || ""}>{displayName}</label>
             }
 
-            return <label className={this.props.classForLabel || ""} title={this.props.value}>{this.props.value}</label>
+            return <label className={this.props.classForLabel || ""}>{this.props.value}</label>
         }
     }
 

@@ -140,7 +140,7 @@ class RuleEditor extends React.Component {
 
     getDeviceCount(groupId) {
         this.props.deviceGroups.forEach(group => {
-            if (group.displayName === groupId) {
+            if (group.id === groupId) {
                 ApiService.getDevicesForGroup(group.conditions).then((data) => {
                     if (data && data.items) {
                         this.setState({ deviceCount: data.items.length });
@@ -157,10 +157,11 @@ class RuleEditor extends React.Component {
             const telemetry = device.Properties.Reported.Telemetry;
             if (telemetry) {
                 Object.keys(telemetry).forEach((field) => {
-                    if (fields.indexOf(field) === -1) {
+                    const extract = field.match(/-(.*);/).pop();
+                    if (!fields.some((o) => o.value === extract)) {
                         fields.push({
-                            label: field,
-                            value: field
+                            label: extract,
+                            value: extract
                         });
                     }
                 });
@@ -173,7 +174,7 @@ class RuleEditor extends React.Component {
         const deviceGroups = this.props.deviceGroups;
         let deviceGroupOptions = deviceGroups.map((group, idx) => {
             return {
-                value: group.displayName,
+                value: group.id,
                 label: group.displayName
             };
         });
