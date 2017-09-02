@@ -1,5 +1,8 @@
 # Customize gitignore
 
+*.crt
+*.key
+
 # Create-React-App build output
 build/**
 
