@@ -20,6 +20,7 @@ import "./rulesActionsList.css";
 
 const RulesActionsHeaderHeight = 48;
 const RulesActionsRowHeight = 48;
+const LastTriggerDefaultWidth = 310;
 
 class RulesActionsList extends Component {
     constructor(props) {
@@ -79,7 +80,8 @@ class RulesActionsList extends Component {
             },
             {
                 headerName: lang.RULESACTIONS.LASTTRIGGER,
-                cellRendererFramework: LastTriggerCellRenderer
+                cellRendererFramework: LastTriggerCellRenderer,
+                width: LastTriggerDefaultWidth
             }
         ];
 
@@ -146,7 +148,13 @@ class RulesActionsList extends Component {
     showEditRulesFlyout = () => {
         const {actions} = this.props;
         actions.hideFlyout();
-        const flyoutConfig = {onClose: this.onFlyoutClose, title: lang.RULESACTIONS.RULEDETAIL, type: 'New Rule', rule: this.state.rulesActions[0], inEdit: true};
+        const flyoutConfig = {
+            onClose: this.onFlyoutClose,
+            title: lang.RULESACTIONS.RULEDETAIL,
+            type: 'New Rule',
+            rule: this.state.rulesActions[0],
+            inEdit: true
+        };
         actions.showFlyout({...flyoutConfig});
     };
 

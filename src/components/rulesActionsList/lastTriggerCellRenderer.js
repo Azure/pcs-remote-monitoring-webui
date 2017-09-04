@@ -29,14 +29,17 @@ class LastTriggerCellRenderer extends React.Component {
                     this.state.cell.row.Id,
                     {
                         order: 'desc',
+                        limit: 1,
                         devices: this.props.data.Devices.map(device => device.Id).toString()
                     }
                 ).then(response => {
                     if (response.Items && response.Items.length) {
-                        this.setState({
-                            loading: false,
-                            lastTrigger: Date.parse(response.Items[0].DateModified).toLocaleString()
-                        });
+                        this.setState(
+                            {
+                                loading: false,
+                                lastTrigger: new Date(response.Items[0].DateCreated).toLocaleString()
+                            }
+                        );
                     }
                     this.setState({loading: false});
                 }).catch(err => {
