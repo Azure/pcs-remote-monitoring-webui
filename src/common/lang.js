@@ -121,6 +121,7 @@ const lang = {
   },
   RULESACTIONS: {
     SOURCEHELP: 'Edit group of devices on rule',
+    SOURCE: 'Source',
     SEVERITYLEVEL: 'Severity level',
     DEVICECOUNT: 'devices effected by this rule',
     UPDATE: 'Update',
