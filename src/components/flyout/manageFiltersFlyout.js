@@ -113,6 +113,9 @@ class ManageFiltersFlyout extends React.Component {
     const { content } = this.props;
     const deviceGroups = content.deviceGroups || [];
     deviceGroups.forEach(group => {
+      if (!group.conditions) {
+        return;
+      }
       group.conditions.forEach(typeComputation);
     });
   }
@@ -191,10 +194,41 @@ class ManageFiltersFlyout extends React.Component {
       }
     ];
 
-    let fieldOptions = (this.state.allFields || []).map(field => ({
-      value: field,
-      label: field
-    }));
+    //TODO: Remove these when the UIconfig provides these filed values
+    let fieldOptions = [
+      {
+        value: 'tags.IsSimulated',
+        label: Config.STATUS_CODES.IS_SIMULATED
+      },
+      {
+        value: 'tags.Region',
+        label: Config.STATUS_CODES.REGION
+      },
+      {
+        value: 'tags.Floor',
+        label: Config.STATUS_CODES.FLOOR
+      },
+      {
+        value: 'tags.Building',
+        label: Config.STATUS_CODES.BUILDING
+      },
+      {
+        value: 'tags.country',
+        label: Config.STATUS_CODES.COUNTRY
+      },
+      {
+        value: 'tags.test',
+        label: Config.STATUS_CODES.TEST
+      },
+      {
+        value: 'Properties.Reported.Type',
+        label: Config.STATUS_CODES.REPORTED_TYPE
+      },
+      {
+        value: 'Properties.Reported.Location',
+        label: Config.STATUS_CODES.REPORTED_LOCATION
+      }
+    ];
 
     return (
       <div className="editable-filters">

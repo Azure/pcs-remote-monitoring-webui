@@ -48,6 +48,7 @@ function online(radius, clusterSize) {
     '</svg>'
   ].join('');
 }
+
 function offline(radius, clusterSize) {
   return [
     '<svg xmlns="http://www.w3.org/2000/svg" width="',
@@ -62,6 +63,7 @@ function offline(radius, clusterSize) {
     '</svg>'
   ].join('');
 }
+
 function offlineAlarm(radius, clusterSize) {
   return [
     '<svg xmlns="http://www.w3.org/2000/svg" width="',
@@ -77,6 +79,7 @@ function offlineAlarm(radius, clusterSize) {
     '</svg>'
   ].join('');
 }
+
 function offlineWarn(radius, clusterSize) {
   return [
     '<svg xmlns="http://www.w3.org/2000/svg" width="',
@@ -96,9 +99,7 @@ function offlineWarn(radius, clusterSize) {
 const defaultIcon = function(severity, isConnected, deviceId) {
   // Design requirements is to show 10chars for the default text length and ... appended at last
   if (deviceId.length > Config.STATUS_CODES.DEFAULTPUSHPINTEXTLENGTH) {
-    deviceId =
-      deviceId.substring(0, Config.STATUS_CODES.DEFAULTPUSHPINTEXTLENGTH) +
-      '...';
+    deviceId = deviceId.substring(0, Config.STATUS_CODES.DEFAULTPUSHPINTEXTLENGTH) + '...';
   }
   let svgAlarm = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
@@ -111,17 +112,19 @@ const defaultIcon = function(severity, isConnected, deviceId) {
       '</text>',
     '</svg>'
   ].join('');
+
   let svgWarn = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
     '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
       'style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(132, 129, 129)"/>',
-    '<rect width="10" x="82" y="0" height="10" fill="#FDE870" />',
+    '<rect width="10" x="65" y="0" height="10" fill="#FDE870" />',
     '<text x="40" y="10" text-anchor="middle" alignment-baseline="central" ' +
       'font-size="11" style="fill:black;stroke-width:1">' +
       deviceId +
       '</text>',
     '</svg>'
   ].join('');
+
   let svg = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
     '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
@@ -132,6 +135,7 @@ const defaultIcon = function(severity, isConnected, deviceId) {
       '</text>',
     '</svg>'
   ].join('');
+
   let svgOfflineAlarm = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
     '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
@@ -143,6 +147,7 @@ const defaultIcon = function(severity, isConnected, deviceId) {
       '</text>',
     '</svg>'
   ].join('');
+
   let svgOfflinewarn = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
     '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
@@ -154,6 +159,7 @@ const defaultIcon = function(severity, isConnected, deviceId) {
       '</text>',
     '</svg>'
   ].join('');
+
   let svgOffline = [
     '<svg xmlns="http://www.w3.org/2000/svg"  width="100px" height="31px">',
     '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
@@ -180,12 +186,4 @@ const defaultIcon = function(severity, isConnected, deviceId) {
   }
 };
 
-export {
-  onlineAlarm,
-  onlineWarn,
-  online,
-  offlineAlarm,
-  offlineWarn,
-  offline,
-  defaultIcon
-};
+export { onlineAlarm, onlineWarn, online, offlineAlarm, offlineWarn, offline, defaultIcon };

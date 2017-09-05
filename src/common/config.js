@@ -35,7 +35,16 @@ const Config = {
     TYPE: 'Type',
     DEFAULTPUSHPINTEXTLENGTH: 10,
     MULTIPLE: 'Multiple',
-    FIRMWARE: 'Firmware'
+    FIRMWARE: 'Firmware',
+    TEST: 'Tags.test',
+    COUNTRY: 'Tags.country',
+    BUILDING: 'Tags.Building',
+    FLOOR: 'Tags.Floor',
+    REGION: 'Tags.Region',
+    IS_SIMULATED: 'Tags.IsSimulated',
+    IS_SIMULATED_WITHOUT_TAGS: 'IsSimulated',
+    REPORTED_TYPE: 'Properties.Reported.Type',
+    REPORTED_LOCATION: 'Properties.Reported.Location'
   },
 
  OPERATOR_OPTIONS: [
