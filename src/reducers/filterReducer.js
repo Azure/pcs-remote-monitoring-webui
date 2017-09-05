@@ -11,10 +11,7 @@ const filterReducer = (state = initialState.filter, action) => {
 
     case types.MANAGE_FILTERS_FLYOUT_DELETE_SUCCESS: {
       const deletedGroupId = action.data.id;
-      const newDeviceGroup = state.deviceGroups.filter(
-        group => group.id !== deletedGroupId
-      );
-
+      const newDeviceGroup = state.deviceGroups.filter(group => group.Id !== deletedGroupId);
       return {
         ...state,
         deviceGroups: newDeviceGroup
@@ -30,10 +27,10 @@ const filterReducer = (state = initialState.filter, action) => {
     }
 
     case types.MANAGE_FILTERS_FLYOUT_UPDATE_SUCCESS: {
-      const updatedGroupId = action.data.id;
+      const updatedGroupId = action.data.Id;
       let groupIdIdx = 0;
       state.deviceGroups.some((group, idx) => {
-        if (group.id === updatedGroupId) {
+        if (group.Id === updatedGroupId) {
           groupIdIdx = idx;
           return true;
         }

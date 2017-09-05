@@ -11,6 +11,7 @@
 }
 .manage-filters-icon {
   padding-right: 8px;
+  height: 12px;
 }
 .top-nav-filters {
   display: inline-block;
@@ -85,20 +86,15 @@
   white-space: nowrap;
 }
 .has-value.Select--single > .Select-control .Select-value a.Select-value-label,
-.has-value.is-pseudo-focused.Select--single
-  > .Select-control .Select-value a.Select-value-label {
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label {
   cursor: pointer;
   text-decoration: none;
   background-color: 1B1D1F;
 }
-.has-value.Select--single
-  > .Select-control .Select-value a.Select-value-label:hover,
-.has-value.is-pseudo-focused.Select--single
-  > .Select-control .Select-value a.Select-value-label:hover,
-.has-value.Select--single
-  > .Select-control .Select-value a.Select-value-label:focus,
-.has-value.is-pseudo-focused.Select--single
-  > .Select-control .Select-value a.Select-value-label:focus {
+.has-value.Select--single > .Select-control .Select-value a.Select-value-label:hover,
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:hover,
+.has-value.Select--single > .Select-control .Select-value a.Select-value-label:focus,
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:focus {
   color: 1B1D1F;
   outline: none;
   text-decoration: underline;

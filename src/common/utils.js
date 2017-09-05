@@ -5,23 +5,19 @@ export function isFunction(value) {
 }
 
 export function getBoundaryChars(str) {
-  if(!str) return;
+  if (!str) return;
   const len = str.length;
   const same = str.charAt(0) === str.charAt(len - 1);
   return same ? str.charAt(0) : null;
 }
 
-export function typeComputation(cond){
-  if (
-    getBoundaryChars(cond.value) === '"' ||
-    getBoundaryChars(cond.value) === "'"
-  ) {
+export function typeComputation(cond) {
+  if (getBoundaryChars(cond.Value) === '"' || getBoundaryChars(cond.Value) === "'") {
     cond.type = 'string';
-    cond.value = cond.value.substring(1, cond.value.length - 1);
+    cond.Value = cond.Value.substring(1, cond.Value.length - 1);
   } else {
     cond.type = 'int';
   }
-
 }
 
 export function getNonFunctionalProps(props) {
@@ -74,8 +70,7 @@ export function formatDate(date) {
 }
 
 export function getRandomString(length) {
-  let template =
-    '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  let template = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   length = length || 10;
   let retVal = '';
   for (let i = 0; i < length; i++) {

@@ -14,36 +14,28 @@ class RegionDetails extends Component {
       totalWarningsDeviceCount: 0
     };
     if (this.props.devices) {
-      regionDetailsProps.onlineDevicesCount = this.props.devices.items.filter(
-        item => {
-          return item.Connected;
-        }
-      ).length;
-      regionDetailsProps.offlineDevicesCount = this.props.devices.items.filter(
-        item => {
-          return !item.Connected;
-        }
-      ).length;
+      regionDetailsProps.onlineDevicesCount = this.props.devices.items.filter(item => {
+        return item.Connected;
+      }).length;
+      regionDetailsProps.offlineDevicesCount = this.props.devices.items.filter(item => {
+        return !item.Connected;
+      }).length;
     }
     if (this.props.alarmList) {
-      regionDetailsProps.totalAlarmDeviceCount = this.props.alarmList.filter(
-        item => {
-          return item.Rule.Severity === Config.STATUS_CODES.CRITICAL;
-        }
-      ).length;
-      regionDetailsProps.totalWarningsDeviceCount = this.props.alarmList.filter(
-        item => {
-          return item.Rule.Severity === Config.STATUS_CODES.WARNING;
-        }
-      ).length;
+      regionDetailsProps.totalAlarmDeviceCount = this.props.alarmList.filter(item => {
+        return item.Rule.Severity === Config.STATUS_CODES.CRITICAL;
+      }).length;
+      regionDetailsProps.totalWarningsDeviceCount = this.props.alarmList.filter(item => {
+        return item.Rule.Severity === Config.STATUS_CODES.WARNING;
+      }).length;
     }
 
     let deviceGroups = this.props.filterReducer.deviceGroups || [];
     let selectedDeviceGroupId = this.props.filterReducer.selectedDeviceGroupId;
     let selectedDeviceGroupName = '';
     deviceGroups.forEach((group, idx) => {
-      if (group.id === selectedDeviceGroupId) {
-        selectedDeviceGroupName = group.displayName;
+      if (group.Id === selectedDeviceGroupId) {
+        selectedDeviceGroupName = group.DisplayName;
       }
     });
     if (!selectedDeviceGroupName) {
@@ -85,8 +77,7 @@ class RegionDetails extends Component {
           <Row>
             <Col md={4} className="total-container">
               <div className="total">
-                {regionDetailsProps.onlineDevicesCount +
-                  regionDetailsProps.offlineDevicesCount}
+                {regionDetailsProps.onlineDevicesCount + regionDetailsProps.offlineDevicesCount}
               </div>
               <div className="warnings">
                 {lang.REGIONDETAILS.TOTAL}

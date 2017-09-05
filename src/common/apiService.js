@@ -7,14 +7,28 @@ import { typeComputation } from './utils';
 
 function getGroupData(group) {
   const data = {
-    id: group.id,
-    displayName: group.displayName,
-    eTag: group.eTag
+    Id: group.Id,
+    DisplayName: group.DisplayName,
+    ETag: group.ETag
   };
-  data.conditions = _.cloneDeep(group.conditions) || [];
-  data.conditions.forEach(cond => {
+  data.Conditions = _.cloneDeep(group.Conditions) || [];
+  data.Conditions.forEach(cond => {
     if (cond.type === 'string') {
-      cond.value = '"' + cond.value + '"';
+      cond.Value = '"' + cond.Value + '"';
+    }
+    delete cond.type;
+  });
+  return data;
+}
+
+function postGroupData(group) {
+  const data = {
+    DisplayName: group.DisplayName
+  };
+  data.Conditions = _.cloneDeep(group.Conditions) || [];
+  data.Conditions.forEach(cond => {
+    if (cond.type === 'string') {
+      cond.Value = '"' + cond.Value + '"';
     }
     delete cond.type;
   });
@@ -126,7 +140,7 @@ class ApiService {
   }
 
   static getAlarmListByRule(id, params = {}) {
-      return Http.get(`${Config.telemetryApiUrl}alarmsbyrule/${id}?${ApiService.serializeParamObject(params)}`);
+    return Http.get(`${Config.telemetryApiUrl}alarmsbyrule/${id}?${ApiService.serializeParamObject(params)}`);
   }
 
   static getRegionByDisplayName() {
@@ -147,14 +161,14 @@ class ApiService {
     }
     const data = getGroupData(group);
 
-    return Http.put(`${Config.uiConfigApiUrl}devicegroups/${group.id}`, data);
+    return Http.put(`${Config.uiConfigApiUrl}devicegroups/${group.Id}`, data);
   }
 
   static postManageFiltersFlyout(group) {
     if (!group) {
       throw new Error('expected valid group object');
     }
-    const data = getGroupData(group);
+    const data = postGroupData(group);
     return Http.post(`${Config.uiConfigApiUrl}devicegroups`, data);
   }
 
@@ -178,15 +192,12 @@ class ApiService {
     if (!group) {
       throw new Error('expected valid group object');
     }
-    return Http.delete(`${Config.uiConfigApiUrl}devicegroups/${group.id}`);
+    return Http.delete(`${Config.uiConfigApiUrl}devicegroups/${group.Id}`);
   }
 
   static serializeParamObject(params) {
     return Object.keys(params)
-      .map(
-        param =>
-          `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`
-      )
+      .map(param => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
       .join('&');
   }
 

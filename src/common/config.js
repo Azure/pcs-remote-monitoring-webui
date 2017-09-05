@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-const baseURL = process.env.REACT_APP_BASE_SERVICE_URL || "";
+const baseURL = process.env.REACT_APP_BASE_SERVICE_URL || '';
 const iothubmanager = process.env.REACT_APP_IOTHUBMANAGER_WEBSERVICE_PORT
   ? ':' + process.env.REACT_APP_IOTHUBMANAGER_WEBSERVICE_PORT
   : '/iothubmanager';
@@ -13,9 +13,7 @@ const uiconfig = process.env.REACT_APP_UICONFIG_WEBSERVICE_PORT
 const devicetelemetry = process.env.REACT_APP_DEVICETELEMETRY_WEBSERVICE_PORT
   ? ':' + process.env.REACT_APP_DEVICETELEMETRY_WEBSERVICE_PORT
   : '/devicetelemetry';
-const auth = process.env.REACT_APP_AUTH_WEBSERVICE_PORT
-  ? ':' + process.env.REACT_APP_AUTH_WEBSERVICE_PORT
-  : '/auth';
+const auth = process.env.REACT_APP_AUTH_WEBSERVICE_PORT ? ':' + process.env.REACT_APP_AUTH_WEBSERVICE_PORT : '/auth';
 
 const Config = {
   STATUS_CODES: {
@@ -47,11 +45,11 @@ const Config = {
     REPORTED_LOCATION: 'Properties.Reported.Location'
   },
 
- OPERATOR_OPTIONS: [
-    { value: "GreaterThan", label: "GreaterThan" }, 
-    { value: "GreaterThanOrEqual", label: "GreaterThanOrEqual" },
-    { value: "LessThan", label: "LessThan" },
-    { value: "Equals", label: "Equals" }
+  OPERATOR_OPTIONS: [
+    { value: 'GreaterThan', label: 'GreaterThan' },
+    { value: 'GreaterThanOrEqual', label: 'GreaterThanOrEqual' },
+    { value: 'LessThan', label: 'LessThan' },
+    { value: 'Equals', label: 'Equals' }
   ],
 
   INTERVALS: {

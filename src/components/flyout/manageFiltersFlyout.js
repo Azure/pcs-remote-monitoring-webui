@@ -49,24 +49,24 @@ class ManageFiltersFlyout extends React.Component {
     const deviceGroups = content.deviceGroups || [];
     this.oldDeviceGroups = JSON.parse(JSON.stringify(deviceGroups));
     const newGroupObj = {
-      id: 0,
-      displayName: '',
-      conditions: [
+      Id: 0,
+      DisplayName: '',
+      Conditions: [
         {
-          key: 'tags.region',
-          operator: 'EQ',
-          value: ''
+          Key: 'tags.region',
+          Operator: 'EQ',
+          Value: ''
         }
       ]
     };
     this.props.content.deviceGroups = [newGroupObj, ...deviceGroups];
     const editingState = this.state.editingState;
     this.props.content.deviceGroups.forEach(group => {
-      if (!editingState[group.id]) {
-        editingState[group.id] = {};
+      if (!editingState[group.Id]) {
+        editingState[group.Id] = {};
       }
-      editingState[group.id].showEdit = false;
-      editingState[group.id].saveInProgress = false;
+      editingState[group.Id].showEdit = false;
+      editingState[group.Id].saveInProgress = false;
     });
   }
 
@@ -75,12 +75,12 @@ class ManageFiltersFlyout extends React.Component {
     const deviceGroups = content.deviceGroups || [];
     const fields = [];
     deviceGroups.forEach(group => {
-      if (!group.conditions) {
+      if (!group.Conditions) {
         return;
       }
-      group.conditions.forEach(cond => {
-        if (fields.indexOf(cond.key) === -1) {
-          fields.push(cond.key);
+      group.Conditions.forEach(cond => {
+        if (fields.indexOf(cond.Key) === -1) {
+          fields.push(cond.Key);
         }
       });
     });
@@ -95,12 +95,12 @@ class ManageFiltersFlyout extends React.Component {
 
     const operators = [];
     deviceGroups.forEach(group => {
-      if (!group.conditions) {
+      if (!group.Conditions) {
         return;
       }
-      group.conditions.forEach(cond => {
-        if (operators.indexOf(cond.operator) === -1) {
-          operators.push(cond.operator);
+      group.Conditions.forEach(cond => {
+        if (operators.indexOf(cond.Operator) === -1) {
+          operators.push(cond.Operator);
         }
       });
     });
@@ -112,11 +112,10 @@ class ManageFiltersFlyout extends React.Component {
   typeFieldComputation() {
     const { content } = this.props;
     const deviceGroups = content.deviceGroups || [];
+    if (!deviceGroups) return;
     deviceGroups.forEach(group => {
-      if (!group.conditions) {
-        return;
-      }
-      group.conditions.forEach(typeComputation);
+      if (!group.Conditions) return;
+      group.Conditions.forEach(typeComputation);
     });
   }
 
@@ -124,12 +123,13 @@ class ManageFiltersFlyout extends React.Component {
     const oldDeviceGroups = this.oldDeviceGroups;
     const { content } = this.props;
     const deviceGroups = content.deviceGroups || [];
+    if (!deviceGroups) return;
     deviceGroups.forEach(group => {
-      if (group.id === groupId) {
+      if (group.Id === groupId) {
         oldDeviceGroups.forEach(oldGroup => {
-          if (oldGroup.id === groupId) {
-            group.displayName = oldGroup.displayName;
-            group.conditions = oldGroup.conditions;
+          if (oldGroup.Id === groupId) {
+            group.DisplayName = oldGroup.DisplayName;
+            group.Conditions = oldGroup.Conditions;
           }
         });
       }
@@ -140,7 +140,7 @@ class ManageFiltersFlyout extends React.Component {
     const { content } = this.props;
     const deviceGroups = content.deviceGroups || [];
     return (
-      deviceGroups.length > 0 && deviceGroups.some(group => group.displayName === groupName && group.id !== groupId)
+      deviceGroups.length > 0 && deviceGroups.some(group => group.DisplayName === groupName && group.Id !== groupId)
     );
   }
 
@@ -239,33 +239,33 @@ class ManageFiltersFlyout extends React.Component {
             </div>
             <input
               onChange={evt => {
-                group.displayName = evt.target.value || '';
+                group.DisplayName = evt.target.value || '';
                 const editingState = {
                   formChanged: true
                 };
-                editingState.isDuplicate = this.checkIfGroupNameExists(group.displayName, group.id);
-                editingState.emptyName = group.displayName.trim() === '';
-                this.setEditingState(group.id, editingState);
+                editingState.isDuplicate = this.checkIfGroupNameExists(group.DisplayName, group.Id);
+                editingState.emptyName = group.DisplayName.trim() === '';
+                this.setEditingState(group.Id, editingState);
               }}
               type="text"
-              value={group && group.displayName}
+              value={group && group.DisplayName}
               className="style-manage"
               placeholder={lang.FILTER.ENTERNAMEFORFILTER}
             />
           </label>
-          {(this.state.editingState[group.id] || {}).isDuplicate
+          {(this.state.editingState[group.Id] || {}).isDuplicate
             ? <div className="error-msg">
                 {lang.FILTER.GROUPNAMEALREADYEXISTS}
               </div>
             : null}
-          {(this.state.editingState[group.id] || {}).emptyName
+          {(this.state.editingState[group.Id] || {}).emptyName
             ? <div className="error-msg">
                 {lang.FILTER.FILTERNAMECANNOTBEEMPTY}
               </div>
             : null}
         </div>
         <div className="conditions-wrapper">
-          {(group.conditions || []).map((cond, idx) => {
+          {(group.Conditions || []).map((cond, idx) => {
             return (
               <div key={idx}>
                 <div>
@@ -276,10 +276,10 @@ class ManageFiltersFlyout extends React.Component {
                     <Select
                       autofocus
                       options={fieldOptions}
-                      value={cond.key}
+                      value={cond.Key}
                       onChange={value => {
-                        this.setEditingState(group.id, { formChanged: true });
-                        cond.key = value;
+                        this.setEditingState(group.Id, { formChanged: true });
+                        cond.Key = value;
                       }}
                       simpleValue
                       searchable={true}
@@ -297,10 +297,10 @@ class ManageFiltersFlyout extends React.Component {
                       <Select
                         autofocus
                         options={operatorOptions}
-                        value={cond.operator}
+                        value={cond.Operator}
                         onChange={value => {
-                          this.setEditingState(group.id, { formChanged: true });
-                          cond.operator = value;
+                          this.setEditingState(group.Id, { formChanged: true });
+                          cond.Operator = value;
                         }}
                         simpleValue
                         searchable={true}
@@ -321,20 +321,20 @@ class ManageFiltersFlyout extends React.Component {
                           formChanged: true,
                           valuesEditingState: {}
                         };
-                        cond.value = evt.target.value || '';
+                        cond.Value = evt.target.value || '';
                         editingState.valuesEditingState[idx] = {
-                          emptyValue: cond.value.trim() === ''
+                          emptyValue: cond.Value.trim() === ''
                         };
-                        this.setEditingState(group.id, editingState);
+                        this.setEditingState(group.Id, editingState);
                       }}
                       type="text"
-                      value={cond.value}
+                      value={cond.Value}
                       placeholder={lang.FILTER.ENTERFILTERVALUE}
                       className="style-manage"
                     />
                   </label>
 
-                  {this.checkIfConditionValueIsEmpty(group.id, idx)
+                  {this.checkIfConditionValueIsEmpty(group.Id, idx)
                     ? <div className="error-msg">
                         {lang.FILTER.VALUECANNOTBEEMPTY}
                       </div>
@@ -350,7 +350,7 @@ class ManageFiltersFlyout extends React.Component {
                       options={typeOptions}
                       onChange={type => {
                         cond.type = type;
-                        this.setEditingState(group.id, { formChanged: true });
+                        this.setEditingState(group.Id, { formChanged: true });
                       }}
                       value={cond.type}
                       simpleValue
@@ -362,8 +362,8 @@ class ManageFiltersFlyout extends React.Component {
                 </div>
                 <button
                   onClick={() => {
-                    group.conditions.splice(idx, 1);
-                    this.setEditingState(group.id, { formChanged: true });
+                    group.Conditions.splice(idx, 1);
+                    this.setEditingState(group.Id, { formChanged: true });
                   }}
                   type="button"
                   className="add-condition"
@@ -376,10 +376,10 @@ class ManageFiltersFlyout extends React.Component {
           })}
           <button
             onClick={() => {
-              group.conditions.push({
-                key: '',
-                operator: 'EQ',
-                value: ''
+              group.Conditions.push({
+                Key: '',
+                Operator: 'EQ',
+                Value: ''
               });
               this.setState({});
             }}
@@ -392,22 +392,22 @@ class ManageFiltersFlyout extends React.Component {
         </div>
         <div className="buttons-group">
           <div className="save-delete-cancel-buttons">
-            {(this.state.editingState[group.id] || {}).saveInProgress
+            {(this.state.editingState[group.Id] || {}).saveInProgress
               ? <span className="loading-spinner">
                   <Spinner />
                 </span>
               : null}
             <button
               onClick={() => {
-                const editingState = this.state.editingState[group.id] || {};
-                if (editingState.emptyName || editingState.isDuplicate || !group.displayName) {
+                const editingState = this.state.editingState[group.Id] || {};
+                if (editingState.emptyName || editingState.isDuplicate || !group.DisplayName) {
                   //do not save
                   return;
                 }
-                if (group.conditions.some(cond => !cond.value)) {
+                if (group.Conditions.some(cond => !cond.Value)) {
                   return;
                 }
-                this.setEditingState(group.id, { saveInProgress: true });
+                this.setEditingState(group.Id, { saveInProgress: true });
                 this.props.saveOrUpdateFilter(formChanged, group);
               }}
               className={newFilterFlag ? 'save' : 'delete-filter'}
@@ -421,12 +421,12 @@ class ManageFiltersFlyout extends React.Component {
             </button>
             <button
               onClick={() => {
-                this.setEditingState(group.id, {
+                this.setEditingState(group.Id, {
                   showEdit: false,
                   formChanged: false
                 });
-                if (group.id !== 0) {
-                  this.restoreFilter(group.id);
+                if (group.Id !== 0) {
+                  this.restoreFilter(group.Id);
                 } else {
                   this.setState({
                     showCreateFilter: false
@@ -503,19 +503,19 @@ class ManageFiltersFlyout extends React.Component {
         </div>
         <div>
           {deviceGroups.map((group, idx) => {
-            const currentEditingState = editingState[group.id] || {};
-            if (group.id === 0) {
+            const currentEditingState = editingState[group.Id] || {};
+            if (group.Id === 0) {
               return null;
             }
             return (
-              <div key={group.id}>
+              <div key={group.Id}>
                 <div className="groupname-icons">
-                  {group.displayName}
+                  {group.DisplayName}
                   <span
-                    onClick={() => this.setEditingState(group.id, { showEdit: true })}
+                    onClick={() => this.setEditingState(group.Id, { showEdit: true })}
                     className="edit-delete-icons"
                   >
-                    <span onClick={() => this.setEditingState(group.id, { showEdit: true })}>
+                    <span onClick={() => this.setEditingState(group.Id, { showEdit: true })}>
                       <img src={EditPencil} alt={`${EditPencil}`} className="edit-icon" />
                     </span>
                     <span>
@@ -540,7 +540,7 @@ class ManageFiltersFlyout extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   saveOrUpdateFilter: (formChanged, group) => {
-    if (formChanged || group.id === 0) {
+    if (formChanged || group.Id === 0) {
       dispatch(saveOrUpdateFilter(group));
     } else {
       dispatch(deleteFilter(group));

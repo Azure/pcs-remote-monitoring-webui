@@ -17,7 +17,7 @@ function showManageFilters(dispatch, getState) {
 
 export const saveOrUpdateFilter = group => {
   return (dispatch, getState) => {
-    if (group.id === 0) {
+    if (group.Id === 0) {
       return ApiService.postManageFiltersFlyout(group)
         .then(data => {
           dispatch({
@@ -54,7 +54,7 @@ export const deleteFilter = group => {
         dispatch({
           type: types.MANAGE_FILTERS_FLYOUT_DELETE_SUCCESS,
           data: {
-            id: group.id
+            id: group.Id
           }
         });
         showManageFilters(dispatch, getState);

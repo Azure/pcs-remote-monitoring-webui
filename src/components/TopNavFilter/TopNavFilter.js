@@ -6,10 +6,7 @@ import Filter from '../../assets/icons/Filter.svg';
 import * as actionTypes from '../../actions/actionTypes';
 import Lang from '../../common/lang';
 import ManageFilters from '../../assets/icons/ManageFilters.svg';
-import {
-  getRegionByDisplayName,
-  loadRegionSpecificDevices
-} from '../../actions/filterActions';
+import { getRegionByDisplayName, loadRegionSpecificDevices } from '../../actions/filterActions';
 import './TopNavFilter.css';
 import Select from 'react-select';
 
@@ -19,7 +16,9 @@ class TopNavFilter extends Component {
     this.state = {
       selectedGroupId: 0 // On intial load we show 'All dveices' as the group filter and set id as 0.
     };
+    this.updateValue = this.updateValue.bind(this);
   }
+
   componentDidMount() {
     this.props.loadRegions();
   }
@@ -35,8 +34,8 @@ class TopNavFilter extends Component {
     const deviceGroups = this.props.deviceGroups || [];
     let options = deviceGroups.map((group, idx) => {
       return {
-        value: group.id,
-        label: group.displayName
+        value: group.Id,
+        label: group.DisplayName
       };
     });
     options = [{ value: 0, label: 'All Devices' }].concat(options);
@@ -49,24 +48,16 @@ class TopNavFilter extends Component {
             autofocus
             options={options}
             value={this.state.selectedGroupId}
-            onChange={this.updateValue.bind(this)}
+            onChange={this.updateValue}
             simpleValue
             searchable={true}
           />
         </span>
         <span
-          onClick={this.props.showManageFiltersFlyout.bind(
-            this,
-            this.props.deviceGroups
-          )}
+          onClick={this.props.showManageFiltersFlyout.bind(this, this.props.deviceGroups)}
           className="manage-filter-header"
         >
-          <img
-            className="manage-filters-icon"
-            src={ManageFilters}
-            alt="ManageFilters"
-            height="12px"
-          />
+          <img className="manage-filters-icon" src={ManageFilters} alt="ManageFilters" />
           {Lang.FILTER.MANAGEFILTER}
         </span>
       </div>
@@ -82,18 +73,13 @@ const mapDispatchToProps = dispatch => ({
   deviceGroupChanged: (selectedGroupId, deviceGroups) => {
     let selectedGroupConditions;
     deviceGroups.some(group => {
-      if (group.id === selectedGroupId) {
-        selectedGroupConditions = group.conditions;
+      if (group.Id === selectedGroupId) {
+        selectedGroupConditions = group.Conditions;
         return true;
       }
       return false;
     });
-    dispatch(
-      loadRegionSpecificDevices(
-        selectedGroupConditions ? selectedGroupConditions : [],
-        selectedGroupId
-      )
-    );
+    dispatch(loadRegionSpecificDevices(selectedGroupConditions ? selectedGroupConditions : [], selectedGroupId));
   },
   showManageFiltersFlyout: deviceGroups => {
     dispatch({
