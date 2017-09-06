@@ -12,32 +12,27 @@ export default class RuleOverviewFlyout extends Component {
         super(props);
 
         this.state = {
-            rules: props.content.selectedRules || []
+            enabled: props.content.selectedRules.some(rule => rule.Enabled !== props.content.selectedRules[0].Enabled) ? true: props.content.selectedRules[0].Enabled
         };
-
-        this.origRules = Array.from(props.content.selectedRules.map(rule => {
-                return {
-                    Enabled: rule.Enabled,
-                    Id: rule.Id
-                }
-            }) || []); // Clone the rules props
     }
 
-    onToggleStatus = (event, index) => {
-        let rules = Array.from(this.state.rules);
-        rules[index].Enabled = !rules[index].Enabled;
-        this.setState({rules: rules});
+    onToggleStatus = () => {
+        this.setState({enabled: !this.state.enabled});
     };
 
     onSave = () => {
         let promises = [];
-        for (let i = 0; i < this.state.rules.length; i++) {
-            if (this.origRules[i].Enabled !== this.state.rules[i].Enabled) {
-                promises.push(ApiService.updateRule(this.origRules[i].Id,this.state.rules[i]));
+        let updatedRules = [];
+        this.props.content.selectedRules.forEach( rule => {
+            if(rule.Enabled !== this.state.enabled)
+            {
+                rule.Enabled = this.state.enabled;
+                updatedRules.push(rule);
+                promises.push(ApiService.updateRule(rule.Id, rule));
             }
-        }
-        Promise.all(promises).then(result => {
-            // TODO:check return value is correct
+        });
+        Promise.all(promises).then(() => {
+            this.props.content.onUpdateData(updatedRules);
         }).catch(err => {
             console.error(err);
         });
@@ -45,43 +40,37 @@ export default class RuleOverviewFlyout extends Component {
         this.props.onClose();
     };
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({rules: nextProps.content.selectedRules || []});
-        this.origRules = nextProps.content.selectedRules.map(rule => {
-            return {
-                Enabled: rule.Enabled,
-                Id: rule.Id
-            }
-        });
-    }
 
     render() {
 
-        const overviewItems = this.state.rules.map((rule, index) => {
+        const overviewItems = this.props.content.selectedRules.map(rule => {
             return (
                 <div className="overview-item">
-                    <div className="toggle-button">
-                        <div className={`icon ${rule.Enabled ? 'icon-enabled' : 'icon-disabled'}`}/>
-                        <div
-                            className="text">{rule.Enabled ? lang.RULESACTIONS.ENABLED : lang.RULESACTIONS.DISABLED}</div>
-                        <div onClick={(event) => this.onToggleStatus(event, index)}
-                             className={`icon ${!rule.Enabled ? 'icon-enable' : 'icon-disable'}`}/>
-                    </div>
                     <div className="title">{rule.Name}</div>
                     <div className="description">{rule.Description}</div>
                     <div className="effectNumber">
                         <div className="count">{rule.DeviceCount}</div>
                         <div className="text">{lang.RULESACTIONS.EFFECTEDDEVICES}</div>
                     </div>
-                    <div className="divider"/>
                 </div>
             )
         });
         return (
             <div className="rule-overview-flyout">
-                <div className="rule-overview-body">
-                {overviewItems}
+                <div className="clearfix"/>
+                <div className="rule-overview-header">
+                    <div className="toggle-button">
+                        <div onClick={this.onToggleStatus}
+                             className={`icon ${!this.state.enabled ? 'icon-enable' : 'icon-disable'}`}/>
+                        <div
+                            className="text">{this.state.enabled ? lang.RULESACTIONS.ENABLESELECTEDRULE : lang.RULESACTIONS.DISABLESELECTEDRULE}</div>
+                    </div>
                 </div>
+                <div className="divider"/>
+                <div className="rule-overview-body">
+                    {overviewItems}
+                </div>
+                <div className="divider"/>
                 <div className="title">{lang.RULESACTIONS.SUMMARY} </div>
                 <div className="description"> {lang.RULESACTIONS.NOTE} </div>
                 <div className="rule-overview-footer">

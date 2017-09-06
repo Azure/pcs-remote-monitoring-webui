@@ -6,8 +6,6 @@ import lang from "../../common/lang";
 import Config from '../../common/config';
 import EditInput from "../editInput/editInput";
 import del from "../../assets/icons/Delete.svg";
-import edit from "../../assets/icons/Edit.svg";
-import add from "../../assets/icons/Add.svg";
 
 import "./ruleTrigger.css";
 
@@ -87,6 +85,15 @@ class RuleTrigger extends React.Component {
         this.setState({ conditions: conditions });
     }
 
+    onBlur(index, event) {
+        var currentTarget = event.currentTarget; 
+        setTimeout(() => { 
+            if (!currentTarget.contains(document.activeElement)) { 
+                this.onUpdateClick(index);
+            } 
+        }); 
+    }
+
     onValueChange(value, index) {
         const conditions = this.state.conditions;
         conditions[index].Value = value;
@@ -129,13 +136,15 @@ class RuleTrigger extends React.Component {
                 {
                     this.state.conditions.map((c, i) => {
                         return <div className="condition-row" key={i}>
-                            <div className="condition-field"><EditInput type="select" isEdit={c.isEdit} value={c.Field} options={this.props.fields} onChange={(value) => this.onFieldChange(value, i)} /></div>
-                            <div className="condition-field"><EditInput type="select" isEdit={c.isEdit} value={c.Operator} options={OperatorOptions} onChange={(value) => this.onOperatorChange(value, i)} /></div>
-                            <div className="condition-field"><EditInput type="text" className="value" isEdit={c.isEdit} value={c.Value} onChange={(value) => this.onValueChange(value, i)} /></div>
+                            <div className={!c.isEdit ? 'editable' : null} onClick={() => this.onEditClick(i)} onBlur={(e) => this.onBlur(i, e)} >
+                                <div className="condition-field"><EditInput type="select" isEdit={c.isEdit} value={c.Field} options={this.props.fields} onChange={(value) => this.onFieldChange(value, i)} /></div>
+                                <div className="condition-field"><EditInput type="select" isEdit={c.isEdit} value={c.Operator} options={OperatorOptions} onChange={(value) => this.onOperatorChange(value, i)} /></div>
+                                <div className="condition-field"><EditInput type="text" className="value" isEdit={c.isEdit} value={c.Value} onChange={(value) => this.onValueChange(value, i)} autoFocus={true} /></div>
+                            </div>
                             <div className="condition-action">
-                                <img src={add} alt={lang.RULESACTIONS.IMGSAVE} className={c.isEdit ? "img-show" : "img-hide"} onClick={() => this.onUpdateClick(i)} />
-                                <img src={edit} alt={lang.RULESACTIONS.IMGEDIT} className={c.isEdit ? "img-hide" : "img-show"} onClick={() => this.onEditClick(i)} />
-                                <img src={del} alt={lang.RULESACTIONS.IMGDELETE} onClick={() => this.onDeleteClick(i)} />
+                                <span className="condition-action-img">
+                                     <img src={del} alt={lang.RULESACTIONS.IMGDELETE} onClick={() => this.onDeleteClick(i)} />
+                                </span>
                             </div>
                         </div>
                     })
@@ -158,10 +167,10 @@ class RuleTrigger extends React.Component {
                     <tbody>
                         {
                             this.state.conditions.map((c, i) => {
-                                return <tr>
-                                    <td>{c.Field}</td>
-                                    <td>{c.Operator}</td>
-                                    <td>{c.Value}</td>
+                                return <tr key={i}>
+                                    <td><EditInput type="select" isEdit={false} value={c.Field} options={this.props.fields} /></td>
+                                    <td><EditInput type="select" isEdit={false} value={c.Operator} options={Config.OPERATOR_OPTIONS} /></td>
+                                    <td><EditInput type="text" isEdit={false} value={c.Value} /></td>
                                 </tr>
                             })
                         }

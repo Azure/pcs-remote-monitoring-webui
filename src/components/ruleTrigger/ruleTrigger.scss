@@ -45,7 +45,7 @@
             width: 100%;
         }
 
-        label, img {
+        label {
             margin-top: 12px;
         }
     }
@@ -54,10 +54,15 @@
         @extend .condition-col;
         width: 14%;
 
-        img {
-            height: 15px;
-            margin-right: 10px;
-            cursor: pointer;
+        .condition-action-img {
+            margin-top: 12px;
+            display: inline-block;
+
+            img {
+                height: 15px;
+                margin-right: 10px;
+                cursor: pointer;
+            }
         }
     }
 
@@ -71,5 +76,9 @@
 
     .img-hide {
         display: none;
+    }
+
+    .editable {
+        cursor: pointer;
     }
 }

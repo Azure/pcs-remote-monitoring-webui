@@ -46,10 +46,10 @@ const Config = {
   },
 
   OPERATOR_OPTIONS: [
-    { value: 'GreaterThan', label: 'GreaterThan' },
-    { value: 'GreaterThanOrEqual', label: 'GreaterThanOrEqual' },
-    { value: 'LessThan', label: 'LessThan' },
-    { value: 'Equals', label: 'Equals' }
+    { value: 'GreaterThan', label: '>' },
+    { value: 'GreaterThanOrEqual', label: '>=' },
+    { value: 'LessThan', label: '<' },
+    { value: 'Equals', label: '=' }
   ],
 
   INTERVALS: {

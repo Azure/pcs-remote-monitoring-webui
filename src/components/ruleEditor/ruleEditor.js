@@ -14,6 +14,8 @@ import disabled from "../../assets/icons/DISABLE_toggle.svg";
 import critical from "../../assets/icons/Critical.svg";
 import info from "../../assets/icons/Info.svg";
 import warning from "../../assets/icons/Warning.svg";
+import cancelX from "../../assets/icons/CancelX.svg";
+import apply from "../../assets/icons/Apply.svg";
 
 import "./ruleEditor.css";
 
@@ -112,13 +114,21 @@ class RuleEditor extends React.Component {
         this.getConditions();
         this.setState({ isEdit: false });
         if (this.state.rule.Id) {
-            ApiService.updateRule(this.state.rule.Id, this.state.rule).catch((err) => {
-                console.error(err);
-            });
+            ApiService.updateRule(this.state.rule.Id, this.state.rule)
+                .then(()=> {
+                    this.props.content.onUpdateData(this.state.rule)
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         } else {
-            ApiService.createRule(this.state.rule).catch((err) => {
-                console.error(err);
-            });
+            ApiService.createRule(this.state.rule)
+                .then(()=> {
+                    this.props.content.onUpdateData(this.state.rule)
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         }
     }
 
@@ -193,7 +203,7 @@ class RuleEditor extends React.Component {
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>{lang.RULESACTIONS.SOURCE}</ControlLabel>
-                        <span className="help-text">{lang.RULESACTIONS.SOURCEHELP}</span>
+                        <span className={`help-text ${this.state.isEdit ? 'show' : 'hide'}`}>{lang.RULESACTIONS.SOURCEHELP}</span>
                         <EditInput type="select" className="input" placeholder={lang.RULESACTIONS.SELECTDEVICEGROUP} options={deviceGroupOptions} value={this.state.rule.GroupId} isEdit={this.state.isEdit} onChange={this.onGroupIdChange} />
                     </FormGroup>
                     <FormGroup>
@@ -218,8 +228,8 @@ class RuleEditor extends React.Component {
                 </div>
                 <div className={`rule-editor-btns ${this.state.isEdit ? 'show' : 'hide'}`}>
                     <ButtonToolbar className="btn-tool-bar">
-                        <button className="button" onClick={() => this.onCancel()}><img src="/static/media/CancelX.fe4be2c5.svg" alt="/static/media/CancelX.fe4be2c5.svg" className="cancel-icon" />{lang.RULESACTIONS.CANCEL}</button>
-                        <button className="button" onClick={() => this.onCreate()}><img src="/static/media/Apply.2f9ac34d.svg" height="10" alt="/static/media/Apply.2f9ac34d.svg" className="apply-icon" />{lang.RULESACTIONS.APPLY}</button>
+                        <button className="button" onClick={() => this.onCancel()}><img src={cancelX} alt={lang.RULESACTIONS.CANCEL} className="cancel-icon" />{lang.RULESACTIONS.CANCEL}</button>
+                        <button className="button" onClick={() => this.onCreate()}><img src={apply} height="10" alt={lang.RULESACTIONS.APPLY} className="apply-icon" />{lang.RULESACTIONS.APPLY}</button>
                     </ButtonToolbar>
                 </div>
             </div>

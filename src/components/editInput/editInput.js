@@ -15,14 +15,13 @@ const TextInput = ({ ...props }) => {
 
 const TextareaInput = ({ text, ...props }) => {
     return (
-        <textarea {...props}>{text}</textarea>
+        <textarea {...props} defaultValue={text} ></textarea>
     );
 }
 
 const SelectInput = ({ options, value, className, onChange, placeholder }) => {
     return (
         <Select
-            autofocus
             options={options}
             value={value}
             simpleValue
@@ -72,22 +71,23 @@ class EditInput extends React.Component {
         if (this.props.isEdit) {
             switch (type) {
                 case "text":
-                    return <TextInput value={this.props.value} className={this.props.className} placeholder={this.props.placeholder} onChange={this.onValueChange} onBlur={this.props.onBlur} />
+                    return <TextInput value={this.props.value} className={this.props.className} placeholder={this.props.placeholder} onChange={this.onValueChange} onBlur={this.props.onBlur} autoFocus={this.props.autoFocus} />
                 case "textarea":
                     return <TextareaInput text={this.props.value} className={this.props.className} placeholder={this.props.placeholder} onChange={this.onValueChange} />
                 case "select":
                     return <SelectInput options={this.props.options} className={this.props.className} placeholder={this.props.placeholder} value={this.props.value} onChange={this.onSelectValueChange} />
                 case "radio":
-                    return <RadioInput name="rd" options={this.props.options} className={this.props.className} value={this.props.value} onClick={this.onValueChange} />
+                    return <RadioInput name="rd" options={this.props.options} className={this.props.className} value={this.props.value} onChange={this.onValueChange} />
                 default:
                     return null
             }
         } else {
             if (type === "radio") {
-                var imgUrl = this.getPropertyFromOptions(this.props.options, this.props.value, "imgUrl");
-                return <label title={this.props.value}><span className="radio-img"><img alt={this.props.value} src={imgUrl} /></span>{this.props.value}</label>
+                const imgUrl = this.getPropertyFromOptions(this.props.options, this.props.value, "imgUrl");
+                const displayName = this.getPropertyFromOptions(this.props.options, this.props.value, "text");
+                return <label title={displayName}><span className="radio-img"><img alt={displayName} src={imgUrl} /></span>{displayName}</label>
             } else if (type === "select") {
-                var displayName = this.getPropertyFromOptions(this.props.options, this.props.value, "label");
+                const displayName = this.getPropertyFromOptions(this.props.options, this.props.value, "label");
                 return <label className={this.props.classForLabel || ""}>{displayName}</label>
             }
 

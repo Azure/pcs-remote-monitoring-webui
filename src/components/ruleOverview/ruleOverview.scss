@@ -22,11 +22,79 @@
     margin: 5px 0;
   }
 
+  .divider{
+    margin: 10px 0;
+    border-bottom: solid #414649 2px;
+  }
+
+  .toggle-button{
+    .icon{
+      display: inline-block;
+      color: #AFB9C3;
+      height: 14pt;
+      width: 14pt;
+      margin: 0 4px;
+      vertical-align: middle;
+    }
+
+    .text{
+      line-height: 48px;
+      display: inline-block;
+      font-size: 14pt;
+      margin: 0 2px;
+      vertical-align: middle;
+      color: #FFF;
+    }
+
+    .text-disable{
+      @extend .text;
+      color: #afb9c3;
+      text-transform: uppercase;
+    }
+
+    .icon-enabled{
+      @extend .icon;
+      background: url("../../assets/icons/Enabled.svg") no-repeat center;
+      background-size: contain;
+    }
+    .icon-disabled{
+      @extend .icon;
+      background: url("../../assets/icons/Disabled.svg") no-repeat center;
+      background-size: contain;
+    }
+    .icon-enable{
+      @extend .icon;
+      cursor: pointer;
+      width: 24pt;
+      background: url("../../assets/icons/Enable_toggle.svg") no-repeat center;
+      background-size: auto;
+      transition: background 500ms ease;
+      vertical-align: middle;
+      margin: 0 10px;
+    }
+    .icon-disable{
+      @extend .icon;
+      cursor: pointer;
+      width: 24pt;
+      background: url("../../assets/icons/DISABLE_toggle.svg") no-repeat center;
+      background-size: auto;
+      transition: background 500ms ease;
+      vertical-align: middle;
+      margin: 0 10px;
+    }
+  }
+
+  .rule-overview-header{
+    margin-top: 10px;
+    position: relative;
+    height: 48px;
+  }
+
   .rule-overview-body{
     overflow-scrolling: auto;
     overflow-x: hidden;
     overflow-y: scroll;
-    height: 100%;
+    height: 80%;
 
     .overview-item{
       margin: 20px 0;
@@ -40,64 +108,6 @@
       .description{
         @extend .description;
         @include labelHeight;
-      }
-
-      .divider{
-        margin: 20px 0;
-        border-bottom: solid #414649 2px;
-      }
-
-      .toggle-button{
-        float: right;
-        position: relative;
-        .icon{
-          display: inline-block;
-          color: #AFB9C3;
-          height: 14pt;
-          width: 14pt;
-          margin: 0 4px;
-        }
-
-        .text{
-          @include labelHeight;
-          display: inline-block;
-          margin: 0 2px;
-          vertical-align: middle;
-          color: #FFF;
-        }
-
-        .text-disable{
-          @extend .text;
-          color: #afb9c3;
-          text-transform: uppercase;
-        }
-
-        .icon-enabled{
-          @extend .icon;
-          background: url("../../assets/icons/Enabled.svg") no-repeat center;
-          background-size: contain;
-        }
-        .icon-disabled{
-          @extend .icon;
-          background: url("../../assets/icons/Disabled.svg") no-repeat center;
-          background-size: contain;
-        }
-        .icon-enable{
-          @extend .icon;
-          cursor: pointer;
-          width: 18pt;
-          background: url("../../assets/icons/Enable_toggle.svg") no-repeat center;
-          background-size: auto;
-          transition: background 500ms ease;
-        }
-        .icon-disable{
-          @extend .icon;
-          cursor: pointer;
-          width: 18pt;
-          background: url("../../assets/icons/DISABLE_toggle.svg") no-repeat center;
-          background-size: auto;
-          transition: background 500ms ease;
-        }
       }
 
       .effectNumber{
