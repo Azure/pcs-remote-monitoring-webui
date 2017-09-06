@@ -112,13 +112,21 @@ class RuleEditor extends React.Component {
         this.getConditions();
         this.setState({ isEdit: false });
         if (this.state.rule.Id) {
-            ApiService.updateRule(this.state.rule.Id, this.state.rule).catch((err) => {
-                console.error(err);
-            });
+            ApiService.updateRule(this.state.rule.Id, this.state.rule)
+                .then(()=> {
+                    this.props.content.onUpdateData(this.state.rule)
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         } else {
-            ApiService.createRule(this.state.rule).catch((err) => {
-                console.error(err);
-            });
+            ApiService.createRule(this.state.rule)
+                .then(()=> {
+                    this.props.content.onUpdateData(this.state.rule)
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         }
     }
 

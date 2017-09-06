@@ -87,6 +87,7 @@ class RulesActionsList extends Component {
 
         this.state = {
             rulesActions: [],
+            currentNode: null,
             showConfirmModal: false,
             showBoth: false,
             toggleButtonText: lang.RULESACTIONS.DISABLE
@@ -124,16 +125,28 @@ class RulesActionsList extends Component {
     newRule = () => {
         this.grid.gridApi.deselectAll();
         const {actions} = this.props;
-        const flyoutConfig = {title: lang.RULESACTIONS.NEWRULE, type: 'New Rule'};
+        const flyoutConfig = {
+            onUpdateData: this.onUpdateData,
+            title: lang.RULESACTIONS.NEWRULE,
+            type: 'New Rule'
+        };
         actions.showFlyout({...flyoutConfig});
+        this.setState({currentNode: null});
     };
 
     onCellClicked = (event) => {
         if (event.colDef.headerName !== lang.RULESACTIONS.ACTIONS) {
             const {actions} = this.props;
             actions.hideFlyout();
-            const flyoutConfig = {title: lang.RULESACTIONS.RULEDETAIL, type: 'New Rule', rule: event.data};
+            const flyoutConfig = {
+                    onUpdateData: this.onUpdateData,
+                    title: lang.RULESACTIONS.RULEDETAIL,
+                    type: 'New Rule',
+                    rule: event.data
+                }
+            ;
             actions.showFlyout({...flyoutConfig});
+            this.setState({currentNode: event.node});
         }
     };
 
@@ -149,13 +162,14 @@ class RulesActionsList extends Component {
         const {actions} = this.props;
         actions.hideFlyout();
         const flyoutConfig = {
-            onClose: this.onFlyoutClose,
+            onUpdateData: this.onUpdateData,
             title: lang.RULESACTIONS.RULEDETAIL,
             type: 'New Rule',
             rule: this.state.rulesActions[0],
             inEdit: true
         };
         actions.showFlyout({...flyoutConfig});
+        this.setState({currentNode: this.state.nodes[0]})
     };
 
     confirmDelete = () => {
@@ -164,6 +178,9 @@ class RulesActionsList extends Component {
             promises.push(ApiService.deleteRule(rule.Id));
         });
         Promise.all(promises)
+            .then(() => {
+                this.grid.gridApi.updateRowData({remove: this.state.rulesActions});
+            })
             .catch(err => {
                 console.error(err);
             });
@@ -172,14 +189,25 @@ class RulesActionsList extends Component {
 
     showToggleRules = () => {
         const {actions} = this.props;
-        const flyoutConfig = {onClose: this.onFlyoutClose, selectedRules: this.state.rulesActions, type: 'Rule Detail'};
+        const flyoutConfig = {
+            onUpdateData: this.onUpdateData,
+            selectedRules: this.state.rulesActions,
+            type: 'Rule Detail'
+        };
         actions.showFlyout({...flyoutConfig});
     };
 
-    onFlyoutClose = () => {
-        this.grid.refreshData();
-        const {actions} = this.props;
-        actions.hideFlyout();
+    onUpdateData = data => {
+        if (data) {
+            if (Array.isArray(data)) {
+                this.grid.gridApi.updateRowData({update: data});
+            }
+            else if (this.state.currentNode === null) {
+                this.grid.gridApi.updateRowData({add: [data]});
+            } else {
+                this.state.currentNode.setData(data);
+            }
+        }
     };
 
     render() {
