@@ -22,7 +22,6 @@ const TextareaInput = ({ text, ...props }) => {
 const SelectInput = ({ options, value, className, onChange, placeholder }) => {
     return (
         <Select
-            autofocus
             options={options}
             value={value}
             simpleValue
@@ -72,7 +71,7 @@ class EditInput extends React.Component {
         if (this.props.isEdit) {
             switch (type) {
                 case "text":
-                    return <TextInput value={this.props.value} className={this.props.className} placeholder={this.props.placeholder} onChange={this.onValueChange} onBlur={this.props.onBlur} />
+                    return <TextInput value={this.props.value} className={this.props.className} placeholder={this.props.placeholder} onChange={this.onValueChange} onBlur={this.props.onBlur} autoFocus={this.props.autoFocus} />
                 case "textarea":
                     return <TextareaInput text={this.props.value} className={this.props.className} placeholder={this.props.placeholder} onChange={this.onValueChange} />
                 case "select":
