@@ -17,15 +17,16 @@ class Main extends Component {
     const { flyout, actions } = this.props;
     const flyoutProp = {
       show: flyout.show,
-      onClose: (flyout.content && flyout.content.onClose)? flyout.content.onClose : actions.hideFlyout,
+      onClose: (flyout.content && flyout.content.onClose) ? flyout.content.onClose : actions.hideFlyout,
       content: flyout.content
     };
+
     return (
-      <div className="main">
+      <div className="main-container">
         <LeftNav onClick={this.props.actions.hideFlyout} />
-        <div className="mainbody">
+        <div className="main-content-container">
           <Header />
-          <div className="content">
+          <div className="main-routing-container">
             {this.props.children}
           </div>
         </div>
@@ -36,15 +37,11 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    flyout: state.flyoutReducer
-  };
+  return { flyout: state.flyoutReducer };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    actions: bindActionCreators(actions, dispatch)
-  };
+  return { actions: bindActionCreators(actions, dispatch) };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

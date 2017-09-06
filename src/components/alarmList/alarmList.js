@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
 import lang from '../../common/lang';
 import Select from 'react-select';
 import ApiService from '../../common/apiService';
 import Rx from 'rxjs';
 import DashboardPanel from '../dashboardPanel/dashboardPanel';
+import PcsGrid from '../pcsGrid/pcsGrid';
 
 import './alarmList.css';
 
@@ -31,8 +31,7 @@ class AlarmList extends Component {
       { headerName: columnDefs.SEVERITY, field: 'severity', filter: 'text' },
       { headerName: columnDefs.CREATED, field: 'created', filter: 'date' },
       { headerName: columnDefs.OPENOCCURRENCES, field: 'occurrences', filter: 'number' },
-      { headerName: columnDefs.DESCRIPTION, field: 'description', filter: 'text' },
-      { headerName: columnDefs.STATUS, field: 'status', filter: 'text' }
+      { headerName: columnDefs.EXPLOREALARM, valueGetter: params => '...' },
     ];
   };
 
@@ -44,6 +43,15 @@ class AlarmList extends Component {
         .takeUntil(this.errorSubject)
         .subscribe((cnt) => this.getData(cnt < 0))
     );
+  }
+
+  /** 
+   * Get the grid api options 
+   * 
+   * @param {Object} gridReadyEvent An object containing access to the grid APIs   
+   */
+  onGridReady = gridReadyEvent => {
+    gridReadyEvent.api.sizeColumnsToFit();
   }
 
   componentWillUnmount() {
@@ -134,24 +142,24 @@ class AlarmList extends Component {
             ]}
           />
         }>
-        <div className="grid-container">
-          <SearchableDataGrid
-            columnDefs={this.state.columnDefs}
-            paginationAutoPageSize={true}
-            suppressScrollOnNewData={true}
-            pagination={false}
-            rowData={this.state.rowData}
-            loading={this.state.loading}
-            enableSorting={false}
-            enableSearch={false}
-            enableFilter={false}
-            autoLoad={false}
-            multiSelect={false}
-            title=""
-            height={300}
-            showLastUpdate={false}
-          />
-        </div>
+          <div className="grid-container">
+            <PcsGrid
+              columnDefs={this.state.columnDefs}
+              paginationAutoPageSize={true}
+              suppressScrollOnNewData={true}
+              pagination={false}
+              rowData={this.state.rowData}
+              loading={this.state.loading}
+              enableSorting={false}
+              enableSearch={false}
+              enableFilter={false}
+              multiSelect={false}
+              showLastUpdate={false}
+              suppressCellSelection={true}
+              suppressMovableColumns={true}
+              onGridReady={this.onGridReady}
+            />
+          </div>
       </DashboardPanel>
     );
   }

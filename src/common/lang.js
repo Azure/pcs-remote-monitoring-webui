@@ -20,10 +20,9 @@ const lang = {
       COLUMNDEFS: {
         RULENAME: 'Rule Name',
         SEVERITY: 'Severity',
-        CREATED: 'Created',
         OPENOCCURRENCES: 'Open Occurrences',
         DESCRIPTION: 'Description',
-        STATUS: 'Status'
+        EXPLOREALARM: 'Explore Alarm'
       }
     }
   },
@@ -52,6 +51,8 @@ const lang = {
     OK: 'ok'
   },
   DEVICES: {
+    DEVICENAME: 'Device Name',
+    DEVICETYPE: 'Device Type',
     CAUTION: 'Caution: You are scheduling an action that will effect {0} devices.',
     DEVICEID: 'DeviceId',
     TYPE: 'Type',
@@ -62,7 +63,7 @@ const lang = {
     SYNC: 'Sync',
     ENABLED: 'Enabled',
     CONNECTED: 'Connected',
-    DISCONNECTED: 'Diconnected',
+    DISCONNECTED: 'Disconnected',
     DEVICEDETAIL: 'Device Detail',
     ACTONDEVICES: 'Act on devices',
     CHOOSEDEVICES: 'Choose devices',
@@ -113,11 +114,14 @@ const lang = {
     CHANGEDEVICECONFIG: 'Change device configuration',
     ORGANIZEMYDEVICE: 'Organize my devices',
     SCHEDULEANACTION: 'Schedule an action',
+    LASTCONNECTION: 'Last Connection',
     LASTACTIVITYTIME: 'Last activity time',
     LASTSTATUSUPDATEDTIME: 'Last status updated time',
     EFFECTED_DEVICES: 'Effected devices',
     NO_AVAILABLE_COMMON_TAGS: 'No available common tags.',
-    PLEASE_CHOOSE_DEVICES_WITH_COMMON_TAGS: 'Please choose devices with common tags'
+    PLEASE_CHOOSE_DEVICES_WITH_COMMON_TAGS: 'Please choose devices with common tags',
+    YES: 'Yes',
+    NO: 'No'
   },
   RULESACTIONS: {
     SOURCEHELP: 'Edit group of devices on rule',
@@ -224,7 +228,7 @@ const lang = {
     SIMULATED: 'Simulated',
     PHYSICAL: 'Physical',
     CONNECTED: 'Connected',
-    DISCONNECTED: 'Diconnected',
+    DISCONNECTED: 'Disconnected',
     KEY: 'KEY',
     VALUE: 'VALUE',
     METHODS: 'Methods',

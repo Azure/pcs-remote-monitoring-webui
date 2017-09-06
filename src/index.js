@@ -14,7 +14,6 @@ import configureStore from "./store/configureStore";
 import oauth2client from "./common/oauth2client";
 
 import "./index.css";
-import "./pcsAgDarkTheme.css";
 
 const app = document.getElementById("root");
 const store = configureStore(initialState);

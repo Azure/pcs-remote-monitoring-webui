@@ -5,99 +5,117 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Config from '../../common/config';
 import { Topics } from '../../common/eventtopic';
-import SearchableDataGrid from '../../framework/searchableDataGrid/searchableDataGrid';
 import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
 import AddDevice from '../addDevice/addDevice';
 import DeviceTag from '../deviceTag/deviceTag';
 import ActOnDevice from '../actOnDevice/actOnDevice';
 import lang from '../../common/lang';
-import Http from '../../common/httpClient';
+import iotHubManagerService from '../../services/iotHubManagerService';
+import Rx from 'rxjs';
 import * as actions from '../../actions';
+import moment from 'moment';
+import PcsGrid from '../pcsGrid/pcsGrid';
 
 import './deviceList.css';
+
+const EMPTY_FIELD = '---';
 
 export class DeviceList extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      columnDefs: [
-        {
-          headerName: lang.DEVICES.DEVICEID,
-          field: 'Id',
-          filter: 'text'
+      columnHeaders: [
+        { 
+          headerName: lang.DEVICES.DEVICENAME, 
+          field: 'Id', 
+          headerCheckboxSelection: true, 
+          headerCheckboxSelectionFilteredOnly: true, 
+          checkboxSelection: true
         },
-        {
-          headerName: lang.DEVICES.TYPE,
-          field: 'Tags.deviceType',
-          filter: 'text'
+        { 
+          headerName: lang.DEVICE_DETAIL.SIMULATED, 
+          field: 'IsSimulated', 
+          valueFormatter: ({ value }) => value ? lang.DEVICES.YES: lang.DEVICES.NO
         },
-        {
-          headerName: lang.DEVICES.FIRMWAREVERSION,
-          field: 'Properties.Reported.Firmware',
-          filter: 'text'
+        { 
+          headerName: lang.DEVICES.DEVICETYPE, 
+          field: 'Tags.deviceType', 
+          valueFormatter: ({ value }) => value || EMPTY_FIELD
         },
-        {
-          headerName: lang.DEVICES.MANUFACTURER,
-          field: 'Properties.Reported.Manufacturer',
-          filter: 'text'
+        { 
+          headerName: lang.DEVICE_DETAIL.FIRMWARE, 
+          field: 'Properties.Reported.Firmware', 
+          valueFormatter: ({ value }) => value || EMPTY_FIELD
         },
-        {
-          headerName: lang.DEVICES.MODELNUMBER,
-          field: 'Properties.Reported.ModelNumber',
-          filter: 'text'
+        { 
+          headerName: lang.DEVICE_DETAIL.TELEMETRY, 
+          field: 'Properties.Reported.Telemetry', 
+          valueFormatter: ({ value }) => Object.keys(value || {}).join('; ') || EMPTY_FIELD
         },
-        {
-          headerName: lang.DEVICES.STATE,
-          field: 'Connected',
-          filter: 'text',
-          valueFormatter: params => {
-            return params.value ? lang.DEVICES.CONNECTED : lang.DEVICES.DISCONNECTED;
+        { 
+          headerName: lang.DEVICE_DETAIL.STATUS, 
+          field: 'Connected', 
+          valueFormatter: ({ value }) => value ? lang.DEVICES.CONNECTED : lang.DEVICES.DISCONNECTED
+        },
+        { 
+          headerName: lang.DEVICES.LASTCONNECTION, 
+          field: 'LastActivity', 
+          valueFormatter: ({ value }) => {
+            const time = moment(value);
+            return (time.unix() < 0) ? EMPTY_FIELD : time.format("hh:mm:ss MM.DD.YYYY");
           }
-        },
-        {
-          headerName: lang.DEVICES.ENABLED,
-          field: 'Enabled',
-          filter: 'boolean'
-        },
-        {
-          headerName: lang.DEVICES.SYNC,
-          field: '',
-          filter: 'boolean'
         }
-      ]
+      ],
+      devices: [],
+      selectedDevices: [],
+      softSelectedDeviceId: ''
     };
   }
 
-  onDataChanged = () => {
-    this.refs.grid.selectAll();
-  };
+  /** Initialize the devices when the component loads */
+  componentDidMount() {
+    this.loadDevices();
+  }
 
-  onRowClick = row => {
-    const { actions } = this.props;
-    const flyoutConfig = { device: row, type: 'Device detail' };
-    actions.showFlyout({ ...flyoutConfig });
-  };
+  /** 
+   * Get the grid api options 
+   * 
+   * @param {Object} gridReadyEvent An object containing access to the grid APIs   
+   */
+  onGridReady = gridReadyEvent => {
+    this.gridApi = gridReadyEvent.api;
+    this.columnApi = gridReadyEvent.columnApi;
 
-  onRowSelectionChanged = rows => {
-    this.setState({
-      devices: rows
+    this.gridApi.sizeColumnsToFit();
+  }
+
+  /** Makes the API call to load the devices */
+  loadDevices() {
+    Rx.Observable.fromPromise(iotHubManagerService.getDevices())
+      .map(data => data.items)
+      .subscribe(devices => this.setState({ devices: devices }));
+  }
+
+  /** When a new row is selected, update the selected devices state */
+  onSelectionChanged = () => {
+    this.setState({ selectedDevices: this.gridApi.getSelectedRows() }, () => {
+      this.props.actions.devicesSelectionChanged(this.state.selectedDevices);
     });
-    this.props.actions.devicesSelectionChanged(rows);
   };
 
-  getData = async (filter, callback) => {
-    // TODO: wait for the global filter to be checked in and get selected device group from props
-    // TODO: Pass conditions to api
-    const url = `${Config.iotHubManagerApiUrl}devices`;
+  /** Given a device object, extract and return the Id */
+  getSoftSelectId = ({ Id }) => Id;
 
-    Http.get(url).then(data => {
-      callback(data.items);
-    });
+  /** When a row is selected, open the flyout for that devices details */
+  onRowClicked = ({ data }) => {
+    this.setState({ softSelectedDeviceId: this.getSoftSelectId(data) });
+    this.props.actions.showFlyout({ device: data, type: 'Device detail' });
   };
 
   render() {
     return (
-      <div ref="container" className="device-list-container">
+      <div className="device-list-container">
         <div className="device-list-button-bar">
           <div className="device-list-button">
             <GenericDropDownList
@@ -116,7 +134,7 @@ export class DeviceList extends Component {
             />
           </div>
           <div className="device-list-button">
-            <ActOnDevice ref="actOnDevice" buttonText={lang.DEVICES.ACTONDEVICES} devices={this.state.devices} />
+            <ActOnDevice ref="actOnDevice" buttonText={lang.DEVICES.ACTONDEVICES} devices={this.state.selectedDevices} />
           </div>
           <div className="device-list-button">
             <AddDevice />
@@ -125,23 +143,24 @@ export class DeviceList extends Component {
             <DeviceTag />
           </div>
         </div>
-        <SearchableDataGrid
-          ref="grid"
-          getData={this.getData}
+        <PcsGrid
+          /* Grid Properties */
           multiSelect={true}
-          title=""
-          showLastUpdate={true}
-          urlSearchPattern="/\{group\}/i"
-          eventDataKey="0"
-          enableSearch={true}
-          autoLoad={true}
-          topics={[Topics.dashboard.deviceGroup.selected]}
-          columnDefs={this.state.columnDefs}
-          pagination={false}
-          onRowSelectionChanged={this.onRowSelectionChanged}
-          onRowClicked={this.onRowClick}
-          onGridReady={this.onDataChanged}
-          onRowDataChanged={this.onDataChanged}
+          rowSelection={'multiple'}
+          columnDefs={this.state.columnHeaders}
+          rowData={this.state.devices}
+          enableColResize={true}
+          pagination={true}
+          paginationAutoPageSize={true}
+          suppressCellSelection={true}
+          suppressRowClickSelection={true} // Suppress so that a row is only selectable by checking the checkbox
+          suppressClickEdit={false}
+          softSelectId={this.state.softSelectedDeviceId}
+          /* Grid Events */
+          onGridReady={this.onGridReady}
+          onSelectionChanged={this.onSelectionChanged}
+          onRowClicked={this.onRowClicked}
+          getSoftSelectId={this.getSoftSelectId}
         />
       </div>
     );
@@ -149,9 +168,7 @@ export class DeviceList extends Component {
 }
 
 const mapDispatchToProps = dispatch => {
-  return {
-    actions: bindActionCreators(actions, dispatch)
-  };
+  return { actions: bindActionCreators(actions, dispatch) };
 };
 
 export default connect(null, mapDispatchToProps)(DeviceList);

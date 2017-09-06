@@ -29,6 +29,19 @@ class IotHubManagerService {
     return Http.post(`${IotHubManagerService.ENDPOINT}devices`, { ...params, IsSimulated: false });
   }
 
+
+  /**
+   * Returns the list of devices
+   */
+  static getDevices() {
+    return Http.get(`${IotHubManagerService.ENDPOINT}devices`)
+  }
+
+  static serializeParamObject(params) {
+    return Object.keys(params)
+      .map(param => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
+      .join('&');
+  }
 }
 
 export default IotHubManagerService;

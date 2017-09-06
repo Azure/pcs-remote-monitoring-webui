@@ -1,18 +1,19 @@
-.alarm-list,
-.ag-dark {
-  background-color: #1b1d1f;
-  color: #afb9c3;
+.alarm-list {
   height: 100%;
-}
 
-.alarm-list {
   .grid-container {
-    margin: 10px;
-  }
-}
+    height: 300px;
 
-.alarm-list {
-  .grid-container {
-    margin: 20px;
+    .pcs-grid-container.ag-dark.pcs-ag-dark {
+      background-color: transparent;
+
+      .ag-header,
+      .ag-row,
+      .ag-body,
+      .ag-body-viewport { background-color: transparent; }
+
+      .ag-cell { border-bottom: 2px solid #000 !important; }
+      
+    }
   }
 }

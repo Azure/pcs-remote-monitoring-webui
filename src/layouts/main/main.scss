@@ -1,19 +1,19 @@
-.main {
+.main-container {
   height: 100%;
   display: flex;  
-}
 
-.mainbody {
-  display: flex;
-  flex-grow: 1;
-  height: 100%;
-  flex-direction: column;
-  background-color:#121416;
-}
-
-.content {
-  width: 100%;
-  overflow: auto;
-  margin-top: 49px;
-  flex: 1;
+  .main-content-container {
+    display: flex;
+    flex-grow: 1;
+    height: 100%;
+    flex-direction: column;
+    background-color:#121416;
+  
+    .main-routing-container {
+      width: 100%;
+      overflow: auto;
+      margin-top: 49px;
+      flex: 1;
+    }
+  }
 }
