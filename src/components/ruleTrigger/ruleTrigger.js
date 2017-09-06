@@ -142,7 +142,9 @@ class RuleTrigger extends React.Component {
                                 <div className="condition-field"><EditInput type="text" className="value" isEdit={c.isEdit} value={c.Value} onChange={(value) => this.onValueChange(value, i)} autoFocus={true} /></div>
                             </div>
                             <div className="condition-action">
-                                <img src={del} alt={lang.RULESACTIONS.IMGDELETE} onClick={() => this.onDeleteClick(i)} />
+                                <span className="condition-action-img">
+                                     <img src={del} alt={lang.RULESACTIONS.IMGDELETE} onClick={() => this.onDeleteClick(i)} />
+                                </span>
                             </div>
                         </div>
                     })
@@ -165,10 +167,10 @@ class RuleTrigger extends React.Component {
                     <tbody>
                         {
                             this.state.conditions.map((c, i) => {
-                                return <tr>
-                                    <td>{c.Field}</td>
-                                    <td>{c.Operator}</td>
-                                    <td>{c.Value}</td>
+                                return <tr key={i}>
+                                    <td><EditInput type="select" isEdit={false} value={c.Field} options={this.props.fields} /></td>
+                                    <td><EditInput type="select" isEdit={false} value={c.Operator} options={Config.OPERATOR_OPTIONS} /></td>
+                                    <td><EditInput type="text" isEdit={false} value={c.Value} /></td>
                                 </tr>
                             })
                         }

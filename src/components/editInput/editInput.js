@@ -15,7 +15,7 @@ const TextInput = ({ ...props }) => {
 
 const TextareaInput = ({ text, ...props }) => {
     return (
-        <textarea {...props}>{text}</textarea>
+        <textarea {...props} defaultValue={text} ></textarea>
     );
 }
 
@@ -77,16 +77,17 @@ class EditInput extends React.Component {
                 case "select":
                     return <SelectInput options={this.props.options} className={this.props.className} placeholder={this.props.placeholder} value={this.props.value} onChange={this.onSelectValueChange} />
                 case "radio":
-                    return <RadioInput name="rd" options={this.props.options} className={this.props.className} value={this.props.value} onClick={this.onValueChange} />
+                    return <RadioInput name="rd" options={this.props.options} className={this.props.className} value={this.props.value} onChange={this.onValueChange} />
                 default:
                     return null
             }
         } else {
             if (type === "radio") {
-                var imgUrl = this.getPropertyFromOptions(this.props.options, this.props.value, "imgUrl");
-                return <label title={this.props.value}><span className="radio-img"><img alt={this.props.value} src={imgUrl} /></span>{this.props.value}</label>
+                const imgUrl = this.getPropertyFromOptions(this.props.options, this.props.value, "imgUrl");
+                const displayName = this.getPropertyFromOptions(this.props.options, this.props.value, "text");
+                return <label title={displayName}><span className="radio-img"><img alt={displayName} src={imgUrl} /></span>{displayName}</label>
             } else if (type === "select") {
-                var displayName = this.getPropertyFromOptions(this.props.options, this.props.value, "label");
+                const displayName = this.getPropertyFromOptions(this.props.options, this.props.value, "label");
                 return <label className={this.props.classForLabel || ""}>{displayName}</label>
             }
 
