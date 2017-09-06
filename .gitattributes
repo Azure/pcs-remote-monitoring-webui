@@ -1,2 +1,2 @@
 # Set run.sh to always be in LF
-./scripts/docker/run.sh eol=LF
+./scripts/docker/contents/run.sh eol=LF
