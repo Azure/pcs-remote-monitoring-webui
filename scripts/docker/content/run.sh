@@ -10,5 +10,5 @@ set -x
 ### npm run build
 
 # serve the app via nginx
-mkdir -p /app/logs/nginx
+mkdir -p /app/logs
 nginx -g 'daemon off;' -c /app/nginx.conf
