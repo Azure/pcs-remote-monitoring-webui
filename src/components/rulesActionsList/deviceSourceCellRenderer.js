@@ -18,9 +18,9 @@ class DeviceSourceCellRenderer extends React.Component {
     }
 
     componentDidMount() {
-        let matchedGroup = this.props.deviceGroups.filter(group => group.id === this.props.value);
+        let matchedGroup = this.props.deviceGroups.filter(group => group.Id === this.props.value);
         if (matchedGroup.length) {
-            this.setState({source: matchedGroup[0].displayName});
+            this.setState({source: matchedGroup[0].DisplayName});
         }
     }
 
