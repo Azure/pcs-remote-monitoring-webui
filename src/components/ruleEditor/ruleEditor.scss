@@ -105,9 +105,14 @@
                 color: white;
             }
 
-            .apply-icon, .cancel-icon {
+            .cancel-icon {
                 height: 15px;
                 width: 15px;
+            }
+
+            .apply-icon {
+                height: 20px;
+                width: 20px;
             }
         }
     }

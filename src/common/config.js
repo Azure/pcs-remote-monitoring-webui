@@ -49,6 +49,7 @@ const Config = {
     { value: 'GreaterThan', label: '>' },
     { value: 'GreaterThanOrEqual', label: '>=' },
     { value: 'LessThan', label: '<' },
+    { value: 'LessThanOrEqual', label: '<=' },
     { value: 'Equals', label: '=' }
   ],
 
