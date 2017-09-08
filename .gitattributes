@@ -1,2 +1,2 @@
-# Set run.sh to always be in LF
+# Set bash scripts to always be in LF
 *.sh text eol=LF
