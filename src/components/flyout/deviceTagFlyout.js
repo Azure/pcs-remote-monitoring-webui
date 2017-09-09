@@ -40,6 +40,7 @@ const typeOptions = [
 class DeviceTagFlyout extends React.Component {
   constructor() {
     super();
+    this.inputReferences = {};
     this.state = {
       commonTags: [],
       deletedTagNames: [],
@@ -256,26 +257,27 @@ class DeviceTagFlyout extends React.Component {
     const { commonTags, commonTagValues, commonTagTypes, deletedTagNames } = this.state;
     return (
       <div className="common-tags">
-        {commonTags.filter(tagName => deletedTagNames.indexOf(tagName) === -1).map(tagName => {
+        {commonTags.filter(tagName => deletedTagNames.indexOf(tagName) === -1).map((tagName, idx) => {
           return (
-            <div className="name-value-type-for-existed-data" key={tagName}>
-              <span className="name-for-existed-data">
+            <div className="device-tag-items name-value-type" key={tagName} onClick={() => {this.inputReferences[idx] && this.inputReferences[idx].focus()}}>
+              <span className="device-tag">
                 {tagName}
               </span>
               {tagName !== Config.STATUS_CODES.FIRMWARE
                 ? <input
                     type="text"
-                    className="value-for-existed-data"
+                    className="device-tag value-for-existed-data"
                     onChange={evt => this.commonTagValueChanged(tagName, evt)}
                     value={commonTagValues[tagName]}
+                    ref={(ip) => this.inputReferences[idx] = ip}
                   />
                 : <span>
                     {commonTagValues[tagName]}
                   </span>}
-              <span className="type-for-existed-data">
+              <span className="device-tag value-for-existed-data">
                 {commonTagTypes[tagName]}
               </span>
-              <span className="trash-icon-for-existed-data">
+              <span className="device-tag trash-icon-for-existed-data">
                 <img
                   src={Trash}
                   onClick={() => this.deleteExistingTag(tagName)}
@@ -322,14 +324,14 @@ class DeviceTagFlyout extends React.Component {
             <input type="text" className="style-manage" placeholder={lang.DEVICE_DETAIL.ADJUST_TAGS} />
           </label>
         </div>
-        <div className="device-tag-conditions">
-          <span className="device-tag-conditions-header">
+        <div className="device-conditions-container">
+          <span className="device-condition">
             {lang.DEVICE_DETAIL.NAME}
           </span>
-          <span className="device-tag-conditions-header">
+          <span className="device-condition">
             {lang.DEVICE_DETAIL.VALUE}
           </span>
-          <span className="device-tag-conditions-header">
+          <span className="device-condition">
             {lang.DEVICE_DETAIL.TYPE}
           </span>
         </div>

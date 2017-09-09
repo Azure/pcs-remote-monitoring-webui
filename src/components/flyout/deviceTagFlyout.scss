@@ -5,9 +5,7 @@
   height: 500px;
   overflow-y: scroll;
 
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
+  ::-webkit-scrollbar { width: 6px; }
 
   ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -17,6 +15,25 @@
   ::-webkit-scrollbar-thumb {
     border-radius: 2px !important;
     -webkit-box-shadow: inset 0 0 6px rgba(175, 185, 195, 0.6);
+  }
+
+  .device-conditions-container {
+    display: flex;
+    flex-flow: row no-wrap;
+    width: 400px;
+    height: 40px;
+    margin-top: 20px;
+    background-color: #1b1d1f;
+
+    .device-condition {
+      display: flex;
+      margin-top: 10px;
+      padding-left: 20px;
+      color: #afb9c3;
+      font-size: 12px;
+      width: 25%;
+      overflow: hidden;
+    }
   }
 
   .sub-heading {
@@ -58,7 +75,7 @@
     font-size: 14px;
   }
 
-  .device-tag-conditions {
+  .device-tag-condition {
     display: flex;
     justify-content: space-between;
     margin-top: 24px;
@@ -114,24 +131,16 @@
         border: 1px solid #3e4145;
         padding-left: 5px;
 
-        &:hover {
-          border: 1px solid #afb9c3;
-        }
+        &:hover { border: 1px solid #afb9c3; }
       }
 
-      .delete-icon {
-        margin-top: 28px;
-      }
+      .delete-icon { margin-top: 28px; }
     }
   }
 
-  .delete-icon {
-    height: 12px;
-  }
+  .delete-icon { height: 12px; }
 
-  .summary-container {
-    margin-top: 24px;
-  }
+  .summary-container { margin-top: 24px; }
 
   .effective-devices {
     margin-top: 24px;
@@ -159,7 +168,7 @@
   }
 
   .common-tags {
-    .name-value-type-for-existed-data {
+    .name-value-type {
       display: flex;
       justify-content: space-around;
       height: 40px;
@@ -173,9 +182,7 @@
       width: 85px !important;
       border: none;
 
-      &:hover {
-        border-color: #3e4145;
-      }
+      &:hover { border-color: #3e4145; }
     }
   }
 
@@ -196,13 +203,9 @@
       padding-top: 3px;
     }
 
-    .Select-clear-zone {
-      display: none;
-    }
+    .Select-clear-zone { display: none; }
 
-    .Select-arrow-zone {
-      padding-top: 0px;
-    }
+    .Select-arrow-zone { padding-top: 0px; }
 
     .Select,
     .Select div,
@@ -214,9 +217,7 @@
       margin-top: 0px;
     }
 
-    .Select--single > .Select-control .Select-value {
-      background-color: #1b1d1f;
-    }
+    .Select--single > .Select-control .Select-value { background-color: #1b1d1f; }
   }
 
   .no-common-tags {
@@ -242,6 +243,26 @@
     .effected-devices-name {
       color: #afb9c3;
       font-size: 14px;
+    }
+  }
+
+  .device-tag-items {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    height: 40px;
+    background-color: #1b1d1f;
+
+    .device-tag {
+      display: flex;
+      justify-content: space-around;
+      flex-grow: 1;
+      color: #afb9c3;
+      font-size: 12px;
+      width: 25%;
+      overflow: hidden;
+      padding-left: 20px;
+      padding-right: 20px;
     }
   }
 }
