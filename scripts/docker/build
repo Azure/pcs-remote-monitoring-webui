@@ -54,5 +54,3 @@ build_docker_image() {
 
 confirm_version
 build_docker_image
-
-set +e

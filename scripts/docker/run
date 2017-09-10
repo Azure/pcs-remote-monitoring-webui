@@ -12,5 +12,3 @@ APP_VERSION=$(cat "$APP_HOME/version")
 
 echo "Starting Remote Monitoring Web UI ..."
 docker run -it -p 10080:80 -p 10443:443 $DOCKER_IMAGE:$APP_VERSION
-
-set +e

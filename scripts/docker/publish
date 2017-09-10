@@ -10,5 +10,3 @@ APP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && cd .. && pwd )/"
 APP_VERSION=$(cat "$APP_HOME/version")
 
 docker push $DOCKER_IMAGE:$APP_VERSION
-
-set +e

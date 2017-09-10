@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-set -e
-set -x
+set -ex
 
 # build the app - this adds 1-2 mins to the bootstrap
 # this step is required only if there are environment

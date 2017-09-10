@@ -14,13 +14,10 @@ error() {
 }
 
 check_dependency_docker() {
-    set +e
-    TEST=$(which docker)
-    if [[ -z "$TEST" ]]; then
+    if ! which docker >/dev/null 2>&1 ; then
         echo "ERROR: 'docker' command not found."
         echo "Install Docker and make sure the 'docker' command is in the PATH."
         echo "Docker installation: https://www.docker.com/community-edition#/download"
         exit 1
     fi
-    set -e
 }
