@@ -277,6 +277,15 @@ const lang = {
     METHODS_NOT_AVAILABLE: 'No available common methods.',
     CHOOSE_NEW_DEVICES: 'Please choose devices with common methods',
     FIRMWARE_OPTION: 'UpdateFirmware'
-  }
+  },
+  MAINTENANCE_SUMMARY: 'Maintenance summary',
+  OPEN_ALARMS: 'Open Alarms',
+  FAILED_JOBS: 'Failed Jobs',
+  CRITICAL: 'Critical',
+  WARNING: 'Warning',
+  TOTAL: 'Total',
+  SUCCEEDED: 'Succeeded',
+  ALARMS: 'Alarms',
+  SYSTEM_STATUS: 'System Status'
 };
 export default lang;

@@ -8,6 +8,7 @@ import Main from "./layouts/main/main.js";
 import Dashboard from "./layouts/dashboard/dashboard.js";
 import Devices from "./layouts/devices/devices.js";
 import RulesActions from "./layouts/rulesActions/rulesActions";
+import Maintenance from "./layouts/maintenance/maintenance";
 import registerServiceWorker from "./registerServiceWorker";
 import initialState from "./reducers/initialState";
 import configureStore from "./store/configureStore";
@@ -28,6 +29,7 @@ ReactDOM.render(
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/devices" component={Devices}/>
         <Route path="/rulesActions" component={RulesActions}/>
+        <Route path="/maintenance" component={Maintenance}/>
       </Route>
     </Router>
   </Provider>,

@@ -48,7 +48,7 @@ class LeftNav extends Component {
         name: lang.LEFTNAV.RULES_ACTIONS
       },
       {
-        path: '#/',
+        path: '#/maintenance',
         icon: MaintenanceIcon,
         name: lang.LEFTNAV.MAINTENANCE
       }

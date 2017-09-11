@@ -1,0 +1,57 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+.summary-container {
+  color: #afb9c3;
+
+  .summary-header {
+    padding: 5px;
+    font-weight: bold;
+    font-size: 42px;
+  }
+
+  .summary-body {
+    display: flex;
+    font-size: 19px;
+
+    .score {
+      font-size: 64px;
+      padding-right: 8px;
+      margin-top: -16px;
+    }
+
+    .score-label { width: 60px; }
+
+    .score-board {
+      display: flex;
+      flex-direction: row;
+      padding: 10px;
+
+      .info-icon {
+        margin-top: 35px;
+        margin-right: 8px;
+      }
+
+      .score-board-details {
+        margin-left: 32px;
+
+        .details-content {
+          display: block;
+        }
+
+        img {
+          margin-right: 8px;
+        }
+      }
+    }
+
+    .alarm-score-board {
+      @extend .score-board;
+      color: #fff;
+    }
+
+    .system-score-board {
+      @extend .score-board;
+      color: #fff;
+    }
+  }
+}
