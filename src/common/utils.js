@@ -11,6 +11,18 @@ export function getBoundaryChars(str) {
   return same ? str.charAt(0) : null;
 }
 
+export function getTypeOf(val) {
+  if (!val) return;
+  if (typeof val === 'number') {
+    return 'Int';
+  } else if (typeof val === 'string' && (val.toLowerCase() === 'y' || val.toLowerCase() === 'n')) {
+    return 'Boolean';
+  } else if (typeof val === 'string' && (getBoundaryChars(val) === '"' || getBoundaryChars(val) === "'")) {
+    return 'String';
+  }
+  return 'String';
+}
+
 export function typeComputation(cond) {
   if (getBoundaryChars(cond.Value) === '"' || getBoundaryChars(cond.Value) === "'") {
     cond.type = 'string';

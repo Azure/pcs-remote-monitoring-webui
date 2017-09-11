@@ -164,7 +164,6 @@ class DeviceTagFlyout extends React.Component {
     const devices = _.cloneDeep(this.props.devices);
     devices.forEach(device => (device.Etag = deviceETags[device.Id] ? deviceETags[device.Id] : device.Etag));
     this.props.actions.deviceListCommonTagsValueChanged(devices, overiddenDeviceTagValues);
-    this.applyDeviceTagJobsData();
   }
 
   saveChangedTagValues(devices, tagName, value) {
@@ -385,7 +384,7 @@ class DeviceTagFlyout extends React.Component {
           <button
             className="pcs-btn primary"
             onClick={() => {
-              this.applyChangedData();
+              this.applyDeviceTagJobsData();
             }}
           >
             <img src={Apply} alt={`${Apply}`} className="apply-icon" />

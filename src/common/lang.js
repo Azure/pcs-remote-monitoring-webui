@@ -1,4 +1,5 @@
 const lang = {
+  MULTIPLE : 'Multiple',
   REGIONDETAILS: {
     REGION: 'Region',
     DEVICES: 'DEVICES',
@@ -224,6 +225,7 @@ const lang = {
   DEVICE_DETAIL: {
     TELEMETRY: 'Telemetry',
     TAGS: 'Tags',
+    RECONFIGURE: 'Reconfigure',
     TAGS_DESCRIPTION: 'Tags applied to device',
     SIMULATED: 'Simulated',
     PHYSICAL: 'Physical',
@@ -257,7 +259,11 @@ const lang = {
     TYPE: 'TYPE',
     SUMMARY: 'Summary',
     APPLY: 'Apply',
-    TAG: 'Tag'
+    TAG: 'Tag',
+    CHOOSE_DEVICE_CONFIGURATION: "Choose device's configuration",
+    AVAILABLE_PROPERTIES: 'Available properties and values to change',
+    RECONFIGURE_JOB: 'ReconfigureJob',
+    FIELD: 'FIELD'
   },
   DEVICE_SCHEDULE: {
     METHODS: 'Methods',

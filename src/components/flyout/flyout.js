@@ -8,7 +8,8 @@ import ManageFiltersFlyout from './manageFiltersFlyout';
 import DeviceTagFlyout from './deviceTagFlyout';
 import RuleOverviewFlyout from '../ruleOverview/ruleOverview';
 import DeviceScheduleFlyout from './deviceScheduleFlyout';
-import RuleEditor from '../ruleEditor/ruleEditor'
+import DeviceReconfigureFlyout from './deviceReconfigureFlyout';
+import RuleEditor from '../ruleEditor/ruleEditor';
 
 import './flyout.css';
 
@@ -30,7 +31,11 @@ const getFlyout = (content, onClose) => {
       return <DeviceScheduleFlyout content={content} onClose={onClose} />;
 
     case 'New Rule':
-      return <RuleEditor content ={content} onClose={onClose} />;
+      return <RuleEditor content={content} onClose={onClose} />;
+
+    case 'Reconfigure':
+      return <DeviceReconfigureFlyout content={content} onClose={onClose} />;
+
     default:
       return null;
   }

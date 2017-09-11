@@ -8,6 +8,7 @@ import { Topics } from '../../common/eventtopic';
 import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
 import AddDevice from '../addDevice/addDevice';
 import DeviceTag from '../deviceTag/deviceTag';
+import DeviceReconfigure from '../deviceReconfigure/deviceReconfigure';
 import ActOnDevice from '../actOnDevice/actOnDevice';
 import lang from '../../common/lang';
 import iotHubManagerService from '../../services/iotHubManagerService';
@@ -141,6 +142,9 @@ export class DeviceList extends Component {
           </div>
           <div className="device-list-button">
             <DeviceTag />
+          </div>
+          <div className="device-list-button">
+            <DeviceReconfigure />
           </div>
         </div>
         <PcsGrid
