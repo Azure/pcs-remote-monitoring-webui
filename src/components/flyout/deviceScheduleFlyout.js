@@ -77,9 +77,10 @@ class DeviceScheduleFlyout extends React.Component {
 
   onConfirm() {
     const ids = this.props.content.devices.map(device => `${device.Id}`);
+    const deviceIds = ids.map(id=> `'${id}'`).join(',');
     const payload = {
-      JobId: uuid(),
-      QueryCondition: `deviceId in [${ids.toString()}]`,
+      JobId: this.state.jobInputValue ? this.state.jobInputValue + '-' + uuid(): uuid(),
+      QueryCondition: `deviceId in [${deviceIds}]`,
       MaxExecutionTimeInSeconds: 0,
       MethodParameter: {
         Name: this.state.methodValue

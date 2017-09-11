@@ -44,6 +44,7 @@ class DeviceTagFlyout extends React.Component {
     this.state = {
       commonTags: [],
       deletedTagNames: [],
+      jobInputValue: '',
       overiddenDeviceTagValues: {
         //key will be device Id and value will be tag name/value map
       },
@@ -56,6 +57,7 @@ class DeviceTagFlyout extends React.Component {
     this.deleteExistingTag = this.deleteExistingTag.bind(this);
     this.deleteNewTag = this.deleteNewTag.bind(this);
     this.commonTagValueChanged = this.commonTagValueChanged.bind(this);
+    this.onChangeInput = this.onChangeInput.bind(this);
   }
 
   componentWillMount() {
@@ -183,6 +185,10 @@ class DeviceTagFlyout extends React.Component {
     });
   }
 
+  onChangeInput(event) {
+    this.setState({ jobInputValue: event.target.value });
+  }
+
   applyDeviceTagJobsData() {
     const x = { ...this.state.commonTagValues };
     this.state.newTags.forEach(tag => {
@@ -190,9 +196,10 @@ class DeviceTagFlyout extends React.Component {
     });
     const { devices } = this.props;
     const ids = devices.map(device => device.Id);
+    const deviceIds = ids.map(id=> `'${id}'`).join(',');
     const payload = {
-      JobId: uuid(),
-      QueryCondition: `deviceId in [${ids.toString()}]`,
+      JobId: this.state.jobInputValue ? this.state.jobInputValue + '-' + uuid(): uuid(),
+      QueryCondition: `deviceId in [${deviceIds}]`,
       MaxExecutionTimeInSeconds: 0,
       updateTwin: {
         tags: x
@@ -320,7 +327,8 @@ class DeviceTagFlyout extends React.Component {
             <div className="label-key">
               {lang.DEVICE_DETAIL.JOB_NAME}
             </div>
-            <input type="text" className="style-manage" placeholder={lang.DEVICE_DETAIL.ADJUST_TAGS} />
+            <input type="text" className="style-manage" placeholder={lang.DEVICE_DETAIL.ADJUST_TAGS} onChange={this.onChangeInput}
+            value={this.state.jobInputValue}/>
           </label>
         </div>
         <div className="device-conditions-container">

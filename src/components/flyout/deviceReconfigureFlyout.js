@@ -132,16 +132,15 @@ class DeviceReconfigureFlyout extends React.Component {
   applyDeviceConfigureJobsData() {
     const { devices } = this.props;
     const ids = devices.map(device => device.Id);
+    const deviceIds = ids.map(id=> `'${id}'`).join(',');
     const reportedProps = {};
     this.state.commonConfiguration.forEach(item => {
       reportedProps[item.label] = item.value;
     });
     const payload = {
-      JobId: uuid(),
-      QueryCondition: `deviceId in [${ids.toString()}]`,
-      MaxExecutionTimeInSeconds: 0,
+      JobId: this.state.jobInputValue ? this.state.jobInputValue + '-' + uuid() : uuid(),
+      QueryCondition: `deviceId in [${deviceIds}]`,
       updateTwin: {
-        deviceId: `deviceId in [${ids.toString()}]`,
         Properties: {
           Desired: reportedProps
         }
