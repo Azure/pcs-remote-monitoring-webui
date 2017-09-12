@@ -1,13 +1,28 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 .rule-editor {
-    margin: 5px;
-    height: calc(100% - 20px);
+    padding: 16px 0;
+    height: calc(100% - 48px);
+    overflow-y: auto;
 
     .rule-editor-body {
-        height: calc(100% - 120px);
-        overflow-y: auto;
         color: white;
+        margin-right:8px;
+        
+        .rule-editor-item{
+            margin-top:8px;
+        }
+
+        .item-title{
+            margin:16px 0;
+        }
+
+        .item-divider{
+            margin-top:32px;
+            height: 2px;
+            width:100%;
+            background-color: #6A737C;
+        }
 
         .show {
             display: block;
@@ -23,13 +38,12 @@
 
         .edit-icon {
             float: right;
-            margin-right: 20px;
+            margin-right: 64px;
             cursor: pointer;
         }
 
         .icon {
             height: 15px;
-            margin-left: 10px;
             cursor: pointer;
             margin-right: 5px;
             float: left;
@@ -61,11 +75,22 @@
             color: #afb9c3;
         }
 
+        .description {
+            margin-bottom: 16px;
+        }
+
         .help-text {
             display: block;
-            margin-top: 2px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-size: 12px;
+        }
+
+        .marginTop24{
+            margin-top:20px;
+        }
+
+        .marginTop32{
+            margin-top:32px;
         }
 
         .ruleTip {
@@ -83,10 +108,11 @@
         }
     }
 
-    .rule-editor-btns {
+    .rule-editor-btns { 
+        margin-top:64px;
+
         .btn-tool-bar {
             float: right;
-            margin-top: 20px;
 
             .button {
                 background-color: transparent;
