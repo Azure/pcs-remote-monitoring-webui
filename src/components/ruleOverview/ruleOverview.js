@@ -12,7 +12,7 @@ export default class RuleOverviewFlyout extends Component {
         super(props);
 
         this.state = {
-            enabled: props.content.selectedRules.some(rule => rule.Enabled !== props.content.selectedRules[0].Enabled) ? true: props.content.selectedRules[0].Enabled
+            enabled: props.content.selectedRules.some(rule => rule.Enabled !== props.content.selectedRules[0].Enabled) ? true : props.content.selectedRules[0].Enabled
         };
     }
 
@@ -23,9 +23,8 @@ export default class RuleOverviewFlyout extends Component {
     onSave = () => {
         let promises = [];
         let updatedRules = [];
-        this.props.content.selectedRules.forEach( rule => {
-            if(rule.Enabled !== this.state.enabled)
-            {
+        this.props.content.selectedRules.forEach(rule => {
+            if (rule.Enabled !== this.state.enabled) {
                 rule.Enabled = this.state.enabled;
                 updatedRules.push(rule);
                 promises.push(ApiService.updateRule(rule.Id, rule));
@@ -49,7 +48,7 @@ export default class RuleOverviewFlyout extends Component {
                     <div className="title">{rule.Name}</div>
                     <div className="description">{rule.Description}</div>
                     <div className="effectNumber">
-                        <div className="count">{rule.DeviceCount}</div>
+                        <div className="count">{rule.DeviceCount || 0}</div>
                         <div className="text">{lang.RULESACTIONS.EFFECTEDDEVICES}</div>
                     </div>
                 </div>
@@ -71,8 +70,10 @@ export default class RuleOverviewFlyout extends Component {
                     {overviewItems}
                 </div>
                 <div className="divider"/>
-                <div className="title">{lang.RULESACTIONS.SUMMARY} </div>
-                <div className="description"> {lang.RULESACTIONS.NOTE} </div>
+                <div className="rule-overview-summary">
+                    <div className="title">{lang.RULESACTIONS.SUMMARY} </div>
+                    <div className="description"> {lang.RULESACTIONS.NOTE} </div>
+                </div>
                 <div className="rule-overview-footer">
                     <button className="button button-save" onClick={() => this.onSave()}>{lang.FLYOUT.SAVE} </button>
                     <button className="button button-cancel" onClick={this.props.onClose}>{lang.FLYOUT.CANCEL} </button>

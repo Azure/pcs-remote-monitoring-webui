@@ -1,46 +1,39 @@
-@mixin labelHeight {
-  line-height: 40px;
-  height: 48px ;
-}
-
 .rule-overview-flyout{
-  height: 70%;
+  height: calc(100% - 20px);
 
   .title{
-    font-size: 14pt;
+    font-size: 14px;
     color: #FFF;
     vertical-align: middle;
     text-align: left;
-    margin: 15px 0;
   }
 
   .description{
-    font-size: 12pt;
+    font-size: 12px;
     color: #afb9c3;
     vertical-align: middle;
     text-align: left;
-    margin: 5px 0;
+    margin-top: 10px;
   }
 
   .divider{
-    margin: 10px 0;
     border-bottom: solid #414649 2px;
   }
 
   .toggle-button{
+    margin: 8px 0;
     .icon{
       display: inline-block;
       color: #AFB9C3;
-      height: 14pt;
+      height: 14px;
       width: 14pt;
       margin: 0 4px;
       vertical-align: middle;
     }
 
     .text{
-      line-height: 48px;
       display: inline-block;
-      font-size: 14pt;
+      font-size: 14px;
       margin: 0 2px;
       vertical-align: middle;
       color: #FFF;
@@ -85,45 +78,51 @@
   }
 
   .rule-overview-header{
-    margin-top: 10px;
+    margin-top: 16px;
     position: relative;
-    height: 48px;
   }
 
   .rule-overview-body{
     overflow-scrolling: auto;
     overflow-x: hidden;
-    overflow-y: scroll;
-    height: 80%;
+    overflow-y: auto;
+    height: calc(100% - 320px);
+    margin-top: 24px;
 
     .overview-item{
-      margin: 20px 0;
+      margin-bottom: 32px;
 
       .title{
         @extend .title;
-        @include labelHeight;
         margin: 0;
       }
 
       .description{
         @extend .description;
-        @include labelHeight;
       }
 
       .effectNumber{
-        margin-top: 10px;
+        margin-top: 16px;
         .count{
           display: inline-block;
-          font-size: 24pt;
+          font-size: 40px;
+          font-weight: bold;
           color: #FFF;
-          margin: 0 10px;
+          margin-right: 10px;
+          line-height: 30px;
         }
         .text{
           display: inline-block;
-          @extend .description
+          @extend .description;
+          vertical-align: text-bottom;
         }
       }
     }
+  }
+
+  .rule-overview-summary{
+    margin-top: 32px;
+    margin-bottom: 64px;
   }
 
   .button{
@@ -132,7 +131,7 @@
     border: none;
     margin: 0 20px;
     transition: background-color 500ms ease, color 500ms ease;
-    font-size: 14pt;
+    font-size: 14px;
     float: right;
   }
 
@@ -141,8 +140,8 @@
     background-size: contain;
     display: inline-block;
     color: #AFB9C3;
-    height: 12pt;
-    width: 12pt;
+    height: 12px;
+    width: 12px;
     margin: 0 8px;
     transition: filter 500ms ease;
   }
