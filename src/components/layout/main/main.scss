@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft. All rights reserved.
+
 .main-container {
   height: 100%;
   display: flex;  
@@ -8,12 +10,5 @@
     height: 100%;
     flex-direction: column;
     background-color:#121416;
-  
-    .main-routing-container {
-      width: 100%;
-      overflow: auto;
-      margin-top: 49px;
-      flex: 1;
-    }
   }
 }

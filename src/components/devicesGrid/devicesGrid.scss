@@ -1,0 +1,22 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+.device-list-container {
+  height: 100%;
+
+  .device-list-button-bar { text-align: right; }
+
+  .device-list-button {
+    width: 10em;
+    display: inline-block;
+    margin-left: 10px;
+  }
+
+  .ag-fresh {
+
+    .ag-row-even.ag-row-selected { background-color: #ffffff; }
+
+    .ag-row-odd.ag-row-selected { background-color: #f6f6f6; }
+
+  }
+
+}

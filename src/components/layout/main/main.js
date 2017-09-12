@@ -3,15 +3,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actions from '../../actions';
-import Header from './header.js';
-import LeftNav from './leftNav.js';
-import Flyout from '../../components/flyout/flyout';
+import * as actions from '../../../actions';
+import LeftNav from '../leftNav/leftNav.js';
+import Flyout from '../../flyout/flyout';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import './main.css';
 
+/**
+ * Contains the main layout of the application (main nav on the left, content on the right). 
+ * This component is meant to be used in conjunction with the router.
+ */
 class Main extends Component {
   render() {
     const { flyout, actions } = this.props;
@@ -25,10 +28,7 @@ class Main extends Component {
       <div className="main-container">
         <LeftNav onClick={this.props.actions.hideFlyout} />
         <div className="main-content-container">
-          <Header />
-          <div className="main-routing-container">
-            {this.props.children}
-          </div>
+          {this.props.children}
         </div>
         <Flyout {...flyoutProp} />
       </div>

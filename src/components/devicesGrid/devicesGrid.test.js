@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import { DeviceList } from './deviceList';
+import { DevicesGrid } from './devicesGrid';
 import fetch from 'node-fetch';
 import { shallow } from 'enzyme';
 
@@ -13,5 +13,5 @@ const props = {
 };
 
 it('renders without crashing', async () => {
-  shallow(<DeviceList {...props} />);
+  shallow(<DevicesGrid {...props} />);
 });
