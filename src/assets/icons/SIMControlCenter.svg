@@ -1,0 +1,12 @@
+<!-- Copyright (c) Microsoft. All rights reserved. -->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="8675 -22535 16 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #afb9c3;
+      }
+    </style>
+  </defs>
+  <path id="Path_1710" data-name="Path 1710" class="cls-1" d="M6.857,0H16V16H0V6.857H3.352V4.571H0V0H4.571V3.352H6.857Zm8.076,14.933V1.219h-3.5V4.571h-3.5V7.924H4.571v3.352H1.219v3.352H14.933ZM1.219,3.352H3.5V1.219H1.219Zm0,4.571V10.21H3.5V7.924ZM4.571,4.571V6.857H6.857V4.571ZM7.924,1.219V3.5H10.21V1.219Z" transform="translate(8675 -22535)"/>
+</svg>

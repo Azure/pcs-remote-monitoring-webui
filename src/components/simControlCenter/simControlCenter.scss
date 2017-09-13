@@ -1,0 +1,38 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+.simControlCenter {
+    position: relative;
+
+    .toolTip {
+        background-color: #242628;
+        padding: 15px 20px;
+        position: absolute;
+        top: 30px;
+        left: 0;
+        z-index: 999;
+        text-align: center;
+        color: white;
+    }
+
+    .simControlCenter-btn {
+        .simControlCenter-icon {
+            width: 15px;
+            padding-right: 4px;
+            vertical-align: baseline;
+        }
+
+        .simControlCenter-text {
+            font-size: 14px;
+            cursor: pointer;
+            color: #fff;
+        }
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .show {
+        display: block;
+    }
+}

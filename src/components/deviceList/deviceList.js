@@ -10,6 +10,7 @@ import AddDevice from '../addDevice/addDevice';
 import DeviceTag from '../deviceTag/deviceTag';
 import DeviceReconfigure from '../deviceReconfigure/deviceReconfigure';
 import ActOnDevice from '../actOnDevice/actOnDevice';
+import SimControlCenter from '../simControlCenter/simControlCenter';
 import lang from '../../common/lang';
 import iotHubManagerService from '../../services/iotHubManagerService';
 import Rx from 'rxjs';
@@ -139,6 +140,9 @@ export class DeviceList extends Component {
           </div>
           <div className="device-list-button">
             <AddDevice />
+          </div>
+          <div className="device-list-button">
+            <SimControlCenter />
           </div>
           <div className="device-list-button">
             <DeviceTag />

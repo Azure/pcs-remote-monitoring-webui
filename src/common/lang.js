@@ -263,7 +263,9 @@ const lang = {
     CHOOSE_DEVICE_CONFIGURATION: "Choose device's configuration",
     AVAILABLE_PROPERTIES: 'Available properties and values to change',
     RECONFIGURE_JOB: 'ReconfigureJob',
-    FIELD: 'FIELD'
+    FIELD: 'FIELD',
+    SIM_CONTROL_CENTER: 'SIM Control Center',
+    COMING_SOON: 'Coming soon'
   },
   DEVICE_SCHEDULE: {
     METHODS: 'Methods',
