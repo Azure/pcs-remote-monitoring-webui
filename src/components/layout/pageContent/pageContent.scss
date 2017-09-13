@@ -1,12 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 .page-content {
-  display: flex;
-  flex-flow: column nowrap;
-  width: 100%;
-  height: 100%;
   overflow: auto;
   padding: 10px 20px;
+  height: 100%;
 
   // Override to fix the bootstrap grid inside the page-conent
   // Should be removed when grids are removed

@@ -1,130 +1,139 @@
 /*
- This file contains a class pcs-ag-dark that when combined with the ag-dark 
- theme from AgGrid updates the ag-dark theme to match the PCS grid theme
- */
+This file contains a class pcs-ag-dark that when combined with the ag-dark 
+theme from AgGrid updates the ag-dark theme to match the PCS grid theme
+*/
 
- $darkBgColor: #121416;
- $rowBgColor: #1b1d1f;
- $selectedRowBgColor: #242628;
- $selectedRowBorderColor: #7065fd;
- $rowHeight: 40px;
- $rowHeightWithPadding: ($rowHeight + 8px);
- $headerColor: #9fa8b1;
- $checkboxPadding: 8px;
- 
- .pcs-grid-container.ag-dark.pcs-ag-dark {
-   background-color: $darkBgColor;
-   height: 100%;
- 
-   .ag-root { border: none; }
- 
-   .ag-row,
-   .ag-body,
-   .ag-body-viewport,
-   .ag-row-even,
-   .ag-row-odd { background-color: $darkBgColor; }
- 
-   .ag-cell-focus { 
-     border: none; 
-     outline: none;
-     text-transform: capitalize;
-   }
- 
-   .ag-cell {
-     background-color: $rowBgColor;
-     text-transform: capitalize;
-     border: none !important;
-     color: #fff;
-     height: $rowHeight;
-     line-height: $rowHeight;
-     padding: 0 2px;
- 
-     &:first-child { border-left: 4px solid $rowBgColor !important; }
-   }
- 
-   .ag-row { 
-     height: 48px; 
-     cursor: pointer;
- 
-     &.ag-row-hover .ag-cell,
-     &.ag-row-focus .ag-cell { 
-       border-color: $selectedRowBgColor !important;
-       background-color: $selectedRowBgColor; 
-     }
- 
-     &.pcs-row-soft-selected .ag-cell { 
-       background-color: $selectedRowBgColor !important;
-       border-color: $selectedRowBorderColor !important;
-     }
-   }
- 
-   .ag-body-container,
-   .ag-pinned-left-cols-container {
-     .ag-row-selected .ag-cell { 
-       background-color: $selectedRowBgColor !important;
-       border-color: $selectedRowBorderColor !important;
-     }
-   }
- 
-   .ag-header {
-     background-color: $darkBgColor;
-     color: $headerColor;
-     border: none;
-     height: $rowHeight;
- 
-     &:first-child { border-left: 4px solid transparent !important; }
-   }
- 
-   .ag-header-cell {
-     text-align: left;
-     text-transform: uppercase;
-     border: none;
-     line-height: $rowHeightWithPadding;
-   }
- 
-   .ag-selection-checkbox {
-     padding-right: $checkboxPadding;
-     padding-left: $checkboxPadding;
-   }
- 
-   .ag-header-cell-label { padding: 0 4px; }
- 
-   .ag-cell-no-focus.ag-cell.ag-cell-not-inline-editing.ag-cell-value {
-     text-transform: capitalize;
-     border-bottom: none;
-   }
- 
-   .ag-cell-last-left-pinned.ag-cell-no-focus,
-   .ag-ltr .ag-cell-no-focus { border-right: none; }
- 
-   /* Remove three pixels to offset the parent padding for font alignment */
-   .ag-header-select-all { 
-     line-height: ($rowHeight - 3px); 
-     padding-left: ($checkboxPadding + 3px);
-   }
- 
-   .ag-paging-panel {
-     display: flex;
-     flex-flow: row wrap;
-     justify-content: flex-end;
-     padding: 0;
-     color: $headerColor;
- 
-     .ag-paging-row-summary-panel { display: none }
- 
-     .ag-paging-button {
-       border: none;
-       background-color: transparent;
-       color: $headerColor;
-       padding: 6px 8px;
- 
-       &:hover {
-         background-color: $rowBgColor;
-         color: #fff;
-       }
-     }
-   }
- 
-   .ag-header-cell-moving { background-color: $darkBgColor; }
- 
- }
+$darkBgColor: #121416;
+$rowBgColor: #1b1d1f;
+$selectedRowBgColor: #242628;
+$selectedRowBorderColor: #7065fd;
+$rowHeight: 40px;
+$rowHeightWithPadding: ($rowHeight + 8px);
+$headerColor: #9fa8b1;
+$checkboxPadding: 8px;
+
+.pcs-grid-container.ag-dark.pcs-ag-dark {
+  background-color: $darkBgColor;
+  position: relative;
+  height: 100%;
+
+  > div:first-child {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .ag-root { border: none; }
+
+  .ag-row,
+  .ag-body,
+  .ag-body-viewport,
+  .ag-row-even,
+  .ag-row-odd { background-color: $darkBgColor; }
+
+  .ag-cell-focus { 
+    border: none; 
+    outline: none;
+    text-transform: capitalize;
+  }
+
+  .ag-cell {
+    background-color: $rowBgColor;
+    text-transform: capitalize;
+    border: none !important;
+    color: #fff;
+    height: $rowHeight;
+    line-height: $rowHeight;
+    padding: 0 2px;
+
+    &:first-child { border-left: 4px solid $rowBgColor !important; }
+  }
+
+  .ag-row { 
+    height: 48px; 
+    cursor: pointer;
+
+    &.ag-row-hover .ag-cell,
+    &.ag-row-focus .ag-cell { 
+      border-color: $selectedRowBgColor !important;
+      background-color: $selectedRowBgColor; 
+    }
+
+    &.pcs-row-soft-selected .ag-cell { 
+      background-color: $selectedRowBgColor !important;
+      border-color: $selectedRowBorderColor !important;
+    }
+  }
+
+  .ag-body-container,
+  .ag-pinned-left-cols-container {
+    .ag-row-selected .ag-cell { 
+      background-color: $selectedRowBgColor !important;
+      border-color: $selectedRowBorderColor !important;
+    }
+  }
+
+  .ag-header {
+    background-color: $darkBgColor;
+    color: $headerColor;
+    border: none;
+    height: $rowHeight;
+
+    &:first-child { border-left: 4px solid transparent !important; }
+  }
+
+  .ag-header-cell {
+    text-align: left;
+    text-transform: uppercase;
+    border: none;
+    line-height: $rowHeightWithPadding;
+  }
+
+  .ag-selection-checkbox {
+    padding-right: $checkboxPadding;
+    padding-left: $checkboxPadding;
+  }
+
+  .ag-header-cell-label { padding: 0 4px; }
+
+  .ag-cell-no-focus.ag-cell.ag-cell-not-inline-editing.ag-cell-value {
+    text-transform: capitalize;
+    border-bottom: none;
+  }
+
+  .ag-cell-last-left-pinned.ag-cell-no-focus,
+  .ag-ltr .ag-cell-no-focus { border-right: none; }
+
+  /* Remove three pixels to offset the parent padding for font alignment */
+  .ag-header-select-all { 
+    line-height: ($rowHeight - 3px); 
+    padding-left: ($checkboxPadding + 3px);
+  }
+
+  .ag-paging-panel {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    padding: 0;
+    color: $headerColor;
+
+    .ag-paging-row-summary-panel { display: none }
+
+    .ag-paging-button {
+      border: none;
+      background-color: transparent;
+      color: $headerColor;
+      padding: 6px 8px;
+
+      &:hover {
+        background-color: $rowBgColor;
+        color: #fff;
+      }
+    }
+  }
+
+  .ag-header-cell-moving { background-color: $darkBgColor; }
+
+}

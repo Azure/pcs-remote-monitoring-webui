@@ -26,9 +26,7 @@ const mapDispatchToProps = dispatch => ({
   onDeviceTagClick: () => {
     dispatch({
       type: actionTypes.FLYOUT_SHOW,
-      content: {
-        type: 'Tag'
-      }
+      content: { type: 'Tag' }
     });
   }
 });

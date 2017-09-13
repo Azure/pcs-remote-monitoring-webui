@@ -67,7 +67,7 @@ class DeviceProvisioningWorkflow extends React.Component {
     Rx.Observable
       .fromPromise(DeviceSimulationService.getDevicemodels())
       .map(models => models.map(model => ({ // Format the models list for the select component
-        value: model.Id,
+        value: model,
         label: model.Name
       })))
       .subscribe(

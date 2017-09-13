@@ -7,6 +7,7 @@ $borderColor: #454A4E;
   flex-flow: row nowrap;
   height: 49px;
   border-bottom: 1px solid $borderColor;
+  flex-shrink: 0;
 
   .device-group-filter {
     display: flex;
@@ -25,6 +26,19 @@ $borderColor: #454A4E;
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-end;
+
+    // Temporary button styling, will be removed when context filter styles are added
+    > button,
+    > input[type="button"] {
+      background-color: transparent;
+      border: none;
+      color: #fff;
+      padding-left: 15px;
+      padding-right: 15px;
+      cursor: pointer;
+
+      &:disabled { color: #585757; }
+    }
   }
 }
 

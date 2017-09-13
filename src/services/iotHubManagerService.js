@@ -26,9 +26,37 @@ class IotHubManagerService {
    *      SecondaryKey/SecondaryThumbprint: The value for the secondary key or thumprint
    */
   static createPhysicalDevice(params) {
-    return Http.post(`${IotHubManagerService.ENDPOINT}devices`, { ...params, IsSimulated: false });
+    return IotHubManagerService.createDevice({ ...params, IsSimulated: false });
   }
 
+  /**
+   * Creates a simlated device
+   *
+   * @param {string} params Parameters for creating a new device
+   *    Id: The ID of the new device. Is auto generated if left empty
+   *    Authentication: An object containg auth parameters. Generates a symmetric key if left empty
+   *      AuthenticationType: Either symmetric or x509 auth (use the AUTH_TYPE enum)
+   *      PrimaryKey/PrimaryThumprint: The value for the primary key or thumprint
+   *      SecondaryKey/SecondaryThumbprint: The value for the secondary key or thumprint
+   */
+  static createSimulatedDevice(params) {
+    return IotHubManagerService.createDevice({ ...params, IsSimulated: true });
+  }
+
+  /**
+   * Creates a device
+   *
+   * @param {string} params Parameters for creating a new device
+   *    Id: The ID of the new device. Is auto generated if left empty
+   *    IsSimulated: A flag for whether or not a device is simulated
+   *    Authentication: An object containg auth parameters. Generates a symmetric key if left empty
+   *      AuthenticationType: Either symmetric or x509 auth (use the AUTH_TYPE enum)
+   *      PrimaryKey/PrimaryThumprint: The value for the primary key or thumprint
+   *      SecondaryKey/SecondaryThumbprint: The value for the secondary key or thumprint
+   */
+  static createDevice(params) {
+    return Http.post(`${IotHubManagerService.ENDPOINT}devices`, params);
+  }  
 
   /**
    * Returns the list of devices

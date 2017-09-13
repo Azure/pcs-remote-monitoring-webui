@@ -10,6 +10,7 @@ $borderColor: #454A4E;
   display: flex;
   flex-flow: row nowrap;
   border-bottom: 1px solid $borderColor;
+  flex-shrink: 0;
 
   .breadcrumbs { 
     flex-grow: 1; 

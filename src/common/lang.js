@@ -288,6 +288,7 @@ const lang = {
   TOTAL: 'Total',
   SUCCEEDED: 'Succeeded',
   ALARMS: 'Alarms',
-  SYSTEM_STATUS: 'System Status'
+  SYSTEM_STATUS: 'System Status',
+  DEVICES_LABEL: 'Devices' // Rename to DEVICES when the devices object above is removed
 };
 export default lang;

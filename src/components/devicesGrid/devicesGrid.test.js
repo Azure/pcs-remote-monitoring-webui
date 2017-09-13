@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import { DevicesGrid } from './devicesGrid';
+import DevicesGrid from './devicesGrid';
 import fetch from 'node-fetch';
 import { shallow } from 'enzyme';
 

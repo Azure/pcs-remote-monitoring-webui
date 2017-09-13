@@ -2,13 +2,11 @@
 
 import React, { Component } from 'react';
 import { AgGridReact } from 'ag-grid-react';
+import { isFunction } from '../../common/utils';
 
 import './pcsGrid.css';
 
 const ROW_HEIGHT = 48;
-
-/** A helper function that returns true if the input is a function, false otherwise */
-const isFunc = value => typeof value === 'function';
 
 /**
  * PcsGrid is a helper wrapper around AgGrid. The primary functionality of this wrapper
@@ -17,7 +15,8 @@ const isFunc = value => typeof value === 'function';
  * Props:
  *  getSoftSelectId: A method that when provided with the a row data object returns an id for that object
  *  softSelectId: The ID of the row data to be soft selected
- * 
+ *  onHardSelectChange: Fires when rows are hard selected
+ *  onSoftSelectChange: Fires when a row is soft selected
  * TODO (stpryor): Add design pagination
  */
 export class PcsGrid extends Component {
@@ -37,7 +36,7 @@ export class PcsGrid extends Component {
     /** Save the gridApi locally on load */
     onGridReady = gridReadyEvent => {
         this.gridApi = gridReadyEvent.api;
-        if (isFunc(this.props.onGridReady)) {
+        if (isFunction(this.props.onGridReady)) {
             this.props.onGridReady(gridReadyEvent);
         }
     }
@@ -48,14 +47,36 @@ export class PcsGrid extends Component {
     /** Computes the CSS classes to apply to each row, including soft select */
     getRowClass = params => {
         let rowClasses = '';
-        if (isFunc(this.props.getSoftSelectId)) {
+        if (isFunction(this.props.getSoftSelectId)) {
             rowClasses = this.props.getSoftSelectId(params.data) === this.props.softSelectId ? 'pcs-row-soft-selected' : '';
         }
-        if (isFunc(this.props.getRowClass)) {
+        if (isFunction(this.props.getRowClass)) {
             rowClasses += ` ${this.props.getRowClass(params)}`;
         }
         return rowClasses;
     }
+
+    /** When a row is hard selected, try to fire a hard select event, plus any props callbacks */
+    onSelectionChanged = () => {
+        const { onHardSelectChange, onSelectionChanged } = this.props;
+        if (isFunction(onHardSelectChange)) {
+            onHardSelectChange(this.gridApi.getSelectedRows());
+        }
+        if (isFunction(onSelectionChanged)) {
+            onSelectionChanged();
+        }
+    };
+
+    /** When a row is selected, try to fire a soft select event, plus any props callbacks */
+    onRowClicked = row => {
+        const { onSoftSelectChange, onRowClicked } = this.props;
+        if (isFunction(onSoftSelectChange)) {
+            onSoftSelectChange(row.data);
+        }
+        if (isFunction(onRowClicked)) {
+            onRowClicked(row);
+        }
+    };
 
     render() {
         const gridParams = {
@@ -63,7 +84,9 @@ export class PcsGrid extends Component {
             headerHeight: ROW_HEIGHT,
             rowHeight: ROW_HEIGHT,
             getRowClass: this.getRowClass,
-            onGridReady: this.onGridReady
+            onGridReady: this.onGridReady,
+            onSelectionChanged: this.onSelectionChanged,
+            onRowClicked: this.onRowClicked
         };
         return (
             <div className="pcs-grid-container ag-dark pcs-ag-dark">

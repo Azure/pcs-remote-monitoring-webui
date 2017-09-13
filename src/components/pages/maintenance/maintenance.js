@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Grid, Row, Col } from 'react-bootstrap';
 
 import PageContainer from '../../layout/pageContainer/pageContainer.js';
 import PageContent from '../../layout/pageContent/pageContent.js';
@@ -23,16 +22,10 @@ class MaintenancePage extends Component {
   render() {
     return (
       <PageContainer>
-        <TopNav breadcrumbs={'Devices'} projectName={lang.DASHBOARD.AZUREPROJECTNAME} />
+        <TopNav breadcrumbs={lang.LEFTNAV.MAINTENANCE} projectName={lang.DASHBOARD.AZUREPROJECTNAME} />
         <ContextFilters></ContextFilters>
         <PageContent>
-          <Grid fluid className="layout">
-            <Row className="widgets rowH100Percent">
-              <Col md={12}>
-                <MaintenanceWidget alarms={this.props.alarmList} />
-              </Col>
-            </Row>
-          </Grid>
+          <MaintenanceWidget alarms={this.props.alarmList} />
         </PageContent>
       </PageContainer>
     );
