@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import MaintenanceSummary from './maintenanceSummary';
+import SystemStatusGrid from '../systemStatusGrid/systemStatusGrid';
 import lang from '../../common/lang';
 
 import './maintenanceWidget.css';
@@ -53,7 +54,7 @@ class MaintenanceWidget extends Component {
         {
           this.state.selectedGrid === 'alarms'
           ? 'alarms'
-          : 'system'
+          : < SystemStatusGrid />
         }
       </div>
     );

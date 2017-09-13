@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import PageContainer from '../../layout/pageContainer/pageContainer.js';
 import PageContent from '../../layout/pageContent/pageContent.js';
 import TopNav from '../../layout/topNav/topNav.js';

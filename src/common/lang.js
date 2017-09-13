@@ -1,5 +1,24 @@
+// Copyright (c) Microsoft. All rights reserved.
+
 const lang = {
+  JOBNAME : 'JOB NAME',
+  STATUS : 'STATUS',
+  OPERATION : 'OPERATION',
+  NO_OF_DEVICES: 'NO OF DEVICES',
+  SUCCEEDED_CAPITAL : 'SUCCEEDED',
+  FAILED_CAPITAL : 'FAILED',
+  START_TIME: 'START TIME',
+  END_TIME : 'END TIME',
   MULTIPLE : 'Multiple',
+  TAG :'Tag',
+  RECONFIGURE : 'Reconfigure',
+  ENQUEUED : 'Enqueued',
+  RUNNING : 'Running',
+  COMPLETED : 'Completed',
+  FAILED : 'Failed',
+  CANCELLED : 'Cancelled',
+  SCHEDULED : 'Scheduled',
+  QUEUED : 'Queued',
   REGIONDETAILS: {
     REGION: 'Region',
     DEVICES: 'DEVICES',

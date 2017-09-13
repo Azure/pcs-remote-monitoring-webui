@@ -65,6 +65,13 @@ class IotHubManagerService {
     return Http.get(`${IotHubManagerService.ENDPOINT}devices`)
   }
 
+  /**
+   * Returns the list of Jobs
+   */
+  static getAllJobs() {
+    return Http.get(`${IotHubManagerService.ENDPOINT}jobs`)
+  }
+
   static serializeParamObject(params) {
     return Object.keys(params)
       .map(param => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
