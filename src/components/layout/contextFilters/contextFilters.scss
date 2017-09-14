@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-$borderColor: #454A4E;
+$borderColor: #454a4e;
 
 .context-filter-container {
   display: flex;
@@ -26,19 +26,10 @@ $borderColor: #454A4E;
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-end;
+    align-items: stretch;
 
-    // Temporary button styling, will be removed when context filter styles are added
-    > button,
-    > input[type="button"] {
-      background-color: transparent;
-      border: none;
-      color: #fff;
-      padding-left: 15px;
-      padding-right: 15px;
-      cursor: pointer;
-
-      &:disabled { color: #585757; }
-    }
+    // Overrides for pcs-btn styles used in the PcsBtn component
+    .pcs-btn:hover:enabled { background-color: #2e2e2e; }
   }
 }
 

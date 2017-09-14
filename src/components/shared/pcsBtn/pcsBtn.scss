@@ -1,0 +1,36 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+.pcs-btn {
+  display: flex;
+  flex-flow: row nowrap;
+  color: #fff;
+  padding: 0px 16px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover { background-color: #b0b9c3; }
+
+  &.primary {
+    color: #454a4e;
+    background-color: #b0b9c3;
+
+    &:hover { background-color: #fff; }
+  }
+
+  &:disabled,
+  &.primary:disabled {
+    background-color: transparent;
+    color: #454a4e;
+    cursor: auto;
+  }
+
+  $btnSvgSize: 1.2em;
+  .pcs-btn-svg {  
+    width: $btnSvgSize;
+    height: $btnSvgSize;
+    margin-right: 0.7em;
+  }
+
+  .pcs-btn-value { font-size: 1em; }
+}

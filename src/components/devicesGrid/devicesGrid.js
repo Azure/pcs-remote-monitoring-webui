@@ -1,24 +1,21 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import Rx from 'rxjs';
-import iotHubManagerService from '../../services/iotHubManagerService';
 import PcsGrid from '../pcsGrid/pcsGrid';
-import { deviceColumnDefs, deviceGridProps } from './devicesConfig';
+import { deviceColumnDefs, defaultDeviceGridProps } from './devicesConfig';
 import { isFunction } from '../../common/utils';
 
 import './devicesGrid.css';
 
 /**
  * A grid for displaying devices
+ * 
+ * Encapsulates the PcsGrid props
  */
 class DevicesGrid extends Component {
+
   constructor(props) {
     super(props);
-
-    this.state = {
-      devices: [],
-    };
 
     // Default device grid columns
     this.columnDefs = [
@@ -30,11 +27,6 @@ class DevicesGrid extends Component {
       deviceColumnDefs.status,
       deviceColumnDefs.lastConnection
     ];
-  }
-
-  /** Initialize the devices when the component loads */
-  componentDidMount() {
-    this.loadDevices();
   }
 
   /** 
@@ -50,20 +42,12 @@ class DevicesGrid extends Component {
     }
   }
 
-  /** Makes the API call to load the devices */
-  loadDevices() {
-    Rx.Observable.fromPromise(iotHubManagerService.getDevices())
-      .map(data => data.items)
-      .subscribe(devices => this.setState({ devices: devices }));
-  }
-
   render() {
     return (
       <PcsGrid
         /* Grid Properties */
-        { ...deviceGridProps } // Default device grid options
+        { ...defaultDeviceGridProps }
         columnDefs={this.columnDefs}
-        rowData={this.state.devices}
         { ...this.props } // Allow default property overrides
         /* Grid Events */
         onGridReady={this.onGridReady}
