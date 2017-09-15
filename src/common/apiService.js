@@ -26,12 +26,6 @@ function postGroupData(group) {
     DisplayName: group.DisplayName
   };
   data.Conditions = _.cloneDeep(group.Conditions) || [];
-  data.Conditions.forEach(cond => {
-    if (cond.type === 'string') {
-      cond.Value = '"' + cond.Value + '"';
-    }
-    delete cond.type;
-  });
   return data;
 }
 
