@@ -36,6 +36,11 @@ function postGroupData(group) {
 }
 
 class ApiService {
+
+  static getCurrentUser() {
+    return Http.get(`${Config.authApiUrl}users/current`);
+  }
+
   static getAllMessages() {
     return Http.get(`${Config.telemetryApiUrl}messages`);
   }

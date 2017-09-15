@@ -2,18 +2,26 @@
 
 import React, { Component } from 'react';
 import ProfileImage from '../../assets/icons/ProfileImage.png';
-import Oauth2client from "../../common/oauth2client";
+import auth from "../../common/auth";
+import ApiService from '../../common/apiService';
 import lang from "../../common/lang";
 
 import './profile.css';
 
 class Profile extends Component {
+
+    userName = ""
+
     constructor(props) {
         super(props);
         this.state = {
             show: false
         }
-
+        ApiService.getCurrentUser().then(user => {
+            if (user) {
+                this.userName = user.Name;
+            }
+        });
     }
 
     show = () => {
@@ -21,11 +29,10 @@ class Profile extends Component {
     }
 
     switchUser() {
-        Oauth2client.logout();
+        auth.logout();
     }
 
     render() {
-        const userName = Oauth2client.getUserName();
         return (
             <span className="profile">
                 <img
@@ -33,7 +40,7 @@ class Profile extends Component {
                     src={ProfileImage}
                     alt="ProfileImage"
                     onClick={this.show}
-                    title={userName}
+                    title={this.userName}
                 />
                 {this.state.show &&
                     <ul className="profileDropdown">

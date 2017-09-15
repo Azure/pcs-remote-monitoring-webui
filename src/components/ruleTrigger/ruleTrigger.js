@@ -86,12 +86,12 @@ class RuleTrigger extends React.Component {
     }
 
     onBlur(index, event) {
-        var currentTarget = event.currentTarget; 
-        setTimeout(() => { 
-            if (!currentTarget.contains(document.activeElement)) { 
+        var currentTarget = event.currentTarget;
+        setTimeout(() => {
+            if (!currentTarget.contains(document.activeElement)) {
                 this.onUpdateClick(index);
-            } 
-        }); 
+            }
+        });
     }
 
     onValueChange(value, index) {

@@ -39,7 +39,7 @@ export default class FileUploader extends React.Component{
         this.file = e.target.files[0];
         if (this.file && this.options.maxSizeInMB && this.file.size > this.options.maxSizeInMB * 1024 * 1024) {
             //TODO: show error
-        } 
+        }
         else {
             this.upload();
         }

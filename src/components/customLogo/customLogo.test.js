@@ -30,10 +30,10 @@ it('loads data', async () => {
 
   const wrapper = mount(<CustomLogo />);
   await loadingTask;
-  
+
   expect(wrapper.state().img.split('?')[0]).toBe(logo);
   expect(wrapper.state().img).toBe(wrapper.find("img").node.src);
-  
+
   Http.get.mockRestore();
 });
 

@@ -28,41 +28,41 @@ export class DeviceList extends Component {
 
     this.state = {
       columnHeaders: [
-        { 
-          headerName: lang.DEVICES.DEVICENAME, 
-          field: 'Id', 
-          headerCheckboxSelection: true, 
-          headerCheckboxSelectionFilteredOnly: true, 
+        {
+          headerName: lang.DEVICES.DEVICENAME,
+          field: 'Id',
+          headerCheckboxSelection: true,
+          headerCheckboxSelectionFilteredOnly: true,
           checkboxSelection: true
         },
-        { 
-          headerName: lang.DEVICE_DETAIL.SIMULATED, 
-          field: 'IsSimulated', 
+        {
+          headerName: lang.DEVICE_DETAIL.SIMULATED,
+          field: 'IsSimulated',
           valueFormatter: ({ value }) => value ? lang.DEVICES.YES: lang.DEVICES.NO
         },
-        { 
-          headerName: lang.DEVICES.DEVICETYPE, 
-          field: 'Tags.deviceType', 
+        {
+          headerName: lang.DEVICES.DEVICETYPE,
+          field: 'Tags.deviceType',
           valueFormatter: ({ value }) => value || EMPTY_FIELD
         },
-        { 
-          headerName: lang.DEVICE_DETAIL.FIRMWARE, 
-          field: 'Properties.Reported.Firmware', 
+        {
+          headerName: lang.DEVICE_DETAIL.FIRMWARE,
+          field: 'Properties.Reported.Firmware',
           valueFormatter: ({ value }) => value || EMPTY_FIELD
         },
-        { 
-          headerName: lang.DEVICE_DETAIL.TELEMETRY, 
-          field: 'Properties.Reported.Telemetry', 
+        {
+          headerName: lang.DEVICE_DETAIL.TELEMETRY,
+          field: 'Properties.Reported.Telemetry',
           valueFormatter: ({ value }) => Object.keys(value || {}).join('; ') || EMPTY_FIELD
         },
-        { 
-          headerName: lang.DEVICE_DETAIL.STATUS, 
-          field: 'Connected', 
+        {
+          headerName: lang.DEVICE_DETAIL.STATUS,
+          field: 'Connected',
           valueFormatter: ({ value }) => value ? lang.DEVICES.CONNECTED : lang.DEVICES.DISCONNECTED
         },
-        { 
-          headerName: lang.DEVICES.LASTCONNECTION, 
-          field: 'LastActivity', 
+        {
+          headerName: lang.DEVICES.LASTCONNECTION,
+          field: 'LastActivity',
           valueFormatter: ({ value }) => {
             const time = moment(value);
             return (time.unix() < 0) ? EMPTY_FIELD : time.format("hh:mm:ss MM.DD.YYYY");
@@ -80,10 +80,10 @@ export class DeviceList extends Component {
     this.loadDevices();
   }
 
-  /** 
-   * Get the grid api options 
-   * 
-   * @param {Object} gridReadyEvent An object containing access to the grid APIs   
+  /**
+   * Get the grid api options
+   *
+   * @param {Object} gridReadyEvent An object containing access to the grid APIs
    */
   onGridReady = gridReadyEvent => {
     this.gridApi = gridReadyEvent.api;

@@ -45,10 +45,10 @@ class AlarmList extends Component {
     );
   }
 
-  /** 
-   * Get the grid api options 
-   * 
-   * @param {Object} gridReadyEvent An object containing access to the grid APIs   
+  /**
+   * Get the grid api options
+   *
+   * @param {Object} gridReadyEvent An object containing access to the grid APIs
    */
   onGridReady = gridReadyEvent => {
     gridReadyEvent.api.sizeColumnsToFit();
@@ -100,7 +100,7 @@ class AlarmList extends Component {
           devices: this.state.deviceIdList
         })
     ).subscribe(
-      data => this.setState({ 
+      data => this.setState({
         rowData: this.dataFormatter(data),
         loading: false
       }),

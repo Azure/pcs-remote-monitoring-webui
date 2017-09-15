@@ -45,10 +45,10 @@ const initialState = {
   isLoading: false
 }
 
-/** 
- * The DeviceProvisioningWorkflow component is resposible for rendering the provisioning forms 
+/**
+ * The DeviceProvisioningWorkflow component is resposible for rendering the provisioning forms
  * in the flyout.
- * 
+ *
  * TODO (stpryor): Consider moving the simulated and physical forms into their own components
  */
 class DeviceProvisioningWorkflow extends React.Component {
@@ -75,7 +75,7 @@ class DeviceProvisioningWorkflow extends React.Component {
 
   /**
    * Resets the component state to the initial state
-   * 
+   *
    * @param {Object} overrides - An object of any state values that to be persisted across a state reset
    */
   resetInitialState(overrides = {}) {
@@ -88,7 +88,7 @@ class DeviceProvisioningWorkflow extends React.Component {
 
   /**
    * A generic handler method for updating state when an input changes
-   * 
+   *
    * @param {Object} event - A DOM event object with the input change details
    * @param {Object} extraState - An object with any updated state other than the input
    */
@@ -110,7 +110,7 @@ class DeviceProvisioningWorkflow extends React.Component {
 
   /**
    * Checks if the given value is an integer
-   * 
+   *
    * @param {any} value - Some value that may or may not be an integer
    * @returns Returns true if the parameter is an integer
    */
@@ -120,7 +120,7 @@ class DeviceProvisioningWorkflow extends React.Component {
 
   /**
    * A helper method to validate the device id form section
-   * 
+   *
    * @param {Object} state The state of the component for state variable access
    * @returns Returns true if the device id is valid
    */
@@ -131,7 +131,7 @@ class DeviceProvisioningWorkflow extends React.Component {
 
   /**
    * Contains logic to validate the simulated device form
-   * 
+   *
    * @param {Object} state The state of the component for state variable access
    * @returns Returns true if the simulated device form is valid
    */
@@ -143,7 +143,7 @@ class DeviceProvisioningWorkflow extends React.Component {
 
   /**
    * Contains logic to validate the physical device form
-   * 
+   *
    * @param {Object} state The state of the component for state variable access
    * @returns Returns true if the physical device form is valid
    */
@@ -160,7 +160,7 @@ class DeviceProvisioningWorkflow extends React.Component {
 
   /**
    * Validates the current form values
-   * 
+   *
    * @returns Returns true if the currently displayed form is valid
    */
   validateForm() {
@@ -225,7 +225,7 @@ class DeviceProvisioningWorkflow extends React.Component {
 
   /**
    * A helper method for generating a JSX list of radio inputs and labels
-   * 
+   *
    * @param {string} radioGroupName A string with the name of the radio input (used as the HTML name attr)
    * @param {Object[]} radioItems The list of items (as objects) in the input group. Each object has a value and a label.
    * @returns Returns a JSX list of radio inputs and labels
@@ -251,7 +251,7 @@ class DeviceProvisioningWorkflow extends React.Component {
 
   /**
    * A helper method for rendering the device id section of the form
-   * 
+   *
    * @returns Returns JSX for the device ID section
    */
   renderDeviceIdSection() {
@@ -289,7 +289,7 @@ class DeviceProvisioningWorkflow extends React.Component {
 
   /**
    * Renders the summary portion of the simulated and physical device forms
-   * 
+   *
    * @returns Returns JSX for the form summary
    */
   renderFormSummary() {
@@ -313,7 +313,7 @@ class DeviceProvisioningWorkflow extends React.Component {
 
   /**
    * Renders simulated device form
-   * 
+   *
    * @returns Returns JSX for the simulated device form
    */
   renderSimulatedForm() {
@@ -354,7 +354,7 @@ class DeviceProvisioningWorkflow extends React.Component {
 
   /**
    * Renders physical device form
-   * 
+   *
    * @returns Returns JSX for the physical device form
    */
   renderPhysicalForm() {

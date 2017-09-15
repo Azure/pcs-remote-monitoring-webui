@@ -6,7 +6,7 @@ import './dashboardPanel.css';
 
 /**
  * DashboardPanel contains layout related styling details for creating a dashboard panel
- * 
+ *
  * Accepted Props:
  *  title: A string or JSX object for the panel header on the top banner left
  *  actions: A string or JSX object for the panel actions on the top banner right

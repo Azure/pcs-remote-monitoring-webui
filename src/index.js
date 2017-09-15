@@ -12,14 +12,15 @@ import MaintenancePage from "./components/pages/maintenance/maintenance";
 import registerServiceWorker from "./registerServiceWorker";
 import initialState from "./reducers/initialState";
 import configureStore from "./store/configureStore";
-import oauth2client from "./common/oauth2client";
+import auth from "./common/auth";
 
 import "./index.css";
 
 const app = document.getElementById("root");
 const store = configureStore(initialState);
 
-oauth2client.onLoad();
+// Start sign in process if required
+auth.onLoad();
 
 ReactDOM.render(
   <Provider store={store}>

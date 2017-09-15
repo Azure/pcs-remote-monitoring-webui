@@ -9,7 +9,6 @@ import Config from '../common/config';
 class DeviceTelemetryService {
 
   static ENDPOINT = Config.telemetryApiUrl;
-  
 }
 
 export default DeviceTelemetryService;

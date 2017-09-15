@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import oauth2client from './oauth2client';
+import auth from "./auth";
 
 function get(url, options) {
   return ajax(url).then(response => {
-    return getJson(response);
+    return getJson(url, response);
   });
 }
 
@@ -13,7 +13,7 @@ function post(url, data, options) {
   setJsonPayload(options, data);
   options.method = 'POST';
   return ajax(url, options).then(response => {
-    return getJson(response);
+    return getJson(url, response);
   });
 }
 
@@ -22,7 +22,7 @@ function put(url, data, options) {
   setJsonPayload(options, data);
   options.method = 'PUT';
   return ajax(url, options).then(response => {
-    return getJson(response);
+    return getJson(url, response);
   });
 }
 
@@ -32,40 +32,52 @@ function _delete(url, options) {
   return ajax(url, options).then(response => {
     var contentType = response.headers.get('content-type');
     if (contentType && contentType.includes('application/json')) {
-      return getJson(response);
+      return getJson(url, response);
     }
     return {};
   });
 }
 
 function ajax(url, options) {
-  oauth2client.getToken(token => {
-    if (token) {
-      options = options || {};
-      options.headers = options.headers || {};
-      options.headers['Authorization'] = 'Bearer ' + token;
+  options = options || {};
+  options.headers = options.headers || {};
+
+  auth.getAccessToken(accessToken => {
+    if (accessToken) {
+      options.headers['Authorization'] = 'Bearer ' + accessToken;
     }
   });
 
-  return fetch(url, options).then(response => {
-    if (response.ok) {
-      return response;
-    } else if (response.status === 401) {
-      console.info('Unauthorized request: ' + response.url);
-      oauth2client.login();
-      return response;
-    } else {
-      var error = new Error(response.statusText);
-      error.response = response;
-      throw error;
+  return fetch(url, options).then(
+    response => {
+      if (response.status < 300) {
+        return response;
+      } else if (response.status === 401) {
+        // Sign in required
+        console.warn('User needs to sign in for: ' + url);
+        return null;
+      } else if (response.status === 403) {
+        // Signed in but not authorized
+        console.error('User is not authorized for: ' + url);
+        return null;
+      } else {
+        var error = new Error(response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
     }
-  });
+  );
 }
 
-function getJson(response) {
-  return response.status !== 204 && response.status !== 401
+function getJson(url, response) {
+  if (response && typeof response !== 'undefined') {
+    return response.status !== 204 && response.status !== 401 && response.status !== 403
     ? response.json()
     : null;
+  }
+
+  console.warn("Response object for " + url + " is null.");
+  return null;
 }
 
 function setJsonPayload(options, data) {

@@ -37,7 +37,7 @@ export const Topics = {
 };
 
 function validateTopic(topic) {
-    if(!topic || typeof topic !== 'string' || topic.trim() === '') { 
+    if(!topic || typeof topic !== 'string' || topic.trim() === '') {
         throw new Error("Topic must be a non-empty string: " + topic);
     }
 }

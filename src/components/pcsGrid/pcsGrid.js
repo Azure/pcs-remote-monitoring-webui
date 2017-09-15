@@ -11,7 +11,7 @@ const ROW_HEIGHT = 48;
 /**
  * PcsGrid is a helper wrapper around AgGrid. The primary functionality of this wrapper
  * is to allow easy reuse of the pcs dark grid theme. To see params, read the AgGrid docs.
- * 
+ *
  * Props:
  *  getSoftSelectId: A method that when provided with the a row data object returns an id for that object
  *  softSelectId: The ID of the row data to be soft selected
