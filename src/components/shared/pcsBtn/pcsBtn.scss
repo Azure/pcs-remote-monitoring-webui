@@ -3,11 +3,13 @@
 .pcs-btn {
   display: flex;
   flex-flow: row nowrap;
+  flex-shrink: 0;
   color: #fff;
   padding: 0px 16px;
   background-color: transparent;
   border: none;
   cursor: pointer;
+  outline: none;
 
   &:hover { background-color: #b0b9c3; }
 

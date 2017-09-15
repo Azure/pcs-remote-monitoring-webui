@@ -2,20 +2,6 @@
 
 //TODO: Remove the fixed height for the scroll purpose once after the flyout css fixed
 .device-tag-flyout-container {
-  height: 500px;
-  overflow-y: scroll;
-
-  ::-webkit-scrollbar { width: 6px; }
-
-  ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 2px !important;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 2px !important;
-    -webkit-box-shadow: inset 0 0 6px rgba(175, 185, 195, 0.6);
-  }
 
   .device-conditions-container {
     display: flex;

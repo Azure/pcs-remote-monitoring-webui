@@ -66,13 +66,11 @@ class DeviceProvisioningWorkflow extends React.Component {
   componentDidMount() {
     Rx.Observable
       .fromPromise(DeviceSimulationService.getDevicemodels())
-      .map(models => models.map(model => ({ // Format the models list for the select component
-        value: model,
-        label: model.Name
+      .map(models => models.map(value => ({ // Format the models list for the select component
+        label: value.Name,
+        value
       })))
-      .subscribe(
-        models => this.setState({ deviceModels: models })
-      );
+      .subscribe(deviceModels => this.setState({ deviceModels }));
   }
 
   /**
@@ -81,11 +79,11 @@ class DeviceProvisioningWorkflow extends React.Component {
    * @param {Object} overrides - An object of any state values that to be persisted across a state reset
    */
   resetInitialState(overrides = {}) {
-    this.setState({ 
-      ...initialState, 
+    this.setState({
+      ...initialState,
       ...overrides,
       deviceModels: this.state.deviceModels // Keep any cached device models
-    } );
+    });
   }
 
   /**
@@ -98,7 +96,7 @@ class DeviceProvisioningWorkflow extends React.Component {
     const target = event.target;
     const name = target.name;
     const value = target.type === 'checkbox' ? target.checked : target.value;
-    
+
     // If the device type is changed, reset to the initial state
     if (name === 'deviceTypeForm' && this.state.deviceTypeForm !== undefined && value !== this.state.deviceTypeForm) {
       this.resetInitialState({ [name]: value });
@@ -140,7 +138,6 @@ class DeviceProvisioningWorkflow extends React.Component {
   simulatedFormIsValid(state) {
     const { numDevices, deviceModel } = state;
     return (this.isInteger(numDevices) && numDevices > 0) // Validate number of devices
-      && this.deviceIdIsValid(state) // Validate Device ID
       && (!!deviceModel); // Validate Device Model
   }
 
@@ -157,7 +154,7 @@ class DeviceProvisioningWorkflow extends React.Component {
       && !!authType // Validate auth type was selected
       // If authKey is manual, primaryKey and secondaryKey must also be selected,
       // otherwise auto is sufficient
-      && (authKey === authValues.AUTO 
+      && (authKey === authValues.AUTO
         || (authKey === authValues.MANUAL && primaryKey && secondaryKey));
   }
 
@@ -179,7 +176,7 @@ class DeviceProvisioningWorkflow extends React.Component {
       default:
         isValid = false;
     }
-    this.setState({ formIsValid : isValid });
+    this.setState({ formIsValid: isValid });
   }
 
   /**
@@ -210,7 +207,7 @@ class DeviceProvisioningWorkflow extends React.Component {
       _ => this.resetInitialState({ deviceTypeForm: deviceTypeValues.PHYSICAL }),
       err => console.error(err),
       _ => this.setState({ isLoading: false })
-    );
+      );
   }
 
   /**
@@ -238,14 +235,14 @@ class DeviceProvisioningWorkflow extends React.Component {
       const id = `radioBtn${radioGroupName + index}`;
       return (
         <div className="pcs-formgroup" key={id}>
-          <input type="radio" 
-                name={radioGroupName}
-                id={id}
-                value={item.value}
-                checked={this.state[radioGroupName] === item.value} 
-                onChange={event => this.handleInputChange(event, item.extraState || {})} />
+          <input type="radio"
+            name={radioGroupName}
+            id={id}
+            value={item.value}
+            checked={this.state[radioGroupName] === item.value}
+            onChange={event => this.handleInputChange(event, item.extraState || {})} />
           <label htmlFor={id}>
-            { item.label }
+            {item.label}
           </label>
         </div>
       );
@@ -269,22 +266,22 @@ class DeviceProvisioningWorkflow extends React.Component {
     }
     return (
       <FlyoutSection header={'Device ID'}>
-        { 
+        {
           this.renderRadioInputGroup('deviceIdType', [
-            { 
+            {
               value: deviceIdTypeValues.CUSTOM,
-              label: <input type="text" 
-                name="deviceId" 
+              label: <input type="text"
+                name="deviceId"
                 placeholder={placeholder}
                 disabled={this.state.deviceIdType !== deviceIdTypeValues.CUSTOM}
                 value={this.state.deviceId}
                 onChange={this.handleInputChange} />
             },
-            { 
-              value: deviceIdTypeValues.GENERATED, 
+            {
+              value: deviceIdTypeValues.GENERATED,
               label: generatedLabel
             }
-          ]) 
+          ])
         }
       </FlyoutSection>
     );
@@ -300,14 +297,14 @@ class DeviceProvisioningWorkflow extends React.Component {
       <div className="form-summary-container">
         <div className="form-summary-header">{'Provision summary'}</div>
         <div className="form-summary-details">
-          <span className="device-cnt">{this.isInteger(this.state.numDevices) ? Math.floor(this.state.numDevices):  0}</span> {'devices to provision'}
+          <span className="device-cnt">{this.isInteger(this.state.numDevices) ? Math.floor(this.state.numDevices) : 0}</span> {'devices to provision'}
         </div>
         <div className="form-action-btns">
           <button className="pcs-btn">{'Cancel'}</button>
-          <button className="pcs-btn primary" 
-                  disabled={!this.state.formIsValid || this.state.isLoading} 
-                  onClick={this.apply}>
-            {this.state.isLoading ? 'Loading...': 'Apply'}
+          <button className="pcs-btn primary"
+            disabled={!this.state.formIsValid || this.state.isLoading}
+            onClick={this.apply}>
+            {this.state.isLoading ? 'Loading...' : 'Apply'}
           </button>
         </div>
       </div>
@@ -320,30 +317,37 @@ class DeviceProvisioningWorkflow extends React.Component {
    * @returns Returns JSX for the simulated device form
    */
   renderSimulatedForm() {
+    const deviceModel = (this.state.deviceModel || {}).value || {};
     return (
       <div className="provision-device-form-container">
         <FlyoutSection header={'Number of devices'}>
           <div className="pcs-formgroup">
-              <input type="text"
-                    className="small"
-                    name="numDevices" 
-                    value={this.state.numDevices}
-                    onChange={this.handleInputChange} />
+            <input type="text"
+              className="small"
+              name="numDevices"
+              value={this.state.numDevices}
+              onChange={this.handleInputChange} />
           </div>
         </FlyoutSection>
-        { this.renderDeviceIdSection() }
+        <FlyoutSection header={'Device ID Example'}>
+          <div className="pcs-formgroup">
+            <div className="pcs-formgroup">
+              <label>{`Simulated-${deviceModel.Name || '{Device Name}'}-{#####}`}</label>
+            </div>
+          </div>
+        </FlyoutSection>
         <FlyoutSection header={'Device model'}>
           <Select
             options={this.state.deviceModels}
             value={this.state.deviceModel}
-            onChange={value => this.handleInputChange({ target: {name: 'deviceModel', value: value }})}
+            onChange={value => this.handleInputChange({ target: { name: 'deviceModel', value: value } })}
             clearable={false}
             searchable={false}
             autosize={true}
             placeholder={this.state.deviceModels.length ? 'Select existing device type' : 'Loading...'}
           />
         </FlyoutSection>
-        { this.renderFormSummary() }
+        {this.renderFormSummary()}
       </div>
     );
   }
@@ -364,46 +368,46 @@ class DeviceProvisioningWorkflow extends React.Component {
       <div className="provision-device-form-container">
         <FlyoutSection header={'Number of devices'}>
           <div className="pcs-formgroup">
-              <label>{ this.state.numDevices }</label>
+            <label>{this.state.numDevices}</label>
           </div>
         </FlyoutSection>
-        { this.renderDeviceIdSection() }
+        {this.renderDeviceIdSection()}
         <FlyoutSection header={'Authentication type'}>
-          { 
+          {
             this.renderRadioInputGroup('authType', [
               { value: authTypes.SYMMETRIC, label: 'Symmetric Key' },
               { value: authTypes.X509, label: 'X.509', extraState: { authKey: authValues.MANUAL } }
-            ]) 
+            ])
           }
         </FlyoutSection>
         <FlyoutSection header={'Authentication key'}>
-          { 
-            this.renderRadioInputGroup('authKey', authKeyOptions) 
+          {
+            this.renderRadioInputGroup('authKey', authKeyOptions)
           }
           <div className="manual-auth-key-container pcs-formgroup">
             <label htmlFor="primary-key-input">
               {this.state.authType === authTypes.X509 ? 'Primary Thumbprint' : 'Primary Key'}
             </label>
-            <input type="text" 
-                  id="primary-key-input"
-                  name="primaryKey" 
-                  placeholder={'Enter your key here...'}
-                  disabled={this.state.authKey !== authValues.MANUAL}
-                  value={this.state.primaryKey}
-                  onChange={this.handleInputChange} />
+            <input type="text"
+              id="primary-key-input"
+              name="primaryKey"
+              placeholder={'Enter your key here...'}
+              disabled={this.state.authKey !== authValues.MANUAL}
+              value={this.state.primaryKey}
+              onChange={this.handleInputChange} />
             <label htmlFor="secondary-key-input">
               {this.state.authType === authTypes.X509 ? 'Secondary Thumbprint' : 'Secondary Key'}
             </label>
-            <input type="text" 
-                  id="secondary-key-input"
-                  name="secondaryKey" 
-                  placeholder={'Enter your key here...'}
-                  disabled={this.state.authKey !== authValues.MANUAL}
-                  value={this.state.secondary}
-                  onChange={this.handleInputChange} />
+            <input type="text"
+              id="secondary-key-input"
+              name="secondaryKey"
+              placeholder={'Enter your key here...'}
+              disabled={this.state.authKey !== authValues.MANUAL}
+              value={this.state.secondary}
+              onChange={this.handleInputChange} />
           </div>
         </FlyoutSection>
-        { this.renderFormSummary() }
+        {this.renderFormSummary()}
       </div>
     );
   }
@@ -424,14 +428,14 @@ class DeviceProvisioningWorkflow extends React.Component {
     return (
       <div className="provision-workflow-container">
         <FlyoutSection header={'Device type'}>
-          { 
+          {
             this.renderRadioInputGroup('deviceTypeForm', [
               { value: deviceTypeValues.SIMULATED, label: 'Simulated' },
               { value: deviceTypeValues.PHYSICAL, label: 'Physical' }
-            ]) 
+            ])
           }
         </FlyoutSection>
-        { deviceForm }
+        {deviceForm}
       </div>
     );
   }

@@ -1,39 +1,74 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+$flyoutHeight: 48px;
 .flyout-wrapper {
-  position: absolute;
-  top: 51px;
+  position: fixed;
+  top: 48px;
   right: 0px;
-  width: 30%;
+  width: 500px;
   bottom: 0px;
+  display: flex;
+  flex-flow: column nowrap;
   transition-duration: 0.1s;
   transition-timing-function: ease;
   background-color: #121416;
   color: #afb9c3;
-  padding: 0 16px;
+  padding: 0;
   z-index: 1001;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: -3px 3px 14px rgba(0, 0, 0, 0.9);
+  animation: 0.2s ease 0s 1 slideInFromRight;
+
+  $borderColor: #454a4e;
+  $headerHeight: 50px;
+  $contentPadding: 20px;
+  .flyout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    border-top: 1px solid $borderColor;
+    border-bottom: 1px solid $borderColor;
+    height: $headerHeight;
+    flex-shrink: 0;
+
+    .flyout-title {
+      padding-left: $contentPadding;
+      line-height: $headerHeight; 
+    }
+
+    .flyout-actions {
+      display: flex;
+      flex-flow: row nowrap;
+      flex-grow: 1;
+      justify-content: flex-end;
+      padding-right: 5px;
+
+      > button {
+        display: flex;
+        justify-content: center;
+        background-color: transparent;
+        border: 0;
+        height: $flyoutHeight;
+        width: $flyoutHeight;
+        outline: none;
+
+        > img {
+          height: 50%;
+          width: 50%;
+        }
+      }
+    }
+  }
+
+  .flyout-content {
+    flex-grow: 1;
+    overflow: auto;
+    padding-left: $contentPadding;
+    padding-right: $contentPadding;
+  }
+
 }
 
-.flyout-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #454a4e;
-  height: 48px;
-  span {
-    margin-left: 10px;
-  }
-}
-
-.flyout-footer {
-  float: right;
-  margin-top: 32px;
-  padding: 8px;
-  background-color: #242628;
-  cursor: pointer;
-  &:hover {
-    color: #ffffff;
-    background-color: #454a4e;
-  }
+@keyframes slideInFromRight {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(0); }
 }

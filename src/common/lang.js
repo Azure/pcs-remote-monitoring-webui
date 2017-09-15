@@ -18,9 +18,12 @@ const lang = {
   FAILED : 'Failed',
   CANCELLED : 'Cancelled',
   SCHEDULED : 'Scheduled',
+  SCHEDULE : 'Schedule',
   QUEUED : 'Queued',
   CONNECTED: 'Connected',
   OFFLINE: 'Offline',
+  MANAGEFILTERS: 'Manage filters',
+  DELETE: 'Delete',
   REGIONDETAILS: {
     REGION: 'Region',
     DEVICES: 'DEVICES',

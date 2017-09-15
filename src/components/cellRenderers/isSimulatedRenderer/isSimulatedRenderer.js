@@ -3,16 +3,17 @@
 import React from "react";
 import lang from "../../../common/lang";
 
+import SimulatedDeviceSvg from '../../../assets/icons/SimulatedDevice.svg';
+import PhysicalDeviceSvg from '../../../assets/icons/PhysicalDevice.svg';
+
 import '../cellRenderer.css'
 
 class IsSimulatedRenderer extends React.Component {
   render() {
     const { value } = this.props;
-    const cellClasses = `pcs-renderer-cell ${value && 'highlight'}`;
-
     return (
-      <div className={cellClasses}>
-        <div className="pcs-renderer-icon"></div>
+      <div className="pcs-renderer-cell highlight">
+        <img src={value ? SimulatedDeviceSvg : PhysicalDeviceSvg} className="pcs-renderer-icon" alt='Device Type Icon' />
         <div className="pcs-renderer-text">
           {value ? lang.DEVICES.YES : lang.DEVICES.NO}
         </div>

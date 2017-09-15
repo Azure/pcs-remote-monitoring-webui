@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import CloseIcon from '../../assets/icons/X.svg';
-import FullWidthIcon from '../../assets/icons/FullWidth.svg';
 import DeviceDetailFlyout from './deviceDetailFlyout';
 import ManageFiltersFlyout from './manageFiltersFlyout';
 import DeviceTagFlyout from './deviceTagFlyout';
@@ -10,6 +8,9 @@ import RuleOverviewFlyout from '../ruleOverview/ruleOverview';
 import DeviceScheduleFlyout from './deviceScheduleFlyout';
 import DeviceReconfigureFlyout from './deviceReconfigureFlyout';
 import RuleEditor from '../ruleEditor/ruleEditor';
+import DeviceProvisioningWorkflow from '../deviceProvisioningWorkflow/deviceProvisioningWorkflow';
+
+import CloseIcon from '../../assets/icons/X.svg';
 
 import './flyout.css';
 
@@ -36,32 +37,30 @@ const getFlyout = (content, onClose) => {
     case 'Reconfigure':
       return <DeviceReconfigureFlyout content={content} onClose={onClose} />;
 
+    case 'Provision':
+      return <DeviceProvisioningWorkflow content={content} onClose={onClose} />;
+
     default:
       return null;
   }
 };
 
 const Flyout = ({ show, content, onClose }) => {
-  const iconStyle = {
-    height: 16,
-    width: 16
-  };
   return show
     ? <div className="flyout-wrapper">
         <div className="flyout-header">
-          <div>
+          <div className="flyout-title">
             {content.title || content.type}
           </div>
-          <div>
-            <span>
-              <img src={FullWidthIcon} {...iconStyle} alt={`${FullWidthIcon}`} />
-            </span>
-            <span onClick={onClose}>
-              <img src={CloseIcon} {...iconStyle} alt={`${CloseIcon}`} />
-            </span>
+          <div className="flyout-actions">
+            <button onClick={onClose}>
+              <img src={CloseIcon} alt="Close" />
+            </button>
           </div>
         </div>
-        {getFlyout(content, onClose)}
+        <div className="flyout-content">
+          {getFlyout(content, onClose)}
+        </div>
       </div>
     : null;
 };

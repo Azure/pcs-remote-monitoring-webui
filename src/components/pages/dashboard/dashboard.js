@@ -14,6 +14,7 @@ import KpiWidget from '../../kpiWidget/kpiWidget';
 import * as actions from '../../../actions';
 import DeviceMap from '../../deviceMap/deviceMap.js';
 import lang from '../../../common/lang';
+import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
 
 class DashboardPage extends Component {
 
@@ -39,7 +40,9 @@ class DashboardPage extends Component {
     return (
       <PageContainer>
         <TopNav breadcrumbs={'Dashboard'} projectName={lang.DASHBOARD.AZUREPROJECTNAME} />
-        <ContextFilters></ContextFilters>
+        <ContextFilters>
+          <ManageFilterBtn />
+        </ContextFilters>
         <PageContent>
           <Grid fluid className="layout">
             <Row>

@@ -13,11 +13,14 @@ import ContextFilters from '../../layout/contextFilters/contextFilters.js';
 import DevicesGrid from '../../devicesGrid/devicesGrid';
 import { getSoftSelectId } from '../../devicesGrid/devicesConfig';
 import lang from '../../../common/lang';
-import ActOnDevice from '../../actOnDevice/actOnDevice';
-import AddDevice from '../../addDevice/addDevice';
 import PcsBtn from '../../shared/pcsBtn/pcsBtn';
+import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
 
-import ApplySvg from '../../../assets/icons/Apply.svg';
+import TagSvg from '../../../assets/icons/Tag.svg';
+import ScheduleSvg from '../../../assets/icons/Schedule.svg';
+import ReconfigureSvg from '../../../assets/icons/Reconfigure.svg';
+import DeleteSvg from '../../../assets/icons/Trash.svg';
+import AddSvg from '../../../assets/icons/Add.svg';
 
 class DevicesPage extends Component {
 
@@ -27,6 +30,42 @@ class DevicesPage extends Component {
     this.state = {
       softSelectedDeviceId: '',
       selectedDevices: []
+    };
+
+    // Define context filter buttons
+    const {
+      openTagFlyout,
+      openDeviceScheduleFlyout,
+      openReconfigureFlyout,
+      openProvisionFlyout
+    } = this.props;
+
+    this.contextButtons = {
+      tag: { 
+        svg: TagSvg, 
+        onClick: openTagFlyout, 
+        value: lang.DEVICE_DETAIL.TAG 
+      },
+      schedule: { 
+        svg: ScheduleSvg, 
+        onClick: openDeviceScheduleFlyout, 
+        value: lang.SCHEDULE 
+      },
+      reconfigure: { 
+        svg: ReconfigureSvg, 
+        onClick: openReconfigureFlyout, 
+        value: lang.RECONFIGURE 
+      },
+      delete: { 
+        svg: DeleteSvg, 
+        onClick: () => alert('Oops, you can\'t delete yet'), 
+        value: lang.DELETE 
+      },
+      provision: { 
+        svg: AddSvg, 
+        onClick: openProvisionFlyout, 
+        value: lang.DEVICES.PROVISIONDEVICES 
+      }
     };
   }
 
@@ -49,6 +88,22 @@ class DevicesPage extends Component {
     );
   }
 
+  renderContextFilters() {
+    const pcsBtn = (props, visible = true) => visible ? <PcsBtn {...props} /> : '';
+    const showActionBtns = this.state.selectedDevices.length > 0;
+
+    return (
+      <ContextFilters>
+        { pcsBtn(this.contextButtons.tag, showActionBtns) }
+        { pcsBtn(this.contextButtons.schedule, showActionBtns) }
+        { pcsBtn(this.contextButtons.reconfigure, showActionBtns) }
+        { pcsBtn(this.contextButtons.delete, showActionBtns) }
+        <ManageFilterBtn />
+        { pcsBtn(this.contextButtons.provision) }
+      </ContextFilters>
+    );
+  }
+
   render() {
     // Extract the devices from the props
     const devicesProps = this.props.devices || {};
@@ -68,15 +123,7 @@ class DevicesPage extends Component {
     return (
       <PageContainer>
         <TopNav breadcrumbs={lang.DEVICES_LABEL} projectName={lang.DASHBOARD.AZUREPROJECTNAME} />
-        <ContextFilters>
-          <ActOnDevice ref="actOnDevice" buttonText={lang.DEVICES.ACTONDEVICES} devices={this.state.selectedDevices} />
-          <AddDevice />
-          <PcsBtn
-            svg={ApplySvg}
-            disabled={!this.state.selectedDevices.length}
-            onClick={this.props.onDeviceTagClick}
-            value={lang.DEVICE_DETAIL.TAG} />
-        </ContextFilters>
+        { this.renderContextFilters() }
         <PageContent>
           <DevicesGrid { ...deviceGridProps } />
         </PageContent>
@@ -91,14 +138,20 @@ const mapStateToProps = state => {
 
 // Connect to Redux store
 const mapDispatchToProps = dispatch => {
+  // A helper method for opening the flyout
+  const openFlyout = (type, callback) => {
+    dispatch({
+      type: actionTypes.FLYOUT_SHOW,
+      content: { type, callback }
+    });
+  }
+
   return {
     actions: bindActionCreators(actions, dispatch),
-    onDeviceTagClick: () => {
-      dispatch({
-        type: actionTypes.FLYOUT_SHOW,
-        content: { type: 'Tag' }
-      });
-    }
+    openTagFlyout: () => openFlyout('Tag'),
+    openDeviceScheduleFlyout: () => openFlyout('Device Schedule'),
+    openReconfigureFlyout: () => openFlyout('Reconfigure'),
+    openProvisionFlyout: () => openFlyout('Provision')
   };
 };
 

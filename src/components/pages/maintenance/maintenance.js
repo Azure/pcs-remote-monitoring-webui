@@ -10,6 +10,7 @@ import ContextFilters from '../../layout/contextFilters/contextFilters.js';
 import * as actions from '../../../actions';
 import MaintenanceWidget from '../../maintenance/maintenanceWidget';
 import lang from '../../../common/lang';
+import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
 
 class MaintenancePage extends Component {
 
@@ -22,7 +23,9 @@ class MaintenancePage extends Component {
     return (
       <PageContainer>
         <TopNav breadcrumbs={lang.LEFTNAV.MAINTENANCE} projectName={lang.DASHBOARD.AZUREPROJECTNAME} />
-        <ContextFilters></ContextFilters>
+        <ContextFilters>
+          <ManageFilterBtn />
+        </ContextFilters>
         <PageContent>
           <MaintenanceWidget alarms={this.props.alarmList} />
         </PageContent>
