@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import MockGlobalConfig from '../../mock/config';
 import React from 'react';
 import CustomDialog from './customDialog';
 import fetch from 'node-fetch';

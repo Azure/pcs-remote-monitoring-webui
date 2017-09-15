@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import MockGlobalConfig from '../../mock/config';
 import React from 'react';
 import CustomLogo from './customLogo';
 import fetch from 'node-fetch';

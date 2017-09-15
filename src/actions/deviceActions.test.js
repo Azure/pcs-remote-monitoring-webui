@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import MockedConfig from '../mock/config';
 import * as actions from './deviceActions';
 import * as types from './actionTypes';
 

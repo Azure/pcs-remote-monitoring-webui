@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import MockedConfig from '../../mock/config';
 import React from 'react';
 import CustomDevice from './customDevice';
 import fetch from 'node-fetch';

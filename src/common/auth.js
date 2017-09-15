@@ -38,10 +38,11 @@ function getUserName(callback) {
 
   if (authContext.getCachedUser()) {
     ApiService.getCurrentUser().then(data => {
-      callback({
-        Name: data.Name,
-        Email: data.Email
-      });
+      if (data) {
+        callback({ Name: "", Email: "" });
+      } else {
+        callback(null);
+      }
     });
   } else {
     console.log('The user is not signed in');

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import MockedConfig from '../../mock/config';
 import React from 'react';
 import GenericDropDownList from './genericDropDownList';
 import EventTopic from '../../common/eventtopic';
