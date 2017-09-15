@@ -1,295 +1,167 @@
-.rulesActionsContainer {
+// Copyright (c) Microsoft. All rights reserved.
+
+.rules-actions-container {
   display: flex;
   flex-direction: column;
   height: 100%;
-}
 
-.rulesActionsListContainer {
-  order: 1;
-  flex-basis: 90%;
-  align-self: stretch;
-  flex-grow: 9;
-}
+  .rules-actions-button-container {
+    order: 0;
+    flex-grow: 1;
+    justify-content: space-between;
+    width: 100%;
 
-.rulesActionsButtonContainer {
-  order: 0;
-  flex-grow: 1;
-  justify-content: space-between;
-  width: 100%;
-
-  .cell-button {
-    display: inline-block;
-    float: none !important;
-    margin: 0 8px !important;
-  }
-
-  .spinner-grid {
-    text-align: center;
-    margin-top: 80px;
-    height: 200px;
-  }
-
-  .button {
-    float: right;
-    height: 40px;
-    line-height: 40px;
-    margin-right: 24px;
-    cursor: pointer;
-    .button-icon {
+    .cell-button {
       display: inline-block;
-      color: #afb9c3;
-      height: 14px;
-      width: 14px;
-    }
-    .delete {
-      @extend .button-icon;
-      background: url("../../assets/icons/Delete.svg") no-repeat center;
-      background-size: contain;
-    }
-    .add {
-      @extend .button-icon;
-      background: url("../../assets/icons/Add.svg") no-repeat center;
-      background-size: contain;
-    }
-    .edit {
-      @extend .button-icon;
-      background: url("../../assets/icons/Edit.svg") no-repeat center;
-      background-size: contain;
-    }
-    .enable {
-      @extend .button-icon;
-      width: 16px;
-      background: url("../../assets/icons/Enable.svg") no-repeat center;
-      background-size: contain;
-    }
-    .disable {
-      @extend .button-icon;
-      width: 16px;
-      background: url("../../assets/icons/Disable.svg") no-repeat center;
-      background-size: contain;
+      float: none !important;
+      margin: 0 8px !important;
     }
 
-    .enableDisable {
-      @extend .button-icon;
+    .spinner-grid {
+      text-align: center;
+      margin-top: 80px;
+      height: 200px;
+    }
+
+    .button {
+      float: right;
+      height: 40px;
+      line-height: 40px;
+      margin-right: 24px;
+      cursor: pointer;
+
+      .button-icon {
+        display: inline-block;
+        color: #afb9c3;
+        height: 14px;
+        width: 14px;
+      }
+
+      .delete {
+        @extend .button-icon;
+        background: url("../../assets/icons/Delete.svg") no-repeat center;
+        background-size: contain;
+      }
+
+      .add {
+        @extend .button-icon;
+        background: url("../../assets/icons/Add.svg") no-repeat center;
+        background-size: contain;
+      }
+
+      .edit {
+        @extend .button-icon;
+        background: url("../../assets/icons/Edit.svg") no-repeat center;
+        background-size: contain;
+      }
+
+      .enable {
+        @extend .button-icon;
+        width: 16px;
+        background: url("../../assets/icons/Enable.svg") no-repeat center;
+        background-size: contain;
+      }
+
+      .disable {
+        @extend .button-icon;
+        width: 16px;
+        background: url("../../assets/icons/Disable.svg") no-repeat center;
+        background-size: contain;
+      }
+
+      .enableDisable {
+        @extend .button-icon;
+        width: 16px;
+        background: url("../../assets/icons/Change_status.svg") no-repeat center;
+        background-size: contain;
+      }
+
+      .more {
+        @extend .button-icon;
+        width: 18px;
+        background: url("../../assets/icons/Elipsis.svg") no-repeat center;
+        background-size: contain;
+      }
+      
+      .button-text {
+        display: inline-block;
+        margin-left: 8px;
+        font-size: 14px;
+        color: #afb9c3;
+      }
+    }
+  }
+
+  .statusGroup {
+    height: 48px;
+
+    .statusGroup-disabled {
+      display: inline-block;
+      background: url("../../assets/icons/Disabled.svg") no-repeat center;
+      background-size: contain;
       width: 16px;
-      background: url("../../assets/icons/Change_status.svg") no-repeat center;
-      background-size: contain;
+      height: 16px;
     }
-    .more {
-      @extend .button-icon;
-      width: 18px;
-      background: url("../../assets/icons/Elipsis.svg") no-repeat center;
+
+    .statusGroup-enabled {
+      line-height: 48px;
+      vertical-align: middle;
+      display: inline-block;
+      background: url("../../assets/icons/Enabled.svg") no-repeat center;
       background-size: contain;
+      width: 16px;
+      height: 16px;
     }
-    .button-text {
+
+    .statusGroup-text-disabled {
       display: inline-block;
       margin-left: 8px;
+      text-transform: uppercase;
       font-size: 14px;
-      color: #afb9c3;
+      color: #afb8c3;
+    }
+
+    .statusGroup-text-enabled {
+      display: inline-block;
+      margin-left: 8px;
+      text-transform: uppercase;
+      font-size: 14px;
+      color: #ffffff;
     }
   }
-}
 
-.rulesActionsContainer {
-  .ag-dark {
-    .ag-row-even {
-      background-color: #121416;
+  .severityGroup{
+    @extend .statusGroup;
+    
+    .severityGroup-text {
+      display: inline-block;
+      margin-left: 8px;
+      text-transform: capitalize;
+      font-size: 14px;
     }
 
-    .ag-row-odd {
-      background-color: #121416;
-    }
-
-    .ag-pinned-left-cols-container {
-      .ag-row-selected {
-
-        .ag-cell {
-          background-color: #232528;
-        }
-
-        .ag-cell:first-child {
-          border-left: 3px solid #6F64FC !important;
-        }
-      }
-    }
-
-    .ag-body-container {
-      .ag-row-selected {
-        .ag-cell {
-          background-color: #232528;
-        }
-      }
-    }
-
-    .ag-cell {
-      background-color: #1b1d1f;
-      height: 40px;
-    }
-
-    .ag-header {
-      background-color: #121416;
-      font-size: 12px;
-      color: #afb9c3;
-      height: 40px;
-      border: none;
-    }
-
-    .ag-header-select-all {
-      padding: 0;
-      top: 50%;
-      left: 50%;
-      position: relative;
-      transform: translate(-50%, -50%);
+    .severityGroup-info {
+      display: inline-block;
+      background: url("../../assets/icons/Info.svg") no-repeat center;
+      background-size: contain;
       width: 12px;
       height: 12px;
     }
 
-    .ag-row {
-      background-color: #121416;
+    .severityGroup-warning {
+      display: inline-block;
+      background: url("../../assets/icons/Warning.svg") no-repeat center;
+      background-size: contain;
+      width: 12px;
+      height: 12px;
     }
 
-    .ag-header-cell {
-      text-align: left;
-      text-transform: uppercase;
-      border: none;
-      line-height: 48px;
-    }
-
-    .ag-header-cell-label {
-      padding: 0 4px;
-    }
-
-    .ag-cell-no-focus.ag-cell.ag-cell-not-inline-editing.ag-cell-value {
-      border-bottom: none;
-    }
-
-    .ag-cell-last-left-pinned.ag-cell-no-focus {
-      border-right: none;
-    }
-
-    .ag-checkbox-checked, .ag-checkbox-unchecked, .ag-checkbox-indeterminate {
-      width: 100%;
-      height: 100%;
-      display: block;
-      img {
-        filter: alpha(35%);
-        display: block;
-        top: 50%;
-        left: 50%;
-        position: relative;
-        transform: translate(-50%, -50%);
-        width: 12px;
-        height: 12px;
-      }
-      img:hover {
-        filter: none;
-      }
-    }
-
-    .ag-ltr {
-      .ag-cell-no-focus {
-        border-right: none;
-      }
-    }
-
-    .ag-body {
-      background-color: #121416;
-      line-height: 40px;
-      font-size: 14px;
-    }
-
-    .ag-body-viewport {
-      background-color: #121416;
-    }
-
-    .ag-selection-checkbox {
-      display: block;
-      width: 100%;
-      height: 100%;
-      img {
-        filter: alpha(35%);
-        display: block;
-        top: 50%;
-        left: 50%;
-        position: relative;
-        transform: translate(-50%, -50%);
-        width: 12px;
-        height: 12px;
-        transition: filter 300ms ease;
-      }
-
-      img:hover {
-        filter: none;
-      }
-    }
-
-    .statusGroup {
-      height: 48px;
-      .statusGroup-disabled {
-        display: inline-block;
-        background: url("../../assets/icons/Disabled.svg") no-repeat center;
-        background-size: contain;
-        width: 16px;
-        height: 16px;
-      }
-      .statusGroup-enabled {
-        line-height: 48px;
-        vertical-align: middle;
-        display: inline-block;
-        background: url("../../assets/icons/Enabled.svg") no-repeat center;
-        background-size: contain;
-        width: 16px;
-        height: 16px;
-      }
-      .statusGroup-text-disabled {
-        display: inline-block;
-        margin-left: 8px;
-        text-transform: uppercase;
-        font-size: 14px;
-        color: #afb8c3;
-      }
-
-      .statusGroup-text-enabled {
-        display: inline-block;
-        margin-left: 8px;
-        text-transform: uppercase;
-        font-size: 14px;
-        color: #ffffff;
-      }
-    }
-
-    .severityGroup{
-      @extend .statusGroup;
-      .severityGroup-text {
-        display: inline-block;
-        margin-left: 8px;
-        text-transform: capitalize;
-        font-size: 14px;
-      }
-
-      .severityGroup-info {
-        display: inline-block;
-        background: url("../../assets/icons/Info.svg") no-repeat center;
-        background-size: contain;
-        width: 12px;
-        height: 12px;
-      }
-
-      .severityGroup-warning {
-        display: inline-block;
-        background: url("../../assets/icons/Warning.svg") no-repeat center;
-        background-size: contain;
-        width: 12px;
-        height: 12px;
-      }
-
-      .severityGroup-critical {
-        display: inline-block;
-        background: url("../../assets/icons/Critical.svg") no-repeat center;
-        background-size: contain;
-        width: 12px;
-        height: 12px;
-      }
+    .severityGroup-critical {
+      display: inline-block;
+      background: url("../../assets/icons/Critical.svg") no-repeat center;
+      background-size: contain;
+      width: 12px;
+      height: 12px;
     }
   }
 }

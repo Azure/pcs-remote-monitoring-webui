@@ -13,14 +13,17 @@ export const gridValueFormatters = {
   checkForEmpty: (value, emptyValue = EMPTY_FIELD_VAL) => value || emptyValue
 };
 
+export const checkboxParams = {
+  headerCheckboxSelection: true,
+  headerCheckboxSelectionFilteredOnly: true,
+  checkboxSelection: true
+};
+
 /** A collection of column definitions for the devices grid */
 export const deviceColumnDefs = {
   id: {
     headerName: lang.DEVICES.DEVICENAME,
-    field: 'Id',
-    headerCheckboxSelection: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    checkboxSelection: true
+    field: 'Id'
   },
   isSimulated: {
     headerName: lang.DEVICE_DETAIL.SIMULATED,

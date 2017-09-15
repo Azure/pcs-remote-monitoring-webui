@@ -1,298 +1,69 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React, {Component} from "react";
-import {Button, Modal} from "react-bootstrap";
-import lang from "../../common/lang";
-import {bindActionCreators} from "redux";
-import {connect} from "react-redux";
-import SeverityCellRenderer from "./severityCellRenderer";
-import SearchableDataGrid from "../../framework/searchableDataGrid/searchableDataGrid";
-import StatusCellRenderer from "./statusCellRenderer";
-import deviceCountCellRenderer from "./deviceCountCellRenderer";
-import LastTriggerCellRenderer from "./lastTriggerCellRenderer";
-import DeviceSourceCellRenderer from "./deviceSourceCellRenderer";
-import ApiService from "../../common/apiService";
-import {formatString} from "../../common/utils";
+import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import * as actions from "../../actions";
+import { isFunction } from "../../common/utils";
+import PcsGrid from '../pcsGrid/pcsGrid';
+import {
+  checkboxParams,
+  rulesAndActionsColumnDefs,
+  defaultRulesAndActionsGridProps
+} from './ruleAndActionsConfig';
 
 import "./rulesActionsList.css";
 
-
-const RulesActionsHeaderHeight = 48;
-const RulesActionsRowHeight = 48;
-const LastTriggerDefaultWidth = 310;
-
 class RulesActionsList extends Component {
-    constructor(props) {
-        super(props);
 
-        this.columnDefs = [
-            {
-                headerName: lang.RULESACTIONS.RULENAME,
-                field: 'Name',
-                filter: 'text'
-            },
-            {
-                headerName: lang.RULESACTIONS.DESCRIPTION,
-                field: 'Description',
-                filter: 'text'
-            },
-            {
-                headerName: lang.RULESACTIONS.SEVERITY,
-                field: 'Severity',
-                filter: 'text',
-                cellRendererFramework: SeverityCellRenderer
-            },
-            {
-                headerName: lang.RULESACTIONS.FILTER,
-                field: 'GroupId',
-                filter: 'text',
-                cellRendererFramework: DeviceSourceCellRenderer
-            },
-            {
-                headerName: lang.RULESACTIONS.TRIGGER,
-                field: 'Conditions',
-                filter: 'text',
-                valueFormatter: (params) => {
-                    if (params.value && Array.isArray(params.value) && params.value.length) {
-                        return params.value.map(trigger => trigger['Field'] || 'Unknown').join(' and ');
-                    }
-                    return 'Unknown'
-                }
-            },
-            {
-                headerName: lang.RULESACTIONS.NOTIFICATIONTYPE,
-                field: 'Action.Type',
-                filter: 'text',
-                valueFormatter: (params) => {
-                    return params.value || lang.RULESACTIONS.ALARMLOG
-                }
-            },
-            {
-                headerName: lang.RULESACTIONS.STATUS,
-                field: 'Enabled',
-                filter: 'text',
-                cellRendererFramework: StatusCellRenderer
-            },
-            {
-                headerName: lang.RULESACTIONS.COUNT,
-                cellRendererFramework: deviceCountCellRenderer,
-            },
-            {
-                headerName: lang.RULESACTIONS.LASTTRIGGER,
-                cellRendererFramework: LastTriggerCellRenderer,
-                width: LastTriggerDefaultWidth
-            }
-        ];
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            rulesActions: [],
-            currentNode: null,
-            showConfirmModal: false,
-            showBoth: false,
-            toggleButtonText: lang.RULESACTIONS.DISABLE
-        }
+    this.columnDefs = [
+      { ...rulesAndActionsColumnDefs.ruleName, ...checkboxParams },
+      rulesAndActionsColumnDefs.description,
+      rulesAndActionsColumnDefs.severity,
+      rulesAndActionsColumnDefs.filter,
+      rulesAndActionsColumnDefs.trigger,
+      rulesAndActionsColumnDefs.notificationType,
+      rulesAndActionsColumnDefs.status,
+      rulesAndActionsColumnDefs.count,
+      rulesAndActionsColumnDefs.lastTrigger
+    ];
+  }
+
+  /** 
+   * Get the grid api options 
+   * 
+   * @param {Object} gridReadyEvent An object containing access to the grid APIs   
+   */
+   onGridReady = gridReadyEvent => {
+    this.gridApi = gridReadyEvent.api;
+
+    this.gridApi.sizeColumnsToFit();
+    // Call the onReady props if it exists
+    if (isFunction(this.props.onGridReady)) {
+      this.props.onGridReady(gridReadyEvent);
     }
+  }
 
-    getData = async (filter, callback) => {
-        ApiService.getRuleList().then(data => {
-            callback(data.Items);
-        });
+  render() {
+    const gridProps = {
+      ...defaultRulesAndActionsGridProps,
+      columnDefs: this.columnDefs,
+      ...this.props,
+      onGridReady: this.onGridReady
     };
-
-    onRowSelectionChanged = rows => {
-        let status;
-
-        // All selected rows have same status field?
-        let showBoth = !rows.every(row => {
-            if (status === undefined) {
-                status = row.Enabled
-            } else if (status !== row.Enabled) {
-                return false
-            }
-            return true;
-        });
-
-        this.setState(
-            {
-                rulesActions: rows,
-                showBoth: showBoth,
-                toggleButtonText: showBoth ? lang.RULESACTIONS.CHANGESTATUS : status ? lang.RULESACTIONS.DISABLE : lang.RULESACTIONS.ENABLE
-            }
-        );
-    };
-
-    newRule = () => {
-        this.grid.gridApi.deselectAll();
-        const {actions} = this.props;
-        const flyoutConfig = {
-            onUpdateData: this.onUpdateData,
-            title: lang.RULESACTIONS.NEWRULE,
-            type: 'New Rule'
-        };
-        actions.showFlyout({...flyoutConfig});
-        this.setState({currentNode: null});
-    };
-
-    onCellClicked = (event) => {
-        if (event.colDef.headerName !== lang.RULESACTIONS.ACTIONS) {
-            const {actions} = this.props;
-            actions.hideFlyout();
-            const flyoutConfig = {
-                    onUpdateData: this.onUpdateData,
-                    title: lang.RULESACTIONS.RULEDETAIL,
-                    type: 'New Rule',
-                    rule: event.data
-                }
-            ;
-            actions.showFlyout({...flyoutConfig});
-            this.setState({currentNode: event.node});
-        }
-    };
-
-    cancelDelete = () => {
-        this.setState({showConfirmModal: false})
-    };
-
-    showDeleteRulesModal = () => {
-        this.setState({showConfirmModal: true})
-    };
-
-    showEditRulesFlyout = () => {
-        const {actions} = this.props;
-        actions.hideFlyout();
-        const flyoutConfig = {
-            onUpdateData: this.onUpdateData,
-            title: lang.RULESACTIONS.RULEDETAIL,
-            type: 'New Rule',
-            rule: this.state.rulesActions[0],
-            inEdit: true
-        };
-        actions.showFlyout({...flyoutConfig});
-        this.setState({currentNode: this.state.nodes[0]})
-    };
-
-    confirmDelete = () => {
-        let promises = [];
-        this.state.rulesActions.forEach(rule => {
-            promises.push(ApiService.deleteRule(rule.Id));
-        });
-        Promise.all(promises)
-            .then(() => {
-                this.grid.gridApi.updateRowData({remove: this.state.rulesActions});
-            })
-            .catch(err => {
-                console.error(err);
-            });
-        this.setState({showConfirmModal: false})
-    };
-
-    showToggleRules = () => {
-        const {actions} = this.props;
-        const flyoutConfig = {
-            onUpdateData: this.onUpdateData,
-            selectedRules: this.state.rulesActions,
-            type: 'Rule Detail'
-        };
-        actions.showFlyout({...flyoutConfig});
-    };
-
-    onUpdateData = data => {
-        if (data) {
-            if (Array.isArray(data)) {
-                this.grid.gridApi.updateRowData({update: data});
-            }
-            else if (this.state.currentNode === null) {
-                this.grid.gridApi.updateRowData({add: [data]});
-            } else {
-                this.state.currentNode.setData(data);
-            }
-        }
-    };
-
-    render() {
-        let ActionButtons = {};
-        ActionButtons.newRuleButton =
-            <div className="button" onClick={this.newRule}>
-                <div className="button-icon add"/>
-                <div className="button-text">{lang.RULESACTIONS.NEWRULE}</div>
-            </div>;
-        if (this.state.rulesActions.length) {
-            ActionButtons.deleteRulesButton =
-                <div className="button" onClick={this.showDeleteRulesModal}>
-                    <div className="button-icon delete"/>
-                    <div className="button-text">{lang.RULESACTIONS.DELETE}</div>
-                </div>;
-            ActionButtons.disableRulesButton =
-                <div className="button" onClick={this.showToggleRules}>
-                    <div
-                        className={this.state.showBoth ? 'enableDisable' : this.state.toggleButtonText.toLocaleLowerCase()}/>
-                    <div className="button-text">{this.state.toggleButtonText}</div>
-                </div>;
-            if (this.state.rulesActions.length === 1) {
-                ActionButtons.editRulesButton =
-                    <div className="button" onClick={this.showEditRulesFlyout}>
-                        <div className="botton-icon edit"/>
-                        <div className="button-text">{lang.RULESACTIONS.EDIT}</div>
-                    </div>;
-            }
-        }
-        const actionButtonBar =
-            <div className="rulesActionsButtonContainer">
-                {ActionButtons.newRuleButton}
-                {ActionButtons.deleteRulesButton}
-                {ActionButtons.disableRulesButton}
-                {ActionButtons.editRulesButton}
-            </div>;
-
-        return (
-            <div ref="container" className="rulesActionsContainer">
-                {actionButtonBar}
-                <div className="rulesActionsListContainer">
-                    <SearchableDataGrid
-                        ref={(grid) => {
-                            this.grid = grid
-                        }}
-                        headerHeight={RulesActionsHeaderHeight}
-                        rowHeight={RulesActionsRowHeight}
-                        getData={this.getData}
-                        multiSelect={true}
-                        title=""
-                        showLastUpdate={true}
-                        eventDataKey="0"
-                        enableSearch={false}
-                        autoLoad={true}
-                        columnDefs={this.columnDefs}
-                        pagination={false}
-                        onRowSelectionChanged={this.onRowSelectionChanged}
-                        onCellClicked={this.onCellClicked}
-                    />
-                </div>
-
-                <Modal show={this.state.showConfirmModal}>
-                    <Modal.Header>
-                        <Modal.Title>{lang.RULESACTIONS.DELETERULES}</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                        {formatString(lang.RULESACTIONS.RULESWILLBEDELETED, this.state.rulesActions.length)}
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        <Button onClick={this.cancelDelete}>{lang.RULESACTIONS.CANCEL}</Button>
-                        <Button bsStyle="primary" onClick={this.confirmDelete}>{lang.RULESACTIONS.CONFIRM}</Button>
-                    </Modal.Footer>
-
-                </Modal>
-            </div>
-        )
-    }
+    return (
+      <div className="rules-actions-container">
+        <PcsGrid {...gridProps} />
+      </div>
+    )
+  }
 }
 
 const mapDispatchToProps = dispatch => {
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
+  return { actions: bindActionCreators(actions, dispatch) };
 };
 
 export default connect(null, mapDispatchToProps)(RulesActionsList);

@@ -13,6 +13,9 @@ import lang from '../../common/lang';
 
 const CheckBoxSize = 44;
 
+/** 
+ * DEPRICATED: The SearchableDataGrid component is being phased out
+ */
 class SearchableDataGrid extends Component {
   constructor(props) {
     super(props);
@@ -124,7 +127,6 @@ class SearchableDataGrid extends Component {
         headerCheckboxSelection: true,
         headerCheckboxSelectionFilteredOnly: true,
         checkboxSelection: true,
-        pinned: 'left',
         width: CheckBoxSize
       });
     }

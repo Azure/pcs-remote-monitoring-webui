@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PcsGrid from '../pcsGrid/pcsGrid';
-import { deviceColumnDefs, defaultDeviceGridProps } from './devicesConfig';
+import { checkboxParams, deviceColumnDefs, defaultDeviceGridProps } from './devicesConfig';
 import { isFunction } from '../../common/utils';
 
 import './devicesGrid.css';
@@ -19,7 +19,7 @@ class DevicesGrid extends Component {
 
     // Default device grid columns
     this.columnDefs = [
-      deviceColumnDefs.id,
+      { ...deviceColumnDefs.id, ...checkboxParams },
       deviceColumnDefs.isSimulated,
       deviceColumnDefs.deviceType,
       deviceColumnDefs.firmware,
