@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions';
 import MapPane from './mapPane';
-import Flyout, { Header, Body } from '../../framework/flyout/flyout';
-import DeviceDetail from '../deviceDetail/deviceDetail';
 import RegionDetails from '../../components/deviceMap/regionDetails.js';
 import { Row, Col } from 'react-bootstrap';
 import lang from '../../common/lang';
@@ -113,10 +111,6 @@ class DeviceMap extends Component {
     );
   }
 
-  showFlyout = () => {
-    this.refs.flyout.show();
-  };
-
   getDeviceData(data) {
     let Location = function(deviceId) {
       this.deviceId = deviceId;
@@ -195,12 +189,6 @@ class DeviceMap extends Component {
           <RegionDetails {...this.props} />
           <Col md={9} className="bing-map">
             <div id="deviceMap" className="dashboard_device_map" />
-            <Flyout ref="flyout">
-              <Header>Device Detail</Header>
-              <Body>
-                <DeviceDetail />
-              </Body>
-            </Flyout>
           </Col>
         </Row>
       </DashboardPanel>

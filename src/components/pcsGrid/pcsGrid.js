@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { isFunction } from '../../common/utils';
 
+import '../../../node_modules/ag-grid/dist/styles/ag-grid.css';
+import '../../../node_modules/ag-grid/dist/styles/theme-dark.css';
 import './pcsGrid.css';
 
 const ROW_HEIGHT = 48;
