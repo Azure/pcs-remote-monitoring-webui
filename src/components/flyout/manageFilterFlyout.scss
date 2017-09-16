@@ -1,5 +1,4 @@
 .manage-filter-container {
-  height: 550px;
   overflow: auto;
 
   .create-filter {
@@ -25,16 +24,12 @@
     .edit-delete-icons {
       float: right;
 
-      .edit-icon {
-        padding-right: 10px;
-      }
+      .edit-icon { padding-right: 10px; }
     }
   }
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-}
+::-webkit-scrollbar { width: 6px; }
 
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -53,9 +48,7 @@
   margin: -7px 3px 12px 6px;
 }
 
-input {
-  background-color: #1b1d1f;
-}
+input { background-color: #1b1d1f; }
 
 .label-names {
   font-size: 10px;
@@ -68,9 +61,7 @@ input {
   display: inline-block;
 }
 
-.conditions-wrapper {
-  display: inline-block;
-}
+.conditions-wrapper { display: inline-block; }
 
 .cancel-button {
   background-color: #1b1d1f;
@@ -89,18 +80,14 @@ input {
     width: 14px;
     padding-right: 2px;
 
-    &:hover {
-      color: #1b1d1f;
-    }
+    &:hover { color: #1b1d1f; }
   }
 }
 
 .buttons-group {
   padding-bottom: 25px;
 
-  .save-delete-cancel-buttons {
-    float: right;
-  }
+  .save-delete-cancel-buttons { float: right; }
 }
 
 .save {
@@ -145,9 +132,7 @@ input {
   height: 12px;
 }
 
-.error-msg {
-  color: red;
-}
+.error-msg { color: red; }
 
 .style-manage {
   font-size: 10 !important;
@@ -168,13 +153,9 @@ input {
     height: 10px;
   }
 
-  .Select {
-    width: 280px !important;
-  }
+  .Select { width: 280px !important; }
 
-  .Select-placeholder {
-    color: #454a4e;
-  }
+  .Select-placeholder { color: #454a4e; }
 
   .Select-menu-outer {
     border: 1px solid #afb9c3 !important;
@@ -184,9 +165,7 @@ input {
     margin-top: 10px !important;
     overflow: auto !important;
 
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
+    ::-webkit-scrollbar { width: 8px; }
 
     ::-webkit-scrollbar-track {
       -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -199,9 +178,7 @@ input {
     }
   }
 
-  .Select-clear {
-    display: none;
-  }
+  .Select-clear { display: none; }
 }
 
 .Remove-icon {
@@ -209,13 +186,9 @@ input {
   width: 12px;
 }
 
-.cancel-icon {
-  height: 12px;
-}
+.cancel-icon { height: 12px; }
 
-.save-delete-cancel-buttons {
-  .loading-spinner {
-    margin-right: 30px !important;
-    display: inline-block;
-  }
+.save-delete-cancel-buttons .loading-spinner {
+  margin-right: 30px !important;
+  display: inline-block;
 }

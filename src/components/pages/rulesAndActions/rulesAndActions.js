@@ -59,10 +59,8 @@ class RulesAndActionsPage extends Component {
   }
 
   componentDidMount() {
-    ApiService.getRuleList().then(({ Items }) => {
-      console.log(Items);
-      this.setState({ rulesAndActions: Items });
-    });
+    ApiService.getRuleList()
+      .then(({ Items }) => this.setState({ rulesAndActions: Items }));
   }
 
   /** 
@@ -109,7 +107,6 @@ class RulesAndActionsPage extends Component {
   getSoftSelectId = ({ Id }) => Id;
 
   onSoftSelectionChange = (rowData, row) => {
-    console.log(row);
     const { actions } = this.props;
     actions.hideFlyout();
     this.setState(

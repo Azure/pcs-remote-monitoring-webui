@@ -52,7 +52,6 @@ export class PcsGrid extends Component {
   getRowClass = params => {
     let rowClasses = '';
     if (isFunction(this.props.getSoftSelectId)) {
-      console.log('Calling getSoftSelectId');
       rowClasses = this.props.getSoftSelectId(params.data) === this.props.softSelectId ? 'pcs-row-soft-selected' : '';
     }
     if (isFunction(this.props.getRowClass)) {

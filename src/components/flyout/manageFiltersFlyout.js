@@ -381,7 +381,7 @@ class ManageFiltersFlyout extends React.Component {
                 Operator: 'EQ',
                 Value: ''
               });
-              this.setState({});
+              this.setState({}); 
             }}
             type="button"
             className="add-condition"
