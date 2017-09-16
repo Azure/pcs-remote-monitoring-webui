@@ -3,6 +3,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as uuid from 'uuid/v4';
+import _ from 'lodash';
+
 import Spinner from '../spinner/spinner';
 import Apply from '../../assets/icons/Apply.svg';
 import CancelX from '../../assets/icons/CancelX.svg';
@@ -11,16 +13,6 @@ import ApiService from '../../common/apiService';
 import lang from '../../common/lang';
 
 import './deviceScheduleFlyout.css';
-
-const intersection = function(setA, setB) {
-  var intersection = new Set();
-  for (var elem of setB) {
-    if (setA.has(elem)) {
-      intersection.add(elem);
-    }
-  }
-  return intersection;
-};
 
 class DeviceScheduleFlyout extends React.Component {
   constructor() {
@@ -45,15 +37,11 @@ class DeviceScheduleFlyout extends React.Component {
     if (!devices) {
       return [];
     }
-    let emptyMethod = false;
-    const methods = devices.map(device => {
-      emptyMethod = (device.reportedProperties || {}).SupportedMethods === undefined;
-      return new Set(((device.reportedProperties || {}).SupportedMethods || '').split(','));
-    });
-    if (emptyMethod) {
-      return [];
-    }
-    return [...methods.reduce((a, b) => intersection(a, b))];
+    const methods = devices
+      .map(device => (device.Properties || {}).Reported || {})
+      .map(({ SupportedMethods }) => SupportedMethods || '')
+      .map(methods => (methods || '').split(',').map(method => method.trim()));
+    return _.intersection.apply(_, methods);
   }
 
   onSelect(value) {
@@ -76,8 +64,8 @@ class DeviceScheduleFlyout extends React.Component {
   }
 
   onConfirm() {
-    const ids = this.props.content.devices.map(device => `${device.Id}`);
-    const deviceIds = ids.map(id=> `'${id}'`).join(',');
+    const deviceIds = this.props.devices
+      .map(({ Id }) => `'${Id}'`).join(',');
     const payload = {
       JobId: this.state.jobInputValue ? this.state.jobInputValue + '-' + uuid(): uuid(),
       QueryCondition: `deviceId in [${deviceIds}]`,
@@ -88,7 +76,6 @@ class DeviceScheduleFlyout extends React.Component {
     };
     this.setState({ showSpinner: true });
     ApiService.scheduleJobs(payload).then(data => {
-      console.log('res', data);
       this.setState({
         showSpinner: false,
         jobApplied: true
@@ -97,8 +84,8 @@ class DeviceScheduleFlyout extends React.Component {
   }
 
   render() {
-    const { content } = this.props;
-    const availableMethods = this.getAvailableMethods(content.devices);
+    const { devices } = this.props;
+    const availableMethods = this.getAvailableMethods(devices);
     const methodOptions = availableMethods.map(method => ({
       value: method,
       label: method
@@ -159,7 +146,7 @@ class DeviceScheduleFlyout extends React.Component {
                     </div>}
                   <div className="device-affected">
                     <span className="device-affected-number">
-                      {content.devices.length}
+                      {devices.length}
                     </span>
                     {`devices affected`}
                   </div>
@@ -210,4 +197,8 @@ class DeviceScheduleFlyout extends React.Component {
   }
 }
 
-export default connect(null, null)(DeviceScheduleFlyout);
+const mapStateToProps = (state, ownProps) => {
+  return { devices: state.flyoutReducer.devices };
+};
+
+export default connect(mapStateToProps, null)(DeviceScheduleFlyout);

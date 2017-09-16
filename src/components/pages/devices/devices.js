@@ -41,30 +41,30 @@ class DevicesPage extends Component {
     } = this.props;
 
     this.contextButtons = {
-      tag: { 
-        svg: TagSvg, 
-        onClick: openTagFlyout, 
-        value: lang.DEVICE_DETAIL.TAG 
+      tag: {
+        svg: TagSvg,
+        onClick: openTagFlyout,
+        value: lang.DEVICE_DETAIL.TAG
       },
-      schedule: { 
-        svg: ScheduleSvg, 
-        onClick: openDeviceScheduleFlyout, 
-        value: lang.SCHEDULE 
+      schedule: {
+        svg: ScheduleSvg,
+        onClick: openDeviceScheduleFlyout,
+        value: lang.SCHEDULE
       },
-      reconfigure: { 
-        svg: ReconfigureSvg, 
-        onClick: openReconfigureFlyout, 
-        value: lang.RECONFIGURE 
+      reconfigure: {
+        svg: ReconfigureSvg,
+        onClick: openReconfigureFlyout,
+        value: lang.RECONFIGURE
       },
-      delete: { 
-        svg: DeleteSvg, 
-        onClick: () => alert('Oops, you can\'t delete yet'), 
-        value: lang.DELETE 
+      delete: {
+        svg: DeleteSvg,
+        onClick: () => alert('Oops, you can\'t delete yet'),
+        value: lang.DELETE
       },
-      provision: { 
-        svg: AddSvg, 
-        onClick: openProvisionFlyout, 
-        value: lang.DEVICES.PROVISIONDEVICES 
+      provision: {
+        svg: AddSvg,
+        onClick: openProvisionFlyout,
+        value: lang.DEVICES.PROVISIONDEVICES
       }
     };
   }
