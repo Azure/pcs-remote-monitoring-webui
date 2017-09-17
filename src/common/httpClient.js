@@ -42,6 +42,12 @@ function ajax(url, options) {
   options = options || {};
   options.headers = options.headers || {};
 
+  // Required by the backend web services when the Authorization
+  // header is not valid, to tell the CSRF protection to allow
+  // this request through (assuming that Auth is not mandatory,
+  // e.g. during development).
+  options.headers['Csrf-Token'] = 'nocheck';
+
   auth.getAccessToken(accessToken => {
     if (accessToken) {
       options.headers['Authorization'] = 'Bearer ' + accessToken;
