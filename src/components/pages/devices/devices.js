@@ -15,6 +15,7 @@ import { getSoftSelectId } from '../../devicesGrid/devicesConfig';
 import lang from '../../../common/lang';
 import PcsBtn from '../../shared/pcsBtn/pcsBtn';
 import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
+import SimControlCenter from '../../simControlCenter/simControlCenter'; 
 
 import TagSvg from '../../../assets/icons/Tag.svg';
 import ScheduleSvg from '../../../assets/icons/Schedule.svg';
@@ -94,6 +95,7 @@ class DevicesPage extends Component {
 
     return (
       <ContextFilters>
+        <SimControlCenter />
         { pcsBtn(this.contextButtons.tag, showActionBtns) }
         { pcsBtn(this.contextButtons.schedule, showActionBtns) }
         { pcsBtn(this.contextButtons.reconfigure, showActionBtns) }
