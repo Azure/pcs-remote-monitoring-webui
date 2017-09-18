@@ -1,2 +1,6 @@
-# Set bash scripts to always be in LF
-*.sh text eol=LF
+# Bash scripts
+* text=auto eol=lf
+*.sh text eol=lf
+scripts/docker/build text eol=lf
+scripts/docker/publish text eol=lf
+scripts/docker/run text eol=lf
