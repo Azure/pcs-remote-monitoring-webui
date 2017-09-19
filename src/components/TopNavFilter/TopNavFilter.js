@@ -53,13 +53,6 @@ class TopNavFilter extends Component {
             searchable={true}
           />
         </span>
-        <span
-          onClick={this.props.showManageFiltersFlyout.bind(this, this.props.deviceGroups)}
-          className="manage-filter-header"
-        >
-          <img className="manage-filters-icon" src={ManageFilters} alt="ManageFilters" />
-          {Lang.FILTER.MANAGEFILTER}
-        </span>
       </div>
     );
   }
@@ -80,15 +73,6 @@ const mapDispatchToProps = dispatch => ({
       return false;
     });
     dispatch(loadRegionSpecificDevices(selectedGroupConditions ? selectedGroupConditions : [], selectedGroupId));
-  },
-  showManageFiltersFlyout: deviceGroups => {
-    dispatch({
-      type: actionTypes.FLYOUT_SHOW,
-      content: {
-        type: 'Manage Filters',
-        deviceGroups
-      }
-    });
   }
 });
 

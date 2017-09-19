@@ -547,4 +547,9 @@ const mapDispatchToProps = dispatch => ({
     }
   }
 });
-export default connect(null, mapDispatchToProps)(ManageFiltersFlyout);
+
+const mapStateToProps = state => ({
+  deviceGroups: state.filterReducer.deviceGroups
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ManageFiltersFlyout);

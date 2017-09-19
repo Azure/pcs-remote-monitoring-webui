@@ -5,15 +5,14 @@ import { connect } from 'react-redux';
 import * as actionTypes from '../../../actions/actionTypes';
 import lang from '../../../common/lang';
 import PcsBtn from '../../shared/pcsBtn/pcsBtn';
-
 import ManageFiltersSvg from '../../../assets/icons/ManageFilters.svg';
 
 class ManageFilterBtn extends Component {
   render() {
     return (
-      <PcsBtn 
+      <PcsBtn
         svg={ManageFiltersSvg}
-        onClick={this.props.openManageFiltersFlyout}
+        onClick={this.props.openManageFiltersFlyout.bind(this, this.props.deviceGroups)}
         value={lang.MANAGEFILTERS} />
     );
   }
@@ -22,11 +21,15 @@ class ManageFilterBtn extends Component {
 // Connect to Redux store
 const mapDispatchToProps = dispatch => {
   return {
-    openManageFiltersFlyout: () => dispatch({
+    openManageFiltersFlyout: deviceGroups => dispatch({
       type: actionTypes.FLYOUT_SHOW,
-      content: { type: 'Manage Filters' }
+      content: { type: 'Manage Filters', deviceGroups }
     })
   };
 };
 
-export default connect(undefined, mapDispatchToProps)(ManageFilterBtn);
+const mapStateToProps = state => ({
+  deviceGroups: state.filterReducer.deviceGroups
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ManageFilterBtn);
