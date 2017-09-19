@@ -76,7 +76,7 @@ class DeviceGroupEditor extends React.Component {
         if (!valid) {
             this.setState({message: 'Incorrect filed name or value.'});
         } else {
-            Http.post(Config.uiConfigApiUrl + '/api/v1/devicegroups/' + this.state.groupName, this.state.clauses)
+            Http.post(Config.configApiUrl + '/api/v1/devicegroups/' + this.state.groupName, this.state.clauses)
                 .then((data) => {
                     this.props.onClose();
                     EventTopic.publish(Topics.dashboard.deviceGroup.changed, null, this);

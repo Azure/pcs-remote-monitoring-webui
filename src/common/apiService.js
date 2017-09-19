@@ -143,7 +143,7 @@ class ApiService {
   }
 
   static getRegionByDisplayName() {
-    return Http.get(`${Config.uiConfigApiUrl}devicegroups`).then(data => {
+    return Http.get(`${Config.configApiUrl}devicegroups`).then(data => {
       if (data && data.items) {
         data.items.forEach(group => {
           const conditions = group.conditions || [];
@@ -160,7 +160,7 @@ class ApiService {
     }
     const data = getGroupData(group);
 
-    return Http.put(`${Config.uiConfigApiUrl}devicegroups/${group.Id}`, data);
+    return Http.put(`${Config.configApiUrl}devicegroups/${group.Id}`, data);
   }
 
   static postManageFiltersFlyout(group) {
@@ -168,7 +168,7 @@ class ApiService {
       throw new Error('expected valid group object');
     }
     const data = postGroupData(group);
-    return Http.post(`${Config.uiConfigApiUrl}devicegroups`, data);
+    return Http.post(`${Config.configApiUrl}devicegroups`, data);
   }
 
   static updateDeviceTagValue(device, newTagValueMap) {
@@ -191,7 +191,7 @@ class ApiService {
     if (!group) {
       throw new Error('expected valid group object');
     }
-    return Http.delete(`${Config.uiConfigApiUrl}devicegroups/${group.Id}`);
+    return Http.delete(`${Config.configApiUrl}devicegroups/${group.Id}`);
   }
 
   static serializeParamObject(params) {

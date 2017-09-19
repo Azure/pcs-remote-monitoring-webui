@@ -19,7 +19,7 @@ export default class CustomFlyout extends Component {
     }
 
     componentDidMount() {
-        Http.get(Config.uiConfigApiUrl + "/api/v1/solution/init").then((result) => {
+        Http.get(Config.configApiUrl + "/api/v1/solution/init").then((result) => {
             if (!result) {
                 this.show();
             }

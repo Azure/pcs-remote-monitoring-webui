@@ -4,7 +4,7 @@ import Http from '../common/httpClient';
 import Config from '../common/config';
 
 /**
- * Contains methods for calling the device telemetry microservice
+ * Contains methods for calling the telemetry microservice
  */
 class DeviceTelemetryService {
 

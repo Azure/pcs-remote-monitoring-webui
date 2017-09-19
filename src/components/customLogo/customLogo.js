@@ -38,7 +38,7 @@ export default class CustomLogo extends React.Component {
     }
 
     getData() {
-        return Http.get(Config.uiConfigApiUrl + "/api/v1/solution");
+        return Http.get(Config.configApiUrl + "/api/v1/solution");
     }
 
     onUpload = () => {
@@ -50,7 +50,7 @@ export default class CustomLogo extends React.Component {
     };
 
     saveData(data) {
-        return Http.put(Config.uiConfigApiUrl + "/api/v1/solution/logo", data);
+        return Http.put(Config.configApiUrl + "/api/v1/solution/logo", data);
     }
 
     render() {
@@ -60,7 +60,7 @@ export default class CustomLogo extends React.Component {
                 <div>
                     <img className="customLogoImg" src={this.state.img} alt="logo" />
                 </div>
-                <FileUploader ref="fileUploader" url={Config.uiConfigApiUrl + "api/v1/solution/logo"} onUploaded={this.onUploaded} />
+                <FileUploader ref="fileUploader" url={Config.configApiUrl + "api/v1/solution/logo"} onUploaded={this.onUploaded} />
             </div>
         );
     }

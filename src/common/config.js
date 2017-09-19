@@ -2,23 +2,23 @@
 
 const baseURL = process.env.REACT_APP_BASE_SERVICE_URL || '';
 
-const iothubmanager = process.env.REACT_APP_IOTHUBMANAGER_WEBSERVICE_PORT
+const iothubmanagerPath = process.env.REACT_APP_IOTHUBMANAGER_WEBSERVICE_PORT
   ? ':' + process.env.REACT_APP_IOTHUBMANAGER_WEBSERVICE_PORT
   : '/iothubmanager';
 
-const devicesimulation = process.env.REACT_APP_DEVICESIMULATION_WEBSERVICE_PORT
+const devicesimulationPath = process.env.REACT_APP_DEVICESIMULATION_WEBSERVICE_PORT
   ? ':' + process.env.REACT_APP_DEVICESIMULATION_WEBSERVICE_PORT
   : '/devicesimulation';
 
-const uiconfig = process.env.REACT_APP_UICONFIG_WEBSERVICE_PORT
-  ? ':' + process.env.REACT_APP_UICONFIG_WEBSERVICE_PORT
-  : '/uiconfig';
+const configPath = process.env.REACT_APP_CONFIG_WEBSERVICE_PORT
+  ? ':' + process.env.REACT_APP_CONFIG_WEBSERVICE_PORT
+  : '/config';
 
-const devicetelemetry = process.env.REACT_APP_DEVICETELEMETRY_WEBSERVICE_PORT
-  ? ':' + process.env.REACT_APP_DEVICETELEMETRY_WEBSERVICE_PORT
-  : '/devicetelemetry';
+const telemetryPath = process.env.REACT_APP_TELEMETRY_WEBSERVICE_PORT
+  ? ':' + process.env.REACT_APP_TELEMETRY_WEBSERVICE_PORT
+  : '/telemetry';
 
-const auth = process.env.REACT_APP_AUTH_WEBSERVICE_PORT
+const authPath = process.env.REACT_APP_AUTH_WEBSERVICE_PORT
   ? ':' + process.env.REACT_APP_AUTH_WEBSERVICE_PORT
   : '/auth';
 
@@ -66,11 +66,11 @@ const Config = {
     TELEMETRY_SLIDE_WINDOW: 15
   },
 
-  iotHubManagerApiUrl: `${baseURL}${iothubmanager}/v1/`,
-  deviceSimulationApiUrl: `${baseURL}${devicesimulation}/v1/`,
-  uiConfigApiUrl: `${baseURL}${uiconfig}/v1/`,
-  telemetryApiUrl: `${baseURL}${devicetelemetry}/v1/`,
-  authApiUrl: `${baseURL}${auth}/v1/`,
+  iotHubManagerApiUrl: `${baseURL}${iothubmanagerPath}/v1/`,
+  deviceSimulationApiUrl: `${baseURL}${devicesimulationPath}/v1/`,
+  configApiUrl: `${baseURL}${configPath}/v1/`,
+  telemetryApiUrl: `${baseURL}${telemetryPath}/v1/`,
+  authApiUrl: `${baseURL}${authPath}/v1/`,
   msTelemetryApiRefreshInterval: 2
 };
 

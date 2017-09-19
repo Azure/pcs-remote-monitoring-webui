@@ -74,11 +74,11 @@ export default class CustomInfo extends React.Component {
     }
 
     getData() {
-        return Http.get(Config.uiConfigApiUrl + "/api/v1/solution");
+        return Http.get(Config.configApiUrl + "/api/v1/solution");
     }
 
     saveData(data) {
-        return Http.post(Config.uiConfigApiUrl + "/api/v1/solution", data);
+        return Http.post(Config.configApiUrl + "/api/v1/solution", data);
     }
 
     render() {

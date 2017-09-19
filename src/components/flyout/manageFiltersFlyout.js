@@ -194,7 +194,7 @@ class ManageFiltersFlyout extends React.Component {
       }
     ];
 
-    //TODO: Remove these when the UIconfig provides these filed values
+    // TODO: Remove these when the PCS Config provides these filed values
     let fieldOptions = [
       {
         value: 'tags.IsSimulated',
