@@ -26,6 +26,15 @@ export class PcsGrid extends Component {
   constructor(props) {
     super(props);
     this.state = { currentSoftSelectId: '' };
+
+    this.defaultPcsGridProps = {
+      domLayout: 'autoHeight',
+      suppressCellSelection: true,
+      suppressClickEdit: true,
+      suppressRowClickSelection: true, // Suppress so that a row is only selectable by checking the checkbox
+      suppressLoadingOverlay: true,
+      suppressNoRowsOverlay: true
+    };
   }
 
   /** When new props are passed in, check if the soft select state needs to be updated */
@@ -86,6 +95,7 @@ export class PcsGrid extends Component {
 
   render() {
     const gridParams = {
+      ...this.defaultPcsGridProps,
       ...this.props,
       headerHeight: ROW_HEIGHT,
       rowHeight: ROW_HEIGHT,

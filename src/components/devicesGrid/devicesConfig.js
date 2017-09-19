@@ -65,13 +65,9 @@ export const getSoftSelectId = ({ Id }) => Id;
 
 /** Shared device grid AgGrid properties */
 export const defaultDeviceGridProps = {
-  domLayout: 'autoHeight',
   enableColResize: true,
   multiSelect: true,
   pagination: true,
   paginationPageSize: DEFAULT_DEVICE_GRID_PAGE_SIZE,
-  rowSelection: 'multiple',
-  suppressCellSelection: true,
-  suppressClickEdit: true,
-  suppressRowClickSelection: true // Suppress so that a row is only selectable by checking the checkbox
+  rowSelection: 'multiple'
 };

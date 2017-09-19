@@ -5,4 +5,11 @@
   flex-flow: column nowrap;
   height: 100%;
   width: 100%;
+  // Add positioning to fix bug in AgGrid when used inside flexbox
+  // Whent the page is resized, the width expands but never contracts
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }

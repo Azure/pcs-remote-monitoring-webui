@@ -15,15 +15,6 @@ $checkboxPadding: 8px;
 .pcs-grid-container.ag-dark.pcs-ag-dark {
   background-color: $darkBgColor;
   position: relative;
-  height: 100%;
-
-  > div:first-child {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
 
   .ag-root { border: none; }
 

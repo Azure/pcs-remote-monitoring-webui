@@ -3,7 +3,9 @@
 .page-content {
   overflow: auto;
   padding: 10px 20px;
+  flex-grow: 1;
   height: 100%;
+  position: relative;
 
   // Override to fix the bootstrap grid inside the page-conent
   // Should be removed when grids are removed
