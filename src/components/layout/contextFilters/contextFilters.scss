@@ -15,8 +15,8 @@ $borderColor: #454a4e;
     align-items: stretch;
     padding-left: 18px;
     border-right: 1px solid $borderColor;
-    
-    .filter-icon { width: 18px; }
+
+    .filter-icon { width: 13px; }
 
     .select-container { width: 200px; }
   }
@@ -45,7 +45,7 @@ $borderColor: #454a4e;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .Select.is-disabled .Select-arrow-zone {
@@ -53,6 +53,7 @@ $borderColor: #454a4e;
   pointer-events: none;
   opacity: 0.35;
 }
+
 
 .Select-control {
   background-color: #121416;
@@ -82,9 +83,16 @@ $borderColor: #454a4e;
   color: #afb9c3;
 }
 
-.is-open > .Select-control .Select-arrow {
+.is-open > .Select-control {
   top: -2px;
   border-width: 0 5px 5px;
+
+  .Select-arrow {
+    margin-top: 13px;
+    border-width: 5px;
+    color: #afb9c3;
+    position: relative;
+  }
 }
 
 .is-searchable.is-focused:not(.is-open) > .Select-control {
@@ -110,14 +118,14 @@ $borderColor: #454a4e;
 .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label {
   cursor: pointer;
   text-decoration: none;
-  background-color: 1B1D1F;
+  background-color: #1b1d1f;
 }
 
 .has-value.Select--single > .Select-control .Select-value a.Select-value-label:hover,
 .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:hover,
 .has-value.Select--single > .Select-control .Select-value a.Select-value-label:focus,
 .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label:focus {
-  color: 1B1D1F;
+  color: #1b1d1f;
   outline: none;
   text-decoration: underline;
 }
@@ -183,32 +191,8 @@ $borderColor: #454a4e;
   vertical-align: middle;
 }
 
-.Select-clear-zone {
-  -webkit-animation: Select-animation-fadeIn 200ms;
-  -o-animation: Select-animation-fadeIn 200ms;
-  animation: Select-animation-fadeIn 200ms;
-  color: #afb9c3;
-  cursor: pointer;
-  display: table-cell;
-  position: relative;
-  padding-top: 13px;
-  text-align: center;
-  vertical-align: middle;
-  width: 17px;
-}
-
-.Select-clear-zone:hover {
-  color: #afb9c3;
-}
-
 .Select-clear {
-  display: inline-block;
-  font-size: 18px;
-  line-height: 1;
-}
-
-.Select--multi .Select-clear-zone {
-  width: 17px;
+  display: none;
 }
 
 .Select-arrow-zone {
@@ -235,10 +219,7 @@ $borderColor: #454a4e;
 .is-open .Select-arrow,
 .Select-arrow-zone:hover > .Select-arrow {
   border-top-color: #666;
-}
 
-.Select--multi .Select-multi-value-wrapper {
-  display: inline-block;
 }
 
 .Select .Select-aria-only {
@@ -258,12 +239,12 @@ $borderColor: #454a4e;
   border: 1px solid #121416;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
-  margin-top: -1px;
   max-height: 400px;
-  position: absolute;
-  top: 100%;
+  position: relative;
+  border-top: 1px solid #454a4e;
   width: 224px;
-  margin-left: -32px;
+  margin-left: -30px;
+  top: 2px;
   z-index: 1;
   -webkit-overflow-scrolling: touch;
 
