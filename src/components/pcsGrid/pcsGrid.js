@@ -54,7 +54,7 @@ export class PcsGrid extends Component {
 
   /** Refreshes the grid to update soft select CSS states */
   refreshRows = () => {
-    if (this.gridApi.rowRenderer && this.gridApi.rowRenderer.refreshRows) {
+    if (this.gridApi && this.gridApi.rowRenderer && this.gridApi.rowRenderer.refreshRows) {
       this.gridApi.rowRenderer.refreshRows(this.gridApi.getRenderedNodes());
     }
   };

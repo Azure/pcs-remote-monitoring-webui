@@ -10,28 +10,22 @@ import './simControlCenter.css';
 class SimControlCenter extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isShow: false
-        }
+        this.state = { isShow: false };
     }
 
-    showToolTip = () => {
-        this.setState({ isShow: true });
-    }
+    showToolTip = () => this.setState({ isShow: true });
 
-    hideToolTip = () => {
-        this.setState({ isShow: false });
-    }
+    hideToolTip = () => this.setState({ isShow: false });
 
     render() {
         return (
-            <div className="simControlCenter">
+            <div className="sim-control-btn-container">
                 <PcsBtn
                     svg={simControlCenter}
                     onMouseOver={this.showToolTip}
                     onMouseOut={this.hideToolTip}
                     value={lang.DEVICE_DETAIL.SIM_CONTROL_CENTER} />
-                <div className={`toolTip ${this.state.isShow ? 'show' : 'hide'}`}>
+                <div className={`sim-tooltip ${this.state.isShow ? 'show' : ''}`}>
                     {lang.DEVICE_DETAIL.COMING_SOON}
                 </div>
             </div>

@@ -17,10 +17,6 @@ import PcsBtn from '../../shared/pcsBtn/pcsBtn';
 import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
 import SimControlCenter from '../../simControlCenter/simControlCenter'; 
 
-import TagSvg from '../../../assets/icons/Tag.svg';
-import ScheduleSvg from '../../../assets/icons/Schedule.svg';
-import ReconfigureSvg from '../../../assets/icons/Reconfigure.svg';
-import DeleteSvg from '../../../assets/icons/Trash.svg';
 import AddSvg from '../../../assets/icons/Add.svg';
 
 class DevicesPage extends Component {
@@ -30,86 +26,29 @@ class DevicesPage extends Component {
 
     this.state = {
       softSelectedDeviceId: '',
-      selectedDevices: []
-    };
-
-    // Define context filter buttons
-    const {
-      openTagFlyout,
-      openDeviceScheduleFlyout,
-      openReconfigureFlyout,
-      openProvisionFlyout
-    } = this.props;
-
-    this.contextButtons = {
-      tag: {
-        svg: TagSvg,
-        onClick: openTagFlyout,
-        value: lang.DEVICE_DETAIL.TAG
-      },
-      schedule: {
-        svg: ScheduleSvg,
-        onClick: openDeviceScheduleFlyout,
-        value: lang.SCHEDULE
-      },
-      reconfigure: {
-        svg: ReconfigureSvg,
-        onClick: openReconfigureFlyout,
-        value: lang.RECONFIGURE
-      },
-      delete: {
-        svg: DeleteSvg,
-        onClick: () => alert('Oops, you can\'t delete yet'),
-        value: lang.DELETE
-      },
-      provision: {
-        svg: AddSvg,
-        onClick: openProvisionFlyout,
-        value: lang.DEVICES.PROVISIONDEVICES
-      }
+      contextBtns: ''
     };
   }
 
   componentDidMount() {
-    const { actions } = this.props;
-    actions.loadDevicesByTelemetryMessages();
-  }
-
-  /** Update the selected devices state on hard select change */
-  onHardSelectChange = selectedDevices => {
-    this.setState({ selectedDevices });
-    this.props.actions.devicesSelectionChanged(selectedDevices);
+    this.props.actions.loadDevicesByTelemetryMessages();
   }
 
   /** Open the device detail flyout on soft select */
-  onSoftSelectChange = deviceData => {
+  onSoftSelectChange = device => {
     this.setState(
-      { softSelectedDeviceId: getSoftSelectId(deviceData) },
-      () => this.props.actions.showFlyout({ device: deviceData, type: 'Device detail' })
+      { softSelectedDeviceId: getSoftSelectId(device) },
+      () => this.props.actions.showFlyout({ device, type: 'Device detail' })
     );
   }
 
-  renderContextFilters() {
-    const pcsBtn = (props, visible = true) => visible ? <PcsBtn {...props} /> : '';
-    const showActionBtns = this.state.selectedDevices.length > 0;
-
-    return (
-      <ContextFilters>
-        <SimControlCenter />
-        { pcsBtn(this.contextButtons.tag, showActionBtns) }
-        { pcsBtn(this.contextButtons.schedule, showActionBtns) }
-        { pcsBtn(this.contextButtons.reconfigure, showActionBtns) }
-        { pcsBtn(this.contextButtons.delete, showActionBtns) }
-        <ManageFilterBtn />
-        { pcsBtn(this.contextButtons.provision) }
-      </ContextFilters>
-    );
-  }
+  /** Listen for changes in the dynamic context filters and update accordingly */
+  onContextMenuChange = contextBtns => this.setState({ contextBtns });
 
   render() {
     // Extract the devices from the props
-    const devicesProps = this.props.devices || {};
-    const devices = devicesProps.items || [];
+    const rawDevices = this.props.devices || {};
+    const devices = rawDevices.items || [];
 
     // Create the device grid props
     const deviceGridProps = {
@@ -119,13 +58,20 @@ class DevicesPage extends Component {
       getSoftSelectId: getSoftSelectId,
       /* Grid Events */
       onSoftSelectChange: this.onSoftSelectChange,
-      onHardSelectChange: this.onHardSelectChange
+      onContextMenuChange: this.onContextMenuChange
     };
 
     return (
       <PageContainer>
         <TopNav breadcrumbs={lang.DEVICES_LABEL} projectName={lang.DASHBOARD.AZUREPROJECTNAME} />
-        { this.renderContextFilters() }
+        <ContextFilters>
+          {this.state.contextBtns}
+          <SimControlCenter />
+          <ManageFilterBtn />
+          <PcsBtn svg={AddSvg} 
+                  onClick={this.props.openProvisionFlyout} 
+                  value={lang.DEVICES.PROVISIONDEVICES} />
+        </ContextFilters>
         <PageContent>
           <DevicesGrid { ...deviceGridProps } />
         </PageContent>
@@ -150,9 +96,6 @@ const mapDispatchToProps = dispatch => {
 
   return {
     actions: bindActionCreators(actions, dispatch),
-    openTagFlyout: () => openFlyout('Tag'),
-    openDeviceScheduleFlyout: () => openFlyout('Device Schedule'),
-    openReconfigureFlyout: () => openFlyout('Reconfigure'),
     openProvisionFlyout: () => openFlyout('Provision')
   };
 };

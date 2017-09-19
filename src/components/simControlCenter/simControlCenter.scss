@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-.simControlCenter {
+.sim-control-btn-container {
     position: relative;
     display: flex;
     
-    .toolTip {
+    .sim-tooltip {
+        display: none;
         background-color: #242628;
         padding: 15px 20px;
         position: absolute;
@@ -13,13 +14,7 @@
         z-index: 999;
         text-align: center;
         color: white;
-    }
-
-    .hide {
-        display: none;
-    }
-
-    .show {
-        display: block;
+    
+        .show { display: block; }
     }
 }
