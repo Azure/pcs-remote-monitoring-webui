@@ -25,7 +25,7 @@ class ContextFilters extends Component {
 
   updateValue(selectedGroupId) {
     this.setState(
-      { selectedGroupId }, 
+      { selectedGroupId },
       _ => this.props.deviceGroupChanged(selectedGroupId, this.props.deviceGroups)
     );
   }
@@ -34,7 +34,10 @@ class ContextFilters extends Component {
     const { deviceGroups, disableDeviceFilter }  = this.props;
     let options = deviceGroups.map(group => {
       return { value: group.Id, label: group.DisplayName };
-    });
+      // The localeCompare() method returns a number indicating whether a reference string comes before or
+      // after or is the same as the given string in sort order.
+    }).sort((a , b) => a.label.localeCompare(b.label));
+
     options = [{ label: 'All Devices', value: 0 }, ...options];
     return (
       <div className="context-filter-container">
