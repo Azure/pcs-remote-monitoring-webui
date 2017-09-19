@@ -207,6 +207,10 @@ class ApiService {
   static scheduleJobs(payload) {
     return Http.post(`${Config.iotHubManagerApiUrl}jobs`, payload);
   }
+
+  static getDeviceGroupFilters() {
+    return Http.get(`${Config.uiConfigApiUrl}devicegroupfilters`);
+  }
 }
 
 export default ApiService;

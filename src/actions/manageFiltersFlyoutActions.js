@@ -65,3 +65,19 @@ export const deleteFilter = group => {
       });
   };
 };
+
+export const getDeviceGroupFilters = () => {
+  return dispatch => {
+    return ApiService.getDeviceGroupFilters()
+      .then(data => {
+        dispatch({
+          type: types.LOAD_FIELDS_SUCCESS,
+          data: data
+        });
+      })
+      .catch(error => {
+        dispatch(loadFailed(error));
+        throw error;
+      });
+  };
+};

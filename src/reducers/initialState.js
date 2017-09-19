@@ -33,6 +33,7 @@ const chartConfig = {
 };
 
 export default {
+  deviceGroupFilters:{},
   deviceGroups: [],
   devices: {},
   selectedDeviceGroupId: '',

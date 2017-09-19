@@ -16,7 +16,7 @@ import { typeComputation } from '../../common/utils';
 
 import './manageFilterFlyout.css';
 
-import { saveOrUpdateFilter, deleteFilter } from '../../actions/manageFiltersFlyoutActions';
+import { saveOrUpdateFilter, deleteFilter, getDeviceGroupFilters } from '../../actions/manageFiltersFlyoutActions';
 
 class ManageFiltersFlyout extends React.Component {
   constructor() {
@@ -33,6 +33,7 @@ class ManageFiltersFlyout extends React.Component {
     this.processFieldValues();
     this.processOperatorValues();
     this.typeFieldComputation();
+    this.props.getDeviceGroupFilters();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -144,6 +145,31 @@ class ManageFiltersFlyout extends React.Component {
     );
   }
 
+  getFieldOptions() {
+    const tagPrefix='tags.';
+    const reportedPrefix='Properties.Reported.';
+    const fields = this.props.deviceGroupFilters || {};
+    let tags = [];
+    let reported = [];
+    if (fields.Tags) {
+      tags = fields.Tags.map((t) => {
+        return {
+          value: tagPrefix + t,
+          label: tagPrefix + t
+        }
+      });
+    }
+    if (fields.Reported){
+      reported = fields.Reported.map((r) => {
+        return {
+          value: reportedPrefix + r,
+          label: reportedPrefix + r
+        }
+      });
+    }
+    return [...tags, ...reported];
+  }
+
   /**
    * This function will render the filter form. It optionally takes a group
    * object to prefill the form with the device group specific data.
@@ -193,42 +219,7 @@ class ManageFiltersFlyout extends React.Component {
         label: Config.STATUS_CODES.STRING
       }
     ];
-
-    //TODO: Remove these when the UIconfig provides these filed values
-    let fieldOptions = [
-      {
-        value: 'tags.IsSimulated',
-        label: Config.STATUS_CODES.IS_SIMULATED
-      },
-      {
-        value: 'tags.Region',
-        label: Config.STATUS_CODES.REGION
-      },
-      {
-        value: 'tags.Floor',
-        label: Config.STATUS_CODES.FLOOR
-      },
-      {
-        value: 'tags.Building',
-        label: Config.STATUS_CODES.BUILDING
-      },
-      {
-        value: 'tags.country',
-        label: Config.STATUS_CODES.COUNTRY
-      },
-      {
-        value: 'tags.test',
-        label: Config.STATUS_CODES.TEST
-      },
-      {
-        value: 'Properties.Reported.Type',
-        label: Config.STATUS_CODES.REPORTED_TYPE
-      },
-      {
-        value: 'Properties.Reported.Location',
-        label: Config.STATUS_CODES.REPORTED_LOCATION
-      }
-    ];
+    let fieldOptions = this.getFieldOptions();
 
     return (
       <div className="editable-filters">
@@ -545,10 +536,14 @@ const mapDispatchToProps = dispatch => ({
     } else {
       dispatch(deleteFilter(group));
     }
+  },
+  getDeviceGroupFilters: () => {
+     dispatch(getDeviceGroupFilters());
   }
 });
 
 const mapStateToProps = state => ({
+  deviceGroupFilters: state.filterReducer.deviceGroupFilters,
   deviceGroups: state.filterReducer.deviceGroups
 });
 
