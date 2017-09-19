@@ -54,6 +54,13 @@ const filterReducer = (state = initialState, action) => {
         ...state,
         selectedDeviceGroupId: action.data
       };
+
+    case types.LOAD_FIELDS_SUCCESS:
+      return {
+        ...state,
+        deviceGroupFilters: action.data
+      }
+
     default:
       return state;
   }

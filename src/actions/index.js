@@ -19,3 +19,6 @@ export * from './filterActions';
 
 // kpi
 export * from './kpiActions';
+
+// rules
+export * from './ruleActions';

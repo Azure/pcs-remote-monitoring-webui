@@ -18,6 +18,12 @@ const flyoutReducer = (state = initialState.flyout, action) => {
         devices: action.data
       };
 
+    case types.RULE_LIST_ROW_SELECTION_CHANGED:
+      return {
+        ...state,
+        rules: action.data
+      };
+
     case types.DEVICE_LIST_COMMON_TAGS_VALUE_CHANGED:
       return {
         ...state,

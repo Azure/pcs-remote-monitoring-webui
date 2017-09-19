@@ -72,7 +72,7 @@ export const rulesAndActionsColumnDefs = {
 
 export const defaultRulesAndActionsGridProps = {
   domLayout: 'autoHeight',
-  multiSelect: true,
+  rowSelection: 'multiple',
   enableColResize: true,
   suppressCellSelection: true,
   suppressClickEdit: true,
