@@ -1,52 +1,53 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+const chartConfig = {
+  bindto: '',
+  data: {
+    json: [],
+    xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+    keys: {
+      x: 'Time',
+      value: []
+    }
+  },
+  axis: {
+    x: {
+      type: 'timeseries',
+      tick: {
+        rotate: 0,
+        format: '%H:%M:%S'
+      }
+    }
+  },
+  tooltip: {
+    format: {
+      title: d => d
+    }
+  },
+  zoom: {
+    enabled: true
+  },
+  line: {
+    connectNull: true
+  }
+};
+
 export default {
-  filter: {
-    deviceGroups: []
+  deviceGroups: [],
+  devices: {},
+  selectedDeviceGroupId: '',
+  alarmsList: [],
+  telemetry: {
+    timeline: {
+      chartConfig
+    }
   },
   dashboard: {
     map: {},
-    telemetry: {
-      timeline: {
-        chartConfig: {
-          bindto: '',
-          data: {
-            json: [],
-            xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
-            keys: {
-              x: 'Time',
-              value: []
-            }
-          },
-          axis: {
-            x: {
-              type: 'timeseries',
-              tick: {
-                rotate: 0,
-                format: '%H:%M:%S'
-              }
-            }
-          },
-          tooltip: {
-            format: {
-              title: d => d
-            }
-          },
-          zoom: {
-            enabled: true
-          },
-          line: {
-            connectNull: true
-          }
-        }
-      }
-    },
-    devices: {},
     kpi: {
       chartDataFetchComplete: false,
       alarmsList: []
-    },
-    messages: []
+    }
   },
   flyout: {
     show: false

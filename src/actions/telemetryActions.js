@@ -57,12 +57,11 @@ export const loadTelemetryMessages = deviceList => {
   };
 };
 
-// telemetryMessages based on the deviceId's
+// get telemetry messages based on the deviceId's
 export const loadTelemetryMessagesByDeviceIds = deviceList => {
   return dispatch => {
-    return ApiService.loadTelemetryMessages(deviceList)
+    return ApiService.getTelemetryMessages({ devices: deviceList })
       .then(data => {
-        // TODO: using the same action ??
         dispatch(loadTelemetrMessagesSuccess(data));
       })
       .catch(error => {

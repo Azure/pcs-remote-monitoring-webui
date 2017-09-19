@@ -9,7 +9,7 @@ const validTelemetryType = (telemetry, telemetryTypes) =>
 const getLatestTimestamp = data =>
   Math.max.apply(null, data.map(e => new Date(e.Time)));
 
-const telemetryReducer = (state = initialState.dashboard.telemetry, action) => {
+const telemetryReducer = (state = initialState.telemetry, action) => {
   let radioBtnOptions = {};
   let chartDataSelected = [];
   let displayNames = [];

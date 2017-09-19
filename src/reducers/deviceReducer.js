@@ -3,7 +3,7 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
-const deviceReducer = (state = initialState.dashboard.devices, action) => {
+const deviceReducer = (state = initialState.devices, action) => {
   switch (action.type) {
     case types.LOAD_DEVICES_SUCCESS:
       return {
