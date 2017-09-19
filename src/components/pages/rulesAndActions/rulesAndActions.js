@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button, Modal } from "react-bootstrap";
 import PageContainer from '../../layout/pageContainer/pageContainer.js';
 import PageContent from '../../layout/pageContent/pageContent.js';
 import TopNav from '../../layout/topNav/topNav.js';
@@ -11,13 +10,11 @@ import ContextFilters from '../../layout/contextFilters/contextFilters.js';
 import RulesActionsList from '../../../components/rulesActionsList/rulesActionsList';
 import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
 import ApiService from "../../../common/apiService";
-import { formatString } from "../../../common/utils";
 import * as actions from "../../../actions";
 import lang from '../../../common/lang';
 import PcsBtn from '../../shared/pcsBtn/pcsBtn';
 
 import AddSvg from '../../../assets/icons/Add.svg';
-import DeleteSvg from '../../../assets/icons/Delete.svg';
 import EditSvg from '../../../assets/icons/Edit.svg';
 import EnableSvg from '../../../assets/icons/Enable.svg';
 import DisableSvg from '../../../assets/icons/Disable.svg';
@@ -32,7 +29,6 @@ class RulesAndActionsPage extends Component {
       rulesAndActions: [],
       selectedRulesActions: [],
       currentNode: null,
-      showConfirmModal: false,
       showBoth: false,
       toggleButtonText: lang.RULESACTIONS.DISABLE,
       toggleButtonSvg: ChangestatusSvg,
@@ -44,11 +40,6 @@ class RulesAndActionsPage extends Component {
         svg: AddSvg,
         onClick: this.newRule,
         value: lang.RULESACTIONS.NEWRULE
-      },
-      delete: {
-        svg: DeleteSvg,
-        onClick: this.showDeleteRulesModal,
-        value: lang.RULESACTIONS.DELETE
       },
       edit: {
         svg: EditSvg,
@@ -84,6 +75,9 @@ class RulesAndActionsPage extends Component {
       }
       return true;
     });
+
+    const { actions } = this.props;
+    actions.rulesSelectionChanged(selectedRulesActions);
 
     this.setState({
       selectedRulesActions,
@@ -124,10 +118,6 @@ class RulesAndActionsPage extends Component {
     );
   };
 
-  cancelDelete = () => this.setState({ showConfirmModal: false });
-
-  showDeleteRulesModal = () => this.setState({ showConfirmModal: true });
-
   showEditRulesFlyout = () => {
     const { actions } = this.props;
     actions.hideFlyout();
@@ -140,17 +130,6 @@ class RulesAndActionsPage extends Component {
     };
     actions.showFlyout(flyoutConfig);
     this.setState({ currentNode: this.state.selectedRulesActions[0].node });
-  };
-
-  confirmDelete = () => {
-    let promises = this.state
-      .selectedRulesActions
-      .map(rule => ApiService.deleteRule(rule.Id));
-
-    Promise.all(promises)
-      .then(() => this.gridApi.updateRowData({ remove: this.state.selectedRulesActions }))
-      .catch(err => console.error(err));
-    this.setState({ showConfirmModal: false });
   };
 
   showToggleRules = () => {
@@ -212,21 +191,6 @@ class RulesAndActionsPage extends Component {
         {this.renderContextFilters()}
         <PageContent>
           <RulesActionsList {...rulesAndActionsProps} />
-
-          <Modal show={this.state.showConfirmModal}>
-            <Modal.Header>
-              <Modal.Title>{lang.RULESACTIONS.DELETERULES}</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              {formatString(lang.RULESACTIONS.RULESWILLBEDELETED, this.state.selectedRulesActions.length)}
-            </Modal.Body>
-
-            <Modal.Footer>
-              <Button onClick={this.cancelDelete}>{lang.RULESACTIONS.CANCEL}</Button>
-              <Button bsStyle="primary" onClick={this.confirmDelete}>{lang.RULESACTIONS.CONFIRM}</Button>
-            </Modal.Footer>
-          </Modal>
         </PageContent>
       </PageContainer>
     );

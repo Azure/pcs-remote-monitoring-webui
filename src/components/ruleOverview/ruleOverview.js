@@ -6,8 +6,9 @@ import lang from "../../common/lang";
 
 import "./ruleOverview.css";
 import ApiService from "../../common/apiService";
+import {connect} from "react-redux";
 
-export default class RuleOverviewFlyout extends Component {
+class RuleOverviewFlyout extends Component {
     constructor(props) {
         super(props);
 
@@ -23,7 +24,8 @@ export default class RuleOverviewFlyout extends Component {
     onSave = () => {
         let promises = [];
         let updatedRules = [];
-        this.props.content.selectedRules.forEach(rule => {
+        const rules = this.props.rules || this.props.content.selectedRules;
+        rules.forEach(rule => {
             if (rule.Enabled !== this.state.enabled) {
                 rule.Enabled = this.state.enabled;
                 updatedRules.push(rule);
@@ -41,8 +43,8 @@ export default class RuleOverviewFlyout extends Component {
 
 
     render() {
-
-        const overviewItems = this.props.content.selectedRules.map(rule => {
+        const rules =  this.props.rules || this.props.content.selectedRules;
+        const overviewItems = rules.map(rule => {
             return (
                 <div className="overview-item">
                     <div className="title">{rule.Name}</div>
@@ -81,4 +83,11 @@ export default class RuleOverviewFlyout extends Component {
             </div>
         );
     }
+}
+
+const mapStateToProps = state => {
+    return { rules: state.flyoutReducer.rules };
 };
+
+export default connect(mapStateToProps, null)(RuleOverviewFlyout);
+
