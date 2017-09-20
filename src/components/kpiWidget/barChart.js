@@ -127,14 +127,14 @@ const getBarChartData = (state, ownProps) => {
   });
   let currentDesc, lastDesc;
   if (ownProps.timeCode === 'D') {
-    currentDesc = lang.KPI.CURRENTDAY;
-    lastDesc = lang.KPI.LASTDAY;
+    currentDesc = lang.CURRENTDAY;
+    lastDesc = lang.LASTDAY;
   } else if (ownProps.timeCode === 'W') {
-    currentDesc = lang.KPI.CURRENTWEEK;
-    lastDesc = lang.KPI.LASTWEEK;
+    currentDesc = lang.CURRENTWEEK;
+    lastDesc = lang.LASTWEEK;
   } else {
-    currentDesc = lang.KPI.CURRENTMONTH;
-    lastDesc = lang.KPI.LASTMONTH;
+    currentDesc = lang.CURRENTMONTH;
+    lastDesc = lang.LASTMONTH;
   }
   const realChartData = [['x'].concat(chartData.map(rule => rule.Description))];
   realChartData.push([currentDesc].concat(chartData.map(rule => rule.Count)));

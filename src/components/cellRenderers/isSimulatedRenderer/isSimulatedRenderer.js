@@ -15,7 +15,7 @@ class IsSimulatedRenderer extends React.Component {
       <div className="pcs-renderer-cell highlight">
         <img src={value ? SimulatedDeviceSvg : PhysicalDeviceSvg} className="pcs-renderer-icon" alt='Device Type Icon' />
         <div className="pcs-renderer-text">
-          {value ? lang.DEVICES.YES : lang.DEVICES.NO}
+          {value ? lang.YES : lang.NO}
         </div>
       </div>
     );

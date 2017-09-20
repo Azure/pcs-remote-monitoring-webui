@@ -27,19 +27,19 @@ class KpiWidget extends Component {
     this.options = [
       {
         value: 'H',
-        label: Lang.KPI.LASTHOUR
+        label: Lang.LASTHOUR
       },
       {
         value: 'D',
-        label: Lang.KPI.LASTDAY
+        label: Lang.LASTDAY
       },
       {
         value: 'W',
-        label: Lang.KPI.LASTWEEK
+        label: Lang.LASTWEEK
       },
       {
         value: 'M',
-        label: Lang.KPI.LASTMONTH
+        label: Lang.LASTMONTH
       }
     ];
   }
@@ -85,7 +85,7 @@ class KpiWidget extends Component {
     return (
       <DashboardPanel
         className="kpi-widget"
-        title={Lang.KPI.SYSTEMKPI}
+        title={Lang.SYSTEMKPI}
         actions={
           <Select
             className="kpi-filters"
@@ -96,7 +96,7 @@ class KpiWidget extends Component {
             simpleValue
             searchable={false}
             clearable={false}
-            placeholder="{Lang.KPI.TIMERANGE}"
+            placeholder="{Lang.TIMERANGE}"
           />
         }
       >
@@ -104,7 +104,7 @@ class KpiWidget extends Component {
           <div className="kpi-container">
             <Row>
               <Col md={12} className="top-rules">
-                {Lang.KPI.TOPRULESTRIGGERED}
+                {Lang.TOPRULESTRIGGERED}
               </Col>
             </Row>
             <Row>

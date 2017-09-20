@@ -51,7 +51,7 @@ class RuleOverviewFlyout extends Component {
                     <div className="description">{rule.Description}</div>
                     <div className="effectNumber">
                         <div className="count">{rule.DeviceCount || 0}</div>
-                        <div className="text">{lang.RULESACTIONS.EFFECTEDDEVICES}</div>
+                        <div className="text">{lang.EFFECTEDDEVICES}</div>
                     </div>
                 </div>
             )
@@ -64,7 +64,7 @@ class RuleOverviewFlyout extends Component {
                         <div onClick={this.onToggleStatus}
                              className={`icon ${!this.state.enabled ? 'icon-enable' : 'icon-disable'}`}/>
                         <div
-                            className="text">{this.state.enabled ? lang.RULESACTIONS.ENABLESELECTEDRULE : lang.RULESACTIONS.DISABLESELECTEDRULE}</div>
+                            className="text">{this.state.enabled ? lang.ENABLESELECTEDRULE : lang.DISABLESELECTEDRULE}</div>
                     </div>
                 </div>
                 <div className="divider"/>
@@ -73,12 +73,12 @@ class RuleOverviewFlyout extends Component {
                 </div>
                 <div className="divider"/>
                 <div className="rule-overview-summary">
-                    <div className="title">{lang.RULESACTIONS.SUMMARY} </div>
-                    <div className="description"> {lang.RULESACTIONS.NOTE} </div>
+                    <div className="title">{lang.SUMMARY} </div>
+                    <div className="description"> {lang.NOTE} </div>
                 </div>
                 <div className="rule-overview-footer">
-                    <button className="button button-save" onClick={() => this.onSave()}>{lang.FLYOUT.SAVE} </button>
-                    <button className="button button-cancel" onClick={this.props.onClose}>{lang.FLYOUT.CANCEL} </button>
+                    <button className="button button-save" onClick={() => this.onSave()}>{lang.SAVE} </button>
+                    <button className="button button-cancel" onClick={this.props.onClose}>{lang.CANCEL} </button>
                 </div>
             </div>
         );

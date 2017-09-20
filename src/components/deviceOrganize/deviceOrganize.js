@@ -55,8 +55,8 @@ class DeviceOrganize extends React.Component {
                     <DeviceProperty ref="deviceProperty" />
                 </div>
                 <div className="marginTop20">
-                    <label>{formatString(lang.DEVICES.CAUTION, deviceCount)}</label>
-                    <Button className="btnConfirm" onClick={() => this.onConfirm()}>{lang.DEVICES.CONFIRM}</Button>
+                    <label>{formatString(lang.CAUTION, deviceCount)}</label>
+                    <Button className="btnConfirm" onClick={() => this.onConfirm()}>{lang.CONFIRM}</Button>
                 </div>
             </div>
         );

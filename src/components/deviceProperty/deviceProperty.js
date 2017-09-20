@@ -59,9 +59,9 @@ export default class DeviceProperty extends React.Component {
             <table className="deviceProperty">
                 <thead>
                     <tr>
-                        <td>{lang.DEVICES.PROPERTYNAME}</td>
-                        <td>{lang.DEVICES.PROPERTYVALUE}</td>
-                        <td>{lang.DEVICES.PROPERTYTYPE}</td>
+                        <td>{lang.PROPERTYNAME}</td>
+                        <td>{lang.PROPERTYVALUE}</td>
+                        <td>{lang.PROPERTYTYPE}</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,11 +78,11 @@ export default class DeviceProperty extends React.Component {
                                     </FormControl>
 
                                 </td>
-                                <td><span className="operation" title={lang.DEVICES.DELETE} onClick={() => this.onDelete(i)}><img alt={lang.DEVICES.DELETE} src={del} /></span></td>
+                                <td><span className="operation" title={lang.DELETE} onClick={() => this.onDelete(i)}><img alt={lang.DELETE} src={del} /></span></td>
                             </tr>
                         )
                     }
-                    <tr><td></td><td></td><td></td><td><span className="operation" title={lang.DEVICES.ADD} onClick={() => this.onAdd()}><img alt={lang.DEVICES.ADD} src={add} /></span></td></tr>
+                    <tr><td></td><td></td><td></td><td><span className="operation" title={lang.ADD} onClick={() => this.onAdd()}><img alt={lang.ADD} src={add} /></span></td></tr>
                 </tbody>
             </table>
         );

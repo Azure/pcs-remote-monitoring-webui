@@ -20,9 +20,9 @@ import apply from "../../assets/icons/Apply.svg";
 import "./ruleEditor.css";
 
 const Severity = [
-    { text: lang.RULESACTIONS.CRITICAL, value: "critical", imgUrl: critical },
-    { text: lang.RULESACTIONS.WARNING, value: "warning", imgUrl: warning },
-    { text: lang.RULESACTIONS.INFO, value: "info", imgUrl: info }
+    { text: lang.CRITICAL, value: "critical", imgUrl: critical },
+    { text: lang.WARNING, value: "warning", imgUrl: warning },
+    { text: lang.INFO, value: "info", imgUrl: info }
 ];
 
 class RuleEditImg extends React.Component {
@@ -33,7 +33,7 @@ class RuleEditImg extends React.Component {
     render() {
         return (
             <div className={`edit-icon ${this.props.isEdit ? 'hide' : 'show'}`} onClick={this.onHandleClick}>
-                <span className="icon"><img alt={lang.RULESACTIONS.EDIT} src={edit} /></span><span>{lang.RULESACTIONS.EDIT}</span>
+                <span className="icon"><img alt={lang.EDIT} src={edit} /></span><span>{lang.EDIT}</span>
             </div>
         );
     }
@@ -45,7 +45,7 @@ class RuleEnableImg extends React.Component {
     }
 
     render() {
-        const statusTxt = this.props.isEnabled ? lang.RULESACTIONS.ENABLED : lang.RULESACTIONS.DISABLED;
+        const statusTxt = this.props.isEnabled ? lang.ENABLED : lang.DISABLED;
         return (
             <div>
                 <span className={`icon ${this.props.isEdit ? 'show' : 'hide'}`} onClick={this.onHandleClick}><img alt={statusTxt} src={this.props.isEnabled ? enabled : disabled} /></span><span>{statusTxt}</span>
@@ -196,44 +196,44 @@ class RuleEditor extends React.Component {
                 <div className="rule-editor-body">
                     <div className="rule-editor-item">
                         <div className="name-wrapper">
-                            <EditInput className="input" type="text" placeholder={lang.RULESACTIONS.ENTERRULENAME} value={this.state.rule.Name} isEdit={this.state.isEdit} onChange={this.onNameChange} />
+                            <EditInput className="input" type="text" placeholder={lang.ENTERRULENAME} value={this.state.rule.Name} isEdit={this.state.isEdit} onChange={this.onNameChange} />
                         </div>
                         <RuleEditImg isEdit={this.state.isEdit} onClick={this.onEditClick} />
                     </div>
                     <div className="rule-editor-item">
-                        <EditInput type="textarea" className="textarea" classForLabel="description" placeholder={lang.RULESACTIONS.ENTERRULEDISCRIPTION} value={this.state.rule.Description} isEdit={this.state.isEdit} onChange={this.onDescriptionChange} />
+                        <EditInput type="textarea" className="textarea" classForLabel="description" placeholder={lang.ENTERRULEDISCRIPTION} value={this.state.rule.Description} isEdit={this.state.isEdit} onChange={this.onDescriptionChange} />
                     </div>
                     <div className="rule-editor-item">
-                        <label className="item-title">{lang.RULESACTIONS.SOURCE}</label>
-                        <span className={`help-text ${this.state.isEdit ? 'show' : 'hide'}`}>{lang.RULESACTIONS.SOURCEHELP}</span>
-                        <EditInput type="select" className="input" placeholder={lang.RULESACTIONS.SELECTDEVICEGROUP} options={deviceGroupOptions} value={this.state.rule.GroupId} isEdit={this.state.isEdit} onChange={this.onGroupIdChange} />
+                        <label className="item-title">{lang.SOURCE}</label>
+                        <span className={`help-text ${this.state.isEdit ? 'show' : 'hide'}`}>{lang.SOURCEHELP}</span>
+                        <EditInput type="select" className="input" placeholder={lang.SELECTDEVICEGROUP} options={deviceGroupOptions} value={this.state.rule.GroupId} isEdit={this.state.isEdit} onChange={this.onGroupIdChange} />
                     </div>
                     <div className="rule-editor-item">
-                        <label className="item-title">{lang.RULESACTIONS.TRIGGER}</label>
+                        <label className="item-title">{lang.TRIGGER}</label>
                         <RuleTrigger fields={this.state.conditionFields} conditions={this.state.rule.Conditions} isEdit={this.state.isEdit} ref="conditions" />
                     </div>
                     <div className="rule-editor-item">
-                        <label className="item-title">{lang.RULESACTIONS.SEVERITYLEVEL}</label>
+                        <label className="item-title">{lang.SEVERITYLEVEL}</label>
                         <EditInput type="radio" options={Severity} value={this.state.rule.Severity} isEdit={this.state.isEdit} onChange={this.onSeverityLevelChange} />
                     </div>
                     <div className="rule-editor-item">
-                        <label className="item-title">{lang.RULESACTIONS.RULESTATUS}</label>
+                        <label className="item-title">{lang.RULESTATUS}</label>
                         <RuleEnableImg isEdit={this.state.isEdit} isEnabled={this.state.rule.Enabled} onClick={this.onEnableClick} />
                     </div>
                     <div className={`item-divider ${this.state.isEdit ? 'show' : 'hide'}`}>
                     </div>
                     <div className="rule-editor-item marginTop32">
-                        <label className={`item-title ${this.state.isEdit && this.state.rule.Id ? "show" : "hide"}`}>{lang.RULESACTIONS.SUMMARY}</label>
-                        <div className="ruleTip"><span className="device-count">{this.state.deviceCount}</span><span className="help-text">{lang.RULESACTIONS.DEVICECOUNT}</span></div>
+                        <label className={`item-title ${this.state.isEdit && this.state.rule.Id ? "show" : "hide"}`}>{lang.SUMMARY}</label>
+                        <div className="ruleTip"><span className="device-count">{this.state.deviceCount}</span><span className="help-text">{lang.DEVICECOUNT}</span></div>
                     </div>
                     <div className={`rule-editor-item ${this.state.isEdit && this.state.rule.Id ? "show" : "hide"}`}>
-                        <div className="help-text marginTop24">{lang.RULESACTIONS.NOTE}</div>
+                        <div className="help-text marginTop24">{lang.NOTE}</div>
                     </div>
                 </div>
                 <div className={`rule-editor-btns ${this.state.isEdit ? 'show' : 'hide'}`}>
                     <ButtonToolbar className="btn-tool-bar">
-                        <button className="button" onClick={() => this.onCancel()}><img src={cancelX} alt={lang.RULESACTIONS.CANCEL} className="cancel-icon" />{lang.RULESACTIONS.CANCEL}</button>
-                        <button className="button" onClick={() => this.onCreate()}><img src={apply} height="10" alt={lang.RULESACTIONS.APPLY} className="apply-icon" />{lang.RULESACTIONS.APPLY}</button>
+                        <button className="button" onClick={() => this.onCancel()}><img src={cancelX} alt={lang.CANCEL} className="cancel-icon" />{lang.CANCEL}</button>
+                        <button className="button" onClick={() => this.onCreate()}><img src={apply} height="10" alt={lang.APPLY} className="apply-icon" />{lang.APPLY}</button>
                     </ButtonToolbar>
                 </div>
             </div>

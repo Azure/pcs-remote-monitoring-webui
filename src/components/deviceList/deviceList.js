@@ -29,39 +29,39 @@ export class DeviceList extends Component {
     this.state = {
       columnHeaders: [
         {
-          headerName: lang.DEVICES.DEVICENAME,
+          headerName: lang.DEVICENAME,
           field: 'Id',
           headerCheckboxSelection: true,
           headerCheckboxSelectionFilteredOnly: true,
           checkboxSelection: true
         },
         {
-          headerName: lang.DEVICE_DETAIL.SIMULATED,
+          headerName: lang.SIMULATED,
           field: 'IsSimulated',
-          valueFormatter: ({ value }) => value ? lang.DEVICES.YES: lang.DEVICES.NO
+          valueFormatter: ({ value }) => value ? lang.YES: lang.NO
         },
         {
-          headerName: lang.DEVICES.DEVICETYPE,
+          headerName: lang.DEVICETYPE,
           field: 'Tags.deviceType',
           valueFormatter: ({ value }) => value || EMPTY_FIELD
         },
         {
-          headerName: lang.DEVICE_DETAIL.FIRMWARE,
+          headerName: lang.FIRMWARE,
           field: 'Properties.Reported.Firmware',
           valueFormatter: ({ value }) => value || EMPTY_FIELD
         },
         {
-          headerName: lang.DEVICE_DETAIL.TELEMETRY,
+          headerName: lang.TELEMETRY,
           field: 'Properties.Reported.Telemetry',
           valueFormatter: ({ value }) => Object.keys(value || {}).join('; ') || EMPTY_FIELD
         },
         {
-          headerName: lang.DEVICE_DETAIL.STATUS,
+          headerName: lang.STATUS,
           field: 'Connected',
-          valueFormatter: ({ value }) => value ? lang.DEVICES.CONNECTED : lang.DEVICES.DISCONNECTED
+          valueFormatter: ({ value }) => value ? lang.CONNECTED : lang.DISCONNECTED
         },
         {
-          headerName: lang.DEVICES.LASTCONNECTION,
+          headerName: lang.LASTCONNECTION,
           field: 'LastActivity',
           valueFormatter: ({ value }) => {
             const time = moment(value);
@@ -125,10 +125,10 @@ export class DeviceList extends Component {
               menuAlign="right"
               requestUrl={Config.deviceGroupApiUrl}
               initialState={{
-                defaultText: lang.DEVICES.CHOOSEDEVICES
+                defaultText: lang.CHOOSEDEVICES
               }}
               newItem={{
-                text: lang.DEVICES.NEWGROUP,
+                text: lang.NEWGROUP,
                 dialog: 'deviceGroupEditor'
               }}
               publishTopic={Topics.dashboard.deviceGroup.selected}
@@ -136,7 +136,7 @@ export class DeviceList extends Component {
             />
           </div>
           <div className="device-list-button">
-            <ActOnDevice ref="actOnDevice" buttonText={lang.DEVICES.ACTONDEVICES} devices={this.state.selectedDevices} />
+            <ActOnDevice ref="actOnDevice" buttonText={lang.ACTONDEVICES} devices={this.state.selectedDevices} />
           </div>
           <div className="device-list-button">
             <AddDevice />

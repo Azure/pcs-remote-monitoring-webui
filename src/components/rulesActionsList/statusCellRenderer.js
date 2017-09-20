@@ -10,11 +10,11 @@ export default class StatusCellRenderer extends React.Component {
             this.props.value
                 ? <div className="statusGroup ">
                 <div className="statusGroup-enabled"/>
-                <div className="statusGroup-text-enabled">{lang.RULESACTIONS.ENABLED}</div>
+                <div className="statusGroup-text-enabled">{lang.ENABLED}</div>
             </div>
                 : <div className="statusGroup">
                 <div className="statusGroup-disabled"/>
-                <div className="statusGroup-text-disabled">{lang.RULESACTIONS.DISABLED}</div>
+                <div className="statusGroup-text-disabled">{lang.DISABLED}</div>
             </div>
         )
     }

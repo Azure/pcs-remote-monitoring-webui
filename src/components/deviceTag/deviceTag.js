@@ -14,7 +14,7 @@ class DeviceTag extends Component {
         <div onClick={this.props.onDeviceTagClick}>
           <img className="tag-icon" src={Tag} alt="Tag" />
           <span className="tag-name">
-            {lang.DEVICE_DETAIL.TAG}
+            {lang.TAG}
           </span>
         </div>
       </div>

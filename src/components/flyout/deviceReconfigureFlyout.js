@@ -162,10 +162,10 @@ class DeviceReconfigureFlyout extends React.Component {
       return (
         <div className="no-common-properties-container">
           <div className="no-common-description">
-            {lang.DEVICES.NO_AVAILABLE_COMMON_TAGS}
+            {lang.NO_AVAILABLE_COMMON_TAGS}
           </div>
           <div className="no-common-description">
-            {lang.DEVICES.PLEASE_CHOOSE_DEVICES_WITH_COMMON_TAGS}
+            {lang.PLEASE_CHOOSE_DEVICES_WITH_COMMON_TAGS}
           </div>
         </div>
       );
@@ -175,13 +175,13 @@ class DeviceReconfigureFlyout extends React.Component {
       <div className="common-reconfigure-container">
         <div className="device-configuration-row name-value-type">
           <span className="device-configuration-items">
-            {lang.DEVICE_DETAIL.FIELD}
+            {lang.FIELD}
           </span>
           <span className="device-configuration-items">
-            {lang.DEVICE_DETAIL.VALUE}
+            {lang.VALUE}
           </span>
           <span className="device-configuration-items">
-            {lang.DEVICE_DETAIL.TYPE}
+            {lang.TYPE}
           </span>
         </div>
         {commonConfiguration.map((item, idx) =>
@@ -215,32 +215,32 @@ class DeviceReconfigureFlyout extends React.Component {
     return (
       <div className="device-configuration-container">
         <div className="sub-heading">
-          {lang.DEVICE_DETAIL.CHOOSE_DEVICE_CONFIGURATION}
+          {lang.CHOOSE_DEVICE_CONFIGURATION}
         </div>
         <div className="sub-class-heading">
-          {lang.DEVICE_DETAIL.AVAILABLE_PROPERTIES}
+          {lang.AVAILABLE_PROPERTIES}
         </div>
         <div className="job-name-container">
           <div className="label-key">
-            {lang.DEVICE_DETAIL.JOB_NAME}
+            {lang.JOB_NAME}
           </div>
           <input
             type="text"
             className="style-manage"
-            placeholder={lang.DEVICE_DETAIL.RECONFIGURE_JOB}
+            placeholder={lang.RECONFIGURE_JOB}
             onChange={this.onChangeInput}
             value={this.state.jobInputValue}
           />
         </div>
         {this.commonReconfigure()}
         <div className="summary-container">
-          {lang.DEVICE_DETAIL.SUMMARY}
+          {lang.SUMMARY}
           <div className="effected-devices">
             <span className="num-effected-devices">
               {totalEffectedDevices}
             </span>
             <span className="effected-devices-name">
-              {lang.DEVICES.EFFECTED_DEVICES}
+              {lang.EFFECTED_DEVICES}
             </span>
           </div>
         </div>
@@ -248,13 +248,13 @@ class DeviceReconfigureFlyout extends React.Component {
         <div className="btn-container">
           <button className="pcs-btn">
             <img src={CancelX} alt={`${CancelX}`} onClick={this.props.onClose} className="cancel-icon" />
-            {lang.FILTER.CANCEL}
+            {lang.CANCEL}
           </button>
           {this.state.showSpinner && <Spinner size="medium" />}
           {this.state.jobApplied
             ? <button className="pcs-btn primary" disabled type="button">
                 <img src={Apply} alt={`${Apply}`} />
-                {lang.FLYOUT.APPLIED}
+                {lang.APPLIED}
               </button>
             : <button
                 className="pcs-btn primary"
@@ -263,7 +263,7 @@ class DeviceReconfigureFlyout extends React.Component {
                 onClick={this.applyDeviceConfigureJobsData}
               >
                 {!disabledButton && <img src={Apply} alt={`${Apply}`} />}
-                {lang.FLYOUT.APPLY}
+                {lang.APPLY}
               </button>}
         </div>
       </div>

@@ -58,7 +58,7 @@ class PieChartGraph extends Component {
         <Row className="pie-line-chart">
           <Col md={6} className="pie-chart">
             <div className="pie-header">
-              {Lang.KPI.ALARMBYDEVICETYPE}
+              {Lang.ALARMBYDEVICETYPE}
             </div>
             {pieChart && pieChart.chartConfig
               ? <Chart

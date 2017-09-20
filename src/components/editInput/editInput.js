@@ -25,7 +25,7 @@ const SelectInput = ({ options, value, className, onChange, placeholder }) => {
             options={options}
             value={value}
             simpleValue
-            placeholder={placeholder || lang.RULESACTIONS.DROUPDOWNPLACEHOLDER}
+            placeholder={placeholder || lang.DROUPDOWNPLACEHOLDER}
             className={`field-select${className ? ' ' + className : ''}`}
             onChange={onChange}
         />

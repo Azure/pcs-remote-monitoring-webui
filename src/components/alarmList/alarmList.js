@@ -25,13 +25,12 @@ class AlarmList extends Component {
   }
 
   createColumnDefs = () => {
-    let columnDefs = lang.DASHBOARD.ALARMLIST.COLUMNDEFS;
     return [
-      { headerName: columnDefs.RULENAME, field: 'ruleId', filter: 'text' },
-      { headerName: columnDefs.SEVERITY, field: 'severity', filter: 'text' },
-      { headerName: columnDefs.CREATED, field: 'created', filter: 'date' },
-      { headerName: columnDefs.OPENOCCURRENCES, field: 'occurrences', filter: 'number' },
-      { headerName: columnDefs.EXPLOREALARM, valueGetter: params => '...' },
+      { headerName: lang.RULENAME, field: 'ruleId', filter: 'text' },
+      { headerName: lang.SEVERITY, field: 'severity', filter: 'text' },
+      { headerName: lang.CREATED, field: 'created', filter: 'date' },
+      { headerName: lang.OPENOCCURRENCES, field: 'occurrences', filter: 'number' },
+      { headerName: lang.EXPLOREALARM, valueGetter: params => '...' },
     ];
   };
 
@@ -115,7 +114,7 @@ class AlarmList extends Component {
     return (
       <DashboardPanel
         className="alarm-list"
-        title={lang.DASHBOARD.ALARMSTATUS}
+        title={lang.ALARMSTATUS}
         actions={
           <Select
             value={this.state.timerange}
@@ -125,19 +124,19 @@ class AlarmList extends Component {
             options={[
               {
                 value: 'PT1H',
-                label: lang.FORMS.LASTHOUR
+                label: lang.LASTHOUR
               },
               {
                 value: 'P1D',
-                label: lang.FORMS.LASTDAY
+                label: lang.LASTDAY
               },
               {
                 value: 'P1W',
-                label: lang.FORMS.LASTWEEK
+                label: lang.LASTWEEK
               },
               {
                 value: 'P1M',
-                label: lang.FORMS.LASTMONTH
+                label: lang.LASTMONTH
               }
             ]}
           />

@@ -48,7 +48,7 @@ class DeviceScheduleFlyout extends React.Component {
     const newState = {
       methodValue: value,
       showJobContent: !!value,
-      showFirmwareContent: value === lang.DEVICE_SCHEDULE.FIRMWARE_OPTION,
+      showFirmwareContent: value === lang.FIRMWARE_OPTION,
       firmwareURIValue: ''
     };
     if (!newState.showJobContent) {
@@ -100,13 +100,13 @@ class DeviceScheduleFlyout extends React.Component {
         {availableMethods.length
           ? <div className="device-schdule-content">
               <div className="content-title">
-                {lang.DEVICE_SCHEDULE.METHODS}
+                {lang.METHODS}
               </div>
               <div className="content-description">
-                {lang.DEVICE_SCHEDULE.METHODS_DESCRIPTION}
+                {lang.METHODS_DESCRIPTION}
               </div>
               <div className="content-title">
-                {lang.DEVICE_SCHEDULE.SELECT_ONE}
+                {lang.SELECT_ONE}
               </div>
               <Select
                 options={methodOptions}
@@ -114,17 +114,17 @@ class DeviceScheduleFlyout extends React.Component {
                 onChange={this.onSelect}
                 simpleValue
                 searchable={true}
-                placeholder={lang.DEVICE_SCHEDULE.SELECT_PLACEHOLDER}
+                placeholder={lang.SELECT_PLACEHOLDER}
                 className="selectStyle-manage"
               />
               {this.state.showJobContent &&
                 <div className="job-schedule-section">
                   <div className="content-title">
-                    {lang.DEVICE_SCHEDULE.JOB_NAME}
+                    {lang.JOB_NAME}
                   </div>
                   <input
                     className="user-input"
-                    placeholder={`${lang.DEVICE_SCHEDULE.JOB_NAME_INPUT_PLACEHOLDER}...`}
+                    placeholder={`${lang.JOB_NAME_INPUT_PLACEHOLDER}...`}
                     type="text"
                     name="jobInputValue"
                     onChange={this.onChangeInput}
@@ -133,12 +133,12 @@ class DeviceScheduleFlyout extends React.Component {
                   {this.state.showFirmwareContent &&
                     <div className="firmware-uri-section">
                       <div className="content-title">
-                        {lang.DEVICE_SCHEDULE.FIRMWARE_URL}
+                        {lang.FIRMWARE_URL}
                       </div>
                       <input
                         className="user-input"
                         name="firmwareURIValue"
-                        placeholder={`${lang.DEVICE_SCHEDULE.FIRMWARE_URL_INPUT_PLACEHOLDER}...`}
+                        placeholder={`${lang.FIRMWARE_URL_INPUT_PLACEHOLDER}...`}
                         type="text"
                         onChange={this.onChangeInput}
                         value={this.state.firmwareURIValue}
@@ -158,7 +158,7 @@ class DeviceScheduleFlyout extends React.Component {
                   type="button"
                 >
                   <img src={CancelX} alt={`${CancelX}`} />
-                  {lang.FLYOUT.CANCEL}
+                  {lang.CANCEL}
                 </button>
                 {this.state.showSpinner && <Spinner size="medium" />}
                 {
@@ -170,7 +170,7 @@ class DeviceScheduleFlyout extends React.Component {
                       type="button"
                     >
                       <img src={Apply} alt={`${Apply}`} />
-                      {lang.FLYOUT.APPLIED}
+                      {lang.APPLIED}
                     </button>
                   : <button
                       className="apply-button "
@@ -179,17 +179,17 @@ class DeviceScheduleFlyout extends React.Component {
                       type="button"
                     >
                       {!disabledButton && <img src={Apply} alt={`${Apply}`} />}
-                      {lang.FLYOUT.APPLY}
+                      {lang.APPLY}
                     </button>
                 }
               </div>
             </div>
           : <div className="device-schdule-content">
               <div className="content-title">
-                {lang.DEVICE_SCHEDULE.CHOOSE_NEW_DEVICES}
+                {lang.CHOOSE_NEW_DEVICES}
               </div>
               <div className="content-description">
-                {lang.DEVICE_SCHEDULE.CHOOSE_NEW_DEVICES}
+                {lang.CHOOSE_NEW_DEVICES}
               </div>
             </div>}
       </div>

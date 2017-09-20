@@ -21,10 +21,10 @@ class AddDevice extends Component {
   render() {
     return (
       <div className="add-device-container">
-        <PcsBtn onClick={this.onClick} value={lang.DEVICES.ADDDEVICES} />
+        <PcsBtn onClick={this.onClick} value={lang.ADDDEVICES} />
         <Flyout ref='flyout'>
           <Header>
-            {lang.DEVICES.PROVISIONDEVICES}
+            {lang.PROVISIONDEVICES}
           </Header>
           <Body>
             <DeviceProvisioningWorkflow finishCallback={this.addDeviceCallback} />

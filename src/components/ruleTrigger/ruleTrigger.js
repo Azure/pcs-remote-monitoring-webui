@@ -122,15 +122,15 @@ class RuleTrigger extends React.Component {
         return (
             <div className="rule-trigger">
                 <div>
-                    <div className="condition-head">{lang.RULESACTIONS.TH_FIELD}</div>
-                    <div className="condition-head">{lang.RULESACTIONS.TH_OPERATOR}</div>
-                    <div className="condition-head">{lang.RULESACTIONS.TH_VALUE}</div>
-                    <div className="condition-action">{lang.RULESACTIONS.TH_ACTIONS}</div>
+                    <div className="condition-head">{lang.TH_FIELD}</div>
+                    <div className="condition-head">{lang.TH_OPERATOR}</div>
+                    <div className="condition-head">{lang.TH_VALUE}</div>
+                    <div className="condition-action">{lang.TH_ACTIONS}</div>
                 </div>
                 <div className="condition-row">
                     <div className="condition-field"><EditInput type="select" isEdit={true} value={this.state.condition.field} options={this.props.fields} onChange={(value) => this.onNewFieldChange(value)} /></div>
                     <div className="condition-field"><EditInput type="select" isEdit={true} value={this.state.condition.operator} options={OperatorOptions} onChange={(value) => this.onNewOperatorChange(value)} /></div>
-                    <div className="condition-field"><EditInput type="text" isEdit={true} placeholder={lang.RULESACTIONS.ENTERVALUE} className="value" value={this.state.condition.value} onBlur={this.addCondition} onChange={(value) => this.onNewValueChange(value)} /></div>
+                    <div className="condition-field"><EditInput type="text" isEdit={true} placeholder={lang.ENTERVALUE} className="value" value={this.state.condition.value} onBlur={this.addCondition} onChange={(value) => this.onNewValueChange(value)} /></div>
                     <div className="condition-action"></div>
                 </div>
                 {
@@ -143,7 +143,7 @@ class RuleTrigger extends React.Component {
                             </div>
                             <div className="condition-action">
                                 <span className="condition-action-img">
-                                     <img src={del} alt={lang.RULESACTIONS.IMGDELETE} onClick={() => this.onDeleteClick(i)} />
+                                     <img src={del} alt={lang.IMGDELETE} onClick={() => this.onDeleteClick(i)} />
                                 </span>
                             </div>
                         </div>
@@ -159,9 +159,9 @@ class RuleTrigger extends React.Component {
                 <Table>
                     <thead>
                         <tr>
-                            <td>{lang.RULESACTIONS.TH_FIELD}</td>
-                            <td>{lang.RULESACTIONS.TH_OPERATOR}</td>
-                            <td>{lang.RULESACTIONS.TH_VALUE}</td>
+                            <td>{lang.TH_FIELD}</td>
+                            <td>{lang.TH_OPERATOR}</td>
+                            <td>{lang.TH_VALUE}</td>
                         </tr>
                     </thead>
                     <tbody>

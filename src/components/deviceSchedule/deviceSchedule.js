@@ -59,7 +59,7 @@ class DeviceSchedule extends React.Component {
         return (
             <div className="deviceSchedule">
                 <FormGroup>
-                    <ControlLabel>{lang.DEVICES.AVAILABLEACTIONS}</ControlLabel>
+                    <ControlLabel>{lang.AVAILABLEACTIONS}</ControlLabel>
                     <FormControl componentClass="select" onChange={this.onSelect}>
                         {
                             this.methods.map((method) =>
@@ -69,14 +69,14 @@ class DeviceSchedule extends React.Component {
                     </FormControl>
                 </FormGroup>
                 <FormGroup>
-                    <ControlLabel>{lang.DEVICES.SELECTTIMELINE}</ControlLabel>
-                    <Radio name="timeOption">{lang.DEVICES.NOW}</Radio>
-                    <Radio name="timeOption">{lang.DEVICES.TIMEWINDOW}</Radio>
+                    <ControlLabel>{lang.SELECTTIMELINE}</ControlLabel>
+                    <Radio name="timeOption">{lang.NOW}</Radio>
+                    <Radio name="timeOption">{lang.TIMEWINDOW}</Radio>
                     <FormControl type="datetime"/>
                 </FormGroup>
                 <FormGroup>
-                    <ControlLabel>{formatString(lang.DEVICES.CAUTION, deviceCount)}</ControlLabel>
-                    <Button className="btnConfirm" onClick={() => this.onConfirm()}>{lang.DEVICES.CONFIRM}</Button>
+                    <ControlLabel>{formatString(lang.CAUTION, deviceCount)}</ControlLabel>
+                    <Button className="btnConfirm" onClick={() => this.onConfirm()}>{lang.CONFIRM}</Button>
                 </FormGroup>
             </div>
         );

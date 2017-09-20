@@ -63,14 +63,14 @@ class DevicesPage extends Component {
 
     return (
       <PageContainer>
-        <TopNav breadcrumbs={lang.DEVICES_LABEL} projectName={lang.DASHBOARD.AZUREPROJECTNAME} />
+        <TopNav breadcrumbs={lang.DEVICES_LABEL} projectName={lang.AZUREPROJECTNAME} />
         <ContextFilters>
           {this.state.contextBtns}
           <SimControlCenter />
           <ManageFilterBtn />
           <PcsBtn svg={AddSvg} 
                   onClick={this.props.openProvisionFlyout} 
-                  value={lang.DEVICES.PROVISIONDEVICES} />
+                  value={lang.PROVISIONDEVICES} />
         </ContextFilters>
         <PageContent>
           <DevicesGrid { ...deviceGridProps } />

@@ -30,7 +30,7 @@ class RulesAndActionsPage extends Component {
       selectedRulesActions: [],
       currentNode: null,
       showBoth: false,
-      toggleButtonText: lang.RULESACTIONS.DISABLE,
+      toggleButtonText: lang.DISABLE,
       toggleButtonSvg: ChangestatusSvg,
       softSelectId: ''
     }
@@ -39,12 +39,12 @@ class RulesAndActionsPage extends Component {
       newRule: {
         svg: AddSvg,
         onClick: this.newRule,
-        value: lang.RULESACTIONS.NEWRULE
+        value: lang.NEWRULE
       },
       edit: {
         svg: EditSvg,
         onClick: this.showEditRulesFlyout,
-        value: lang.RULESACTIONS.EDIT
+        value: lang.EDIT
       }
     };
   }
@@ -82,7 +82,7 @@ class RulesAndActionsPage extends Component {
     this.setState({
       selectedRulesActions,
       showBoth: showBoth,
-      toggleButtonText: showBoth ? lang.RULESACTIONS.CHANGESTATUS : status ? lang.RULESACTIONS.DISABLE : lang.RULESACTIONS.ENABLE,
+      toggleButtonText: showBoth ? lang.CHANGESTATUS : status ? lang.DISABLE : lang.ENABLE,
       toggleButtonSvg: showBoth ? ChangestatusSvg : status ? DisableSvg : EnableSvg,
     });
   };
@@ -91,7 +91,7 @@ class RulesAndActionsPage extends Component {
     this.gridApi.deselectAll();
     const flyoutConfig = {
       onUpdateData: this.onUpdateData,
-      title: lang.RULESACTIONS.NEWRULE,
+      title: lang.NEWRULE,
       type: 'New Rule'
     };
     this.props.actions.showFlyout(flyoutConfig);
@@ -108,7 +108,7 @@ class RulesAndActionsPage extends Component {
       () => {
         const flyoutConfig = {
           onUpdateData: this.onUpdateData,
-          title: lang.RULESACTIONS.RULEDETAIL,
+          title: lang.RULEDETAIL,
           type: 'New Rule',
           rule: rowData
         };
@@ -123,7 +123,7 @@ class RulesAndActionsPage extends Component {
     actions.hideFlyout();
     const flyoutConfig = {
       onUpdateData: this.onUpdateData,
-      title: lang.RULESACTIONS.RULEDETAIL,
+      title: lang.RULEDETAIL,
       type: 'New Rule',
       rule: this.state.selectedRulesActions[0],
       inEdit: true
@@ -187,7 +187,7 @@ class RulesAndActionsPage extends Component {
 
     return (
       <PageContainer>
-        <TopNav breadcrumbs={'Rules and Actions'} projectName={lang.DASHBOARD.AZUREPROJECTNAME} />
+        <TopNav breadcrumbs={'Rules and Actions'} projectName={lang.AZUREPROJECTNAME} />
         {this.renderContextFilters()}
         <PageContent>
           <RulesActionsList {...rulesAndActionsProps} />

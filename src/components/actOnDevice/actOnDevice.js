@@ -18,7 +18,7 @@ class ActOnDevice extends Component {
     const flyout = (
       <Flyout ref='flyout'>
         <Header>
-          {lang.DEVICES.ACTONDEVICES}
+          {lang.ACTONDEVICES}
         </Header>
         <Body>
           <ActionList devices={this.props.devices} />

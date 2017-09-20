@@ -32,7 +32,7 @@ class ActionList extends Component {
         const configflyout =(
             <Flyout ref='configflyout'>
                 <Header>
-                    {lang.DEVICES.CHANGEDEVICECONFIG}
+                    {lang.CHANGEDEVICECONFIG}
                 </Header>
                 <Body>
                     <DeviceConfig
@@ -44,7 +44,7 @@ class ActionList extends Component {
         const organizeflyout =(
             <Flyout ref='organizeflyout'>
                 <Header>
-                    {lang.DEVICES.ORGANIZEMYDEVICE}
+                    {lang.ORGANIZEMYDEVICE}
                 </Header>
                 <Body>
                     <DeviceOrganize
@@ -56,7 +56,7 @@ class ActionList extends Component {
         const scheduleflyout =(
             <Flyout ref='scheduleflyout'>
                 <Header>
-                    {lang.DEVICES.SCHEDULEANACTION}
+                    {lang.SCHEDULEANACTION}
                 </Header>
                 <Body>
                     <DeviceSchedule
@@ -69,9 +69,9 @@ class ActionList extends Component {
         return (
             <Row>
                 <ListGroup>
-                    <ListGroupItem onClick={()=>{this.openFlyout('configflyout')}}>{lang.DEVICES.CHANGEDEVICECONFIG}</ListGroupItem>
-                    <ListGroupItem onClick={()=>{this.openFlyout('organizeflyout')}}>{lang.DEVICES.ORGANIZEMYDEVICE}</ListGroupItem>
-                    <ListGroupItem onClick={()=>{this.openFlyout('scheduleflyout')}}>{lang.DEVICES.SCHEDULEANACTION}</ListGroupItem>
+                    <ListGroupItem onClick={()=>{this.openFlyout('configflyout')}}>{lang.CHANGEDEVICECONFIG}</ListGroupItem>
+                    <ListGroupItem onClick={()=>{this.openFlyout('organizeflyout')}}>{lang.ORGANIZEMYDEVICE}</ListGroupItem>
+                    <ListGroupItem onClick={()=>{this.openFlyout('scheduleflyout')}}>{lang.SCHEDULEANACTION}</ListGroupItem>
                 </ListGroup>
                 {configflyout}
                 {organizeflyout}

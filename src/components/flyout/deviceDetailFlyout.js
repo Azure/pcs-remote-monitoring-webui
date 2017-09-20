@@ -315,7 +315,7 @@ class DeviceDetailFlyout extends Component {
      */
     // TODO: confirm firmware obj structure
     const deviceProperties = Object.keys(Reported).map((key, index) => {
-      if (key === lang.DEVICE_DETAIL.DEVICETYPE && Reported[key] !== '') {
+      if (key === lang.DEVICETYPE && Reported[key] !== '') {
         if (Desired[key] && Desired[key] !== Reported[key]) {
           return (
             <tr key={index}>
@@ -326,7 +326,7 @@ class DeviceDetailFlyout extends Component {
                 {Reported[key]}
               </td>
               <td>
-                `${lang.DEVICE_DETAIL.SYNC} ${Reported[key]}`
+                `${lang.SYNC} ${Reported[key]}`
               </td>
             </tr>
           );
@@ -342,7 +342,7 @@ class DeviceDetailFlyout extends Component {
           </tr>
         );
       }
-      if (key === lang.DEVICE_DETAIL.LOCATION && Reported[key]) {
+      if (key === lang.LOCATION && Reported[key]) {
         const deviceLocation = Reported[key];
         if (Desired[key] && Desired[key] !== Reported[key]) {
           const desiredLocation = Desired[key];
@@ -355,7 +355,7 @@ class DeviceDetailFlyout extends Component {
                 {deviceLocation}
               </td>
               <td>
-                `${lang.DEVICE_DETAIL.SYNC} ${desiredLocation}`
+                `${lang.SYNC} ${desiredLocation}`
               </td>
             </tr>
           );
@@ -373,7 +373,7 @@ class DeviceDetailFlyout extends Component {
           );
         }
       }
-      if (key === lang.DEVICE_DETAIL.FIRMWARE && Reported[key]) {
+      if (key === lang.FIRMWARE && Reported[key]) {
         const deviceFirmware = Reported[key];
         if (Desired[key] && Desired[key] !== Reported[key]) {
           const desiredFirmware = Desired[key];
@@ -386,7 +386,7 @@ class DeviceDetailFlyout extends Component {
                 {deviceFirmware}
               </td>
               <td>
-                `${lang.DEVICE_DETAIL.SYNC} ${desiredFirmware}`
+                `${lang.SYNC} ${desiredFirmware}`
               </td>
             </tr>
           );
@@ -420,19 +420,19 @@ class DeviceDetailFlyout extends Component {
               <div className="device-status">
                 {deviceType}{' '}
                 {IsSimulated
-                  ? lang.DEVICE_DETAIL.SIMULATED
-                  : lang.DEVICE_DETAIL.PHYSICAL}
+                  ? lang.SIMULATED
+                  : lang.PHYSICAL}
               </div>
               <div>
                 {device.Connected
-                  ? lang.DEVICE_DETAIL.CONNECTED
-                  : lang.DEVICE_DETAIL.DISCONNECTED}
+                  ? lang.CONNECTED
+                  : lang.DISCONNECTED}
               </div>
             </div>
           </div>
           <div className="device-alarm-list">alarm list</div>
         </div>
-        <Drawer toggle={true} title={lang.DEVICE_DETAIL.TELEMETRY}>
+        <Drawer toggle={true} title={lang.TELEMETRY}>
           <div>
             {telemetryRadioBtnGroup}
           </div>
@@ -442,8 +442,8 @@ class DeviceDetailFlyout extends Component {
         </Drawer>
         <Drawer
           toggle={true}
-          title={lang.DEVICE_DETAIL.TAGS}
-          description={lang.DEVICE_DETAIL.TAGS_DESCRIPTION}
+          title={lang.TAGS}
+          description={lang.TAGS_DESCRIPTION}
         >
           <div className="drawer-content">
             {deviceTags.length > 0 &&
@@ -451,10 +451,10 @@ class DeviceDetailFlyout extends Component {
                 <thead>
                   <tr>
                     <th>
-                      {lang.DEVICE_DETAIL.KEY}
+                      {lang.KEY}
                     </th>
                     <th>
-                      {lang.DEVICE_DETAIL.VALUE}
+                      {lang.VALUE}
                     </th>
                   </tr>
                 </thead>
@@ -466,8 +466,8 @@ class DeviceDetailFlyout extends Component {
         </Drawer>
         <Drawer
           toggle={true}
-          title={lang.DEVICE_DETAIL.METHODS}
-          description={lang.DEVICE_DETAIL.METHODS_DESCRIPTION}
+          title={lang.METHODS}
+          description={lang.METHODS_DESCRIPTION}
         >
           <div className="drawer-content">
             {deviceMethods}
@@ -475,8 +475,8 @@ class DeviceDetailFlyout extends Component {
         </Drawer>
         <Drawer
           toggle={true}
-          title={lang.DEVICE_DETAIL.PROPERTIES}
-          description={lang.DEVICE_DETAIL.PROPERTIES_DESCRIPTION}
+          title={lang.PROPERTIES}
+          description={lang.PROPERTIES_DESCRIPTION}
         >
           <div className="drawer-content">
             {deviceProperties.length > 0 &&
@@ -484,10 +484,10 @@ class DeviceDetailFlyout extends Component {
                 <thead>
                   <tr>
                     <th>
-                      {lang.DEVICE_DETAIL.PROPERTIES}
+                      {lang.PROPERTIES}
                     </th>
                     <th>
-                      {lang.DEVICE_DETAIL.VALUE}
+                      {lang.VALUE}
                     </th>
                   </tr>
                 </thead>
@@ -499,44 +499,44 @@ class DeviceDetailFlyout extends Component {
         </Drawer>
         <Drawer
           toggle={false}
-          title={lang.DEVICE_DETAIL.COPY_TO_CLIPBOARD}
-          description={lang.DEVICE_DETAIL.COPY_TO_CLIPBOARD_DESCRIPTION}
+          title={lang.COPY_TO_CLIPBOARD}
+          description={lang.COPY_TO_CLIPBOARD_DESCRIPTION}
         >
           <div className="drawer-content">
             <button onClick={() => this.copyToClipboard(Reported)}>
-              {lang.DEVICE_DETAIL.COPY}
+              {lang.COPY}
             </button>
           </div>
         </Drawer>
         <Drawer
           toggle={true}
-          title={lang.DEVICE_DETAIL.DIAGNOSTICS}
-          description={lang.DEVICE_DETAIL.DIAGNOSTICS_DESCRIPTION}
+          title={lang.DIAGNOSTICS}
+          description={lang.DIAGNOSTICS_DESCRIPTION}
         >
           <div className="drawer-content">
             <table>
               <thead>
                 <tr>
                   <th>
-                    {lang.DEVICE_DETAIL.PROPERTIES}
+                    {lang.PROPERTIES}
                   </th>
                   <th>
-                    {lang.DEVICE_DETAIL.VALUE}
+                    {lang.VALUE}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>
-                    {lang.DEVICE_DETAIL.STATUS}
+                    {lang.STATUS}
                   </td>
                   <td>
-                    {lang.DEVICE_DETAIL.CONNECTED}
+                    {lang.CONNECTED}
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    {lang.DEVICE_DETAIL.LAST_MSG}
+                    {lang.LAST_MSG}
                   </td>
                   <td>
                     {this.state.lastMessageReceived}
@@ -544,13 +544,13 @@ class DeviceDetailFlyout extends Component {
                 </tr>
                 <tr>
                   <td>
-                    {lang.DEVICE_DETAIL.MESSAGE}
+                    {lang.MESSAGE}
                   </td>
                   <td
                     className="show-device-detail-message"
                     onClick={this.toggleShowRawMessage}
                   >
-                    {lang.DEVICE_DETAIL.CLICK_TO_SHOW}
+                    {lang.CLICK_TO_SHOW}
                   </td>
                 </tr>
               </tbody>

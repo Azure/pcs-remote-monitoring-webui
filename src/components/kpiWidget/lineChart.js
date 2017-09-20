@@ -56,7 +56,7 @@ class LineChart extends Component {
     return (
       <Col md={6} className="line-chart">
         <div className="line-header">
-          {Lang.KPI.CRITICALALARM}
+          {Lang.CRITICALALARM}
         </div>
         <div className="percentage-critical">
           {typeof this.props.criticalAlarmCountLast !== 'undefined' &&

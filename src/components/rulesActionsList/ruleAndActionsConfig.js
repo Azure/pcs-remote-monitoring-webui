@@ -15,29 +15,29 @@ export const checkboxParams = {
 
 export const rulesAndActionsColumnDefs = {
   ruleName: {
-    headerName: lang.RULESACTIONS.RULENAME,
+    headerName: lang.RULENAME,
     field: 'Name',
     filter: 'text'
   },
   description: {
-    headerName: lang.RULESACTIONS.DESCRIPTION,
+    headerName: lang.DESCRIPTION,
     field: 'Description',
     filter: 'text'
   },
   severity: {
-    headerName: lang.RULESACTIONS.SEVERITY,
+    headerName: lang.SEVERITY,
     field: 'Severity',
     filter: 'text',
     cellRendererFramework: SeverityCellRenderer
   },
   filter: {
-    headerName: lang.RULESACTIONS.FILTER,
+    headerName: lang.FILTER,
     field: 'GroupId',
     filter: 'text',
     cellRendererFramework: DeviceSourceCellRenderer
   },
   trigger: {
-    headerName: lang.RULESACTIONS.TRIGGER,
+    headerName: lang.TRIGGER,
     field: 'Conditions',
     filter: 'text',
     valueFormatter: ({ value }) => {
@@ -48,23 +48,23 @@ export const rulesAndActionsColumnDefs = {
     }
   },
   notificationType: {
-    headerName: lang.RULESACTIONS.NOTIFICATIONTYPE,
+    headerName: lang.NOTIFICATIONTYPE,
     field: 'Action.Type',
     filter: 'text',
-    valueFormatter: ({ value }) => value || lang.RULESACTIONS.ALARMLOG
+    valueFormatter: ({ value }) => value || lang.ALARMLOG
   },
   status: {
-    headerName: lang.RULESACTIONS.STATUS,
+    headerName: lang.STATUS,
     field: 'Enabled',
     filter: 'text',
     cellRendererFramework: StatusCellRenderer
   },
   count: {
-    headerName: lang.RULESACTIONS.COUNT,
+    headerName: lang.COUNT,
     cellRendererFramework: deviceCountCellRenderer,
   },
   lastTrigger: {
-    headerName: lang.RULESACTIONS.LASTTRIGGER,
+    headerName: lang.LASTTRIGGER,
     cellRendererFramework: LastTriggerCellRenderer,
     width: LastTriggerDefaultWidth
   }

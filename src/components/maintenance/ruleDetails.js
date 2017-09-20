@@ -125,7 +125,7 @@ class RuleDetailsPage extends Component {
   selectGrid(event) {
     this.setState({
       selectedAll: event.currentTarget.textContent === lang.ALL,
-      selectedDevices: event.currentTarget.textContent === lang.LEFTNAV.DEVICES,
+      selectedDevices: event.currentTarget.textContent === lang.DEVICES,
       selectedTelemetry: event.currentTarget.textContent === lang.TELEMETRY
     });
   }
@@ -208,7 +208,7 @@ class RuleDetailsPage extends Component {
 
         <Section header={lang.RELATED_INFO} childClassName="selection-bar">
           <div className={this.state.selectedAll ? 'selection-item-active' : 'selection-item'} onClick={this.selectGrid}>{lang.ALL}</div>
-          <div className={this.state.selectedDevices ? 'selection-item-active' : 'selection-item'} onClick={this.selectGrid}>{lang.LEFTNAV.DEVICES}</div>
+          <div className={this.state.selectedDevices ? 'selection-item-active' : 'selection-item'} onClick={this.selectGrid}>{lang.DEVICES}</div>
           <div className={this.state.selectedTelemetry ? 'selection-item-active' : 'selection-item'} onClick={this.selectGrid}>{lang.TELEMETRY}</div>
         </Section>
 

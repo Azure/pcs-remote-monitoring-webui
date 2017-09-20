@@ -226,7 +226,7 @@ class ManageFiltersFlyout extends React.Component {
         <div>
           <label>
             <div className="label-names">
-              {lang.FILTER.FILTERNAME}
+              {lang.FILTERNAME}
             </div>
             <input
               onChange={evt => {
@@ -241,17 +241,17 @@ class ManageFiltersFlyout extends React.Component {
               type="text"
               value={group && group.DisplayName}
               className="style-manage"
-              placeholder={lang.FILTER.ENTERNAMEFORFILTER}
+              placeholder={lang.ENTERNAMEFORFILTER}
             />
           </label>
           {(this.state.editingState[group.Id] || {}).isDuplicate
             ? <div className="error-msg">
-                {lang.FILTER.GROUPNAMEALREADYEXISTS}
+                {lang.GROUPNAMEALREADYEXISTS}
               </div>
             : null}
           {(this.state.editingState[group.Id] || {}).emptyName
             ? <div className="error-msg">
-                {lang.FILTER.FILTERNAMECANNOTBEEMPTY}
+                {lang.FILTERNAMECANNOTBEEMPTY}
               </div>
             : null}
         </div>
@@ -262,7 +262,7 @@ class ManageFiltersFlyout extends React.Component {
                 <div>
                   <label>
                     <div className="label-names">
-                      {lang.FILTER.FIELD}
+                      {lang.FIELD}
                     </div>
                     <Select
                       autofocus
@@ -274,7 +274,7 @@ class ManageFiltersFlyout extends React.Component {
                       }}
                       simpleValue
                       searchable={true}
-                      placeholder={lang.FILTER.ENTERREPORTED}
+                      placeholder={lang.ENTERREPORTED}
                       className="select-style-manage"
                     />
                   </label>
@@ -282,7 +282,7 @@ class ManageFiltersFlyout extends React.Component {
                 <div>
                   <label>
                     <div className="label-names">
-                      {lang.FILTER.OPERATOR}
+                      {lang.OPERATOR}
                     </div>
                     <div>
                       <Select
@@ -295,7 +295,7 @@ class ManageFiltersFlyout extends React.Component {
                         }}
                         simpleValue
                         searchable={true}
-                        placeholder={lang.FILTER.EQUALS}
+                        placeholder={lang.EQUALS}
                         className="select-style-manage"
                       />
                     </div>
@@ -304,7 +304,7 @@ class ManageFiltersFlyout extends React.Component {
                 <div>
                   <label>
                     <div className="label-names">
-                      {lang.FILTER.VALUE}
+                      {lang.VALUE}
                     </div>
                     <input
                       onChange={evt => {
@@ -320,21 +320,21 @@ class ManageFiltersFlyout extends React.Component {
                       }}
                       type="text"
                       value={cond.Value}
-                      placeholder={lang.FILTER.ENTERFILTERVALUE}
+                      placeholder={lang.ENTERFILTERVALUE}
                       className="style-manage"
                     />
                   </label>
 
                   {this.checkIfConditionValueIsEmpty(group.Id, idx)
                     ? <div className="error-msg">
-                        {lang.FILTER.VALUECANNOTBEEMPTY}
+                        {lang.VALUECANNOTBEEMPTY}
                       </div>
                     : null}
                 </div>
                 <div>
                   <label>
                     <div className="label-names">
-                      {lang.FILTER.TYPE}
+                      {lang.TYPE}
                     </div>
                     <Select
                       autofocus
@@ -346,7 +346,7 @@ class ManageFiltersFlyout extends React.Component {
                       value={cond.type}
                       simpleValue
                       searchable={true}
-                      placeholder={lang.FILTER.TYPE}
+                      placeholder={lang.TYPE}
                       className="select-style-manage"
                     />
                   </label>
@@ -360,7 +360,7 @@ class ManageFiltersFlyout extends React.Component {
                   className="add-condition"
                 >
                   <img src={Remove} alt={`${Remove}`} className="Remove-icon" />
-                  {lang.FILTER.REMOVECONDITIONS}
+                  {lang.REMOVECONDITIONS}
                 </button>
               </div>
             );
@@ -378,7 +378,7 @@ class ManageFiltersFlyout extends React.Component {
             className="add-condition"
           >
             <img src={Add} alt={`${Add}`} className="add-icon" />
-            {lang.FILTER.ADDCONDITIONS}
+            {lang.ADDCONDITIONS}
           </button>
         </div>
         <div className="buttons-group">
@@ -427,7 +427,7 @@ class ManageFiltersFlyout extends React.Component {
               className="cancel-button"
             >
               <img src={CancelX} alt={`${CancelX}`} className="cancel-icon" />
-              {lang.FILTER.CANCEL}
+              {lang.CANCEL}
             </button>
           </div>
         </div>
@@ -479,17 +479,17 @@ class ManageFiltersFlyout extends React.Component {
       <div className="manage-filter-container">
         <div onClick={() => this.setState({ showCreateFilter: true })} className="create-filter">
           <img src={Add} alt={`${Add}`} className="add-icon" />
-          {lang.FILTER.CREATEFILTER}
+          {lang.CREATEFILTER}
         </div>
         {showCreateFilter
           ? this.getFilterComponent(true, editingState[0] && editingState[0].formChanged, newGroupObj)
           : null}
         <div className="headers-for-deviceGroups">
           <span className="filters-text">
-            {lang.FILTER.FILTERS}
+            {lang.FILTERS}
           </span>
           <span className="actions">
-            {lang.FILTER.ACTIONS}
+            {lang.ACTIONS}
           </span>
         </div>
         <div>

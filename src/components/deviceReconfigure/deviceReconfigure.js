@@ -13,7 +13,7 @@ class DeviceReconfigure extends Component {
       <div className="reconfigure-container" onClick={this.props.onDeviceTagClick}>
         <img className="reconfigure-icon" src={Reconfigure} alt="Reconfigure" />
         <span className="reconfigure">
-          {lang.DEVICE_DETAIL.RECONFIGURE}
+          {lang.RECONFIGURE}
         </span>
       </div>
     );

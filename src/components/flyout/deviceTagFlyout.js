@@ -228,14 +228,14 @@ class DeviceTagFlyout extends React.Component {
                 className="condition-name"
                 value={tag.name}
                 onChange={evt => this.setTagProperty(tag, 'name', evt.target.value)}
-                placeholder={lang.DEVICE_DETAIL.NAME}
+                placeholder={lang.NAME}
               />
               <input
                 type="text"
                 className="condition-value"
                 value={tag.value}
                 onChange={evt => this.setTagProperty(tag, 'value', evt.target.value)}
-                placeholder={lang.DEVICE_DETAIL.VALUE}
+                placeholder={lang.VALUE}
               />
               <span className="device-tag-type">
                 <Select
@@ -245,7 +245,7 @@ class DeviceTagFlyout extends React.Component {
                   simpleValue
                   onChange={val => this.setTagProperty(tag, 'type', val)}
                   searchable={true}
-                  placeholder={lang.FILTER.TYPE}
+                  placeholder={lang.TYPE}
                   className="select-style-manage"
                 />
               </span>
@@ -317,36 +317,36 @@ class DeviceTagFlyout extends React.Component {
     return (
       <div className="device-tag-flyout-container">
         <div className="sub-heading">
-          {lang.DEVICE_DETAIL.TAGS_ON_SELECTED_DEVICES}
+          {lang.TAGS_ON_SELECTED_DEVICES}
         </div>
         <div className="sub-class-heading">
-          {lang.DEVICE_DETAIL.TAGS_IN_COMMON_SELECTED_DEVICE}
+          {lang.TAGS_IN_COMMON_SELECTED_DEVICE}
         </div>
         <div className="job-name-container">
           <label>
             <div className="label-key">
-              {lang.DEVICE_DETAIL.JOB_NAME}
+              {lang.JOB_NAME}
             </div>
-            <input type="text" className="style-manage" placeholder={lang.DEVICE_DETAIL.ADJUST_TAGS} onChange={this.onChangeInput}
+            <input type="text" className="style-manage" placeholder={lang.ADJUST_TAGS} onChange={this.onChangeInput}
             value={this.state.jobInputValue}/>
           </label>
         </div>
         <div className="device-conditions-container">
           <span className="device-condition">
-            {lang.DEVICE_DETAIL.NAME}
+            {lang.NAME}
           </span>
           <span className="device-condition">
-            {lang.DEVICE_DETAIL.VALUE}
+            {lang.VALUE}
           </span>
           <span className="device-condition">
-            {lang.DEVICE_DETAIL.TYPE}
+            {lang.TYPE}
           </span>
         </div>
         <div className="device-tag-inner-conditions">
           <div className="add-icon-name-container" onClick={this.addNewTag}>
             <img src={Add} alt={`${Add}`} className="add-icon" />
             <span className="add-device-tag">
-              {lang.DEVICE_DETAIL.ADD_TAG}
+              {lang.ADD_TAG}
             </span>
           </div>
 
@@ -356,22 +356,22 @@ class DeviceTagFlyout extends React.Component {
           ? this.renderCommonTags()
           : <div>
               <div className="no-common-tags">
-                {lang.DEVICES.NO_AVAILABLE_COMMON_TAGS}
+                {lang.NO_AVAILABLE_COMMON_TAGS}
               </div>
               <div className="no-common-tags-sub-class">
-                {lang.DEVICES.PLEASE_CHOOSE_DEVICES_WITH_COMMON_TAGS}
+                {lang.PLEASE_CHOOSE_DEVICES_WITH_COMMON_TAGS}
               </div>
             </div>}
 
         <div className="summary-container">
-          {lang.DEVICE_DETAIL.SUMMARY}
+          {lang.SUMMARY}
         </div>
         <div className="effective-devices">
           <span className="no-effected-devices">
             {totalEffectedDevices}
           </span>
           <span className="effected-devices-name">
-            {lang.DEVICES.EFFECTED_DEVICES}
+            {lang.EFFECTED_DEVICES}
           </span>
         </div>
         <div className="button-container">
@@ -382,7 +382,7 @@ class DeviceTagFlyout extends React.Component {
             className="pcs-btn"
           >
             <img src={CancelX} alt={`${CancelX}`} className="cancel-icon" />
-            {lang.FILTER.CANCEL}
+            {lang.CANCEL}
           </button>
           {this.props.requestInProgress
             ? <span className="loading-spinner">
@@ -396,7 +396,7 @@ class DeviceTagFlyout extends React.Component {
             }}
           >
             <img src={Apply} alt={`${Apply}`} className="apply-icon" />
-            {lang.DEVICE_DETAIL.APPLY}
+            {lang.APPLY}
           </button>
         </div>
       </div>

@@ -50,7 +50,7 @@ class MaintenancePage extends Component {
       selectedAlarms: [],
       currentNode: null,
       showBoth: false,
-      toggleButtonText: lang.RULESACTIONS.DISABLE,
+      toggleButtonText: lang.DISABLE,
       toggleButtonSvg: ChangestatusSvg,
       softSelectId: ''
     }
@@ -59,17 +59,17 @@ class MaintenancePage extends Component {
       newRule: {
         svg: AddSvg,
         onClick: this.newRule,
-        value: lang.RULESACTIONS.NEWRULE
+        value: lang.NEWRULE
       },
       delete: {
         svg: DeleteSvg,
         onClick: this.showDeleteRulesModal,
-        value: lang.RULESACTIONS.DELETE
+        value: lang.DELETE
       },
       edit: {
         svg: EditSvg,
         onClick: this.showEditRulesFlyout,
-        value: lang.RULESACTIONS.EDIT
+        value: lang.EDIT
       },
       close: {
         svg: CloseAlarmSvg,
@@ -124,7 +124,7 @@ class MaintenancePage extends Component {
       () => {
         const flyoutConfig = {
           onUpdateData: this.onUpdateData,
-          title: lang.RULESACTIONS.RULEDETAIL,
+          title: lang.RULEDETAIL,
           type: 'New Rule',
           rule: rowData
         };
@@ -148,7 +148,7 @@ class MaintenancePage extends Component {
     this.gridApi.deselectAll();
     const flyoutConfig = {
       onUpdateData: this.onUpdateData,
-      title: lang.RULESACTIONS.NEWRULE,
+      title: lang.NEWRULE,
       type: 'New Rule'
     };
     this.props.actions.showFlyout(flyoutConfig);
@@ -175,7 +175,7 @@ class MaintenancePage extends Component {
       selectedRulesActions,
       selectedAlarms: [],
       showBoth: showBoth,
-      toggleButtonText: showBoth ? lang.RULESACTIONS.CHANGESTATUS : status ? lang.RULESACTIONS.DISABLE : lang.RULESACTIONS.ENABLE,
+      toggleButtonText: showBoth ? lang.CHANGESTATUS : status ? lang.DISABLE : lang.ENABLE,
       toggleButtonSvg: showBoth ? ChangestatusSvg : status ? DisableSvg : EnableSvg,
     });
   };
@@ -251,7 +251,7 @@ class MaintenancePage extends Component {
     actions.hideFlyout();
     const flyoutConfig = {
       onUpdateData: this.onUpdateData,
-      title: lang.RULESACTIONS.RULEDETAIL,
+      title: lang.RULEDETAIL,
       type: 'New Rule',
       rule: this.state.selectedRulesActions[0],
       inEdit: true
@@ -293,7 +293,7 @@ class MaintenancePage extends Component {
     };
     return (
       <PageContainer>
-        <TopNav breadcrumbs={lang.LEFTNAV.MAINTENANCE} projectName={lang.DASHBOARD.AZUREPROJECTNAME} />
+        <TopNav breadcrumbs={lang.MAINTENANCE} projectName={lang.AZUREPROJECTNAME} />
         <ContextFilters>
           {pcsBtn(this.contextButtons.delete, showActionBtns)}
           {pcsBtn({ // Change status button
@@ -316,19 +316,19 @@ class MaintenancePage extends Component {
               options={[
                 {
                   value: 'PT1H',
-                  label: lang.FORMS.LASTHOUR
+                  label: lang.LASTHOUR
                 },
                 {
                   value: 'P1D',
-                  label: lang.FORMS.LASTDAY
+                  label: lang.LASTDAY
                 },
                 {
                   value: 'P1W',
-                  label: lang.FORMS.LASTWEEK
+                  label: lang.LASTWEEK
                 },
                 {
                   value: 'P1M',
-                  label: lang.FORMS.LASTMONTH
+                  label: lang.LASTMONTH
                 }
               ]}
             />

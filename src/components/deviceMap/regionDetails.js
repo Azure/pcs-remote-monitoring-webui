@@ -39,7 +39,7 @@ class RegionDetails extends Component {
       }
     });
     if (!selectedDeviceGroupName) {
-      selectedDeviceGroupName = lang.REGIONDETAILS.ALLDEVICES;
+      selectedDeviceGroupName = lang.ALLDEVICES;
     }
     return (
       <Col md={3} className="device-location-conatiner">
@@ -48,7 +48,7 @@ class RegionDetails extends Component {
             {selectedDeviceGroupName}
           </h3>
           <div className="device-subheading">
-            {lang.REGIONDETAILS.DEVICES}
+            {lang.DEVICES_LABEL}
           </div>
           <Row className="alarm-warning-container">
             <Col md={5} className="total-alarms-container">
@@ -59,7 +59,7 @@ class RegionDetails extends Component {
                 <polygon points="25,2.5 48.5,49.8 2.5,49.8" fill="#fc540a" />
               </svg>
               <div className="alarms">
-                {lang.REGIONDETAILS.ALARMS}
+                {lang.ALARMS}
               </div>
             </Col>
             <Col md={6} className=" total-alarms-container warnings-container">
@@ -70,7 +70,7 @@ class RegionDetails extends Component {
                 <rect width="8" height="8" fill="#FDE870" />
               </svg>
               <div className=" total warnings">
-                {lang.REGIONDETAILS.WARNINGS}
+                {lang.WARNINGS}
               </div>
             </Col>
           </Row>
@@ -80,7 +80,7 @@ class RegionDetails extends Component {
                 {regionDetailsProps.onlineDevicesCount + regionDetailsProps.offlineDevicesCount}
               </div>
               <div className="warnings">
-                {lang.REGIONDETAILS.TOTAL}
+                {lang.TOTAL}
               </div>
             </Col>
             <Col md={4} className="total-container total-online-container">
@@ -88,7 +88,7 @@ class RegionDetails extends Component {
                 {regionDetailsProps.onlineDevicesCount}
               </div>
               <div className="online">
-                {lang.REGIONDETAILS.ONLINE}
+                {lang.ONLINE}
               </div>
             </Col>
             <Col md={4} className="total-container total-offline-container">
@@ -96,7 +96,7 @@ class RegionDetails extends Component {
                 {regionDetailsProps.offlineDevicesCount}
               </div>
               <div className="offline">
-                {lang.REGIONDETAILS.OFFLINE}
+                {lang.OFFLINE}
               </div>
             </Col>
           </Row>

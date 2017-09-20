@@ -22,36 +22,36 @@ export const checkboxParams = {
 /** A collection of column definitions for the devices grid */
 export const deviceColumnDefs = {
   id: {
-    headerName: lang.DEVICES.DEVICENAME,
+    headerName: lang.DEVICENAME,
     field: 'Id'
   },
   isSimulated: {
-    headerName: lang.DEVICE_DETAIL.SIMULATED,
+    headerName: lang.SIMULATED,
     field: 'IsSimulated',
     cellRendererFramework: IsSimulatedRenderer
   },
   deviceType: {
-    headerName: lang.DEVICES.DEVICETYPE,
+    headerName: lang.DEVICETYPE,
     field: 'Tags.deviceType',
     valueFormatter: ({ value }) => gridValueFormatters.checkForEmpty(value)
   },
   firmware: {
-    headerName: lang.DEVICE_DETAIL.FIRMWARE,
+    headerName: lang.FIRMWARE,
     field: 'Properties.Reported.Firmware',
     valueFormatter: ({ value }) => gridValueFormatters.checkForEmpty(value)
   },
   telemetry: {
-    headerName: lang.DEVICE_DETAIL.TELEMETRY,
+    headerName: lang.TELEMETRY,
     field: 'Properties.Reported.Telemetry',
     valueFormatter: ({ value }) => Object.keys(value || {}).join('; ') || EMPTY_FIELD_VAL
   },
   status: {
-    headerName: lang.DEVICE_DETAIL.STATUS,
+    headerName: lang.STATUS,
     field: 'Connected',
     cellRendererFramework: ConnectionStatusRenderer
   },
   lastConnection: {
-    headerName: lang.DEVICES.LASTCONNECTION,
+    headerName: lang.LASTCONNECTION,
     field: 'LastActivity',
     valueFormatter: ({ value }) => {
       const time = moment(value);

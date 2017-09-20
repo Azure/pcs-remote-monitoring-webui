@@ -55,7 +55,7 @@ class DevicesGrid extends Component {
       {
         svg: TagSvg,
         onClick: openTagFlyout,
-        value: lang.DEVICE_DETAIL.TAG
+        value: lang.TAG
       },
       {
         svg: ScheduleSvg,

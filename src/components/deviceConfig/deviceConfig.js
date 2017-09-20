@@ -56,12 +56,12 @@ class DeviceConfig extends React.Component {
         return (
             <div className="deviceConfig">
                 <div className="marginTop20">
-                    <label>{lang.DEVICES.CONFIGPROPERTIES}</label>
+                    <label>{lang.CONFIGPROPERTIES}</label>
                     <DeviceProperty ref="deviceProperty" />
                 </div>
                 <div className="marginTop20">
-                    <label>{formatString(lang.DEVICES.CAUTION, deviceCount)}</label>
-                    <Button className="btnConfirm" onClick={() => this.onConfirm()}>{lang.DEVICES.CONFIRM}</Button>
+                    <label>{formatString(lang.CAUTION, deviceCount)}</label>
+                    <Button className="btnConfirm" onClick={() => this.onConfirm()}>{lang.CONFIRM}</Button>
                 </div>
             </div>
         );

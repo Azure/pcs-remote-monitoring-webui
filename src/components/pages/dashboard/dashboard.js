@@ -39,7 +39,7 @@ class DashboardPage extends Component {
 
     return (
       <PageContainer>
-        <TopNav breadcrumbs={'Dashboard'} projectName={lang.DASHBOARD.AZUREPROJECTNAME} />
+        <TopNav breadcrumbs={'Dashboard'} projectName={lang.AZUREPROJECTNAME} />
         <ContextFilters>
           <ManageFilterBtn />
         </ContextFilters>
