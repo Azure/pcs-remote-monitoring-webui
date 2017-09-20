@@ -18,6 +18,40 @@ class DeviceSimulationService {
       .then(data => data.Items);
   }
 
+  /**
+   * Get the list of running simulated devices
+   */
+  static getSimulatedDevices() {
+    return Http.get(`${DeviceSimulationService.ENDPOINT}simulations/1`);
+  }
+
+  /**
+   * Creates new simulated devices
+   * 
+   * @param {string} Id The device model Id to be created
+   * @param {string} count The number of simulated devices to create
+   */
+  static createSimulatedDevices(Id, count) {
+    return DeviceSimulationService.getSimulatedDevices()
+      .then(simulations => {
+          const DeviceModels = simulations.DeviceModels.reduce(
+            (deviceAccumulator, currDevice) => {
+              if (currDevice.Id === Id) {
+                deviceAccumulator[0].Count += currDevice.Count;
+              } else {
+                deviceAccumulator.push(currDevice);
+              }
+              return deviceAccumulator;
+            }, 
+            [{ Id, Count: parseInt(count, 10) }] // Default new device
+          );
+          return Http.put(
+            `${DeviceSimulationService.ENDPOINT}simulations/1`,
+            { ...simulations, DeviceModels }
+          );
+      });
+  }
+
 }
 
 export default DeviceSimulationService;

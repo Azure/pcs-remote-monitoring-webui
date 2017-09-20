@@ -13,6 +13,7 @@ class PcsBtn extends Component {
     // Remove invalid attributes before passing to the button tag
     delete btnProps.svg;
     delete btnProps.value;
+    if (this.props.disabled) delete btnProps.onClick;
 
     return (
       <button {...btnProps}>

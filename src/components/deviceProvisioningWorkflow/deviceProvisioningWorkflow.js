@@ -138,7 +138,7 @@ class DeviceProvisioningWorkflow extends React.Component {
   simulatedFormIsValid(state) {
     const { numDevices, deviceModel } = state;
     return (this.isInteger(numDevices) && numDevices > 0) // Validate number of devices
-      && (!!deviceModel); // Validate Device Model
+      && (deviceModel && deviceModel.value); // Validate Device Model
   }
 
   /**
@@ -210,13 +210,28 @@ class DeviceProvisioningWorkflow extends React.Component {
       );
   }
 
+    /**
+   * Makes the service call to create a new physical device
+   */
+  createSimulatedDevice() {
+    const { numDevices, deviceModel } = this.state;
+    this.setState({ isLoading: true });
+    Rx.Observable.fromPromise(
+      DeviceSimulationService.createSimulatedDevices(deviceModel.value.Id, numDevices)
+    ).subscribe(
+      _ => this.resetInitialState({ deviceTypeForm: deviceTypeValues.SIMULATED }),
+      err => console.error(err),
+      _ => this.setState({ isLoading: false })
+      );
+  }
+
   /**
    * Checks that the form is valid and selects the creation method for physical or simulated devices
    */
   apply() {
     if (this.state.formIsValid) {
       if (this.state.deviceTypeForm === deviceTypeValues.SIMULATED) {
-        // TODO (stpryor): Pending implementation from backend
+        this.createSimulatedDevice();
       } else if (this.state.deviceTypeForm === deviceTypeValues.PHYSICAL) {
         this.createPhysicalDevice();
       }
