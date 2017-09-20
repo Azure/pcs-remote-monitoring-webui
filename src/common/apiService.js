@@ -209,7 +209,7 @@ class ApiService {
   }
 
   static getDeviceGroupFilters() {
-    return Http.get(`${Config.uiConfigApiUrl}devicegroupfilters`);
+    return Http.get(`${Config.configApiUrl}devicegroupfilters`);
   }
 
   static updateAlarmsStatus(payload) {
