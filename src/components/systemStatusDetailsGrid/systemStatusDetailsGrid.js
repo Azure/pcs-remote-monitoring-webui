@@ -11,7 +11,7 @@ class SystemStatusDetailsGrid extends Component {
   constructor(props) {
     super(props);
 
-    this.defalutColumnDefs = [
+    this.defaultColumnDefs = [
       systemStatusColumnDefs.jobId,
       systemStatusColumnDefs.status, // Status of total jobs ( fail/ Queued/completed)
       systemStatusColumnDefs.type, // MethodName of the total jobs
@@ -52,7 +52,7 @@ class SystemStatusDetailsGrid extends Component {
           ? <PcsGrid
               /* systemStatusGridProps Properties */
               {...systemStatusGridProps} // Default systemStatusGrid options
-              columnDefs={this.defalutColumnDefs}
+              columnDefs={this.defaultColumnDefs}
               pagination = {false}
               rowData={jobs}
             />: null}

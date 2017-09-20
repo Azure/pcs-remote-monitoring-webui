@@ -62,7 +62,7 @@ class LineChart extends Component {
           {typeof this.props.criticalAlarmCountLast !== 'undefined' &&
           typeof this.props.criticalAlarmCount !== 'undefined' &&
           this.props.criticalAlarmCountLast !== this.props.criticalAlarmCount
-            ? <img
+            ? <div className="percentage"><img
                 className="delta-down"
                 src={
                   this.props.criticalAlarmCountLast >
@@ -77,8 +77,8 @@ class LineChart extends Component {
                     : `${DeltaUp}`
                 }
               />
+              {this.props.percentChange}% </div>
             : null}
-          {this.props.percentChange}%
         </div>
         {lineChart && this.props.lineChartData.length && lineChart.chartConfig
           ? <Chart
@@ -126,9 +126,8 @@ const mapStateToProps = state => {
     criticalAlarmCount
   ]);
 
-  const percentChange = ((criticalAlarmCount - criticalAlarmCountLast) /
-    criticalAlarmCount *
-    100).toFixed(2);
+  const percentChange = ((criticalAlarmCount - criticalAlarmCountLast) / criticalAlarmCount * 100).toFixed(2);
+  if(isNaN (percentChange)){ return; }
 
   return {
     lineChartData: lineChartData,
