@@ -26,11 +26,10 @@ const pcsBtn = (props, key=0) => {
 
 /**
  * A grid for displaying devices
- * 
+ *
  * Encapsulates the PcsGrid props
  */
 class DevicesGrid extends Component {
-
   constructor(props) {
     super(props);
 
@@ -76,10 +75,10 @@ class DevicesGrid extends Component {
     ].map(pcsBtn);
   }
 
-  /** 
-   * Get the grid api options 
-   * 
-   * @param {Object} gridReadyEvent An object containing access to the grid APIs   
+  /**
+   * Get the grid api options
+   *
+   * @param {Object} gridReadyEvent An object containing access to the grid APIs
    */
   onGridReady = gridReadyEvent => {
     gridReadyEvent.api.sizeColumnsToFit();
@@ -87,12 +86,12 @@ class DevicesGrid extends Component {
     if (isFunction(this.props.onGridReady)) {
       this.props.onGridReady(gridReadyEvent);
     }
-  }
+  };
 
-  /** 
+  /**
    * Handles context filter changes and calls any hard select props method
-   * 
-   * @param {Array} selectedDevices A list of currently selected devices 
+   *
+   * @param {Array} selectedDevices A list of currently selected devices
    */
   onHardSelectChange = (selectedDevices) => {
     const { contextActions, onContextMenuChange, onHardSelectChange} = this.props;

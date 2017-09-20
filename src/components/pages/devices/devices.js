@@ -15,7 +15,7 @@ import { getSoftSelectId } from '../../devicesGrid/devicesConfig';
 import lang from '../../../common/lang';
 import PcsBtn from '../../shared/pcsBtn/pcsBtn';
 import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
-import SimControlCenter from '../../simControlCenter/simControlCenter'; 
+import SimControlCenter from '../../simControlCenter/simControlCenter';
 
 import AddSvg from '../../../assets/icons/Add.svg';
 

@@ -12,6 +12,8 @@ import MaintenancePage from "./components/pages/maintenance/maintenance.js";
 import RuleDetailsPage from "./components/maintenance/ruleDetails.js";
 import MaintenanceWidget from "./components/maintenance/maintenanceWidget.js";
 import AlarmsByRuleGrid from "./components/maintenance/alarmsByRuleGrid.js";
+import SystemStatusDetailsGrid from "./components/systemStatusDetailsGrid/systemStatusDetailsGrid.js";
+import SystemStatusGrid from "./components/systemStatusGrid/systemStatusGrid.js";
 import registerServiceWorker from "./registerServiceWorker";
 import initialState from "./reducers/initialState";
 import configureStore from "./store/configureStore";
@@ -42,6 +44,13 @@ ReactDOM.render(
           </Route>
           <Route path="/maintenance/:id" component={AlarmsByRuleGrid}>
             <Route path="rule/:id" component={RuleDetailsPage} />
+          </Route>
+          <Route path="/maintenance" component={MaintenanceWidget}>
+            <IndexRoute component={SystemStatusGrid} />
+            <Route path="/systemStatus" component={SystemStatusGrid} />
+          </Route>
+          <Route path="/maintenance" component={SystemStatusDetailsGrid}>
+            <Route path="job/(:jobId)" component={SystemStatusDetailsGrid} />
           </Route>
         </Route>
       </Route>

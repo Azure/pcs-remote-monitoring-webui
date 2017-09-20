@@ -17,6 +17,9 @@ export * from './telemetryActions';
 // filter
 export * from './filterActions';
 
+// systemStatus
+export * from './systemStatusJobActions';
+
 // kpi
 export * from './kpiActions';
 

@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import Select from 'react-select';
-
+import * as _ from 'lodash';
+import { systemStatusColumnDefs } from '../../systemStatusGrid/systemStatusConfig';
 import PageContainer from '../../layout/pageContainer/pageContainer.js';
 import PageContent from '../../layout/pageContent/pageContent.js';
 import TopNav from '../../layout/topNav/topNav.js';
@@ -14,7 +15,6 @@ import lang from '../../../common/lang';
 import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
 import PcsBtn from '../../shared/pcsBtn/pcsBtn';
 import ApiService from '../../../common/apiService';
-
 import AddSvg from '../../../assets/icons/Add.svg';
 import DeleteSvg from '../../../assets/icons/Delete.svg';
 import EditSvg from '../../../assets/icons/Edit.svg';
@@ -29,8 +29,19 @@ import './maintenance.css';
 class MaintenancePage extends Component {
   constructor(props) {
     super(props);
-
+    this.systemStatusColumnDefsLocal = _.cloneDeep(systemStatusColumnDefs);
+    this.systemStatusColumnDefsArray = [
+      this.systemStatusColumnDefsLocal.jobId,
+      this.systemStatusColumnDefsLocal.deviceIdEffected, // DeviceId in each job effected
+      this.systemStatusColumnDefsLocal.status, // Status of jobs ( fail/ Queued/completed)
+      this.systemStatusColumnDefsLocal.lastReturnMessage, // Last mesaage about completeion of jobs
+      this.systemStatusColumnDefsLocal.startTime, // StartTime of the job
+      this.systemStatusColumnDefsLocal.endTime //End time of the job
+    ];
     this.state = {
+      systemStatusDetailsDevices: [],
+      systemStatusDetailsJobs: [],
+      selectedDetailsDevices: [],
       selectedGrid: 'alarms',
       timerange: 'PT1H',
       lastRefresed: new Date(),
@@ -71,7 +82,7 @@ class MaintenancePage extends Component {
         value: lang.ACKNOWLEDGE
       }
     };
-
+    this.onDeviceJobSoftSelectChange = this.onDeviceJobSoftSelectChange.bind(this);
     this.onTimeRangeChange = this.onTimeRangeChange.bind(this);
   }
 
@@ -182,6 +193,59 @@ class MaintenancePage extends Component {
     this.gridApi = gridReadyEvent.api;
   }
 
+  componentWillMount() {
+    this.selectJobAndSetState(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.selectJobAndSetState(nextProps);
+  }
+
+
+
+  // Retrieving the deviceIds from "queryCondition": "deviceId in ['Simulated.prototype-01.0','Simulated.prototype-01.1']".
+  selectJobAndSetState(props) {
+    const { jobs } = props;
+    if (!props.params || !props.params.jobId) {
+      return;
+    }
+    if (!jobs || !jobs.length) { return; }
+    const job = _.find(jobs, { jobId: props.params.jobId });
+    let deviceJobs = [];
+    if (job.queryCondition) {
+      const idx = job.queryCondition.indexOf('in [');
+      if (idx !== -1) {
+        const idx2 = job.queryCondition.indexOf(']', idx);
+        if (idx2 !== -1) {
+          const deviceIdsInQuery = job.queryCondition.substring(idx + 4, idx2);
+          const deviceIds = deviceIdsInQuery.replace(/["']{1}/gi, '').split(',');
+          deviceJobs = deviceIds.map(deviceId => ({
+            jobId: job.jobId,
+            deviceId
+          }));
+          // If the grid is related to tags or reconfigure then hide endtime and lastReturnMessage
+          this.systemStatusColumnDefsLocal.endTime.hide = job.type === 4;
+          this.systemStatusColumnDefsLocal.lastReturnMessage.hide = job.type === 4;
+        }
+      }
+    }
+    this.setState({ systemStatusDetailsDevices: deviceJobs, systemStatusDetailsJobs: [job] });
+  }
+
+  onDeviceJobSoftSelectChange({deviceId}) {
+    const selectedDeviceIdInJob = deviceId;
+    let deviceJob;
+    if (!this.props.devices || !this.props.devices.items) { return false; }
+    this.props.devices.items.some(device => {
+      if (device.Id === selectedDeviceIdInJob) {
+        deviceJob = device;
+        return true;
+      }
+      return false;
+    });
+    this.setState({ selectedDetailsDevices: [deviceJob] });
+  }
+
   showEditRulesFlyout = () => {
     const { actions } = this.props;
     actions.hideFlyout();
@@ -217,9 +281,14 @@ class MaintenancePage extends Component {
     const alarmListProps = {
       alarms: this.props.alarmList,
       devices: devicesList,
+      detailsJobs: this.state.systemStatusDetailsJobs,
+      detailsDevices: this.state.systemStatusDetailsDevices,
+      systemStatusGridSelectedDevices: this.state.selectedDetailsDevices,
+      onDeviceJobSoftSelectChange : this.onDeviceJobSoftSelectChange,
+      systemStatusGridColumnDefs: this.systemStatusColumnDefsArray,
       alarmsGridData: this.props.alarmsGridData,
       actions: this.props.actions,
-      jobs:{}, // TODO (ss) props for jobs
+      jobs: this.props.jobs,
       btnActions: this.getGridActions() //TODO: add all grid related actions
     };
     return (
@@ -278,7 +347,8 @@ const mapStateToProps = state => {
   return {
     alarmList: state.deviceReducer.alarmsList,
     devices: state.deviceReducer.devices,
-    alarmsGridData: state.maintenanceReducer.alarmsByRuleGridRowData
+    alarmsGridData: state.maintenanceReducer.alarmsByRuleGridRowData,
+    jobs: state.systemStatusJobReducer.jobs
   };
 };
 

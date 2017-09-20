@@ -1,6 +1,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '../../actions';
+import { browserHistory } from "react-router";
 import MaintenanceSummary from './maintenanceSummary';
 import SystemStatusGrid from '../systemStatusGrid/systemStatusGrid';
 import AlarmsByRuleGrid from './alarmsByRuleGrid';
@@ -21,12 +25,27 @@ class MaintenanceWidget extends Component {
     this.selectGrid = this.selectGrid.bind(this);
   }
 
+  componentDidMount() {
+    this.props.actions.loadAllJobs();
+    this.props.actions.loadDevices();
+  }
+
+  onSoftSelectChange({ jobId }) {
+    browserHistory.push({ pathname: `/maintenance/job/${jobId}`});
+  }
+
   selectGrid(e) {
     const selectedGrid = e.currentTarget.textContent === 'Alarms' ? 'alarms' : 'system';
     this.setState({ selectedGrid });
   }
 
   render() {
+    const systemStatusProps = {
+      onSoftSelectChange : this.onSoftSelectChange,
+      jobs : this.props.jobs,
+      devices : this.props.devices
+    };
+
     const totalAlarms = (this.props.alarms || []).filter(alarm => alarm.Status === 'open').length;
     const criticalAlarms = (this.props.alarms || []).filter(alarm => alarm.Status === 'open' && (alarm.Rule || {}).Severity === 'critical').length;
     const warningAlarms = (this.props.alarms || []).filter(alarm => alarm.Status === 'open' && (alarm.Rule || {}).Severity === 'warning').length;
@@ -36,7 +55,7 @@ class MaintenanceWidget extends Component {
         critical: criticalAlarms,
         warning: warningAlarms
       },
-        // TODO: remove hardcoded value
+      // TODO: remove hardcoded value
       jobs: {
         total: 268,
         failed: 26,
@@ -59,10 +78,18 @@ class MaintenanceWidget extends Component {
           <div className={`selection-item${systemSelected}`} onClick={this.selectGrid}>{lang.SYSTEM_STATUS}</div>
         </div>
         <div className={`grid-container${alarmSelected}`}><AlarmsByRuleGrid {...alarmsByRuleGridProps} /></div>
-        <div className={`grid-container${systemSelected}`}><SystemStatusGrid /></div>
+        <div className={`grid-container${systemSelected}`}><SystemStatusGrid {...systemStatusProps}/></div>
       </div>
     );
   }
 }
 
-export default MaintenanceWidget;
+const mapDispatchToProps = dispatch => {
+  return { actions: bindActionCreators(actions, dispatch) };
+};
+
+const mapStateToProps = state => {
+  return { jobs: state.systemStatusJobReducer.jobs };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps) (MaintenanceWidget);
