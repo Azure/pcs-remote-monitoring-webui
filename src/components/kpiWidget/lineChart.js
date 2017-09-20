@@ -92,14 +92,10 @@ class LineChart extends Component {
 }
 
 const getCriticalCount = alarms => {
-  let criticalAlarmCount = 0;
-
-  alarms.forEach(item => {
-    if (item.Rule.Severity === 'critical') {
-      criticalAlarmCount++;
-    }
-  });
-  return criticalAlarmCount;
+  return alarms.reduce(
+    (count, { Rule }) => Rule.Severity === 'critical' ? ++count : count, 
+    0 // Default count
+  );
 };
 
 const mapStateToProps = state => {
@@ -119,15 +115,16 @@ const mapStateToProps = state => {
   const criticalAlarmCount = getCriticalCount(alarms);
   //this is last day/week/month alarm count
   const criticalAlarmCountLast = getCriticalCount(alarmListLastDuration);
-  const lineChartData = [];
-  lineChartData.push([
-    'criticalAlarmCount',
-    criticalAlarmCountLast,
-    criticalAlarmCount
-  ]);
+  const lineChartData = [
+    [
+      'criticalAlarmCount',
+      criticalAlarmCountLast,
+      criticalAlarmCount
+    ]
+  ];
 
   const percentChange = ((criticalAlarmCount - criticalAlarmCountLast) / criticalAlarmCount * 100).toFixed(2);
-  if(isNaN (percentChange)){ return; }
+  if (isNaN(percentChange)) return; 
 
   return {
     lineChartData: lineChartData,

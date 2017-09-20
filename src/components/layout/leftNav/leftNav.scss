@@ -11,17 +11,9 @@ $hover-background-color: #1b1d1f;
   color: $primary-color;
   padding-top: 10px;
 
-  .sidebar { width: 150px; }
+  &.expanded { width: 150px; }
 
-  .nav > li > a:hover,
-  .nav > li > a:focus {
-    color: $hover-color !important;
-    background-color: $hover-background-color !important;
-
-    img { opacity: 1; }
-  }
-
-  a { color: $primary-color !important; }
+  a { color: $primary-color ; }
 
   img { opacity: 0.7; }
 
@@ -43,6 +35,34 @@ $hover-background-color: #1b1d1f;
     .contoso-text {
       display: inline-block;
       margin-left: 10px;
+    }
+  }
+
+  .pcs-nav-container {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-shrink: 0;
+
+    .pcs-nav-link {
+      display: flex;
+      flex-flow: row nowrap;
+      flex-shrink: 0;
+      align-items: center;
+      padding: 10px 15px;
+      line-height: 1em;
+      height: 2.5em;
+      text-decoration: none;
+      cursor: pointer;
+
+      > .pcs-nav-label { padding-left: 4px; }
+
+      &:hover,
+      &:focus {
+        color: $hover-color;
+        background-color: $hover-background-color;
+    
+        img { opacity: 1; }
+      }
     }
   }
 }

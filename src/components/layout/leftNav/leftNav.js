@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { Nav, NavItem } from 'react-bootstrap';
+import { Link } from "react-router";
 import lang from '../../../common/lang';
 
 import HamburgerIcon from '../../../assets/icons/Hamburger.svg';
@@ -37,14 +37,14 @@ class LeftNav extends Component {
     ];
 
     const navigationTabs = navItems.map((item, index) =>
-        <NavItem key={index} href={item.path} onClick={this.props.onClick}>
+        <Link key={index} to={item.path} className="pcs-nav-link">
           <img src={item.icon} {...iconStyle} alt={item.name} />
-          {this.state.showAll ? ` ${item.name}` : ''}
-        </NavItem>
+          {this.state.showAll ? <span className="pcs-nav-label">{item.name}</span> : ''}
+        </Link>
       );
 
     return (
-      <div className="left-nav">
+      <div className={`left-nav ${this.state.showAll ? 'expanded' : ''}`}>
         <div className="contoso">
           <img
             src={ContosoIcon}
@@ -68,13 +68,9 @@ class LeftNav extends Component {
             onClick={this.toggleNav}
           />
         </div>
-        <Nav
-          bsStyle="pills"
-          stacked
-          className={this.state.showAll ? 'sidebar' : 'iconbar'}
-        >
+        <div className="pcs-nav-container">
           {navigationTabs}
-        </Nav>
+        </div>
       </div>
     );
   }
