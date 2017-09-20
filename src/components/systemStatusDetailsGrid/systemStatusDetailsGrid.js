@@ -67,7 +67,7 @@ class SystemStatusDetailsGrid extends Component {
               onGridReady={this.onGridReady}
             /> : null}
         <div className="devices-container">
-          <div className="devices-header"> {Lang.DEVICES_SYSTEM} </div>
+          <div className="devices-header"> {Lang.DEVICES} </div>
           <div className="devices-placeholder">
             {devices && devices.length ? <DevicesGrid {...devicesGridProps} pagination = {false} />
               : <div className="no-devices-text">

@@ -31,7 +31,7 @@ class LeftNav extends Component {
 
     const navItems = [
       { path: '/dashboard',    icon: DashboardIcon,    name: lang.DASHBOARD_LABEL },
-      { path: '/devices',      icon: DevicesIcon,      name: lang.DEVICES_LABEL },
+      { path: '/devices',      icon: DevicesIcon,      name: lang.DEVICES },
       { path: '/rulesActions', icon: RulesActionsIcon, name: lang.RULES_ACTIONS },
       { path: '/maintenance',  icon: MaintenanceIcon,  name: lang.MAINTENANCE }
     ];

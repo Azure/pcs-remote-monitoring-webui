@@ -48,7 +48,7 @@ class RegionDetails extends Component {
             {selectedDeviceGroupName}
           </h3>
           <div className="device-subheading">
-            {lang.DEVICES_LABEL}
+            {lang.DEVICES}
           </div>
           <Row className="alarm-warning-container">
             <Col md={5} className="total-alarms-container">

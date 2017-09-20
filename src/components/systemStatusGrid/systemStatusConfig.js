@@ -2,14 +2,11 @@
 
 import moment from 'moment';
 import lang from '../../common/lang';
+import { EMPTY_FIELD_VAL, DEFAULT_TIME_FORMAT, gridValueFormatters } from '../pcsGrid/pcsGridConfig';
 
-export const EMPTY_FIELD = '---';
+const { checkForEmpty } = gridValueFormatters;
+
 export const DEFAULT_SYSTEM_GRID_PAGE_SIZE = 6;
-
-/** A collection of reusable value formatter methods */
-export const gridValueFormatters = {
-  checkForEmpty: value => value || 0
-};
 
 /** A collection of column definitions for the systemStatusGrid */
 export const systemStatusColumnDefs = {
@@ -40,11 +37,8 @@ export const systemStatusColumnDefs = {
     headerName: lang.LAST_RETURN_MESSAGE,
     field: 'type',
     valueFormatter: ({ value, data }) => {
-      if (value === 3 && Object.keys(data.methodParameter.name).length) {
-        return data.methodName +  lang.NOT_COMPLETED;
-      } else {
-        return data.methodName + lang.COMPLETED;
-      }
+      const isCompleted = !(value === 3 && Object.keys(data.methodParameter.name).length);
+      return `${data.methodName} ${isCompleted ? lang.COMPLETED : lang.NOT_COMPLETED}`;
     }
   },
   type: {
@@ -66,34 +60,33 @@ export const systemStatusColumnDefs = {
   deviceCount: {
     headerName: lang.NO_OF_DEVICES,
     field: 'resultStatistics.deviceCount',
-    valueFormatter: ({ value }) => gridValueFormatters.checkForEmpty(value)
+    valueFormatter: ({ value }) => checkForEmpty(value, 0)
   },
   succeededCount: {
     headerName: lang.SUCCEEDED_CAPITAL,
     field: 'resultStatistics.succeededCount',
-    valueFormatter: ({ value }) => gridValueFormatters.checkForEmpty(value)
+    valueFormatter: ({ value }) => checkForEmpty(value, 0)
   },
   failedCount: {
     headerName: lang.FAILED_CAPITAL,
     field: 'resultStatistics.failedCount',
-    valueFormatter: ({ value }) => gridValueFormatters.checkForEmpty(value)
+    valueFormatter: ({ value }) => checkForEmpty(value, 0)
   },
   startTime: {
     headerName: lang.START_TIME,
     field: 'createdTimeUtc',
     valueFormatter: ({ value }) => {
       const time = moment(value);
-      return time.unix() < 0 ? EMPTY_FIELD : time.format('hh:mm:ss MM.DD.YYYY');
+      return time.unix() < 0 ? EMPTY_FIELD_VAL : time.format(DEFAULT_TIME_FORMAT);
     }
   },
   endTime: {
     // TODO: Replace when service provides the endTime
     headerName: lang.END_TIME,
     field: 'endTimeUtc',
-    valueFormatter: ({ value }) =>  EMPTY_FIELD
+    valueFormatter: _ => EMPTY_FIELD_VAL
   }
 };
-
 
 export const getSoftSelectId = ({ jobId }) => jobId;
 
@@ -103,9 +96,5 @@ export const systemStatusGridProps = {
   rowSelection: 'multiple',
   enableColResize: true,
   pagination: true,
-  domLayout: 'autoHeight',
-  paginationPageSize: DEFAULT_SYSTEM_GRID_PAGE_SIZE,
-  suppressCellSelection: true,
-  suppressRowClickSelection: true, // Suppress so that a row is only selectable by checking the checkbox
-  suppressClickEdit: true
+  paginationPageSize: DEFAULT_SYSTEM_GRID_PAGE_SIZE
 };

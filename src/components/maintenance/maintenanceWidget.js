@@ -69,7 +69,7 @@ class MaintenanceWidget extends Component {
       devices: this.props.devices,
       timerange: this.state.timerange,
       rowData: this.props.alarmsGridData
-    }
+    };
     return (
       <div className="maintenance-container">
         <MaintenanceSummary {...maintenanceProps} />

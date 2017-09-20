@@ -4,14 +4,11 @@ import moment from 'moment';
 import lang from '../../common/lang';
 import ConnectionStatusRenderer from '../cellRenderers/connectionStatusRenderer/connectionStatusRenderer';
 import IsSimulatedRenderer from '../cellRenderers/isSimulatedRenderer/isSimulatedRenderer';
+import { EMPTY_FIELD_VAL, DEFAULT_TIME_FORMAT, gridValueFormatters } from '../pcsGrid/pcsGridConfig';
 
-export const EMPTY_FIELD_VAL = '---';
+const { checkForEmpty } = gridValueFormatters;
+
 export const DEFAULT_DEVICE_GRID_PAGE_SIZE = 50;
-
-/** A collection of reusable value formatter methods */
-export const gridValueFormatters = {
-  checkForEmpty: (value, emptyValue = EMPTY_FIELD_VAL) => value || emptyValue
-};
 
 export const checkboxParams = {
   headerCheckboxSelection: true,
@@ -33,12 +30,12 @@ export const deviceColumnDefs = {
   deviceType: {
     headerName: lang.DEVICETYPE,
     field: 'Tags.deviceType',
-    valueFormatter: ({ value }) => gridValueFormatters.checkForEmpty(value)
+    valueFormatter: ({ value }) => checkForEmpty(value)
   },
   firmware: {
     headerName: lang.FIRMWARE,
     field: 'Properties.Reported.Firmware',
-    valueFormatter: ({ value }) => gridValueFormatters.checkForEmpty(value)
+    valueFormatter: ({ value }) => checkForEmpty(value)
   },
   telemetry: {
     headerName: lang.TELEMETRY,
@@ -55,7 +52,7 @@ export const deviceColumnDefs = {
     field: 'LastActivity',
     valueFormatter: ({ value }) => {
       const time = moment(value);
-      return gridValueFormatters.checkForEmpty((time.unix() > 0) ? time.format("hh:mm:ss MM.DD.YYYY") : '');
+      return checkForEmpty((time.unix() > 0) ? time.format(DEFAULT_TIME_FORMAT) : '');
     }
   }
 };

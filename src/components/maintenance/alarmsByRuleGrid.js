@@ -5,26 +5,42 @@ import { browserHistory } from 'react-router';
 import lang from '../../common/lang';
 import PcsGrid from '../pcsGrid/pcsGrid';
 
+const defaultAlarmsByRuleGridProps = {
+  pagination: true,
+  paginationAutoPageSize: true,
+  suppressScrollOnNewData: true,
+  paginationPageSize: 8,
+  enableSorting: false,
+  enableSearch: false,
+  enableFilter: false,
+  multiSelect: false,
+  showLastUpdate: false,
+  enableColResize: true,
+  suppressMovableColumns: true,
+};
+
 class AlarmsByRuleGrid extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      columnDefs: [
-        { headerName: lang.NAME, field: 'name', filter: 'text' },
-        { headerName: lang.DESCRIPTION, field: 'description', filter: 'text' },
-        { headerName: lang.SEVERITY, field: 'severity', filter: 'text' },
-        { headerName: lang.TOTAL_OCCRRENCES, field: 'total_occrrences', filter: 'text' },
-        { headerName: lang.OPEN_OCCRRENCES, field: 'open_occrrences', filter: 'text' },
-        { headerName: lang.ACK_OCCRRENCES, field: 'ack_occrrences', filter: 'text' },
-        { headerName: lang.CLOSE_OCCRRENCES, field: 'close_occrrences', filter: 'text' },
-        { headerName: lang.LAST_OCCRRENCES, field: 'last_occrrences', filter: 'text' },
-      ],
       timerange: 'PT1H',
       rowData: [],
       loading: true,
       deviceIdList: '',
       alarmsByRule: {}
     };
+
+    this.defaultcolumnDefs = [
+      { headerName: lang.NAME, field: 'name', filter: 'text' },
+      { headerName: lang.DESCRIPTION, field: 'description', filter: 'text' },
+      { headerName: lang.SEVERITY, field: 'severity', filter: 'text' },
+      { headerName: lang.TOTAL_OCCRRENCES, field: 'total_occrrences', filter: 'text' },
+      { headerName: lang.OPEN_OCCRRENCES, field: 'open_occrrences', filter: 'text' },
+      { headerName: lang.ACK_OCCRRENCES, field: 'ack_occrrences', filter: 'text' },
+      { headerName: lang.CLOSE_OCCRRENCES, field: 'close_occrrences', filter: 'text' },
+      { headerName: lang.LAST_OCCRRENCES, field: 'last_occrrences', filter: 'text' },
+    ];
   }
 
   /**
@@ -45,24 +61,16 @@ class AlarmsByRuleGrid extends Component {
   };
 
   render() {
+    const gridProps = {
+      ...defaultAlarmsByRuleGridProps,
+      columnDefs: this.defaultcolumnDefs,
+      ...this.props,
+      onRowClicked: this.onRowClicked,
+      onGridReady: this.onGridReady
+    };
+
     return (
-      <PcsGrid
-        columnDefs={this.state.columnDefs}
-        pagination={true}
-        paginationAutoPageSize={true}
-        suppressScrollOnNewData={true}
-        paginationPageSize={8}
-        rowData={this.props.rowData}
-        enableSorting={false}
-        enableSearch={false}
-        enableFilter={false}
-        multiSelect={false}
-        showLastUpdate={false}
-        enableColResize={true}
-        onRowClicked={this.onRowClicked}
-        suppressMovableColumns={true}
-        onGridReady={this.onGridReady}
-      />
+      <PcsGrid {...gridProps} />
     );
   }
 }
