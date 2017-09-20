@@ -20,5 +20,8 @@ export * from './filterActions';
 // kpi
 export * from './kpiActions';
 
+// maintenance
+export * from './maintenanceActions';
+
 // rules
 export * from './ruleActions';

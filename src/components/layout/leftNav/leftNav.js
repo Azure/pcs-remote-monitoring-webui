@@ -14,7 +14,7 @@ import ContosoIcon from '../../../assets/icons/Contoso.svg';
 import './leftNav.css';
 
 class LeftNav extends Component {
-  
+
   constructor(props) {
     super(props);
     this.state = { showAll: true };
@@ -30,10 +30,10 @@ class LeftNav extends Component {
     const iconStyle = { height: 16, width: 16 };
 
     const navItems = [
-      { path: '#/dashboard',    icon: DashboardIcon,    name: lang.LEFTNAV.DASHBOARD },
-      { path: '#/devices',      icon: DevicesIcon,      name: lang.LEFTNAV.DEVICES },
-      { path: '#/rulesActions', icon: RulesActionsIcon, name: lang.LEFTNAV.RULES_ACTIONS },
-      { path: '#/maintenance',  icon: MaintenanceIcon,  name: lang.LEFTNAV.MAINTENANCE }
+      { path: '/dashboard',    icon: DashboardIcon,    name: lang.LEFTNAV.DASHBOARD },
+      { path: '/devices',      icon: DevicesIcon,      name: lang.LEFTNAV.DEVICES },
+      { path: '/rulesActions', icon: RulesActionsIcon, name: lang.LEFTNAV.RULES_ACTIONS },
+      { path: '/maintenance',  icon: MaintenanceIcon,  name: lang.LEFTNAV.MAINTENANCE }
     ];
 
     const navigationTabs = navItems.map((item, index) =>

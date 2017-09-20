@@ -111,8 +111,8 @@ class ApiService {
     return Http.get(`${Config.telemetryApiUrl}alarmsbyrule`);
   }
 
-  static getRuleList() {
-    return Http.get(`${Config.telemetryApiUrl}rules`);
+  static getRuleList(params = '') {
+    return Http.get(`${Config.telemetryApiUrl}rules/${params}`);
   }
 
   static updateRule(id, rule) {
@@ -210,6 +210,10 @@ class ApiService {
 
   static getDeviceGroupFilters() {
     return Http.get(`${Config.uiConfigApiUrl}devicegroupfilters`);
+  }
+
+  static updateAlarmsStatus(payload) {
+    return Http.patch(`${Config.telemetryApiUrl}alarms/${encodeURIComponent(payload.id)}`, payload);
   }
 }
 

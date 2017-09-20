@@ -1,57 +1,153 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React from 'react';
-import Config from '../../common/config';
-import { Topics } from '../../common/eventtopic';
-import GenericDropDownList from '../../components/genericDropDownList/genericDropDownList';
-import CurveChart from '../../components/curveChart/curveChart';
+import React, { Component } from 'react';
+import { Radio } from 'react-bootstrap';
 
-export default class TelemetryWidget extends React.Component {
+import ApiService from '../../common/apiService';
+import Timeline from '../charts/timeline';
 
-    render() {
-        return (
-            <div style={{ height: '100%' }}>
-                <div style={{ width: '10em', marginLeft: '1em', float: 'right' }}>
-                    <div>
-                        <GenericDropDownList
-                            id="DeviceGroups"
-                            menuAlign="right"
-                            requestUrl={Config.deviceGroupApiUrl}
-                            initialState={{
-                                defaultText: 'Choose devices'
-                            }}
-                            newItem={{
-                                text: '(new group)',
-                                dialog: 'deviceGroupEditor'
-                            }}
-                            publishTopic={Topics.dashboard.deviceGroup.selected}
-                            reloadRequestTopic={Topics.dashboard.deviceGroup.changed}>
-                        </GenericDropDownList>
-                    </div>
+import './telemetry.css';
 
-                    <div style={{ marginTop: '1em' }}>
-                        <GenericDropDownList
-                            id="TelemetryTypes"
-                            menuAlign="right"
-                            multipleSelect={ true }
-                            requestUrl={Config.telemetryTypeApiUrl}
-                            initialState={{
-                                defaultText: 'Telemetry',
-                                selectFirstItem: true,
-                                keepLastSelection: true
-                            }}
-                            selectAll={{
-                                text: 'Select All'
-                            }}
-                            publishTopic={Topics.dashboard.telemetryType.selected}
-                            reloadRequestTopic={Topics.dashboard.deviceGroup.selected}>
-                        </GenericDropDownList>
-                    </div>
-                </div>
-                <div style={{ width: 'auto', height: '100%', float: 'none', overflow: 'hidden' }}>
-                    <CurveChart deviceGroupTopics={[Topics.dashboard.deviceGroup.selected, Topics.dashboard.telemetryType.selected]}></CurveChart>
-                </div>
-            </div>
-        );
+const validTelemetryType = (telemetry, telemetryTypes) =>
+  telemetryTypes.map(e => e.toUpperCase()).includes(telemetry.toUpperCase());
+
+class TelemetryWidget extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      radioBtnOptions: {},
+      timeline: this.props.timeline
+    };
+    this.handleOptionChange = this.handleOptionChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { queryParams } = nextProps;
+    if(this.props.queryParams.devices !== queryParams.devices) {
+      ApiService.getTelemetryMessages(queryParams).then(data => {
+        if (data && data.Items) {
+          const {radioBtnOptions, selectedTelemetry, selectedChartData, displayNames} = this.getRadioBtnOptions(data);
+          this.setState({
+            radioBtnOptions,
+            timeline: {
+              ...this.state.timeline,
+              selectedTelemetry,
+              chartConfig: {
+                ...this.state.timeline.chartConfig,
+                data: {
+                  ...this.state.timeline.chartConfig.data,
+                  json: selectedChartData,
+                  keys: {
+                    ...this.state.timeline.chartConfig.data.keys,
+                    value: displayNames
+                  }
+                }
+              }
+            }
+          });
+        }
+      })
     }
+  }
+
+  getRadioBtnOptions(data) {
+    if (!data) return {};
+    let radioBtnOptions = {};
+    let selectedTelemetry = '';
+    let selectedChartData = [];
+    let displayNames = [];
+    /*
+    * Properties is an array contains telemetry types and telemetry units
+    * telemetry units contains '_' where telemetry types are not
+    */
+    const telemetrytypes = data.Properties.filter(e => !e.includes('_'));
+    data.Items.forEach(item => {
+      if (item.Data) {
+        Object.keys(item.Data).forEach(telemetry => {
+          if (validTelemetryType(telemetry, telemetrytypes)) {
+            const deviceName = item.DeviceId.split('.').join('_');
+            if (!radioBtnOptions[telemetry]) {
+              radioBtnOptions[telemetry] = {
+                selected: false,
+                chartData: [],
+                deviceNames: [deviceName]
+              };
+            }
+            const option = {
+              [deviceName]: item.Data[telemetry],
+              Time: new Date(item.Time).toISOString()
+            };
+            radioBtnOptions[telemetry].chartData.push(option);
+            if (radioBtnOptions[telemetry].deviceNames.every(e => e !== deviceName)) {
+              radioBtnOptions[telemetry].deviceNames.push(deviceName);
+            }
+            selectedTelemetry = Object.keys(radioBtnOptions).sort()[0];
+            (radioBtnOptions[selectedTelemetry] || {}).selected = true;
+            selectedChartData = [].concat(radioBtnOptions[selectedTelemetry].chartData);
+            displayNames = [].concat(radioBtnOptions[selectedTelemetry].deviceNames);
+          }
+        });
+      }
+    });
+    return {
+      radioBtnOptions,
+      selectedTelemetry,
+      selectedChartData,
+      displayNames
+    };
+  }
+
+  handleOptionChange(selectedKey) {
+    let newOptions = Object.assign({}, this.state.radioBtnOptions);
+    Object.keys(newOptions).forEach(key => {
+      newOptions[key].selected = selectedKey === key;
+    });
+    this.setState(
+      {
+        radioBtnOptions: newOptions,
+        timeline: {
+          ...this.state.timeline,
+          selectedTelemetry: selectedKey,
+          chartConfig: {
+            ...this.state.timeline.chartConfig,
+            data: {
+              ...this.state.timeline.chartConfig.data,
+              json: [].concat(newOptions[selectedKey].chartData)
+            }
+          }
+        }
+      }
+    );
+  }
+
+  render() {
+    const { radioBtnOptions } = this.state;
+    const telemetryRadioBtnGroup = radioBtnOptions
+      ? Object.keys(radioBtnOptions).sort().map((key, index) =>
+          <Radio
+            onClick={() => this.handleOptionChange(key)}
+            name="telemetryRadioButtonGroup"
+            inline
+            className={radioBtnOptions[key].selected ? 'btn-selected' : ''}
+            checked={radioBtnOptions[key].selected}
+            key={index}
+          >
+            {key} [{radioBtnOptions[key].deviceNames.length}]
+          </Radio>
+        )
+      : null;
+    return (
+      <div className="telemetry-container">
+        <div className="telemetry-btn-group">
+          {telemetryRadioBtnGroup}
+        </div>
+        <div className="timeline-chart">
+          <Timeline {...this.state.timeline} />
+        </div>
+      </div>
+    );
+  }
 }
+
+export default TelemetryWidget;

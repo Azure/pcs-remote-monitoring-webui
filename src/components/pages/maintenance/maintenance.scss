@@ -1,0 +1,27 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+.timerange-selection {
+  display: flex;
+  justify-content: flex-end;
+
+  .Select {
+    width: 150px;
+    margin-top: -15px;
+  }
+
+  .last-refresed-time {
+    margin-left: 5px;
+    margin-right: 5px;
+    color: #fff;
+  }
+
+  .refresh-icon {
+    background: url("../../../assets/icons/Refresh.svg") no-repeat center;
+    background-size: contain;
+  }
+
+  .icon-sm {
+    width: 14px;
+    height: 14px;
+  }
+}

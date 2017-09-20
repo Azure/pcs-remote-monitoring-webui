@@ -52,5 +52,6 @@ export default {
   },
   flyout: {
     show: false
-  }
+  },
+  maintenance: {}
 };

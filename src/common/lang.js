@@ -72,9 +72,6 @@ const lang = {
     GROUPNAMEALREADYEXISTS: 'Group name already exists',
     TYPE: 'Type'
   },
-  TELEMETRY: {
-    OK: 'ok'
-  },
   DEVICES: {
     DEVICENAME: 'Device Name',
     DEVICETYPE: 'Device Type',
@@ -306,10 +303,34 @@ const lang = {
   FAILED_JOBS: 'Failed Jobs',
   CRITICAL: 'Critical',
   WARNING: 'Warning',
-  TOTAL: 'Total',
+  TOTAL: 'TOTAL',
   SUCCEEDED: 'Succeeded',
   ALARMS: 'Alarms',
   SYSTEM_STATUS: 'System Status',
-  DEVICES_LABEL: 'Devices' // Rename to DEVICES when the devices object above is removed
+  NAME: 'Name',
+  DESCRIPTION: 'Description',
+  SEVERITY: 'SEVERITY',
+  TOTAL_OCCRRENCES: 'Total Occurrences',
+  OPEN_OCCRRENCES: 'Open Occurrences',
+  ACK_OCCRRENCES: 'Ack Occurrences',
+  CLOSE_OCCRRENCES: 'Close Occurrences',
+  LAST_OCCRRENCES: 'Last Occurrences',
+  LAST_REFRESHED: 'LAST REFRESHED',
+  RULE_NAME: 'Rule Name',
+  TRIGGER_DEVICE: 'Trigger Device',
+  TIME: 'Time',
+  OPEN: 'OPEN',
+  ACKNOWLEDGED: 'ACKNOWLEDGED',
+  CLOSED: 'CLOSED',
+  LAST_EVENT: 'LAST EVENT',
+  RULE_DETAIL: 'Rule detail',
+  ALARM_OCCURENCE: 'Alarm occurrences',
+  RELATED_INFO: 'Related information',
+  ALARMED_DEVICE: 'Alarmed devices',
+  ALARMED_TELEMETRY: 'Alarmed device\'s telemetry',
+  ALL: 'All',
+  TELEMETRY: 'Telemetry',
+  CLOSE: 'Close',
+  ACKNOWLEDGE: 'Acknowledge'
 };
 export default lang;

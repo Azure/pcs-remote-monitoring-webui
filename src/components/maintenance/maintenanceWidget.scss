@@ -11,7 +11,7 @@
     .selection-item {
       padding: 5px;
       font-weight: bold;
-      font-size: 42px;
+      font-size: 32px;
       margin-right: 32px;
 
       &:hover {
@@ -26,4 +26,7 @@
       color: #fff;
     }
   }
+
+  .grid-container { display: none; }
+
 }

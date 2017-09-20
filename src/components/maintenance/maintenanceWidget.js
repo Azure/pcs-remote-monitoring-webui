@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import MaintenanceSummary from './maintenanceSummary';
 import SystemStatusGrid from '../systemStatusGrid/systemStatusGrid';
+import AlarmsByRuleGrid from './alarmsByRuleGrid';
 import lang from '../../common/lang';
 
 import './maintenanceWidget.css';
@@ -12,7 +13,9 @@ class MaintenanceWidget extends Component {
     super(props);
 
     this.state = {
-      selectedGrid: 'alarms'
+      selectedGrid: 'alarms',
+      timerange: 'PT1H',
+      lastRefresed: new Date()
     }
 
     this.selectGrid = this.selectGrid.bind(this);
@@ -22,7 +25,6 @@ class MaintenanceWidget extends Component {
     const selectedGrid = e.currentTarget.textContent === 'Alarms' ? 'alarms' : 'system';
     this.setState({ selectedGrid });
   }
-
 
   render() {
     const totalAlarms = (this.props.alarms || []).filter(alarm => alarm.Status === 'open').length;
@@ -44,6 +46,11 @@ class MaintenanceWidget extends Component {
     };
     const alarmSelected = this.state.selectedGrid === 'alarms' ? '-active' : '';
     const systemSelected = this.state.selectedGrid === 'alarms' ? '' : '-active';
+    const alarmsByRuleGridProps = {
+      devices: this.props.devices,
+      timerange: this.state.timerange,
+      rowData: this.props.alarmsGridData
+    }
     return (
       <div className="maintenance-container">
         <MaintenanceSummary {...maintenanceProps} />
@@ -51,11 +58,8 @@ class MaintenanceWidget extends Component {
           <div className={`selection-item${alarmSelected}`} onClick={this.selectGrid}>{lang.ALARMS}</div>
           <div className={`selection-item${systemSelected}`} onClick={this.selectGrid}>{lang.SYSTEM_STATUS}</div>
         </div>
-        {
-          this.state.selectedGrid === 'alarms'
-          ? 'alarms'
-          : < SystemStatusGrid />
-        }
+        <div className={`grid-container${alarmSelected}`}><AlarmsByRuleGrid {...alarmsByRuleGridProps} /></div>
+        <div className={`grid-container${systemSelected}`}><SystemStatusGrid /></div>
       </div>
     );
   }

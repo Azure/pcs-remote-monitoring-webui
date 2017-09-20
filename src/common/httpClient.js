@@ -26,6 +26,15 @@ function put(url, data, options) {
   });
 }
 
+function patch(url, data, options) {
+  options = options || {};
+  setJsonPayload(options, data);
+  options.method = 'PATCH';
+  return ajax(url, options).then(response => {
+    return getJson(url, response);
+  });
+}
+
 function _delete(url, options) {
   options = options || {};
   options.method = 'DELETE';
@@ -94,4 +103,4 @@ function setJsonPayload(options, data) {
   options.body = JSON.stringify(data);
 }
 
-export default { get: get, post: post, put: put, delete: _delete, ajax };
+export default { get, post, put, delete: _delete, ajax, patch };

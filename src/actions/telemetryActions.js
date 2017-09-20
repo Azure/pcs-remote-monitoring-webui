@@ -44,9 +44,9 @@ export const loadTelemetryTypes = () => {
 };
 
 //for all telemetry messages
-export const loadTelemetryMessages = deviceList => {
+export const loadTelemetryMessages = params => {
   return dispatch => {
-    return ApiService.loadTelemetryMessages(deviceList)
+    return ApiService.getTelemetryMessages(params)
       .then(data => {
         dispatch(loadTelemetrMessagesSuccess(data));
       })
