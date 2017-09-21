@@ -18,7 +18,11 @@ class ContextFilters extends Component {
   }
 
   componentDidMount() {
-    this.props.loadRegions();
+    // Only load the regions if no default device group is selected
+    // since that means the regions haven't been loaded yet
+    if (!this.props.selectedDeviceGroupId) {
+      this.props.loadRegions();
+    }
   }
 
   updateValue(selectedGroupId) {
@@ -27,7 +31,7 @@ class ContextFilters extends Component {
 
   render() {
     const { deviceGroups, disableDeviceFilter }  = this.props;
-    let options = deviceGroups.map(group => {
+    let options = (deviceGroups || []).map(group => {
       return { value: group.Id, label: group.DisplayName };
       // The localeCompare() method returns a number indicating whether a reference string comes before or
       // after or is the same as the given string in sort order.
@@ -85,8 +89,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  deviceGroups: state.filterReducer.deviceGroups || [],
-  selectedDeviceGroupId: state.filterReducer.selectedDeviceGroupId || 0
+  deviceGroups: state.filterReducer.deviceGroups,
+  selectedDeviceGroupId: state.filterReducer.selectedDeviceGroupId
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContextFilters);
