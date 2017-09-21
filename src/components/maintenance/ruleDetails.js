@@ -12,7 +12,7 @@ import './ruleDetails.css';
 
 const alarmsColumnDefs = [
   {
-    headerName: lang.RULE_NAME,
+    headerName: lang.OCCURRENCE,
     field: 'rule_name',
     headerCheckboxSelection: true,
     headerCheckboxSelectionFilteredOnly: true,
@@ -146,7 +146,8 @@ class RuleDetailsPage extends Component {
       getSoftSelectId: btnActions.getSoftSelectId,
       onGridReady: btnActions.onGridReady,
       onHardSelectChange: btnActions.onRuleDetailHardSelectChange,
-      onSoftSelectChange: btnActions.onRuleDetailSoftSelectionChange
+      onSoftSelectChange: btnActions.onRuleDetailSoftSelectionChange,
+      onContextMenuChange: btnActions.onContextMenuChange
     };
 
     const deviceGridProps = {
@@ -154,11 +155,11 @@ class RuleDetailsPage extends Component {
       //TODO: finish all the event handlers
       rowData: this.state.devicesGridData,
       domLayout: 'autoHeight',
-      // softSelectId: this.state.softSelectedDeviceId,
-      // getSoftSelectId: getSoftSelectId,
-      // /* Grid Events */
-      // onSoftSelectChange: this.onSoftSelectChange,
-      // onHardSelectChange: this.onHardSelectChange
+      softSelectId: this.state.softSelectedDeviceId,
+      getSoftSelectId: btnActions.getSoftSelectId,
+      /* Grid Events */
+      onSoftSelectChange: btnActions.onSoftSelectDeviceGrid,
+      onContextMenuChange: btnActions.onContextMenuChange
     };
 
     const telemetryProps = {
@@ -203,6 +204,7 @@ class RuleDetailsPage extends Component {
             onHardSelectChange={btnActions.onAlarmOccGridHardSelectChange}
             onSoftSelectChange={btnActions.onAlarmOccGridSoftSelectionChange}
             getSoftSelectId={this.getSoftSelectId}
+            onContextMenuChange={btnActions.onContextMenuChange}
           />
         </Section>
 

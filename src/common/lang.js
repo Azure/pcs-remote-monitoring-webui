@@ -4,6 +4,7 @@ const lang = {
   ACKNOWLEDGE: 'Acknowledge',
   ACKNOWLEDGED: 'Acknowledged',
   ACK_OCCRRENCES: 'Ack Occurrences',
+  OCCURRENCE: 'Occurrence',
   ACTIONS: 'Actions',
   ACTONDEVICES: 'Act on devices',
   ADD: 'Add',

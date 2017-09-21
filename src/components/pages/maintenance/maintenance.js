@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import Select from 'react-select';
 import * as _ from 'lodash';
+
 import { systemStatusColumnDefs } from '../../systemStatusGrid/systemStatusConfig';
 import PageContainer from '../../layout/pageContainer/pageContainer.js';
 import PageContent from '../../layout/pageContent/pageContent.js';
@@ -52,7 +53,9 @@ class MaintenancePage extends Component {
       showBoth: false,
       toggleButtonText: lang.DISABLE,
       toggleButtonSvg: ChangestatusSvg,
-      softSelectId: ''
+      softSelectId: '',
+      softSelectedDeviceId: '',
+      contextBtns: ''
     }
 
     this.contextButtons = {
@@ -115,6 +118,15 @@ class MaintenancePage extends Component {
   }
 
 // --- Grid events handler starts here ----------------------------------
+
+  onContextMenuChange = contextBtns => this.setState({ contextBtns });
+
+  onSoftSelectDeviceGrid = device => {
+    this.setState(
+      { softSelectedDeviceId: this.getSoftSelectId(device) },
+      () => this.props.actions.showFlyout({ device, type: 'Device detail' })
+    );
+  }
 
   onRuleDetailSoftSelectionChange = (rowData, row) => {
     const { actions } = this.props;
@@ -268,14 +280,17 @@ class MaintenancePage extends Component {
       onRuleDetailSoftSelectionChange: this.onRuleDetailSoftSelectionChange,
       onAlarmOccGridHardSelectChange: this.onAlarmOccGridHardSelectChange,
       onAlarmOccGridSoftSelectionChange: this.onAlarmOccGridSoftSelectionChange,
+      onSoftSelectDeviceGrid: this.onSoftSelectDeviceGrid,
       getSoftSelectId: this.getSoftSelectId,
       onGridReady: this.onGridReady,
+      onContextMenuChange: this.onContextMenuChange
     };
   };
 
 // --- Grid events handler ends here ----------------------------------
   render() {
     const pcsBtn = (props, visible = true) => visible ? <PcsBtn {...props} /> : '';
+    const showContextBtns = this.state.contextBtns === '';
     const showActionBtns = this.state.selectedRulesActions.length > 0;
     const devicesList = this.props.devices && this.props.devices.items ? this.props.devices.items : [];
     const alarmListProps = {
@@ -295,15 +310,15 @@ class MaintenancePage extends Component {
       <PageContainer>
         <TopNav breadcrumbs={lang.MAINTENANCE} projectName={lang.AZUREPROJECTNAME} />
         <ContextFilters>
-          {pcsBtn(this.contextButtons.delete, showActionBtns)}
           {pcsBtn({ // Change status button
             svg: this.state.toggleButtonSvg,
             onClick: this.showToggleRules,
             value: this.state.toggleButtonText
-          }, showActionBtns)}
-          {pcsBtn(this.contextButtons.edit, this.state.selectedRulesActions.length === 1)}
-          {pcsBtn(this.contextButtons.close, this.state.selectedAlarms.length > 0)}
-          {pcsBtn(this.contextButtons.acknowledge, this.state.selectedAlarms.length > 0)}
+          }, showActionBtns && showContextBtns)}
+          {pcsBtn(this.contextButtons.edit, this.state.selectedRulesActions.length === 1 && showContextBtns)}
+          {pcsBtn(this.contextButtons.close, this.state.selectedAlarms.length > 0 && showContextBtns)}
+          {pcsBtn(this.contextButtons.acknowledge, this.state.selectedAlarms.length > 0 && showContextBtns)}
+          {this.state.contextBtns}
           <ManageFilterBtn />
         </ContextFilters>
         <PageContent>
