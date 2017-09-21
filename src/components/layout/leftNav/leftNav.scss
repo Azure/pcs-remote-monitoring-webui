@@ -1,68 +1,69 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-$primary-dark: #242628;
-$primary-color: #afb9c3;
-$hover-color: #fff;
-$hover-background-color: #1b1d1f;
+$leftNavBgColor: #242628;
+$leftNavFontColor: #afb9c3;
+$leftNavFontHoverColor: #fff;
+$leftNavLinkHoverBgColor: #1b1d1f;
+$leftNavExpandedWidth: 220px;
+$navItemHeight: 48px;
 
 .left-nav {
   flex-shrink: 1;
-  background-color: $primary-dark;
-  color: $primary-color;
-  padding-top: 10px;
+  background-color: $leftNavBgColor;
+  color: $leftNavFontColor;
 
-  &.expanded { width: 150px; }
+  // New CSS
+  $navItemHeight: 48px;
+  .leftnav-item-container {
+    display: flex;
+    flex-flow: row nowrap;
+    flex-shrink: 0;
+    align-items: center;
 
-  a { color: $primary-color ; }
+    &.hamburger { margin-bottom: 16px; }
 
-  img { opacity: 0.7; }
+    .leftnav-item-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: $navItemHeight; 
+      width: $navItemHeight;
 
-  .hamburger {
-    padding: 14px;
+      > img {
+        height: 16px;
+        width: 16px;
+      }
+    }
 
-    &:hover {
-      cursor: pointer;
+    .leftnav-item-text { 
+      display: none;
+      flex-grow: 1; 
+      line-height: $navItemHeight;
+    }
+  }
 
+  // Style overrides if the item is a link or the hamburger
+  a.leftnav-item-container,
+  .leftnav-item-container.hamburger {
+    cursor: pointer;
+    color: $leftNavFontColor;
+    text-decoration: none;
+    
+    img { opacity: 0.7; }
+
+    &:hover,
+    &:focus {
+      color: $leftNavFontHoverColor;
+      background-color: $leftNavLinkHoverBgColor;
+      font-weight: 600;
+  
       img { opacity: 1; }
     }
   }
 
-  .contoso {
-    color: #fff;
-    margin-left: 7px;
-    display: inline;
+  &.expanded { 
+    width: $leftNavExpandedWidth;
 
-    .contoso-text {
-      display: inline-block;
-      margin-left: 10px;
-    }
-  }
-
-  .pcs-nav-container {
-    display: flex;
-    flex-flow: column nowrap;
-    flex-shrink: 0;
-
-    .pcs-nav-link {
-      display: flex;
-      flex-flow: row nowrap;
-      flex-shrink: 0;
-      align-items: center;
-      padding: 10px 15px;
-      line-height: 1em;
-      height: 2.5em;
-      text-decoration: none;
-      cursor: pointer;
-
-      > .pcs-nav-label { padding-left: 4px; }
-
-      &:hover,
-      &:focus {
-        color: $hover-color;
-        background-color: $hover-background-color;
-    
-        img { opacity: 1; }
-      }
-    }
+    .leftnav-item-container .leftnav-item-text { display: block; }
   }
 }

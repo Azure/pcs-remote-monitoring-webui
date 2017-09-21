@@ -13,64 +13,49 @@ import ContosoIcon from '../../../assets/icons/Contoso.svg';
 
 import './leftNav.css';
 
+const tabConfig = [
+  { path: '/dashboard',    icon: DashboardIcon,    name: lang.DASHBOARD_LABEL },
+  { path: '/devices',      icon: DevicesIcon,      name: lang.DEVICES },
+  { path: '/rulesActions', icon: RulesActionsIcon, name: lang.RULES_ACTIONS },
+  { path: '/maintenance',  icon: MaintenanceIcon,  name: lang.MAINTENANCE }
+];
+
 class LeftNav extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { showAll: true };
 
-    this.toggleNav = this.toggleNav.bind(this);
+    this.state = { isExpanded: true };
+
+    this.tabLinks = tabConfig.map((item, index) =>
+      <Link key={index} to={item.path} className="leftnav-item-container">
+        <div className="leftnav-item-icon"><img src={item.icon} alt={item.name} /></div>
+        <div className="leftnav-item-text">{item.name}</div>
+      </Link>
+    );
   }
 
-  toggleNav() {
-    this.setState({ showAll: !this.state.showAll });
-  }
+  toggleExpansion = () => this.setState({ isExpanded: !this.state.isExpanded });
 
   render() {
-    const iconStyle = { height: 16, width: 16 };
-
-    const navItems = [
-      { path: '/dashboard',    icon: DashboardIcon,    name: lang.DASHBOARD_LABEL },
-      { path: '/devices',      icon: DevicesIcon,      name: lang.DEVICES },
-      { path: '/rulesActions', icon: RulesActionsIcon, name: lang.RULES_ACTIONS },
-      { path: '/maintenance',  icon: MaintenanceIcon,  name: lang.MAINTENANCE }
-    ];
-
-    const navigationTabs = navItems.map((item, index) =>
-        <Link key={index} to={item.path} className="pcs-nav-link">
-          <img src={item.icon} {...iconStyle} alt={item.name} />
-          {this.state.showAll ? <span className="pcs-nav-label">{item.name}</span> : ''}
-        </Link>
-      );
-
     return (
-      <div className={`left-nav ${this.state.showAll ? 'expanded' : ''}`}>
-        <div className="contoso">
-          <img
-            src={ContosoIcon}
-            {...iconStyle}
-            className="contoso"
-            alt="ContosoIcon"
-            onClick={this.toggleNav}
-          />
-          {
-            this.state.showAll &&
-            <div className="contoso-text">
-              {lang.CONTOSO}
-            </div>
-          }
+      <div className={`left-nav ${this.state.isExpanded ? 'expanded' : ''}`}>
+
+        <div className="leftnav-item-container">
+          <div className="leftnav-item-icon">
+            <img src={ContosoIcon} className="page-title-icon" alt="ContosoIcon" />
+          </div>
+          <div className="leftnav-item-text">{lang.CONTOSO}</div>
         </div>
-        <div className="hamburger">
-          <img
-            src={HamburgerIcon}
-            {...iconStyle}
-            alt="HamburgerIcon"
-            onClick={this.toggleNav}
-          />
+
+        <div className="leftnav-item-container hamburger" onClick={this.toggleExpansion}>
+          <div className="leftnav-item-icon">
+            <img src={HamburgerIcon} alt="HamburgerIcon" />
+          </div>
         </div>
-        <div className="pcs-nav-container">
-          {navigationTabs}
-        </div>
+
+        {this.tabLinks}
+
       </div>
     );
   }

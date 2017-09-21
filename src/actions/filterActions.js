@@ -8,12 +8,12 @@ import * as telemetryActions from './telemetryActions';
 
 function setDefaultDeviceGroupId(dispatch, deviceGroups){
   if (deviceGroups.length > 0) {
-    let defaultGroupId = "";
-    deviceGroups.some((group) => {
-    if (group.Conditions.length === 0) {
-      defaultGroupId = group.Id;
+    let defaultGroupId = '';
+    deviceGroups.some(({ Id, Conditions }) => {
+      if (Conditions.length === 0) {
+        defaultGroupId = Id;
         return true;
-    }
+      }
       return false;
     });
     defaultGroupId = defaultGroupId || deviceGroups[0].Id;
