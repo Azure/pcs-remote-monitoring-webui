@@ -19,7 +19,7 @@ class MaintenanceWidget extends Component {
     this.state = {
       selectedGrid: 'alarms',
       timerange: 'PT1H',
-      lastRefresed: new Date()
+      lastRefreshed: new Date()
     }
 
     this.selectGrid = this.selectGrid.bind(this);
@@ -46,6 +46,21 @@ class MaintenanceWidget extends Component {
       devices : this.props.devices
     };
 
+    const jobDetailsProps = {
+      failed: 0,
+      total: 0,
+      succeeded: 0,
+    };
+
+    (this.props.jobs || []).forEach(({ resultStatistics }) => {
+    	if (resultStatistics) {
+    		const { failedCount, succeededCount }  = resultStatistics;
+    		if (failedCount) ++jobDetailsProps.failed; // Check failed jobs
+    		if (failedCount + succeededCount) ++jobDetailsProps.total; // Check total jobs
+    		if (succeededCount) ++jobDetailsProps.succeeded; // Check succeeded jobs
+    	}
+    });
+
     const totalAlarms = (this.props.alarms || []).filter(alarm => alarm.Status === 'open').length;
     const criticalAlarms = (this.props.alarms || []).filter(alarm => alarm.Status === 'open' && (alarm.Rule || {}).Severity === 'critical').length;
     const warningAlarms = (this.props.alarms || []).filter(alarm => alarm.Status === 'open' && (alarm.Rule || {}).Severity === 'warning').length;
@@ -55,12 +70,8 @@ class MaintenanceWidget extends Component {
         critical: criticalAlarms,
         warning: warningAlarms
       },
-      // TODO: remove hardcoded value
-      jobs: {
-        total: 268,
-        failed: 26,
-        succeeded: 191
-      },
+
+      jobs: jobDetailsProps,
       selectedGrid: this.state.selectedGrid
     };
     const alarmSelected = this.state.selectedGrid === 'alarms' ? '-active' : '';

@@ -3,7 +3,7 @@
 import React from 'react';
 import Critical from '../../assets/icons/Critical.svg';
 import Warning from '../../assets/icons/Warning.svg';
-import Info from '../../assets/icons/Info.svg';
+import InfoFailed from '../../assets/icons/InfoFailed.svg';
 import lang from '../../common/lang';
 
 import './maintenanceSummary.css';
@@ -47,7 +47,7 @@ const MaintenanceSummary = ({ alarms, jobs, selectedGrid = 'alarms' }) => {
               </div>
             </div>
             <div className={`${systemSelected}score-board`}>
-              <img className="info-icon" src={Info} {...iconStyle} alt={`${Info}`} />
+              <img src={InfoFailed} className="info-failed" alt={`${InfoFailed}`} />
               <div className="score">{jobs.failed}</div>
               <div className="score-label">{lang.FAILED_JOBS}</div>
               <div className="score-board-details">

@@ -4,15 +4,31 @@
   display: flex;
   justify-content: flex-end;
 
+  .Select-value-label ,
+  .Select-arrow-zone { color: #fff; }
+
   .Select {
-    width: 150px;
-    margin-top: -15px;
+    width: 120px;
+    margin-top: -20px;
+    margin-right: 20px;
+    font-size: 16px;
+    color: #fff !important;
   }
 
-  .last-refresed-time {
-    margin-left: 5px;
-    margin-right: 5px;
+  .Select-menu-outer {
+    width : 120px;
+    margin-left: 10px;
+  }
+
+  .last-refreshed-time {
+    margin-right: 10px;
     color: #fff;
+  }
+
+  .last-refreshed-text {
+    margin-left: 10px;
+    margin-right: 6px;
+    color: #afb9c3;
   }
 
   .refresh-icon {
@@ -23,5 +39,7 @@
   .icon-sm {
     width: 14px;
     height: 14px;
+    margin-left: 2px;
   }
+
 }

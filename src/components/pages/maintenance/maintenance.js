@@ -44,7 +44,7 @@ class MaintenancePage extends Component {
       selectedDetailsDevices: [],
       selectedGrid: 'alarms',
       timerange: 'PT1H',
-      lastRefresed: new Date(),
+      lastRefreshed: new Date(),
       rulesAndActions: [],
       selectedRulesActions: [],
       selectedAlarms: [],
@@ -97,7 +97,7 @@ class MaintenancePage extends Component {
     if (!selectedOption) return;
     this.setState({
       timerange: selectedOption.value,
-      lastRefresed: new Date()
+      lastRefreshed: new Date()
     }, () => this.props.actions.loadMaintenanceData({
       from: `NOW-${this.state.timerange}`,
       to: 'NOW'
@@ -332,8 +332,8 @@ class MaintenancePage extends Component {
                 }
               ]}
             />
-            {`${lang.LAST_REFRESHED} | `}
-            <div className="last-refresed-time">{this.state.lastRefresed.toLocaleString()}</div>
+            <span className="last-refreshed-text"> {`${lang.LAST_REFRESHED} | `} </span>
+            <div className="last-refreshed-time">{this.state.lastRefreshed.toLocaleString()}</div>
             <div className="refresh-icon icon-sm" />
           </div>
           {React.cloneElement(this.props.children, {...alarmListProps})}
