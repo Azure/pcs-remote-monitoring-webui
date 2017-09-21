@@ -14,8 +14,6 @@ class ContextFilters extends Component {
 
   constructor(props) {
     super(props);
-    // On intial load we show 'All devices' as the group filter and set id as 0.
-    this.state = { selectedGroupId: this.props.selectedDeviceGroupId };
     this.updateValue = this.updateValue.bind(this);
   }
 
@@ -24,10 +22,7 @@ class ContextFilters extends Component {
   }
 
   updateValue(selectedGroupId) {
-    this.setState(
-      { selectedGroupId },
-      _ => this.props.deviceGroupChanged(selectedGroupId, this.props.deviceGroups)
-    );
+    this.props.deviceGroupChanged(selectedGroupId, this.props.deviceGroups)
   }
 
   render() {
@@ -38,7 +33,6 @@ class ContextFilters extends Component {
       // after or is the same as the given string in sort order.
     }).sort((a , b) => a.label.localeCompare(b.label));
 
-    options = [{ label: 'All Devices', value: 0 }, ...options];
     return (
       <div className="context-filter-container">
         <div className="device-group-filter">
@@ -49,7 +43,7 @@ class ContextFilters extends Component {
               autofocus
               options={options}
               disabled={disableDeviceFilter}
-              value={this.state.selectedGroupId}
+              value={this.props.selectedDeviceGroupId}
               onChange={this.updateValue}
               simpleValue
               searchable={true}

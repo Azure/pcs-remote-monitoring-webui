@@ -6,6 +6,24 @@ import { loadDeviceSuccess } from './deviceActions';
 import ApiService from '../common/apiService';
 import * as telemetryActions from './telemetryActions';
 
+function setDefaultDeviceGroupId(dispatch, deviceGroups){
+  if (deviceGroups.length > 0) {
+    let defaultGroupId = "";
+    deviceGroups.some((group) => {
+    if (group.Conditions.length === 0) {
+      defaultGroupId = group.Id;
+        return true;
+    }
+      return false;
+    });
+    defaultGroupId = defaultGroupId || deviceGroups[0].Id;
+    dispatch({
+      type: types.DEVICE_GROUP_CHANGED,
+      data: defaultGroupId
+    });
+  } 
+}
+
 export const getRegionByDisplayName = deviceGroup => {
   return dispatch => {
     return ApiService.getRegionByDisplayName(deviceGroup)
@@ -15,6 +33,7 @@ export const getRegionByDisplayName = deviceGroup => {
           type: types.LOAD_DEVICE_GROUPS_SUCCESS,
           data: data.items
         });
+        setDefaultDeviceGroupId(dispatch, data.items);
       })
       .catch(error => {
         dispatch(loadFailed(error));
