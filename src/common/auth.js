@@ -2,8 +2,6 @@
 
 import AuthenticationContext from 'adal-angular/dist/adal.min.js'
 import ApiService from './apiService';
-import { browserHistory } from "react-router";
-
 
 function isDisabled() {
   return authEnabled === false;
@@ -16,7 +14,10 @@ function isEnabled() {
 function onLoad() {
   if (isDisabled()) return;
 
-  if (authContext.isCallback( browserHistory )) {
+  // Note: "window.location.hash" is the anchor part attached by
+  //       the Identity Provider when redirecting the user after
+  //       a successful authentication.
+  if (authContext.isCallback(window.location.hash)) {
     // Handle redirect after authentication
     authContext.handleWindowCallback();
     var error = authContext.getLoginError();
