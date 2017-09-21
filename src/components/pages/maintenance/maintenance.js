@@ -233,7 +233,12 @@ class MaintenancePage extends Component {
           const deviceIds = deviceIdsInQuery.replace(/["']{1}/gi, '').split(',');
           deviceJobs = deviceIds.map(deviceId => ({
             jobId: job.jobId,
-            deviceId
+            deviceId,
+            methodName : job.methodParameter.name,
+            status : job.status,
+            failedCount: job.resultStatistics.failedCount,
+            succeededCount: job.resultStatistics.succeededCount,
+            type: job.type
           }));
           // If the grid is related to tags or reconfigure then hide endtime and lastReturnMessage
           this.systemStatusColumnDefsLocal.endTime.hide = job.type === 4;

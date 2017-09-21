@@ -1,9 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as actions from '../../actions';
 import { browserHistory } from "react-router";
 import MaintenanceSummary from './maintenanceSummary';
 import SystemStatusGrid from '../systemStatusGrid/systemStatusGrid';
@@ -95,12 +92,4 @@ class MaintenanceWidget extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return { actions: bindActionCreators(actions, dispatch) };
-};
-
-const mapStateToProps = state => {
-  return { jobs: state.systemStatusJobReducer.jobs };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps) (MaintenanceWidget);
+export default MaintenanceWidget;

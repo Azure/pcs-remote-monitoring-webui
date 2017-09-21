@@ -37,8 +37,8 @@ export const systemStatusColumnDefs = {
     headerName: lang.LAST_RETURN_MESSAGE,
     field: 'type',
     valueFormatter: ({ value, data }) => {
-      const isCompleted = !(value === 3 && Object.keys(data.methodParameter.name).length);
-      return `${data.methodName} ${isCompleted ? lang.COMPLETED : lang.NOT_COMPLETED}`;
+      const isCompleted = !(value === 3 && data.methodName && data.failedCount > 0);
+       return `${data.methodName} ${isCompleted ? lang.COMPLETED : lang.NOT_COMPLETED}`;
     }
   },
   type: {
