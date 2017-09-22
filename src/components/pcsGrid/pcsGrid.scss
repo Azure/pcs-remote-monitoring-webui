@@ -3,6 +3,8 @@ This file contains a class pcs-ag-dark that when combined with the ag-dark
 theme from AgGrid updates the ag-dark theme to match the PCS grid theme
 */
 
+@import '../../styles/fonts/font-variables';
+
 $darkBgColor: #121416;
 $rowBgColor: #1b1d1f;
 $selectedRowBgColor: #242628;
@@ -15,6 +17,7 @@ $checkboxPadding: 8px;
 .pcs-grid-container.ag-dark.pcs-ag-dark {
   background-color: $darkBgColor;
   position: relative;
+  font-family: $fontSelawik;
 
   .ag-root { border: none; }
 

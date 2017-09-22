@@ -1,0 +1,30 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'font-variables';
+
+/* Font face definitions for the Selawik font */
+
+@font-face {
+  font-family: $fontSelawik;
+  src: url('assets/fonts/selawk.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: $fontSelawikBold;
+  src: url('assets/fonts/selawkb.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: $fontSelawikLight;
+  src: url('assets/fonts/selawkl.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: $fontSelawikSemibold;
+  src: url('assets/fonts/selawksb.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: $fontSelawikSemilight;
+  src: url('assets/fonts/selawksl.ttf') format('truetype');
+}
