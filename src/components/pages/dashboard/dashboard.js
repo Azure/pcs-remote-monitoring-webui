@@ -33,9 +33,12 @@ class DashboardPage extends Component {
     };
 
     const devicesList = this.props.devices && this.props.devices.items ? this.props.devices.items : [];
-    const alarmListProps = {
-      devices: devicesList.map(device => device.Id)
-    };
+    const devices = devicesList.map(({ Id }) => Id)
+    const alarmListProps = { devices };
+    const telemetryProps = {
+      chartId: 'dashboard_telemetry_chart',
+      devices
+    }
 
     return (
       <PageContainer>
@@ -55,7 +58,7 @@ class DashboardPage extends Component {
             </Row>
             <Row>
               <Col md={8}>
-                <Telemetry chartId="telemetry_chart" />
+                <Telemetry {...telemetryProps} />
               </Col>
               <Col md={4}>
                 <KpiWidget />
