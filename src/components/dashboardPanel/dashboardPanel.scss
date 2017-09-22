@@ -21,14 +21,8 @@ $padding: 15px;
       color: #fff;
     }
 
-    > .panel-actions-container {
-      > .Select {
-        width: 150px;
-      }
-    }
+    > .panel-actions-container > .Select { width: 150px; }
   }
 
-  > .panel-contents{
-    padding: 0px $padding;
-  }
+  > .panel-contents { padding: 0px $padding; }
 }
