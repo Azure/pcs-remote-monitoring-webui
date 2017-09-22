@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import Profile from '../../../layouts/main/profile.js';
+import Profile from '../profile/profile.js';
 
 import Setting from '../../../assets/icons/Setting.svg';
 
