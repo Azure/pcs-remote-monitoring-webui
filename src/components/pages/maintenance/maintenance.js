@@ -76,12 +76,12 @@ class MaintenancePage extends Component {
       },
       close: {
         svg: CloseAlarmSvg,
-        onClick: () => this.updateAlarm('close'),
+        onClick: () => this.updateAlarm('closed'),
         value: lang.CLOSE
       },
       acknowledge: {
         svg: AckAlarmSvg,
-        onClick: () => this.updateAlarm('acknowledge'),
+        onClick: () => this.updateAlarm('acknowledged'),
         value: lang.ACKNOWLEDGE
       }
     };
