@@ -66,7 +66,7 @@ class TelemetryWidget extends Component {
       if (item.Data) {
         Object.keys(item.Data).forEach(telemetry => {
           if (validTelemetryType(telemetry, telemetrytypes)) {
-            const deviceName = item.DeviceId.split('.').join('_');
+            const deviceName = item.DeviceId.split('.').join('-');
             if (!radioBtnOptions[telemetry]) {
               radioBtnOptions[telemetry] = {
                 selected: false,

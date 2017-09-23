@@ -2,13 +2,15 @@
 
 import React, { Component } from 'react';
 import { Radio } from 'react-bootstrap';
+import Rx from 'rxjs';
+
 import Drawer from './drawer';
 import JsonViewer from '../jsonViewer/jsonViewer';
 import DeviceIcon from '../../assets/icons/DeviceIcon1.svg';
 import lang from '../../common/lang';
 import ApiService from '../../common/apiService';
 import Timeline from '../charts/timeline';
-import Rx from 'rxjs';
+import AlarmsGrid from '../alarmList/alarmsGrid';
 
 import './deviceDetailFlyout.css';
 
@@ -26,7 +28,7 @@ const loadTelemetry = (data, deviceId) => {
     if (item.Data) {
       Object.keys(item.Data).forEach(telemetry => {
         if (validTelemetryType(telemetry, telemetrytypes)) {
-          const deviceName = item.DeviceId.split('.').join('_');
+          const deviceName = item.DeviceId.split('.').join('-');
           if (!radioBtnOptions[telemetry]) {
             radioBtnOptions[telemetry] = {
               selected: false,
@@ -56,6 +58,7 @@ class DeviceDetailFlyout extends Component {
       rawMessage: {},
       lastMessageReceived: '',
       showRawMessage: false,
+      alarmRowData: [],
       timeline: {
         selectedTelemetry: '',
         chartConfig: {
@@ -108,6 +111,7 @@ class DeviceDetailFlyout extends Component {
         .subscribe(cnt => this.getData(cnt < 0))
     );
     this.getLastMessage(this.props.content.device.Id);
+    this.getAlarms(this.props.content.device.Id)
   }
 
   componentWillUnmount() {
@@ -121,6 +125,7 @@ class DeviceDetailFlyout extends Component {
     }
     if (deviceId !== this.props.content.device.Id) {
       this.getLastMessage(deviceId);
+      this.getAlarms(deviceId);
       this.setState(
         {
           deviceId,
@@ -151,6 +156,27 @@ class DeviceDetailFlyout extends Component {
       this.setState({
         rawMessage: (data.Items || [])[0],
         lastMessageReceived: ((data.Items || [])[0] || {}).Time || ''
+      });
+    });
+  }
+
+  getAlarms(id) {
+    ApiService.getAlarms({
+      limit: 5,
+      order: 'desc',
+      devices: id
+    }).then(data => {
+      this.setState({
+        alarmRowData: data.Items.map(item => {
+          return {
+            ruleId: item.Rule.Id,
+            created: item.DateCreated,
+            occurrences: item.Count,
+            description: item.Rule.Description,
+            severity: item.Rule.Severity,
+            status: item.Status
+          };
+        })
       });
     });
   }
@@ -209,7 +235,7 @@ class DeviceDetailFlyout extends Component {
                   ...this.state.timeline.chartConfig.data,
                   json: selectedChartData,
                   keys: {
-                    value: [deviceId.split('.').join('_')],
+                    value: [deviceId.split('.').join('-')],
                     x: 'Time'
                   }
                 }
@@ -406,6 +432,10 @@ class DeviceDetailFlyout extends Component {
       }
       return null;
     });
+    const alarmsGridProps = {
+      rowData: this.state.alarmRowData,
+      pagination: false
+    }
     return (
       <div className="device-detail-flyout">
         <div className="device-detail-tile">
@@ -430,7 +460,9 @@ class DeviceDetailFlyout extends Component {
               </div>
             </div>
           </div>
-          <div className="device-alarm-list">alarm list</div>
+          <div className="device-alarm-list">
+            <AlarmsGrid {...alarmsGridProps} />
+          </div>
         </div>
         <Drawer toggle={true} title={lang.TELEMETRY}>
           <div>

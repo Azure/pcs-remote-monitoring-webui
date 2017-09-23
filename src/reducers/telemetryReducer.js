@@ -64,7 +64,7 @@ const telemetryReducer = (state = initialState.telemetry, action) => {
                 };
               }
               const option = {};
-              const deviceName = item.DeviceId.split('.').join('_');
+              const deviceName = item.DeviceId.split('.').join('-');
               option[deviceName] = item.Data[telemetry];
               option['Time'] = new Date(item.Time).toISOString();
               radioBtnOptions[telemetry].chartData.push(option);
@@ -131,7 +131,7 @@ const telemetryReducer = (state = initialState.telemetry, action) => {
                 radioBtnOptions[currentSelectedTelemetry].selected = true;
               }
               const option = {};
-              const deviceName = item.DeviceId.split('.').join('_');
+              const deviceName = item.DeviceId.split('.').join('-');
               option[deviceName] = item.Data[telemetry];
               option['Time'] = new Date(item.Time).toISOString();
               if (

@@ -1,4 +1,6 @@
-import SeverityCellRenderer from "./severityCellRenderer";
+// Copyright (c) Microsoft. All rights reserved.
+
+import SeverityCellRenderer from '../cellRenderers/severityCellRenderer/severityCellRenderer';
 import StatusCellRenderer from "./statusCellRenderer";
 import deviceCountCellRenderer from "./deviceCountCellRenderer";
 import LastTriggerCellRenderer from "./lastTriggerCellRenderer";

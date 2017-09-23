@@ -124,6 +124,21 @@ class ApiService {
   }
 
   /**
+   * Get list of alarms
+   *
+   * @param params An object containing API parameters
+   *    "from": The ISO8601 format start of the time window for the query.
+   *    "to": The ISO8601 format end of the time window for the query.
+   *    "order": Whether to sort the result from the oldest (asc) or the most recent (desc)
+   *    "skip": How many records to skip, used to paginate through the global list of alarms
+   *    "limit": How many records to return, used to paginate through the global list of alarms
+   *    "devices": A filter used to request alarms for specific devices
+   */
+  static getAlarms(params = {}) {
+    return Http.get(`${Config.telemetryApiUrl}alarms?${ApiService.serializeParamObject(params)}`);
+  }
+
+  /**
    * Get list of alarms aggregated by rule
    *
    * @param params An object containing API parameters

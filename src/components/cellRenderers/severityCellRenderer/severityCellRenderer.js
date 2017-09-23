@@ -10,19 +10,19 @@ import './severityCellRenderer.css'
 
 class SeverityCellRenderer extends React.Component {
   render() {
-    const { value } = this.props;
-    const cellClasses = `pcs-renderer-cell ${value && 'highlight'}`;
+    const value = this.props.value.toLowerCase();
+    const cellClasses = `pcs-renderer-cell severity ${value && 'highlight'}`;
 
     let svg = InfoSvg;
-    if (value.toLowerCase() === 'warning') {
+    if (value === 'warning') {
         svg = WarningSvg;
-    } else if (value.toLowerCase() === 'critical') {
+    } else if (value === 'critical') {
         svg = CriticalSvg;
     }
 
     return (
       <div className={cellClasses}>
-        <img src={svg} className="pcs-renderer-icon severity-icon" alt='Connection Status Icon' />
+        <img src={svg} className="pcs-renderer-icon" alt='Connection Status Icon' />
         <div className="pcs-renderer-text">
           {value}
         </div>

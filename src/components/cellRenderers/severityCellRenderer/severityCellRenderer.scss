@@ -4,7 +4,10 @@
 
 $iconSize: 12px;
 
-.pcs-renderer-icon.severity-icon {
-  width: $iconSize;
-  height: $iconSize;
+.pcs-renderer-cell.severity {
+
+  .pcs-renderer-icon {
+    width: $iconSize;
+    height: $iconSize;
+  }
 }
