@@ -51,6 +51,7 @@ const lang = {
   COPY_TO_CLIPBOARD_DESCRIPTION: 'Copy a list of all properties and methods associated',
   COUNT: 'NO. Devices',
   CREATE: 'Create',
+  CREATED: 'Created',
   CREATEDEVICE: 'Create device',
   CREATEFILTER: 'Create Filter',
   CRITICAL: 'Critical',
@@ -263,4 +264,5 @@ const lang = {
   X509: 'X.509',
   YES: 'Yes'
 };
+
 export default lang;

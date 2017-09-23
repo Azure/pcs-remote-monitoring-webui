@@ -66,7 +66,7 @@ class AlarmList extends Component {
   }
 
   dataFormatter(data) {
-    return data.Items.map(item => {
+    return data.map(item => {
       return {
         ruleId: item.Rule.Id,
         created: item.Created,
@@ -94,15 +94,14 @@ class AlarmList extends Component {
     if (showLoading) this.setState({ loading: true });
     Rx.Observable.fromPromise(
       ApiService.getAlarmsByRule({
-          from: `NOW-${this.state.timerange}`,
-          to: 'NOW',
-          devices: this.state.deviceIdList
-        })
-    ).subscribe(
-      data => this.setState({
-        rowData: this.dataFormatter(data),
-        loading: false
-      }),
+        from: `NOW-${this.state.timerange}`,
+        to: 'NOW',
+        devices: this.state.deviceIdList
+      })
+    )
+    .map(({ Items }) => this.dataFormatter(Items))
+    .subscribe(
+      rowData => this.setState({ rowData, loading: false }),
       err => {
         this.setState({ loading: false });
         this.errorSubject.next(undefined);

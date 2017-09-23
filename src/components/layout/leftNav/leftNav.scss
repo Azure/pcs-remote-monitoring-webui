@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import '../../../styles/fonts/font-variables';
+
 $leftNavBgColor: #242628;
 $leftNavFontColor: #afb9c3;
 $leftNavFontHoverColor: #fff;
@@ -55,7 +57,7 @@ $navItemHeight: 48px;
     &:focus {
       color: $leftNavFontHoverColor;
       background-color: $leftNavLinkHoverBgColor;
-      font-weight: 600;
+      font-family: $fontSelawikSemibold;
   
       img { opacity: 1; }
     }
