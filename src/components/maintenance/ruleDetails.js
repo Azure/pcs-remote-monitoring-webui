@@ -177,6 +177,7 @@ class RuleDetailsPage extends Component {
           <div className="aggregated-rule-name">{ruleDetails.name}</div>
           <div className="aggregated-rule-details">{aggregatedRule}</div>
         </div>
+        <div className="rule-subtitle">{lang.RULE_SUBTITLE}</div>
 
         <Section header={lang.RULE_DETAIL} childClassName="rule-details">
           <RulesActionsList {...rulesAndActionsProps} />
