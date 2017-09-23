@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import lang from '../../common/lang';
 import PcsGrid from '../pcsGrid/pcsGrid';
+import SeverityCellRenderer from '../cellRenderers/severityCellRenderer/severityCellRenderer';
 
 const defaultAlarmsByRuleGridProps = {
   pagination: true,
@@ -34,11 +35,16 @@ class AlarmsByRuleGrid extends Component {
     this.defaultcolumnDefs = [
       { headerName: lang.NAME, field: 'name', filter: 'text' },
       { headerName: lang.DESCRIPTION, field: 'description', filter: 'text' },
-      { headerName: lang.SEVERITY, field: 'severity', filter: 'text' },
-      { headerName: lang.TOTAL_OCCRRENCES, field: 'total_occrrences', filter: 'text' },
-      { headerName: lang.OPEN_OCCRRENCES, field: 'open_occrrences', filter: 'text' },
-      { headerName: lang.ACK_OCCRRENCES, field: 'ack_occrrences', filter: 'text' },
-      { headerName: lang.CLOSE_OCCRRENCES, field: 'close_occrrences', filter: 'text' },
+      {
+        headerName: lang.SEVERITY,
+        field: 'severity',
+        filter: 'text',
+        cellRendererFramework: SeverityCellRenderer
+      },
+      { headerName: lang.TOTAL_COUNT, field: 'total_occrrences', filter: 'text' },
+      { headerName: lang.OPEN, field: 'open_occrrences', filter: 'text' },
+      { headerName: lang.ACKNOWLEDGE, field: 'ack_occrrences', filter: 'text' },
+      { headerName: lang.CLOSE, field: 'close_occrrences', filter: 'text' },
       { headerName: lang.LAST_OCCRRENCES, field: 'last_occrrences', filter: 'text' },
     ];
   }

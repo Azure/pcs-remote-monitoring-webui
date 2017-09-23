@@ -7,6 +7,7 @@ import DevicesGrid from '../devicesGrid/devicesGrid';
 import RulesActionsList from '../rulesActionsList/rulesActionsList';
 import TelemetryWidget from '../telemetryWidget/telemetryWidget';
 import lang from '../../common/lang';
+import SeverityCellRenderer from '../cellRenderers/severityCellRenderer/severityCellRenderer';
 
 import './ruleDetails.css';
 
@@ -19,7 +20,11 @@ const alarmsColumnDefs = [
     checkboxSelection: true
   },
   { headerName: lang.DESCRIPTION, field: 'description' },
-  { headerName: lang.SEVERITY, field: 'severity' },
+  {
+    headerName: lang.SEVERITY,
+    field: 'severity',
+    cellRendererFramework: SeverityCellRenderer
+  },
   { headerName: lang.TRIGGER_DEVICE, field: 'trigger_device' },
   { headerName: lang.TIME, field: 'time' },
   { headerName: lang.STATUS, field: 'status' }
