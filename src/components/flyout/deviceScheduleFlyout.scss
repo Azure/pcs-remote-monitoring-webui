@@ -89,31 +89,9 @@ $content-height: 24px;
       justify-content: flex-end;
       margin-top: 32px;
 
-      .cancel-button {
-        padding: 0 10px;
-        margin: 0 36px;
-        background-color: #1b1d1f;
-        border: 2px solid transparent;
-        color: $title-color;
-      }
-
-      .apply-button {
-        padding: 0 10px;
-        background-color: #afb9c3;
-        border: 2px solid transparent;
-        color: #000000;
-
-        &:disabled {
-          color: gray;
-          cursor: not-allowed;
-          background-color: #afb9c3;
-          border: 2px solid #afb9c3;
-        }
-      }
-
-      img {
-        color: #ffffff;
-        height: 16px;
+      .pcs-btn {
+        height: 30px;
+        margin-left: 28px;
       }
     }
   }

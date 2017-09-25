@@ -34,32 +34,8 @@
       padding: 8px 0px;
 
       .pcs-btn {
-        display: flex;
-        flex-flow: row nowrap;
         height: 30px;
-        font-size: 14px;
-        color: #fff;
-        padding: 0px 16px;
-        background-color: transparent;
-        border: none;
         margin-left: 28px;
-        cursor: pointer;
-
-        &:hover { background-color: #b0b9c3; }
-
-        &.primary {
-          color: #454a4e;
-          background-color: #b0b9c3;
-
-          &:hover { background-color: #fff; }
-        }
-
-        &:disabled,
-        &.primary:disabled {
-          background-color: transparent;
-          color: #454a4e;
-          cursor: auto;
-        }
       }
     }
   }

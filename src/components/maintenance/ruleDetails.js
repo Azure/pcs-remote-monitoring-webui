@@ -135,6 +135,8 @@ class RuleDetailsPage extends Component {
     });
   }
 
+  onGridReady = gridReadyEvent => gridReadyEvent.api.sizeColumnsToFit();
+
   render() {
     const ruleId = (this.props.params || {}).id;
     const ruleDetails = this.props.alarmsGridData.filter(({ id }) => id === ruleId)[0];

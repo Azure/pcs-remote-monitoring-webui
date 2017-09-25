@@ -15,7 +15,7 @@ class SystemStatusDetailsGrid extends Component {
       systemStatusColumnDefs.jobId,
       systemStatusColumnDefs.status, // Status of total jobs ( fail/ Queued/completed)
       systemStatusColumnDefs.type, // MethodName of the total jobs
-      systemStatusColumnDefs.deviceCount, // No of devices effected in the job.
+      systemStatusColumnDefs.deviceCount, // No of devices affected in the job.
       systemStatusColumnDefs.succeededCount, // Success count of the job based on the devices
       systemStatusColumnDefs.failedCount, // Failed count of the job
       systemStatusColumnDefs.startTime, // Start Time of the job

@@ -56,19 +56,19 @@
     border-top: 1px solid #454a4e;
     padding-top: 10px;
 
-    .effected-devices {
+    .affected-devices {
       margin-top: 24px;
       color: #afb9c3;
       font-size: 12px;
       margin-bottom: 30px;
 
-      .num-effected-devices {
+      .num-affected-devices {
         font-size: 48px;
         padding-right: 5px;
         color: #fff;
       }
 
-      .effected-devices-name {
+      .affected-devices-name {
         color: #afb9c3;
         font-size: 14px;
       }
@@ -81,19 +81,7 @@
     margin-bottom: 20px;
     margin-top: 20px;
 
-    .pcs-btn {
-      height: 35px;
-      background-color: #121416;
-      border: none;
-      margin-right: 10px;
-
-      img { width: 12px; }
-
-      &:hover {
-        background-color: #afb9c3;
-        color: #1b1d1f;
-      }
-    }
+    .pcs-btn { height: 35px; }
   }
 
   .no-common-properties-container { margin-top: 24px; }

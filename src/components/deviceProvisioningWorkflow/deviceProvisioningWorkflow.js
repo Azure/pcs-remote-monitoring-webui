@@ -5,7 +5,9 @@ import FlyoutSection from './flyoutSection/flyoutSection'
 import Select from 'react-select';
 import DeviceSimulationService from '../../services/deviceSimulationService';
 import IotHubManagerService from '../../services/iotHubManagerService';
+import PcsBtn from '../shared/pcsBtn/pcsBtn';
 import Rx from 'rxjs';
+import lang from '../../common/lang';
 
 import './deviceProvisioningWorkflow.css';
 
@@ -315,12 +317,11 @@ class DeviceProvisioningWorkflow extends React.Component {
           <span className="device-cnt">{this.isInteger(this.state.numDevices) ? Math.floor(this.state.numDevices) : 0}</span> {'devices to provision'}
         </div>
         <div className="form-action-btns">
-          <button className="pcs-btn">{'Cancel'}</button>
-          <button className="pcs-btn primary"
+          <PcsBtn value={lang.CANCEL}/>
+          <PcsBtn className="primary"
             disabled={!this.state.formIsValid || this.state.isLoading}
-            onClick={this.apply}>
-            {this.state.isLoading ? 'Loading...' : 'Apply'}
-          </button>
+            onClick={this.apply}
+            value={this.state.isLoading ? 'Loading...' : lang.APPLY} />
         </div>
       </div>
     );

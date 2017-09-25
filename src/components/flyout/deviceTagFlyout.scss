@@ -141,17 +141,9 @@
     justify-content: flex-end;
     margin-bottom: 20px;
 
-    .pcs-btn,
-    .pcs-btn.primary {
-      height: 35px;
-      background-color: #121416;
-      border: none;
-      margin-right: 10px;
-
-      &:hover {
-        background-color: #afb9c3;
-        color: #1b1d1f;
-      }
+    .pcs-btn {
+      height: 30px;
+      margin-left: 28px;
     }
   }
 
@@ -222,13 +214,13 @@
     margin-bottom: 30px;
     margin-top: 10px;
 
-    .no-effected-devices {
+    .no-affected-devices {
       font-size: 48px;
       padding-right: 5px;
       color: #ffffff;
     }
 
-    .effected-devices-name {
+    .affected-devices-name {
       color: #afb9c3;
       font-size: 14px;
     }

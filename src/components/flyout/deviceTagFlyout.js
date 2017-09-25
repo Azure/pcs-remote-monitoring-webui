@@ -16,6 +16,7 @@ import Apply from '../../assets/icons/Apply.svg';
 import ApiService from '../../common/apiService';
 import Config from '../../common/config';
 import Spinner from '../spinner/spinner';
+import PcsBtn from '../shared/pcsBtn/pcsBtn';
 import _ from 'lodash';
 
 const isNumeric = value => typeof value === 'number' || !isNaN(parseInt(value, 10));
@@ -311,7 +312,7 @@ class DeviceTagFlyout extends React.Component {
   }
 
   render() {
-    let totalEffectedDevices = this.props.devices ? this.props.devices.length : 0;
+    let totalAffectedDevices = this.props.devices ? this.props.devices.length : 0;
     const { commonTags } = this.state;
 
     return (
@@ -367,37 +368,28 @@ class DeviceTagFlyout extends React.Component {
           {lang.SUMMARY}
         </div>
         <div className="effective-devices">
-          <span className="no-effected-devices">
-            {totalEffectedDevices}
+          <span className="no-affected-devices">
+            {totalAffectedDevices}
           </span>
-          <span className="effected-devices-name">
-            {lang.EFFECTED_DEVICES}
+          <span className="affected-devices-name">
+            {lang.AFFECTED_DEVICES}
           </span>
         </div>
         <div className="button-container">
-          <button
-            onClick={() => {
-              this.setState({ showCreateFilter: false });
-            }}
-            className="pcs-btn"
-          >
-            <img src={CancelX} alt={`${CancelX}`} className="cancel-icon" />
+          <PcsBtn svg={CancelX} 
+            onClick={() => this.setState({ showCreateFilter: false })}>
             {lang.CANCEL}
-          </button>
+          </PcsBtn>
           {this.props.requestInProgress
             ? <span className="loading-spinner">
                 <Spinner />
               </span>
             : null}
-          <button
-            className="pcs-btn primary"
-            onClick={() => {
-              this.applyDeviceTagJobsData();
-            }}
-          >
-            <img src={Apply} alt={`${Apply}`} className="apply-icon" />
+          <PcsBtn svg={Apply} 
+            className="primary"
+            onClick={() => this.applyDeviceTagJobsData()}>
             {lang.APPLY}
-          </button>
+          </PcsBtn>
         </div>
       </div>
     );

@@ -51,7 +51,7 @@ class RuleOverviewFlyout extends Component {
                     <div className="description">{rule.Description}</div>
                     <div className="effectNumber">
                         <div className="count">{rule.DeviceCount || 0}</div>
-                        <div className="text">{lang.EFFECTEDDEVICES}</div>
+                        <div className="text">{lang.AFFECTEDDEVICES}</div>
                     </div>
                 </div>
             )

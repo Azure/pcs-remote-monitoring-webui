@@ -14,8 +14,8 @@ export const systemStatusColumnDefs = {
     headerName: lang.JOBNAME,
     field: 'jobId'
   },
-  deviceIdEffected: {
-    headerName: lang.DEVICE_ID_EFFECTED,
+  deviceIdAffected: {
+    headerName: lang.DEVICE_ID_AFFECTED,
     field: 'deviceId'
   },
   status: {

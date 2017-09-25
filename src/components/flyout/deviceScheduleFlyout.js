@@ -11,6 +11,7 @@ import CancelX from '../../assets/icons/CancelX.svg';
 import Select from 'react-select';
 import ApiService from '../../common/apiService';
 import lang from '../../common/lang';
+import PcsBtn from '../shared/pcsBtn/pcsBtn';
 
 import './deviceScheduleFlyout.css';
 
@@ -152,35 +153,15 @@ class DeviceScheduleFlyout extends React.Component {
                   </div>
                 </div>}
               <div className="btn-group">
-                <button
-                  className="cancel-button"
-                  onClick={this.props.onClose}
-                  type="button"
-                >
-                  <img src={CancelX} alt={`${CancelX}`} />
-                  {lang.CANCEL}
-                </button>
+                <PcsBtn svg={CancelX} onClick={this.props.onClose}>{lang.CANCEL}</PcsBtn>
                 {this.state.showSpinner && <Spinner size="medium" />}
                 {
                   this.state.jobApplied
-                  ? <button
-                      className="apply-button "
-                      onClick={this.onConfirm}
-                      disabled
-                      type="button"
-                    >
-                      <img src={Apply} alt={`${Apply}`} />
-                      {lang.APPLIED}
-                    </button>
-                  : <button
-                      className="apply-button "
-                      onClick={this.onConfirm}
-                      disabled={disabledButton}
-                      type="button"
-                    >
-                      {!disabledButton && <img src={Apply} alt={`${Apply}`} />}
-                      {lang.APPLY}
-                    </button>
+                  ? <PcsBtn svg={Apply} disabled>{lang.APPLIED}</PcsBtn>
+                  : <PcsBtn svg={Apply} 
+                      className="primary" 
+                      onClick={this.onConfirm} 
+                      disabled={disabledButton}>{lang.APPLY}</PcsBtn>
                 }
               </div>
             </div>

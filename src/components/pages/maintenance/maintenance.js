@@ -33,7 +33,7 @@ class MaintenancePage extends Component {
     this.systemStatusColumnDefsLocal = _.cloneDeep(systemStatusColumnDefs);
     this.systemStatusColumnDefsArray = [
       this.systemStatusColumnDefsLocal.jobId,
-      this.systemStatusColumnDefsLocal.deviceIdEffected, // DeviceId in each job effected
+      this.systemStatusColumnDefsLocal.deviceIdAffected, // DeviceId in each job affected
       this.systemStatusColumnDefsLocal.status, // Status of jobs ( fail/ Queued/completed)
       this.systemStatusColumnDefsLocal.lastReturnMessage, // Last mesaage about completeion of jobs
       this.systemStatusColumnDefsLocal.startTime, // StartTime of the job

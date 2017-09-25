@@ -12,6 +12,7 @@ import ApiService from '../../common/apiService';
 import Config from '../../common/config';
 import Spinner from '../spinner/spinner';
 import { getTypeOf } from '../../common/utils';
+import PcsBtn from '../shared/pcsBtn/pcsBtn';
 import './deviceReconfigureFlyout.css';
 
 const validReportedProperties = [Config.STATUS_CODES.TYPE, Config.STATUS_CODES.LOCATION, Config.STATUS_CODES.FIRMWARE];
@@ -210,7 +211,7 @@ class DeviceReconfigureFlyout extends React.Component {
   }
 
   render() {
-    let totalEffectedDevices = this.props.devices ? this.props.devices.length : 0;
+    let totalAffectedDevices = this.props.devices ? this.props.devices.length : 0;
     const disabledButton = !this.state.jobInputValue;
     return (
       <div className="device-configuration-container">
@@ -235,36 +236,28 @@ class DeviceReconfigureFlyout extends React.Component {
         {this.commonReconfigure()}
         <div className="summary-container">
           {lang.SUMMARY}
-          <div className="effected-devices">
-            <span className="num-effected-devices">
-              {totalEffectedDevices}
+          <div className="affected-devices">
+            <span className="num-affected-devices">
+              {totalAffectedDevices}
             </span>
-            <span className="effected-devices-name">
-              {lang.EFFECTED_DEVICES}
+            <span className="affected-devices-name">
+              {lang.AFFECTED_DEVICES}
             </span>
           </div>
         </div>
 
         <div className="btn-container">
-          <button className="pcs-btn">
-            <img src={CancelX} alt={`${CancelX}`} onClick={this.props.onClose} className="cancel-icon" />
-            {lang.CANCEL}
-          </button>
+          <PcsBtn svg={CancelX} value={lang.CANCEL} onClick={this.props.onClose} />
           {this.state.showSpinner && <Spinner size="medium" />}
           {this.state.jobApplied
-            ? <button className="pcs-btn primary" disabled type="button">
-                <img src={Apply} alt={`${Apply}`} />
-                {lang.APPLIED}
-              </button>
-            : <button
-                className="pcs-btn primary"
+            ? <PcsBtn svg={Apply} value={lang.APPLIED} disabled />
+            : <PcsBtn 
+                className="primary"
+                svg={Apply} 
+                value={lang.APPLY} 
                 disabled={disabledButton}
-                type="button"
-                onClick={this.applyDeviceConfigureJobsData}
-              >
-                {!disabledButton && <img src={Apply} alt={`${Apply}`} />}
-                {lang.APPLY}
-              </button>}
+                onClick={this.applyDeviceConfigureJobsData} 
+              /> }
         </div>
       </div>
     );
