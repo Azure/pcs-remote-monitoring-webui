@@ -124,7 +124,11 @@
 
   .delete-icon { height: 12px; }
 
-  .summary-container { margin-top: 24px; }
+  .summary-container {
+    margin-top: 24px;
+    border-top: 1px solid #454a4e;
+    padding-top: 10px; 
+  }
 
   .effective-devices {
     margin-top: 24px;

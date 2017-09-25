@@ -385,7 +385,7 @@ class ManageFiltersFlyout extends React.Component {
           <div className="save-delete-cancel-buttons">
             {(this.state.editingState[group.Id] || {}).saveInProgress
               ? <span className="loading-spinner">
-                  <Spinner />
+                  <Spinner size="medium"/>
                 </span>
               : null}
             <button
