@@ -3,32 +3,26 @@
 .telemetry-panel.telemetry-panel-default {
   background-color: #1b1d1f;
   color: #afb9c3;
+
   .telemetry-panel-heading {
     background-color: #242628;
     padding: 5px;
     height: 48px;
   }
+
   .telemetry-header {
     display: flex;
     justify-content: space-between;
-    .pause-button {
-      border-radius: 25px;
-      color: #afb9c3;
-      background: #1b1d1f;
-      padding: 5px 10px 5px 10px;
-      &:hover {
-        background-color: #333;
-      }
-    }
   }
-  label.radio-inline {
-    margin-left: 29px;
-  }
+
+  label.radio-inline { margin-left: 29px; }
+
   .chevron-close {
     height: 16px;
     width: 16px;
     margin-left: 15px;
   }
+
   .chevron-open {
     height: 16px;
     width: 16px;
@@ -37,12 +31,14 @@
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
   }
+
   .subMenu {
     position: absolute;
     background-color: #1b1d1f;
     z-index: 1;
     width: 125px;
   }
+
   .confirm-btn {
     float: right;
     margin-right: 10px;
@@ -53,11 +49,15 @@
 .c3 .c3-axis-x text,
 .c3 .c3-axis-x line,
 .c3 .c3-axis-y line,
-.c3 .c3-legend-item text {
-  fill: #afb9c3;
-}
+.c3 .c3-legend-item text { fill: #afb9c3; }
 
 .c3 .c3-axis-y path,
-.c3 .c3-axis-x path {
-  stroke: #afb9c3;
+.c3 .c3-axis-x path { stroke: #afb9c3; }
+
+.pause-button {
+  color: #fff;
+  background: #1b1d1f;
+  padding: 5px 10px;
+
+  &:hover { background-color: #333; }
 }

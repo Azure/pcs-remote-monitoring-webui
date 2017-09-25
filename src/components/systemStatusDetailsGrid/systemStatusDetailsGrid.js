@@ -38,9 +38,12 @@ class SystemStatusDetailsGrid extends Component {
   }
 
   render() {
-    const props = this.props;
-    const deviceJobs = props.detailsDevices, jobs = props.detailsJobs, devices = props.systemStatusGridSelectedDevices;
-    let devicesGridProps = {};
+    const { detailsDevices,detailsJobs,systemStatusGridSelectedDevices, btnActions } = this.props;
+    const deviceJobs = detailsDevices, jobs = detailsJobs, devices = systemStatusGridSelectedDevices;
+    let devicesGridProps = {
+      onSoftSelectChange: btnActions.onSoftSelectDeviceGrid,
+      onContextMenuChange: btnActions.onContextMenuChange
+    };
     if (devices && devices.length) {
       devicesGridProps.rowData = devices;
     }

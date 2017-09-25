@@ -184,7 +184,7 @@ class DeviceMap extends Component {
 
   render() {
     return (
-      <DashboardPanel title={lang.DEVICELOCATION}>
+      <DashboardPanel title={lang.DEVICELOCATION} className="map-container">
         <Row>
           <RegionDetails {...this.props} />
           <Col md={9} className="bing-map">
