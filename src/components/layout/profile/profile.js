@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import ProfileImage from '../../../assets/icons/ProfileImage.png';
+import ProfileImageNew from '../../../assets/icons/ProfileImageNew.png';
 import auth from "../../../common/auth";
 import ApiService from '../../../common/apiService';
 import lang from "../../../common/lang";
@@ -31,7 +31,7 @@ class Profile extends Component {
       <span className="profile">
         <img
           className="top-nav-icon"
-          src={ProfileImage}
+          src={ProfileImageNew}
           alt="ProfileImage"
           onClick={this.show}
           title={this.userName}

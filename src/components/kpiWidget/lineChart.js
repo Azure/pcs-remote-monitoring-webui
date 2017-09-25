@@ -80,7 +80,7 @@ class LineChart extends Component {
               {this.props.percentChange}% </div>
             : null}
         </div>
-        {lineChart && this.props.lineChartData.length && lineChart.chartConfig
+        {lineChart && this.props.lineChartData && lineChart.chartConfig
           ? <Chart
               chartConfig={lineChart.chartConfig}
               chartId={lineChart.chartId}
@@ -93,7 +93,7 @@ class LineChart extends Component {
 
 const getCriticalCount = alarms => {
   return alarms.reduce(
-    (count, { Rule }) => Rule.Severity === 'critical' ? ++count : count, 
+    (count, { Rule }) => Rule.Severity === 'critical' ? ++count : count,
     0 // Default count
   );
 };
@@ -124,7 +124,7 @@ const mapStateToProps = state => {
   ];
 
   const percentChange = ((criticalAlarmCount - criticalAlarmCountLast) / criticalAlarmCount * 100).toFixed(2);
-  if (isNaN(percentChange)) return; 
+  if (isNaN(percentChange)) return;
 
   return {
     lineChartData: lineChartData,
