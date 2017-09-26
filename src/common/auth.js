@@ -12,12 +12,16 @@ function isEnabled() {
 }
 
 function onLoad() {
-  if (isDisabled()) return;
+  if (isDisabled()) {
+    console.debug("Skipping Auth onLoad because Auth is disabled");
+    return
+  };
 
   // Note: "window.location.hash" is the anchor part attached by
   //       the Identity Provider when redirecting the user after
   //       a successful authentication.
   if (authContext.isCallback(window.location.hash)) {
+    console.debug("Handling Auth Window callback");
     // Handle redirect after authentication
     authContext.handleWindowCallback();
     var error = authContext.getLoginError();
@@ -89,14 +93,14 @@ let clientId = '00000000-0000-0000-0000-000000000000';
 let appId = '00000000-0000-0000-0000-000000000000';
 
 if (typeof global.DeploymentConfig === 'undefined') {
-  alert('The dashboard configuration is missing.\n\nVerify the content of config.js.');
-  throw new Error('The global configuration is missing. Verify the content of config.js.');
+  alert('The dashboard configuration is missing.\n\nVerify the content of webui-config.js.');
+  throw new Error('The global configuration is missing. Verify the content of webui-config.js.');
 }
 
 if (typeof global.DeploymentConfig.authEnabled !== 'undefined') {
   authEnabled = global.DeploymentConfig.authEnabled;
   if (!authEnabled) {
-    console.warn('Auth is disabled! (see config.js)');
+    console.warn('Auth is disabled! (see webui-config.js)');
   }
 }
 
@@ -110,7 +114,7 @@ if (isEnabled() && global.DeploymentConfig.authType !== 'aad') {
 }
 
 let currentUri = window.location.href;
-console.log(currentUri);
+console.log("currentUri: " + currentUri);
 let hashPos = currentUri.indexOf('#');
 if (hashPos >= 0) {
   currentUri = currentUri.substr(0, hashPos);
@@ -126,6 +130,5 @@ let authContext = new AuthenticationContext({
 export default {
   onLoad,
   getAccessToken,
-  //getUserName,
   logout
 };
