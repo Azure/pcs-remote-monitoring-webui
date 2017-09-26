@@ -1,13 +1,24 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import moment from 'moment';
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
+import Config from '../common/config';
 
 const validTelemetryType = (telemetry, telemetryTypes) =>
   telemetryTypes.map(e => e.toUpperCase()).includes(telemetry.toUpperCase());
 
-const getLatestTimestamp = data =>
-  Math.max.apply(null, data.map(e => new Date(e.Time)));
+// Filter chart data by telemetry slide window (15 minutes)
+const filterByTimestamp = (radioBtnOptions) => {
+  const newOptions = Object.assign({}, radioBtnOptions);
+  Object.keys(radioBtnOptions).forEach(key => {
+    if(radioBtnOptions[key].chartData && radioBtnOptions[key].chartData.length > 0) {
+      const filterTimestamp = moment().subtract(Config.INTERVALS.TELEMETRY_SLIDE_WINDOW, 'minute').valueOf();
+      newOptions[key].chartData = newOptions[key].chartData.filter(e => new Date(e.Time) > filterTimestamp)
+    }
+  });
+  return newOptions;
+}
 
 const telemetryReducer = (state = initialState.telemetry, action) => {
   let radioBtnOptions = {};
@@ -63,10 +74,11 @@ const telemetryReducer = (state = initialState.telemetry, action) => {
                   deviceNames: []
                 };
               }
-              const option = {};
               const deviceName = item.DeviceId.split('.').join('-');
-              option[deviceName] = item.Data[telemetry];
-              option['Time'] = new Date(item.Time).toISOString();
+              const option = {
+                [deviceName]: item.Data[telemetry],
+                Time: new Date(item.Time).toISOString()
+              };
               radioBtnOptions[telemetry].chartData.push(option);
               if (
                 radioBtnOptions[telemetry].deviceNames.every(
@@ -114,8 +126,9 @@ const telemetryReducer = (state = initialState.telemetry, action) => {
       }
 
       const currentSelectedTelemetry = state.timeline.selectedTelemetry || Object.keys(state.radioBtnOptions || {}).sort()[0];
-      let latestTimestamp = 0;
       telemetrytypes = action.data.Properties.filter(e => !e.includes('_'));
+      radioBtnOptions = Object.assign({}, state.radioBtnOptions);
+      const newData = {};
       action.data.Items.forEach(item => {
         if (item.Data) {
           Object.keys(item.Data).forEach(telemetry => {
@@ -130,41 +143,28 @@ const telemetryReducer = (state = initialState.telemetry, action) => {
               if (currentSelectedTelemetry === telemetry) {
                 radioBtnOptions[currentSelectedTelemetry].selected = true;
               }
-              const option = {};
               const deviceName = item.DeviceId.split('.').join('-');
-              option[deviceName] = item.Data[telemetry];
-              option['Time'] = new Date(item.Time).toISOString();
-              if (
-                !radioBtnOptions[telemetry].chartData.some(
-                  e =>
-                    e.Time === option.Time && e.deviceName === option.deviceName
-                )
-              ) {
+              const option = {
+                [deviceName]: item.Data[telemetry],
+                Time: new Date(item.Time).toISOString()
+              };
+              const isNewData = !radioBtnOptions[telemetry].chartData.some(e => e.Time === option.Time && e.deviceName === option.deviceName);
+              const isNewDevice = radioBtnOptions[telemetry].deviceNames.every(e => e !== deviceName);
+              if (isNewData) {
                 radioBtnOptions[telemetry].chartData.push(option);
+                if (!newData[telemetry]) {
+                  newData[telemetry] = [];
+                }
+                newData[telemetry].push(option);
               }
-              if (
-                radioBtnOptions[telemetry].deviceNames.every(
-                  e => e !== deviceName
-                )
-              ) {
+              if (isNewDevice) {
                 radioBtnOptions[telemetry].deviceNames.push(deviceName);
               }
             }
           });
         }
       });
-      chartDataSelected = [].concat(
-        (radioBtnOptions[currentSelectedTelemetry] || {}).chartData
-      );
-      if (currentSelectedTelemetry && chartDataSelected.length) {
-        latestTimestamp = getLatestTimestamp(
-          state.radioBtnOptions[currentSelectedTelemetry].chartData
-        );
-        chartDataSelected = chartDataSelected.filter(
-          e => new Date(e.Time) > latestTimestamp
-        );
-      }
-      // TODO: filter by timestamp?
+      const newChartData = newData[currentSelectedTelemetry] || [];
 
       displayNames = [].concat(
         (radioBtnOptions[currentSelectedTelemetry] || {}).deviceNames
@@ -172,7 +172,8 @@ const telemetryReducer = (state = initialState.telemetry, action) => {
       return {
         ...state,
         telemetryByDeviceGroup: action.data,
-        radioBtnOptions,
+        radioBtnOptions: filterByTimestamp(radioBtnOptions),
+        newData,
         timeline: {
           ...state.timeline,
           selectedTelemetry: currentSelectedTelemetry,
@@ -180,7 +181,7 @@ const telemetryReducer = (state = initialState.telemetry, action) => {
             ...state.timeline.chartConfig,
             data: {
               ...state.timeline.chartConfig.data,
-              json: chartDataSelected,
+              json: newChartData,
               keys: {
                 ...state.timeline.chartConfig.data.keys,
                 value: displayNames

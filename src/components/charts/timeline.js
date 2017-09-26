@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import C3 from 'c3';
 import moment from 'moment';
+import _ from 'lodash';
 import Config from '../../common/config';
 
 import './chart.css';
@@ -43,8 +44,13 @@ class Timeline extends Component {
       this.destroyChart();
       return;
     }
+    const propsIsEqual = _.isEqual(
+      nextProps,
+      this.props
+    );
     const { data } = nextProps.chartConfig;
     if (
+      propsIsEqual ||
       !data ||
       !data.json ||
       !data.json.length ||
