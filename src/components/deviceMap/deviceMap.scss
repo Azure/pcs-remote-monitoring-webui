@@ -6,6 +6,29 @@
     height: 90%;
   }
 
+  .infobox-close {
+    top: 1px !important;
+    margin-top: 3px !important;
+  }
+
+  .infobox-close-img {
+    vertical-align: top;
+    background-color: white;
+    border-radius: 10px
+   }
+
+  .MicrosoftMap .Infobox {
+    border-radius: 0px !important;
+    background-color: #000 !important;
+
+    .infobox-title {
+      font-size: 10px !important;
+      padding: 5px !important;
+      margin-bottom: -2px !important;
+      color: #fff;
+    }
+  }
+
   .bing-map {
     height: 356px;
     margin-left: -15px;

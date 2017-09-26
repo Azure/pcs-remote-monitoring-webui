@@ -9,6 +9,8 @@ import lang from '../../common/lang';
 import { getNonFunctionalProps } from '../../common/utils';
 import _ from 'lodash';
 
+import './kpiWidget.css';
+
 class BarChart extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     let nonFunctionalNextProps = _.omit(getNonFunctionalProps(nextProps), [

@@ -7,7 +7,7 @@ $padding: 15px;
   flex-flow: column wrap;
   background: #1b1d1f;
   color: #fff;
-  margin-top: 16px;
+  margin-bottom: 16px;
 
   > .panel-header-container {
     display: flex;
@@ -16,7 +16,7 @@ $padding: 15px;
     align-items: center;
     background-color: #242628;
     padding: $padding;
-    height: 48px;
+    height: 48px; // TODO:  Remove when flex box work is done
 
     > .panel-header {
       flex-grow: 1;

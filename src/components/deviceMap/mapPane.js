@@ -4,6 +4,8 @@ import * as clusterIcons from './clusterIcons';
 import EventTopic, { Topics } from '../../common/eventtopic';
 import Config from '../../common/config';
 
+import './deviceMap.css';
+
 let map = null;
 let pinInfobox = null;
 let deviceData;

@@ -5,7 +5,6 @@
 $titleRowHeight: 36px;
 .kpi-widget {
   margin-left: -16px;
-  margin-top: 16px;
 
   .kpi-row {
     height: calc(50% - #{$titleRowHeight}/2);
@@ -36,6 +35,23 @@ $titleRowHeight: 36px;
     border: 1px solid #afb9c3;
     margin-top: 0px;
     padding-top: 0px;
+
+    .Select-menu-outer {
+      border: 1px solid #afb9c3;
+      width: 120px;
+      margin-left: 1px;
+    }
+
+    .Select-clear-zone {
+      display: none;
+      padding-top: 0px;
+    }
+
+    .Select--single > .Select-control .Select-value {
+      padding: 8px 0px 5px 10px !important;
+    }
+
+    .Select-value-label { margin-top: 0px !important; }
   }
 
   .top-rules {
@@ -46,13 +62,11 @@ $titleRowHeight: 36px;
     margin-left: 10px;
   }
 
-  .c3-chart-arc path {
-    stroke: NONE;
-  }
+  .c3-chart-arc path { stroke: NONE; }
 
   .line-header,
   .pie-header {
-    color: #ffffff;
+    color: #fff;
     font-size: 14px;
     padding-top: 5px;
     padding-left: 25px;
@@ -60,11 +74,11 @@ $titleRowHeight: 36px;
   }
 
   .line-chart {
-    border-left: 1px solid black;
+    border-left: 1px solid #000;
     width: 120px;
   }
 
-  .pie-line-chart { border-top: 1px solid black; }
+  .pie-line-chart { border-top: 1px solid #000; }
 
   .kpi-container {
     background-color: #1b1d1f;

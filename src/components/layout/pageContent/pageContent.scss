@@ -5,11 +5,12 @@
   flex-grow: 1;
   height: 100%;
   position: relative;
+  padding: 16px;
 
   // Override to fix the bootstrap grid inside the page-conent
   // Should be removed when grids are removed
   > .container-fluid {
     margin-right: 0;
-    margin-left: 0;
+    margin-left: -16px;
   }
 }
