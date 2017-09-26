@@ -57,7 +57,7 @@ class MaintenancePage extends Component {
       softSelectedDeviceId: '',
       contextBtns: ''
     }
-
+    this.refreshData = this.refreshData.bind(this);
     this.contextButtons = {
       newRule: {
         svg: AddSvg,
@@ -100,13 +100,15 @@ class MaintenancePage extends Component {
 
   onTimeRangeChange(selectedOption) {
     if (!selectedOption) return;
-    this.setState({
-      timerange: selectedOption.value,
-      lastRefreshed: new Date()
-    }, () => this.props.actions.loadMaintenanceData({
+    this.setState({ timerange: selectedOption.value, lastRefreshed: new Date() }, this.refreshData);
+  }
+
+  refreshData() {
+    this.props.actions.loadMaintenanceData({
       from: `NOW-${this.state.timerange}`,
       to: 'NOW'
-    }));
+    });
+    this.props.actions.loadJobsForTimePeriod(`NOW-${this.state.timerange}`);
   }
 
   updateAlarm = (Status) => {
@@ -215,8 +217,6 @@ class MaintenancePage extends Component {
     this.selectJobAndSetState(nextProps);
   }
 
-
-
   // Retrieving the deviceIds from "queryCondition": "deviceId in ['Simulated.prototype-01.0','Simulated.prototype-01.1']".
   selectJobAndSetState(props) {
     const { jobs } = props;
@@ -303,6 +303,7 @@ class MaintenancePage extends Component {
     const alarmListProps = {
       alarms: this.props.alarmList,
       devices: devicesList,
+      jobsLoadingInProgress: this.props.jobsLoadingInProgress,
       detailsJobs: this.state.systemStatusDetailsJobs,
       detailsDevices: this.state.systemStatusDetailsDevices,
       systemStatusGridSelectedDevices: this.state.selectedDetailsDevices,
@@ -356,7 +357,7 @@ class MaintenancePage extends Component {
             />
             <span className="last-refreshed-text"> {`${lang.LAST_REFRESHED} | `} </span>
             <div className="last-refreshed-time">{this.state.lastRefreshed.toLocaleString()}</div>
-            <div className="refresh-icon icon-sm" />
+            <div onClick={this.refreshData} className="refresh-icon icon-sm" />
           </div>
           {React.cloneElement(this.props.children, {...alarmListProps})}
         </PageContent>
@@ -370,7 +371,8 @@ const mapStateToProps = state => {
     alarmList: state.deviceReducer.alarmsList,
     devices: state.deviceReducer.devices,
     alarmsGridData: state.maintenanceReducer.alarmsByRuleGridRowData,
-    jobs: state.systemStatusJobReducer.jobs
+    jobs: state.systemStatusJobReducer.jobs,
+    jobsLoadingInProgress: state.systemStatusJobReducer.loadingInProgress
   };
 };
 

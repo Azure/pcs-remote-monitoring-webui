@@ -17,12 +17,12 @@ export const loadJobsFailed = error => {
   };
 };
 
-export const loadAllJobs = () => {
+
+export const loadJobsForTimePeriod = (from) => {
   return dispatch => {
-    return IotHubManagerService.getAllJobs()
-      .then(jobs => {
-        dispatch(loadJobsSuccess(jobs));
-      })
+    dispatch({ type: types.LOAD_JOBS_PROGRESS });
+    return IotHubManagerService.getJobsForTimePeriod(from)
+      .then(jobs => dispatch(loadJobsSuccess(jobs)))
       .catch(error => {
         dispatch(loadJobsFailed(error));
         throw error;

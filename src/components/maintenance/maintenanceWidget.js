@@ -22,6 +22,11 @@ class MaintenanceWidget extends Component {
     this.selectGrid = this.selectGrid.bind(this);
   }
 
+  componentDidMount() {
+    this.props.actions.loadJobsForTimePeriod(`NOW-${this.state.timerange}`);
+    this.props.actions.loadDevices();
+  }
+
   onSoftSelectChange({ jobId }) {
     browserHistory.push({ pathname: `/maintenance/job/${jobId}`});
   }
@@ -33,9 +38,10 @@ class MaintenanceWidget extends Component {
 
   render() {
     const systemStatusProps = {
-      onSoftSelectChange : this.onSoftSelectChange,
-      jobs : this.props.jobs,
-      devices : this.props.devices
+      onSoftSelectChange: this.onSoftSelectChange,
+      loadingInProgress: this.props.jobsLoadingInProgress,
+      jobs: this.props.jobs,
+      devices: this.props.devices
     };
 
     const jobDetailsProps = {

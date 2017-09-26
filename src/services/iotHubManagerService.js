@@ -56,7 +56,7 @@ class IotHubManagerService {
    */
   static createDevice(params) {
     return Http.post(`${IotHubManagerService.ENDPOINT}devices`, params);
-  }  
+  }
 
   /**
    * Returns the list of devices
@@ -68,8 +68,8 @@ class IotHubManagerService {
   /**
    * Returns the list of Jobs
    */
-  static getAllJobs() {
-    return Http.get(`${IotHubManagerService.ENDPOINT}jobs`)
+  static getJobsForTimePeriod(from) {
+    return Http.get(`${IotHubManagerService.ENDPOINT}jobs?from=${from}&to=NOW`);
   }
 
   static serializeParamObject(params) {

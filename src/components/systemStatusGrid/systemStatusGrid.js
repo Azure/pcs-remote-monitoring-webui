@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import PcsGrid from '../pcsGrid/pcsGrid';
+import Spinner from '../spinner/spinner';
 import { systemStatusColumnDefs, systemStatusGridProps } from './systemStatusConfig';
 import './systemStatusGrid.css';
 
@@ -37,15 +38,20 @@ class SystemStatusGrid extends Component {
 
   render() {
     return (
-     <PcsGrid
-        /* systemStatusGridProps Properties */
-        {...systemStatusGridProps} // Default systemStatusGrid options
-        columnDefs={this.columnDefs}
-        rowData = {this.props.jobs}
-        /* Grid Events */
-        onSoftSelectChange={this.props.onSoftSelectChange}
-        onGridReady={this.onGridReady}
-      />
+      <div className="system-grid-container">
+       {this.props.loadingInProgress ? <span className="loading-spinner">
+           <Spinner size='large'/>
+         </span> : null }
+       <PcsGrid
+          /* systemStatusGridProps Properties */
+          {...systemStatusGridProps} // Default systemStatusGrid options
+          columnDefs={this.columnDefs}
+          rowData = {this.props.jobs}
+          /* Grid Events */
+          onSoftSelectChange={this.props.onSoftSelectChange}
+          onGridReady={this.onGridReady}
+        />
+      </div>
     );
   }
 }

@@ -4,18 +4,32 @@ import * as types from '../actions/actionTypes';
 
 const defaultState = {
   jobs: [],
+  loadingInProgress: false,
   loadingError: false
 };
 
 export default function(state = defaultState, action) {
   switch (action.type) {
-    case types.LOAD_JOBS_SUCCESS:
+    case types.LOAD_JOBS_PROGRESS:
       return {
         ...state,
+        loadingInProgress: true,
         loadingError: false,
         jobs: action.jobs
       };
-    default:
+      case types.LOAD_JOBS_SUCCESS:
+        return {
+          ...state,
+          loadingInProgress: false,
+          loadingError: false,
+          jobs: action.jobs
+        };
+      case types.LOAD_JOBS_FAILURE:
+        return {
+          ...state,
+          loadingInProgress: false,
+        };
+      default:
       return state;
   }
 }
