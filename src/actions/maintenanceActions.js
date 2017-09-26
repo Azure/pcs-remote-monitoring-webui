@@ -28,29 +28,20 @@ export const loadMaintenanceDataSuccess = data => {
 
 export const loadMaintenanceData = ({ params }) => {
   return dispatch =>
-    Rx.Observable
-      .fromPromise(ApiService.getAllDevices())
-      .map(({items}) => items.map(({Id}) => Id))
-      .flatMap(deviceIds =>
-        Rx.Observable.fromPromise(
-          ApiService.getAlarmsByRule({
-            ...params,
-            devices: deviceIds
-          })
+      Rx.Observable.fromPromise(
+          ApiService.getAlarmsByRule(params)
         )
         .flatMap(({ Items }) => Items)
         .flatMap(ruleSummary => Rx.Observable
           .fromPromise(ApiService.getAlarmListByRule(ruleSummary.Rule.Id, {
             ...params,
-            order: 'desc',
-            devices: deviceIds
+            order: 'desc'
           }))
           .map(alarms => getOccurences(alarms.Items, ruleSummary.Rule.Id))
           .map(occurences => {
             return {...ruleSummary, ...occurences};
           })
         )
-      )
       .flatMap(ruleSummary => Rx.Observable
         .fromPromise(ApiService.getRuleList(ruleSummary.Rule.Id))
         .map(rule => {

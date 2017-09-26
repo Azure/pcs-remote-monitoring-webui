@@ -12,10 +12,14 @@ import 'bootstrap/dist/css/bootstrap-theme.css';
 import './main.css';
 
 /**
- * Contains the main layout of the application (main nav on the left, content on the right). 
+ * Contains the main layout of the application (main nav on the left, content on the right).
  * This component is meant to be used in conjunction with the router.
  */
 class Main extends Component {
+  componentDidMount() {
+    this.props.actions.loadDevices();
+  }
+
   render() {
     const { flyout, actions } = this.props;
     const flyoutProp = {

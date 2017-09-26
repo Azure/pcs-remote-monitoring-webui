@@ -19,6 +19,13 @@ export const loadDeviceGroupSuccess = deviceGroup => {
   };
 };
 
+export const loadDashboardData = (deviceIds) => {
+  return dispatch => {
+    dispatch(telemetryActions.loadTelemetryMessagesByDeviceIds(deviceIds));
+    dispatch(loadDeviceMapAlaramsList(deviceIds));
+  };
+};
+
 export const loadDevicesByTelemetryMessages = () => {
   return dispatch => {
     return ApiService.getAllDevices()

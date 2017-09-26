@@ -19,9 +19,8 @@ import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
 class DashboardPage extends Component {
 
   componentDidMount() {
-    const { actions } = this.props;
-    actions.loadDevicesByTelemetryMessages();
-    actions.loadDevices();
+    const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
+    this.props.actions.loadDashboardData(deviceIds);
   }
 
   render() {

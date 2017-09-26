@@ -90,9 +90,11 @@ class MaintenancePage extends Component {
   }
 
   componentDidMount() {
+    const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
     this.props.actions.loadMaintenanceData({
       from: `NOW-${this.state.timerange}`,
-      to: 'NOW'
+      to: 'NOW',
+      devices: deviceIds
     });
   }
 

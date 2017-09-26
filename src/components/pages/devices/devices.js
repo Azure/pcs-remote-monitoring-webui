@@ -30,10 +30,6 @@ class DevicesPage extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.actions.loadDevicesByTelemetryMessages();
-  }
-
   /** Open the device detail flyout on soft select */
   onSoftSelectChange = device => {
     this.setState(
