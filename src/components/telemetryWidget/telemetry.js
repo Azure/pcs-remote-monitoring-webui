@@ -8,6 +8,8 @@ import Timeline from '../charts/timeline';
 import * as actions from '../../actions';
 import Config from '../../common/config';
 import DashboardPanel from '../dashboardPanel/dashboardPanel';
+import PcsBtn from '../shared/pcsBtn/pcsBtn';
+
 import './telemetry.css';
 
 class Telemetry extends Component {
@@ -90,11 +92,12 @@ class Telemetry extends Component {
     };
     return (
       <DashboardPanel 
+          className="telemetry-panel-container"
           title={'Telemetry'}
           actions={
-            <button className="pause-button" onClick={this.toggleTimer}>
-              {this.state.pause ? 'pause' : 'flowing'}
-            </button>
+            <PcsBtn className="pause-button" 
+              onClick={this.toggleTimer}
+              value={this.state.pause ? 'pause' : 'flowing'} />
           }>
         <Row>
           {telemetryRadioBtnGroup}
