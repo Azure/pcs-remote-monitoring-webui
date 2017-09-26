@@ -10,7 +10,7 @@ import './pageContent.css';
  */
 export default function PageContent(props) {
     return (
-        <div className="page-content">
+        <div className={`page-content ${props.className || ''}`}>
             {props.children}
         </div>
     );
