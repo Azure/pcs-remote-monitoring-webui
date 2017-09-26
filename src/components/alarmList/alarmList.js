@@ -55,6 +55,8 @@ class AlarmList extends Component {
 
   componentWillUnmount() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    if (this.getDataSub && this.getDataSub.unsubscribe) 
+      this.getDataSub.unsubscribe();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -92,7 +94,7 @@ class AlarmList extends Component {
     // since the device group has not been selected
     if (!this.state.deviceIdList) return;
     if (showLoading) this.setState({ loading: true });
-    Rx.Observable.fromPromise(
+    this.getDataSub = Rx.Observable.fromPromise(
       ApiService.getAlarmsByRule({
         from: `NOW-${this.state.timerange}`,
         to: 'NOW',

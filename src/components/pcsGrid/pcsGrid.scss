@@ -17,7 +17,8 @@ $checkboxPadding: 8px;
 .pcs-grid-container.ag-dark.pcs-ag-dark {
   background-color: $darkBgColor;
   position: relative;
-  font-family: $fontSelawik;
+  // Commented out until a solution to the webpack issue is found
+  // font-family: $fontSelawik;
 
   .ag-root { border: none; }
 

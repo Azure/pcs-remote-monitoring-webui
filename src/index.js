@@ -4,6 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Router, Route, IndexRoute, browserHistory } from "react-router";
 import { Provider } from "react-redux";
+import * as actionTypes from './actions/actionTypes';
 import Main from "./components/layout/main/main.js";
 import DashboardPage from "./components/pages/dashboard/dashboard.js";
 import DevicesPage from "./components/pages/devices/devices.js";
@@ -23,6 +24,7 @@ import "./index.css";
 
 const app = document.getElementById("root");
 const store = configureStore(initialState);
+const closeOpenFlyouts = () => store.dispatch({ type: actionTypes.FLYOUT_HIDE });
 
 // Start sign in process if required
 auth.onLoad();
@@ -30,7 +32,7 @@ auth.onLoad();
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/" component={Main}>
+      <Route path="/" component={Main} onChange={closeOpenFlyouts}>
         <IndexRoute component={DashboardPage} />
         <Route path="/dashboard" component={DashboardPage} />
         <Route path="/devices" component={DevicesPage} />
