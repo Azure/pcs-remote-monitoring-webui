@@ -54,10 +54,10 @@ class RulesAndActionsPage extends Component {
       .then(({ Items }) => this.setState({ rulesAndActions: Items }));
   }
 
-  /** 
-   * Get the grid api options 
-   * 
-   * @param {Object} gridReadyEvent An object containing access to the grid APIs   
+  /**
+   * Get the grid api options
+   *
+   * @param {Object} gridReadyEvent An object containing access to the grid APIs
    */
   onGridReady = gridReadyEvent => {
     this.gridApi = gridReadyEvent.api;
@@ -77,7 +77,7 @@ class RulesAndActionsPage extends Component {
     });
 
     const { actions } = this.props;
-    actions.rulesSelectionChanged(selectedRulesActions);
+    actions.rulesSelectionChanged(selectedRulesActions, this.onUpdateData);
 
     this.setState({
       selectedRulesActions,
@@ -136,7 +136,7 @@ class RulesAndActionsPage extends Component {
     const { actions } = this.props;
     const flyoutConfig = {
       onUpdateData: this.onUpdateData,
-      selectedRules: this.state.selectedRulesActions,
+      selectedRules: this.gridApi.getSelectedRows(),
       type: 'Rule Detail'
     };
     actions.showFlyout(flyoutConfig);
@@ -145,7 +145,14 @@ class RulesAndActionsPage extends Component {
   onUpdateData = data => {
     if (data) {
       if (Array.isArray(data)) {
-        this.gridApi.updateRowData({ update: data });
+        data.forEach(newData => {
+          this.gridApi.forEachNode(node => {
+            if(node.data.Id === newData.Id){
+              node.setData(newData);
+            }
+          })
+        });
+        this.onHardSelectChange(data)
       }
       else if (this.state.currentNode === null) {
         this.gridApi.updateRowData({ add: [data] });

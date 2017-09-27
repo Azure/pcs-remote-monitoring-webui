@@ -13,7 +13,7 @@ class RuleOverviewFlyout extends Component {
         super(props);
 
         this.state = {
-            enabled: props.content.selectedRules.some(rule => rule.Enabled !== props.content.selectedRules[0].Enabled) ? true : props.content.selectedRules[0].Enabled
+            enabled: props.rules.some(rule => rule.Enabled !== props.rules[0].Enabled) ? true : props.rules[0].Enabled
         };
     }
 
@@ -24,16 +24,15 @@ class RuleOverviewFlyout extends Component {
     onSave = () => {
         let promises = [];
         let updatedRules = [];
-        const rules = this.props.rules || this.props.content.selectedRules;
-        rules.forEach(rule => {
+        this.props.rules.forEach(rule => {
             if (rule.Enabled !== this.state.enabled) {
                 rule.Enabled = this.state.enabled;
                 updatedRules.push(rule);
                 promises.push(ApiService.updateRule(rule.Id, rule));
             }
         });
-        Promise.all(promises).then(() => {
-            this.props.content.onUpdateData(updatedRules);
+        Promise.all(promises).then((rules) => {
+            this.props.onUpdateData(rules);
         }).catch(err => {
             console.error(err);
         });
@@ -41,10 +40,14 @@ class RuleOverviewFlyout extends Component {
         this.props.onClose();
     };
 
+    componentWillReceiveProps(nextProps) {
+        if (!nextProps.rules || !nextProps.rules.length) {
+            this.props.onClose();
+        }
+    }
 
     render() {
-        const rules =  this.props.rules || this.props.content.selectedRules;
-        const overviewItems = rules.map(rule => {
+        const overviewItems = this.props.rules.map(rule => {
             return (
                 <div className="overview-item">
                     <div className="title">{rule.Name}</div>
@@ -86,7 +89,10 @@ class RuleOverviewFlyout extends Component {
 }
 
 const mapStateToProps = state => {
-    return { rules: state.flyoutReducer.rules };
+    return {
+        rules: state.flyoutReducer.rules,
+        onUpdateData: state.flyoutReducer.onUpdateData
+    };
 };
 
 export default connect(mapStateToProps, null)(RuleOverviewFlyout);

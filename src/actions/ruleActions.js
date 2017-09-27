@@ -2,9 +2,9 @@
 
 import * as types from './actionTypes';
 
-export const rulesSelectionChanged = rules => {
+export const rulesSelectionChanged = (rules, onUpdateData) => {
     return {
         type: types.RULE_LIST_ROW_SELECTION_CHANGED,
-        data: rules
+        data: { rules, onUpdateData }
     };
 };
