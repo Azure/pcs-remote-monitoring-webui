@@ -53,6 +53,7 @@ $navItemHeight: 48px;
     
     img { opacity: 0.7; }
 
+    &.active,
     &:hover,
     &:focus {
       color: $leftNavFontHoverColor;

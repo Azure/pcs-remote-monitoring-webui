@@ -7,6 +7,9 @@ import * as actions from '../../../actions';
 import LeftNav from '../leftNav/leftNav.js';
 import Flyout from '../../flyout/flyout';
 import PcsModal from '../../shared/pcsModal/pcsModal';
+import lang from '../../../common/lang';
+
+import BlueShieldSvg from '../../../assets/icons/BlueShield.svg';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
@@ -19,6 +22,9 @@ import './main.css';
 class Main extends Component {
   componentDidMount() {
     this.props.actions.loadDevices();
+
+    // On the first page load, open a modal to direct the user to more information
+    this.props.actions.showModal(lang.PREVIEWNOTICE, BlueShieldSvg);
   }
 
   render() {

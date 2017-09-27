@@ -28,7 +28,7 @@ class LeftNav extends Component {
     this.state = { isExpanded: true };
 
     this.tabLinks = tabConfig.map((item, index) =>
-      <Link key={index} to={item.path} className="leftnav-item-container">
+      <Link key={index} to={item.path} className="leftnav-item-container" activeClassName="active">
         <div className="leftnav-item-icon"><img src={item.icon} alt={item.name} /></div>
         <div className="leftnav-item-text">{item.name}</div>
       </Link>
