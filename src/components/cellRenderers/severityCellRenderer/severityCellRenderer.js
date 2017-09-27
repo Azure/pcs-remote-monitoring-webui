@@ -6,6 +6,7 @@ import InfoSvg from '../../../assets/icons/Info.svg';
 import WarningSvg from '../../../assets/icons/Warning.svg';
 import CriticalSvg from '../../../assets/icons/Critical.svg';
 
+import '../cellRenderer.css'
 import './severityCellRenderer.css'
 
 class SeverityCellRenderer extends React.Component {
