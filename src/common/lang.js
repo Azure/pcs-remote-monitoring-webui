@@ -26,7 +26,7 @@ const lang = {
   AUTOMATIC: 'Automatic',
   AVAILABLEACTIONS: 'Available actions',
   AVAILABLE_PROPERTIES: 'Available properties and values to change',
-  AZUREPROJECTNAME: 'Azure Iot Suite Remote Monitoring',
+  AZUREPROJECTNAME: 'Azure IoT Suite Remote Monitoring Preview',
   CANCEL: 'Cancel',
   CANCELLED: 'Cancelled',
   CAUTION: 'Caution: You are scheduling an action that will effect {0} devices.',

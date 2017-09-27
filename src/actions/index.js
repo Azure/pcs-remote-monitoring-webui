@@ -1,30 +1,34 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-// flyout
+// Flyout
 export * from './flyoutActions';
 
+// Modal
+export * from './modalActions';
+
+// Device list Actions
 export * from './deviceListActions';
 
-// devices
+// Devices
 export * from './deviceActions';
 
-// map
+// Map
 export * from './mapActions';
 
-// telemetry
+// Telemetry
 export * from './telemetryActions';
 
-// filter
+// Filter
 export * from './filterActions';
 
-// systemStatus
+// System Status
 export * from './systemStatusJobActions';
 
-// kpi
+// KPI
 export * from './kpiActions';
 
-// maintenance
+// Maintenance
 export * from './maintenanceActions';
 
-// rules
+// Rules
 export * from './ruleActions';

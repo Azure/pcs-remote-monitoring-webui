@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../../../actions';
 import LeftNav from '../leftNav/leftNav.js';
 import Flyout from '../../flyout/flyout';
+import PcsModal from '../../shared/pcsModal/pcsModal';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
@@ -21,7 +22,7 @@ class Main extends Component {
   }
 
   render() {
-    const { flyout, actions } = this.props;
+    const { flyout, actions, modal } = this.props;
     const flyoutProp = {
       show: flyout.show,
       onClose: (flyout.content && flyout.content.onClose) ? flyout.content.onClose : actions.hideFlyout,
@@ -35,13 +36,21 @@ class Main extends Component {
           {this.props.children}
         </div>
         <Flyout {...flyoutProp} />
+        {
+          modal.visible 
+            ? <PcsModal svg={modal.svg}>{modal.content}</PcsModal>
+            : ''
+        }
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return { flyout: state.flyoutReducer };
+  return { 
+    flyout: state.flyoutReducer,
+    modal: state.modalReducer
+  };
 };
 
 const mapDispatchToProps = dispatch => {

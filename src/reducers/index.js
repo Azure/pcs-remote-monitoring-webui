@@ -2,6 +2,7 @@
 
 import { combineReducers } from 'redux';
 import flyoutReducer from './flyoutReducer';
+import modalReducer from './modalReducer';
 import deviceReducer from './deviceReducer';
 import mapReducer from './mapReducer';
 import telemetryReducer from './telemetryReducer';
@@ -12,6 +13,7 @@ import maintenanceReducer from './maintenanceReducer';
 
 const rootReducer = combineReducers({
   flyoutReducer,
+  modalReducer,
   deviceReducer,
   systemStatusJobReducer,
   mapReducer,

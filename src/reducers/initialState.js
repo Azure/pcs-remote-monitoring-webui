@@ -53,5 +53,8 @@ export default {
   flyout: {
     show: false
   },
+  modal: {
+    visible: false
+  },
   maintenance: {}
 };

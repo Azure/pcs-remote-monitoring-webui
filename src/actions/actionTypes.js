@@ -4,6 +4,10 @@
 export const FLYOUT_SHOW = 'FLYOUT_SHOW';
 export const FLYOUT_HIDE = 'FLYOUT_HIDE';
 
+// modal
+export const MODAL_SHOW = 'MODAL_SHOW';
+export const MODAL_HIDE = 'MODAL_HIDE';
+
 // message
 export const LOAD_MESSAGE_SUCCESS = 'LOAD_MESSAGE_SUCCESS';
 export const LOAD_MESSAGE_FAILED = 'LOAD_MESSAGE_FAILED';
