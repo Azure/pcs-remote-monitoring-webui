@@ -301,7 +301,9 @@ class MaintenancePage extends Component {
     const showActionBtns = this.state.selectedRulesActions.length > 0;
     const devicesList = this.props.devices && this.props.devices.items ? this.props.devices.items : [];
     const alarmListProps = {
-      alarms: this.props.alarmList,
+      alarms: this.props.alarmsGridData
+        .map(row => row[row.Rule.Id])
+        .reduce((acc, cur) => acc.concat(cur), []),
       devices: devicesList,
       jobsLoadingInProgress: this.props.jobsLoadingInProgress,
       detailsJobs: this.state.systemStatusDetailsJobs,
@@ -370,7 +372,7 @@ const mapStateToProps = state => {
   return {
     alarmList: state.deviceReducer.alarmsList,
     devices: state.deviceReducer.devices,
-    alarmsGridData: state.maintenanceReducer.alarmsByRuleGridRowData,
+    alarmsGridData: state.maintenanceReducer.alarmsByRuleGridRowData || [],
     jobs: state.systemStatusJobReducer.jobs,
     jobsLoadingInProgress: state.systemStatusJobReducer.loadingInProgress
   };
