@@ -91,6 +91,7 @@ let authEnabled = true;
 let tenantId = '00000000-0000-0000-0000-000000000000';
 let clientId = '00000000-0000-0000-0000-000000000000';
 let appId = '00000000-0000-0000-0000-000000000000';
+let aadInstance = '';
 
 if (typeof global.DeploymentConfig === 'undefined') {
   alert('The dashboard configuration is missing.\n\nVerify the content of webui-config.js.');
@@ -107,6 +108,11 @@ if (typeof global.DeploymentConfig.authEnabled !== 'undefined') {
 tenantId = global.DeploymentConfig.aad.tenant;
 clientId = global.DeploymentConfig.aad.appId;
 appId = global.DeploymentConfig.aad.appId;
+aadInstance = global.DeploymentConfig.aad.instance;
+
+if (aadInstance.endsWith('{0}')) {
+    aadInstance = aadInstance.substr(0, aadInstance.length - 3);
+}
 
 // TODO: support multiple types/providers
 if (isEnabled() && global.DeploymentConfig.authType !== 'aad') {
@@ -121,6 +127,7 @@ if (hashPos >= 0) {
 }
 
 let authContext = new AuthenticationContext({
+  instance: aadInstance,
   tenant: tenantId,
   clientId: clientId,
   redirectUri: currentUri,
