@@ -1,8 +1,24 @@
 @import '../../../node_modules/c3/c3.css';
 
+$chart-color: #afb9c3;
+
 .c3-tooltip {
-  .name,
-  .value {
-    color: #000;
+
+  .name, .value { color: #000; }
+}
+
+.c3-legend-item { fill : #fff; }
+
+.c3-legend-item-data text { fill: $chart-color; }
+
+.c3 {
+
+  .c3-axis-x,
+  .c3-axis-y {
+
+    line,
+    path { stroke: $chart-color; }
+
+     g { fill: $chart-color; }
   }
 }
