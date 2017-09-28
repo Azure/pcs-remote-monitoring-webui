@@ -24,20 +24,13 @@ export function getTypeOf(val) {
 }
 
 export function typeComputation(cond) {
-  if (getBoundaryChars(cond.Value) === '"' || getBoundaryChars(cond.Value) === "'") {
-    cond.type = 'string';
-    cond.Value = cond.Value.substring(1, cond.Value.length - 1);
-  } else {
-    cond.type = 'int';
-  }
+  cond.type = typeof cond.Value === 'number' ? 'int' : 'string';
 }
 
 export function getNonFunctionalProps(props) {
   const nonFuncKeys = Object.keys(props).filter(key => !isFunction(props[key]));
   const result = {};
-  nonFuncKeys.forEach(key => {
-    result[key] = props[key];
-  });
+  nonFuncKeys.forEach(key => result[key] = props[key]);
   return result;
 }
 

@@ -91,7 +91,7 @@ class DeviceTagFlyout extends React.Component {
       .distinct()
       // Extract only the common tag names
       .filter(tagName =>
-        devices.every(device => !!mergeTags(device.Tags, overiddenDeviceTagValues[device.Id])[tagName])
+        devices.every(device => (typeof (mergeTags(device.Tags, overiddenDeviceTagValues[device.Id])[tagName]) !== 'undefined'))
       )
       // Compute the tag values for each tag name into a map
       .flatMap(tagName =>
@@ -376,7 +376,7 @@ class DeviceTagFlyout extends React.Component {
           </span>
         </div>
         <div className="button-container">
-          <PcsBtn svg={CancelX} 
+          <PcsBtn svg={CancelX}
             onClick={() => this.setState({ showCreateFilter: false })}>
             {lang.CANCEL}
           </PcsBtn>
@@ -385,7 +385,7 @@ class DeviceTagFlyout extends React.Component {
                 <Spinner />
               </span>
             : null}
-          <PcsBtn svg={Apply} 
+          <PcsBtn svg={Apply}
             className="primary"
             onClick={() => this.applyDeviceTagJobsData()}>
             {lang.APPLY}

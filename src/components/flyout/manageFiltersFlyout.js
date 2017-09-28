@@ -313,8 +313,9 @@ class ManageFiltersFlyout extends React.Component {
                           valuesEditingState: {}
                         };
                         cond.Value = evt.target.value || '';
+                        if (cond.type === 'int') cond.Value = (+cond.Value);
                         editingState.valuesEditingState[idx] = {
-                          emptyValue: cond.Value.trim() === ''
+                          emptyValue: typeof cond.Value === 'string' && cond.Value.trim() === '' 
                         };
                         this.setEditingState(group.Id, editingState);
                       }}
@@ -341,6 +342,13 @@ class ManageFiltersFlyout extends React.Component {
                       options={typeOptions}
                       onChange={type => {
                         cond.type = type;
+                        if (type === 'int') {
+                          if (!isNaN(parseInt(cond.Value, 10))) {
+                            cond.Value = (+cond.Value);
+                          } else { 
+                            cond.Value = ''; 
+                          }
+                        }
                         this.setEditingState(group.Id, { formChanged: true });
                       }}
                       value={cond.type}
@@ -372,7 +380,7 @@ class ManageFiltersFlyout extends React.Component {
                 Operator: 'EQ',
                 Value: ''
               });
-              this.setState({}); 
+              this.setState({});
             }}
             type="button"
             className="add-condition"
