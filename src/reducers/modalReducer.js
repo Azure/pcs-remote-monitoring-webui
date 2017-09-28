@@ -10,6 +10,7 @@ const modalReducer = (state = initialState.modal, action) => {
         ...state,
         visible: true,
         content: action.content,
+        to: action.to,
         svg: action.svg
       };
 

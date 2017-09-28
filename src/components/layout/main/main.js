@@ -24,7 +24,11 @@ class Main extends Component {
     this.props.actions.loadDevices();
 
     // On the first page load, open a modal to direct the user to more information
-    this.props.actions.showModal(lang.PREVIEWNOTICE, BlueShieldSvg);
+    this.props.actions.showModal(
+      lang.PREVIEWNOTICE,
+      'https://github.com/Azure/azure-iot-pcs-remote-monitoring-dotnet/blob/master/README.md',
+      BlueShieldSvg
+    );
   }
 
   render() {
@@ -44,7 +48,7 @@ class Main extends Component {
         <Flyout {...flyoutProp} />
         {
           modal.visible 
-            ? <PcsModal svg={modal.svg}>{modal.content}</PcsModal>
+            ? <PcsModal svg={modal.svg} to={modal.to}>{modal.content}</PcsModal>
             : ''
         }
       </div>

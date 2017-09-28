@@ -1,10 +1,11 @@
 import * as types from './actionTypes';
 
-export const showModal = (content, svg=undefined) => {
+export const showModal = (content, to, svg=undefined) => {
   return {
     type: types.MODAL_SHOW,
-    content: content,
-    svg: svg
+    content,
+    to,
+    svg
   };
 };
 
