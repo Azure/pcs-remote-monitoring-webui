@@ -260,6 +260,8 @@ const lang = {
   UPDATE: 'Update',
   VALUE: 'Value',
   VALUECANNOTBEEMPTY: 'Value cannot be empty',
+  VIEW: 'View',
+  VIEW_JOB_STATUS: 'View job status progress in Maintenance page',
   WARNING: 'Warning',
   WARNINGS: 'Warnings',
   X509: 'X.509',

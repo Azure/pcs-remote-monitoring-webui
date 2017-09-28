@@ -4,12 +4,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as uuid from 'uuid/v4';
 import _ from 'lodash';
-
 import Spinner from '../spinner/spinner';
 import Apply from '../../assets/icons/Apply.svg';
 import CancelX from '../../assets/icons/CancelX.svg';
 import Select from 'react-select';
 import ApiService from '../../common/apiService';
+import DeepLinkSection from '../deepLinkSection/deepLinkSection';
 import lang from '../../common/lang';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
 
@@ -86,6 +86,11 @@ class DeviceScheduleFlyout extends React.Component {
 
   render() {
     const { devices } = this.props;
+    const deepLinkSectionProps = {
+      path: `/maintenance`,
+      description: lang.VIEW_JOB_STATUS,
+      linkText: lang.VIEW
+    };
     const availableMethods = this.getAvailableMethods(devices);
     const methodOptions = availableMethods.map(method => ({
       value: method,
@@ -155,12 +160,11 @@ class DeviceScheduleFlyout extends React.Component {
               <div className="btn-group">
                 <PcsBtn svg={CancelX} onClick={this.props.onClose}>{lang.CANCEL}</PcsBtn>
                 {this.state.showSpinner && <Spinner size="medium" />}
-                {
-                  this.state.jobApplied
+                {this.state.jobApplied
                   ? <PcsBtn svg={Apply} disabled>{lang.APPLIED}</PcsBtn>
-                  : <PcsBtn svg={Apply} 
-                      className="primary" 
-                      onClick={this.onConfirm} 
+                  : <PcsBtn svg={Apply}
+                      className="primary"
+                      onClick={this.onConfirm}
                       disabled={disabledButton}>{lang.APPLY}</PcsBtn>
                 }
               </div>
@@ -173,6 +177,7 @@ class DeviceScheduleFlyout extends React.Component {
                 {lang.CHOOSE_NEW_DEVICES}
               </div>
             </div>}
+            {this.state.jobApplied ? <DeepLinkSection {...deepLinkSectionProps}/> : null}
       </div>
     );
   }

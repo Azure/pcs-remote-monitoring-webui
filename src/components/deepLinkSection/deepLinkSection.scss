@@ -1,0 +1,14 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+.deep-link-container {
+  display: flex;
+
+  .deep-link {
+    margin-left: 28px;
+    margin-top: 30px;
+    background-color: #b0b9c3;
+    text-decoration: none;
+    padding: 5px 10px;
+    color: #000;
+  }
+}

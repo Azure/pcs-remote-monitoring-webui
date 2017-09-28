@@ -11,6 +11,7 @@ import Apply from '../../assets/icons/Apply.svg';
 import ApiService from '../../common/apiService';
 import Config from '../../common/config';
 import Spinner from '../spinner/spinner';
+import DeepLinkSection from '../deepLinkSection/deepLinkSection';
 import { getTypeOf } from '../../common/utils';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
 import './deviceReconfigureFlyout.css';
@@ -213,6 +214,12 @@ class DeviceReconfigureFlyout extends React.Component {
   render() {
     let totalAffectedDevices = this.props.devices ? this.props.devices.length : 0;
     const disabledButton = !this.state.jobInputValue;
+    const deepLinkSectionProps = {
+      path: `/maintenance`,
+      description: lang.VIEW_JOB_STATUS,
+      linkText: lang.VIEW
+    };
+    
     return (
       <div className="device-configuration-container">
         <div className="sub-heading">
@@ -251,14 +258,15 @@ class DeviceReconfigureFlyout extends React.Component {
           {this.state.showSpinner && <Spinner size="medium" />}
           {this.state.jobApplied
             ? <PcsBtn svg={Apply} value={lang.APPLIED} disabled />
-            : <PcsBtn 
+            : <PcsBtn
                 className="primary"
-                svg={Apply} 
-                value={lang.APPLY} 
+                svg={Apply}
+                value={lang.APPLY}
                 disabled={disabledButton}
-                onClick={this.applyDeviceConfigureJobsData} 
+                onClick={this.applyDeviceConfigureJobsData}
               /> }
         </div>
+        {this.state.jobApplied ? <DeepLinkSection {...deepLinkSectionProps}/> : null}
       </div>
     );
   }

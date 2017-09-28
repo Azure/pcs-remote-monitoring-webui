@@ -16,6 +16,7 @@ import Apply from '../../assets/icons/Apply.svg';
 import ApiService from '../../common/apiService';
 import Config from '../../common/config';
 import Spinner from '../spinner/spinner';
+import DeepLinkSection from '../deepLinkSection/deepLinkSection';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
 import _ from 'lodash';
 
@@ -312,9 +313,13 @@ class DeviceTagFlyout extends React.Component {
   }
 
   render() {
+    const deepLinkSectionProps = {
+      path: `/maintenance`,
+      description: lang.VIEW_JOB_STATUS,
+      linkText: lang.VIEW
+    };
     let totalAffectedDevices = this.props.devices ? this.props.devices.length : 0;
     const { commonTags } = this.state;
-
     return (
       <div className="device-tag-flyout-container">
         <div className="sub-heading">
@@ -391,6 +396,7 @@ class DeviceTagFlyout extends React.Component {
             {lang.APPLY}
           </PcsBtn>
         </div>
+        {this.state.jobApplied ? <DeepLinkSection {...deepLinkSectionProps}/> : null}
       </div>
     );
   }
