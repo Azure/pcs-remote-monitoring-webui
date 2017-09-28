@@ -12,39 +12,7 @@
       height: 48px;
     }
 
-    .telemetry-header {
-      display: flex;
-      justify-content: space-between;
-    }
-
     label.radio-inline { margin-left: 29px; }
-
-    .chevron-close {
-      height: 16px;
-      width: 16px;
-      margin-left: 15px;
-    }
-
-    .chevron-open {
-      height: 16px;
-      width: 16px;
-      margin-left: 15px;
-      -ms-transform: rotate(90deg);
-      -webkit-transform: rotate(90deg);
-      transform: rotate(90deg);
-    }
-
-    .subMenu {
-      position: absolute;
-      background-color: #1b1d1f;
-      z-index: 1;
-      width: 125px;
-    }
-
-    .confirm-btn {
-      float: right;
-      margin-right: 10px;
-    }
   }
 
   .c3 .c3-axis-y text,
@@ -63,5 +31,11 @@
     background-color: #353535;
 
     &:hover { background-color: #545454; }
+  }
+
+  .telemetry-btn-group {
+    color: #afb9c3;
+
+    .btn-selected { color: #fff };
   }
 }

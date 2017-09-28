@@ -3,7 +3,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Row, Radio } from 'react-bootstrap';
+import { Radio } from 'react-bootstrap';
+import _ from 'lodash';
+
 import Timeline from '../charts/timeline';
 import * as actions from '../../actions';
 import Config from '../../common/config';
@@ -17,7 +19,9 @@ class Telemetry extends Component {
     super(props);
 
     this.state = {
-      pause: false
+      pause: false,
+      telemetryTypes: new Set(),
+      devices: []
     };
 
     this.handleOptionChange = this.handleOptionChange.bind(this);
@@ -26,11 +30,31 @@ class Telemetry extends Component {
   }
 
   componentDidMount() {
-    const { actions, devices } = this.props;
+    const { actions } = this.props;
+    const devicesList = this.props.devices && this.props.devices.items ? this.props.devices.items : [];
+    const devices = devicesList.map(({ Id }) => Id);
     this.timerID = setInterval(
       () => actions.loadTelemetryMessagesP1M(devices),
       Config.INTERVALS.TELEMETRY_UPDATE_INTERVAL
     );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { devices } = nextProps;
+    if(!devices || !devices.items.length) return;
+
+    // New device group reset timer
+    if (!_.isEqual(devices, this.props.devices)) {
+      if (this.timerID) {
+        clearInterval(this.timerID);
+        this.timerID = 0;
+      }
+      const deviceIds = devices.items.map(({ Id }) => Id);
+      this.timerID = setInterval(
+        () => this.props.actions.loadTelemetryMessagesP1M(deviceIds),
+        2500
+      );
+    }
   }
 
   componentWillUnmount() {
@@ -42,8 +66,10 @@ class Telemetry extends Component {
       clearInterval(this.timerID);
       this.timerID = 0;
     } else {
+      const devicesList = this.props.devices && this.props.devices.items ? this.props.devices.items : [];
+      const devices = devicesList.map(({ Id }) => Id);
       this.timerID = setInterval(
-        () => this.props.actions.loadTelemetryMessagesP1M(),
+        () => this.props.actions.loadTelemetryMessagesP1M(devices),
         2500
       );
     }
@@ -51,8 +77,8 @@ class Telemetry extends Component {
   }
 
   handleOptionChange(key) {
-    const { actions } = this.props;
-    actions.selectTelemetryType(key);
+    const { actions, devices } = this.props;
+    actions.selectTelemetryType(key, devices);
   }
 
   toggleTelemetryOption(key) {
@@ -62,19 +88,14 @@ class Telemetry extends Component {
 
   render() {
     const { radioBtnOptions, timeline } = this.props;
-    const selectedColor = '#ffffff';
-    const unselectedColor = '#afb9c3';
     const telemetryRadioBtnGroup = radioBtnOptions
-      ? Object.keys(radioBtnOptions).sort().map((key, index) =>
+      ? Object.keys(radioBtnOptions).sort()
+        .map((key, index) =>
           <Radio
             onClick={() => this.handleOptionChange(key)}
             name="telemetryRadioButtonGroup"
             inline
-            style={{
-              color: radioBtnOptions[key].selected
-                ? selectedColor
-                : unselectedColor
-            }}
+            className={radioBtnOptions[key].selected ? 'btn-selected' : ''}
             checked={radioBtnOptions[key].selected}
             key={index}
           >
@@ -91,20 +112,20 @@ class Telemetry extends Component {
       }
     };
     return (
-      <DashboardPanel 
+      <DashboardPanel
           className="telemetry-panel-container"
           title={'Telemetry'}
           actions={
-            <PcsBtn className="pause-button" 
+            <PcsBtn className="pause-button"
               onClick={this.toggleTimer}
               value={this.state.pause ? 'pause' : 'flowing'} />
           }>
-        <Row>
+        <div className="telemetry-btn-group">
           {telemetryRadioBtnGroup}
-        </Row>
-        <Row>
+        </div>
+        <div className="timeline-chart">
           <Timeline {...timelineConfig} />
-        </Row>
+        </div>
       </DashboardPanel>
     );
   }

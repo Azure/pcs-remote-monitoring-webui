@@ -37,7 +37,7 @@ class DashboardPage extends Component {
     const alarmListProps = { devices };
     const telemetryProps = {
       chartId: 'dashboard_telemetry_chart',
-      devices
+      devices: this.props.devices,
     }
 
     return (

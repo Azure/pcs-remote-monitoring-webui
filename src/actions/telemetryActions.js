@@ -60,7 +60,10 @@ export const loadTelemetryMessages = params => {
 // get telemetry messages based on the deviceId's
 export const loadTelemetryMessagesByDeviceIds = deviceList => {
   return dispatch => {
-    return ApiService.getTelemetryMessages({ devices: deviceList })
+    return ApiService.getTelemetryMessages({
+        devices: deviceList,
+        order: 'desc'
+      })
       .then(data => {
         dispatch(loadTelemetrMessagesSuccess(data));
       })
@@ -74,7 +77,7 @@ export const loadTelemetryMessagesByDeviceIds = deviceList => {
 // telemetryMessages for last 1 minute
 export const loadTelemetryMessagesP1M = deviceList => {
   return dispatch => {
-    return ApiService.getTelemetryMessagesP1M(deviceList)
+    return ApiService.getTelemetryMessageByDeviceIdP1M(deviceList)
       .then(data => {
         dispatch(updateTelemetrMessagesSuccess(data));
       })
