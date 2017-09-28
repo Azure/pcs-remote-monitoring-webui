@@ -8,11 +8,10 @@ const mapReducer = (state = initialState.dashboard.map, action) => {
     case types.LOAD_MAPKEY_SUCCESS:
       return {
         ...state,
-        mapkey: action.mapkey.key
+        BingMapKey: action.BingMapKey
       };
 
-    default:
-      return state;
+    default: return state;
   }
 };
 

@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import * as types from './actionTypes';
-import MockApi from '../mock/mockApi';
+import ApiService from '../common/apiService';
 
-export const loadMapkeySuccess = mapkey => {
+
+export const loadMapkeySuccess = BingMapResponse => {
   return {
     type: types.LOAD_MAPKEY_SUCCESS,
-    mapkey
+    BingMapKey: BingMapResponse.BingMapKey
   };
 };
 
@@ -19,10 +20,8 @@ export const loadMapkeyFailed = error => {
 
 export const loadMapkey = () => {
   return dispatch => {
-    return MockApi.getMapKey()
-      .then(mapkey => {
-        dispatch(loadMapkeySuccess(mapkey));
-      })
+    return ApiService.getMapKey()
+      .then(BingMapResponse => dispatch(loadMapkeySuccess(BingMapResponse)))
       .catch(error => {
         dispatch(loadMapkeyFailed(error));
         throw error;

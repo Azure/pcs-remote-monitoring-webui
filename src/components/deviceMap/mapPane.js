@@ -11,9 +11,9 @@ let pinInfobox = null;
 let deviceData;
 let container;
 let actions;
-let init = function(mapApiKey) {
+let init = function(BingMapKey) {
   let options = {
-    credentials: 'AhDYdhgAYmHLSCQm9xFRo2PPMGPXKeLnsz6yczTOxVMZQPnNJBben3rpV7DvnL4e',
+    credentials: BingMapKey,
     mapTypeId: window.Microsoft.Maps.MapTypeId.canvasDark,
     showMapTypeSelector: false,
     animate: false,

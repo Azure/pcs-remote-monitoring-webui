@@ -227,7 +227,7 @@ const lang = {
   SOURCE: 'Source',
   SOURCEHELP: 'Edit group of devices on rule',
   START_TIME: 'Start Time',
-  STATE: 'State',
+  STATE: 'State',  
   STATUS: 'Status',
   SUCCEEDED: 'Succeeded',
   SUCCEEDED_CAPITAL: 'Succeeded',

@@ -49,7 +49,8 @@ const Config = {
     IS_SIMULATED: 'Tags.IsSimulated',
     IS_SIMULATED_WITHOUT_TAGS: 'IsSimulated',
     REPORTED_TYPE: 'Properties.Reported.Type',
-    REPORTED_LOCATION: 'Properties.Reported.Location'
+    REPORTED_LOCATION: 'Properties.Reported.Location',
+    STATIC: 'static'
   },
 
   OPERATOR_OPTIONS: [

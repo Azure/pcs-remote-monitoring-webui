@@ -8,18 +8,16 @@ import MapPane from './mapPane';
 import RegionDetails from '../../components/deviceMap/regionDetails.js';
 import { Row, Col } from 'react-bootstrap';
 import lang from '../../common/lang';
+import config from '../../common/config';
 import DashboardPanel from '../dashboardPanel/dashboardPanel';
 import _ from 'lodash';
 import { getNonFunctionalProps } from '../../common/utils';
-
 import './deviceMap.css';
 
 class DeviceMap extends Component {
   constructor(props) {
     super(props);
-    window.loadMap = () => {
-      MapPane.init();
-    };
+    window.loadMap = () => MapPane.init(this.props.BingMapKey);
     this.state = {
       loadingMap: true,
       mapCallbackComplete: false
@@ -43,9 +41,9 @@ class DeviceMap extends Component {
   }
 
   componentDidMount() {
-    this.createScript(
-      'https://www.bing.com/api/maps/mapcontrol?callback=loadMap'
-    );
+    if (this.props.BingMapKey && this.props.BingMapKey !== config.STATUS_CODES.STATIC) {
+      this.createScript( 'https://www.bing.com/api/maps/mapcontrol?callback=loadMap' );
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -57,7 +55,9 @@ class DeviceMap extends Component {
       //the data is not loaded yet, return !
       return;
     }
-    this.showMap(nextProps);
+    if (nextProps.BingMapKey && nextProps.BingMapKey !== config.STATUS_CODES.STATIC) {
+      this.showMap(nextProps);
+    }
   }
 
   showMap(props) {
@@ -97,6 +97,7 @@ class DeviceMap extends Component {
       });
     });
     MapPane.setData({
+      BingMapKey: props.BingMapKey,
       deviceData: devices.items,
       container: this,
       actions
@@ -183,12 +184,17 @@ class DeviceMap extends Component {
   }
 
   render() {
+    const { BingMapKey } = this.props;
     return (
       <DashboardPanel title={lang.DEVICELOCATION} className="map-container">
         <Row>
           <RegionDetails {...this.props} />
           <Col md={9} className="bing-map">
-            <div id="deviceMap" className="dashboard_device_map" />
+            {
+              BingMapKey === config.STATUS_CODES.STATIC 
+                ? <div className="static-bing-map"/> 
+                : <div id="deviceMap" className="dashboard_device_map" />
+            }
           </Col>
         </Row>
       </DashboardPanel>

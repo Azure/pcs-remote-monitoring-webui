@@ -21,6 +21,7 @@ class DashboardPage extends Component {
   componentDidMount() {
     const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
     this.props.actions.loadDashboardData(deviceIds);
+    this.props.actions.loadMapkey();
   }
 
   render() {
@@ -28,7 +29,7 @@ class DashboardPage extends Component {
       alarmList: this.props.alarmList,
       devices: this.props.devices,
       telemetryByDeviceGroup: this.props.telemetryByDeviceGroup,
-      mapkey: this.props.mapkey
+      BingMapKey: this.props.BingMapKey
     };
 
     const devicesList = this.props.devices && this.props.devices.items ? this.props.devices.items : [];
@@ -49,7 +50,7 @@ class DashboardPage extends Component {
           <Grid fluid className="layout">
             <Row>
               <Col md={8}>
-                <DeviceMap {...deviceMapProps} />
+                {this.props.BingMapKey ? <DeviceMap {...deviceMapProps} /> : null}
               </Col>
               <Col md={4}>
                 <AlarmList {...alarmListProps} />
@@ -74,7 +75,7 @@ const mapStateToProps = state => {
   return {
     telemetryByDeviceGroup: state.telemetryReducer.telemetryByDeviceGroup,
     devices: state.deviceReducer.devices,
-    mapkey: state.mapReducer.mapkey,
+    BingMapKey: state.mapReducer.BingMapKey,
     alarmList: state.deviceReducer.alarmsList
   };
 };

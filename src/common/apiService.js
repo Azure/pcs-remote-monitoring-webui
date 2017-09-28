@@ -227,6 +227,10 @@ class ApiService {
     return Http.get(`${Config.configApiUrl}devicegroupfilters`);
   }
 
+  static getMapKey() {
+    return Http.get(`${Config.configApiUrl}solution-settings/theme`);
+  }
+
   static updateAlarmsStatus(payload) {
     return Http.patch(`${Config.telemetryApiUrl}alarms/${encodeURIComponent(payload.id)}`, payload);
   }
