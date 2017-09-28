@@ -110,7 +110,7 @@ clientId = global.DeploymentConfig.aad.appId;
 appId = global.DeploymentConfig.aad.appId;
 aadInstance = global.DeploymentConfig.aad.instance;
 
-if (aadInstance.endsWith('{0}')) {
+if (aadInstance && aadInstance.endsWith('{0}')) {
     aadInstance = aadInstance.substr(0, aadInstance.length - 3);
 }
 
