@@ -1,0 +1,122 @@
+version: "3"
+
+services:
+  auth:
+    image: azureiotpcs/pcs-auth-dotnet
+    ports:
+      - "9001:9001"
+    environment:
+      - PCS_AUTH_ISSUER
+      - PCS_AUTH_AUDIENCE
+      - PCS_AUTH_REQUIRED
+      - PCS_CORS_WHITELIST
+      - PCS_APPLICATION_SECRET
+      - APPLICATION_SECRET
+
+  iothubmanager:
+    image: azureiotpcs/iothub-manager-dotnet
+    ports:
+      - "9002:9002"
+    environment:
+      - PCS_IOTHUB_CONNSTRING
+      # TODO: the dependency on config is temporary
+      - PCS_CONFIG_WEBSERVICE_URL=http://config:9005/v1
+      - PCS_AUTH_ISSUER
+      - PCS_AUTH_AUDIENCE
+      - PCS_AUTH_REQUIRED
+      - PCS_CORS_WHITELIST
+      - PCS_APPLICATION_SECRET
+      - APPLICATION_SECRET
+
+  devicesimulation:
+    image: azureiotpcs/device-simulation-dotnet:latest
+    depends_on:
+      - storageadapter
+    ports:
+      - "9003:9003"
+    environment:
+      - PCS_IOTHUB_CONNSTRING
+      - PCS_STORAGEADAPTER_WEBSERVICE_URL=http://storageadapter:9022/v1
+      - PCS_AUTH_ISSUER
+      - PCS_AUTH_AUDIENCE
+      - PCS_AUTH_REQUIRED
+      - PCS_CORS_WHITELIST
+      - PCS_APPLICATION_SECRET
+      - APPLICATION_SECRET
+
+  telemetry:
+    image: azureiotpcs/telemetry-dotnet:latest
+    depends_on:
+      - storageadapter
+    ports:
+      - "9004:9004"
+    environment:
+      - PCS_TELEMETRY_DOCUMENTDB_CONNSTRING
+      - PCS_STORAGEADAPTER_WEBSERVICE_URL=http://storageadapter:9022/v1
+      - PCS_AUTH_ISSUER
+      - PCS_AUTH_AUDIENCE
+      - PCS_AUTH_REQUIRED
+      - PCS_CORS_WHITELIST
+      - PCS_APPLICATION_SECRET
+      - APPLICATION_SECRET
+
+  config:
+    image: azureiotpcs/pcs-config-dotnet:latest
+    depends_on:
+      - storageadapter
+    ports:
+      - "9005:9005"
+    environment:
+      - PCS_CONFIG_WEBSERVICE_PORT=9005
+      - PCS_STORAGEADAPTER_WEBSERVICE_URL=http://storageadapter:9022/v1
+      - PCS_DEVICESIMULATION_WEBSERVICE_URL=http://devicesimulation:9003/v1
+      - PCS_TELEMETRY_WEBSERVICE_URL=http://telemetry:9004/v1
+      - PCS_DEVICETELEMETRY_WEBSERVICE_URL=http://telemetry:9004/v1
+      - PCS_IOTHUBMANAGER_WEBSERVICE_URL=http://iothubmanager:9002/v1
+      - PCS_BINGMAP_KEY
+      - PCS_AUTH_ISSUER
+      - PCS_AUTH_AUDIENCE
+      - PCS_AUTH_REQUIRED
+      - PCS_CORS_WHITELIST
+      - PCS_APPLICATION_SECRET
+      - APPLICATION_SECRET
+
+  storageadapter:
+    image: azureiotpcs/pcs-storage-adapter-dotnet:latest
+    ports:
+      - "9022:9022"
+    environment:
+      - PCS_STORAGEADAPTER_DOCUMENTDB_CONNSTRING
+      - PCS_AUTH_ISSUER
+      - PCS_AUTH_AUDIENCE
+      - PCS_AUTH_REQUIRED
+      - PCS_CORS_WHITELIST
+      - PCS_APPLICATION_SECRET
+      - APPLICATION_SECRET
+
+  telemetryagent:
+    image: azureiotpcs/telemetry-agent-dotnet:latest
+    depends_on:
+      - telemetry
+      - iothubmanager
+      - config
+    ports:
+      - "9023:9023"
+    environment:
+      - PCS_TELEMETRYAGENT_DOCUMENTDB_CONNSTRING
+      - PCS_TELEMETRY_WEBSERVICE_URL=http://telemetry:9004/v1
+      - PCS_CONFIG_WEBSERVICE_URL=http://config:9005/v1
+      - PCS_IOTHUBMANAGER_WEBSERVICE_URL=http://iothubmanager:9002/v1
+      - PCS_IOTHUBREACT_AZUREBLOB_ACCOUNT
+      - PCS_IOTHUBREACT_AZUREBLOB_KEY
+      - PCS_IOTHUBREACT_AZUREBLOB_ENDPOINT_SUFFIX
+      - PCS_IOTHUBREACT_HUB_NAME
+      - PCS_IOTHUBREACT_HUB_ENDPOINT
+      - PCS_IOTHUBREACT_HUB_PARTITIONS
+      - PCS_IOTHUBREACT_ACCESS_CONNSTRING
+      - PCS_AUTH_ISSUER
+      - PCS_AUTH_AUDIENCE
+      - PCS_AUTH_REQUIRED
+      - PCS_CORS_WHITELIST
+      - PCS_APPLICATION_SECRET
+      - APPLICATION_SECRET
