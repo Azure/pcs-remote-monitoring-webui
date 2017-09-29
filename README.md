@@ -55,5 +55,5 @@ You can find a guide to using it [here](https://github.com/facebookincubator/cre
 [build-url]: https://travis-ci.com/Azure/pcs-remote-monitoring-webui
 [issues-badge]: https://img.shields.io/github/issues/azure/pcs-remote-monitoring-webui.svg
 [issues-url]: https://github.com/Azure/pcs-remote-monitoring-webui/issues/new
-[gitter-badge]: https://img.shields.io/gitter/room/azure/iot-pcs.js.svg
-[gitter-url]: https://gitter.im/azure/iot-pcs
+[gitter-badge]: https://img.shields.io/gitter/room/azure/iot-solutions.js.svg
+[gitter-url]: https://gitter.im/azure/iot-solutions
