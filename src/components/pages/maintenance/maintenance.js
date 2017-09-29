@@ -97,6 +97,7 @@ class MaintenancePage extends Component {
       to: 'NOW',
       devices: deviceIds
     });
+    this.props.actions.loadJobsForTimePeriod(`NOW-${this.state.timerange}`);
   }
 
   onTimeRangeChange(selectedOption) {
@@ -234,10 +235,10 @@ class MaintenancePage extends Component {
           deviceJobs = deviceIds.map(deviceId => ({
             jobId: job.jobId,
             deviceId,
-            methodName : job.methodParameter.name,
-            status : job.status,
-            failedCount: job.resultStatistics.failedCount,
-            succeededCount: job.resultStatistics.succeededCount,
+            methodName: (job.methodParameter || {}).name || '',
+            status: job.status,
+            failedCount: (job.resultStatistics || {}).failedCount || 0,
+            succeededCount: (job.resultStatistics || {}).succeededCount || 0,
             type: job.type
           }));
           // If the grid is related to tags or reconfigure then hide endtime and lastReturnMessage
