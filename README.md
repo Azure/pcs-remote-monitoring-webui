@@ -52,7 +52,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 You can find a guide to using it [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
 
 [build-badge]: https://img.shields.io/travis/Azure/pcs-remote-monitoring-webui.svg
-[build-url]: https://travis-ci.com/Azure/pcs-remote-monitoring-webui
+[build-url]: https://travis-ci.org/Azure/pcs-remote-monitoring-webui
 [issues-badge]: https://img.shields.io/github/issues/azure/pcs-remote-monitoring-webui.svg
 [issues-url]: https://github.com/Azure/pcs-remote-monitoring-webui/issues/new
 [gitter-badge]: https://img.shields.io/gitter/room/azure/iot-solutions.js.svg
