@@ -20,30 +20,41 @@ export const checkboxParams = {
 export const alarmColumnDefs = {
   name: {
     headerName: lang.RULENAME,
-    field: 'ruleId'
+    field: 'ruleId',
+    tooltipField: "ruleId",
+    headerTooltip: lang.RULENAME
   },
   severity: {
     headerName: lang.SEVERITY,
     field: 'severity',
+    tooltipField: "severity",
+    headerTooltip: lang.SEVERITY,
     cellRendererFramework: SeverityCellRenderer
   },
   created: {
     headerName: lang.CREATED,
     field: 'created',
+    tooltipField: "created",
+    headerTooltip: lang.CREATED
   },
   firmware: {
     headerName: lang.FIRMWARE,
     field: 'Properties.Reported.Firmware',
-
+    tooltipField: "Properties.Reported.Firmware",
+    headerTooltip: lang.FIRMWARE,
   },
   occurrences: {
     headerName: lang.OPENOCCURRENCES,
     field: 'occurrences',
+    tooltipField: "occurrences",
+    headerTooltip: lang.OPENOCCURRENCES,
     valueFormatter: ({ value }) => checkForEmpty(value)
   },
   explore: {
     headerName: lang.EXPLOREALARM,
     field: 'Connected',
+    tooltipField: "Connected",
+    headerTooltip: lang.EXPLOREALARM,
     cellRendererFramework: () => <ElipsisCellRenderer to={'/maintenance'}/>
   }
 };
