@@ -29,7 +29,7 @@ export const deviceColumnDefs = {
   },
   deviceType: {
     headerName: lang.DEVICETYPE,
-    field: 'Tags.deviceType',
+    field: 'Properties.Reported.Type',
     valueFormatter: ({ value }) => checkForEmpty(value)
   },
   firmware: {
