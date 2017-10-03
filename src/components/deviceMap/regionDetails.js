@@ -51,7 +51,7 @@ class RegionDetails extends Component {
             {lang.DEVICES}
           </div>
           <Row className="alarm-warning-container">
-            <Col md={5} className="total-alarms-container">
+            <Col md={6} className="total-alarms-container">
               <div className="total-alarms">
                 {regionDetailsProps.totalAlarmDeviceCount}
               </div>
