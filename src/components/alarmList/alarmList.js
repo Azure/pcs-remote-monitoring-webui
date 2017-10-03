@@ -7,11 +7,8 @@ import ApiService from '../../common/apiService';
 import Rx from 'rxjs';
 import DashboardPanel from '../dashboardPanel/dashboardPanel';
 import AlarmsGrid from './alarmsGrid';
-import ElipsisCellRenderer from '../cellRenderers/elipsisCellRenderer/elipsisCellRenderer';
 
 import './alarmList.css';
-
-const ExploreAlarmRenderer = () => <ElipsisCellRenderer to={'/maintenance'}/>;
 
 class AlarmList extends Component {
   constructor(props) {
@@ -22,14 +19,6 @@ class AlarmList extends Component {
       loading: false,
       deviceIdList: ''
     };
-    
-    this.columnDefOverrides = [
-      { headerName: lang.RULENAME, field: 'ruleId', filter: 'text' },
-      { headerName: lang.SEVERITY, field: 'severity', filter: 'text' },
-      { headerName: lang.CREATED, field: 'created', filter: 'date' },
-      { headerName: lang.OPENOCCURRENCES, field: 'occurrences', filter: 'number' },
-      { headerName: lang.EXPLOREALARM, cellRendererFramework: ExploreAlarmRenderer },
-    ];
 
     this.subscriptions = [];
     this.errorSubject = new Rx.Subject();
@@ -56,7 +45,7 @@ class AlarmList extends Component {
 
   componentWillUnmount() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
-    if (this.getDataSub && this.getDataSub.unsubscribe) 
+    if (this.getDataSub && this.getDataSub.unsubscribe)
       this.getDataSub.unsubscribe();
   }
 
@@ -114,8 +103,7 @@ class AlarmList extends Component {
 
   render() {
     const alarmsGridProps = {
-      rowData: this.state.rowData,
-      columnDefs: this.columnDefOverrides
+      rowData: this.state.rowData
     }
 
     return (

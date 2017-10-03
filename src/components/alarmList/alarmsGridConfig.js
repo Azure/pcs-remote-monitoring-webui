@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import React from 'react';
 import lang from '../../common/lang';
 import SeverityCellRenderer from '../cellRenderers/severityCellRenderer/severityCellRenderer';
+import ElipsisCellRenderer from '../cellRenderers/elipsisCellRenderer/elipsisCellRenderer';
 import { gridValueFormatters } from '../pcsGrid/pcsGridConfig';
 
 const { checkForEmpty } = gridValueFormatters;
@@ -42,7 +44,7 @@ export const alarmColumnDefs = {
   explore: {
     headerName: lang.EXPLOREALARM,
     field: 'Connected',
-    valueGetter: params => '...'
+    cellRendererFramework: () => <ElipsisCellRenderer to={'/maintenance'}/>
   }
 };
 
