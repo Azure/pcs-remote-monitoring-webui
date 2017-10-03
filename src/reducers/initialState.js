@@ -56,5 +56,11 @@ export default {
   modal: {
     visible: false
   },
-  maintenance: {}
+  maintenance: {},
+  indicator: {
+    map: false,
+    telemetry: false,
+    kpi: false,
+    alarms: false
+  }
 };

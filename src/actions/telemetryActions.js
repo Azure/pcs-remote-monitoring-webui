@@ -1,5 +1,8 @@
+// Copyright (c) Microsoft. All rights reserved.
+
 import * as types from './actionTypes';
 import { loadFailed } from './ajaxStatusActions';
+import { indicatorStart, indicatorEnd } from './indicatorActions';
 import ApiService from '../common/apiService';
 
 export const loadTelemetryTypesSuccess = data => {
@@ -60,12 +63,16 @@ export const loadTelemetryMessages = params => {
 // get telemetry messages based on the deviceId's
 export const loadTelemetryMessagesByDeviceIds = deviceList => {
   return dispatch => {
+    dispatch(indicatorStart('telemetry'));
     return ApiService.getTelemetryMessages({
+        from: 'NOW-PT15M',
+        to: 'NOW',
         devices: deviceList,
         order: 'desc'
       })
       .then(data => {
         dispatch(loadTelemetrMessagesSuccess(data));
+        dispatch(indicatorEnd('telemetry'));
       })
       .catch(error => {
         dispatch(loadFailed(error));
@@ -77,9 +84,11 @@ export const loadTelemetryMessagesByDeviceIds = deviceList => {
 // telemetryMessages for last 1 minute
 export const loadTelemetryMessagesP1M = deviceList => {
   return dispatch => {
+    dispatch(indicatorStart('telemetry'));
     return ApiService.getTelemetryMessageByDeviceIdP1M(deviceList)
       .then(data => {
         dispatch(updateTelemetrMessagesSuccess(data));
+        dispatch(indicatorEnd('telemetry'));
       })
       .catch(error => {
         dispatch(loadFailed(error));

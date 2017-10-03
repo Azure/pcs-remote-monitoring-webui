@@ -69,3 +69,7 @@ export const LOAD_JOBS_FAILURE = 'LOAD_JOBS_FAILURE';
 
 //Rule list actions
 export const RULE_LIST_ROW_SELECTION_CHANGED = 'RULE_LIST_ROW_SELECTION_CHANGED';
+
+// Indicator
+export const INDICATOR_START = 'INDICATOR_START';
+export const INDICATOR_END = 'INDICATOR_END';

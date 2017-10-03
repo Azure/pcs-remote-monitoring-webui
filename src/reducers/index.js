@@ -10,6 +10,7 @@ import filterReducer from './filterReducer';
 import systemStatusJobReducer from './systemStatusJobReducer';
 import kpiReducer from './kpiReducer';
 import maintenanceReducer from './maintenanceReducer';
+import indicatorReducer from './indicatorReducer';
 
 const rootReducer = combineReducers({
   flyoutReducer,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   telemetryReducer,
   filterReducer,
   kpiReducer,
-  maintenanceReducer
+  maintenanceReducer,
+  indicatorReducer
 });
 
 export default rootReducer;

@@ -115,6 +115,7 @@ class Telemetry extends Component {
       <DashboardPanel
           className="telemetry-panel-container"
           title={'Telemetry'}
+          indicator={this.props.indicator}
           actions={
             <PcsBtn className="pause-button"
               onClick={this.toggleTimer}
@@ -136,7 +137,8 @@ const mapStateToProps = state => {
     telemetryTypes: state.telemetryReducer.telemetryTypes,
     telemetryByDeviceGroup: state.telemetryReducer.telemetryByDeviceGroup,
     radioBtnOptions: state.telemetryReducer.radioBtnOptions,
-    timeline: state.telemetryReducer.timeline
+    timeline: state.telemetryReducer.timeline,
+    indicator: state.indicatorReducer.telemetry
   };
 };
 

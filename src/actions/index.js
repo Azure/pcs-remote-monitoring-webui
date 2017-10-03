@@ -32,3 +32,6 @@ export * from './maintenanceActions';
 
 // Rules
 export * from './ruleActions';
+
+// indicator
+export * from './indicatorActions';

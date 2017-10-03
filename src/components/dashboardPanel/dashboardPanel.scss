@@ -18,10 +18,17 @@ $padding: 15px;
     padding: $padding;
     height: 48px; // TODO:  Remove when flex box work is done
 
-    > .panel-header {
-      flex-grow: 1;
-      color: #fff;
+    .panel-header-indicator {
+      display: flex;
+      align-items: center;
+
+      .panel-header {
+        flex-grow: 1;
+        margin-right: 10px;
+        color: #fff;
+      }
     }
+
 
     > .panel-actions-container > .Select { width: 150px; }
   }

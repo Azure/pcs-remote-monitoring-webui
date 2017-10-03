@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react';
 
+import Spinner from '../spinner/spinner';
+
 import './dashboardPanel.css';
 
 /**
@@ -17,7 +19,12 @@ class DashboardPanel extends Component {
     return (
       <div className={classNames}>
         <div className="panel-header-container">
-          <div className="panel-header">{this.props.title}</div>
+          <div className="panel-header-indicator">
+            <div className="panel-header">
+              {this.props.title}
+            </div>
+            {this.props.indicator && <Spinner size="medium"/>}
+          </div>
           {this.props.actions ? <div className="panel-actions-container">{this.props.actions}</div> : ''}
         </div>
         <div className="panel-contents">{this.props.children}</div>
@@ -27,4 +34,3 @@ class DashboardPanel extends Component {
 }
 
 export default DashboardPanel;
-

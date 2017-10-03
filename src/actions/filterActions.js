@@ -3,6 +3,7 @@
 import * as types from './actionTypes';
 import { loadFailed } from './ajaxStatusActions';
 import { loadDeviceSuccess } from './deviceActions';
+import { indicatorStart } from './indicatorActions';
 import ApiService from '../common/apiService';
 import * as telemetryActions from './telemetryActions';
 
@@ -21,7 +22,7 @@ function setDefaultDeviceGroupId(dispatch, deviceGroups){
       type: types.DEVICE_GROUP_CHANGED,
       data: defaultGroupId
     });
-  } 
+  }
 }
 
 export const getRegionByDisplayName = deviceGroup => {
@@ -44,6 +45,7 @@ export const getRegionByDisplayName = deviceGroup => {
 
 export const loadRegionSpecificDevices = (selectedGroupConditions, groupId) => {
   return dispatch => {
+    dispatch(indicatorStart('telemetry'));
     dispatch({
       type: types.DEVICE_GROUP_CHANGED,
       data: groupId
