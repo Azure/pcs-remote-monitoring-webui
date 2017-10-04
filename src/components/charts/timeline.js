@@ -30,11 +30,11 @@ class Timeline extends Component {
 
   updateChart(props) {
     const startTime = moment()
-      .subtract(Config.INTERVALS.TELEMETRY_SLIDE_WINDOW, 'minutes')
+      .subtract(Config.INTERVALS.TELEMETRY_SLIDE_WINDOW_MIN, 'minutes')
       .toISOString();
     this.state.timeline.flow({
       ...props,
-      duration: Config.INTERVALS.TELEMETRY_FLOW_DURATION,
+      duration: Config.INTERVALS.TELEMETRY_FLOW_DURATION_MS,
       to: startTime
     });
   }

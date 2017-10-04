@@ -13,7 +13,7 @@ const filterByTimestamp = (radioBtnOptions) => {
   const newOptions = Object.assign({}, radioBtnOptions);
   Object.keys(radioBtnOptions).forEach(key => {
     if(radioBtnOptions[key].chartData && radioBtnOptions[key].chartData.length > 0) {
-      const filterTimestamp = moment().subtract(Config.INTERVALS.TELEMETRY_SLIDE_WINDOW, 'minute').valueOf();
+      const filterTimestamp = moment().subtract(Config.INTERVALS.TELEMETRY_SLIDE_WINDOW_MIN, 'minute').valueOf();
       newOptions[key].chartData = newOptions[key].chartData.filter(e => new Date(e.Time) > filterTimestamp)
     }
   });

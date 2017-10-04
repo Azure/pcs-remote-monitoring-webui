@@ -11,6 +11,7 @@ import lang from '../../common/lang';
 import ApiService from '../../common/apiService';
 import Timeline from '../charts/timeline';
 import AlarmsGrid from '../alarmList/alarmsGrid';
+import Config from '../../common/config';
 
 import './deviceDetailFlyout.css';
 
@@ -105,7 +106,7 @@ class DeviceDetailFlyout extends Component {
   componentDidMount() {
     this.subscriptions.push(
       Rx.Observable
-        .interval(2000)
+        .interval(Config.INTERVALS.TELEMETRY_UPDATE)
         .startWith(-1)
         .takeUntil(this.errorSubject)
         .subscribe(cnt => this.getData(cnt < 0))

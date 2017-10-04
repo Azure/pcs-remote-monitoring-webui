@@ -61,9 +61,9 @@ const Config = {
   ],
 
   INTERVALS: {
-    TELEMETRY_FLOW_DURATION: 1500,
-    TELEMETRY_UPDATE_INTERVAL: 2500,
-    TELEMETRY_SLIDE_WINDOW: 15
+    TELEMETRY_FLOW_DURATION_MS: 1500,
+    TELEMETRY_UPDATE_MS: 15000,
+    TELEMETRY_SLIDE_WINDOW_MIN: 15
   },
 
   iotHubManagerApiUrl: `${baseURL}${iothubmanagerPath}/v1/`,
@@ -71,7 +71,6 @@ const Config = {
   configApiUrl: `${baseURL}${configPath}/v1/`,
   telemetryApiUrl: `${baseURL}${telemetryPath}/v1/`,
   authApiUrl: `${baseURL}${authPath}/v1/`,
-  msTelemetryApiRefreshInterval: 2
 };
 
 export default Config;

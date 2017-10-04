@@ -35,7 +35,7 @@ class Telemetry extends Component {
     const devices = devicesList.map(({ Id }) => Id);
     this.timerID = setInterval(
       () => actions.loadTelemetryMessagesP1M(devices),
-      Config.INTERVALS.TELEMETRY_UPDATE_INTERVAL
+      Config.INTERVALS.TELEMETRY_UPDATE_MS
     );
   }
 
@@ -52,7 +52,7 @@ class Telemetry extends Component {
       const deviceIds = devices.items.map(({ Id }) => Id);
       this.timerID = setInterval(
         () => this.props.actions.loadTelemetryMessagesP1M(deviceIds),
-        2500
+        Config.INTERVALS.TELEMETRY_UPDATE_MS
       );
     }
   }
@@ -119,7 +119,7 @@ class Telemetry extends Component {
           actions={
             <PcsBtn className="pause-button"
               onClick={this.toggleTimer}
-              value={this.state.pause ? 'pause' : 'flowing'} />
+              value={this.state.pause ? 'paused' : 'flowing'} />
           }>
         <div className="telemetry-btn-group">
           {telemetryRadioBtnGroup}

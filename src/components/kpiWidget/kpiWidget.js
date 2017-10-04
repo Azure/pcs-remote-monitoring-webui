@@ -53,7 +53,7 @@ class KpiWidget extends Component {
   scheduleAutoUpdate() {
     this.intervalId = setTimeout(() => {
       this.props.intervalChanged(this.state.selectedValue);
-    }, Config.msTelemetryApiRefreshInterval * 1000);
+    }, Config.INTERVALS.TELEMETRY_UPDATE_MS);
   }
 
   componentWillReceiveProps(nextProps) {

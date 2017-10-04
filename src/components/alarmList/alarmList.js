@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import lang from '../../common/lang';
-import Select from 'react-select';
-import ApiService from '../../common/apiService';
 import Rx from 'rxjs';
+import Select from 'react-select';
+
+import lang from '../../common/lang';
+import ApiService from '../../common/apiService';
 import DashboardPanel from '../dashboardPanel/dashboardPanel';
 import AlarmsGrid from './alarmsGrid';
+import Config from '../../common/config';
 
 import './alarmList.css';
 
@@ -27,7 +29,7 @@ class AlarmList extends Component {
   componentDidMount() {
     // Initialize the grid and start refreshing
     this.subscriptions.push(
-      Rx.Observable.interval(2000)
+      Rx.Observable.interval(Config.INTERVALS.TELEMETRY_UPDATE_MS)
         .startWith(-1)
         .takeUntil(this.errorSubject)
         .subscribe((cnt) => this.getData(cnt < 0))
