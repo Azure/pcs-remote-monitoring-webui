@@ -21,3 +21,12 @@ check_dependency_docker() {
         exit 1
     fi
 }
+
+check_dependency_git() {
+    if ! which git >/dev/null 2>&1 ; then
+        echo "ERROR: 'git' command not found."
+        echo "Install git and make sure the 'git' command is in the PATH."
+        echo "Git installation: https://git-scm.com"
+        exit 1
+    fi
+}

@@ -1,12 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -e
 
 # Note: use lowercase names for the Docker images
 DOCKER_IMAGE="azureiotpcs/pcs-remote-monitoring-webui"
+# "testing" is the latest dev build, usually matching the code in the "master" branch
+DOCKER_TAG="$DOCKER_IMAGE:testing"
 
-set -e
-APP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && cd .. && pwd )/"
-
-# The version is stored in a file, to avoid hardcoding it in multiple places
-APP_VERSION=$(cat "$APP_HOME/version")
-
-docker push $DOCKER_IMAGE:$APP_VERSION
+docker push $DOCKER_TAG

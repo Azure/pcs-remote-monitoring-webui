@@ -1,33 +1,21 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -e
 
 # Note: use lowercase names for the Docker images
 DOCKER_IMAGE="azureiotpcs/pcs-remote-monitoring-webui"
+# "testing" is the latest dev build, usually matching the code in the "master" branch
+DOCKER_TAG="$DOCKER_IMAGE:testing"
 
-set -e
 APP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && cd .. && pwd )/"
 source "$APP_HOME/scripts/.functions.sh"
 
-# The version is stored in a file, to avoid hardcoding it in multiple places
-APP_VERSION=$(cat "$APP_HOME/version")
-
-# Whether to update the "latest" tag of the Docker image
-BUILD_LATEST="no"
-
-confirm_version() {
-    echo "Building version $APP_VERSION"
-    read -r -p "Do you want to update the 'latest' version too? [y/N] " response
-    response=${response,,} # tolower
-    if [[ $response =~ ^(no|n| ) ]] | [ -z $response ]; then
-        BUILD_LATEST="no"
-    else
-        BUILD_LATEST="yes"
-    fi
-}
-
 build_docker_image() {
     check_dependency_docker
+    check_dependency_git
 
     cd $APP_HOME
+
+    DOCKER_LABEL2="Commit=$(git log --pretty=format:'%H' -n 1)"
+    DOCKER_LABEL3="Date=$(/usr/bin/env date +%Y-%m-%dT%H:%M:%S)"
 
     rm -fR out/docker
 
@@ -45,12 +33,8 @@ build_docker_image() {
 
     cd out/docker/
 
-    if [[ $BUILD_LATEST == "no" ]]; then
-        docker build --squash --compress --label "Tags=azure,iot,suite,solution,pcs,webui,react" --tag "$DOCKER_IMAGE:$APP_VERSION" .
-    else
-        docker build --squash --compress --label "Tags=azure,iot,suite,solution,pcs,webui,react" --tag "$DOCKER_IMAGE:$APP_VERSION" --tag "$DOCKER_IMAGE:latest" .
-    fi
+    docker build --squash --compress --tag $DOCKER_TAG \
+        --label "$DOCKER_LABEL2" --label "$DOCKER_LABEL3" .
 }
 
-confirm_version
 build_docker_image

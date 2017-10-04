@@ -2,6 +2,8 @@ FROM alpine:3.6
 
 MAINTAINER Devis Lucato (https://github.com/dluc)
 
+LABEL Tags="Azure,IoT,Solutions,React,SPA"
+
 COPY ./ /app
 WORKDIR /app
 
