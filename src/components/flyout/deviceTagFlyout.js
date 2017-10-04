@@ -53,13 +53,15 @@ class DeviceTagFlyout extends React.Component {
       newTags: [], //{name, value, type}
       commonTagValues: {},
       commonTagTypes: [],
-      showCreateFilter: false
+      showCreateFilter: false,
+      jobApplied: false
     };
     this.addNewTag = this.addNewTag.bind(this);
     this.deleteExistingTag = this.deleteExistingTag.bind(this);
     this.deleteNewTag = this.deleteNewTag.bind(this);
     this.commonTagValueChanged = this.commonTagValueChanged.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
+    this.applyDeviceTagJobsData = this.applyDeviceTagJobsData.bind(this);
   }
 
   componentWillMount() {
@@ -208,9 +210,9 @@ class DeviceTagFlyout extends React.Component {
       }
     };
     this.setState({ showSpinner: true });
-    ApiService.scheduleJobs(payload).then(data => {
-      this.setState({ showSpinner: false });
-    });
+    ApiService.scheduleJobs(payload).then(_ =>
+      this.setState({ showSpinner: false, jobApplied: true })
+    );
   }
 
   setTagProperty(tag, property, value) {
@@ -318,6 +320,7 @@ class DeviceTagFlyout extends React.Component {
       description: lang.VIEW_JOB_STATUS,
       linkText: lang.VIEW
     };
+    const disabledButton = !this.state.jobInputValue;
     let totalAffectedDevices = this.props.devices ? this.props.devices.length : 0;
     const { commonTags } = this.state;
     return (
@@ -385,16 +388,15 @@ class DeviceTagFlyout extends React.Component {
             onClick={() => this.setState({ showCreateFilter: false })}>
             {lang.CANCEL}
           </PcsBtn>
-          {this.props.requestInProgress
-            ? <span className="loading-spinner">
-                <Spinner />
-              </span>
-            : null}
-          <PcsBtn svg={Apply}
-            className="primary"
-            onClick={() => this.applyDeviceTagJobsData()}>
-            {lang.APPLY}
-          </PcsBtn>
+          {this.state.showSpinner && <Spinner size="medium" />}
+          {this.state.jobApplied
+            ? <PcsBtn svg={Apply} value={lang.APPLIED} disabled />
+            : <PcsBtn
+                className="primary"
+                svg={Apply}
+                value={lang.APPLY}
+                disabled={disabledButton}
+                onClick={this.applyDeviceTagJobsData}/> }
         </div>
         {this.state.jobApplied ? <DeepLinkSection {...deepLinkSectionProps}/> : null}
       </div>
