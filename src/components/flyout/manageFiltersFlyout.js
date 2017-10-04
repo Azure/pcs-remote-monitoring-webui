@@ -211,8 +211,8 @@ class ManageFiltersFlyout extends React.Component {
     ];
     let typeOptions = [
       {
-        value: 'int',
-        label: Config.STATUS_CODES.INT
+        value: 'number',
+        label: lang.NUMBER
       },
       {
         value: 'string',
@@ -313,9 +313,9 @@ class ManageFiltersFlyout extends React.Component {
                           valuesEditingState: {}
                         };
                         cond.Value = evt.target.value || '';
-                        if (cond.type === 'int') cond.Value = (+cond.Value);
+                        if (cond.type === 'number') cond.Value = (+cond.Value);
                         editingState.valuesEditingState[idx] = {
-                          emptyValue: typeof cond.Value === 'string' && cond.Value.trim() === '' 
+                          emptyValue: typeof cond.Value === 'string' && cond.Value.trim() === ''
                         };
                         this.setEditingState(group.Id, editingState);
                       }}
@@ -342,11 +342,11 @@ class ManageFiltersFlyout extends React.Component {
                       options={typeOptions}
                       onChange={type => {
                         cond.type = type;
-                        if (type === 'int') {
+                        if (type === 'number') {
                           if (!isNaN(parseInt(cond.Value, 10))) {
                             cond.Value = (+cond.Value);
-                          } else { 
-                            cond.Value = ''; 
+                          } else {
+                            cond.Value = '';
                           }
                         }
                         this.setEditingState(group.Id, { formChanged: true });

@@ -24,7 +24,7 @@ export function getTypeOf(val) {
 }
 
 export function typeComputation(cond) {
-  cond.type = typeof cond.Value === 'number' ? 'int' : 'string';
+  cond.type = typeof cond.Value === 'number' ? 'number' : 'string';
 }
 
 export function getNonFunctionalProps(props) {

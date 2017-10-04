@@ -171,6 +171,7 @@ const lang = {
   NO_OCCURENCES: 'No occurences selected',
   NO_OF_DEVICES: 'No Of Devices',
   NUMBEROFDEVICES: 'Number of devices',
+  NUMBER: 'Number',
   OCCURRENCE: 'Occurrence',
   OFFLINE: 'Offline',
   ONLINE: 'Online',
