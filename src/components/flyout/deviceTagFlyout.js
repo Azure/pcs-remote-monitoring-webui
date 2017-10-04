@@ -22,7 +22,7 @@ import _ from 'lodash';
 
 const isNumeric = value => typeof value === 'number' || !isNaN(parseInt(value, 10));
 const isBoolean = value =>
-  value !== null && (typeof value === 'boolean' || value.toLowerCase() === 'Y' || value.toLowerCase() === 'n');
+  value !== null && (typeof value === 'boolean' || value.toLowerCase() === 'y' || value.toLowerCase() === 'n');
 
 const typeOptions = [
   {
