@@ -186,13 +186,13 @@ class DeviceMap extends Component {
   render() {
     const { BingMapKey } = this.props;
     return (
-      <DashboardPanel title={lang.DEVICELOCATION} className="map-container">
+      <DashboardPanel title={lang.DEVICELOCATION} indicator={this.props.showSpinner} className="map-container">
         <Row>
           <RegionDetails {...this.props} />
           <Col md={9} className="bing-map">
             {
-              BingMapKey === config.STATUS_CODES.STATIC 
-                ? <div className="static-bing-map"/> 
+              BingMapKey === config.STATUS_CODES.STATIC
+                ? <div className="static-bing-map"/>
                 : <div id="deviceMap" className="dashboard_device_map" />
             }
           </Col>

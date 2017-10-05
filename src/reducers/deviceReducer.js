@@ -11,9 +11,24 @@ const deviceReducer = (state = initialState.devices, action) => {
         devices: action.devices
       };
 
+    case types.LOAD_TELEMETRY_MESSAGES_FOR_MAP_UPDATE_SUCCESS:
+      return {
+        ...state,
+        telemetryByDeviceGroup: action.data
+      };
+
+    case types.INDICATOR_START:
+      if (action.key === 'map') {
+        return {
+          ...state,
+          mapControlDataLoading : true
+        };
+      } else { return state; }
+
     case types.LOAD_DEVICE_TELEMETRY_SUCCESS:
       return {
         ...state,
+        mapControlDataLoading : false,
         alarmsList: action.data.Items
       };
 

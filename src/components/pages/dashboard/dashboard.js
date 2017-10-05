@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Grid, Row, Col } from 'react-bootstrap';
@@ -14,6 +15,7 @@ import KpiWidget from '../../kpiWidget/kpiWidget';
 import * as actions from '../../../actions';
 import DeviceMap from '../../deviceMap/deviceMap.js';
 import lang from '../../../common/lang';
+import Config from '../../../common/config';
 import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
 
 class DashboardPage extends Component {
@@ -22,10 +24,27 @@ class DashboardPage extends Component {
     const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
     this.props.actions.loadDashboardData(deviceIds);
     this.props.actions.loadMapkey();
+    this.timerID = setInterval(() => {
+      const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
+      if (deviceIds.length && !this.props.mapControlDataLoading) {
+        this.props.actions.loadDashboardDataUpdate(deviceIds);
+      }
+    }, Config.INTERVALS.TELEMETRY_UPDATE_MS);
+  }
+
+  componentWillUnmount() {
+    if (this.timerID) {
+      clearInterval(this.timerID);
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState );
   }
 
   render() {
     const deviceMapProps = {
+      showSpinner: this.props.mapControlDataLoading,
       alarmList: this.props.alarmList,
       devices: this.props.devices,
       telemetryByDeviceGroup: this.props.telemetryByDeviceGroup,
@@ -73,7 +92,8 @@ class DashboardPage extends Component {
 
 const mapStateToProps = state => {
   return {
-    telemetryByDeviceGroup: state.telemetryReducer.telemetryByDeviceGroup,
+    mapControlDataLoading : state.deviceReducer.mapControlDataLoading,
+    telemetryByDeviceGroup: state.deviceReducer.telemetryByDeviceGroup,
     devices: state.deviceReducer.devices,
     BingMapKey: state.mapReducer.BingMapKey,
     alarmList: state.deviceReducer.alarmsList

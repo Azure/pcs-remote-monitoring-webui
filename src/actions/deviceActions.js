@@ -3,6 +3,7 @@
 import * as types from './actionTypes';
 import { loadFailed } from './ajaxStatusActions';
 import ApiService from '../common/apiService';
+import { indicatorStart, indicatorEnd } from './indicatorActions';
 import * as telemetryActions from './telemetryActions';
 
 export const loadDeviceSuccess = devices => {
@@ -22,7 +23,42 @@ export const loadDeviceGroupSuccess = deviceGroup => {
 export const loadDashboardData = (deviceIds) => {
   return dispatch => {
     dispatch(telemetryActions.loadTelemetryMessagesByDeviceIds(deviceIds));
+    dispatch(loadTelemetryMessagesByDeviceIdsForMap(deviceIds));
     dispatch(loadDeviceMapAlaramsList(deviceIds));
+  };
+};
+
+export const loadDashboardDataUpdate = (deviceIds) => {
+  return dispatch => {
+    dispatch(loadTelemetryMessagesByDeviceIdsForMap(deviceIds));
+    dispatch(loadDeviceMapAlaramsList(deviceIds));
+  };
+};
+
+export const loadTelemetrMessagesForMapUpdateSuccess = data => {
+  return {
+    type: types.LOAD_TELEMETRY_MESSAGES_FOR_MAP_UPDATE_SUCCESS,
+    data
+  };
+};
+
+export const loadTelemetryMessagesByDeviceIdsForMap = (deviceList) => {
+  return dispatch => {
+    dispatch(indicatorStart('map'));
+    return ApiService.getTelemetryMessages({
+        from: 'NOW-PT30M',
+        to: 'NOW',
+        devices: deviceList,
+        order: 'desc'
+      })
+      .then(data => {
+        dispatch(loadTelemetrMessagesForMapUpdateSuccess(data));
+        dispatch(indicatorEnd('map'));
+      })
+      .catch(error => {
+        dispatch(loadFailed(error));
+        throw error;
+      });
   };
 };
 
