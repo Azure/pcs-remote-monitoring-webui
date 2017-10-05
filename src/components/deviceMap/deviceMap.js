@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../../actions';
 import MapPane from './mapPane';
 import RegionDetails from '../../components/deviceMap/regionDetails.js';
+import StaticMap from '../../assets/icons/StaticMap.png';
 import { Row, Col } from 'react-bootstrap';
 import lang from '../../common/lang';
 import config from '../../common/config';
@@ -192,7 +193,7 @@ class DeviceMap extends Component {
           <Col md={9} className="bing-map">
             {
               BingMapKey === config.STATUS_CODES.STATIC
-                ? <div className="static-bing-map"/>
+                ? <img src={StaticMap} alt="StaticMap" className="static-bing-map"/>
                 : <div id="deviceMap" className="dashboard_device_map" />
             }
           </Col>
