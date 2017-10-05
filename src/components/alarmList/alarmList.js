@@ -111,6 +111,7 @@ class AlarmList extends Component {
     return (
       <DashboardPanel
         className="alarm-list"
+        indicator= {this.state.loading}
         title={lang.ALARMSTATUS}
         actions={
           <Select
