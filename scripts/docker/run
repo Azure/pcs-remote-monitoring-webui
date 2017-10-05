@@ -1,14 +1,17 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -e
+
+# Usage:
+# ./scripts/docker/run         : Starts the stable version
+# ./scripts/docker/run testing : Starts the testing version
 
 # Note: use lowercase names for the Docker images
 DOCKER_IMAGE="azureiotpcs/pcs-remote-monitoring-webui"
+STABLE_VERSION="1.0.0-preview"
 
-set -e
-
-APP_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && cd .. && pwd )/"
-
-# The version is stored in a file, to avoid hardcoding it in multiple places
-APP_VERSION=$(cat "$APP_HOME/version")
-
-echo "Starting Remote Monitoring Web UI ..."
-docker run -it -p 10080:80 -p 10443:443 $DOCKER_IMAGE:$APP_VERSION
+if [ "$1" == "testing" ]; then
+  echo "Starting Remote Monitoring Web UI [testing version] ..."
+  docker run -it -p 10080:80 -p 10443:443 $DOCKER_IMAGE:testing
+else
+  echo "Starting Remote Monitoring Web UI [$STABLE_VERSION] ..."
+  docker run -it -p 10080:80 -p 10443:443 $DOCKER_IMAGE:$STABLE_VERSION
+fi

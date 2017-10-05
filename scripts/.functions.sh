@@ -13,6 +13,18 @@ error() {
     echo -e "${COL_ERR}$1 ${COL_NO}"
 }
 
+check_dependency_npm() {
+    set +e
+    TEST=$(which npm)
+    if [[ -z "$TEST" ]]; then
+        echo "ERROR: 'npm' command not found."
+        echo "Install Node.js and npm and make sure the 'npm' command is in the PATH."
+        echo "Node.js and npm installation: https://www.npmjs.com/get-npm"
+        exit 1
+    fi
+    set -e
+}
+
 check_dependency_docker() {
     if ! which docker >/dev/null 2>&1 ; then
         echo "ERROR: 'docker' command not found."
