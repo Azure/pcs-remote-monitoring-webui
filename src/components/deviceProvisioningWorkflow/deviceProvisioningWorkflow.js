@@ -57,7 +57,10 @@ class DeviceProvisioningWorkflow extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = initialState;
+    this.state = {
+      ...initialState, 
+      deviceTypeForm: deviceTypeValues.SIMULATED
+    };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.apply = this.apply.bind(this);
   }
