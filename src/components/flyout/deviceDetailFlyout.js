@@ -59,6 +59,7 @@ class DeviceDetailFlyout extends Component {
       rawMessage: {},
       lastMessageReceived: '',
       showRawMessage: false,
+      showAlarmsGrid: false,
       alarmRowData: [],
       timeline: {
         selectedTelemetry: '',
@@ -168,6 +169,7 @@ class DeviceDetailFlyout extends Component {
       devices: id
     }).then(data => {
       this.setState({
+        showAlarmsGrid: data.Items.length > 0,
         alarmRowData: data.Items.map(item => {
           return {
             ruleId: item.Rule.Id,
@@ -461,9 +463,12 @@ class DeviceDetailFlyout extends Component {
               </div>
             </div>
           </div>
-          <div className="device-alarm-list">
-            <AlarmsGrid {...alarmsGridProps} />
-          </div>
+          {
+            this.state.showAlarmsGrid &&
+            <div className="device-alarm-list">
+              <AlarmsGrid {...alarmsGridProps} />
+            </div>
+          }
         </div>
         <Drawer toggle={true} title={lang.TELEMETRY}>
           <div>
