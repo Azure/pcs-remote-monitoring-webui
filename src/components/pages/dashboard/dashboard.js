@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Select from 'react-select';
 import { Grid, Row, Col } from 'react-bootstrap';
 import PageContainer from '../../layout/pageContainer/pageContainer.js';
 import PageContent from '../../layout/pageContent/pageContent.js';
@@ -15,21 +15,28 @@ import KpiWidget from '../../kpiWidget/kpiWidget';
 import * as actions from '../../../actions';
 import DeviceMap from '../../deviceMap/deviceMap.js';
 import lang from '../../../common/lang';
-import Config from '../../../common/config';
 import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
 
+import './dashboard.css';
+
 class DashboardPage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      timeRange: 'PT1H',
+      lastRefreshed: new Date(),
+    };
+
+    this.loadMapData = this.loadMapData.bind(this);
+    this.onTimeRangeChange = this.onTimeRangeChange.bind(this);
+  }
 
   componentDidMount() {
     const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
-    this.props.actions.loadDashboardData(deviceIds);
+    this.props.actions.loadTelemetryMessagesByDeviceIds(deviceIds);
+    this.loadMapData();
     this.props.actions.loadMapkey();
-    this.timerID = setInterval(() => {
-      const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
-      if (deviceIds.length && !this.props.mapControlDataLoading) {
-        this.props.actions.loadDashboardDataUpdate(deviceIds);
-      }
-    }, Config.INTERVALS.TELEMETRY_UPDATE_MS);
   }
 
   componentWillUnmount() {
@@ -38,31 +45,79 @@ class DashboardPage extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState );
+  loadMapData() {
+    const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
+    this.props.actions.loadDashboardData(deviceIds, this.state.timeRange);
+  }
+
+  onTimeRangeChange(selectedOption) {
+    if (!selectedOption) return;
+    this.setState({
+      timeRange: selectedOption.value,
+      lastRefreshed: new Date()
+    },
+      () => this.loadMapData()
+    );
   }
 
   render() {
     const deviceMapProps = {
-      showSpinner: this.props.mapControlDataLoading,
       alarmList: this.props.alarmList,
       devices: this.props.devices,
       telemetryByDeviceGroup: this.props.telemetryByDeviceGroup,
-      BingMapKey: this.props.BingMapKey
+      BingMapKey: this.props.BingMapKey,
+      timeRange: this.state.timeRange
     };
 
     const devicesList = this.props.devices && this.props.devices.items ? this.props.devices.items : [];
     const devices = devicesList.map(({ Id }) => Id)
-    const alarmListProps = { devices };
+    const alarmListProps = {
+      devices,
+      timeRange: this.state.timeRange
+    };
     const telemetryProps = {
       chartId: 'dashboard_telemetry_chart',
       devices: this.props.devices,
+    };
+    const kpiProps = {
+      devices,
+      timeRange: this.state.timeRange
     }
+    const selectProps = {
+      value: this.state.timeRange,
+      onChange: this.onTimeRangeChange,
+      searchable: false,
+      clearable: false,
+      options: [
+        {
+          value: 'PT1H',
+          label: lang.LASTHOUR
+        },
+        {
+          value: 'P1D',
+          label: lang.LASTDAY
+        },
+        {
+          value: 'P1W',
+          label: lang.LASTWEEK
+        },
+        {
+          value: 'P1M',
+          label: lang.LASTMONTH
+        }
+      ]
+    };
 
     return (
       <PageContainer>
         <TopNav breadcrumbs={'Dashboard'} projectName={lang.AZUREPROJECTNAME} />
         <ContextFilters>
+          <div className="timerange-selection dashboard">
+            <div className="last-refreshed-text"> {`${lang.LAST_REFRESHED} | `} </div>
+            <div className="last-refreshed-time">{this.state.lastRefreshed.toLocaleString()}</div>
+            <div onClick={this.refreshData} className="refresh-icon icon-sm" />
+            <Select {...selectProps} />
+          </div>
           <ManageFilterBtn />
         </ContextFilters>
         <PageContent>
@@ -80,7 +135,7 @@ class DashboardPage extends Component {
                 <Telemetry {...telemetryProps} />
               </Col>
               <Col md={4}>
-                <KpiWidget />
+                <KpiWidget {...kpiProps} />
               </Col>
             </Row>
           </Grid>
@@ -92,8 +147,6 @@ class DashboardPage extends Component {
 
 const mapStateToProps = state => {
   return {
-    mapControlDataLoading : state.deviceReducer.mapControlDataLoading,
-    telemetryByDeviceGroup: state.deviceReducer.telemetryByDeviceGroup,
     devices: state.deviceReducer.devices,
     BingMapKey: state.mapReducer.BingMapKey,
     alarmList: state.deviceReducer.alarmsList

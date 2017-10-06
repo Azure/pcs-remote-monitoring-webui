@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import Rx from 'rxjs';
-import Select from 'react-select';
 
 import lang from '../../common/lang';
 import ApiService from '../../common/apiService';
@@ -16,7 +15,7 @@ class AlarmList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      timerange: 'PT1H',
+      timeRange: this.props.timeRange || 'PT1H',
       rowData: [],
       loading: false,
       deviceIdList: ''
@@ -54,8 +53,12 @@ class AlarmList extends Component {
   componentWillReceiveProps(nextProps) {
     // If the device list changes, reload the list data
     const newDeviceIdList = this.generateDeviceIdList(nextProps.devices);
-    if (this.state.deviceIdList !== newDeviceIdList) {
-      this.setState({ deviceIdList: newDeviceIdList }, () => this.getData());
+    if (this.state.deviceIdList !== newDeviceIdList ||
+      this.state.timeRange !== nextProps.timeRange) {
+      this.setState({
+        deviceIdList: newDeviceIdList,
+        timeRange: nextProps.timeRange
+      }, () => this.getData());
     }
   }
 
@@ -74,7 +77,7 @@ class AlarmList extends Component {
 
   onTimeRangeChange(selectedOption) {
     if (!selectedOption) return;
-    this.setState({ timerange: selectedOption.value }, () => this.getData());
+    this.setState({ timeRange: selectedOption.value }, () => this.getData());
   }
 
   generateDeviceIdList(devices) {
@@ -88,7 +91,7 @@ class AlarmList extends Component {
     if (showLoading) this.setState({ loading: true });
     this.getDataSub = Rx.Observable.fromPromise(
       ApiService.getAlarmsByRule({
-        from: `NOW-${this.state.timerange}`,
+        from: `NOW-${this.state.timeRange}`,
         to: 'NOW',
         devices: this.state.deviceIdList
       })
@@ -112,33 +115,7 @@ class AlarmList extends Component {
       <DashboardPanel
         className="alarm-list"
         indicator= {this.state.loading}
-        title={lang.ALARMSTATUS}
-        actions={
-          <Select
-            value={this.state.timerange}
-            onChange={this.onTimeRangeChange.bind(this)}
-            searchable={false}
-            clearable={false}
-            options={[
-              {
-                value: 'PT1H',
-                label: lang.LASTHOUR
-              },
-              {
-                value: 'P1D',
-                label: lang.LASTDAY
-              },
-              {
-                value: 'P1W',
-                label: lang.LASTWEEK
-              },
-              {
-                value: 'P1M',
-                label: lang.LASTMONTH
-              }
-            ]}
-          />
-        }>
+        title={lang.ALARMSTATUS}>
           <div className="grid-container">
             <AlarmsGrid {...alarmsGridProps}/>
           </div>

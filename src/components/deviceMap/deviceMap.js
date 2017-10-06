@@ -11,8 +11,6 @@ import { Row, Col } from 'react-bootstrap';
 import lang from '../../common/lang';
 import config from '../../common/config';
 import DashboardPanel from '../dashboardPanel/dashboardPanel';
-import _ from 'lodash';
-import { getNonFunctionalProps } from '../../common/utils';
 import './deviceMap.css';
 
 class DeviceMap extends Component {
@@ -20,25 +18,8 @@ class DeviceMap extends Component {
     super(props);
     window.loadMap = () => MapPane.init(this.props.BingMapKey);
     this.state = {
-      loadingMap: true,
       mapCallbackComplete: false
     };
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    let nonFunctionalNextProps = _.omit(getNonFunctionalProps(nextProps), [
-      'actions'
-    ]);
-    let nonFunctionalThisProps = _.omit(getNonFunctionalProps(this.props), [
-      'actions'
-    ]);
-    const propsNotEqual = !_.isEqual(
-      nonFunctionalNextProps,
-      nonFunctionalThisProps
-    );
-    const stateNotequal = !_.isEqual(this.state, nextState);
-    let result = propsNotEqual || stateNotequal;
-    return result;
   }
 
   componentDidMount() {
@@ -203,10 +184,17 @@ class DeviceMap extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    showSpinner : state.indicatorReducer.map,
+    telemetryByDeviceGroup: state.deviceReducer.telemetryByDeviceGroup,
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(actions, dispatch)
   };
 };
 
-export default connect(null, mapDispatchToProps)(DeviceMap);
+export default connect(mapStateToProps, mapDispatchToProps)(DeviceMap);

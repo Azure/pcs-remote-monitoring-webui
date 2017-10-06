@@ -1,0 +1,45 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+.timerange-selection.dashboard {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+
+  .Select-value-label,
+  .Select-arrow-zone { color: #fff; }
+
+  .Select {
+    width: 120px;
+    font-size: 16px;
+    color: #fff !important;
+  }
+
+  .Select-menu-outer {
+    width : 120px;
+    margin-left: 10px;
+  }
+
+  .last-refreshed-time {
+    margin-right: 10px;
+    color: #fff;
+  }
+
+  .last-refreshed-text {
+    margin-left: 10px;
+    margin-right: 6px;
+    color: #afb9c3;
+  }
+
+  .refresh-icon {
+    background: url("../../../assets/icons/Refresh.svg") no-repeat center;
+    background-size: contain;
+    cursor: pointer;
+  }
+
+  .icon-sm {
+    width: 14px;
+    height: 14px;
+    margin-left: 2px;
+  }
+
+}

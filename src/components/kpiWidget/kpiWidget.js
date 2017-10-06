@@ -1,84 +1,51 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import Rx from 'rxjs';
 import { connect } from 'react-redux';
 import { refreshAllChartData } from '../../actions/kpiActions';
 import PieChartGraph from './pieChartGraph';
 import BarChart from './barChart';
 import { Grid, Row, Col } from 'react-bootstrap';
-import Select from 'react-select';
 import Config from '../../common/config';
 import Lang from '../../common/lang';
 import DashboardPanel from '../dashboardPanel/dashboardPanel';
-import { getNonFunctionalProps } from '../../common/utils';
-import _ from 'lodash';
 
 import './kpiWidget.css';
 
 class KpiWidget extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.state = {
-      selectedValue: 'H'
+      timeRange: this.props.timeRange || 'PT1H'
     };
 
-    this.updateValue = this.updateValue.bind(this);
-
-    this.options = [
-      {
-        value: 'H',
-        label: Lang.LASTHOUR
-      },
-      {
-        value: 'D',
-        label: Lang.LASTDAY
-      },
-      {
-        value: 'W',
-        label: Lang.LASTWEEK
-      },
-      {
-        value: 'M',
-        label: Lang.LASTMONTH
-      }
-    ];
+    this.subscriptions = [];
+    this.errorSubject = new Rx.Subject();
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    let nonFunctionalNextProps = _.omit(getNonFunctionalProps(nextProps), ['chartDataFetchComplete']);
-    let nonFunctionalThisProps = _.omit(getNonFunctionalProps(this.props), ['chartDataFetchComplete']);
-    return !_.isEqual(nonFunctionalNextProps, nonFunctionalThisProps) || !_.isEqual(this.state, nextState);
-  }
-
-  scheduleAutoUpdate() {
-    this.intervalId = setTimeout(() => {
-      this.props.intervalChanged(this.state.selectedValue);
-    }, Config.INTERVALS.TELEMETRY_UPDATE_MS);
+  componentDidMount() {
+    this.subscriptions.push(
+      Rx.Observable.interval(Config.INTERVALS.TELEMETRY_UPDATE_MS)
+        .startWith(-1)
+        .takeUntil(this.errorSubject)
+        .subscribe(() => this.props.intervalChanged(this.state.timeRange))
+    );
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.chartDataFetchComplete) {
-      this.scheduleAutoUpdate();
+    const { timeRange } = nextProps;
+    if (timeRange && timeRange !== this.props.timeRange) {
+      this.setState(
+        { timeRange },
+        () => this.props.intervalChanged(timeRange)
+      )
     }
   }
 
   componentWillUnmount() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
-  }
-
-  componentWillUpdate(nextProps) {
-    if (nextProps.devices) {
-      this.props.intervalChanged(this.state.selectedValue);
-    }
-  }
-
-  updateValue(newValue) {
-    this.setState({
-      selectedValue: newValue
-    });
-    this.props.intervalChanged(newValue);
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   render() {
@@ -88,17 +55,7 @@ class KpiWidget extends Component {
         indicator={this.props.indicator}
         title={Lang.SYSTEMKPI}
         actions={
-          <Select
-            className="kpi-filters"
-            autofocus
-            options={this.options}
-            value={this.state.selectedValue}
-            onChange={this.updateValue}
-            simpleValue
-            searchable={false}
-            clearable={false}
-            placeholder="{Lang.TIMERANGE}"
-          />
+          <div>more</div>
         }
       >
         <Grid fluid className="kpi-widget">
@@ -129,22 +86,22 @@ const mapDispatchToProps = dispatch => ({
   intervalChanged: timeCode => {
     let firstDurationFrom, secondDurationFrom, secondDurationTo;
     switch (timeCode) {
-      case 'H':
+      case 'PT1H':
         secondDurationTo = firstDurationFrom = 'NOW-PT1H';
         secondDurationFrom = 'NOW-PT2H';
         break;
 
-      case 'D':
+      case 'P1D':
         secondDurationTo = firstDurationFrom = 'NOW-P1D';
         secondDurationFrom = 'NOW-P2D';
         break;
 
-      case 'W':
+      case 'P1W':
         secondDurationTo = firstDurationFrom = 'NOW-P1W';
         secondDurationFrom = 'NOW-P2W';
         break;
 
-      case 'M':
+      case 'P1M':
         secondDurationTo = firstDurationFrom = 'NOW-P1M';
         secondDurationFrom = 'NOW-P2M';
         break;
@@ -158,8 +115,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  devices: state.deviceReducer.devices,
-  chartDataFetchComplete: state.kpiReducer.chartDataFetchComplete,
   indicator: state.indicatorReducer.kpi
 });
 

@@ -20,11 +20,10 @@ export const loadDeviceGroupSuccess = deviceGroup => {
   };
 };
 
-export const loadDashboardData = (deviceIds) => {
+export const loadDashboardData = (deviceIds = '', timeRange) => {
   return dispatch => {
-    dispatch(telemetryActions.loadTelemetryMessagesByDeviceIds(deviceIds));
-    dispatch(loadTelemetryMessagesByDeviceIdsForMap(deviceIds));
-    dispatch(loadDeviceMapAlaramsList(deviceIds));
+    dispatch(loadTelemetryMessagesByDeviceIdsForMap(deviceIds, timeRange));
+    dispatch(loadDeviceMapAlaramsList(deviceIds, timeRange));
   };
 };
 
@@ -42,11 +41,11 @@ export const loadTelemetrMessagesForMapUpdateSuccess = data => {
   };
 };
 
-export const loadTelemetryMessagesByDeviceIdsForMap = (deviceList) => {
+export const loadTelemetryMessagesByDeviceIdsForMap = (deviceList, timeRange) => {
   return dispatch => {
     dispatch(indicatorStart('map'));
     return ApiService.getTelemetryMessages({
-        from: 'NOW-PT30M',
+        from: `NOW-${timeRange}`,
         to: 'NOW',
         devices: deviceList,
         order: 'desc'
@@ -82,9 +81,14 @@ export const loadDevicesByTelemetryMessages = () => {
   };
 };
 
-export const loadDeviceMapAlaramsList = deviceIds => {
+export const loadDeviceMapAlaramsList = (deviceIds, timeRange) => {
   return dispatch => {
-    ApiService.getAlarmsListForDeviceMap(deviceIds.join(','))
+    ApiService.getAlarms({
+      from: `NOW-${timeRange}`,
+      to: 'NOW',
+      devices: deviceIds,
+      order: 'desc'
+    })
       .then(data => {
         dispatch({
           type: types.LOAD_DEVICE_TELEMETRY_SUCCESS,
