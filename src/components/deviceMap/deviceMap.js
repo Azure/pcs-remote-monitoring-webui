@@ -193,7 +193,7 @@ class DeviceMap extends Component {
           <Col md={9} className="bing-map">
             {
               BingMapKey === config.STATUS_CODES.STATIC
-                ? <img src={StaticMap} alt="StaticMap" className="static-bing-map"/>
+                ? <div className="map-container"><img src={StaticMap} alt="StaticMap" className="static-bing-map"/></div>
                 : <div id="deviceMap" className="dashboard_device_map" />
             }
           </Col>

@@ -2,6 +2,7 @@
 
 import * as types from './actionTypes';
 import { loadFailed } from './ajaxStatusActions';
+import { indicatorStart, indicatorEnd } from './indicatorActions';
 import ApiService from '../common/apiService';
 
 export const refreshAllChartDataSuccess = data => {
@@ -24,6 +25,7 @@ export const refreshAllChartData = (
       return;
     }
     const deviceIdsCsv = devices.items.map(device => device.Id).join(',');
+    dispatch(indicatorStart('kpi'));
     dispatch({
       type: types.KPI_REFRESH_CHART_DATA_START
     });
@@ -50,6 +52,7 @@ export const refreshAllChartData = (
       )
     ])
       .then(dataArray => {
+        dispatch(indicatorEnd('kpi'));
         dispatch(
           refreshAllChartDataSuccess({
             alarmsByRule: dataArray[0],
@@ -60,6 +63,7 @@ export const refreshAllChartData = (
         );
       })
       .catch(error => {
+        dispatch(indicatorEnd('kpi'));
         dispatch(loadFailed(error));
         throw error;
       });

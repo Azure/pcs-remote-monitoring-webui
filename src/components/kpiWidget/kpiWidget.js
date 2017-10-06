@@ -85,6 +85,7 @@ class KpiWidget extends Component {
     return (
       <DashboardPanel
         className="kpi-widget"
+        indicator={this.props.indicator}
         title={Lang.SYSTEMKPI}
         actions={
           <Select
@@ -158,7 +159,8 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   devices: state.deviceReducer.devices,
-  chartDataFetchComplete: state.kpiReducer.chartDataFetchComplete
+  chartDataFetchComplete: state.kpiReducer.chartDataFetchComplete,
+  indicator: state.indicatorReducer.kpi
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(KpiWidget);

@@ -1,4 +1,5 @@
-.map-container{
+.map-container {
+  
   .loading-spinner {
     display: flex;
     align-items: center;
@@ -6,11 +7,14 @@
     height: 90%;
   }
 
-  .static-bing-map {
-    width: 100%;
-    height: 100%;
-    background-size: 600px;
+  .map-container {
+    position: relative;
+    overflow: hidden;
+
+    .static-bing-map { height: 336px; }
   }
+
+
 
   .infobox-close {
     top: 1px !important;
@@ -56,7 +60,7 @@
       float: right;
       font-size: 12px;
     }
-
+    
     .device-location { padding-left: 20px; }
   }
 }
