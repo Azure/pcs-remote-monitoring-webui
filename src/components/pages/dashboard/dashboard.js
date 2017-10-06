@@ -124,7 +124,7 @@ class DashboardPage extends Component {
           <Grid fluid className="layout">
             <Row>
               <Col md={8}>
-                {this.props.BingMapKey ? <DeviceMap {...deviceMapProps} /> : null}
+                <DeviceMap {...deviceMapProps} />
               </Col>
               <Col md={4}>
                 <AlarmList {...alarmListProps} />

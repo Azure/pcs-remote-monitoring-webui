@@ -120,7 +120,7 @@ const getBarChartData = (state, ownProps) => {
       Id: data.Rule.Id,
       LastDurationCount: 0,
       Count: data.Count,
-      Description: data.Rule.Description
+      Description: data.Rule.Id
     };
     chartData.push(computedItem);
     if (lastDurationData) {
