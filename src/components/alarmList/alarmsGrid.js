@@ -21,7 +21,6 @@ class AlarmsGrid extends Component {
       alarmColumnDefs.name,
       alarmColumnDefs.severity,
       alarmColumnDefs.created,
-      alarmColumnDefs.firmware,
       alarmColumnDefs.occurrences,
       alarmColumnDefs.explore
     ];
