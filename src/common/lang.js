@@ -172,6 +172,7 @@ const lang = {
   NO_OF_DEVICES: 'No Of Devices',
   NUMBEROFDEVICES: 'Number of devices',
   NUMBER: 'Number',
+  STRING: 'String',
   OCCURRENCE: 'Occurrence',
   OFFLINE: 'Offline',
   ONLINE: 'Online',

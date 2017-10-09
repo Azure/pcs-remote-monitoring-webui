@@ -21,21 +21,15 @@ import PcsBtn from '../shared/pcsBtn/pcsBtn';
 import _ from 'lodash';
 
 const isNumeric = value => typeof value === 'number' || !isNaN(parseInt(value, 10));
-const isBoolean = value =>
-  value !== null && (typeof value === 'boolean' || value.toLowerCase() === 'y' || value.toLowerCase() === 'n');
 
 const typeOptions = [
   {
-    value: 'int',
-    label: Config.STATUS_CODES.INT
+    value: 'Number',
+    label: lang.NUMBER
   },
   {
-    value: 'string',
-    label: Config.STATUS_CODES.STRING
-  },
-  {
-    value: 'boolean',
-    label: Config.STATUS_CODES.BOOLEAN
+    value: 'String',
+    label: lang.STRING
   }
 ];
 
@@ -114,9 +108,7 @@ class DeviceTagFlyout extends React.Component {
           newState.commonTags.push(tagName);
           newState.commonTagValues[tagName] = values.length === 1 ? values[0] : 'Multiple';
           if (values.every(isNumeric)) {
-            newState.commonTagTypes[tagName] = 'Int';
-          } else if (values.every(isBoolean)) {
-            newState.commonTagTypes[tagName] = 'Boolean';
+            newState.commonTagTypes[tagName] = 'Number';
           } else {
             newState.commonTagTypes[tagName] = 'String';
           }
@@ -384,10 +376,7 @@ class DeviceTagFlyout extends React.Component {
           </span>
         </div>
         <div className="button-container">
-          <PcsBtn svg={CancelX}
-            onClick={() => this.setState({ showCreateFilter: false })}>
-            {lang.CANCEL}
-          </PcsBtn>
+          <PcsBtn svg={CancelX} onClick={this.props.onClose}>{lang.CANCEL}</PcsBtn>
           {this.state.showSpinner && <Spinner size="medium" />}
           {this.state.jobApplied
             ? <PcsBtn svg={Apply} value={lang.APPLIED} disabled />

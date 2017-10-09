@@ -15,8 +15,6 @@ export function getTypeOf(val) {
   if (!val) return;
   if (typeof val === 'number') {
     return 'Int';
-  } else if (typeof val === 'string' && (val.toLowerCase() === 'y' || val.toLowerCase() === 'n')) {
-    return 'Boolean';
   } else if (typeof val === 'string' && (getBoundaryChars(val) === '"' || getBoundaryChars(val) === "'")) {
     return 'String';
   }
