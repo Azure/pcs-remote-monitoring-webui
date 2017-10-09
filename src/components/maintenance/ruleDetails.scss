@@ -53,7 +53,10 @@
         margin-right: 10px;
         margin-left: 10px;
 
-        .aggregated-rule-details-header { font-size:  12px; }
+        .aggregated-rule-details-header {
+          font-size: 12px;
+          text-transform: uppercase;
+        }
 
         .aggregated-rule-details-field {
           color: #fff;
