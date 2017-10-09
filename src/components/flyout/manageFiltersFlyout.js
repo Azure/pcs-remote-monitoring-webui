@@ -10,6 +10,7 @@ import CancelX from '../../assets/icons/CancelX.svg';
 import Remove from '../../assets/icons/Remove.svg';
 import Select from 'react-select';
 import Config from '../../common/config';
+import PcsBtn from '../shared/pcsBtn/pcsBtn';
 import Spinner from '../spinner/spinner';
 import lang from '../../common/lang';
 import { typeComputation } from '../../common/utils';
@@ -530,7 +531,9 @@ class ManageFiltersFlyout extends React.Component {
           })}
         </div>
         <div className="flyout-footer">
-          <div onClick={this.props.onClose}>Cancel</div>
+          <PcsBtn onClick={this.props.onClose} svg={CancelX}>
+            {lang.CANCEL}
+          </PcsBtn>
         </div>
       </div>
     );

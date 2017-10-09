@@ -1,6 +1,17 @@
 .manage-filter-container {
   overflow: auto;
 
+  .flyout-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    .pcs-btn {
+      height: 30px;
+      margin-left: 28px;
+    }
+  }
+
   .create-filter {
     padding: 10px 0px 10px 16px;
     cursor: pointer;
