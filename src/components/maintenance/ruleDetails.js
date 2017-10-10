@@ -159,7 +159,7 @@ class RuleDetailsPage extends Component {
     const { btnActions } = this.props;
 
     const rulesAndActionsProps = {
-      rowData: [ruleDetails.rule],
+      rowData: ruleDetails.rule ? [ruleDetails.rule] : [],
       pagination: false,
       softSelectId: this.state.softSelectId,
       getSoftSelectId: btnActions.getSoftSelectId,

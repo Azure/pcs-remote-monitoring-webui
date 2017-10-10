@@ -55,7 +55,7 @@ export const alarmColumnDefs = {
     field: 'Connected',
     tooltipField: "Connected",
     headerTooltip: lang.EXPLOREALARM,
-    cellRendererFramework: () => <ElipsisCellRenderer to={'/maintenance'}/>
+    cellRendererFramework: ({ data }) => <ElipsisCellRenderer to={`/maintenance/rule/${data.ruleId}`} />
   }
 };
 
