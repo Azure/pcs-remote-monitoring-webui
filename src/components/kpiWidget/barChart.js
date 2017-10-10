@@ -13,16 +13,17 @@ import './kpiWidget.css';
 
 class BarChart extends Component {
   shouldComponentUpdate(nextProps, nextState) {
-    let nonFunctionalNextProps = _.omit(getNonFunctionalProps(nextProps), [
-      'chartDataFetchComplete'
-    ]);
-    let nonFunctionalThisProps = _.omit(getNonFunctionalProps(this.props), [
-      'chartDataFetchComplete'
-    ]);
+    let nonFunctionalNextProps = _.omit(getNonFunctionalProps(nextProps), ['chartDataFetchComplete']);
+    let nonFunctionalThisProps = _.omit(getNonFunctionalProps(this.props), ['chartDataFetchComplete']);
     let result = !_.isEqual(nonFunctionalNextProps, nonFunctionalThisProps);
     return result;
   }
-  componentWillUpdate(nextProps) {
+
+  componentWillMount() { this.updateBarChartData(this.props); }
+
+  componentWillUpdate(nextProps) { this.updateBarChartData(nextProps); }
+  
+  updateBarChartData(nextProps) {
     this.barChart = {
       chartConfig: {
         size: {

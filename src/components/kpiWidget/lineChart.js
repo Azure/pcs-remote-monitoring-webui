@@ -12,17 +12,18 @@ import './kpiWidget.css';
 import _ from 'lodash';
 
 class LineChart extends Component {
+  componentWillMount() { this.updateLineChartData(this.props); }
+
   shouldComponentUpdate(nextProps, nextState) {
-    let nonFunctionalNextProps = _.omit(getNonFunctionalProps(nextProps), [
-      'chartDataFetchComplete'
-    ]);
-    let nonFunctionalThisProps = _.omit(getNonFunctionalProps(this.props), [
-      'chartDataFetchComplete'
-    ]);
+    let nonFunctionalNextProps = _.omit(getNonFunctionalProps(nextProps), ['chartDataFetchComplete']);
+    let nonFunctionalThisProps = _.omit(getNonFunctionalProps(this.props), ['chartDataFetchComplete']);
     let result = !_.isEqual(nonFunctionalNextProps, nonFunctionalThisProps);
     return result;
   }
-  componentWillUpdate(nextProps) {
+
+  componentWillUpdate(nextProps) { this.updateLineChartData(nextProps); }
+
+  updateLineChartData(nextProps) {
     this.lineChart = {
       chartConfig: {
         size: {
