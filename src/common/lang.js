@@ -82,6 +82,7 @@ const lang = {
   DISABLE: 'Disable',
   DISABLED: 'Disabled',
   DISABLESELECTEDRULE: 'Disable selected rules',
+  DISABLED_FILTER: '- - - -',
   DISCONNECTED: 'Disconnected',
   DPSTENANT: 'DPS Tenant',
   DROUPDOWNPLACEHOLDER: 'Select',

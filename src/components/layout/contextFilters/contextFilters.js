@@ -2,11 +2,12 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../../actions/actionTypes';
-import { getRegionByDisplayName, loadRegionSpecificDevices } from '../../../actions/filterActions';
 import Select from 'react-select';
 
+import * as actionTypes from '../../../actions/actionTypes';
+import { getRegionByDisplayName, loadRegionSpecificDevices } from '../../../actions/filterActions';
 import FilterSvg from '../../../assets/icons/Filter.svg';
+import lang from '../../../common/lang';
 
 import './contextFilters.css';
 
@@ -14,6 +15,7 @@ class ContextFilters extends Component {
 
   constructor(props) {
     super(props);
+
     this.updateValue = this.updateValue.bind(this);
   }
 
@@ -31,23 +33,35 @@ class ContextFilters extends Component {
 
   render() {
     const { deviceGroups, disableDeviceFilter }  = this.props;
-    let options = (deviceGroups || []).map(group => {
+    const options = (deviceGroups || []).map(group => {
       return { value: group.Id, label: group.DisplayName };
       // The localeCompare() method returns a number indicating whether a reference string comes before or
       // after or is the same as the given string in sort order.
     }).sort((a , b) => a.label.localeCompare(b.label));
+    const disabledClass = disableDeviceFilter ? 'disabled' : '';
+    const optionProps = disableDeviceFilter
+      ? {
+          value: lang.DISABLED_FILTER,
+          options: [{
+            value: lang.DISABLED_FILTER,
+            label: lang.DISABLED_FILTER
+          }]
+        }
+      : {
+          value: this.props.selectedDeviceGroupId,
+          options
+        };
 
     return (
       <div className="context-filter-container">
         <div className="device-group-filter">
-          <img src={FilterSvg} alt="Filter" className="filter-icon" />
-          <div className="select-container">
+          <img src={FilterSvg} alt="Filter" className={`filter-icon ${disabledClass}`} />
+          <div className={`select-container ${disabledClass}`}>
             <Select
               className="top-nav-filters"
               autofocus
-              options={options}
+              {...optionProps}
               disabled={disableDeviceFilter}
-              value={this.props.selectedDeviceGroupId}
               onChange={this.updateValue}
               simpleValue
               searchable={true}

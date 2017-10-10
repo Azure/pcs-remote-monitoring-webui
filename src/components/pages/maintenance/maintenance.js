@@ -319,7 +319,7 @@ class MaintenancePage extends Component {
     return (
       <PageContainer>
         <TopNav breadcrumbs={lang.MAINTENANCE} projectName={lang.AZUREPROJECTNAME} />
-        <ContextFilters>
+        <ContextFilters disableDeviceFilter={(this.props.params || {}).id !== undefined}>
           {pcsBtn({ // Change status button
             svg: this.state.toggleButtonSvg,
             onClick: this.showToggleRules,

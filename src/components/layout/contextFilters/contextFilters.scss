@@ -16,9 +16,19 @@ $borderColor: #454a4e;
     padding-left: 18px;
     border-right: 1px solid $borderColor;
 
-    .filter-icon { width: 13px; }
+    .filter-icon {
+      width: 13px;
+
+      &.disabled { opacity: 0.5; }
+    }
 
     .select-container { width: 200px; }
+
+    .select-container {
+      width: 200px;
+
+      &.disabled { margin-top: -4px; }
+    }
   }
 
   .dynamic-filters-container {
@@ -48,10 +58,12 @@ $borderColor: #454a4e;
   margin-top: 4px;
 }
 
+.Select.is-disabled { opacity: 0.5; }
+
 .Select.is-disabled .Select-arrow-zone {
   cursor: default;
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.5;
 }
 
 
