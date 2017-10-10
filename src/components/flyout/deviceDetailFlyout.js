@@ -107,7 +107,7 @@ class DeviceDetailFlyout extends Component {
   componentDidMount() {
     this.subscriptions.push(
       Rx.Observable
-        .interval(Config.INTERVALS.TELEMETRY_UPDATE)
+        .interval(Config.INTERVALS.TELEMETRY_UPDATE_MS)
         .startWith(-1)
         .takeUntil(this.errorSubject)
         .subscribe(cnt => this.getData(cnt < 0))
