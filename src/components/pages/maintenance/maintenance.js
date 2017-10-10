@@ -225,7 +225,7 @@ class MaintenancePage extends Component {
     if (!jobs || !jobs.length) { return; }
     const job = _.find(jobs, { jobId: props.params.jobId });
     let deviceJobs = [];
-    if (job.queryCondition) {
+    if (job && job.queryCondition) {
       const idx = job.queryCondition.indexOf('in [');
       if (idx !== -1) {
         const idx2 = job.queryCondition.indexOf(']', idx);
@@ -246,8 +246,8 @@ class MaintenancePage extends Component {
           this.systemStatusColumnDefsLocal.lastReturnMessage.hide = job.type === 4;
         }
       }
+      this.setState({ systemStatusDetailsDevices: deviceJobs, systemStatusDetailsJobs: [job] });
     }
-    this.setState({ systemStatusDetailsDevices: deviceJobs, systemStatusDetailsJobs: [job] });
   }
 
   onDeviceJobSoftSelectChange({deviceId}) {

@@ -25,7 +25,8 @@ class DeviceScheduleFlyout extends React.Component {
       showJobContent: false,
       showFirmwareContent: false,
       showSpinner: false,
-      jobApplied: false
+      jobApplied: false,
+      jobId: ''
     };
 
     this.getAvailableMethods = this.getAvailableMethods.bind(this);
@@ -76,10 +77,11 @@ class DeviceScheduleFlyout extends React.Component {
       }
     };
     this.setState({ showSpinner: true });
-    ApiService.scheduleJobs(payload).then(data => {
+    ApiService.scheduleJobs(payload).then(({ jobId }) => {
       this.setState({
         showSpinner: false,
-        jobApplied: true
+        jobApplied: true,
+        jobId
       })
     });
   }
@@ -87,7 +89,7 @@ class DeviceScheduleFlyout extends React.Component {
   render() {
     const { devices } = this.props;
     const deepLinkSectionProps = {
-      path: `/maintenance`,
+      path: `/maintenance/job/${this.state.jobId}`,
       description: lang.VIEW_JOB_STATUS,
       linkText: lang.VIEW
     };
@@ -177,7 +179,7 @@ class DeviceScheduleFlyout extends React.Component {
                 {lang.CHOOSE_NEW_DEVICES}
               </div>
             </div>}
-            {this.state.jobApplied ? <DeepLinkSection {...deepLinkSectionProps}/> : null}
+            {this.state.jobApplied ? <DeepLinkSection {...deepLinkSectionProps} /> : null}
       </div>
     );
   }

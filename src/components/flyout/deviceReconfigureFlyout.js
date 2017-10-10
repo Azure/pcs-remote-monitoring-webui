@@ -25,7 +25,8 @@ class DeviceReconfigureFlyout extends React.Component {
     this.state = {
       commonConfiguration: [],
       jobInputValue: '',
-      jobApplied: false
+      jobApplied: false,
+      jobId: ''
     };
 
     this.commonConfigValueChanged = this.commonConfigValueChanged.bind(this);
@@ -150,10 +151,11 @@ class DeviceReconfigureFlyout extends React.Component {
     };
 
     this.setState({ showSpinner: true });
-    ApiService.scheduleJobs(payload).then(data => {
+    ApiService.scheduleJobs(payload).then(({ jobId }) => {
       this.setState({
         showSpinner: false,
-        jobApplied: true
+        jobApplied: true,
+        jobId
       });
     });
   }
@@ -215,7 +217,7 @@ class DeviceReconfigureFlyout extends React.Component {
     let totalAffectedDevices = this.props.devices ? this.props.devices.length : 0;
     const disabledButton = !this.state.jobInputValue;
     const deepLinkSectionProps = {
-      path: `/maintenance`,
+      path: `/maintenance/job/${this.state.jobId}`,
       description: lang.VIEW_JOB_STATUS,
       linkText: lang.VIEW
     };

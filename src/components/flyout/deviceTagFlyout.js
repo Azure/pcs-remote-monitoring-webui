@@ -48,7 +48,8 @@ class DeviceTagFlyout extends React.Component {
       commonTagValues: {},
       commonTagTypes: [],
       showCreateFilter: false,
-      jobApplied: false
+      jobApplied: false,
+      jobId: ''
     };
     this.addNewTag = this.addNewTag.bind(this);
     this.deleteExistingTag = this.deleteExistingTag.bind(this);
@@ -202,8 +203,12 @@ class DeviceTagFlyout extends React.Component {
       }
     };
     this.setState({ showSpinner: true });
-    ApiService.scheduleJobs(payload).then(_ =>
-      this.setState({ showSpinner: false, jobApplied: true })
+    ApiService.scheduleJobs(payload).then(({ jobId }) =>
+      this.setState({ 
+        showSpinner: false, 
+        jobApplied: true,
+        jobId
+      })
     );
   }
 
@@ -308,7 +313,7 @@ class DeviceTagFlyout extends React.Component {
 
   render() {
     const deepLinkSectionProps = {
-      path: `/maintenance`,
+      path: `/maintenance/job/${this.state.jobId}`,
       description: lang.VIEW_JOB_STATUS,
       linkText: lang.VIEW
     };
