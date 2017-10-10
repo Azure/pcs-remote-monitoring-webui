@@ -10,6 +10,7 @@ WORKDIR /app
 RUN apk update && apk upgrade \
  && apk add --no-cache nodejs-npm \
  && npm install \
+ && export CI=true \
  && npm run build \
  && rm -rf node_modules src public package.json Dockerfile .dockerignore \
  && apk del --force --purge ncurses-terminfo ncurses-terminfo-base ncurses-libs readline \

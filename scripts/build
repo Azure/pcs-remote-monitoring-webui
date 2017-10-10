@@ -5,10 +5,10 @@ source "$APP_HOME/scripts/.functions.sh"
 
 check_dependency_npm
 
+# Treat warnings as errors because
 export CI=true
 
-## broken
-# npm test
+npm test
 
-## broken
+## broken? "flow" is not recognized
 # npm flow
