@@ -8,10 +8,11 @@ function onlineWarn(radius, clusterSize) {
     radius * 2,
     '" height="',
     radius * 2,
+
     '">',
     '<rect width="24" x="0" y="5" height="24" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(175,185,195)" />',
     '<rect width="8" x="18" y="0" height="8" fill="#FDE870" />',
-    '<text x="10" y="18" text-anchor="middle" alignment-baseline="central" font-size="12" style="fill:black">' +
+    '<text x="10" y="18" text-anchor="middle" alignment-baseline="central" font-size="12" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" style="fill:black">' +
       clusterSize +
       '</text>',
     '</svg>'
@@ -27,7 +28,7 @@ function onlineAlarm(radius, clusterSize) {
     '">',
     '<rect width="24" height="24"  x="0" y="7" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(175,185,195)" />',
     '<polygon points="23,0 29,10.6 17,11" fill="#fc540a" />',
-    '<text x="12" y="20" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
+    '<text x="12" y="20" font-size="12" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
       clusterSize +
       '</text>',
     '</svg>'
@@ -42,7 +43,7 @@ function online(radius, clusterSize) {
     radius * 2,
     '">',
     '<rect width="24" height="24" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(175,185,195)" />',
-    '<text x="10" y="12" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
+    '<text x="10" y="12" font-size="12" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
       clusterSize +
       '</text>',
     '</svg>'
@@ -57,7 +58,7 @@ function offline(radius, clusterSize) {
     radius * 2,
     '">',
     '<rect width="24" height="24" style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(255,255,255)" />',
-    '<text x="10" y="12" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
+    '<text x="10" y="12" font-size="12" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
       clusterSize +
       '</text>',
     '</svg>'
@@ -73,7 +74,7 @@ function offlineAlarm(radius, clusterSize) {
     '">',
     '<rect width="24" height="24" x="0" y="7" style="fill:rgb(175,185,195);stroke-width:2;stroke:rgb(255,255,255)" />',
     '<polygon points="23,0 29,10.6 17,11" fill="#fc540a" />',
-    '<text x="12" y="20" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
+    '<text x="12" y="20" font-size="12" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
       clusterSize +
       '</text>',
     '</svg>'
@@ -89,7 +90,7 @@ function offlineWarn(radius, clusterSize) {
     '">',
     '<rect width="24" x="0" y="5" height="24" style="fill:rgb(175,185,195);stroke-width:2;stroke:rgb(255,255,255)" />',
     '<rect width="8" x="18" y="0" height="8" fill="#FDE870" />',
-    '<text x="10" y="20" font-size="12" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
+    '<text x="10" y="20" font-size="12" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" style="fill:black" text-anchor="middle" alignment-baseline="central">' +
       clusterSize +
       '</text>',
     '</svg>'
@@ -107,7 +108,7 @@ const defaultIcon = function(severity, isConnected, deviceId) {
       'style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(132, 129, 129)"/>',
     '<polygon points="23,0 29,10.6 17,11" fill="#fc540a" transform="translate(48)"/>',
     '<text x="40" y="10" text-anchor="middle" alignment-baseline="central" ' +
-      'font-size="10" style="fill:black;stroke-width:1">' +
+      'font-size="10" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" style="fill:black;stroke-width:1">' +
       deviceId +
       '</text>',
     '</svg>'
@@ -119,7 +120,7 @@ const defaultIcon = function(severity, isConnected, deviceId) {
       'style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(132, 129, 129)"/>',
     '<rect width="10" x="65" y="0" height="10" fill="#FDE870" />',
     '<text x="40" y="10" text-anchor="middle" alignment-baseline="central" ' +
-      'font-size="11" style="fill:black;stroke-width:1">' +
+      'font-size="11" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" style="fill:black;stroke-width:1">' +
       deviceId +
       '</text>',
     '</svg>'
@@ -130,7 +131,7 @@ const defaultIcon = function(severity, isConnected, deviceId) {
     '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
       'style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(132, 129, 129)"/>',
     '<text x="40" y="10" text-anchor="middle" alignment-baseline="central" ' +
-      'font-size="11" style="fill:black;stroke-width:1">' +
+      'font-size="11" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" style="fill:black;stroke-width:1">' +
       deviceId +
       '</text>',
     '</svg>'
@@ -142,7 +143,7 @@ const defaultIcon = function(severity, isConnected, deviceId) {
       'style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(132, 129, 129)"/>',
     '<polygon points="23,0 29,10.6 17,11" fill="#fc540a" transform="translate(64-1)"/>',
     '<text x="40" y="10" text-anchor="middle" alignment-baseline="central" ' +
-      'font-size="11" style="fill:black;stroke-width:1">' +
+      'font-size="11" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" style="fill:black;stroke-width:1">' +
       deviceId +
       '</text>',
     '</svg>'
@@ -154,7 +155,7 @@ const defaultIcon = function(severity, isConnected, deviceId) {
       'style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(132, 129, 129)"/>',
     '<rect width="10" x="65" y="0" height="10" fill="#FDE870" />',
     '<text x="41" y="10" text-anchor="middle" alignment-baseline="central" ' +
-      'font-size="11" style="fill:black;stroke-width:1">' +
+      'font-size="11" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" style="fill:black;stroke-width:1">' +
       deviceId +
       '</text>',
     '</svg>'
@@ -165,7 +166,7 @@ const defaultIcon = function(severity, isConnected, deviceId) {
     '<path transform="translate(7,3) scale(0.7,0.7)" class="cls-1" d="M0,0H89.71V24H47.642l-3.534,7-4.13-7H0Z" ' +
       'style="fill:rgb(175,185,195);stroke-width:3;stroke:rgb(132, 129, 129)"/>',
     '<text x="41" y="10" text-anchor="middle" alignment-baseline="central" ' +
-      'font-size="11" style="fill:black;stroke-width:1">' +
+      'font-size="11" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" style="fill:black;stroke-width:1">' +
       deviceId +
       '</text>',
     '</svg>'

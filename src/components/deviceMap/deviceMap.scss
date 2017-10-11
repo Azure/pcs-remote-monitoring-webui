@@ -1,5 +1,6 @@
 .map-container {
-  
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+
   .loading-spinner {
     display: flex;
     align-items: center;
@@ -32,6 +33,7 @@
     background-color: #000 !important;
 
     .infobox-title {
+      font-family: inherit;
       font-size: 10px !important;
       padding: 5px !important;
       margin-bottom: -2px !important;
@@ -40,6 +42,7 @@
   }
 
   .bing-map {
+    font-family: inherit;
     height: 356px;
     margin-left: -15px;
   }
@@ -60,7 +63,7 @@
       float: right;
       font-size: 12px;
     }
-    
+
     .device-location { padding-left: 20px; }
   }
 }
