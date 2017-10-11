@@ -16,14 +16,22 @@ import './deviceMap.css';
 class DeviceMap extends Component {
   constructor(props) {
     super(props);
-    window.loadMap = () => MapPane.init(this.props.BingMapKey);
-    this.state = {
-      mapCallbackComplete: false
+    window.loadMap = () => {
+      MapPane.init(this.props.BingMapKey);
+      if (this.props.BingMapKey && this.props.BingMapKey !== config.STATUS_CODES.STATIC) {
+         this.showMap(this.props);
+       }
     };
+    this.state = { mapCallbackComplete: false };
   }
 
   componentDidMount() {
-    if (this.props.BingMapKey && this.props.BingMapKey !== config.STATUS_CODES.STATIC) {
+    this.addScript(this.props);
+  }
+
+  addScript(nextProps) {
+    if (!this.createdScript && nextProps.BingMapKey && nextProps.BingMapKey !== config.STATUS_CODES.STATIC) {
+      this.createdScript = true;
       this.createScript( 'https://www.bing.com/api/maps/mapcontrol?callback=loadMap' );
     }
   }
@@ -32,23 +40,23 @@ class DeviceMap extends Component {
     if (
       !nextProps.devices ||
       !nextProps.telemetryByDeviceGroup ||
-      !nextProps.alarmList
+      !nextProps.alarmList ||
+      !nextProps.BingMapKey
     ) {
       //the data is not loaded yet, return !
       return;
     }
+    this.addScript(nextProps);
     if (nextProps.BingMapKey && nextProps.BingMapKey !== config.STATUS_CODES.STATIC) {
-      this.showMap(nextProps);
-    }
+       this.showMap(nextProps);
+     }
   }
 
   showMap(props) {
     this.setState({ mapCallbackComplete: true });
     const { devices, telemetryByDeviceGroup, alarmList, actions } = props;
 
-    if (!devices || !telemetryByDeviceGroup || !alarmList) {
-      return;
-    }
+    if (!devices || !telemetryByDeviceGroup || !alarmList)  return;
 
     //If control reaches here, that means map is loaded and also the data is also loaded.
     devices.items.forEach(device => {
@@ -172,11 +180,10 @@ class DeviceMap extends Component {
         <Row>
           <RegionDetails {...this.props} />
           <Col md={9} className="bing-map">
-            {
-              BingMapKey === config.STATUS_CODES.STATIC
-                ? <div className="map-container"><img src={StaticMap} alt="StaticMap" className="static-bing-map"/></div>
-                : <div id="deviceMap" className="dashboard_device_map" />
-            }
+          { BingMapKey ?
+            (BingMapKey === config.STATUS_CODES.STATIC
+            ? <div className="map-container"><img src={StaticMap} alt="StaticMap" className="static-bing-map"/></div>
+            : <div id="deviceMap" className="dashboard_device_map" />) : null }
           </Col>
         </Row>
       </DashboardPanel>
