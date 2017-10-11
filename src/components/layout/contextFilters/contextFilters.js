@@ -28,7 +28,9 @@ class ContextFilters extends Component {
   }
 
   updateValue(selectedGroupId) {
-    this.props.deviceGroupChanged(selectedGroupId, this.props.deviceGroups)
+    if (selectedGroupId !== this.props.selectedDeviceGroupId) {
+      this.props.deviceGroupChanged(selectedGroupId, this.props.deviceGroups)
+    }
   }
 
   render() {

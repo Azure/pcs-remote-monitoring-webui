@@ -26,23 +26,6 @@ function postGroupData(group) {
   return data;
 }
 
-/**
- * Delete Object properties with value of empty array or empty string
- *
- * @param params An object containing API parameters
- */
-function filterParamObject(params) {
-  const newParams = Object.assign({}, params);
-  Object.keys(params)
-    .forEach(param => {
-      const value = params[param];
-      if (value === '' || (Array.isArray(value) && value.length === 0)) {
-        delete newParams[param];
-      }
-    });
-  return newParams;
-}
-
 class ApiService {
 
   static getCurrentUser() {
@@ -108,7 +91,7 @@ class ApiService {
    *    "devices": A filter used to request messages for specific devices
    */
   static getTelemetryMessages(params = {}) {
-    return Http.get(`${Config.telemetryApiUrl}messages?${ApiService.serializeParamObject(filterParamObject(params))}`
+    return Http.get(`${Config.telemetryApiUrl}messages?${ApiService.serializeParamObject(params)}`
     );
   }
 
@@ -149,7 +132,7 @@ class ApiService {
    *    "devices": A filter used to request alarms for specific devices
    */
   static getAlarms(params = {}) {
-    return Http.get(`${Config.telemetryApiUrl}alarms?${ApiService.serializeParamObject(filterParamObject(params))}`);
+    return Http.get(`${Config.telemetryApiUrl}alarms?${ApiService.serializeParamObject(params)}`);
   }
 
   /**
@@ -164,7 +147,7 @@ class ApiService {
    *    "devices": A filter used to request alarms for specific devices
    */
   static getAlarmsByRule(params = {}) {
-    return Http.get(`${Config.telemetryApiUrl}alarmsbyrule?${ApiService.serializeParamObject(filterParamObject(params))}`);
+    return Http.get(`${Config.telemetryApiUrl}alarmsbyrule?${ApiService.serializeParamObject(params)}`);
   }
 
   static getAlarmListByRule(id, params = {}) {

@@ -6,6 +6,7 @@ import { loadDeviceSuccess } from './deviceActions';
 import { indicatorStart } from './indicatorActions';
 import ApiService from '../common/apiService';
 import * as telemetryActions from './telemetryActions';
+import lang from '../common/lang';
 
 function setDefaultDeviceGroupId(dispatch, deviceGroups){
   if (deviceGroups.length > 0) {
@@ -50,19 +51,33 @@ export const loadRegionSpecificDevices = (selectedGroupConditions, groupId) => {
       type: types.DEVICE_GROUP_CHANGED,
       data: groupId
     });
-    ApiService.getDevicesForGroup(selectedGroupConditions)
-      .then(data => {
-        dispatch(loadDeviceSuccess(data));
-        if (data && data.items) {
-          const deviceIds = data.items.map(device => device.Id);
-          dispatch(
-            telemetryActions.loadTelemetryMessagesByDeviceIds(deviceIds)
-          );
-        }
-      })
-      .catch(error => {
-        dispatch(loadFailed(error));
-        throw error;
-      });
+    selectedGroupConditions.length === 0
+      ? ApiService.getDevicesForGroup(selectedGroupConditions)
+        .then(data => {
+          dispatch(loadDeviceSuccess(data));
+          if (data && data.items) {
+            dispatch(
+              telemetryActions.loadTelemetryMessagesByDeviceIds(lang.ALLDEVICES)
+            );
+          }
+        })
+        .catch(error => {
+          dispatch(loadFailed(error));
+          throw error;
+        })
+      : ApiService.getDevicesForGroup(selectedGroupConditions)
+        .then(data => {
+          dispatch(loadDeviceSuccess(data));
+          if (data && data.items) {
+            const deviceIds = data.items.map(device => device.Id);
+            dispatch(
+              telemetryActions.loadTelemetryMessagesByDeviceIds(deviceIds)
+            );
+          }
+        })
+        .catch(error => {
+          dispatch(loadFailed(error));
+          throw error;
+        });
   };
 };

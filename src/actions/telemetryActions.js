@@ -4,6 +4,7 @@ import * as types from './actionTypes';
 import { loadFailed } from './ajaxStatusActions';
 import { indicatorStart, indicatorEnd } from './indicatorActions';
 import ApiService from '../common/apiService';
+import lang from '../common/lang';
 
 export const loadTelemetryTypesSuccess = data => {
   return {
@@ -64,20 +65,34 @@ export const loadTelemetryMessages = params => {
 export const loadTelemetryMessagesByDeviceIds = deviceList => {
   return dispatch => {
     dispatch(indicatorStart('telemetry'));
-    return ApiService.getTelemetryMessages({
-        from: 'NOW-PT15M',
-        to: 'NOW',
-        devices: deviceList,
-        order: 'desc'
-      })
-      .then(data => {
-        dispatch(loadTelemetrMessagesSuccess(data));
-        dispatch(indicatorEnd('telemetry'));
-      })
-      .catch(error => {
-        dispatch(loadFailed(error));
-        throw error;
-      });
+    return deviceList === lang.ALLDEVICES
+      ? ApiService.getTelemetryMessages({
+          from: 'NOW-PT15M',
+          to: 'NOW',
+          order: 'desc'
+        })
+        .then(data => {
+          dispatch(loadTelemetrMessagesSuccess(data));
+          dispatch(indicatorEnd('telemetry'));
+        })
+        .catch(error => {
+          dispatch(loadFailed(error));
+          throw error;
+        })
+      : ApiService.getTelemetryMessages({
+          from: 'NOW-PT15M',
+          to: 'NOW',
+          devices: deviceList,
+          order: 'desc'
+        })
+        .then(data => {
+          dispatch(loadTelemetrMessagesSuccess(data));
+          dispatch(indicatorEnd('telemetry'));
+        })
+        .catch(error => {
+          dispatch(loadFailed(error));
+          throw error;
+        });
   };
 };
 

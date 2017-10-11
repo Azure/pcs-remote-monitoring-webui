@@ -34,9 +34,15 @@ class DashboardPage extends Component {
 
   componentDidMount() {
     const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
-    this.props.actions.loadTelemetryMessagesByDeviceIds(deviceIds);
-    this.loadMapData();
     this.props.actions.loadMapkey();
+    if (this.props.selectedDeviceGroup === '') {
+      // Default query messages and alarms for all devices
+      this.props.actions.loadDashboardData(lang.ALLDEVICES, this.state.timeRange);
+      this.props.actions.loadTelemetryMessagesByDeviceIds(lang.ALLDEVICES);
+    } else {
+      this.props.actions.loadTelemetryMessagesByDeviceIds(deviceIds);
+      this.loadMapData();
+    }
   }
 
   componentWillUnmount() {
@@ -149,7 +155,8 @@ const mapStateToProps = state => {
   return {
     devices: state.deviceReducer.devices,
     BingMapKey: state.mapReducer.BingMapKey,
-    alarmList: state.deviceReducer.alarmsList
+    alarmList: state.deviceReducer.alarmsList,
+    selectedDeviceGroup: state.filterReducer.selectedDeviceGroupId
   };
 };
 
