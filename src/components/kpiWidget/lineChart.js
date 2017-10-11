@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Chart from './generateChart';
 import { Col } from 'react-bootstrap';
 import DeltaDown from '../../assets/icons/DeltaDown.svg';
 import DeltaUp from '../../assets/icons/DeltaUp.svg';
@@ -53,7 +52,6 @@ class LineChart extends Component {
   }
 
   render() {
-    const lineChart = this.lineChart;
     return (
       <Col md={6} className="line-chart">
         <div className="line-header">
@@ -78,15 +76,9 @@ class LineChart extends Component {
                     : `${DeltaUp}`
                 }
               />
-              {this.props.percentChange}% </div>
+              {this.props.percentChange} <span className="percentage-icon">%</span></div>
             : null}
         </div>
-        {lineChart && this.props.lineChartData && lineChart.chartConfig
-          ? <Chart
-              chartConfig={lineChart.chartConfig}
-              chartId={lineChart.chartId}
-            />
-          : null}
       </Col>
     );
   }

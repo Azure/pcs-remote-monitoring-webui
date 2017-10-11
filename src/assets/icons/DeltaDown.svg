@@ -1,12 +1,10 @@
 <!-- Copyright (c) Microsoft. All rights reserved. -->
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-23268 -23775.971 8.322 6.971">
-  <defs>
-    <style>
-      .cls-1 {
-        fill: #4eff92;
-      }
-    </style>
-  </defs>
-  <path id="Path_1031" data-name="Path 1031" class="cls-1" d="M3.92,7.148l4.4,6.971H0Z" transform="translate(-23259.678 -23761.852) rotate(180)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14.398 16">
+  <title>Delta</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Random">
+      <path d="M8,0V12.938l5.266-5.266L14.4,8.8,7.2,16,0,8.8,1.133,7.672,6.4,12.938V0Z" fill="#7085FD"/>
+    </g>
+  </g>
 </svg>
