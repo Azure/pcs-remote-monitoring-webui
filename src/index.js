@@ -39,21 +39,13 @@ ReactDOM.render(
         <Route path="/rulesActions" component={RulesAndActionsPage} />
         <Route path="/maintenance" component={MaintenancePage}>
           <IndexRoute component={MaintenanceWidget} />
-          <Route path="rule/:id" component={RuleDetailsPage} />
           <Route path="/maintenance/:id" component={MaintenanceWidget}>
             <IndexRoute component={AlarmsByRuleGrid} />
             <Route path="/alarmsByRule" component={AlarmsByRuleGrid} />
-          </Route>
-          <Route path="/maintenance/:id" component={AlarmsByRuleGrid}>
-            <Route path="rule/:id" component={RuleDetailsPage} />
-          </Route>
-          <Route path="/maintenance" component={MaintenanceWidget}>
-            <IndexRoute component={SystemStatusGrid} />
             <Route path="/systemStatus" component={SystemStatusGrid} />
           </Route>
-          <Route path="/maintenance" component={SystemStatusDetailsGrid}>
-            <Route path="job/(:jobId)" component={SystemStatusDetailsGrid} />
-          </Route>
+          <Route path="rule/:id" component={RuleDetailsPage} />
+          <Route path="job/(:jobId)" component={SystemStatusDetailsGrid} />
         </Route>
       </Route>
     </Router>
