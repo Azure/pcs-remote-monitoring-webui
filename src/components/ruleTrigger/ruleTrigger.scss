@@ -45,12 +45,6 @@
             color: white !important;
         }
 
-        input {
-            border: 1px solid #646A71;
-            background-color: #1B1D1F;
-            width: 100%;
-        }
-
         label {
             margin-top: 12px;
         }
@@ -74,7 +68,8 @@
     }
 
     .value {
-        height: 36px;
+        height: 31px;
+        margin-top: 2px;
     }
 
     .img-show {
