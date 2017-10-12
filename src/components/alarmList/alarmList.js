@@ -21,18 +21,31 @@ class AlarmList extends Component {
       deviceIdList: ''
     };
 
-    this.subscriptions = [];
-    this.errorSubject = new Rx.Subject();
+    // Event subjects: used to create events
+    this.refreshEvents = new Rx.Subject();
+    this.delayedRefreshEvents = new Rx.Subject();
+    // Event streams: converts events into actual service call observables
+    this.refreshStream = this.refreshEvents
+      .map(this.createGetDataEvent);
+    this.delayedRefreshStream = this.delayedRefreshEvents
+      .map(eventName => 
+        Rx.Observable.of(eventName)
+          .delay(Config.INTERVALS.TELEMETRY_UPDATE_MS)
+          .flatMap(this.createGetDataEvent)
+      );
   }
 
   componentDidMount() {
-    // Initialize the grid and start refreshing
-    this.subscriptions.push(
-      Rx.Observable.interval(Config.INTERVALS.TELEMETRY_UPDATE_MS)
-        .startWith(-1)
-        .takeUntil(this.errorSubject)
-        .subscribe((cnt) => this.getData(cnt < 0))
-    );
+    // Start listening to the refresh streams to update the row data
+    this.refreshSubscription = 
+      this.refreshStream
+        .merge(this.delayedRefreshStream)
+        .switch() // Only take the latest event
+        .do(_ => this.delayedRefreshEvents.next(`intervalRefresh`)) // After each call, kick off a refresh
+        .subscribe(
+          rowData => this.setState({ rowData, loading: false }),
+          err => this.setState({ loading: false })
+        );
   }
 
   /**
@@ -45,9 +58,7 @@ class AlarmList extends Component {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-    if (this.getDataSub && this.getDataSub.unsubscribe)
-      this.getDataSub.unsubscribe();
+    this.refreshSubscription.unsubscribe();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -55,15 +66,27 @@ class AlarmList extends Component {
     const newDeviceIdList = this.generateDeviceIdList(nextProps.devices);
     if (this.state.deviceIdList !== newDeviceIdList ||
       this.state.timeRange !== nextProps.timeRange) {
-      this.setState({
-        deviceIdList: newDeviceIdList,
-        timeRange: nextProps.timeRange
-      }, () => this.getData());
+      this.setState(
+        {
+          deviceIdList: newDeviceIdList,
+          timeRange: nextProps.timeRange
+        }, 
+        () => this.refreshEvents.next(`filterGroupRefresh`)
+      );
     }
   }
 
-  dataFormatter(data) {
-    return data.map(item => {
+  onTimeRangeChange(selectedOption) {
+    if (!selectedOption) return;
+    this.setState({ timeRange: selectedOption.value }, () => this.refreshEvents.next(`timeRangeRefresh`));
+  }
+
+  generateDeviceIdList(devices) {
+    return devices.map(id => encodeURIComponent(id)).join(',');
+  }
+
+  dataFormatter = ({ Items }) => {
+    return Items.map(item => {
       return {
         ruleId: item.Rule.Id,
         created: item.Created,
@@ -73,43 +96,22 @@ class AlarmList extends Component {
         status: item.Status
       };
     });
-  }
+  };
 
-  onTimeRangeChange(selectedOption) {
-    if (!selectedOption) return;
-    this.setState({ timeRange: selectedOption.value }, () => this.getData());
-  }
-
-  generateDeviceIdList(devices) {
-    return devices.map(id => encodeURIComponent(id)).join(',');
-  }
-
-  getData(showLoading = true) {
-    // If no device list is provided, do not initialize the alarm list
-    // since the device group has not been selected
-    if (!this.state.deviceIdList) return;
-    if (showLoading) this.setState({ loading: true });
-    this.getDataSub = Rx.Observable.fromPromise(
-      ApiService.getAlarmsByRule({
-        from: `NOW-${this.state.timeRange}`,
-        to: 'NOW',
-        devices: this.state.deviceIdList
-      })
-    )
-    .map(({ Items }) => this.dataFormatter(Items))
-    .subscribe(
-      rowData => this.setState({ rowData, loading: false }),
-      err => {
-        this.setState({ loading: false });
-        this.errorSubject.next(undefined);
-      }
-    );
+  createGetDataEvent = (eventName) => {
+    this.setState({ loading: true });
+    return Rx.Observable.fromPromise(
+        ApiService.getAlarmsByRule({
+          from: `NOW-${this.state.timeRange}`,
+          to: 'NOW',
+          devices: this.state.deviceIdList
+        })
+      )
+      .map(this.dataFormatter);
   };
 
   render() {
-    const alarmsGridProps = {
-      rowData: this.state.rowData
-    }
+    const alarmsGridProps = { rowData: this.state.rowData };
 
     return (
       <DashboardPanel
@@ -117,7 +119,7 @@ class AlarmList extends Component {
         indicator= {this.state.loading}
         title={lang.ALARMSTATUS}>
           <div className="grid-container">
-            <AlarmsGrid {...alarmsGridProps}/>
+            <AlarmsGrid {...alarmsGridProps} />
           </div>
       </DashboardPanel>
     );
