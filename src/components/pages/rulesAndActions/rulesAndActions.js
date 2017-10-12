@@ -182,9 +182,22 @@ class RulesAndActionsPage extends Component {
     );
   }
 
+  isAllDevices() {
+    let selectedGroupConditions = null;
+    this.props.deviceGroups.some(group => {
+      if (group.Id === this.props.selectedDeviceGroupId) {
+        selectedGroupConditions = group.Conditions;
+        return true;
+      }
+      return false;
+    });
+
+    return selectedGroupConditions === null || selectedGroupConditions.length === 0;
+  }
+
   render() {
     const rulesAndActionsProps = {
-      rowData: this.state.rulesAndActions,
+      rowData: this.isAllDevices() ? this.state.rulesAndActions : this.state.rulesAndActions.filter(rule => rule.GroupId === this.props.selectedDeviceGroupId),
       softSelectId: this.state.softSelectId,
       getSoftSelectId: this.getSoftSelectId,
       onGridReady: this.onGridReady,
@@ -204,10 +217,17 @@ class RulesAndActionsPage extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    deviceGroups: state.filterReducer.deviceGroups,
+    selectedDeviceGroupId: state.filterReducer.selectedDeviceGroupId
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(actions, dispatch)
   };
 };
 
-export default connect(null, mapDispatchToProps)(RulesAndActionsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(RulesAndActionsPage);
