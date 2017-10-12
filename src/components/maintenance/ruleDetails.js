@@ -171,8 +171,6 @@ class RuleDetailsPage extends Component {
     });
   }
 
-  onGridReady = gridReadyEvent => gridReadyEvent.api.sizeColumnsToFit();
-
   render() {
     const ruleId = (this.props.params || {}).id;
     const ruleDetails = this.props.alarmsGridData.filter(({ id }) => id === ruleId)[0];
@@ -187,7 +185,7 @@ class RuleDetailsPage extends Component {
       pagination: false,
       softSelectId: this.state.softSelectId,
       getSoftSelectId: btnActions.getSoftSelectId,
-      onGridReady: btnActions.onGridReady,
+      onGridReady: btnActions.onRuleGridReady,
       onHardSelectChange: btnActions.onRuleDetailHardSelectChange,
       onSoftSelectChange: btnActions.onRuleDetailSoftSelectionChange,
       onContextMenuChange: btnActions.onContextMenuChange
@@ -201,7 +199,9 @@ class RuleDetailsPage extends Component {
       softSelectId: this.state.softSelectedDeviceId,
       getSoftSelectId: btnActions.getSoftSelectId,
       /* Grid Events */
+      onGridReady: btnActions.onDeviceGridReady,
       onSoftSelectChange: btnActions.onSoftSelectDeviceGrid,
+      onHardSelectChange: btnActions.onDeviceGridHardSelectChange,
       onContextMenuChange: btnActions.onContextMenuChange
     };
 
@@ -244,7 +244,7 @@ class RuleDetailsPage extends Component {
             suppressMovableColumns={true}
             softSelectId={this.state.softSelectedDeviceId}
             /* Grid Events */
-            onGridReady={this.onGridReady}
+            onGridReady={btnActions.onAlarmGridReady}
             onHardSelectChange={btnActions.onAlarmOccGridHardSelectChange}
             onSoftSelectChange={btnActions.onAlarmOccGridSoftSelectionChange}
             getSoftSelectId={this.getSoftSelectId}

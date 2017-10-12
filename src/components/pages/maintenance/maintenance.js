@@ -49,6 +49,7 @@ class MaintenancePage extends Component {
       rulesAndActions: [],
       selectedRulesActions: [],
       selectedAlarms: [],
+      selectedDevices: [],
       currentNode: null,
       showBoth: false,
       toggleButtonText: lang.DISABLE,
@@ -88,6 +89,7 @@ class MaintenancePage extends Component {
     };
     this.onDeviceJobSoftSelectChange = this.onDeviceJobSoftSelectChange.bind(this);
     this.onTimeRangeChange = this.onTimeRangeChange.bind(this);
+    this.deselectOtherGrids = this.deselectOtherGrids.bind(this);
   }
 
   componentDidMount() {
@@ -185,27 +187,43 @@ class MaintenancePage extends Component {
 
     const { actions } = this.props;
     actions.rulesSelectionChanged(selectedRulesActions);
-
+    if (selectedRulesActions.length > 0) {
+      this.deselectOtherGrids('ruleGrid');
+    }
     this.setState({
       selectedRulesActions,
-      selectedAlarms: [],
       showBoth: showBoth,
       toggleButtonText: showBoth ? lang.CHANGESTATUS : status ? lang.DISABLE : lang.ENABLE,
-      toggleButtonSvg: showBoth ? ChangestatusSvg : status ? DisableSvg : EnableSvg,
+      toggleButtonSvg: showBoth ? ChangestatusSvg : status ? DisableSvg : EnableSvg
     });
   };
 
   onAlarmOccGridHardSelectChange = selectedAlarms => {
-    this.setState({
-      selectedAlarms,
-      selectedRulesActions: []
-    });
+    if (selectedAlarms.length > 0) {
+      this.deselectOtherGrids('alarmGrid');
+    }
+    this.setState({ selectedAlarms });
   };
+
+  onDeviceGridHardSelectChange = selectedDevices => {
+    if (selectedDevices.length > 0) {
+      this.deselectOtherGrids('deviceGrid');
+    }
+    this.setState({ selectedDevices });
+  }
 
   getSoftSelectId = ({ Id }) => Id;
 
-  onGridReady = gridReadyEvent => {
-    this.gridApi = gridReadyEvent.api;
+  onAlarmGridReady = gridReadyEvent => this.alarmGridApi = gridReadyEvent.api;
+
+  onRuleGridReady = gridReadyEvent => this.ruleGridApi = gridReadyEvent.api;
+
+  onDeviceGridReady = gridReadyEvent => this.deviceGridApi = gridReadyEvent.api;
+
+  deselectOtherGrids = (gridName) => {
+    if (gridName !== 'alarmGrid') this.alarmGridApi.deselectAll();
+    if (gridName !== 'ruleGrid') this.ruleGridApi.deselectAll();
+    if (gridName !== 'deviceGrid') this.deviceGridApi.deselectAll();
   }
 
   componentWillMount() {
@@ -286,9 +304,12 @@ class MaintenancePage extends Component {
       onRuleDetailSoftSelectionChange: this.onRuleDetailSoftSelectionChange,
       onAlarmOccGridHardSelectChange: this.onAlarmOccGridHardSelectChange,
       onAlarmOccGridSoftSelectionChange: this.onAlarmOccGridSoftSelectionChange,
+      onDeviceGridHardSelectChange: this.onDeviceGridHardSelectChange,
       onSoftSelectDeviceGrid: this.onSoftSelectDeviceGrid,
       getSoftSelectId: this.getSoftSelectId,
-      onGridReady: this.onGridReady,
+      onDeviceGridReady: this.onDeviceGridReady,
+      onAlarmGridReady: this.onAlarmGridReady,
+      onRuleGridReady: this.onRuleGridReady,
       onContextMenuChange: this.onContextMenuChange
     };
   };
