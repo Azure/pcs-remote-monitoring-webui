@@ -36,8 +36,10 @@ export const selectTelemetryType = key => {
 
 export const loadTelemetryTypes = () => {
   return dispatch => {
+    dispatch(indicatorStart('mapInitial'));
     return ApiService.getTelemetryMessages()
       .then(data => {
+        dispatch(indicatorEnd('mapInitial'));
         dispatch(loadTelemetryTypesSuccess(data.Properties));
       })
       .catch(error => {
@@ -50,8 +52,10 @@ export const loadTelemetryTypes = () => {
 //for all telemetry messages
 export const loadTelemetryMessages = params => {
   return dispatch => {
+    dispatch(indicatorStart('mapInitial'));
     return ApiService.getTelemetryMessages(params)
       .then(data => {
+        dispatch(indicatorEnd('mapInitial'));
         dispatch(loadTelemetrMessagesSuccess(data));
       })
       .catch(error => {
@@ -64,7 +68,7 @@ export const loadTelemetryMessages = params => {
 // get telemetry messages based on the deviceId's
 export const loadTelemetryMessagesByDeviceIds = deviceList => {
   return dispatch => {
-    dispatch(indicatorStart('telemetry'));
+    dispatch(indicatorStart('mapInitial'));
     return deviceList === lang.ALLDEVICES
       ? ApiService.getTelemetryMessages({
           from: 'NOW-PT15M',
@@ -73,7 +77,7 @@ export const loadTelemetryMessagesByDeviceIds = deviceList => {
         })
         .then(data => {
           dispatch(loadTelemetrMessagesSuccess(data));
-          dispatch(indicatorEnd('telemetry'));
+          dispatch(indicatorEnd('mapInitial'));
         })
         .catch(error => {
           dispatch(loadFailed(error));
@@ -87,7 +91,7 @@ export const loadTelemetryMessagesByDeviceIds = deviceList => {
         })
         .then(data => {
           dispatch(loadTelemetrMessagesSuccess(data));
-          dispatch(indicatorEnd('telemetry'));
+          dispatch(indicatorEnd('mapInitial'));
         })
         .catch(error => {
           dispatch(loadFailed(error));

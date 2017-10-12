@@ -16,7 +16,8 @@ export const refreshAllChartData = (
   firstDurationFrom,
   firstDurationTo,
   secondDurationFrom,
-  secondDurationTo
+  secondDurationTo,
+  refreshFlag
 ) => {
   return (dispatch, getState) => {
     const currentState = getState();
@@ -25,10 +26,8 @@ export const refreshAllChartData = (
       return;
     }
     const deviceIdsCsv = devices.items.map(device => device.Id).join(',');
-    dispatch(indicatorStart('kpi'));
-    dispatch({
-      type: types.KPI_REFRESH_CHART_DATA_START
-    });
+    dispatch(indicatorStart(refreshFlag ? 'kpi' : 'kpiInitial'));
+    dispatch({ type: types.KPI_REFRESH_CHART_DATA_START });
     Promise.all([
       ApiService.getAlarmsByRuleForKpi(
         firstDurationFrom,
@@ -53,6 +52,7 @@ export const refreshAllChartData = (
     ])
       .then(dataArray => {
         dispatch(indicatorEnd('kpi'));
+        dispatch(indicatorEnd('kpiInitial'));
         dispatch(
           refreshAllChartDataSuccess({
             alarmsByRule: dataArray[0],

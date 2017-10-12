@@ -52,9 +52,8 @@ describe('actions', () => {
       );
     return store.dispatch(actions.loadTelemetryMessages()).then(data => {
       const expectedActions = store.getActions();
-      expect(expectedActions.length).toBe(1);
-
-      expect(expectedActions[0].type).toEqual(
+      expect(expectedActions.length).toBe(3);
+      expect(expectedActions[2].type).toEqual(
         types.LOAD_TELEMETRY_MESSAGES_SUCCESS
       );
     });

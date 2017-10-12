@@ -23,11 +23,12 @@ class DashboardPanel extends Component {
             <div className="panel-header">
               {this.props.title}
             </div>
-            {this.props.indicator && <Spinner size="small"/>}
+            {this.props.showHeaderSpinner && <Spinner size="small"/>}
           </div>
           {this.props.actions ? <div className="panel-actions-container">{this.props.actions}</div> : ''}
         </div>
         <div className="panel-contents">{this.props.children}</div>
+        { this.props.showContentSpinner ? <div className="initial-loading"><Spinner size='large'/></div> : null}
       </div>
     );
   }

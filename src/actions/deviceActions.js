@@ -44,7 +44,7 @@ export const loadTelemetrMessagesForMapUpdateSuccess = data => {
 
 export const loadTelemetryMessagesByDeviceIdsForMap = (deviceList, timeRange) => {
   return dispatch => {
-    dispatch(indicatorStart('map'));
+    dispatch(indicatorStart('mapInitial'));
     return deviceList === lang.ALLDEVICES
       ? ApiService.getTelemetryMessages({
           from: `NOW-${timeRange}`,
@@ -53,7 +53,7 @@ export const loadTelemetryMessagesByDeviceIdsForMap = (deviceList, timeRange) =>
         })
         .then(data => {
           dispatch(loadTelemetrMessagesForMapUpdateSuccess(data));
-          dispatch(indicatorEnd('map'));
+          dispatch(indicatorEnd('mapInitial'));
         })
         .catch(error => {
           dispatch(loadFailed(error));
@@ -67,19 +67,22 @@ export const loadTelemetryMessagesByDeviceIdsForMap = (deviceList, timeRange) =>
         })
         .then(data => {
           dispatch(loadTelemetrMessagesForMapUpdateSuccess(data));
-          dispatch(indicatorEnd('map'));
+          dispatch(indicatorEnd('mapInitial'));
         })
         .catch(error => {
           dispatch(loadFailed(error));
           throw error;
         });
+
   };
 };
 
 export const loadDevicesByTelemetryMessages = () => {
   return dispatch => {
+    dispatch(indicatorStart('mapInitial'));
     return ApiService.getAllDevices()
       .then(data => {
+        dispatch(indicatorEnd('mapInitial'));
         dispatch(loadDeviceSuccess(data));
         if (data && data.items) {
           const deviceIds = data.items.map(device => device.Id);
@@ -135,8 +138,10 @@ export const loadDeviceMapAlaramsList = (deviceList, timeRange) => {
 
 export const loadDevices = () => {
   return dispatch => {
+    dispatch(indicatorStart('mapInitial'));
     return ApiService.getAllDevices()
       .then(data => {
+        dispatch(indicatorEnd('mapInitial'));
         dispatch(loadDeviceSuccess(data));
       })
       .catch(error => {

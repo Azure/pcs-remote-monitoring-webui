@@ -59,8 +59,11 @@ export default {
   maintenance: {},
   indicator: {
     map: false,
+    mapInitial: true,
     telemetry: false,
+    telemetryInitial: true,
     kpi: false,
-    alarms: false
+    kpiInitial: true,
+    alarms: false,
   }
 };

@@ -155,7 +155,7 @@ const mapStateToProps = state => {
   return {
     devices: state.deviceReducer.devices,
     BingMapKey: state.mapReducer.BingMapKey,
-    alarmList: state.deviceReducer.alarmsList,
+    alarmList: state.kpiReducer.alarmsList,
     selectedDeviceGroup: state.filterReducer.selectedDeviceGroupId
   };
 };

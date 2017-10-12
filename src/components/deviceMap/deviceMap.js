@@ -176,7 +176,7 @@ class DeviceMap extends Component {
   render() {
     const { BingMapKey } = this.props;
     return (
-      <DashboardPanel title={lang.DEVICELOCATION} indicator={this.props.showSpinner} className="map-container">
+      <DashboardPanel title={lang.DEVICELOCATION} showContentSpinner={this.props.showContentSpinner} showHeaderSpinner={this.props.showHeaderSpinner} className="map-container">
         <Row>
           <RegionDetails {...this.props} />
           <Col md={9} className="bing-map">
@@ -193,7 +193,8 @@ class DeviceMap extends Component {
 
 const mapStateToProps = state => {
   return {
-    showSpinner : state.indicatorReducer.map,
+    showHeaderSpinner: state.indicatorReducer.kpi,
+    showContentSpinner: state.indicatorReducer.kpiInitial,
     telemetryByDeviceGroup: state.deviceReducer.telemetryByDeviceGroup,
   };
 };

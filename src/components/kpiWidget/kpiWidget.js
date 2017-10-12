@@ -30,7 +30,7 @@ class KpiWidget extends Component {
       Rx.Observable.interval(Config.INTERVALS.TELEMETRY_UPDATE_MS)
         .startWith(-1)
         .takeUntil(this.errorSubject)
-        .subscribe(() => this.props.intervalChanged(this.state.timeRange))
+        .subscribe(() => this.props.intervalChanged(this.state.timeRange, true))
     );
   }
 
@@ -52,7 +52,8 @@ class KpiWidget extends Component {
     return (
       <DashboardPanel
         className="kpi-widget"
-        indicator={this.props.indicator}
+        showHeaderSpinner={this.props.showHeaderSpinner}
+        showContentSpinner={this.props.showContentSpinner}
         title={Lang.SYSTEMKPI}
         actions={
           <div>more</div>
@@ -83,7 +84,7 @@ class KpiWidget extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  intervalChanged: timeCode => {
+  intervalChanged: (timeCode, refreshFlag) => {
     let firstDurationFrom, secondDurationFrom, secondDurationTo;
     switch (timeCode) {
       case 'PT1H':
@@ -110,12 +111,13 @@ const mapDispatchToProps = dispatch => ({
         return null;
     }
 
-    dispatch(refreshAllChartData(firstDurationFrom, 'NOW', secondDurationFrom, secondDurationTo));
+    dispatch(refreshAllChartData(firstDurationFrom, 'NOW', secondDurationFrom, secondDurationTo, refreshFlag));
   }
 });
 
 const mapStateToProps = state => ({
-  indicator: state.indicatorReducer.kpi
+  showHeaderSpinner: state.indicatorReducer.kpi,
+  showContentSpinner: state.indicatorReducer.kpiInitial,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(KpiWidget);

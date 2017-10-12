@@ -6,11 +6,6 @@ $titleRowHeight: 36px;
 .kpi-widget {
   margin-left: -16px;
 
-  .kpi-row {
-    height: calc(50% - #{$titleRowHeight}/2);
-  }
-
-
   .kpi-widget {
     height: 360px;
     margin-right: -15px;
