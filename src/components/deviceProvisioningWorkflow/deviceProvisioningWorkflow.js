@@ -58,7 +58,7 @@ class DeviceProvisioningWorkflow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ...initialState, 
+      ...initialState,
       deviceTypeForm: deviceTypeValues.SIMULATED
     };
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -278,11 +278,11 @@ class DeviceProvisioningWorkflow extends React.Component {
     const { deviceTypeForm } = this.state;
     let placeholder, generatedLabel = '';
     if (deviceTypeForm === deviceTypeValues.SIMULATED) {
-      placeholder = 'Enter device Id prefix...';
-      generatedLabel = 'System generated device IDs';
+      placeholder = lang.ENTER_DEVICE_ID;
+      generatedLabel = lang.SYSTEM_GENERATED_DEVICE_ID;
     } else if (deviceTypeForm === deviceTypeValues.PHYSICAL) {
-      placeholder = 'Enter device Id...';
-      generatedLabel = 'System generated device ID';
+      placeholder = lang.ENTER_DEVICE_ID;
+      generatedLabel = lang.SYSTEM_GENERATED_DEVICE_ID;
     }
     return (
       <FlyoutSection header={'Device ID'}>
@@ -315,16 +315,17 @@ class DeviceProvisioningWorkflow extends React.Component {
   renderFormSummary() {
     return (
       <div className="form-summary-container">
-        <div className="form-summary-header">{'Provision summary'}</div>
+        <div className="form-summary-header">{lang.PROVISION_SUMMARY}</div>
         <div className="form-summary-details">
-          <span className="device-cnt">{this.isInteger(this.state.numDevices) ? Math.floor(this.state.numDevices) : 0}</span> {'devices to provision'}
+          <span className="device-cnt">{this.isInteger(this.state.numDevices) ? Math.floor(this.state.numDevices) : 0}</span>
+          {this.state.isLoading ?   lang.DEVICES_ARE_PROVISIONING : lang.DEVICES_TO_PROVISION }
         </div>
         <div className="form-action-btns">
-          <PcsBtn value={lang.CANCEL}/>
+          <PcsBtn onClick={this.props.onClose} value={lang.CANCEL}/>
           <PcsBtn className="primary"
             disabled={!this.state.formIsValid || this.state.isLoading}
             onClick={this.apply}
-            value={this.state.isLoading ? 'Loading...' : lang.APPLY} />
+            value={this.state.isLoading ? lang.PROVISION_LOADING : lang.APPLY} />
         </div>
       </div>
     );
@@ -363,7 +364,7 @@ class DeviceProvisioningWorkflow extends React.Component {
             clearable={false}
             searchable={false}
             autosize={true}
-            placeholder={this.state.deviceModels.length ? 'Select existing device type' : 'Loading...'}
+            placeholder={this.state.deviceModels.length ? lang.SELECT_EXISTING_DVICE_TYPE : lang.PROVISION_LOADING}
           />
         </FlyoutSection>
         {this.renderFormSummary()}
@@ -379,9 +380,9 @@ class DeviceProvisioningWorkflow extends React.Component {
   renderPhysicalForm() {
     const authKeyOptions = [];
     if (this.state.authType !== authTypes.X509) {
-      authKeyOptions.push({ value: authValues.AUTO, label: 'Auto generate keys' });
+      authKeyOptions.push({ value: authValues.AUTO, label: lang.AUTO_GENERATED_KEYS });
     }
-    authKeyOptions.push({ value: authValues.MANUAL, label: 'Enter keys manually' });
+    authKeyOptions.push({ value: authValues.MANUAL, label: lang.ENTER_KEYS_MANUALLY });
 
     return (
       <div className="provision-device-form-container">
@@ -394,7 +395,7 @@ class DeviceProvisioningWorkflow extends React.Component {
         <FlyoutSection header={'Authentication type'}>
           {
             this.renderRadioInputGroup('authType', [
-              { value: authTypes.SYMMETRIC, label: 'Symmetric Key' },
+              { value: authTypes.SYMMETRIC, label: lang.SYMMETRIC_KEY },
               { value: authTypes.X509, label: 'X.509', extraState: { authKey: authValues.MANUAL } }
             ])
           }
@@ -410,7 +411,7 @@ class DeviceProvisioningWorkflow extends React.Component {
             <input type="text"
               id="primary-key-input"
               name="primaryKey"
-              placeholder={'Enter your key here...'}
+              placeholder={lang.ENTER_YOUR_KEY}
               disabled={this.state.authKey !== authValues.MANUAL}
               value={this.state.primaryKey}
               onChange={this.handleInputChange} />
@@ -420,7 +421,7 @@ class DeviceProvisioningWorkflow extends React.Component {
             <input type="text"
               id="secondary-key-input"
               name="secondaryKey"
-              placeholder={'Enter your key here...'}
+              placeholder={lang.ENTER_YOUR_KEY}
               disabled={this.state.authKey !== authValues.MANUAL}
               value={this.state.secondary}
               onChange={this.handleInputChange} />
@@ -449,8 +450,8 @@ class DeviceProvisioningWorkflow extends React.Component {
         <FlyoutSection header={'Device type'}>
           {
             this.renderRadioInputGroup('deviceTypeForm', [
-              { value: deviceTypeValues.SIMULATED, label: 'Simulated' },
-              { value: deviceTypeValues.PHYSICAL, label: 'Physical' }
+              { value: deviceTypeValues.SIMULATED, label: lang.SIMULATED },
+              { value: deviceTypeValues.PHYSICAL, label: lang.PHYSICAL }
             ])
           }
         </FlyoutSection>
