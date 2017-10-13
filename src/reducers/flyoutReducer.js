@@ -18,6 +18,28 @@ const flyoutReducer = (state = initialState.flyout, action) => {
         devices: action.data
       };
 
+    case types.UPDATE_DEVICE_TWIN:
+      const { tags, deviceIds } = action.jobs;
+      return {
+        ...state,
+        devices: state.devices.map(({ Tags, Id, ...rest }) => {
+          if (deviceIds.indexOf(Id) !== -1) {
+            let newTags = {...Tags};
+            Object.keys(tags).forEach(key => {
+              (tags[key] === null)
+                ? delete newTags[key]
+                : newTags[key] = tags[key]
+            });
+            return {
+              ...rest,
+              Id,
+              Tags: newTags
+            }
+          }
+          return { Tags, Id, ...rest };
+        })
+      };
+
     case types.RULE_LIST_ROW_SELECTION_CHANGED:
       return {
         ...state,

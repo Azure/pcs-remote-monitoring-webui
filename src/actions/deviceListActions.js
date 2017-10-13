@@ -10,6 +10,13 @@ export const devicesSelectionChanged = devices => {
   };
 };
 
+export const updateDeviceTwin = jobs => {
+  return {
+    type: types.UPDATE_DEVICE_TWIN,
+    jobs
+  };
+};
+
 export const deviceListCommonTagsValueChanged = (devices, newTagValueMap) => {
   return dispatch => {
     dispatch({

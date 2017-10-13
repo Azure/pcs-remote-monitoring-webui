@@ -17,6 +17,12 @@ export const loadJobsFailed = error => {
   };
 };
 
+export const updateTwinJobs = job => {
+  return {
+    type: types.UPDATE_TWIN_JOBS,
+    job
+  };
+};
 
 export const loadJobsForTimePeriod = (from) => {
   return dispatch => {

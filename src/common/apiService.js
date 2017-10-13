@@ -220,6 +220,10 @@ class ApiService {
     return Http.post(`${Config.iotHubManagerApiUrl}jobs`, payload);
   }
 
+  static getJobStatus(id) {console.log('getJobStatus')
+    return Http.get(`${Config.iotHubManagerApiUrl}jobs/${id}`);
+  }
+
   static getDeviceGroupFilters() {
     return Http.get(`${Config.configApiUrl}devicegroupfilters`);
   }

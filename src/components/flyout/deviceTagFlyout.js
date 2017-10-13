@@ -22,6 +22,11 @@ import _ from 'lodash';
 
 const isNumeric = value => typeof value === 'number' || !isNaN(parseInt(value, 10));
 
+const getRelatedJobs = (devices, twinUpdateJobs) => {
+  if (!devices || !twinUpdateJobs || !devices.length || !twinUpdateJobs.length) return [];
+  return twinUpdateJobs.filter(job => devices.some(({ Id }) => job.deviceIds.indexOf(Id) !== -1));
+}
+
 const typeOptions = [
   {
     value: 'Number',
@@ -57,9 +62,12 @@ class DeviceTagFlyout extends React.Component {
     this.commonTagValueChanged = this.commonTagValueChanged.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
     this.applyDeviceTagJobsData = this.applyDeviceTagJobsData.bind(this);
+    this.checkJobStatus = this.checkJobStatus.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    const { devices, twinUpdateJobs } = this.props;
+    this.checkJobStatus(devices, twinUpdateJobs);
     if (this.props.overiddenDeviceTagValues) {
       this.setState({ overiddenDeviceTagValues: this.props.overiddenDeviceTagValues });
     }
@@ -124,13 +132,39 @@ class DeviceTagFlyout extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(nextProps.devices, this.props.devices)) {
-      this.computeState(nextProps, 'componentWillReceiveProps');
+    const { devices, twinUpdateJobs } = nextProps;
+    if (!_.isEqual(devices, this.props.devices)) {
+      this.setState(
+        { jobApplied: false },
+        () => this.computeState(nextProps)
+      );
+    }
+    if (!_.isEqual(twinUpdateJobs, this.props.twinUpdateJobs)) {
+      this.checkJobStatus(devices, twinUpdateJobs);
     }
   }
 
+  checkJobStatus (devices, twinUpdateJobs) {
+    const jobs = getRelatedJobs(devices, twinUpdateJobs);
+    const jobStream = Rx.Observable.from(jobs);
+    jobStream
+      .flatMap(({ jobId, deviceIds }) =>
+        Rx.Observable
+          .fromPromise(ApiService.getJobStatus(jobId))
+          // Get completed jobs
+          .filter(({ status }) => status === 3)
+          .map(({ updateTwin }) => ({
+            tags: updateTwin.tags,
+            deviceIds
+          }))
+      )
+      .subscribe(
+        completedJobs => this.props.actions.updateDeviceTwin(completedJobs),
+        error => console.log('error', error)
+      );
+  }
+
   commonTagValueChanged(tagName, evt) {
-    console.log(tagName, evt);
     const { devices } = this.props;
     const devicesToBeUpdated = devices.filter(device => {
       return device.Tags && typeof device.Tags[tagName] !== 'undefined';
@@ -139,7 +173,7 @@ class DeviceTagFlyout extends React.Component {
   }
 
   applyChangedData() {
-    const { newTags, overiddenDeviceTagValues, deletedTagNames } = this.state;
+    const { newTags, overiddenDeviceTagValues } = this.state;
     const { deviceETags } = this.props;
     newTags.forEach(tag => {
       this.props.devices.forEach(device => {
@@ -150,16 +184,7 @@ class DeviceTagFlyout extends React.Component {
       });
     });
 
-    deletedTagNames.forEach(tagName => {
-      this.props.devices.forEach(device => {
-        let overiddenMap = overiddenDeviceTagValues[device.Id]
-          ? overiddenDeviceTagValues[device.Id]
-          : (overiddenDeviceTagValues[device.Id] = {});
-        overiddenMap[tagName] = null;
-      });
-    });
-
-    this.setState({ newTags: [], overiddenDeviceTagValues }, () => this.computeState(this.props, 'applyChangedData'));
+    this.setState({ newTags: [], overiddenDeviceTagValues }, () => this.computeState(this.props));
     const devices = _.cloneDeep(this.props.devices);
     devices.forEach(device => (device.Etag = deviceETags[device.Id] ? deviceETags[device.Id] : device.Etag));
     this.props.actions.deviceListCommonTagsValueChanged(devices, overiddenDeviceTagValues);
@@ -171,7 +196,7 @@ class DeviceTagFlyout extends React.Component {
       const tagNameValue = overiddenDeviceTagValues[device.Id] || (overiddenDeviceTagValues[device.Id] = {});
       tagNameValue[tagName] = value;
     });
-    this.setState({ overiddenDeviceTagValues }, () => this.computeState(this.props, 'saveChangedTagValues'));
+    this.setState({ overiddenDeviceTagValues }, () => this.computeState(this.props));
   }
 
   deleteNewTag(idx) {
@@ -187,28 +212,44 @@ class DeviceTagFlyout extends React.Component {
   }
 
   applyDeviceTagJobsData() {
-    const x = { ...this.state.commonTagValues };
-    this.state.newTags.forEach(tag => {
-      x[tag.name] = tag.value;
-    });
     const { devices } = this.props;
-    const ids = devices.map(device => device.Id);
-    const deviceIds = ids.map(id=> `'${id}'`).join(',');
+    const { newTags, deletedTagNames } = this.state;
+    const deviceIds = devices.map(({ Id }) => `'${Id}'`).join(',');
+    const tags = {
+      ...this.state.commonTagValues,
+      ...this.state.overiddenDeviceTagValues
+    };
+
+    Object.keys(tags).forEach(key => {
+      if (deletedTagNames.indexOf(key) !== -1) {
+        tags[key] = null;
+      }
+    });
+
+    newTags.forEach(tag => {
+      tags[tag.name] = tag.value;
+    });
+
     const payload = {
       JobId: this.state.jobInputValue ? this.state.jobInputValue + '-' + uuid(): uuid(),
       QueryCondition: `deviceId in [${deviceIds}]`,
       MaxExecutionTimeInSeconds: 0,
       updateTwin: {
-        tags: x
+        tags
       }
     };
     this.setState({ showSpinner: true });
-    ApiService.scheduleJobs(payload).then(({ jobId }) =>
-      this.setState({ 
-        showSpinner: false, 
-        jobApplied: true,
-        jobId
-      })
+    ApiService.scheduleJobs(payload).then(({ jobId }) => {
+        this.props.actions.updateTwinJobs({
+          jobId,
+          deviceIds : devices.map(({ Id }) => Id)
+        });
+        this.setState({
+          showSpinner: false,
+          jobApplied: true,
+          jobId
+        })
+      }
     );
   }
 
@@ -409,7 +450,8 @@ const mapStateToProps = (state, ownProps) => {
     devices: state.flyoutReducer.devices,
     deviceETags: state.flyoutReducer.deviceETags || {},
     overiddenDeviceTagValues: state.flyoutReducer.overiddenDeviceTagValues,
-    requestInProgress: state.flyoutReducer.requestInProgress
+    requestInProgress: state.flyoutReducer.requestInProgress,
+    twinUpdateJobs: state.systemStatusJobReducer.twinUpdateJobs
   };
 };
 
