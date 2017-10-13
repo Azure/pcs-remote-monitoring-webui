@@ -32,7 +32,8 @@ class RulesAndActionsPage extends Component {
       showBoth: false,
       toggleButtonText: lang.DISABLE,
       toggleButtonSvg: ChangestatusSvg,
-      softSelectId: ''
+      softSelectId: '',
+      showSpinner: true
     }
 
     this.contextButtons = {
@@ -51,7 +52,10 @@ class RulesAndActionsPage extends Component {
 
   componentDidMount() {
     ApiService.getRuleList()
-      .then(({ Items }) => this.setState({ rulesAndActions: Items }));
+      .then(({ Items }) => this.setState({ 
+        rulesAndActions: Items, 
+        showSpinner: false 
+      }));
   }
 
   /**
@@ -202,7 +206,8 @@ class RulesAndActionsPage extends Component {
       getSoftSelectId: this.getSoftSelectId,
       onGridReady: this.onGridReady,
       onHardSelectChange: this.onHardSelectChange,
-      onSoftSelectChange: this.onSoftSelectionChange
+      onSoftSelectChange: this.onSoftSelectionChange,
+      showSpinner: this.state.showSpinner
     };
 
     return (

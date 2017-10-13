@@ -11,6 +11,7 @@ import {
   rulesAndActionsColumnDefs,
   defaultRulesAndActionsGridProps
 } from './ruleAndActionsConfig';
+import Spinner from '../spinner/spinner';
 
 import "./rulesActionsList.css";
 
@@ -57,6 +58,7 @@ class RulesActionsList extends Component {
     return (
       <div className="rules-actions-container">
         <PcsGrid {...gridProps} />
+        {this.props.showSpinner && <div className='spinner-container'><Spinner /></div>}
       </div>
     )
   }
