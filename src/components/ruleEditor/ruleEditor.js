@@ -168,14 +168,17 @@ class RuleEditor extends React.Component {
         devices.forEach(device => {
             const telemetry = device.Properties.Reported.Telemetry;
             if (telemetry) {
-                Object.keys(telemetry).forEach((field) => {
-                    const extract = field.match(/-(.*);/).pop();
-                    if (!fields.some((o) => o.value === extract)) {
-                        fields.push({
-                            label: extract,
-                            value: extract
-                        });
-                    }
+                Object.values(telemetry).forEach(field => {
+                    const extract = field.MessageSchema.Fields;
+                    Object.keys(extract).forEach(field => {
+                        if (field.indexOf('_unit') !== -1) return; //we don't want keys that contain _
+                        if (fields.every(o => o.value !== field)) {
+                            fields.push({
+                                label: field,
+                                value: field
+                            });
+                        }
+                    });
                 });
             }
         });
