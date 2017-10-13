@@ -8,6 +8,7 @@ import ApiService from '../../common/apiService';
 import DashboardPanel from '../dashboardPanel/dashboardPanel';
 import AlarmsGrid from './alarmsGrid';
 import Config from '../../common/config';
+import RxEventSwitchManager from '../../common/rxEventSwitchManager';
 
 import './alarmList.css';
 
@@ -21,27 +22,16 @@ class AlarmList extends Component {
       deviceIdList: ''
     };
 
-    // Event subjects: used to create events
-    this.refreshEvents = new Rx.Subject();
-    this.delayedRefreshEvents = new Rx.Subject();
-    // Event streams: converts events into actual service call observables
-    this.refreshStream = this.refreshEvents
-      .map(this.createGetDataEvent);
-    this.delayedRefreshStream = this.delayedRefreshEvents
-      .map(eventName => 
-        Rx.Observable.of(eventName)
-          .delay(Config.INTERVALS.TELEMETRY_UPDATE_MS)
-          .flatMap(this.createGetDataEvent)
-      );
+    this.eventManager = new RxEventSwitchManager();
   }
 
   componentDidMount() {
     // Start listening to the refresh streams to update the row data
+    // After each call, kick off a refresh after waiting TELEMETRY_UPDATE_MS
     this.refreshSubscription = 
-      this.refreshStream
-        .merge(this.delayedRefreshStream)
-        .switch() // Only take the latest event
-        .do(_ => this.delayedRefreshEvents.next(`intervalRefresh`)) // After each call, kick off a refresh
+      this.eventManager
+        .stream
+        .do(_ => this.refresh(`intervalRefresh`, Config.INTERVALS.TELEMETRY_UPDATE_MS))
         .subscribe(
           rowData => this.setState({ rowData, loading: false }),
           err => this.setState({ loading: false })
@@ -71,14 +61,14 @@ class AlarmList extends Component {
           deviceIdList: newDeviceIdList,
           timeRange: nextProps.timeRange
         }, 
-        () => this.refreshEvents.next(`filterGroupRefresh`)
+        () => this.refresh(`filterGroupRefresh`)
       );
     }
   }
 
   onTimeRangeChange(selectedOption) {
     if (!selectedOption) return;
-    this.setState({ timeRange: selectedOption.value }, () => this.refreshEvents.next(`timeRangeRefresh`));
+    this.setState({ timeRange: selectedOption.value }, () => this.refresh(`timeRangeRefresh`));
   }
 
   generateDeviceIdList(devices) {
@@ -86,37 +76,42 @@ class AlarmList extends Component {
   }
 
   dataFormatter = ({ Items }) => {
-    return Items.map(item => {
-      return {
-        ruleId: item.Rule.Id,
-        created: item.Created,
-        occurrences: item.Count,
-        description: item.Rule.Description,
-        severity: item.Rule.Severity,
-        status: item.Status
-      };
-    });
+    return Items.map(item => ({
+      ruleId: item.Rule.Id,
+      created: item.Created,
+      occurrences: item.Count,
+      description: item.Rule.Description,
+      severity: item.Rule.Severity,
+      status: item.Status
+    }));
   };
 
   createGetDataEvent = (eventName) => {
     this.setState({ loading: true });
-    return Rx.Observable.fromPromise(
-        ApiService.getAlarmsByRule({
-          from: `NOW-${this.state.timeRange}`,
-          to: 'NOW',
-          devices: this.state.deviceIdList
-        })
+    return Rx.Observable.of(this.state)
+      .filter(({ deviceIdList }) => deviceIdList) // Don't make the call if device id list is not defined
+      .flatMap(({ timeRange, deviceIdList }) => 
+        Rx.Observable.fromPromise(
+          ApiService.getAlarmsByRule({
+            from: `NOW-${timeRange}`,
+            to: 'NOW',
+            devices: deviceIdList
+          })
+        )
       )
       .map(this.dataFormatter);
   };
 
+  refresh(eventName, delayAmount) {
+    this.eventManager.emit(eventName, this.createGetDataEvent, delayAmount);
+  }
+
   render() {
     const alarmsGridProps = { rowData: this.state.rowData };
-
     return (
       <DashboardPanel
         className="alarm-list"
-        indicator= {this.state.loading}
+        showHeaderSpinner={this.state.loading}
         title={lang.ALARMSTATUS}>
           <div className="grid-container">
             <AlarmsGrid {...alarmsGridProps} />

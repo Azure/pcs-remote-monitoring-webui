@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Radio } from 'react-bootstrap';
-import _ from 'lodash';
 
 import Timeline from '../charts/timeline';
 import * as actions from '../../actions';
@@ -33,7 +32,7 @@ class Telemetry extends Component {
     const { actions } = this.props;
     const devicesList = this.props.devices && this.props.devices.items ? this.props.devices.items : [];
     const devices = devicesList.map(({ Id }) => Id);
-    this.timerID = setInterval(
+    this.timerID = setTimeout(
       () => actions.loadTelemetryMessagesP1M(devices),
       Config.INTERVALS.TELEMETRY_UPDATE_MS
     );
@@ -43,32 +42,29 @@ class Telemetry extends Component {
     const { devices } = nextProps;
     if(!devices || !devices.items.length) return;
 
-    // New device group reset timer
-    if (!_.isEqual(devices, this.props.devices)) {
-      if (this.timerID) {
-        clearInterval(this.timerID);
-        this.timerID = 0;
-      }
-      const deviceIds = devices.items.map(({ Id }) => Id);
-      this.timerID = setInterval(
-        () => this.props.actions.loadTelemetryMessagesP1M(deviceIds),
-        Config.INTERVALS.TELEMETRY_UPDATE_MS
-      );
+    if (this.timerID) {
+      clearTimeout(this.timerID);
+      this.timerID = 0;
     }
+    const deviceIds = devices.items.map(({ Id }) => Id);
+    this.timerID = setTimeout(
+      () => this.props.actions.loadTelemetryMessagesP1M(deviceIds),
+      Config.INTERVALS.TELEMETRY_UPDATE_MS
+    );
   }
 
   componentWillUnmount() {
-    clearInterval(this.timerID);
+    clearTimeout(this.timerID);
   }
 
   toggleTimer() {
     if (this.timerID) {
-      clearInterval(this.timerID);
+      clearTimeout(this.timerID);
       this.timerID = 0;
     } else {
       const devicesList = this.props.devices && this.props.devices.items ? this.props.devices.items : [];
       const devices = devicesList.map(({ Id }) => Id);
-      this.timerID = setInterval(
+      this.timerID = setTimeout(
         () => this.props.actions.loadTelemetryMessagesP1M(devices),
         2500
       );

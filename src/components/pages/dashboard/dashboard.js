@@ -59,9 +59,9 @@ class DashboardPage extends Component {
   onTimeRangeChange(selectedOption) {
     if (!selectedOption) return;
     this.setState({
-      timeRange: selectedOption.value,
-      lastRefreshed: new Date()
-    },
+        timeRange: selectedOption.value,
+        lastRefreshed: new Date()
+      },
       () => this.loadMapData()
     );
   }
@@ -88,7 +88,7 @@ class DashboardPage extends Component {
     const kpiProps = {
       devices,
       timeRange: this.state.timeRange
-    }
+    };
     const selectProps = {
       value: this.state.timeRange,
       onChange: this.onTimeRangeChange,

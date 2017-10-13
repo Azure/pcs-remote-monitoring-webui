@@ -21,6 +21,9 @@ export const refreshAllChartData = (
 ) => {
   return (dispatch, getState) => {
     const currentState = getState();
+    if (currentState.indicatorReducer.kpi) {
+      return;
+    }
     const devices = currentState.deviceReducer.devices;
     if (!devices) {
       return;

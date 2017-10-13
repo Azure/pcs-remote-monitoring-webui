@@ -12,6 +12,7 @@ import ApiService from '../../common/apiService';
 import Timeline from '../charts/timeline';
 import AlarmsGrid from '../alarmList/alarmsGrid';
 import Config from '../../common/config';
+import RxEventSwitchManager from '../../common/rxEventSwitchManager';
 
 import './deviceDetailFlyout.css';
 
@@ -52,8 +53,8 @@ const loadTelemetry = (data, deviceId) => {
 class DeviceDetailFlyout extends Component {
   constructor(props) {
     super(props);
+
     this.subscriptions = [];
-    this.errorSubject = new Rx.Subject();
     this.state = {
       deviceId: '',
       rawMessage: {},
@@ -101,19 +102,22 @@ class DeviceDetailFlyout extends Component {
       }
     };
 
+    
+    this.eventManager = new RxEventSwitchManager();
+
     this.handleOptionChange = this.handleOptionChange.bind(this);
   }
 
   componentDidMount() {
     this.subscriptions.push(
-      Rx.Observable
-        .interval(Config.INTERVALS.TELEMETRY_UPDATE_MS)
-        .startWith(-1)
-        .takeUntil(this.errorSubject)
-        .subscribe(cnt => this.getData(cnt < 0))
+      this.eventManager
+        .stream
+        .do(_ => this.refresh(`intervalRefresh`, Config.INTERVALS.TELEMETRY_UPDATE_MS))
+        .subscribe(this.handleNewData)
     );
+    this.refresh(`initialize`);
     this.getLastMessage(this.props.content.device.Id);
-    this.getAlarms(this.props.content.device.Id)
+    this.getAlarms(this.props.content.device.Id);
   }
 
   componentWillUnmount() {
@@ -144,7 +148,7 @@ class DeviceDetailFlyout extends Component {
             }
           }
         },
-        () => this.getData()
+        () => this.refresh(`updatedPropsRefresh`)
       );
     }
   }
@@ -184,74 +188,75 @@ class DeviceDetailFlyout extends Component {
     });
   }
 
-  getData() {
+  handleNewData = data => {
+    let radioBtnOptions = loadTelemetry(data, data.deviceId);
+    if (!radioBtnOptions) {
+      return;
+    }
+    let selectedTelemetry = this.state.timeline.selectedTelemetry;
+    if (selectedTelemetry === '') {
+      selectedTelemetry = Object.keys(radioBtnOptions).sort()[0];
+      (radioBtnOptions[selectedTelemetry] || {}).selected = true;
+    } else {
+      Object.keys(radioBtnOptions).forEach(key => {
+        radioBtnOptions[key].selected = selectedTelemetry === key;
+      });
+    }
+
+    let chartData = ((this.state.radioBtnOptions || {})[selectedTelemetry] || {}).chartData || [];
+    let latestTimestamp = 0;
+    if (chartData.length) {
+      latestTimestamp = getLatestTimestamp(chartData);
+    }
+    const selectedChartData = ((radioBtnOptions[selectedTelemetry] || {})
+      .chartData || [])
+      .filter(e => new Date(e.Time) > latestTimestamp);
+    const rawMessage = (data.Items || [])[0]
+      ? (data.Items || [])[0]
+      : this.state.rawMessage;
+    const lastMessageReceived =
+      ((data.Items || [])[0] || {}).Time || ''
+        ? ((data.Items || [])[0] || {}).Time || ''
+        : this.state.lastMessageReceived;
+    const newState = {
+      rawMessage,
+      lastMessageReceived,
+      radioBtnOptions,
+      timeline: {
+        ...this.state.timeline,
+        destroy: false,
+        chartId: `${data.deviceId}_flyout_chart`,
+        selectedTelemetry,
+        chartConfig: {
+          ...this.state.timeline.chartConfig,
+          bindto: `${data.deviceId}_flyout_chart`,
+          data: {
+            ...this.state.timeline.chartConfig.data,
+            json: selectedChartData,
+            keys: {
+              value: [data.deviceId.split('.').join('-')],
+              x: 'Time'
+            }
+          }
+        }
+      }
+    };
+
+    this.setState(newState);
+  }
+
+  createGetDataEvent = (eventName) => {
     const deviceId = this.state.deviceId
       ? this.state.deviceId
       : ((this.props.content || {}).device || {}).Id;
-    let selectedTelemetry = this.state.timeline.selectedTelemetry;
-    if (!deviceId) return;
-    Rx.Observable
-      .fromPromise(ApiService.getTelemetryMessageByDeviceIdP1M(deviceId))
-      .subscribe(
-        data => {
-          let radioBtnOptions = loadTelemetry(data, deviceId);
-          if (!radioBtnOptions) {
-            return;
-          }
-          if (selectedTelemetry === '') {
-            selectedTelemetry = Object.keys(radioBtnOptions).sort()[0];
-            (radioBtnOptions[selectedTelemetry] || {}).selected = true;
-          } else {
-            Object.keys(radioBtnOptions).forEach(key => {
-              radioBtnOptions[key].selected = selectedTelemetry === key;
-            });
-          }
+    return Rx.Observable.of(deviceId)
+      .filter(id => id) // Ignore undefined device Ids
+      .flatMap(id => Rx.Observable.fromPromise(ApiService.getTelemetryMessageByDeviceIdP1M(id)))
+      .do(response => response.deviceId = deviceId);
+  };
 
-          let chartData = ((this.state.radioBtnOptions || {})[selectedTelemetry] || {}).chartData || [];
-          let latestTimestamp = 0;
-          if (chartData.length) {
-            latestTimestamp = getLatestTimestamp(chartData);
-          }
-          const selectedChartData = ((radioBtnOptions[selectedTelemetry] || {})
-            .chartData || [])
-            .filter(e => new Date(e.Time) > latestTimestamp);
-          const rawMessage = (data.Items || [])[0]
-            ? (data.Items || [])[0]
-            : this.state.rawMessage;
-          const lastMessageReceived =
-            ((data.Items || [])[0] || {}).Time || ''
-              ? ((data.Items || [])[0] || {}).Time || ''
-              : this.state.lastMessageReceived;
-          const newState = {
-            rawMessage,
-            lastMessageReceived,
-            radioBtnOptions,
-            timeline: {
-              ...this.state.timeline,
-              destroy: false,
-              chartId: `${deviceId}_flyout_chart`,
-              selectedTelemetry,
-              chartConfig: {
-                ...this.state.timeline.chartConfig,
-                bindto: `${deviceId}_flyout_chart`,
-                data: {
-                  ...this.state.timeline.chartConfig.data,
-                  json: selectedChartData,
-                  keys: {
-                    value: [deviceId.split('.').join('-')],
-                    x: 'Time'
-                  }
-                }
-              }
-            }
-          };
-
-          this.setState(newState);
-        },
-        err => {
-          this.errorSubject.next(undefined);
-        }
-      );
+  refresh(eventName, delayAmount) {
+    this.eventManager.emit(eventName, this.createGetDataEvent, delayAmount);
   }
 
   handleOptionChange(selectedKey) {
@@ -274,7 +279,7 @@ class DeviceDetailFlyout extends Component {
           }
         }
       },
-      () => this.getData(null, selectedKey)
+      () => this.refresh(`optionChangeRefresh`)
     );
   }
 
