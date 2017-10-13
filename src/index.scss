@@ -15,4 +15,7 @@ body {
   overflow: hidden;
 }
 
+input, 
+textarea { outline: none; }
+
 #root { height: 100%; }
