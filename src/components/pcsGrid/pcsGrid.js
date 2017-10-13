@@ -3,6 +3,8 @@
 import React, { Component } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { isFunction } from '../../common/utils';
+import Spinner from '../spinner/spinner';
+import Rx from 'rxjs';
 
 import '../../../node_modules/ag-grid/dist/styles/ag-grid.css';
 import '../../../node_modules/ag-grid/dist/styles/theme-dark.css';
@@ -35,6 +37,21 @@ export class PcsGrid extends Component {
       suppressLoadingOverlay: true,
       suppressNoRowsOverlay: true
     };
+
+    this.subscriptions = [];
+    this.clickStream = new Rx.Subject();
+  }
+
+  componentDidMount() {
+    this.subscriptions.push(
+      this.clickStream
+        .debounceTime(180)
+        .subscribe(clickAction => clickAction())
+    );
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   /** When new props are passed in, check if the soft select state needs to be updated */
@@ -83,14 +100,23 @@ export class PcsGrid extends Component {
   };
 
   /** When a row is selected, try to fire a soft select event, plus any props callbacks */
-  onRowClicked = row => {
-    const { onSoftSelectChange, onRowClicked } = this.props;
-    if (isFunction(onSoftSelectChange)) {
-      onSoftSelectChange(row.data, row);
-    }
-    if (isFunction(onRowClicked)) {
-      onRowClicked(row);
-    }
+  onRowClicked = rowEvent => {
+    this.clickStream.next(
+      () => {
+        const { onSoftSelectChange, onRowClicked } = this.props;
+        if (isFunction(onSoftSelectChange)) onSoftSelectChange(rowEvent.data, rowEvent);
+        if (isFunction(onRowClicked)) onRowClicked(rowEvent);
+      }
+    );
+  };
+
+  onRowDoubleClicked = rowEvent => {
+    this.clickStream.next(
+      () => {
+        const { onRowDoubleClicked } = this.props;
+        if (isFunction(onRowDoubleClicked)) onRowDoubleClicked(rowEvent);
+      }
+    );
   };
 
   render() {
@@ -102,10 +128,20 @@ export class PcsGrid extends Component {
       getRowClass: this.getRowClass,
       onGridReady: this.onGridReady,
       onSelectionChanged: this.onSelectionChanged,
-      onRowClicked: this.onRowClicked
+      onRowClicked: this.onRowClicked,
+      onRowDoubleClicked: this.onRowDoubleClicked
     };
+
+    const { rowData, pcsLoadingTemplate } = this.props;
+
+    const loadingContainer = 
+      <div className="pcs-grid-loading-container">
+        { !pcsLoadingTemplate ? <Spinner /> : pcsLoadingTemplate }
+      </div>;
+
     return (
       <div className="pcs-grid-container ag-dark pcs-ag-dark">
+        { !rowData ? loadingContainer : ''}
         <AgGridReact {...gridParams} />
       </div>
     );

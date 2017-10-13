@@ -3,7 +3,7 @@
 import * as types from '../actions/actionTypes';
 
 const defaultState = {
-  jobs: [],
+  jobs: undefined,
   loadingInProgress: false,
   loadingError: false
 };

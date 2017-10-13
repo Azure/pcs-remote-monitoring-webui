@@ -17,7 +17,7 @@ class AlarmList extends Component {
     super(props);
     this.state = {
       timeRange: this.props.timeRange || 'PT1H',
-      rowData: [],
+      rowData: undefined,
       loading: false,
       deviceIdList: ''
     };

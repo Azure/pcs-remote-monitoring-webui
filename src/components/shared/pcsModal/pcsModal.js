@@ -27,7 +27,7 @@ class PcsModal extends Component {
     return (
       <div className="pcs-modal-container">
         <div className="pcs-modal-close">
-          <span className="pcs-moda-close-btn" onClick={actions.hideModal}>
+          <span className="pcs-modal-close-btn" onClick={actions.hideModal}>
             <img src={CloseSvg} alt="Modal icon" />
           </span>
         </div>

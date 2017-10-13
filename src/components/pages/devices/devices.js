@@ -43,8 +43,7 @@ class DevicesPage extends Component {
 
   render() {
     // Extract the devices from the props
-    const rawDevices = this.props.devices || {};
-    const devices = rawDevices.items || [];
+    const devices = (this.props.devices || {}).items;
 
     // Create the device grid props
     const deviceGridProps = {

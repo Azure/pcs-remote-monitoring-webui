@@ -26,7 +26,7 @@ class RulesAndActionsPage extends Component {
     super(props);
 
     this.state = {
-      rulesAndActions: [],
+      rulesAndActions: undefined,
       selectedRulesActions: [],
       currentNode: null,
       showBoth: false,
@@ -200,8 +200,12 @@ class RulesAndActionsPage extends Component {
   }
 
   render() {
+    let rowData = this.state.rulesAndActions;
+    if (rowData && !this.isAllDevices()) {
+      rowData = rowData.filter(rule => rule.GroupId === this.props.selectedDeviceGroupId)
+    }
     const rulesAndActionsProps = {
-      rowData: this.isAllDevices() ? this.state.rulesAndActions : this.state.rulesAndActions.filter(rule => rule.GroupId === this.props.selectedDeviceGroupId),
+      rowData,
       softSelectId: this.state.softSelectId,
       getSoftSelectId: this.getSoftSelectId,
       onGridReady: this.onGridReady,

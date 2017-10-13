@@ -109,6 +109,7 @@ class DevicesGrid extends Component {
       /* Grid Properties */
       ...defaultDeviceGridProps,
       columnDefs: this.columnDefs,
+      onRowDoubleClicked: ({ node }) => node.setSelected(!node.isSelected()),
       ...this.props, // Allow default property overrides
       /* Grid Events */
       onHardSelectChange: this.onHardSelectChange,

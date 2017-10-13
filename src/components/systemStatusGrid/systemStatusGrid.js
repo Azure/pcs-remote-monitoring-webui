@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import PcsGrid from '../pcsGrid/pcsGrid';
-import Spinner from '../spinner/spinner';
 import { systemStatusColumnDefs, systemStatusGridProps } from './systemStatusConfig';
 import './systemStatusGrid.css';
 
@@ -21,6 +20,7 @@ class SystemStatusGrid extends Component {
       systemStatusColumnDefs.startTime,
       systemStatusColumnDefs.endTime
     ];
+
     this.onGridReady = this.onGridReady.bind(this);
   }
 
@@ -39,14 +39,11 @@ class SystemStatusGrid extends Component {
   render() {
     return (
       <div className="system-grid-container">
-       {this.props.loadingInProgress ? <span className="loading-spinner">
-           <Spinner size='large'/>
-         </span> : null }
-       <PcsGrid
+        <PcsGrid
           /* systemStatusGridProps Properties */
           {...systemStatusGridProps} // Default systemStatusGrid options
           columnDefs={this.columnDefs}
-          rowData = {this.props.jobs}
+          rowData={this.props.jobs}
           /* Grid Events */
           onSoftSelectChange={this.props.onSoftSelectChange}
           onGridReady={this.onGridReady}

@@ -87,7 +87,7 @@ class RuleDetailsPage extends Component {
       timeline,
       alarmsColumnDefs,
       timerange: 'PT1H',
-      rowData: [],
+      rowData: undefined,
       loading: true,
       deviceIdList: '',
       ruleId: '',
@@ -101,7 +101,7 @@ class RuleDetailsPage extends Component {
 
   componentDidMount() {
     const ruleId = (this.props.params || {}).id;
-    const ruleDetails = this.props.alarmsGridData.filter(data => data.id === ruleId)[0];
+    const ruleDetails = (this.props.alarmsGridData || []).filter(data => data.id === ruleId)[0];
     if (!ruleId || !ruleDetails) return;
     const alarmsByRule = ruleDetails[ruleId];
     const devicesList = this.getDeviceList(alarmsByRule);
@@ -127,7 +127,7 @@ class RuleDetailsPage extends Component {
   componentWillReceiveProps(nextProps) {
     const { updatedAlarms, params, devices, alarmsGridData } = nextProps;
     const ruleId = (params || {}).id;
-    const ruleDetails = alarmsGridData.filter(data => data.id === ruleId)[0];
+    const ruleDetails = (alarmsGridData || []).filter(data => data.id === ruleId)[0];
     if (!ruleId || !ruleDetails) return;
     const alarmsByRule = ruleDetails[ruleId];
     const devicesList = this.getDeviceList(alarmsByRule);
@@ -173,7 +173,7 @@ class RuleDetailsPage extends Component {
 
   render() {
     const ruleId = (this.props.params || {}).id;
-    const ruleDetails = this.props.alarmsGridData.filter(({ id }) => id === ruleId)[0];
+    const ruleDetails = (this.props.alarmsGridData || []).filter(({ id }) => id === ruleId)[0];
     const aggregatedRule = ruleDetails ? aggregatedRuleColumnDefs.map((col, idx) => (<div className="aggregated-rule-column" key={idx}>
       <div className="aggregated-rule-details-header">{col.headerName}</div>
       <div className="aggregated-rule-details-field">{ruleDetails[col.field]}</div>
@@ -181,7 +181,7 @@ class RuleDetailsPage extends Component {
     const { btnActions } = this.props;
 
     const rulesAndActionsProps = {
-      rowData: (ruleDetails || {}).rule ? [ruleDetails.rule] : [],
+      rowData: (ruleDetails || {}).rule ? [ruleDetails.rule] : undefined,
       pagination: false,
       softSelectId: this.state.softSelectId,
       getSoftSelectId: btnActions.getSoftSelectId,
