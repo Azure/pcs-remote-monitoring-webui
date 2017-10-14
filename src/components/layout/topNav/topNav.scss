@@ -17,6 +17,8 @@ $borderColor: #454A4E;
     color: $topNavColor;
     line-height: $navHeight;
     margin-left: 20px;
+
+    a { color: inherit; }
   }
 
   .project-name { 

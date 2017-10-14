@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { bindActionCreators } from "redux";
 import Select from 'react-select';
 import * as _ from 'lodash';
@@ -316,6 +317,16 @@ class MaintenancePage extends Component {
 
 // --- Grid events handler ends here ----------------------------------
   render() {
+    let breadcrumbs;
+    const pathName = this.props.location.pathname;
+    const parentLink = <Link to={'/maintenance'}>{lang.MAINTENANCE}</Link>;
+    if (pathName.indexOf('/rule/') > 0) {
+      breadcrumbs = <span>{parentLink} &rsaquo; Alarm details</span>;
+    } else if (pathName.indexOf('/job/') > 0) {
+      breadcrumbs = <span>{parentLink} &rsaquo; System status details</span>;
+    } else {
+      breadcrumbs = lang.MAINTENANCE;
+    }
     const pcsBtn = (props, visible = true) => visible ? <PcsBtn {...props} /> : '';
     const showContextBtns = this.state.contextBtns === '';
     const showActionBtns = this.state.selectedRulesActions.length > 0;
@@ -339,7 +350,7 @@ class MaintenancePage extends Component {
     };
     return (
       <PageContainer>
-        <TopNav breadcrumbs={lang.MAINTENANCE} projectName={lang.AZUREPROJECTNAME} />
+        <TopNav breadcrumbs={breadcrumbs} projectName={lang.AZUREPROJECTNAME} />
         <ContextFilters disableDeviceFilter={(this.props.params || {}).id !== undefined}>
           {pcsBtn({ // Change status button
             svg: this.state.toggleButtonSvg,
