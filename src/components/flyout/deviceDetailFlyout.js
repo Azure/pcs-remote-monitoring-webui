@@ -102,7 +102,6 @@ class DeviceDetailFlyout extends Component {
       }
     };
 
-    
     this.eventManager = new RxEventSwitchManager();
 
     this.handleOptionChange = this.handleOptionChange.bind(this);
@@ -349,7 +348,7 @@ class DeviceDetailFlyout extends Component {
      */
     // TODO: confirm firmware obj structure
     const deviceProperties = Object.keys(Reported).map((key, index) => {
-      if (key === lang.DEVICETYPE && Reported[key] !== '') {
+      if (key === lang.TYPE && Reported[key] !== '') {
         if (Desired[key] && Desired[key] !== Reported[key]) {
           return (
             <tr key={index}>
@@ -360,7 +359,7 @@ class DeviceDetailFlyout extends Component {
                 {Reported[key]}
               </td>
               <td>
-                `${lang.SYNC} ${Reported[key]}`
+                {`${lang.SYNC} ${Desired[key]}`}
               </td>
             </tr>
           );
