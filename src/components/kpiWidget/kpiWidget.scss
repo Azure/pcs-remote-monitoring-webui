@@ -109,6 +109,9 @@ $titleRowHeight: 36px;
     fill: #fff;
   }
 
+  .c3 .c3-axis path,
+  .c3 .c3-axis line { display: none; }
+
   .Select-clear-zone { display: none; }
 
   .Select-placeholder, .Select--single > .Select-control .Select-value {

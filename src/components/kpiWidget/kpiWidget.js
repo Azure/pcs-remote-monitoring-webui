@@ -55,9 +55,6 @@ class KpiWidget extends Component {
         showHeaderSpinner={this.props.showHeaderSpinner}
         showContentSpinner={this.props.showContentSpinner}
         title={Lang.SYSTEMKPI}
-        actions={
-          <div>more</div>
-        }
       >
         <Grid fluid className="kpi-widget">
           <div className="kpi-container">
