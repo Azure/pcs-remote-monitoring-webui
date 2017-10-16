@@ -12,7 +12,7 @@ import ApiService from '../../common/apiService';
 import Timeline from '../charts/timeline';
 import AlarmsGrid from '../alarmList/alarmsGrid';
 import Config from '../../common/config';
-import RxEventSwitchManager from '../../common/rxEventSwitchManager';
+import PollingManager from '../../common/pollingManager';
 
 import './deviceDetailFlyout.css';
 
@@ -102,14 +102,14 @@ class DeviceDetailFlyout extends Component {
       }
     };
 
-    this.eventManager = new RxEventSwitchManager();
+    this.pollingManager = new PollingManager();
 
     this.handleOptionChange = this.handleOptionChange.bind(this);
   }
 
   componentDidMount() {
     this.subscriptions.push(
-      this.eventManager
+      this.pollingManager
         .stream
         .do(_ => this.refresh(`intervalRefresh`, Config.INTERVALS.TELEMETRY_UPDATE_MS))
         .subscribe(this.handleNewData)
@@ -255,7 +255,7 @@ class DeviceDetailFlyout extends Component {
   };
 
   refresh(eventName, delayAmount) {
-    this.eventManager.emit(eventName, this.createGetDataEvent, delayAmount);
+    this.pollingManager.emit(eventName, this.createGetDataEvent, delayAmount);
   }
 
   handleOptionChange(selectedKey) {

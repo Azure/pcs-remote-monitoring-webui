@@ -8,13 +8,15 @@ import ApiService from '../../common/apiService';
 import DashboardPanel from '../dashboardPanel/dashboardPanel';
 import AlarmsGrid from './alarmsGrid';
 import Config from '../../common/config';
-import RxEventSwitchManager from '../../common/rxEventSwitchManager';
+import PollingManager from '../../common/pollingManager';
 
 import './alarmList.css';
 
 class AlarmList extends Component {
+
   constructor(props) {
     super(props);
+
     this.state = {
       timeRange: this.props.timeRange || 'PT1H',
       rowData: undefined,
@@ -22,14 +24,14 @@ class AlarmList extends Component {
       deviceIdList: ''
     };
 
-    this.eventManager = new RxEventSwitchManager();
+    this.pollingManager = new PollingManager();
   }
 
   componentDidMount() {
     // Start listening to the refresh streams to update the row data
     // After each call, kick off a refresh after waiting TELEMETRY_UPDATE_MS
     this.refreshSubscription = 
-      this.eventManager
+      this.pollingManager
         .stream
         .do(_ => this.refresh(`intervalRefresh`, Config.INTERVALS.TELEMETRY_UPDATE_MS))
         .subscribe(
@@ -103,15 +105,17 @@ class AlarmList extends Component {
   };
 
   refresh(eventName, delayAmount) {
-    this.eventManager.emit(eventName, this.createGetDataEvent, delayAmount);
+    this.pollingManager.emit(eventName, this.createGetDataEvent, delayAmount);
   }
 
   render() {
-    const alarmsGridProps = { rowData: this.state.rowData };
+    // Pass an empty string to avoid two spinners appearing on top of each other
+    const alarmsGridProps = { rowData: this.state.rowData || [] };
     return (
       <DashboardPanel
         className="alarm-list"
         showHeaderSpinner={this.state.loading}
+        showContentSpinner={!this.state.rowData}
         title={lang.ALARMSTATUS}>
           <div className="grid-container">
             <AlarmsGrid {...alarmsGridProps} />
