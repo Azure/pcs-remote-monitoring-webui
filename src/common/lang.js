@@ -246,7 +246,7 @@ const lang = {
   SUMMARY: 'Summary',
   SWITCHUSER: 'Switch to another user',
   SYMMETRICKEY: 'Symmetric Key',
-  SYNC: 'Sync',
+  SYNCING: 'Syncing',
   SYSTEMKPI: 'System KPIs',
   SYMMETRIC_KEY: 'Symmetric Key',
   SYSTEM_STATUS: 'System Status',

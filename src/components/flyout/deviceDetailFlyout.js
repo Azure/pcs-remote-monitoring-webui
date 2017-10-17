@@ -359,7 +359,7 @@ class DeviceDetailFlyout extends Component {
                 {Reported[key]}
               </td>
               <td>
-                {`${lang.SYNC} ${Desired[key]}`}
+                {`${lang.SYNCING} ${Desired[key]}`}
               </td>
             </tr>
           );
@@ -388,7 +388,7 @@ class DeviceDetailFlyout extends Component {
                 {deviceLocation}
               </td>
               <td>
-                `${lang.SYNC} ${desiredLocation}`
+                `${lang.SYNCING} ${desiredLocation}`
               </td>
             </tr>
           );
@@ -419,7 +419,7 @@ class DeviceDetailFlyout extends Component {
                 {deviceFirmware}
               </td>
               <td>
-                `${lang.SYNC} ${desiredFirmware}`
+                `${lang.SYNCING} ${desiredFirmware}`
               </td>
             </tr>
           );

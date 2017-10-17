@@ -6,7 +6,8 @@ const defaultState = {
   jobs: undefined,
   loadingInProgress: false,
   loadingError: false,
-  twinUpdateJobs: []
+  twinUpdateJobs: [],
+  propertyUpdateJobs: []
 };
 
 export default function(state = defaultState, action) {
@@ -38,6 +39,15 @@ export default function(state = defaultState, action) {
         ...state,
         twinUpdateJobs: [
           ...state.twinUpdateJobs.filter(({ jobId }) => jobId !== action.job.jobId),
+          action.job
+        ]
+      };
+
+    case types.UPDATE_PROPERTY_JOBS:
+      return {
+        ...state,
+        propertyUpdateJobs: [
+          ...state.propertyUpdateJobs.filter(({ jobId }) => jobId !== action.job.jobId),
           action.job
         ]
       };

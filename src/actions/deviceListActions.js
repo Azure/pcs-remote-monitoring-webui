@@ -10,6 +10,13 @@ export const devicesSelectionChanged = devices => {
   };
 };
 
+export const updateDevices = devices => {
+  return {
+    type: types.UPDATE_DEVICES,
+    devices
+  };
+};
+
 export const updateDeviceTwin = jobs => {
   return {
     type: types.UPDATE_DEVICE_TWIN,

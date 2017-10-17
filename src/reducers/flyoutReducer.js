@@ -18,6 +18,15 @@ const flyoutReducer = (state = initialState.flyout, action) => {
         devices: action.data
       };
 
+    case types.UPDATE_DEVICES:
+      return {
+        ...state,
+        devices: [
+          ...state.devices.filter(device => action.devices.some(({ Id }) => device.Id !== Id)),
+          ...action.devices
+        ]
+      }
+
     case types.UPDATE_DEVICE_TWIN:
       const { tags, deviceIds } = action.jobs;
       return {

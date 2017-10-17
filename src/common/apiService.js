@@ -40,6 +40,10 @@ class ApiService {
     return Http.get(`${Config.iotHubManagerApiUrl}devices`);
   }
 
+  static getDeviceById(id) {
+    return Http.get(`${Config.iotHubManagerApiUrl}devices/${id}`);
+  }
+
   static getDevicesForGroup(selectedGroupConditions) {
     const encodedParam = encodeURIComponent(JSON.stringify(selectedGroupConditions));
     return Http.get(`${Config.iotHubManagerApiUrl}devices?query=${encodedParam}`);
@@ -220,7 +224,7 @@ class ApiService {
     return Http.post(`${Config.iotHubManagerApiUrl}jobs`, payload);
   }
 
-  static getJobStatus(id) {console.log('getJobStatus')
+  static getJobStatus(id) {
     return Http.get(`${Config.iotHubManagerApiUrl}jobs/${id}`);
   }
 

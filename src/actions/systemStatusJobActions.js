@@ -24,6 +24,13 @@ export const updateTwinJobs = job => {
   };
 };
 
+export const updatePropertyJobs = job => {
+  return {
+    type: types.UPDATE_PROPERTY_JOBS,
+    job
+  };
+};
+
 export const loadJobsForTimePeriod = (from) => {
   return dispatch => {
     dispatch({ type: types.LOAD_JOBS_PROGRESS });

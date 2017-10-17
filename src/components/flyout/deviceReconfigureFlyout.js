@@ -3,9 +3,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import * as uuid from 'uuid/v4';
+import Rx from 'rxjs';
+import _ from 'lodash';
+
 import lang from '../../common/lang';
 import * as actions from '../../actions';
-import * as uuid from 'uuid/v4';
+
 import CancelX from '../../assets/icons/CancelX.svg';
 import Apply from '../../assets/icons/Apply.svg';
 import ApiService from '../../common/apiService';
@@ -14,9 +18,15 @@ import Spinner from '../spinner/spinner';
 import DeepLinkSection from '../deepLinkSection/deepLinkSection';
 import { getTypeOf } from '../../common/utils';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
+
 import './deviceReconfigureFlyout.css';
 
 const validReportedProperties = [Config.STATUS_CODES.TYPE, Config.STATUS_CODES.LOCATION, Config.STATUS_CODES.FIRMWARE];
+
+const getRelatedJobs = (devices, propertyUpdateJobs) => {
+  if (!devices || !propertyUpdateJobs || !devices.length || !propertyUpdateJobs.length) return [];
+  return propertyUpdateJobs.filter(job => devices.some(({ Id }) => job.deviceIds.indexOf(Id) !== -1));
+}
 
 class DeviceReconfigureFlyout extends React.Component {
   constructor() {
@@ -32,14 +42,46 @@ class DeviceReconfigureFlyout extends React.Component {
     this.commonConfigValueChanged = this.commonConfigValueChanged.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
     this.applyDeviceConfigureJobsData =this.applyDeviceConfigureJobsData.bind(this);
+    this.checkJobStatus = this.checkJobStatus.bind(this);
   }
 
-  componentWillMount() {
-    this.calcCommonConfiguration(this.props.devices);
+  componentDidMount() {
+    const { devices, propertyUpdateJobs } = this.props;
+    this.checkJobStatus(devices, propertyUpdateJobs);
+    this.calcCommonConfiguration(devices);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.calcCommonConfiguration(nextProps.devices);
+    const { devices, propertyUpdateJobs } = nextProps;
+    if (!_.isEqual(propertyUpdateJobs, this.props.propertyUpdateJobs)) {
+      this.checkJobStatus(devices, propertyUpdateJobs);
+    }
+    if (!_.isEqual(devices, this.props.devices)) {
+      this.calcCommonConfiguration(devices);
+    }
+  }
+
+  checkJobStatus (devices, propertyUpdateJobs) {
+    if(!devices || !propertyUpdateJobs || !devices.length || !propertyUpdateJobs.length) return;
+    const jobs = getRelatedJobs(devices, propertyUpdateJobs);
+    Rx.Observable.from(jobs)
+      .flatMap(({ jobId, deviceIds }) =>
+        Rx.Observable
+          .fromPromise(ApiService.getJobStatus(jobId))
+          // Get completed jobs
+          .filter(({ status }) => status === 3)
+          .flatMap(_ => deviceIds)
+      )
+      .distinct()
+      .flatMap(deviceId =>
+        Rx.Observable
+          .fromPromise(ApiService.getDeviceById(deviceId))
+      )
+      .reduce((devices, device) => [...devices, device], [])
+      .subscribe(
+        devices => this.props.actions.updateDevices(devices),
+        error => console.log('error', error)
+      );
   }
 
   calcCommonConfiguration(devices) {
@@ -55,13 +97,14 @@ class DeviceReconfigureFlyout extends React.Component {
     if (devices.length === 1) {
       const device = devices[0];
       if (device && device.Properties && device.Properties.Reported) {
-        const { Reported } = device.Properties;
+        const { Reported, Desired } = device.Properties;
         validReportedProperties.forEach(key => {
           if (Reported[key] !== undefined) {
             commonConfiguration.push({
               label: key,
-              value: Reported[key],
-              type: getTypeOf(Reported[key])
+              value: (Desired[key] && Desired[key] !== Reported[key]) ? `${Reported[key]} ${lang.SYNCING} ${Desired[key]}` : Reported[key],
+              type: getTypeOf(Reported[key]),
+              desired: Desired[key] ? true : false
             });
           }
         });
@@ -89,16 +132,19 @@ class DeviceReconfigureFlyout extends React.Component {
       const valuesMap = {};
       devices.forEach(device => {
         if (!device || !device.Properties || !device.Properties.Reported) return;
-        const { Reported } = device.Properties;
+        const { Reported, Desired } = device.Properties;
         validReportedProperties.forEach(reportedProp => {
           if (uncommonReportedPropValueMap[reportedProp]) return;
           if (Reported[reportedProp] !== undefined) {
+            const commonValue = valuesMap[reportedProp] === Reported[reportedProp] ? valuesMap[reportedProp] : lang.MULTIPLE;
             if (valuesMap[reportedProp] !== undefined) {
               // If the values are shared across devices, show the value, if not, show 'Multiple'
-              valuesMap[reportedProp] =
-                valuesMap[reportedProp] === Reported[reportedProp] ? valuesMap[reportedProp] : lang.MULTIPLE;
+              valuesMap[reportedProp] = commonValue;
             } else {
               valuesMap[reportedProp] = Reported[reportedProp];
+            }
+            if (Desired[reportedProp] && Reported[reportedProp] !== Desired[reportedProp]) {
+              valuesMap[reportedProp] = commonValue === lang.MULTIPLE ? `${commonValue} ${lang.SYNCING}` : `${commonValue} ${lang.SYNCING} ${Desired[reportedProp]}`
             }
           }
         });
@@ -108,7 +154,8 @@ class DeviceReconfigureFlyout extends React.Component {
         commonConfiguration.push({
           label: key,
           value: valuesMap[key],
-          type: getTypeOf(valuesMap[key])
+          type: getTypeOf(valuesMap[key]),
+          desired: valuesMap[key].indexOf(lang.SYNCING) !== -1
         });
       });
     }
@@ -134,8 +181,7 @@ class DeviceReconfigureFlyout extends React.Component {
 
   applyDeviceConfigureJobsData() {
     const { devices } = this.props;
-    const ids = devices.map(device => device.Id);
-    const deviceIds = ids.map(id=> `'${id}'`).join(',');
+    const deviceIds = devices.map(({ Id }) => `'${Id}'`).join(',');
     const reportedProps = {};
     this.state.commonConfiguration.forEach(item => {
       reportedProps[item.label] = item.value;
@@ -152,6 +198,10 @@ class DeviceReconfigureFlyout extends React.Component {
 
     this.setState({ showSpinner: true });
     ApiService.scheduleJobs(payload).then(({ jobId }) => {
+      this.props.actions.updatePropertyJobs({
+        jobId,
+        deviceIds: devices.map(({ Id }) => Id)
+      });
       this.setState({
         showSpinner: false,
         jobApplied: true,
@@ -194,13 +244,17 @@ class DeviceReconfigureFlyout extends React.Component {
               {item.label}
             </span>
             {item.label !== Config.STATUS_CODES.FIRMWARE
-              ? <input
-                  type="text"
-                  className="device-configuration-items value-for-existed-data"
-                  onChange={evt => this.commonConfigValueChanged(item.label, evt.target.value)}
-                  value={item.value}
-                  ref={(ip) => this.inputReference[idx] = ip}
-                />
+              ? item.desired
+                  ? <span className="device-configuration-items value-for-existed-data">
+                      {item.value}
+                    </span>
+                  : <input
+                      type="text"
+                      className="device-configuration-items value-for-existed-data"
+                      onChange={evt => this.commonConfigValueChanged(item.label, evt.target.value)}
+                      value={item.value}
+                      ref={(ip) => this.inputReference[idx] = ip}
+                    />
               : <span className="device-configuration-items value-for-existed-data">
                   {item.value}
                 </span>}
@@ -221,7 +275,7 @@ class DeviceReconfigureFlyout extends React.Component {
       description: lang.VIEW_JOB_STATUS,
       linkText: lang.VIEW
     };
-    
+
     return (
       <div className="device-configuration-container">
         <div className="sub-heading">
@@ -283,7 +337,8 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     devices: state.flyoutReducer.devices,
-    deviceETags: state.flyoutReducer.deviceETags || {}
+    deviceETags: state.flyoutReducer.deviceETags || {},
+    propertyUpdateJobs: state.systemStatusJobReducer.propertyUpdateJobs
   };
 };
 
