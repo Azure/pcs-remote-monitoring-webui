@@ -61,20 +61,26 @@
 
         .Select-placeholder,
         .Select-value,
-        .Select-arrow-zone { padding-top: 2px !important; }
+        .Select-arrow-zone {
+            padding-top: 2px !important;
+            line-height: 21px !important;
+        }
 
         .Select-menu-outer {
-            border: 1px solid #afb9c3 !important;
+            border: 1px solid #454A4E !important;
             width: 100%;
             margin-left: 1px !important;
             max-height: 200px !important;
-            margin-top: 10px !important;
-            overflow: auto !important;            
         }
 
         .Select-input {
             margin-left: -16px;
             padding-top: 2px;
+        }
+
+        .Select-placeholder, .Select--single > .Select-control .Select-value {
+          padding: 0px 10px;
+          line-height: 21px !important;
         }
 
         .Select-clear { display: none; }

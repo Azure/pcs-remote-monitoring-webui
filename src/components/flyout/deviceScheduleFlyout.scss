@@ -28,9 +28,7 @@ $content-height: 24px;
       }
 
       .Select-arrow-zone,
-      .Select-clear-zone {
-        padding-top: 2px;
-      }
+      .Select-clear-zone { padding-top: 2px; }
     }
 
     .Select {
@@ -38,13 +36,11 @@ $content-height: 24px;
       font-size: $content-font-size;
 
       .Select-value,
-      .Select-placeholder {
-        padding: 2px 10px 0px 10px;
-      }
+      .Select-placeholder { line-height: 24px; }
     }
 
     .Select-menu-outer {
-      border: 1px solid #afb9c3;
+      border: 1px solid #454A4E !important;
       width: $content-width;
       margin-left: 1px;
       overflow: auto;
