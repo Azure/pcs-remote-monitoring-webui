@@ -175,6 +175,7 @@ const lang = {
   NOTIFICATIONTYPE: 'Notification Type',
   NOT_COMPLETED : 'Not Completed',
   NOW: 'Now',
+  NO_DATA: 'No data available',
   NO_AVAILABLE_COMMON_TAGS: 'No available common tags.',
   NO_OCCURENCES: 'No occurences selected',
   NO_OF_DEVICES: 'No Of Devices',

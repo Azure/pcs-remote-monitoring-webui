@@ -114,6 +114,7 @@ class AlarmList extends Component {
     return (
       <DashboardPanel
         className="alarm-list"
+        showNoDataOverlay={!(this.state.rowData && this.state.rowData.length)}
         showHeaderSpinner={this.state.loading}
         showContentSpinner={!this.state.rowData}
         title={lang.ALARMSTATUS}>

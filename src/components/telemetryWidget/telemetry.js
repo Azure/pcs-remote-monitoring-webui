@@ -111,6 +111,7 @@ class Telemetry extends Component {
       <DashboardPanel
           className="telemetry-panel-container"
           title={'Telemetry'}
+          showNoDataOverlay={!this.props.telemetryByDeviceGroup || !this.props.telemetryByDeviceGroup.Items.length}
           showHeaderSpinner={this.props.showHeaderSpinner}
           showContentSpinner={this.props.showContentSpinner}
           actions={

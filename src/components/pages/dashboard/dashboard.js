@@ -87,6 +87,8 @@ class DashboardPage extends Component {
     };
     const kpiProps = {
       devices,
+      alarmList: this.props.alarmList,
+      alarmsByRule: this.props.alarmsByRule,
       timeRange: this.state.timeRange
     };
     const selectProps = {
@@ -156,6 +158,7 @@ const mapStateToProps = state => {
     devices: state.deviceReducer.devices,
     BingMapKey: state.mapReducer.BingMapKey,
     alarmList: state.kpiReducer.alarmsList,
+    alarmsByRule: state.kpiReducer.alarmsByRule,
     selectedDeviceGroup: state.filterReducer.selectedDeviceGroupId
   };
 };

@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 
 import Spinner from '../spinner/spinner';
+import lang from '../../common/lang';
 
 import './dashboardPanel.css';
 
@@ -29,6 +30,7 @@ class DashboardPanel extends Component {
         </div>
         <div className="panel-contents">{this.props.children}</div>
         { this.props.showContentSpinner ? <div className="initial-loading"><Spinner size='large'/></div> : null}
+        { !this.props.showContentSpinner && this.props.showNoDataOverlay ? <div className="initial-loading">{lang.NO_DATA}</div> : null}
       </div>
     );
   }

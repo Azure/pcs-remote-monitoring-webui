@@ -52,6 +52,7 @@ class KpiWidget extends Component {
     return (
       <DashboardPanel
         className="kpi-widget"
+        showNoDataOverlay={!this.props.alarmList.length && !(this.props.alarmsByRule && this.props.alarmsByRule.length)}
         showHeaderSpinner={this.props.showHeaderSpinner}
         showContentSpinner={this.props.showContentSpinner}
         title={Lang.SYSTEMKPI}

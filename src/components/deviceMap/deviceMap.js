@@ -22,7 +22,7 @@ class DeviceMap extends Component {
          this.showMap(this.props);
        }
     };
-    this.state = { mapCallbackComplete: false };
+    this.state = { mapCallbackComplete: false, showNoDataOverlay: false };
   }
 
   componentDidMount() {
@@ -37,19 +37,13 @@ class DeviceMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      !nextProps.devices ||
-      !nextProps.telemetryByDeviceGroup ||
-      !nextProps.alarmList ||
-      !nextProps.BingMapKey
-    ) {
-      //the data is not loaded yet, return !
-      return;
-    }
+    const {devices, telemetryByDeviceGroup, alarmList, BingMapKey} = nextProps;
+    if (!devices || !telemetryByDeviceGroup || !alarmList || !BingMapKey) return;  //the data is not loaded yet, return
     this.addScript(nextProps);
-    if (nextProps.BingMapKey && nextProps.BingMapKey !== config.STATUS_CODES.STATIC) {
+    if (BingMapKey && BingMapKey !== config.STATUS_CODES.STATIC) {
        this.showMap(nextProps);
-     }
+    }
+    this.setState({ showNoDataOverlay: (!alarmList.length && !devices.length && !telemetryByDeviceGroup.Items.length) });
   }
 
   showMap(props) {
@@ -176,7 +170,11 @@ class DeviceMap extends Component {
   render() {
     const { BingMapKey } = this.props;
     return (
-      <DashboardPanel title={lang.DEVICELOCATION} showContentSpinner={this.props.showContentSpinner} showHeaderSpinner={this.props.showHeaderSpinner} className="map-container">
+      <DashboardPanel title={lang.DEVICELOCATION}
+        showNoDataOverlay={this.state.showNoDataOverlay}
+        showContentSpinner={this.props.showContentSpinner}
+        showHeaderSpinner={this.props.showHeaderSpinner}
+        className="map-container">
         <Row>
           <RegionDetails {...this.props} />
           <Col md={9} className="bing-map">
