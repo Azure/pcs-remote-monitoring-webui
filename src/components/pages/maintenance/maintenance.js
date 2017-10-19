@@ -389,7 +389,7 @@ class MaintenancePage extends Component {
                   label: lang.LASTDAY
                 },
                 {
-                  value: 'P1W',
+                  value: 'P7D',
                   label: lang.LASTWEEK
                 },
                 {

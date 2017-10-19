@@ -95,9 +95,9 @@ const mapDispatchToProps = dispatch => ({
         secondDurationFrom = 'NOW-P2D';
         break;
 
-      case 'P1W':
-        secondDurationTo = firstDurationFrom = 'NOW-P1W';
-        secondDurationFrom = 'NOW-P2W';
+      case 'P7D':
+        secondDurationTo = firstDurationFrom = 'NOW-P7D';
+        secondDurationFrom = 'NOW-P14D';
         break;
 
       case 'P1M':
