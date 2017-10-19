@@ -76,7 +76,9 @@ class LineChart extends Component {
                     : `${DeltaUp}`
                 }
               />
-              {this.props.percentChange} <span className="percentage-icon">%</span></div>
+                  <span className="percentage-change">{this.props.percentChange}</span>
+                  <span className="percentage-icon">%</span>
+              </div>
             : null}
         </div>
       </Col>

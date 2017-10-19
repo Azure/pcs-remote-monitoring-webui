@@ -81,19 +81,21 @@ $titleRowHeight: 36px;
   }
 
   .percentage-critical {
-    font-size: 40px;
     margin-top: 40px;
-    text-align: center;
+    display: flex;
+    align-items: center;
     color: #fff;
 
     .percentage { display: inline-block; }
+
+    .percentage-change { font-size: 40px; }
 
     .percentage-icon { font-size: 20px; }
   }
 
   .delta-down {
-    margin-right: 3px;
     width: 22px;
+    margin-top: -16px;
     display: inline-block;
   }
 
