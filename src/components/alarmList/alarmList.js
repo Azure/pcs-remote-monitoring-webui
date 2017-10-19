@@ -21,7 +21,8 @@ class AlarmList extends Component {
       timeRange: this.props.timeRange || 'PT1H',
       rowData: undefined,
       loading: false,
-      deviceIdList: ''
+      deviceIdList: '',
+      error: ''
     };
 
     this.pollingManager = new PollingManager();
@@ -36,7 +37,7 @@ class AlarmList extends Component {
         .do(_ => this.refresh(`intervalRefresh`, Config.INTERVALS.TELEMETRY_UPDATE_MS))
         .subscribe(
           rowData => this.setState({ rowData, loading: false }),
-          err => this.setState({ loading: false })
+          error => this.setState({ error, loading: false })
         );
   }
 
@@ -45,9 +46,7 @@ class AlarmList extends Component {
    *
    * @param {Object} gridReadyEvent An object containing access to the grid APIs
    */
-  onGridReady = gridReadyEvent => {
-    gridReadyEvent.api.sizeColumnsToFit();
-  }
+  onGridReady = gridReadyEvent => gridReadyEvent.api.sizeColumnsToFit();
 
   componentWillUnmount() {
     this.refreshSubscription.unsubscribe();
@@ -61,6 +60,7 @@ class AlarmList extends Component {
       this.setState(
         {
           deviceIdList: newDeviceIdList,
+          rowData: undefined,
           timeRange: nextProps.timeRange
         }, 
         () => this.refresh(`filterGroupRefresh`)
@@ -111,12 +111,14 @@ class AlarmList extends Component {
   render() {
     // Pass an empty string to avoid two spinners appearing on top of each other
     const alarmsGridProps = { rowData: this.state.rowData || [] };
+
     return (
       <DashboardPanel
         className="alarm-list"
         showNoDataOverlay={!(this.state.rowData && this.state.rowData.length)}
         showHeaderSpinner={this.state.loading}
-        showContentSpinner={!this.state.rowData}
+        showContentSpinner={!this.state.rowData && !this.state.error}
+        error={this.state.error}
         title={lang.ALARMSTATUS}>
           <div className="grid-container">
             <AlarmsGrid {...alarmsGridProps} />

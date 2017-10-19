@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 
+import PcsErrorModal from '../shared/pcsErrorModal/pcsErrorModal';
 import Spinner from '../spinner/spinner';
 import lang from '../../common/lang';
 
@@ -17,6 +18,10 @@ import './dashboardPanel.css';
 class DashboardPanel extends Component {
   render() {
     const classNames = 'dashboard-panel ' + (this.props.className || '');
+    const errorContainer = 
+      <div className="error-modal-container">
+        <PcsErrorModal header={'Error!'}>{ this.props.error }</PcsErrorModal>
+      </div>;
     return (
       <div className={classNames}>
         <div className="panel-header-container">
@@ -28,7 +33,10 @@ class DashboardPanel extends Component {
           </div>
           {this.props.actions ? <div className="panel-actions-container">{this.props.actions}</div> : ''}
         </div>
-        <div className="panel-contents">{this.props.children}</div>
+        <div className="panel-contents">
+          {this.props.children}
+          {this.props.error ? errorContainer : ''}
+        </div>
         { this.props.showContentSpinner ? <div className="initial-loading"><Spinner size='large'/></div> : null}
         { !this.props.showContentSpinner && this.props.showNoDataOverlay ? <div className="initial-loading">{lang.NO_DATA}</div> : null}
       </div>
