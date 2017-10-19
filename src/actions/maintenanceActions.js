@@ -26,7 +26,7 @@ export const loadMaintenanceDataSuccess = data => {
   };
 };
 
-export const loadMaintenanceData = ({ params }) => {
+export const loadMaintenanceData = (params) => {
   return dispatch =>
       Rx.Observable.fromPromise(
           ApiService.getAlarmsByRule(params)

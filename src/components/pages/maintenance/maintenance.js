@@ -232,6 +232,15 @@ class MaintenancePage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { devices } = nextProps;
+    if (devices && devices.items.length && !_.isEqual(devices, this.props.devices)) {
+      const deviceIds = devices.items.map(({Id}) => Id);
+      this.props.actions.loadMaintenanceData({
+        from: `NOW-${this.state.timerange}`,
+        to: 'NOW',
+        devices: deviceIds
+      });
+    }
     this.selectJobAndSetState(nextProps);
   }
 
