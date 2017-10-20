@@ -44,7 +44,7 @@ class DeviceTagFlyout extends React.Component {
     this.inputReferences = {};
     this.state = {
       commonTags: [],
-      deletedTagNames: [],
+      deletedTagNames: {},
       jobInputValue: '',
       overiddenDeviceTagValues: {
         //key will be device Id and value will be tag name/value map
@@ -145,21 +145,26 @@ class DeviceTagFlyout extends React.Component {
   }
 
   checkJobStatus (devices, twinUpdateJobs) {
+    if(!devices || !twinUpdateJobs || !devices.length || !twinUpdateJobs.length) return;
     const jobs = getRelatedJobs(devices, twinUpdateJobs);
-    const jobStream = Rx.Observable.from(jobs);
-    jobStream
+    const deviceIdSet = new Set(devices.map(({Id}) => Id));
+    Rx.Observable.from(jobs)
       .flatMap(({ jobId, deviceIds }) =>
         Rx.Observable
           .fromPromise(ApiService.getJobStatus(jobId))
           // Get completed jobs
           .filter(({ status }) => status === 3)
-          .map(({ updateTwin }) => ({
-            tags: updateTwin.tags,
-            deviceIds
-          }))
+          .flatMap(_ => deviceIds)
       )
+      .distinct()
+      .filter(deviceId => deviceIdSet.has(deviceId))
+      .flatMap(deviceId =>
+        Rx.Observable
+          .fromPromise(ApiService.getDeviceById(deviceId))
+      )
+      .reduce((devices, device) => [...devices, device], [])
       .subscribe(
-        completedJobs => this.props.actions.updateDeviceTwin(completedJobs),
+        devices => this.props.actions.updateDevices(devices),
         error => console.log('error', error)
       );
   }
@@ -213,18 +218,12 @@ class DeviceTagFlyout extends React.Component {
 
   applyDeviceTagJobsData() {
     const { devices } = this.props;
-    const { newTags, deletedTagNames } = this.state;
+    const { newTags, deletedTagNames, commonTagValues } = this.state;
     const deviceIds = devices.map(({ Id }) => `'${Id}'`).join(',');
     const tags = {
-      ...this.state.commonTagValues,
-      ...this.state.overiddenDeviceTagValues
+      ...commonTagValues,
+      ...deletedTagNames,
     };
-
-    Object.keys(tags).forEach(key => {
-      if (deletedTagNames.indexOf(key) !== -1) {
-        tags[key] = null;
-      }
-    });
 
     newTags.forEach(tag => {
       tags[tag.name] = tag.value;
@@ -305,7 +304,7 @@ class DeviceTagFlyout extends React.Component {
     const { commonTags, commonTagValues, commonTagTypes, deletedTagNames } = this.state;
     return (
       <div className="common-tags">
-        {commonTags.filter(tagName => deletedTagNames.indexOf(tagName) === -1).map((tagName, idx) => {
+        {commonTags.filter(tagName => !(tagName in deletedTagNames)).map((tagName, idx) => {
           return (
             <div className="device-tag-items name-value-type" key={tagName} onClick={() => {this.inputReferences[idx] && this.inputReferences[idx].focus()}}>
               <span className="device-tag">
@@ -342,7 +341,10 @@ class DeviceTagFlyout extends React.Component {
 
   deleteExistingTag(tagName) {
     this.setState({
-      deletedTagNames: [...this.state.deletedTagNames, tagName]
+      deletedTagNames: {
+        ...this.state.deletedTagNames,
+        [tagName]: null
+      }
     });
   }
 

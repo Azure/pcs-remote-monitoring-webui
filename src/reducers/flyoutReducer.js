@@ -22,8 +22,8 @@ const flyoutReducer = (state = initialState.flyout, action) => {
       return {
         ...state,
         devices: [
-          ...state.devices.filter(device => action.devices.some(({ Id }) => device.Id !== Id)),
-          ...action.devices
+          ...state.devices.filter(device => action.devices.every(({ Id }) => device.Id !== Id)),
+          ...action.devices.filter(device => state.devices.some(({ Id }) => device.Id === Id)),
         ]
       }
 

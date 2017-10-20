@@ -64,6 +64,7 @@ class DeviceReconfigureFlyout extends React.Component {
   checkJobStatus (devices, propertyUpdateJobs) {
     if(!devices || !propertyUpdateJobs || !devices.length || !propertyUpdateJobs.length) return;
     const jobs = getRelatedJobs(devices, propertyUpdateJobs);
+    const deviceIdSet = new Set(devices.map(({Id}) => Id));
     Rx.Observable.from(jobs)
       .flatMap(({ jobId, deviceIds }) =>
         Rx.Observable
@@ -73,6 +74,7 @@ class DeviceReconfigureFlyout extends React.Component {
           .flatMap(_ => deviceIds)
       )
       .distinct()
+      .filter(deviceId => deviceIdSet.has(deviceId))
       .flatMap(deviceId =>
         Rx.Observable
           .fromPromise(ApiService.getDeviceById(deviceId))
