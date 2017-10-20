@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import * as _ from 'lodash';
 
 import PcsGrid from '../pcsGrid/pcsGrid';
 import DevicesGrid from '../devicesGrid/devicesGrid';
@@ -125,7 +124,7 @@ class RuleDetailsPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { updatedAlarms, params, devices, alarmsGridData } = nextProps;
+    const { params, devices, alarmsGridData } = nextProps;
     const ruleId = (params || {}).id;
     const ruleDetails = (alarmsGridData || []).filter(data => data.id === ruleId)[0];
     if (!ruleId || !ruleDetails) return;
@@ -148,15 +147,6 @@ class RuleDetailsPage extends Component {
         };
       })
     });
-
-
-    if(!_.isEqual(updatedAlarms, this.props.updatedAlarms) && updatedAlarms.length > 0) {
-      const alarmIds = new Set(updatedAlarms.map(({Id}) => Id));
-      const status = updatedAlarms[0].Status;
-      this.setState({
-        rowData: this.state.rowData.map(data => alarmIds.has(data.id) ? { ...data, status } : data)
-      });
-    }
   }
 
   getDeviceList(alarms) {

@@ -70,3 +70,10 @@ export const loadMaintenanceData = (params) => {
         error => dispatch(loadFailed(error))
       );
 };
+
+export const updateAlarmsStatus = data => {
+  return {
+    type: types.UPDATE_ALARMS_STATUS,
+    data
+  };
+};

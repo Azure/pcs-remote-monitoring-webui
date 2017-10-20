@@ -57,8 +57,7 @@ class MaintenancePage extends Component {
       toggleButtonSvg: ChangestatusSvg,
       softSelectId: '',
       softSelectedDeviceId: '',
-      contextBtns: '',
-      updatedAlarms: []
+      contextBtns: ''
     }
     this.refreshData = this.refreshData.bind(this);
     this.contextButtons = {
@@ -120,7 +119,14 @@ class MaintenancePage extends Component {
     const { selectedAlarms } = this.state;
     Promise.all(
       selectedAlarms.map(alarm => ApiService.updateAlarmsStatus({...alarm, Status}))
-    ).then(updatedAlarms => this.setState({ updatedAlarms }));
+    ).then(updatedAlarms => {
+      if (updatedAlarms && updatedAlarms.length > 0) {
+        const alarmIds = new Set(updatedAlarms.map(({Id}) => Id));
+        const status = updatedAlarms[0].Status;
+        const ruleId = updatedAlarms[0].Rule.Id;
+        this.props.actions.updateAlarmsStatus({ alarmIds, status, ruleId });
+      }
+    });
   }
 
 // --- Grid events handler starts here ----------------------------------
@@ -354,7 +360,6 @@ class MaintenancePage extends Component {
       alarmsGridData: this.props.alarmsGridData,
       actions: this.props.actions,
       jobs: this.props.jobs,
-      updatedAlarms: this.state.updatedAlarms,
       btnActions: this.getGridActions() //TODO: add all grid related actions
     };
     return (
