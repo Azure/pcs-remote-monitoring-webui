@@ -50,12 +50,13 @@ class ApiService {
   }
 
   static getAlarmsList(from, to, deviceIds) {
-    return Http.get(
-      `${Config.telemetryApiUrl}alarms?devices=${deviceIds}&from=` +
-        encodeURIComponent(from) +
-        '&to=' +
-        encodeURIComponent(to)
-    );
+      const paramsMap = {
+          Order : 'desc',
+          from,
+          to
+      };
+      if (deviceIds) paramsMap.devices = deviceIds;
+      return Http.get(`${Config.telemetryApiUrl}alarms?${ApiService.serializeParamObject(paramsMap)}`);
   }
 
   static getAlarmsListForDeviceMap(deviceIds) {
@@ -100,12 +101,13 @@ class ApiService {
   }
 
   static getAlarmsByRuleForKpi(from, to, deviceIds) {
-    return Http.get(
-      `${Config.telemetryApiUrl}alarmsbyrule?devices=${deviceIds}&Order=desc&from=` +
-        encodeURIComponent(from) +
-        '&to=' +
-        encodeURIComponent(to)
-    );
+      const paramsMap = {
+          Order : 'desc',
+          from,
+          to
+      };
+      if (deviceIds) paramsMap.devices = deviceIds;
+      return Http.get(`${Config.telemetryApiUrl}alarmsbyrule?${ApiService.serializeParamObject(paramsMap)}`);
   }
 
   static getAlarmList() {

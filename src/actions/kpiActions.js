@@ -31,10 +31,7 @@ export const refreshAllChartData = (
       return;
     }
     const devices = currentState.deviceReducer.devices;
-    if (!devices) {
-      return;
-    }
-    const deviceIdsCsv = devices.items.map(device => device.Id).join(',');
+    const deviceIdsCsv = (devices ? devices.items : []).map(({ Id })=> Id).join(',');
     dispatch(indicatorStart(refreshFlag ? 'kpi' : 'kpiInitial'));
     dispatch({ type: types.KPI_REFRESH_CHART_DATA_START });
     Promise.all([
