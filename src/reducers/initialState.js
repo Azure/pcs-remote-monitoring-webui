@@ -65,5 +65,12 @@ export default {
     kpi: false,
     kpiInitial: true,
     alarms: false,
+  },
+  systemJobs: {
+    jobs: [],
+    loadingInProgress: false,
+    loadingError: false,
+    twinUpdateJobs: [],
+    propertyUpdateJobs: []
   }
 };

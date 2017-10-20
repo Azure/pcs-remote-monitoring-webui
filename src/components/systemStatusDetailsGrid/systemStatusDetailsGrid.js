@@ -1,11 +1,20 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
+import Rx from 'rxjs';
+
+import * as actions from "../../actions";
 import Lang from '../../common/lang';
 import DevicesGrid from '../devicesGrid/devicesGrid';
 import PcsGrid from '../pcsGrid/pcsGrid';
 import { systemStatusColumnDefs, systemStatusGridProps } from '../systemStatusGrid/systemStatusConfig';
+import ApiService from '../../common/apiService';
+
 import './systemStatusDetailsGrid.css';
+
+const jobDoneSet = new Set([3, 4, 5]);
 
 class SystemStatusDetailsGrid extends Component {
   constructor(props) {
@@ -22,7 +31,37 @@ class SystemStatusDetailsGrid extends Component {
       systemStatusColumnDefs.endTime // End time of the job
     ];
 
+
     this.onGridReady = this.onGridReady.bind(this);
+    // A stream of job ids
+    this.refreshStream = new Rx.Subject();
+  }
+
+  componentDidMount() {
+    this.subscription = this.refreshStream
+      .filter(job => job && job.jobId && !jobDoneSet.has(job.status)) // Filter out undefined
+      .debounceTime(5000)
+      .flatMap(({ jobId }) => ApiService.getJobStatus(jobId))
+      .filter(job => {
+        const isComplete = jobDoneSet.has(job.status);
+        if (!isComplete) this.refreshStream.next(job);
+        return isComplete;
+      })
+      .subscribe(
+        job => this.props.actions.updateJobs(job),
+        err => console.error(err)
+      );
+
+    // Initial refresh
+    this.refreshStream.next(this.props.jobDetails);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.refreshStream.next(nextProps.jobDetails);
+  }
+
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
   }
 
   /**
@@ -38,51 +77,56 @@ class SystemStatusDetailsGrid extends Component {
   }
 
   render() {
-    const { detailsDevices,detailsJobs,systemStatusGridSelectedDevices, btnActions } = this.props;
-    const deviceJobs = detailsDevices, 
-          jobs = detailsJobs, 
-          devices = systemStatusGridSelectedDevices;
+    const { detailsDevices, jobDetails, systemStatusGridSelectedDevices, btnActions } = this.props;
+    const hasJobs = (detailsDevices || []).length > 0;
     let devicesGridProps = {
       onSoftSelectChange: btnActions.onSoftSelectDeviceGrid,
-      onContextMenuChange: btnActions.onContextMenuChange
+      onContextMenuChange: btnActions.onContextMenuChange,
+      rowData: systemStatusGridSelectedDevices
     };
-    if (devices && devices.length) {
-      devicesGridProps.rowData = devices;
-    }
-    const jobIdTrim = jobs[0] ? jobs[0].jobId.substring(0, 20) : '';
+    const jobIdTrim = ((jobDetails || {}).jobId || '').substring(0, 20);
     return (
       <div className="system-details-container">
-        {jobs && jobs.length ? <div className="sytem-status-header"> { jobIdTrim } </div> : null}
-        {jobs && jobs.length
-          ? <PcsGrid
-              /* systemStatusGridProps Properties */
-              {...systemStatusGridProps} // Default systemStatusGrid options
-              columnDefs={this.defaultColumnDefs}
-              pagination = {false}
-              rowData={jobs}
-            />: null}
-        {deviceJobs && deviceJobs.length
-          ?<PcsGrid
-              /* systemStatusGridProps Properties */
-              {...systemStatusGridProps} // Default systemStatusGrid options
-              columnDefs={this.props.systemStatusGridColumnDefs}
-              rowData={deviceJobs}
-              /* Grid Events */
-              onSoftSelectChange={this.props.onDeviceJobSoftSelectChange}
-              onGridReady={this.onGridReady}
-            /> : null}
-        <div className="devices-container">
-          <div className="devices-header"> {Lang.DEVICES} </div>
-          <div className="devices-placeholder">
-            {devices && devices.length ? <DevicesGrid {...devicesGridProps} pagination = {false} />
-              : <div className="no-devices-text">
-                  {Lang.NO_OCCURENCES}
-                </div>}
-          </div>
-        </div>
+        <div className="sytem-status-header"> { jobIdTrim } </div>
+        <PcsGrid
+          /* systemStatusGridProps Properties */
+          {...systemStatusGridProps} // Default systemStatusGrid options
+          columnDefs={this.defaultColumnDefs}
+          pagination = {false}
+          rowData={hasJobs ? [jobDetails] : undefined}
+        />
+
+        <PcsGrid
+          /* systemStatusGridProps Properties */
+          {...systemStatusGridProps} // Default systemStatusGrid options
+          columnDefs={this.props.systemStatusGridColumnDefs}
+          rowData={hasJobs ? detailsDevices : undefined}
+          /* Grid Events */
+          onSoftSelectChange={this.props.onDeviceJobSoftSelectChange}
+          onGridReady={this.onGridReady}
+        />
+
+        { hasJobs &&
+            <div className="devices-container">
+              <div className="devices-header"> {Lang.DEVICES} </div>
+              <div className="devices-placeholder">
+                {systemStatusGridSelectedDevices && systemStatusGridSelectedDevices.length
+                  ? <DevicesGrid {...devicesGridProps} pagination = {false} />
+                  : <div className="no-devices-text">
+                      {Lang.NO_OCCURENCES}
+                    </div>}
+              </div>
+            </div>
+        }
       </div>
     );
   }
 }
 
-export default (SystemStatusDetailsGrid);
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
+};
+
+export default connect(null, mapDispatchToProps)(SystemStatusDetailsGrid);

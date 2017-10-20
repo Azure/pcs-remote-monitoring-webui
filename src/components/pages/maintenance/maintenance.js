@@ -42,7 +42,7 @@ class MaintenancePage extends Component {
     ];
     this.state = {
       systemStatusDetailsDevices: [],
-      systemStatusDetailsJobs: [],
+      systemStatusDetailsJobs: {},
       selectedDetailsDevices: [],
       selectedGrid: 'alarms',
       timerange: 'PT1H',
@@ -280,7 +280,7 @@ class MaintenancePage extends Component {
           this.systemStatusColumnDefsLocal.lastReturnMessage.hide = job.type === 4;
         }
       }
-      this.setState({ systemStatusDetailsDevices: deviceJobs, systemStatusDetailsJobs: [job] });
+      this.setState({ systemStatusDetailsDevices: deviceJobs, systemStatusDetailsJobs: job });
     }
   }
 
@@ -352,7 +352,7 @@ class MaintenancePage extends Component {
         .reduce((acc, cur) => acc.concat(cur), []),
       devices: devicesList,
       jobsLoadingInProgress: this.props.jobsLoadingInProgress,
-      detailsJobs: this.state.systemStatusDetailsJobs,
+      jobDetails: this.state.systemStatusDetailsJobs,
       detailsDevices: this.state.systemStatusDetailsDevices,
       systemStatusGridSelectedDevices: this.state.selectedDetailsDevices,
       onDeviceJobSoftSelectChange : this.onDeviceJobSoftSelectChange,

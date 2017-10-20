@@ -8,6 +8,18 @@ const { checkForEmpty } = gridValueFormatters;
 
 export const DEFAULT_SYSTEM_GRID_PAGE_SIZE = 6;
 
+const getStatusCode = value => {
+  switch (value) {
+    case 1: return lang.ENQUEUED;
+    case 2: return lang.RUNNING;
+    case 3: return lang.COMPLETED;
+    case 4: return lang.FAILED;
+    case 5: return lang.CANCELLED;
+    case 6: return lang.SCHEDULED;
+    default: return lang.QUEUED;
+  }
+}
+
 /** A collection of column definitions for the systemStatusGrid */
 export const systemStatusColumnDefs = {
   jobId: {
@@ -21,24 +33,13 @@ export const systemStatusColumnDefs = {
   status: {
     headerName: lang.STATUS,
     field: 'status',
-    valueFormatter: ({ value }) => {
-      switch (value) {
-        case 1: return lang.ENQUEUED;
-        case 2: return lang.RUNNING;
-        case 3: return lang.COMPLETED;
-        case 4: return lang.FAILED;
-        case 5: return lang.CANCELLED;
-        case 6: return lang.SCHEDULED;
-        default: return lang.QUEUED;
-      }
-    }
+    valueFormatter: ({ value }) => getStatusCode(value)
   },
   lastReturnMessage: {
     headerName: lang.LAST_RETURN_MESSAGE,
-    field: 'type',
+    field: 'status',
     valueFormatter: ({ value, data }) => {
-      const isCompleted = !(value === 3 && data.methodName && data.failedCount > 0);
-       return `${data.methodName} ${isCompleted ? lang.COMPLETED : lang.NOT_COMPLETED}`;
+       return `${data.methodName} ${getStatusCode(value)}`;
     }
   },
   type: {
