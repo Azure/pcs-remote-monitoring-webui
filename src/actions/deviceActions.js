@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import * as types from './actionTypes';
-import { loadFailed } from './ajaxStatusActions';
 import ApiService from '../common/apiService';
 import { indicatorStart, indicatorEnd } from './indicatorActions';
 import * as telemetryActions from './telemetryActions';
@@ -42,6 +41,13 @@ export const loadTelemetrMessagesForMapUpdateSuccess = data => {
   };
 };
 
+export const devicesError = error => {
+  return {
+    type: types.DEVICES_ERROR,
+    error
+  };
+};
+
 export const loadTelemetryMessagesByDeviceIdsForMap = (deviceList, timeRange) => {
   return dispatch => {
     dispatch(indicatorStart('mapInitial'));
@@ -56,7 +62,7 @@ export const loadTelemetryMessagesByDeviceIdsForMap = (deviceList, timeRange) =>
           dispatch(indicatorEnd('mapInitial'));
         })
         .catch(error => {
-          dispatch(loadFailed(error));
+          dispatch(devicesError(error));
           throw error;
         })
       : ApiService.getTelemetryMessages({
@@ -70,7 +76,7 @@ export const loadTelemetryMessagesByDeviceIdsForMap = (deviceList, timeRange) =>
           dispatch(indicatorEnd('mapInitial'));
         })
         .catch(error => {
-          dispatch(loadFailed(error));
+          dispatch(devicesError(error));
           throw error;
         });
 
@@ -93,7 +99,7 @@ export const loadDevicesByTelemetryMessages = () => {
         }
       })
       .catch(error => {
-        dispatch(loadFailed(error));
+        dispatch(devicesError(error));
         throw error;
       });
   };
@@ -114,7 +120,7 @@ export const loadDeviceMapAlaramsList = (deviceList, timeRange) => {
             });
           })
           .catch(error => {
-            dispatch(loadFailed(error));
+            dispatch(devicesError(error));
             throw error;
           })
       : ApiService.getAlarms({
@@ -130,7 +136,7 @@ export const loadDeviceMapAlaramsList = (deviceList, timeRange) => {
             });
           })
           .catch(error => {
-            dispatch(loadFailed(error));
+            dispatch(devicesError(error));
             throw error;
           });
   };
@@ -145,7 +151,7 @@ export const loadDevices = () => {
         dispatch(loadDeviceSuccess(data));
       })
       .catch(error => {
-        dispatch(loadFailed(error));
+        dispatch(devicesError(error));
         throw error;
       });
   };
@@ -158,7 +164,7 @@ export const loadDeviceGroup = () => {
         dispatch(loadDeviceGroupSuccess(devices));
       })
       .catch(error => {
-        dispatch(loadFailed(error));
+        dispatch(devicesError(error));
         throw error;
       });
   };

@@ -114,6 +114,7 @@ class Telemetry extends Component {
           showNoDataOverlay={!this.props.telemetryByDeviceGroup || !this.props.telemetryByDeviceGroup.Items.length}
           showHeaderSpinner={this.props.showHeaderSpinner}
           showContentSpinner={this.props.showContentSpinner}
+          error={this.props.error}
           actions={
             <PcsBtn className="pause-button"
               onClick={this.toggleTimer}
@@ -136,6 +137,7 @@ const mapStateToProps = state => {
     telemetryByDeviceGroup: state.telemetryReducer.telemetryByDeviceGroup,
     radioBtnOptions: state.telemetryReducer.radioBtnOptions,
     timeline: state.telemetryReducer.timeline,
+    error: state.telemetryReducer.error,
     showHeaderSpinner: state.indicatorReducer.telemetry,
     showContentSpinner: state.indicatorReducer.mapInitial
   };

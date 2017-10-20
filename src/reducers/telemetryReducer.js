@@ -191,6 +191,12 @@ const telemetryReducer = (state = initialState.telemetry, action) => {
         }
       };
 
+    case types.TELEMETRY_ERROR:
+      return {
+        ...state,
+        error: action.error
+      };
+
     default:
       return state;
   }

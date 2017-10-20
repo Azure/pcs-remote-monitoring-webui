@@ -29,6 +29,12 @@ const deviceReducer = (state = initialState.devices, action) => {
         deviceGroup: action.deviceGroup
       };
 
+    case types.DEVICES_ERROR:
+      return {
+        ...state,
+        error: action.error
+      };
+
     default:
       return state;
   }

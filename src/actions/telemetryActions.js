@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import * as types from './actionTypes';
-import { loadFailed } from './ajaxStatusActions';
 import { indicatorStart, indicatorEnd } from './indicatorActions';
 import ApiService from '../common/apiService';
 import lang from '../common/lang';
@@ -34,6 +33,13 @@ export const selectTelemetryType = key => {
   };
 };
 
+export const telemetryError = error => {
+  return {
+    type: types.TELEMETRY_ERROR,
+    error
+  };
+};
+
 export const loadTelemetryTypes = () => {
   return dispatch => {
     dispatch(indicatorStart('mapInitial'));
@@ -43,7 +49,7 @@ export const loadTelemetryTypes = () => {
         dispatch(loadTelemetryTypesSuccess(data.Properties));
       })
       .catch(error => {
-        dispatch(loadFailed(error));
+        dispatch(telemetryError(error));
         throw error;
       });
   };
@@ -59,7 +65,7 @@ export const loadTelemetryMessages = params => {
         dispatch(loadTelemetrMessagesSuccess(data));
       })
       .catch(error => {
-        dispatch(loadFailed(error));
+        dispatch(telemetryError(error));
         throw error;
       });
   };
@@ -80,7 +86,7 @@ export const loadTelemetryMessagesByDeviceIds = deviceList => {
           dispatch(indicatorEnd('mapInitial'));
         })
         .catch(error => {
-          dispatch(loadFailed(error));
+          dispatch(telemetryError(error));
           throw error;
         })
       : ApiService.getTelemetryMessages({
@@ -94,7 +100,7 @@ export const loadTelemetryMessagesByDeviceIds = deviceList => {
           dispatch(indicatorEnd('mapInitial'));
         })
         .catch(error => {
-          dispatch(loadFailed(error));
+          dispatch(telemetryError(error));
           throw error;
         });
   };
@@ -110,7 +116,7 @@ export const loadTelemetryMessagesP1M = deviceList => {
         dispatch(indicatorEnd('telemetry'));
       })
       .catch(error => {
-        dispatch(loadFailed(error));
+        dispatch(telemetryError(error));
         throw error;
       });
   };

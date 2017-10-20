@@ -21,7 +21,7 @@ import './devicesGrid.css';
 /** A helper method for creating PcsBtns */
 const pcsBtn = (props, key=0) => {
   const btnProps = {...props, key};
-  return <PcsBtn {...btnProps} />
+  return <PcsBtn {...btnProps} />;
 };
 
 /**

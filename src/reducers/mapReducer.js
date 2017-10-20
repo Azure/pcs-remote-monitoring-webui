@@ -11,6 +11,12 @@ const mapReducer = (state = initialState.dashboard.map, action) => {
         BingMapKey: action.BingMapKey
       };
 
+    case types.LOAD_MAPKEY_FAILED: 
+      return {
+        ...state,
+        error: action.error
+      };
+
     default: return state;
   }
 };

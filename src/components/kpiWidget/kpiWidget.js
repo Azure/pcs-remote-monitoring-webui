@@ -55,6 +55,7 @@ class KpiWidget extends Component {
         showNoDataOverlay={!this.props.alarmList.length && !(this.props.alarmsByRule && this.props.alarmsByRule.length)}
         showHeaderSpinner={this.props.showHeaderSpinner}
         showContentSpinner={this.props.showContentSpinner}
+        error={this.props.error}
         title={Lang.SYSTEMKPI}
       >
         <Grid fluid className="kpi-widget">
@@ -116,6 +117,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   showHeaderSpinner: state.indicatorReducer.kpi,
   showContentSpinner: state.indicatorReducer.kpiInitial,
+  error: state.kpiReducer.error
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(KpiWidget);

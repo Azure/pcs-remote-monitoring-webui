@@ -1,7 +1,6 @@
 //Copyright (c) Microsoft. All rights reserved.
 
 import * as types from './actionTypes';
-import { loadFailed } from './ajaxStatusActions';
 import { indicatorStart, indicatorEnd } from './indicatorActions';
 import ApiService from '../common/apiService';
 
@@ -9,6 +8,13 @@ export const refreshAllChartDataSuccess = data => {
   return {
     type: types.REFRESH_ALL_CHART_DATA_SUCCESS,
     data
+  };
+};
+
+export const kpiError = error => {
+  return {
+    type: types.KPI_ERROR,
+    error
   };
 };
 
@@ -21,7 +27,7 @@ export const refreshAllChartData = (
 ) => {
   return (dispatch, getState) => {
     const currentState = getState();
-    if (currentState.indicatorReducer.kpi) {
+    if (currentState.indicatorReducer.kpi || currentState.kpiReducer.error) {
       return;
     }
     const devices = currentState.deviceReducer.devices;
@@ -67,7 +73,7 @@ export const refreshAllChartData = (
       })
       .catch(error => {
         dispatch(indicatorEnd('kpi'));
-        dispatch(loadFailed(error));
+        dispatch(kpiError(error));
         throw error;
       });
   };

@@ -171,8 +171,9 @@ class DeviceMap extends Component {
     return (
       <DashboardPanel title={lang.DEVICELOCATION}
         showNoDataOverlay={this.state.showNoDataOverlay}
-        showContentSpinner={this.props.showContentSpinner}
+        showContentSpinner={this.props.showContentSpinner && !this.props.error}
         showHeaderSpinner={this.props.showHeaderSpinner}
+        error={this.props.error}
         className="map-container">
         <Row>
           <RegionDetails {...this.props} />
@@ -190,9 +191,10 @@ class DeviceMap extends Component {
 
 const mapStateToProps = state => {
   return {
+    error: state.mapReducer.error || state.deviceReducer.error,
     showHeaderSpinner: state.indicatorReducer.kpi,
     showContentSpinner: state.indicatorReducer.kpiInitial,
-    telemetryByDeviceGroup: state.deviceReducer.telemetryByDeviceGroup,
+    telemetryByDeviceGroup: state.deviceReducer.telemetryByDeviceGroup
   };
 };
 

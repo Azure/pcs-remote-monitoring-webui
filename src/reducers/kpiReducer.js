@@ -19,6 +19,11 @@ const kpiReducer = (state = initialState.dashboard.kpi, action) => {
         ...state,
         chartDataFetchComplete: false
       };
+    case types.KPI_ERROR:
+      return {
+        ...state,
+        error: action.error
+      };
     default:
       return state;
   }
