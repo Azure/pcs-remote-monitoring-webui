@@ -58,8 +58,7 @@ $navItemHeight: 48px;
     &:focus {
       color: $leftNavFontHoverColor;
       background-color: $leftNavLinkHoverBgColor;
-      // Commented out until a solution to the webpack issue is found
-      // font-family: $fontSelawikSemibold;
+      font-family: $fontSelawikSemibold;
   
       img { opacity: 1; }
     }
