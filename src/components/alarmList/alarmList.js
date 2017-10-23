@@ -93,13 +93,11 @@ class AlarmList extends Component {
     return Rx.Observable.of(this.state)
       .filter(({ deviceIdList }) => deviceIdList) // Don't make the call if device id list is not defined
       .flatMap(({ timeRange, deviceIdList }) => 
-        Rx.Observable.fromPromise(
-          ApiService.getAlarmsByRule({
-            from: `NOW-${timeRange}`,
-            to: 'NOW',
-            devices: deviceIdList
-          })
-        )
+        ApiService.getAlarmsByRule({
+          from: `NOW-${timeRange}`,
+          to: 'NOW',
+          devices: deviceIdList
+        })
       )
       .map(this.dataFormatter);
   };

@@ -1,0 +1,38 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+.setting-workflow-container {
+
+  .setting-section {
+    padding-top: 24px;
+    border-bottom: 1px solid #454a4e;
+
+    .section-header {
+      color: #fff;
+      font-size: 16px;
+      padding-bottom: 16px;
+    }
+
+    .section-description { 
+      padding-bottom: 24px; 
+      font-size: 14px;
+    }
+
+    .section-input-group { 
+      padding-bottom: 48px;
+
+      label {
+        padding-left: 10px;
+        font-weight: normal;
+        margin: 0;
+      }
+    }
+
+  }
+
+  .btn-container {
+    display: flex;
+    justify-content: flex-end;
+    height: 30px;
+    margin-top: 48px;
+  }
+}

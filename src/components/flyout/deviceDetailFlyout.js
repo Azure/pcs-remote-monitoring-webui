@@ -250,7 +250,7 @@ class DeviceDetailFlyout extends Component {
       : ((this.props.content || {}).device || {}).Id;
     return Rx.Observable.of(deviceId)
       .filter(id => id) // Ignore undefined device Ids
-      .flatMap(id => Rx.Observable.fromPromise(ApiService.getTelemetryMessageByDeviceIdP1M(id)))
+      .flatMap(id => ApiService.getTelemetryMessageByDeviceIdP1M(id))
       .do(response => response.deviceId = deviceId);
   };
 

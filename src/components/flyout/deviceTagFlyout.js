@@ -158,10 +158,7 @@ class DeviceTagFlyout extends React.Component {
       )
       .distinct()
       .filter(deviceId => deviceIdSet.has(deviceId))
-      .flatMap(deviceId =>
-        Rx.Observable
-          .fromPromise(ApiService.getDeviceById(deviceId))
-      )
+      .flatMap(deviceId => ApiService.getDeviceById(deviceId))
       .reduce((devices, device) => [...devices, device], [])
       .subscribe(
         devices => this.props.actions.updateDevices(devices),

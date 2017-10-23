@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Profile from '../profile/profile.js';
 import PcsTooltip from '../../shared/pcsTooltip/pcsTooltip';
 import lang from '../../../common/lang';
+import * as actionTypes from '../../../actions/actionTypes';
 
 import Setting from '../../../assets/icons/Setting.svg';
 
@@ -40,8 +42,7 @@ class TopNav extends Component {
         <div className="user-settings">
           <img
             className="settings-icon"
-            onMouseOver={this.showToolTip}
-            onMouseOut={this.hideToolTip}
+            onClick={this.props.openSettingsFlyout}
             src={Setting}
             alt="Setting" />
           <PcsTooltip {...tooltipProps} />
@@ -52,4 +53,20 @@ class TopNav extends Component {
   }
 }
 
-export default TopNav;
+// Connect to Redux store
+const mapDispatchToProps = dispatch => {
+
+  // A helper method for opening the flyout
+  const openFlyout = (type, callback) => {
+    dispatch({
+      type: actionTypes.FLYOUT_SHOW,
+      content: { type, callback }
+    });
+  }
+
+  return {
+    openSettingsFlyout: () => openFlyout('Settings')
+  };
+};
+
+export default connect(undefined, mapDispatchToProps)(TopNav);

@@ -97,8 +97,7 @@ class DeviceProvisioningWorkflow extends React.Component {
    * @param {Object} event - A DOM event object with the input change details
    * @param {Object} extraState - An object with any updated state other than the input
    */
-  handleInputChange(event, extraState = {}) {
-    const target = event.target;
+  handleInputChange({ target }, extraState = {}) {
     const name = target.name;
     const value = target.type === 'checkbox' ? target.checked : target.value;
 

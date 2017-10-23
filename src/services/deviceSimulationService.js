@@ -26,6 +26,13 @@ class DeviceSimulationService {
   }
 
   /**
+   * Toggles simulation status
+   */
+  static toggleSimulation(Etag, Enabled) {
+    return Http.put(`${DeviceSimulationService.ENDPOINT}simulations/1`, { Etag, Enabled });
+  }
+
+  /**
    * Creates new simulated devices
    * 
    * @param {string} Id The device model Id to be created

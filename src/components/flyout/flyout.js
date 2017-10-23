@@ -9,6 +9,7 @@ import DeviceScheduleFlyout from './deviceScheduleFlyout';
 import DeviceReconfigureFlyout from './deviceReconfigureFlyout';
 import RuleEditor from '../ruleEditor/ruleEditor';
 import DeviceProvisioningWorkflow from '../deviceProvisioningWorkflow/deviceProvisioningWorkflow';
+import SettingFlyout from '../settingFlyout/settingFlyout';
 
 import CloseIcon from '../../assets/icons/X.svg';
 
@@ -39,6 +40,9 @@ const getFlyout = (content, onClose) => {
 
     case 'Provision':
       return <DeviceProvisioningWorkflow content={content} onClose={onClose} />;
+
+    case 'Settings':
+      return <SettingFlyout content={content} onClose={onClose} />;
 
     default:
       return null;
