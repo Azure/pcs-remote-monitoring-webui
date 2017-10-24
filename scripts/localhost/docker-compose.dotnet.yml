@@ -2,7 +2,7 @@ version: "3"
 
 services:
   auth:
-    image: azureiotpcs/pcs-auth-dotnet
+    image: azureiotpcs/pcs-auth-dotnet:testing
     ports:
       - "9001:9001"
     environment:
@@ -11,10 +11,9 @@ services:
       - PCS_AUTH_REQUIRED
       - PCS_CORS_WHITELIST
       - PCS_APPLICATION_SECRET
-      - APPLICATION_SECRET
 
   iothubmanager:
-    image: azureiotpcs/iothub-manager-dotnet
+    image: azureiotpcs/iothub-manager-dotnet:testing
     ports:
       - "9002:9002"
     environment:
@@ -26,10 +25,9 @@ services:
       - PCS_AUTH_REQUIRED
       - PCS_CORS_WHITELIST
       - PCS_APPLICATION_SECRET
-      - APPLICATION_SECRET
 
   devicesimulation:
-    image: azureiotpcs/device-simulation-dotnet:latest
+    image: azureiotpcs/device-simulation-dotnet:testing
     depends_on:
       - storageadapter
     ports:
@@ -42,10 +40,9 @@ services:
       - PCS_AUTH_REQUIRED
       - PCS_CORS_WHITELIST
       - PCS_APPLICATION_SECRET
-      - APPLICATION_SECRET
 
   telemetry:
-    image: azureiotpcs/telemetry-dotnet:latest
+    image: azureiotpcs/telemetry-dotnet:testing
     depends_on:
       - storageadapter
     ports:
@@ -58,10 +55,9 @@ services:
       - PCS_AUTH_REQUIRED
       - PCS_CORS_WHITELIST
       - PCS_APPLICATION_SECRET
-      - APPLICATION_SECRET
 
   config:
-    image: azureiotpcs/pcs-config-dotnet:latest
+    image: azureiotpcs/pcs-config-dotnet:testing
     depends_on:
       - storageadapter
     ports:
@@ -79,10 +75,9 @@ services:
       - PCS_AUTH_REQUIRED
       - PCS_CORS_WHITELIST
       - PCS_APPLICATION_SECRET
-      - APPLICATION_SECRET
 
   storageadapter:
-    image: azureiotpcs/pcs-storage-adapter-dotnet:latest
+    image: azureiotpcs/pcs-storage-adapter-dotnet:testing
     ports:
       - "9022:9022"
     environment:
@@ -92,10 +87,9 @@ services:
       - PCS_AUTH_REQUIRED
       - PCS_CORS_WHITELIST
       - PCS_APPLICATION_SECRET
-      - APPLICATION_SECRET
 
   telemetryagent:
-    image: azureiotpcs/telemetry-agent-dotnet:latest
+    image: azureiotpcs/telemetry-agent-dotnet:testing
     depends_on:
       - telemetry
       - iothubmanager
@@ -119,4 +113,3 @@ services:
       - PCS_AUTH_REQUIRED
       - PCS_CORS_WHITELIST
       - PCS_APPLICATION_SECRET
-      - APPLICATION_SECRET

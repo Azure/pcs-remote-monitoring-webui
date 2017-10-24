@@ -105,12 +105,20 @@ if (typeof global.DeploymentConfig.authEnabled !== 'undefined') {
   }
 }
 
+// Add "endsWith" function, not supported by IE (without touching String.prototype)
+// TODO: clean up IoT Suite and remove this "workaround"
+//       https://github.com/Azure/pcs-remote-monitoring-webui/issues/700
+function stringEndsWith(haystack, needle) {
+  return haystack.substr(haystack.length - needle.length, needle.length) === needle;
+};
+
 tenantId = global.DeploymentConfig.aad.tenant;
 clientId = global.DeploymentConfig.aad.appId;
 appId = global.DeploymentConfig.aad.appId;
 aadInstance = global.DeploymentConfig.aad.instance;
 
-if (aadInstance && aadInstance.endsWith('{0}')) {
+// TODO: remove this code - https://github.com/Azure/pcs-remote-monitoring-webui/issues/700
+if (aadInstance && stringEndsWith(aadInstance, '{0}')) {
     aadInstance = aadInstance.substr(0, aadInstance.length - 3);
 }
 
