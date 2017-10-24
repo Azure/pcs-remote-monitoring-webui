@@ -236,7 +236,7 @@ const lang = {
   SIMULATED: 'Simulated',
   SIMULATEDDEVICES: 'Simulated devices(s)',
   SIMULATION_DATA: 'Simulation Data',
-  SIMULATION_SETTINGS_DESC: 'Start or stop the devices simulation data. Stopping the simulation data will minimize the cost of the solution. No telemetry will flow and rules will not be triggered for simulated devices.',
+  SIMULATION_SETTINGS_DESC: 'Start or stop simulation of devices. Stopping device simulation will minimize the cost of the solution; no simulated telemetry will be sent to your IoTHub and alarms will not be generated for simulated devices.',
   SIM_CONTROL_CENTER: 'SIM Control Center',
   SOURCE: 'Source',
   SOURCEHELP: 'Edit group of devices on rule',
