@@ -23,14 +23,12 @@ export const loadDeviceGroupSuccess = deviceGroup => {
 export const loadDashboardData = (deviceIds = '', timeRange) => {
   return dispatch => {
     dispatch(loadTelemetryMessagesByDeviceIdsForMap(deviceIds, timeRange));
-    dispatch(loadDeviceMapAlaramsList(deviceIds, timeRange));
   };
 };
 
 export const loadDashboardDataUpdate = (deviceIds) => {
   return dispatch => {
     dispatch(loadTelemetryMessagesByDeviceIdsForMap(deviceIds));
-    dispatch(loadDeviceMapAlaramsList(deviceIds));
   };
 };
 
@@ -142,18 +140,20 @@ export const loadDeviceMapAlaramsList = (deviceList, timeRange) => {
   };
 };
 
-export const loadDevices = () => {
-  return dispatch => {
+export const loadDevices = (deviceGroupFlag) => {
+  return (dispatch, getState) => {
+    const state = getState();
     dispatch(indicatorStart('mapInitial'));
-    return ApiService.getAllDevices()
-      .then(data => {
-        dispatch(indicatorEnd('mapInitial'));
-        dispatch(loadDeviceSuccess(data));
-      })
-      .catch(error => {
-        dispatch(devicesError(error));
-        throw error;
-      });
+    const promise = deviceGroupFlag && state.filterReducer.selectedGroupConditions ?
+      ApiService.getDevicesForGroup(state.filterReducer.selectedGroupConditions) : ApiService.getAllDevices()
+    return promise.then(data => {
+      dispatch(indicatorEnd('mapInitial'));
+      dispatch(loadDeviceSuccess(data));
+    })
+    .catch(error => {
+       dispatch(devicesError(error));
+       throw error;
+     });
   };
 };
 

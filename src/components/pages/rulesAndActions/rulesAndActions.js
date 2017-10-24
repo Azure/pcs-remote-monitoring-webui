@@ -9,7 +9,6 @@ import TopNav from '../../layout/topNav/topNav.js';
 import ContextFilters from '../../layout/contextFilters/contextFilters.js';
 import RulesActionsList from '../../../components/rulesActionsList/rulesActionsList';
 import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
-import ApiService from "../../../common/apiService";
 import * as actions from "../../../actions";
 import lang from '../../../common/lang';
 import PcsBtn from '../../shared/pcsBtn/pcsBtn';
@@ -29,11 +28,12 @@ class RulesAndActionsPage extends Component {
       rulesAndActions: undefined,
       selectedRulesActions: [],
       currentNode: null,
+      lastRefreshed: new Date(),
       showBoth: false,
       toggleButtonText: lang.DISABLE,
       toggleButtonSvg: ChangestatusSvg,
       softSelectId: '',
-      showSpinner: true
+      showSpinner: true,
     }
 
     this.contextButtons = {
@@ -48,14 +48,19 @@ class RulesAndActionsPage extends Component {
         value: lang.EDIT
       }
     };
+    this.refreshData = this.refreshData.bind(this);
   }
 
   componentDidMount() {
-    ApiService.getRuleList()
-      .then(({ Items }) => this.setState({ 
-        rulesAndActions: Items, 
-        showSpinner: false 
-      }));
+    this.props.actions.showingRulesPage();
+    this.setState(
+      { showSpinner: false, lastRefreshed: new Date() },
+      () => this.props.actions.loadRulesList()
+    );
+  }
+
+  componentWillUnmount() {
+    this.props.actions.notShowingRulesPage();
   }
 
   /**
@@ -166,6 +171,13 @@ class RulesAndActionsPage extends Component {
     }
   };
 
+  refreshData() {
+    this.setState(
+      { lastRefreshed: new Date(), showSpinner: false },
+      () => this.props.actions.loadRulesList()
+    );
+  }
+
   renderContextFilters() {
     const pcsBtn = (props, visible = true) => visible ? <PcsBtn {...props} /> : '';
     const { selectedRulesActions } = this.state;
@@ -200,25 +212,30 @@ class RulesAndActionsPage extends Component {
   }
 
   render() {
-    let rowData = this.state.rulesAndActions;
+    let rowData = this.props.rulesAndActions;
     if (rowData && !this.isAllDevices()) {
       rowData = rowData.filter(rule => rule.GroupId === this.props.selectedDeviceGroupId)
     }
     const rulesAndActionsProps = {
       rowData,
-      softSelectId: this.state.softSelectId,
+      softSelectId: this.props.softSelectId,
       getSoftSelectId: this.getSoftSelectId,
       onGridReady: this.onGridReady,
       onHardSelectChange: this.onHardSelectChange,
       onSoftSelectChange: this.onSoftSelectionChange,
-      showSpinner: this.state.showSpinner
+      showSpinner: this.props.showSpinner
     };
 
     return (
       <PageContainer>
         <TopNav breadcrumbs={'Rules and Actions'} projectName={lang.AZUREPROJECTNAME} />
         {this.renderContextFilters()}
-        <PageContent>
+        <PageContent className="rules-and-actions-conatiner">
+        <div className="timerange-selection">
+          <span className="last-refreshed-text">{`${lang.LAST_REFRESHED} | `}</span>
+          <div className="last-refreshed-time">{this.state.lastRefreshed.toLocaleString()}</div>
+          <div onClick={this.refreshData} className="refresh-icon icon-sm" />
+        </div>
           <RulesActionsList {...rulesAndActionsProps} />
         </PageContent>
       </PageContainer>
@@ -229,7 +246,8 @@ class RulesAndActionsPage extends Component {
 const mapStateToProps = state => {
   return {
     deviceGroups: state.filterReducer.deviceGroups,
-    selectedDeviceGroupId: state.filterReducer.selectedDeviceGroupId
+    selectedDeviceGroupId: state.filterReducer.selectedDeviceGroupId,
+    rulesAndActions: state.ruleReducer.rulesAndActions
   };
 };
 

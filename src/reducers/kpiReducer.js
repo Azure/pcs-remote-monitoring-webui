@@ -17,6 +17,7 @@ const kpiReducer = (state = initialState.dashboard.kpi, action) => {
     case types.KPI_REFRESH_CHART_DATA_START:
       return {
         ...state,
+        ...action.payload,
         chartDataFetchComplete: false
       };
     case types.KPI_ERROR:

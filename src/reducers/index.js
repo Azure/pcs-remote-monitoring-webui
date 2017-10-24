@@ -9,12 +9,15 @@ import telemetryReducer from './telemetryReducer';
 import filterReducer from './filterReducer';
 import systemStatusJobReducer from './systemStatusJobReducer';
 import kpiReducer from './kpiReducer';
+import ruleReducer from './ruleReducer';
 import maintenanceReducer from './maintenanceReducer';
+import deviceListReducer from './deviceListReducer';
 import indicatorReducer from './indicatorReducer';
 
 const rootReducer = combineReducers({
   flyoutReducer,
   modalReducer,
+  deviceListReducer,
   deviceReducer,
   systemStatusJobReducer,
   mapReducer,
@@ -22,7 +25,8 @@ const rootReducer = combineReducers({
   filterReducer,
   kpiReducer,
   maintenanceReducer,
-  indicatorReducer
+  indicatorReducer,
+  ruleReducer
 });
 
 export default rootReducer;

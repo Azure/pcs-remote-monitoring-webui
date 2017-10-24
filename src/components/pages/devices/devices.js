@@ -18,6 +18,7 @@ import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
 import SimControlCenter from '../../simControlCenter/simControlCenter';
 
 import AddSvg from '../../../assets/icons/Add.svg';
+import './devices.css';
 
 class DevicesPage extends Component {
 
@@ -26,8 +27,25 @@ class DevicesPage extends Component {
 
     this.state = {
       softSelectedDeviceId: '',
+      lastRefreshed: new Date(),
       contextBtns: ''
     };
+    this.refreshData = this.refreshData.bind(this);
+  }
+
+  refreshData() {
+    this.setState(
+      { lastRefreshed: new Date() },
+      () => this.props.actions.loadDevices(true)
+    );
+  }
+
+  componentDidMount() {
+    this.props.actions.showingDevicesPage();
+  }
+
+  componentWillUnmount() {
+    this.props.actions.notShowingDevicesPage();
   }
 
   /** Open the device detail flyout on soft select */
@@ -63,11 +81,16 @@ class DevicesPage extends Component {
           {this.state.contextBtns}
           <SimControlCenter />
           <ManageFilterBtn />
-          <PcsBtn svg={AddSvg} 
-                  onClick={this.props.openProvisionFlyout} 
+          <PcsBtn svg={AddSvg}
+                  onClick={this.props.openProvisionFlyout}
                   value={lang.PROVISIONDEVICES} />
         </ContextFilters>
-        <PageContent>
+        <PageContent className="devices-grid-container">
+        <div className="timerange-selection">
+          <span className="last-refreshed-text">{`${lang.LAST_REFRESHED} | `}</span>
+          <div className="last-refreshed-time">{this.state.lastRefreshed.toLocaleString()}</div>
+          <div onClick={this.refreshData} className="refresh-icon icon-sm" />
+        </div>
           <DevicesGrid { ...deviceGridProps } />
         </PageContent>
       </PageContainer>

@@ -21,7 +21,7 @@ function setDefaultDeviceGroupId(dispatch, deviceGroups){
     defaultGroupId = defaultGroupId || deviceGroups[0].Id;
     dispatch({
       type: types.DEVICE_GROUP_CHANGED,
-      data: defaultGroupId
+      data: {groupId: defaultGroupId}
     });
   }
 }
@@ -47,10 +47,11 @@ export const getRegionByDisplayName = deviceGroup => {
 };
 
 export const loadRegionSpecificDevices = (selectedGroupConditions, groupId) => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const state = getState();
     dispatch({
       type: types.DEVICE_GROUP_CHANGED,
-      data: groupId
+      data: {groupId, selectedGroupConditions}
     });
     dispatch(indicatorStart('mapInitial'));
     dispatch(indicatorStart('kpiInitial'));
@@ -58,10 +59,9 @@ export const loadRegionSpecificDevices = (selectedGroupConditions, groupId) => {
       ? ApiService.getDevicesForGroup(selectedGroupConditions)
         .then(data => {
           dispatch(loadDeviceSuccess(data));
+          if (state.deviceListReducer.showingDevicesPage || state.ruleReducer.showingRulesPage) return;
           if (data && data.items) {
-            dispatch(
-              telemetryActions.loadTelemetryMessagesByDeviceIds(lang.ALLDEVICES)
-            );
+            dispatch( telemetryActions.loadTelemetryMessagesByDeviceIds(lang.ALLDEVICES) );
             dispatch(indicatorEnd('mapInitial'));
             dispatch(indicatorEnd('kpiInitial'));
           }
@@ -73,11 +73,10 @@ export const loadRegionSpecificDevices = (selectedGroupConditions, groupId) => {
       : ApiService.getDevicesForGroup(selectedGroupConditions)
         .then(data => {
           dispatch(loadDeviceSuccess(data));
+          if (state.deviceListReducer.showingDevicesPage || state.ruleReducer.showingRulesPage) return;
           if (data && data.items) {
             const deviceIds = data.items.map(device => device.Id);
-            dispatch(
-              telemetryActions.loadTelemetryMessagesByDeviceIds(deviceIds)
-            );
+            dispatch( telemetryActions.loadTelemetryMessagesByDeviceIds(deviceIds) );
             dispatch(indicatorEnd('mapInitial'));
             dispatch(indicatorEnd('kpiInitial'));
           }

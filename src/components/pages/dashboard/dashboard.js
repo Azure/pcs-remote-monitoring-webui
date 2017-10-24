@@ -30,6 +30,7 @@ class DashboardPage extends Component {
 
     this.loadMapData = this.loadMapData.bind(this);
     this.onTimeRangeChange = this.onTimeRangeChange.bind(this);
+    this.refreshData = this.refreshData.bind(this);
   }
 
   componentDidMount() {
@@ -52,8 +53,13 @@ class DashboardPage extends Component {
   }
 
   loadMapData() {
-    const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
-    this.props.actions.loadDashboardData(deviceIds, this.state.timeRange);
+      const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
+      this.props.actions.loadDashboardData(deviceIds, this.state.timeRange);
+  }
+
+  loadRefreshData(){
+     this.loadMapData();
+     this.props.actions.refreshAllChartData();
   }
 
   onTimeRangeChange(selectedOption) {
@@ -63,6 +69,13 @@ class DashboardPage extends Component {
         lastRefreshed: new Date()
       },
       () => this.loadMapData()
+    );
+  }
+
+  refreshData() {
+    this.setState(
+      { lastRefreshed: new Date() },
+      () => this.loadRefreshData()
     );
   }
 
@@ -157,9 +170,11 @@ const mapStateToProps = state => {
   return {
     devices: state.deviceReducer.devices,
     BingMapKey: state.mapReducer.BingMapKey,
+    selectedDeviceGroup: state.filterReducer.selectedDeviceGroupId,
     alarmList: state.kpiReducer.alarmsList,
+    alarmListLastDuration: state.kpiReducer.alarmListLastDuration,
     alarmsByRule: state.kpiReducer.alarmsByRule,
-    selectedDeviceGroup: state.filterReducer.selectedDeviceGroupId
+    alarmsByRuleLastDuration: state.kpiReducer.alarmsByRuleLastDuration
   };
 };
 

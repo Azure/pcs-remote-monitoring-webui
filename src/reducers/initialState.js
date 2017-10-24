@@ -72,5 +72,6 @@ export default {
     loadingError: false,
     twinUpdateJobs: [],
     propertyUpdateJobs: []
-  }
+  },
+  rules: {}
 };

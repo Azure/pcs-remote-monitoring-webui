@@ -1,0 +1,23 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import '../../../styles/variables/colors';
+
+.devices-grid-container {
+
+    .last-refreshed-time {
+      margin-right: 10px;
+      color: $white;
+    }
+
+    .last-refreshed-text {
+      margin-left: 10px;
+      margin-right: 6px;
+      color: $lightestGray;
+    }
+
+    .icon-sm {
+      width: 14px;
+      height: 14px;
+      margin-left: 2px;
+    }
+}

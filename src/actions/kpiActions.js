@@ -30,10 +30,21 @@ export const refreshAllChartData = (
     if (currentState.indicatorReducer.kpi || currentState.kpiReducer.error) {
       return;
     }
+    if (!firstDurationFrom && !firstDurationTo && !secondDurationFrom && !secondDurationTo) {
+        firstDurationFrom = currentState.kpiReducer.firstDurationFrom;
+        firstDurationTo = currentState.kpiReducer.firstDurationTo;
+        secondDurationFrom = currentState.kpiReducer.secondDurationFrom;
+        secondDurationTo = currentState.kpiReducer.secondDurationTo;
+    }
     const devices = currentState.deviceReducer.devices;
     const deviceIdsCsv = (devices ? devices.items : []).map(({ Id })=> Id).join(',');
     dispatch(indicatorStart(refreshFlag ? 'kpi' : 'kpiInitial'));
-    dispatch({ type: types.KPI_REFRESH_CHART_DATA_START });
+    dispatch({ type: types.KPI_REFRESH_CHART_DATA_START, payload: {
+        firstDurationFrom,
+        firstDurationTo,
+        secondDurationFrom,
+        secondDurationTo,
+    } });
     Promise.all([
       ApiService.getAlarmsByRuleForKpi(
         firstDurationFrom,

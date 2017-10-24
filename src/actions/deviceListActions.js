@@ -10,6 +10,20 @@ export const devicesSelectionChanged = devices => {
   };
 };
 
+export const showingDevicesPage = () => {
+  return {
+    type: types.DEVICE_LIST_SHOWN,
+    data: {}
+  }
+};
+
+export const notShowingDevicesPage = () => {
+  return {
+    type: types.DEVICE_LIST_HIDDEN,
+    data: {}
+  }
+};
+
 export const updateDevices = devices => {
   return {
     type: types.UPDATE_DEVICES,
