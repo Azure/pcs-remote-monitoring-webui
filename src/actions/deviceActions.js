@@ -13,6 +13,13 @@ export const loadDeviceSuccess = devices => {
   };
 };
 
+export const updateDevicesItems = items => {
+  return {
+    type: types.UPDATE_DEVICE_ITEMS,
+    items
+  };
+};
+
 export const loadDeviceGroupSuccess = deviceGroup => {
   return {
     type: types.LOAD_DEVICES_GROUP_SUCCESS,

@@ -75,12 +75,25 @@ class DevicesGrid extends Component {
     ].map(pcsBtn);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { hardSelectedDevices } = nextProps;
+    if (!hardSelectedDevices ) return;
+    const deviceIdSet = new Set((hardSelectedDevices || []).map(({ Id }) => Id));
+
+    this.deviceGridApi.forEachNode(node => {
+      if (deviceIdSet.has(node.data.Id) && !node.selected) {
+        node.setSelected(true);
+      }
+    });
+  }
+
   /**
    * Get the grid api options
    *
    * @param {Object} gridReadyEvent An object containing access to the grid APIs
    */
   onGridReady = gridReadyEvent => {
+    this.deviceGridApi = gridReadyEvent.api;
     gridReadyEvent.api.sizeColumnsToFit();
     // Call the onReady props if it exists
     if (isFunction(this.props.onGridReady)) {
@@ -142,4 +155,10 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(undefined, mapDispatchToProps)(DevicesGrid);
+const mapStateToProps = (state) => {
+  return {
+    hardSelectedDevices: state.flyoutReducer.devices
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DevicesGrid);

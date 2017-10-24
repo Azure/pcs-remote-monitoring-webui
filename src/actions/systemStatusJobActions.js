@@ -24,10 +24,24 @@ export const updateTwinJobs = job => {
   };
 };
 
+export const removeTwinJob = jobId => {
+  return {
+    type: types.REMOVE_TWIN_JOB,
+    jobId
+  };
+};
+
 export const updatePropertyJobs = job => {
   return {
     type: types.UPDATE_PROPERTY_JOBS,
     job
+  };
+};
+
+export const removePropertyJob = jobId => {
+  return {
+    type: types.REMOVE_PROPERTY_JOB,
+    jobId
   };
 };
 

@@ -154,6 +154,7 @@ class DeviceTagFlyout extends React.Component {
           .fromPromise(ApiService.getJobStatus(jobId))
           // Get completed jobs
           .filter(({ status }) => status === 3)
+          .do(_ => this.props.actions.removeTwinJob(jobId))
           .flatMap(_ => deviceIds)
       )
       .distinct()
@@ -161,7 +162,10 @@ class DeviceTagFlyout extends React.Component {
       .flatMap(deviceId => ApiService.getDeviceById(deviceId))
       .reduce((devices, device) => [...devices, device], [])
       .subscribe(
-        devices => this.props.actions.updateDevices(devices),
+        devices => {
+          this.props.actions.updateDevicesItems(devices);
+          this.props.actions.updateDevices(devices);
+        },
         error => console.log('error', error)
       );
   }

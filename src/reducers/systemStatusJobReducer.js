@@ -45,6 +45,14 @@ export default function(state = initialState.systemJobs, action) {
         ]
       };
 
+    case types.REMOVE_TWIN_JOB:
+      return {
+        ...state,
+        twinUpdateJobs: [
+          ...state.twinUpdateJobs.filter(({ jobId }) => jobId !== action.jobId)
+        ]
+      };
+
     case types.UPDATE_PROPERTY_JOBS:
       return {
         ...state,
@@ -53,6 +61,14 @@ export default function(state = initialState.systemJobs, action) {
           action.job
         ]
       };
+
+      case types.REMOVE_PROPERTY_JOB:
+        return {
+          ...state,
+          propertyUpdateJobs: [
+            ...state.propertyUpdateJobs.filter(({ jobId }) => jobId !== action.jobId)
+          ]
+        };
 
     default:
       return state;

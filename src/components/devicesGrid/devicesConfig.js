@@ -20,7 +20,8 @@ export const checkboxParams = {
 export const deviceColumnDefs = {
   id: {
     headerName: lang.DEVICENAME,
-    field: 'Id'
+    field: 'Id',
+    sort: 'asc'
   },
   isSimulated: {
     headerName: lang.SIMULATED,
