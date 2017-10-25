@@ -1,12 +1,16 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import FlyoutSection from './flyoutSection/flyoutSection'
+import Rx from 'rxjs';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Select from 'react-select';
+
+import * as actions from '../../actions';
+import FlyoutSection from './flyoutSection/flyoutSection'
 import DeviceSimulationService from '../../services/deviceSimulationService';
 import IotHubManagerService from '../../services/iotHubManagerService';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
-import Rx from 'rxjs';
 import lang from '../../common/lang';
 
 import './deviceProvisioningWorkflow.css';
@@ -38,8 +42,8 @@ const initialState = {
   deviceIdType: deviceIdTypeValues.CUSTOM,
   deviceId: '',
   deviceModel: undefined,
-  authType: undefined,
-  authKey: undefined,
+  authType: authTypes.SYMMETRIC,
+  authKey: authValues.AUTO,
   primaryKey: '',
   secondaryKey: '',
   formIsValid: false,
@@ -208,10 +212,12 @@ class DeviceProvisioningWorkflow extends React.Component {
         Authentication: authOptions
       })
     ).subscribe(
-      _ => this.resetInitialState({ deviceTypeForm: deviceTypeValues.PHYSICAL }),
-      err => console.error(err),
-      _ => this.setState({ isLoading: false })
-      );
+      _ => {
+        this.props.actions.loadDevices(true);
+        this.props.onClose();
+      },
+      err => console.error(err)
+    );
   }
 
     /**
@@ -223,10 +229,9 @@ class DeviceProvisioningWorkflow extends React.Component {
     Rx.Observable.fromPromise(
       DeviceSimulationService.createSimulatedDevices(deviceModel.value.Id, numDevices)
     ).subscribe(
-      _ => this.resetInitialState({ deviceTypeForm: deviceTypeValues.SIMULATED }),
-      err => console.error(err),
-      _ => this.setState({ isLoading: false })
-      );
+      _ => this.props.onClose(),
+      err => console.error(err)
+    );
   }
 
   /**
@@ -460,4 +465,8 @@ class DeviceProvisioningWorkflow extends React.Component {
   }
 }
 
-export default DeviceProvisioningWorkflow;
+const mapDispatchToProps = dispatch => {
+  return { actions: bindActionCreators(actions, dispatch) };
+};
+
+export default connect(undefined, mapDispatchToProps)(DeviceProvisioningWorkflow);

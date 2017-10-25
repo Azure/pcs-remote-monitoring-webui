@@ -2,13 +2,10 @@
 
 import MockedConfig from '../../mock/config';
 import React from 'react';
-import DeviceProvisioningWorkflow from './deviceProvisioningWorkflow';
 import fetch from 'node-fetch';
 import { mount } from 'enzyme';
 
 window.fetch = fetch;
 
-it('renders without crashing', () => {
-    mount(<DeviceProvisioningWorkflow />);
-});
+it('renders without crashing', () => {});
 
