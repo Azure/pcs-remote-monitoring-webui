@@ -7,7 +7,6 @@ import { bindActionCreators } from "redux";
 import Select from 'react-select';
 import * as _ from 'lodash';
 
-import { systemStatusColumnDefs } from '../../systemStatusGrid/systemStatusConfig';
 import PageContainer from '../../layout/pageContainer/pageContainer.js';
 import PageContent from '../../layout/pageContent/pageContent.js';
 import TopNav from '../../layout/topNav/topNav.js';
@@ -31,18 +30,9 @@ import './maintenance.css';
 class MaintenancePage extends Component {
   constructor(props) {
     super(props);
-    this.systemStatusColumnDefsLocal = _.cloneDeep(systemStatusColumnDefs);
-    this.systemStatusColumnDefsArray = [
-      this.systemStatusColumnDefsLocal.jobId,
-      this.systemStatusColumnDefsLocal.deviceIdAffected, // DeviceId in each job affected
-      this.systemStatusColumnDefsLocal.status, // Status of jobs ( fail/ Queued/completed)
-      this.systemStatusColumnDefsLocal.lastReturnMessage, // Last mesaage about completeion of jobs
-      this.systemStatusColumnDefsLocal.startTime, // StartTime of the job
-      this.systemStatusColumnDefsLocal.endTime //End time of the job
-    ];
     this.state = {
       systemStatusDetailsDevices: [],
-      systemStatusDetailsJobs: {},
+      jobDetails: {},
       selectedDetailsDevices: [],
       selectedGrid: 'alarms',
       timerange: 'PT1H',
@@ -255,36 +245,22 @@ class MaintenancePage extends Component {
 
   // Retrieving the deviceIds from "queryCondition": "deviceId in ['Simulated.prototype-01.0','Simulated.prototype-01.1']".
   selectJobAndSetState(props) {
-    const { jobs } = props;
     if (!props.params || !props.params.jobId) {
       return;
     }
-    if (!jobs || !jobs.length) { return; }
-    const job = _.find(jobs, { jobId: props.params.jobId });
-    let deviceJobs = [];
-    if (job && job.queryCondition) {
-      const idx = job.queryCondition.indexOf('in [');
-      if (idx !== -1) {
-        const idx2 = job.queryCondition.indexOf(']', idx);
-        if (idx2 !== -1) {
-          const deviceIdsInQuery = job.queryCondition.substring(idx + 4, idx2);
-          const deviceIds = deviceIdsInQuery.replace(/["']{1}/gi, '').split(',');
-          deviceJobs = deviceIds.map(deviceId => ({
-            jobId: job.jobId,
-            deviceId,
-            methodName: (job.methodParameter || {}).name || '',
-            status: job.status,
-            failedCount: (job.resultStatistics || {}).failedCount || 0,
-            succeededCount: (job.resultStatistics || {}).succeededCount || 0,
-            type: job.type
-          }));
-          // If the grid is related to tags or reconfigure then hide endtime and lastReturnMessage
-          this.systemStatusColumnDefsLocal.endTime.hide = job.type === 4;
-          this.systemStatusColumnDefsLocal.lastReturnMessage.hide = job.type === 4;
-        }
-      }
-      this.setState({ systemStatusDetailsDevices: deviceJobs, systemStatusDetailsJobs: job });
-    }
+    ApiService.getJobStatus(props.params.jobId)
+      .then(jobDetails => {
+        const { Devices } = jobDetails;
+        const systemStatusDetailsDevices = Devices.map(device => ({
+          deviceId: device.DeviceId,
+          startTimeUtc: device.StartTimeUtc,
+          status: device.Status,
+          endTimeUtc: device.EndTimeUtc,
+          jobId: jobDetails.jobId,
+          methodName: (jobDetails.methodParameter || {}).name || ''
+        }));
+        this.setState({ systemStatusDetailsDevices, jobDetails });
+      });
   }
 
   onDeviceJobSoftSelectChange({deviceId}) {
@@ -355,11 +331,10 @@ class MaintenancePage extends Component {
         .reduce((acc, cur) => acc.concat(cur), []),
       devices: devicesList,
       jobsLoadingInProgress: this.props.jobsLoadingInProgress,
-      jobDetails: this.state.systemStatusDetailsJobs,
+      jobDetails: this.state.jobDetails,
       detailsDevices: this.state.systemStatusDetailsDevices,
       systemStatusGridSelectedDevices: this.state.selectedDetailsDevices,
       onDeviceJobSoftSelectChange : this.onDeviceJobSoftSelectChange,
-      systemStatusGridColumnDefs: this.systemStatusColumnDefsArray,
       alarmsGridData: this.props.alarmsGridData,
       actions: this.props.actions,
       jobs: this.props.jobs,

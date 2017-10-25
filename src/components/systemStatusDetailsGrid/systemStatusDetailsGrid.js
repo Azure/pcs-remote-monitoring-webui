@@ -31,6 +31,14 @@ class SystemStatusDetailsGrid extends Component {
       systemStatusColumnDefs.endTime // End time of the job
     ];
 
+    this.systemStatusGridColumnDefs = [
+      systemStatusColumnDefs.jobId,
+      systemStatusColumnDefs.deviceIdAffected,
+      systemStatusColumnDefs.status,
+      systemStatusColumnDefs.lastReturnMessage,
+      systemStatusColumnDefs.startTime,
+      systemStatusColumnDefs.endTime
+    ];
 
     this.onGridReady = this.onGridReady.bind(this);
     // A stream of job ids
@@ -77,12 +85,13 @@ class SystemStatusDetailsGrid extends Component {
   }
 
   render() {
-    const { detailsDevices, jobDetails, systemStatusGridSelectedDevices, btnActions } = this.props;
+    const { detailsDevices, jobDetails, systemStatusGridSelectedDevices, btnActions, devices } = this.props;
     const hasJobs = (detailsDevices || []).length > 0;
+    const deviceIds = new Set(detailsDevices.map(({ deviceId }) => deviceId));
     let devicesGridProps = {
       onSoftSelectChange: btnActions.onSoftSelectDeviceGrid,
       onContextMenuChange: btnActions.onContextMenuChange,
-      rowData: systemStatusGridSelectedDevices
+      rowData: devices.filter(({ Id }) => deviceIds.has(Id))
     };
     const jobIdTrim = ((jobDetails || {}).jobId || '').substring(0, 20);
     return (
@@ -99,7 +108,7 @@ class SystemStatusDetailsGrid extends Component {
         <PcsGrid
           /* systemStatusGridProps Properties */
           {...systemStatusGridProps} // Default systemStatusGrid options
-          columnDefs={this.props.systemStatusGridColumnDefs}
+          columnDefs={this.systemStatusGridColumnDefs}
           rowData={hasJobs ? detailsDevices : undefined}
           /* Grid Events */
           onSoftSelectChange={this.props.onDeviceJobSoftSelectChange}
@@ -129,4 +138,10 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(SystemStatusDetailsGrid);
+const mapStateToProps = state => {
+  return {
+    devices: (state.deviceReducer.devices || {}).items || []
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SystemStatusDetailsGrid);

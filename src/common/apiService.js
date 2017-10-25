@@ -234,7 +234,7 @@ class ApiService {
   }
 
   static getJobStatus(id) {
-    return Http.get(`${Config.iotHubManagerApiUrl}jobs/${id}`);
+    return Http.get(`${Config.iotHubManagerApiUrl}jobs/${id}?includeDeviceDetails=true`);
   }
 
   static getDeviceGroupFilters() {

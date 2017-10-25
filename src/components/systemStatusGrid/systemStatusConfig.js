@@ -75,17 +75,21 @@ export const systemStatusColumnDefs = {
   },
   startTime: {
     headerName: lang.START_TIME,
-    field: 'createdTimeUtc',
+    field: 'startTimeUtc',
     valueFormatter: ({ value }) => {
-      const time = moment(value);
+      if (!value) return EMPTY_FIELD_VAL;
+      const time = moment.utc(value);
       return time.unix() < 0 ? EMPTY_FIELD_VAL : time.format(DEFAULT_TIME_FORMAT);
     }
   },
   endTime: {
-    // TODO: Replace when service provides the endTime
     headerName: lang.END_TIME,
     field: 'endTimeUtc',
-    valueFormatter: _ => EMPTY_FIELD_VAL
+    valueFormatter: ({ value }) => {
+      if (!value) return EMPTY_FIELD_VAL;
+      const time = moment.utc(value);
+      return time.unix() < 0 ? EMPTY_FIELD_VAL : time.format(DEFAULT_TIME_FORMAT);
+    }
   }
 };
 
