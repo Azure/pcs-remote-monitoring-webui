@@ -29,7 +29,7 @@ class DeviceSimulationService {
    * Toggles simulation status
    */
   static toggleSimulation(Etag, Enabled) {
-    return Http.put(`${DeviceSimulationService.ENDPOINT}simulations/1`, { Etag, Enabled });
+    return Http.patch(`${DeviceSimulationService.ENDPOINT}simulations/1`, { Etag, Enabled });
   }
 
   /**
