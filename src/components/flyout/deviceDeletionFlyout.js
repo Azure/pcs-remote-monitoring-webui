@@ -61,7 +61,7 @@ class DeviceDeletionFlyout extends React.Component {
             {lang.DELETE_DEVICE}
           </div>
           <div className="content-description">
-            {IsSimulated ? lang.NOT_ABLE_TO_DELETE : lang.DELETE_DEVICE_DESCRIPTION}
+            {lang.DELETE_DEVICE_DESCRIPTION}
           </div>
 
           { IsSimulated &&
