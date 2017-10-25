@@ -18,6 +18,7 @@ import Spinner from '../spinner/spinner';
 import DeepLinkSection from '../deepLinkSection/deepLinkSection';
 import { getTypeOf } from '../../common/utils';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
+import SummarySection from '../shared/summarySection/summarySection';
 
 import './deviceReconfigureFlyout.css';
 
@@ -300,18 +301,7 @@ class DeviceReconfigureFlyout extends React.Component {
           />
         </div>
         {this.commonReconfigure()}
-        <div className="summary-container">
-          {lang.SUMMARY}
-          <div className="affected-devices">
-            <span className="num-affected-devices">
-              {totalAffectedDevices}
-            </span>
-            <span className="affected-devices-name">
-              {lang.AFFECTED_DEVICES}
-            </span>
-          </div>
-        </div>
-
+        <SummarySection count={totalAffectedDevices} content={lang.AFFECTED_DEVICES} />
         <div className="btn-container">
           <PcsBtn svg={CancelX} value={lang.CANCEL} onClick={this.props.onClose} />
           {this.state.showSpinner && <Spinner size="medium" />}

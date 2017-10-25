@@ -126,6 +126,13 @@ class ApiService {
     return Http.delete(`${Config.telemetryApiUrl}rules/${id}`);
   }
 
+  static deleteDevice(id) {
+    if (!id) {
+      throw new Error('expected valid device id');
+    }
+    return Http.delete(`${Config.iotHubManagerApiUrl}devices/${id}`);
+  }
+
   /**
    * Get list of alarms
    *

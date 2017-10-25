@@ -12,6 +12,7 @@ import ApiService from '../../common/apiService';
 import DeepLinkSection from '../deepLinkSection/deepLinkSection';
 import lang from '../../common/lang';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
+import SummarySection from '../shared/summarySection/summarySection';
 
 import './deviceScheduleFlyout.css';
 
@@ -152,12 +153,7 @@ class DeviceScheduleFlyout extends React.Component {
                         value={this.state.firmwareURIValue}
                       />
                     </div>}
-                  <div className="device-affected">
-                    <span className="device-affected-number">
-                      {devices.length}
-                    </span>
-                    {`devices affected`}
-                  </div>
+                    <SummarySection count={devices.length} content={lang.AFFECTED_DEVICES} />
                 </div>}
               <div className="btn-group">
                 <PcsBtn svg={CancelX} onClick={this.props.onClose}>{lang.CANCEL}</PcsBtn>

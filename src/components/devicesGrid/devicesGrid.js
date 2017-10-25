@@ -48,7 +48,8 @@ class DevicesGrid extends Component {
     const {
       openTagFlyout,
       openDeviceScheduleFlyout,
-      openReconfigureFlyout
+      openReconfigureFlyout,
+      openDeviceDeletionFlyout
     } = this.props.contextActions;
 
     this.contextBtns = [
@@ -69,7 +70,7 @@ class DevicesGrid extends Component {
       },
       {
         svg: DeleteSvg,
-        onClick: () => alert('Oops, you can\'t delete yet'),
+        onClick: openDeviceDeletionFlyout,
         value: lang.DELETE
       }
     ].map(pcsBtn);
@@ -150,7 +151,8 @@ const mapDispatchToProps = dispatch => {
       actions: bindActionCreators(actions, dispatch),
       openTagFlyout: () => openFlyout('Tag'),
       openDeviceScheduleFlyout: () => openFlyout('Device Schedule'),
-      openReconfigureFlyout: () => openFlyout('Reconfigure')
+      openReconfigureFlyout: () => openFlyout('Reconfigure'),
+      openDeviceDeletionFlyout: () => openFlyout('Delete')
     }
   };
 };

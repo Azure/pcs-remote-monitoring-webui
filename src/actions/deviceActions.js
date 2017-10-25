@@ -176,3 +176,10 @@ export const loadDeviceGroup = () => {
       });
   };
 };
+
+export const updateDevicesList = devices => {
+  return {
+      type: types.UPDATE_DEVICE_LIST,
+      devices
+    };
+};

@@ -3,9 +3,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import _ from 'lodash';
+
 import lang from '../../common/lang';
 import * as actions from '../../actions';
-import './deviceTagFlyout.css';
 import Trash from '../../assets/icons/Trash.svg';
 import Add from '../../assets/icons/Add.svg';
 import Select from 'react-select';
@@ -18,7 +19,9 @@ import Config from '../../common/config';
 import Spinner from '../spinner/spinner';
 import DeepLinkSection from '../deepLinkSection/deepLinkSection';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
-import _ from 'lodash';
+import SummarySection from '../shared/summarySection/summarySection';
+
+import './deviceTagFlyout.css';
 
 const isNumeric = value => typeof value === 'number' || !isNaN(parseInt(value, 10));
 
@@ -413,17 +416,7 @@ class DeviceTagFlyout extends React.Component {
               </div>
             </div>}
 
-        <div className="summary-container">
-          {lang.SUMMARY}
-        </div>
-        <div className="effective-devices">
-          <span className="no-affected-devices">
-            {totalAffectedDevices}
-          </span>
-          <span className="affected-devices-name">
-            {lang.AFFECTED_DEVICES}
-          </span>
-        </div>
+        <SummarySection count={totalAffectedDevices} content={lang.AFFECTED_DEVICES} />
         <div className="button-container">
           <PcsBtn svg={CancelX} onClick={this.props.onClose}>{lang.CANCEL}</PcsBtn>
           {this.state.showSpinner && <Spinner size="medium" />}

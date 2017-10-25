@@ -1,0 +1,42 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import '../../styles/variables/colors';
+
+.device-deletion-flyout {
+  padding: 0 15px;
+  font-size: 14px;
+
+  .device-deletion-content {
+
+    .content-title {
+      font-size: 16px;
+      color: $white;
+      margin: 16px 0;
+    }
+
+    .simulated-device-info {
+      background-color: $bgBlack;
+      padding: 16px;
+      text-align: center;
+      margin-top: 16px;
+      color: white;
+      border: 1px solid $borderDarkGray;
+
+      .pcs-tooltip-icon {
+        width: 16px;
+        margin-right: 8px;
+      }
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 32px;
+
+      .pcs-btn {
+        height: 30px;
+        margin-left: 28px;
+      }
+    }
+  }
+}
