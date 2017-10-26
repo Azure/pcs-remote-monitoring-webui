@@ -27,7 +27,6 @@ function postGroupData(group) {
 }
 
 class ApiService {
-
   static getCurrentUser() {
     return Http.get(`${Config.authApiUrl}users/current`);
   }
@@ -50,13 +49,13 @@ class ApiService {
   }
 
   static getAlarmsList(from, to, deviceIds) {
-      const paramsMap = {
-          Order : 'desc',
-          from,
-          to
-      };
-      if (deviceIds) paramsMap.devices = deviceIds;
-      return Http.get(`${Config.telemetryApiUrl}alarms?${ApiService.serializeParamObject(paramsMap)}`);
+    const paramsMap = {
+      Order: 'desc',
+      from,
+      to
+    };
+    if (deviceIds) paramsMap.devices = deviceIds;
+    return Http.get(`${Config.telemetryApiUrl}alarms?${ApiService.serializeParamObject(paramsMap)}`);
   }
 
   static getAlarmsListForDeviceMap(deviceIds) {
@@ -96,18 +95,16 @@ class ApiService {
    *    "devices": A filter used to request messages for specific devices
    */
   static getTelemetryMessages(params = {}) {
-    return Http.get(`${Config.telemetryApiUrl}messages?${ApiService.serializeParamObject(params)}`
-    );
+    return Http.get(`${Config.telemetryApiUrl}messages?${ApiService.serializeParamObject(params)}`);
   }
 
   static getAlarmsByRuleForKpi(from, to, deviceIds) {
-      const paramsMap = {
-          Order : 'desc',
-          from,
-          to
-      };
-      if (deviceIds) paramsMap.devices = deviceIds;
-      return Http.get(`${Config.telemetryApiUrl}alarmsbyrule?${ApiService.serializeParamObject(paramsMap)}`);
+    const paramsMap = {
+      from,
+      to
+    };
+    if (deviceIds) paramsMap.devices = deviceIds;
+    return Http.get(`${Config.telemetryApiUrl}alarmsbyrule?${ApiService.serializeParamObject(paramsMap)}`);
   }
 
   static getAlarmList() {

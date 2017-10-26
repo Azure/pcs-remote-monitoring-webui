@@ -35,6 +35,7 @@ class DashboardPage extends Component {
 
   componentDidMount() {
     const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
+    this.props.actions.loadRulesList();
     this.props.actions.loadMapkey();
     if (this.props.selectedDeviceGroup === '') {
       // Default query messages and alarms for all devices
@@ -92,7 +93,8 @@ class DashboardPage extends Component {
     const devices = devicesList.map(({ Id }) => Id)
     const alarmListProps = {
       devices,
-      timeRange: this.state.timeRange
+      timeRange: this.state.timeRange,
+      rulesAndActions: this.props.rulesAndActions
     };
     const telemetryProps = {
       chartId: 'dashboard_telemetry_chart',
@@ -102,7 +104,8 @@ class DashboardPage extends Component {
       devices,
       alarmList: this.props.alarmList,
       alarmsByRule: this.props.alarmsByRule,
-      timeRange: this.state.timeRange
+      timeRange: this.state.timeRange,
+      rulesAndActions: this.props.rulesAndActions
     };
     const selectProps = {
       value: this.state.timeRange,
@@ -174,7 +177,8 @@ const mapStateToProps = state => {
     alarmList: state.kpiReducer.alarmsList,
     alarmListLastDuration: state.kpiReducer.alarmListLastDuration,
     alarmsByRule: state.kpiReducer.alarmsByRule,
-    alarmsByRuleLastDuration: state.kpiReducer.alarmsByRuleLastDuration
+    alarmsByRuleLastDuration: state.kpiReducer.alarmsByRuleLastDuration,
+    rulesAndActions: state.ruleReducer.rulesAndActions
   };
 };
 

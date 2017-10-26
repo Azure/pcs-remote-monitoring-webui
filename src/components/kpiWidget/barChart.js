@@ -22,7 +22,7 @@ class BarChart extends Component {
   componentWillMount() { this.updateBarChartData(this.props); }
 
   componentWillUpdate(nextProps) { this.updateBarChartData(nextProps); }
-  
+
   updateBarChartData(nextProps) {
     this.barChart = {
       chartConfig: {
@@ -72,10 +72,7 @@ class BarChart extends Component {
         <Row>
           <Col md={12} className="bar-chart">
             {barChart && barChart.chartConfig
-              ? <Chart
-                  chartConfig={barChart.chartConfig}
-                  chartId={barChart.chartId}
-                />
+              ? <Chart chartConfig={barChart.chartConfig} chartId={barChart.chartId} />
               : null}
           </Col>
         </Row>
@@ -94,22 +91,25 @@ const sortByCount = (alpha, beta) => {
 };
 
 const getBarChartData = (state, ownProps) => {
-  if (
-    !state.deviceReducer ||
-    !state.deviceReducer.devices ||
-    !state.kpiReducer ||
-    !state.kpiReducer.alarmsByRule
-  ) {
+  if (!state.deviceReducer || !state.deviceReducer.devices || !state.kpiReducer || !state.kpiReducer.alarmsByRule) {
     return [];
   }
   const alarmsByRule = state.kpiReducer.alarmsByRule || [];
-  const alarmsByRuleLastDuration =
-    state.kpiReducer.alarmsByRuleLastDuration || [];
-
+  const alarmsByRuleLastDuration = state.kpiReducer.alarmsByRuleLastDuration || [];
+  const rulesAndActions = state.ruleReducer.rulesAndActions;
   const top5Latest = alarmsByRule.sort(sortByCount).slice(0, 5);
   const chartData = [];
   top5Latest.forEach(data => {
     let lastDurationData;
+    alarmsByRule.some(data => {
+      rulesAndActions.forEach(Rule => {
+        if (data.Rule.Id === Rule.Id) {
+          data.Rule.Name = Rule.Name;
+        }
+        return false;
+      });
+      return false;
+    });
     alarmsByRuleLastDuration.some(data2 => {
       if (data2.Rule.Id === data.Rule.Id) {
         lastDurationData = data2;
@@ -121,7 +121,7 @@ const getBarChartData = (state, ownProps) => {
       Id: data.Rule.Id,
       LastDurationCount: 0,
       Count: data.Count,
-      Description: data.Rule.Id
+      Description: data.Rule.Name
     };
     chartData.push(computedItem);
     if (lastDurationData) {
@@ -141,9 +141,7 @@ const getBarChartData = (state, ownProps) => {
   }
   const realChartData = [['x'].concat(chartData.map(rule => rule.Description))];
   realChartData.push([currentDesc].concat(chartData.map(rule => rule.Count)));
-  realChartData.push(
-    [lastDesc].concat(chartData.map(rule => rule.LastDurationCount))
-  );
+  realChartData.push([lastDesc].concat(chartData.map(rule => rule.LastDurationCount)));
   return realChartData;
 };
 

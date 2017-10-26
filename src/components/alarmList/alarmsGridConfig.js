@@ -20,8 +20,8 @@ export const checkboxParams = {
 export const alarmColumnDefs = {
   name: {
     headerName: lang.RULENAME,
-    field: 'ruleId',
-    tooltipField: "ruleId",
+    field: 'ruleName',
+    tooltipField: "ruleName",
     headerTooltip: lang.RULENAME
   },
   severity: {

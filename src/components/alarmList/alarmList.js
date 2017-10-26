@@ -13,7 +13,6 @@ import PollingManager from '../../common/pollingManager';
 import './alarmList.css';
 
 class AlarmList extends Component {
-
   constructor(props) {
     super(props);
 
@@ -26,19 +25,39 @@ class AlarmList extends Component {
     };
 
     this.pollingManager = new PollingManager();
+    this.rulesAndActionsEmitter = new Rx.BehaviorSubject(undefined);
+    this.rulesAndActionsStream = this.rulesAndActionsEmitter
+      .filter(_ => _)
+      .distinct()
+      .map(rulesAndActions => rulesAndActions.reduce((acc, { Id, Name }) => ({ ...acc, [Id]: Name }), {}));
   }
 
   componentDidMount() {
+    if (this.props.rulesAndActions) {
+      this.rulesAndActionsEmitter.next(this.props.rulesAndActions);
+    }
     // Start listening to the refresh streams to update the row data
     // After each call, kick off a refresh after waiting TELEMETRY_UPDATE_MS
-    this.refreshSubscription = 
-      this.pollingManager
-        .stream
-        .do(_ => this.refresh(`intervalRefresh`, Config.INTERVALS.TELEMETRY_UPDATE_MS))
-        .subscribe(
-          rowData => this.setState({ rowData, loading: false }),
-          error => this.setState({ error, loading: false })
-        );
+    this.refreshSubscription = this.pollingManager.stream
+      .combineLatest(this.rulesAndActionsStream, (data, ruleIdNameMap) => ({ alarms: data.Items, ruleIdNameMap }))
+      .flatMap(({ alarms, ruleIdNameMap }) =>
+        Rx.Observable
+          .from(alarms)
+          .map(alarm => ({
+            ruleName: ruleIdNameMap[alarm.Rule.Id] || alarm.Rule.Id,
+            created: alarm.Created,
+            occurrences: alarm.Count,
+            description: alarm.Rule.Description,
+            severity: alarm.Rule.Severity,
+            status: alarm.Status
+          }))
+          .reduce((acc, curr) => [...acc, curr], [])
+      )
+      .do(_ => this.refresh(`intervalRefresh`, Config.INTERVALS.TELEMETRY_UPDATE_MS))
+      .subscribe(
+        rowData => this.setState({ rowData, loading: false }),
+        error => this.setState({ error, loading: false })
+      );
   }
 
   /**
@@ -55,51 +74,36 @@ class AlarmList extends Component {
   componentWillReceiveProps(nextProps) {
     // If the device list changes, reload the list data
     const newDeviceIdList = this.generateDeviceIdList(nextProps.devices);
-    if (this.state.deviceIdList !== newDeviceIdList ||
-      this.state.timeRange !== nextProps.timeRange) {
-      this.setState(
-        {
-          deviceIdList: newDeviceIdList,
-          rowData: undefined,
-          timeRange: nextProps.timeRange
-        }, 
-        () => this.refresh(`filterGroupRefresh`)
-      );
+    if (this.state.deviceIdList !== newDeviceIdList) {
+      this.setState({ deviceIdList: newDeviceIdList, rowData: undefined }, () => this.refresh() );
     }
-  }
 
-  onTimeRangeChange(selectedOption) {
-    if (!selectedOption) return;
-    this.setState({ timeRange: selectedOption.value }, () => this.refresh(`timeRangeRefresh`));
+    if (this.state.timeRange !== nextProps.timeRange) {
+      this.setState({ timeRange: nextProps.timeRange, rowData: undefined }, () => this.refresh() );
+    }
+
+    if (nextProps.rulesAndActions) {
+      this.rulesAndActionsEmitter.next(nextProps.rulesAndActions);
+    }
   }
 
   generateDeviceIdList(devices) {
     return devices.map(id => encodeURIComponent(id)).join(',');
   }
 
-  dataFormatter = ({ Items }) => {
-    return Items.map(item => ({
-      ruleId: item.Rule.Id,
-      created: item.Created,
-      occurrences: item.Count,
-      description: item.Rule.Description,
-      severity: item.Rule.Severity,
-      status: item.Status
-    }));
-  };
-
-  createGetDataEvent = (eventName) => {
+  createGetDataEvent = eventName => {
     this.setState({ loading: true });
-    return Rx.Observable.of(this.state)
-      .filter(({ deviceIdList }) => deviceIdList) // Don't make the call if device id list is not defined
-      .flatMap(({ timeRange, deviceIdList }) => 
-        ApiService.getAlarmsByRule({
-          from: `NOW-${timeRange}`,
-          to: 'NOW',
-          devices: deviceIdList
-        })
-      )
-      .map(this.dataFormatter);
+    return (
+      Rx.Observable
+        .of(this.state)
+        .flatMap(({ timeRange, deviceIdList }) =>
+          ApiService.getAlarmsByRule({
+            from: `NOW-${timeRange}`,
+            to: 'NOW',
+            devices: deviceIdList
+          })
+        )
+    );
   };
 
   refresh(eventName, delayAmount) {
@@ -118,9 +122,9 @@ class AlarmList extends Component {
         showContentSpinner={!this.state.rowData && !this.state.error}
         error={this.state.error}
         title={lang.ALARMSTATUS}>
-          <div className="grid-container">
-            <AlarmsGrid {...alarmsGridProps} />
-          </div>
+        <div className="grid-container">
+          <AlarmsGrid {...alarmsGridProps} />
+        </div>
       </DashboardPanel>
     );
   }
