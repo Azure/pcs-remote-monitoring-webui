@@ -49,10 +49,11 @@ $padding: 15px;
     > .panel-actions-container > .Select { width: 150px; }
   }
 
-  > .panel-contents { 
+  > .panel-contents {
+    width: 100%;
     position: relative;
     flex-grow: 1;
-    padding: 0px $padding; 
+    padding: 0px $padding;
 
     .error-modal-container {
       position: absolute;

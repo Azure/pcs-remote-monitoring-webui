@@ -1,5 +1,10 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import '../../styles/variables/colors';
+@import '../../styles/fonts/font-variables';
+
 .map-container {
-  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-family: $fontSelawik;
 
   .loading-spinner {
     display: flex;
@@ -12,10 +17,36 @@
     position: relative;
     overflow: hidden;
 
-    .static-bing-map { height: 336px; }
+    .static-bing-map { height: 356px; }
+
+    .static-map-modal {
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      position: absolute;
+      bottom: 0px;
+
+      .static-text {
+        border: 1px solid $borderDarkGray;
+        padding: 20px;
+        background-color: $bgBlack;
+
+        .static-link {
+          padding-left: 5px;
+          text-decoration: none;
+          color: $white;
+
+          &:hover { color: $lightestGray !important; }
+        }
+      }
+    }
   }
-
-
 
   .infobox-close {
     top: 1px !important;
@@ -37,7 +68,7 @@
       font-size: 10px !important;
       padding: 5px !important;
       margin-bottom: -2px !important;
-      color: #fff;
+      color: $white;
     }
   }
 
@@ -55,9 +86,9 @@
   .region-header {
     margin-left: -10px;
     height: 48px;
-    background-color: #242628;
+    background-color: $gridTileLight;
     padding: 15px 15px 15px 0px;
-    color: #afb9c3;
+    color: $lightestGray;
 
     .more {
       float: right;

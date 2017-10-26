@@ -158,6 +158,8 @@ const lang = {
   MANAGEFILTER: 'Manage Filters',
   MANAGEFILTERS: 'Manage filters',
   MANUAL: 'Manual',
+  MAP_MODAL_CONTENT: 'This solution has been configured with a static map. To learn more about adding an interactive map please visit our',
+  MAP_MODAL_FAQS: 'FAQs.',
   MANUFACTURER: 'Manufacturer',
   MESSAGE: 'Message',
   METHODS: 'Methods',
