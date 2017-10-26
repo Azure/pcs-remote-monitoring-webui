@@ -56,7 +56,10 @@ class SystemStatusDetailsGrid extends Component {
         return isComplete;
       })
       .subscribe(
-        job => this.props.actions.updateJobs(job),
+        job => {
+          this.props.actions.updateJobs(job);
+          this.props.actions.loadDevices(true);
+        },
         err => console.error(err)
       );
 
