@@ -78,7 +78,7 @@ class DevicesGrid extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { hardSelectedDevices } = nextProps;
-    if (!hardSelectedDevices ) return;
+    if (!hardSelectedDevices || !this.deviceGridApi ) return;
     const deviceIdSet = new Set((hardSelectedDevices || []).map(({ Id }) => Id));
 
     this.deviceGridApi.forEachNode(node => {
@@ -86,6 +86,10 @@ class DevicesGrid extends Component {
         node.setSelected(true);
       }
     });
+  }
+
+  componentWillUnmount() {
+    this.props.contextActions.actions.devicesSelectionChanged([]);
   }
 
   /**

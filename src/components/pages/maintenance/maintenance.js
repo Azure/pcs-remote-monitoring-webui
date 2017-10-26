@@ -173,6 +173,9 @@ class MaintenancePage extends Component {
   };
 
   onRuleDetailHardSelectChange = selectedRulesActions => {
+    if (this.props.selectedDevices && this.props.selectedDevices.length > 0) {
+      this.props.actions.devicesSelectionChanged([]);
+    }
     let status;
 
     // All selected rows have same status field?
@@ -199,6 +202,9 @@ class MaintenancePage extends Component {
   };
 
   onAlarmOccGridHardSelectChange = selectedAlarms => {
+    if (this.props.selectedDevices && this.props.selectedDevices.length > 0) {
+      this.props.actions.devicesSelectionChanged([]);
+    }
     if (selectedAlarms.length > 0) {
       this.deselectOtherGrids('alarmGrid');
     }
@@ -400,7 +406,8 @@ const mapStateToProps = state => {
     loadingInProgress: state.maintenanceReducer.loadingInProgress,
     alarmsGridData: state.maintenanceReducer.alarmsByRuleGridRowData,
     jobs: state.systemStatusJobReducer.jobs,
-    jobsLoadingInProgress: state.systemStatusJobReducer.loadingInProgress
+    jobsLoadingInProgress: state.systemStatusJobReducer.loadingInProgress,
+    selectedDevices: state.flyoutReducer.devices
   };
 };
 
