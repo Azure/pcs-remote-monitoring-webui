@@ -87,6 +87,9 @@ class SettingFlyout extends React.Component {
     return (
       <div className="setting-workflow-container">
         <div className="setting-section">
+          <div className="section-header">{ 'Version 0.0.1' }</div>
+        </div>
+        <div className="setting-section">
           <div className="section-header">{ lang.SIMULATION_DATA }</div>
           <div className="section-description">{ lang.SIMULATION_SETTINGS_DESC }</div>
           <div className="section-input-group">

@@ -9,6 +9,7 @@ $padding: 15px;
   color: #fff;
   margin-bottom: 16px;
   position: relative;
+  
 
   .initial-loading {
     position: absolute;
@@ -54,6 +55,7 @@ $padding: 15px;
     position: relative;
     flex-grow: 1;
     padding: 0px $padding;
+    width: 100%;
 
     .error-modal-container {
       position: absolute;
