@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import '../../styles/variables/colors';
+
 //TODO: Remove the fixed height for the scroll purpose once after the flyout css fixed
 .device-tag-flyout-container {
 
@@ -9,13 +11,13 @@
     width: 400px;
     height: 40px;
     margin-top: 20px;
-    background-color: #1b1d1f;
+    background-color: $gridTileDark;
 
     .device-condition {
       display: flex;
       margin-top: 10px;
       padding-left: 20px;
-      color: #afb9c3;
+      color: $lightestGray;
       font-size: 12px;
       width: 25%;
       overflow: hidden;
@@ -23,14 +25,14 @@
   }
 
   .sub-heading {
-    color: #fff;
+    color: $white;
     font-size: 16px;
     padding-top: 32px;
     padding-bottom: 16px;
   }
 
   .sub-class-heading {
-    color: #afb9c3;
+    color: $lightestGray;
     font-size: 14px;
     padding-bottom: 5px;
   }
@@ -50,14 +52,14 @@
   }
 
   .label-key {
-    color: #afb9c3;
+    color: $lightestGray;
     font-size: 14px;
     font-weight: normal;
     margin-bottom: 16px;
   }
 
   .add-device-tag {
-    color: #afb9c3;
+    color: $lightestGray;
     font-size: 14px;
   }
 
@@ -67,14 +69,14 @@
     margin-top: 24px;
 
     .device-tag-conditions-header {
-      color: #afb9c3;
+      color: $lightestGray;
       font-size: 12px;
       width: 300px;
     }
   }
 
   .device-tag-inner-conditions {
-    background-color: #1b1d1f;
+    background-color: $gridTileDark;
     margin-top: 16px;
     width: 400px;
 
@@ -102,10 +104,10 @@
       .condition-type {
         margin-top: 16px;
         margin-bottom: 10px;
-        background-color: #1b1d1f;
+        background-color: $gridTileDark;
         height: 40px;
         padding: 10px;
-        color: #afb9c3;
+        color: $lightestGray;
         font-size: 12px;
         display: flex;
         flex-direction: row;
@@ -115,7 +117,7 @@
         border: 1px solid #3e4145;
         padding-left: 5px;
 
-        &:hover { border: 1px solid #afb9c3; }
+        &:hover { border: 1px solid $lightestGray; }
       }
 
       .delete-icon { margin-top: 28px; }
@@ -132,7 +134,7 @@
 
   .effective-devices {
     margin-top: 24px;
-    color: #afb9c3;
+    color: $lightestGray;
     font-size: 12px;
   }
 
@@ -155,14 +157,16 @@
       align-items: center;
       margin-top: 16px;
       width: 400px;
-      background-color: #1b1d1f;
+      background-color: $gridTileDark;
     }
 
     .value-for-existed-data {
       width: 85px !important;
       border: none;
 
-      &:hover { border-color: #3e4145; }
+      &:hover { border-color: $lightestGray; }
+
+      &:focus { border: 1px solid $lightestGray; }
     }
   }
 
@@ -177,7 +181,7 @@
     margin-top: 15px;
 
     .Select-menu-outer {
-      border: 1px solid #afb9c3;
+      border: 1px solid $lightestGray;
       width: 80px;
       margin-left: 5px;
       padding-top: 3px;
@@ -191,13 +195,13 @@
     .Select div,
     .Select input,
     .Select span {
-      background-color: #1b1d1f;
-      color: #afb9c3;
+      background-color: $gridTileDark;
+      color: $lightestGray;
       font-weight: normal;
       margin-top: 0px;
     }
 
-    .Select--single > .Select-control .Select-value { background-color: #1b1d1f; }
+    .Select--single > .Select-control .Select-value { background-color: $gridTileDark; }
   }
 
   .no-common-tags {
@@ -207,7 +211,7 @@
 
   .no-common-tags-sub-class {
     font-size: 12px;
-    color: #afb9c3;
+    color: $lightestGray;
   }
 
   .effective-devices {
@@ -217,11 +221,11 @@
     .no-affected-devices {
       font-size: 48px;
       padding-right: 5px;
-      color: #fff;
+      color: $white;
     }
 
     .affected-devices-name {
-      color: #afb9c3;
+      color: $lightestGray;
       font-size: 14px;
     }
   }
@@ -231,13 +235,13 @@
     flex-flow: row nowrap;
     width: 100%;
     height: 40px;
-    background-color: #1b1d1f;
+    background-color: $gridTileDark;
 
     .device-tag {
       display: flex;
       justify-content: space-around;
       flex-grow: 1;
-      color: #afb9c3;
+      color: $lightestGray;
       font-size: 12px;
       width: 25%;
       overflow: hidden;
