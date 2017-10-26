@@ -25,6 +25,7 @@ class AlarmList extends Component {
     };
 
     this.pollingManager = new PollingManager();
+    this.subscriptions = [];
     this.rulesAndActionsEmitter = new Rx.BehaviorSubject(undefined);
     this.rulesAndActionsStream = this.rulesAndActionsEmitter
       .filter(_ => _)
@@ -38,26 +39,31 @@ class AlarmList extends Component {
     }
     // Start listening to the refresh streams to update the row data
     // After each call, kick off a refresh after waiting TELEMETRY_UPDATE_MS
-    this.refreshSubscription = this.pollingManager.stream
-      .combineLatest(this.rulesAndActionsStream, (data, ruleIdNameMap) => ({ alarms: data.Items, ruleIdNameMap }))
-      .flatMap(({ alarms, ruleIdNameMap }) =>
-        Rx.Observable
-          .from(alarms)
-          .map(alarm => ({
-            ruleName: ruleIdNameMap[alarm.Rule.Id] || alarm.Rule.Id,
-            created: alarm.Created,
-            occurrences: alarm.Count,
-            description: alarm.Rule.Description,
-            severity: alarm.Rule.Severity,
-            status: alarm.Status
-          }))
-          .reduce((acc, curr) => [...acc, curr], [])
+    this.subscriptions.push(
+      this.pollingManager.stream
+        .combineLatest(this.rulesAndActionsStream, (data, ruleIdNameMap) => ({ alarms: data.Items, ruleIdNameMap }))
+        .flatMap(({ alarms, ruleIdNameMap }) =>
+          Rx.Observable
+            .from(alarms)
+            .map(alarm => ({
+              ruleName: ruleIdNameMap[alarm.Rule.Id] || alarm.Rule.Id,
+              created: alarm.Created,
+              occurrences: alarm.Count,
+              description: alarm.Rule.Description,
+              severity: alarm.Rule.Severity,
+              status: alarm.Status
+            }))
+            .reduce((acc, curr) => [...acc, curr], [])
+        )
+        .do(_ => this.refresh(`intervalRefresh`, Config.INTERVALS.TELEMETRY_UPDATE_MS))
+        .subscribe(
+          rowData => this.setState({ rowData, loading: false }),
+          error => this.setState({ error, loading: false })
+        ),
+      this.props.dashboardRefresh.subscribe(eventName =>
+        this.setState({ rowData: undefined }, () => this.refresh(eventName))
       )
-      .do(_ => this.refresh(`intervalRefresh`, Config.INTERVALS.TELEMETRY_UPDATE_MS))
-      .subscribe(
-        rowData => this.setState({ rowData, loading: false }),
-        error => this.setState({ error, loading: false })
-      );
+    );
   }
 
   /**
@@ -68,7 +74,7 @@ class AlarmList extends Component {
   onGridReady = gridReadyEvent => gridReadyEvent.api.sizeColumnsToFit();
 
   componentWillUnmount() {
-    this.refreshSubscription.unsubscribe();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   componentWillReceiveProps(nextProps) {

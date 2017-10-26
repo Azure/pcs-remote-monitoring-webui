@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import Rx from 'rxjs';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Select from 'react-select';
@@ -28,6 +29,7 @@ class DashboardPage extends Component {
       lastRefreshed: new Date(),
     };
 
+    this.emitter = new Rx.Subject();
     this.loadMapData = this.loadMapData.bind(this);
     this.onTimeRangeChange = this.onTimeRangeChange.bind(this);
     this.refreshData = this.refreshData.bind(this);
@@ -61,6 +63,7 @@ class DashboardPage extends Component {
   loadRefreshData(){
      this.loadMapData();
      this.props.actions.refreshAllChartData();
+     this.emitter.next('dashboardRefresh');
   }
 
   onTimeRangeChange(selectedOption) {
@@ -94,6 +97,7 @@ class DashboardPage extends Component {
     const alarmListProps = {
       devices,
       timeRange: this.state.timeRange,
+      dashboardRefresh: this.emitter,
       rulesAndActions: this.props.rulesAndActions
     };
     const telemetryProps = {

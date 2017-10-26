@@ -8,8 +8,15 @@ const maintenanceReducer = (state = initialState.maintenance, action) => {
     case types.LOAD_MAINTENANCE_DATA_SUCCESS:
       return {
         ...state,
+        loadingInProgress: false,
         alarmsByRuleGridRowData: action.data,
         alarmsByRule: action.data.alarmsByRule
+      };
+
+    case types.LOAD_MAINTENANCE_DATA_IN_PROGRESS:
+      return {
+        ...state,
+        loadingInProgress: true
       };
 
     case types.UPDATE_ALARMS_STATUS:

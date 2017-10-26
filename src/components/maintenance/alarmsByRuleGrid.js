@@ -17,7 +17,7 @@ const defaultAlarmsByRuleGridProps = {
   multiSelect: false,
   showLastUpdate: false,
   enableColResize: true,
-  suppressMovableColumns: true,
+  suppressMovableColumns: true
 };
 
 class AlarmsByRuleGrid extends Component {
@@ -26,7 +26,7 @@ class AlarmsByRuleGrid extends Component {
 
     this.state = {
       timerange: 'PT1H',
-      rowData: [],
+      rowData: null,
       loading: true,
       deviceIdList: '',
       alarmsByRule: {}
@@ -45,7 +45,7 @@ class AlarmsByRuleGrid extends Component {
       { headerName: lang.OPEN, field: 'open_occrrences', filter: 'text' },
       { headerName: lang.ACKNOWLEDGE, field: 'ack_occrrences', filter: 'text' },
       { headerName: lang.CLOSE, field: 'close_occrrences', filter: 'text' },
-      { headerName: lang.LAST_OCCRRENCES, field: 'last_occrrences', filter: 'text' },
+      { headerName: lang.LAST_OCCRRENCES, field: 'last_occrrences', filter: 'text' }
     ];
   }
 
@@ -56,7 +56,7 @@ class AlarmsByRuleGrid extends Component {
    */
   onGridReady = gridReadyEvent => {
     gridReadyEvent.api.sizeColumnsToFit();
-  }
+  };
 
   /** When a row is selected, redirect to rule details page */
   onRowClicked = ({ data }) => {
@@ -75,9 +75,7 @@ class AlarmsByRuleGrid extends Component {
       onGridReady: this.onGridReady
     };
 
-    return (
-      <PcsGrid {...gridProps} />
-    );
+    return <PcsGrid {...gridProps} />;
   }
 }
 

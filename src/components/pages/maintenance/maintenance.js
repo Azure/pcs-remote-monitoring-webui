@@ -335,7 +335,8 @@ class MaintenancePage extends Component {
       detailsDevices: this.state.systemStatusDetailsDevices,
       systemStatusGridSelectedDevices: this.state.selectedDetailsDevices,
       onDeviceJobSoftSelectChange : this.onDeviceJobSoftSelectChange,
-      alarmsGridData: this.props.alarmsGridData,
+      systemStatusGridColumnDefs: this.systemStatusColumnDefsArray,
+      alarmsGridData: this.props.loadingInProgress ? null : this.props.alarmsGridData,
       actions: this.props.actions,
       jobs: this.props.jobs,
       btnActions: this.getGridActions() //TODO: add all grid related actions
@@ -396,6 +397,7 @@ const mapStateToProps = state => {
   return {
     alarmList: state.deviceReducer.alarmsList,
     devices: state.deviceReducer.devices,
+    loadingInProgress: state.maintenanceReducer.loadingInProgress,
     alarmsGridData: state.maintenanceReducer.alarmsByRuleGridRowData,
     jobs: state.systemStatusJobReducer.jobs,
     jobsLoadingInProgress: state.systemStatusJobReducer.loadingInProgress

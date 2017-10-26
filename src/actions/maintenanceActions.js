@@ -27,8 +27,9 @@ export const loadMaintenanceDataSuccess = data => {
 };
 
 export const loadMaintenanceData = (params) => {
-  return dispatch =>
-      Rx.Observable.fromPromise(
+  return dispatch => {
+      dispatch({ type: types.LOAD_MAINTENANCE_DATA_IN_PROGRESS });
+      return Rx.Observable.fromPromise(
           ApiService.getAlarmsByRule(params)
         )
         .flatMap(({ Items }) => Items)
@@ -69,6 +70,7 @@ export const loadMaintenanceData = (params) => {
         data => dispatch(loadMaintenanceDataSuccess(data)),
         error => dispatch(loadFailed(error))
       );
+    }
 };
 
 export const updateAlarmsStatus = data => {
