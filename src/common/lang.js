@@ -287,6 +287,7 @@ const lang = {
   UPDATE: 'Update',
   VALUE: 'Value',
   VALUECANNOTBEEMPTY: 'Value cannot be empty',
+  VERSION: 'Version',
   VIEW: 'View',
   VIEW_JOB_STATUS: 'View job status progress in Maintenance page',
   WARNING: 'Warning',

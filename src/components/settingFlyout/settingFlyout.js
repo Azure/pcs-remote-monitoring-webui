@@ -6,6 +6,7 @@ import PcsBtn from '../shared/pcsBtn/pcsBtn';
 import PscToggle from '../shared/pcsToggle/pcsToggle';
 import DeviceSimulationService from '../../services/deviceSimulationService';
 import lang from '../../common/lang';
+import Config from '../../common/config';
 import Spinner from '../spinner/spinner';
 
 import CloseIconSvg from '../../assets/icons/X.svg';
@@ -87,7 +88,7 @@ class SettingFlyout extends React.Component {
     return (
       <div className="setting-workflow-container">
         <div className="setting-section">
-          <div className="section-header">{ 'Version 0.0.1' }</div>
+          <div className="section-header">{ `${lang.VERSION} ${Config.VERSION}` }</div>
         </div>
         <div className="setting-section">
           <div className="section-header">{ lang.SIMULATION_DATA }</div>
