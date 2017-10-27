@@ -3,7 +3,7 @@
 @import '../../styles/variables/colors';
 
 .device-configuration-container {
-  overflow-y: scroll;
+  overflow-y: auto;
 
   .sub-heading {
     color: $white;
