@@ -51,7 +51,8 @@ class AlarmList extends Component {
               occurrences: alarm.Count,
               description: alarm.Rule.Description,
               severity: alarm.Rule.Severity,
-              status: alarm.Status
+              status: alarm.Status,
+              ruleId: alarm.Rule.Id
             }))
             .reduce((acc, curr) => [...acc, curr], [])
         )
