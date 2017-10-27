@@ -1,36 +1,32 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 .device-detail-flyout {
-  height: 85%;
   overflow-x: hidden;
 
   .device-detail-tile {
     padding-top: 16px;
+
     .device-detail {
       display: flex;
+
       .device-icon {
         margin-right: 32px;
         max-width: 100px;
       }
-      .device-name {
-        font-size: large;
-      }
-      .device-status {
-        font-size: x-small;
-      }
+
+      .device-name { font-size: large; }
+
+      .device-status { font-size: x-small; }
+
     }
   }
 
   td,
-  th {
-    padding: 0 5px;
-  }
+  th { padding: 0 5px; }
 
-  .show-device-detail-message {
-    &:hover {
-      font-weight: bold;
-      cursor: pointer;
-    }
+  .show-device-detail-message:hover {
+    font-weight: bold;
+    cursor: pointer;
   }
 }
 

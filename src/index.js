@@ -19,6 +19,7 @@ import registerServiceWorker from "./registerServiceWorker";
 import initialState from "./reducers/initialState";
 import configureStore from "./store/configureStore";
 import auth from "./common/auth";
+import "./polyfills";
 
 import "./index.css";
 

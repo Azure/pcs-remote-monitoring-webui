@@ -7,12 +7,11 @@ $horizontalPadding: 16px;
 .pcs-modal-container {
   position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
+  left: 33.33%;
   margin: auto;
   display: flex;
   flex-flow: column nowrap;
-  max-width: 600px;
+  width: 33.33%;
   border: 1px solid $pcsBlue;
   background-color: $bgBlack;
   box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.9);
