@@ -43,9 +43,7 @@ class DeviceCountCellRenderer extends React.Component {
     render() {
         return (
             this.state.loading
-                ? <div className="loading-spinner-cell">
-                    <Spinner size='small'/>
-                </div>
+                ? <Spinner size="small" pattern="bar"/>
                 : <div> {this.state.count} </div>
         )
     }

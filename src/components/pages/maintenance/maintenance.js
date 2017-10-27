@@ -6,7 +6,9 @@ import { Link } from 'react-router';
 import { bindActionCreators } from "redux";
 import Select from 'react-select';
 import * as _ from 'lodash';
+import Rx from 'rxjs';
 
+import Spinner from '../../spinner/spinner';
 import PageContainer from '../../layout/pageContainer/pageContainer.js';
 import PageContent from '../../layout/pageContent/pageContent.js';
 import TopNav from '../../layout/topNav/topNav.js';
@@ -47,7 +49,8 @@ class MaintenancePage extends Component {
       toggleButtonSvg: ChangestatusSvg,
       softSelectId: '',
       softSelectedDeviceId: '',
-      contextBtns: ''
+      contextBtns: '',
+      showIndicator: false
     }
     this.refreshData = this.refreshData.bind(this);
     this.contextButtons = {
@@ -110,16 +113,27 @@ class MaintenancePage extends Component {
 
   updateAlarm = (Status) => {
     const { selectedAlarms } = this.state;
-    Promise.all(
-      selectedAlarms.map(alarm => ApiService.updateAlarmsStatus({...alarm, Status}))
-    ).then(updatedAlarms => {
-      if (updatedAlarms && updatedAlarms.length > 0) {
-        const alarmIds = new Set(updatedAlarms.map(({Id}) => Id));
-        const status = updatedAlarms[0].Status;
-        const ruleId = updatedAlarms[0].Rule.Id;
-        this.props.actions.updateAlarmsStatus({ alarmIds, status, ruleId });
-      }
-    });
+    Rx.Observable.from(selectedAlarms)
+      .do(_ => this.setState({ showIndicator: true }))
+      .map(alarm => ({...alarm, Status}))
+      .flatMap(ApiService.updateAlarmsStatus)
+      .reduce((alarms, alarm) => [...alarms, alarm], [])
+      .zip(Rx.Observable.of(undefined).delay(2000), alarms => alarms)
+      .subscribe(
+        alarms => {
+          if (alarms && alarms.length > 0) {
+            const alarmIds = new Set(alarms.map(({Id}) => Id));
+            const status = alarms[0].Status;
+            const ruleId = alarms[0].Rule.Id;
+            this.props.actions.updateAlarmsStatus({ alarmIds, status, ruleId });
+          }
+          this.setState({ showIndicator: false });
+        },
+        error => {
+          console.log('error', error);
+          this.setState({ showIndicator: false });
+        }
+      );
   }
 
 // --- Grid events handler starts here ----------------------------------
@@ -351,6 +365,7 @@ class MaintenancePage extends Component {
       <PageContainer>
         <TopNav breadcrumbs={breadcrumbs} projectName={lang.AZUREPROJECTNAME} />
         <ContextFilters disableDeviceFilter={(this.props.params || {}).id !== undefined}>
+          {this.state.showIndicator && <div className="spinner-container"><Spinner size="medium" pattern="bar" /></div>}
           {pcsBtn({ // Change status button
             svg: this.state.toggleButtonSvg,
             onClick: this.showToggleRules,

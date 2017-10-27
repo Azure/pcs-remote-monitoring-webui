@@ -53,7 +53,7 @@ class LastTriggerCellRenderer extends React.Component {
     render() {
         return (
             this.state.loading
-                ? <div><Spinner size='small'/></div>
+                ? <Spinner size="small" pattern="bar"/>
                 : <div> {this.state.lastTrigger} </div>
         )
     }

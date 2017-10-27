@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import Rx from 'rxjs';
+import { isEqual } from 'lodash';
 
 import * as actions from "../../actions";
 import Lang from '../../common/lang';
@@ -47,7 +48,7 @@ class SystemStatusDetailsGrid extends Component {
 
   componentDidMount() {
     this.subscription = this.refreshStream
-      .filter(job => job && job.jobId && !jobDoneSet.has(job.status)) // Filter out undefined
+      .filter(job => job && job.jobId) // Filter out undefined
       .debounceTime(5000)
       .flatMap(({ jobId }) => ApiService.getJobStatus(jobId))
       .filter(job => {
@@ -68,7 +69,9 @@ class SystemStatusDetailsGrid extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.refreshStream.next(nextProps.jobDetails);
+    if (!isEqual(nextProps.jobDetails, this.props.jobDetails)) {
+      this.refreshStream.next(nextProps.jobDetails);
+    }
   }
 
   componentWillUnmount() {

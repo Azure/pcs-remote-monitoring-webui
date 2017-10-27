@@ -9,9 +9,9 @@ import './spinner.css';
 *  default 'size' is 'large'
 */
 
-const Spinner = ({ size = 'large' }) => {
+const Spinner = ({ size='large', pattern='ring' }) => {
   return (
-    <div className={`styleLibrary waitIndicator ring ${size}`}>
+    <div className={`pcs waitIndicator ${pattern} ${size}`}>
       <div className="dot">
         <span className="inner" />
       </div>
