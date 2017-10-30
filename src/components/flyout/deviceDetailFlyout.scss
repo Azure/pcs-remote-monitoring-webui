@@ -21,6 +21,14 @@
     }
   }
 
+  .btn-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 32px;
+
+    .pcs-btn { height: 30px; }
+  }
+
   td,
   th { padding: 0 5px; }
 

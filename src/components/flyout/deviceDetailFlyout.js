@@ -13,6 +13,8 @@ import Timeline from '../charts/timeline';
 import AlarmsGrid from '../alarmList/alarmsGrid';
 import Config from '../../common/config';
 import PollingManager from '../../common/pollingManager';
+import CancelX from '../../assets/icons/CancelX.svg';
+import PcsBtn from '../shared/pcsBtn/pcsBtn';
 
 import './deviceDetailFlyout.css';
 
@@ -601,9 +603,9 @@ class DeviceDetailFlyout extends Component {
               <JsonViewer showButton={false} data={this.state.rawMessage} />}
           </div>
         </Drawer>
-        <div className="flyout-footer">
-          <div onClick={this.props.onClose}>Cancel</div>
-        </div>
+        <div className="btn-group">
+            <PcsBtn svg={CancelX} onClick={this.props.onClose}>{lang.CLOSE}</PcsBtn>
+          </div>
       </div>
     );
   }
