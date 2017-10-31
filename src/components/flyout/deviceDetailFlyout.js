@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react';
 import { Radio } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
 import Rx from 'rxjs';
 
 import Drawer from './drawer';
@@ -12,6 +14,7 @@ import ApiService from '../../common/apiService';
 import Timeline from '../charts/timeline';
 import AlarmsGrid from '../alarmList/alarmsGrid';
 import Config from '../../common/config';
+import * as actions from '../../actions';
 import PollingManager from '../../common/pollingManager';
 import CancelX from '../../assets/icons/CancelX.svg';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
@@ -55,7 +58,7 @@ const loadTelemetry = (data, deviceId) => {
 class DeviceDetailFlyout extends Component {
   constructor(props) {
     super(props);
-
+    this.ruleIDToNameMap = {};
     this.subscriptions = [];
     this.state = {
       deviceId: '',
@@ -121,11 +124,21 @@ class DeviceDetailFlyout extends Component {
     this.getAlarms(this.props.content.device.Id);
   }
 
+  componentWillMount() {
+    this.props.actions.loadRulesList();
+  }
+
   componentWillUnmount() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   componentWillReceiveProps(nextProps) {
+    const { rulesAndActions } = nextProps;
+    if (rulesAndActions) {
+      rulesAndActions.forEach(({ Id, Name }) => {
+        this.ruleIDToNameMap[Id] = Name;
+      });
+    }
     const deviceId = ((nextProps.content || {}).device || {}).Id;
     if (!deviceId) {
       return;
@@ -177,6 +190,7 @@ class DeviceDetailFlyout extends Component {
         showAlarmsGrid: data.Items.length > 0,
         alarmRowData: data.Items.map(item => {
           return {
+            ruleName: this.ruleIDToNameMap[item.Rule.Id] || item.Rule.Id,
             ruleId: item.Rule.Id,
             created: item.DateCreated,
             occurrences: item.Count,
@@ -611,4 +625,16 @@ class DeviceDetailFlyout extends Component {
   }
 }
 
-export default DeviceDetailFlyout;
+const mapStateToProps = state => {
+  return {
+    rulesAndActions: state.ruleReducer.rulesAndActions
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeviceDetailFlyout);
