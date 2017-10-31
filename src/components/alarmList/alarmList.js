@@ -119,7 +119,10 @@ class AlarmList extends Component {
 
   render() {
     // Pass an empty string to avoid two spinners appearing on top of each other
-    const alarmsGridProps = { rowData: this.state.rowData || [] };
+    const alarmsGridProps = { 
+      rowData: this.state.rowData || [],
+      paginationPageSize: 5
+    };
 
     return (
       <DashboardPanel
