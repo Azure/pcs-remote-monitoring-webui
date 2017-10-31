@@ -94,7 +94,7 @@ class RuleDetailsPage extends Component {
       selectedDevices: false,
       selectedTelemetry: false
     };
-
+    this.onSoftSelectDeviceGrid = this.onSoftSelectDeviceGrid.bind(this);
     this.selectGrid = this.selectGrid.bind(this);
   }
 
@@ -160,7 +160,12 @@ class RuleDetailsPage extends Component {
       selectedTelemetry: event.currentTarget.textContent === lang.TELEMETRY
     });
   }
-
+  
+  onSoftSelectDeviceGrid(device) {
+    this.setState({ softSelectedDeviceId: device.Id });
+    this.props.btnActions.onSoftSelectDeviceGrid(device);
+  }
+  
   render() {
     const ruleId = (this.props.params || {}).id;
     const ruleDetails = (this.props.alarmsGridData || []).filter(({ id }) => id === ruleId)[0];
@@ -186,13 +191,11 @@ class RuleDetailsPage extends Component {
       //TODO: finish all the event handlers
       rowData: this.state.devicesGridData,
       domLayout: 'autoHeight',
+      onSoftSelectChange: this.onSoftSelectDeviceGrid,
+      onContextMenuChange: btnActions.onContextMenuChange,
       softSelectId: this.state.softSelectedDeviceId,
       getSoftSelectId: btnActions.getSoftSelectId,
-      /* Grid Events */
       onGridReady: btnActions.onDeviceGridReady,
-      onSoftSelectChange: btnActions.onSoftSelectDeviceGrid,
-      onHardSelectChange: btnActions.onDeviceGridHardSelectChange,
-      onContextMenuChange: btnActions.onContextMenuChange
     };
 
     const telemetryProps = {
