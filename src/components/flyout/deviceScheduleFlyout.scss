@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import '../../styles/variables/colors';
+
 $title-color: #ffffff;
 $content-color: #afb9c3;
 $border-color: #3e4145;
@@ -16,7 +18,7 @@ $content-height: 24px;
     .content-title {
       font-size: $title-font-size;
       color: $title-color;
-      margin: 16px 0;
+      margin-top: 16px;
     }
 
     .Select-control {
@@ -77,6 +79,18 @@ $content-height: 24px;
           font-size: 48px;
           color: $title-color;
         }
+      }
+    }
+
+    .jobname-reference {
+      display: flex;
+      font-size: 13px;
+      color: $lightestGray;
+      padding-top: 5px;
+
+      .asterisk {
+        font-size: 26px;
+        margin-top: -5px;
       }
     }
 

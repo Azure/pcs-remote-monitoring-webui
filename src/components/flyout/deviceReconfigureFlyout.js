@@ -14,6 +14,7 @@ import CancelX from '../../assets/icons/CancelX.svg';
 import Apply from '../../assets/icons/Apply.svg';
 import ApiService from '../../common/apiService';
 import Config from '../../common/config';
+import {sanitizeJobName} from '../../common/utils';
 import Spinner from '../spinner/spinner';
 import DeepLinkSection from '../deepLinkSection/deepLinkSection';
 import { getTypeOf } from '../../common/utils';
@@ -180,7 +181,7 @@ class DeviceReconfigureFlyout extends React.Component {
   }
 
   onChangeInput(event) {
-    this.setState({ jobInputValue: event.target.value });
+    this.setState({ jobInputValue: sanitizeJobName(event.target.value || '') });
   }
 
   applyDeviceConfigureJobsData() {
@@ -299,6 +300,10 @@ class DeviceReconfigureFlyout extends React.Component {
             onChange={this.onChangeInput}
             value={this.state.jobInputValue}
           />
+          <div className="jobname-reference">
+            <span className="asterisk">*</span>
+            {lang.JOB_NAME_REFERENCE}
+          </div>
         </div>
         {this.commonReconfigure()}
         <SummarySection count={totalAffectedDevices} content={lang.AFFECTED_DEVICES} />

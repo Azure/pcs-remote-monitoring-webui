@@ -29,10 +29,22 @@
     }
   }
 
+  .jobname-reference {
+    display: flex;
+    font-size: 13px;
+    color: $lightestGray;
+    padding-top: 5px;
+
+    .asterisk {
+      font-size: 26px;
+      margin-top: -5px;
+    }
+  }
+
   .style-manage {
     font-size: 12px;
     font-weight: normal;
-    margin-top: 16px;
+    margin-top: 14px;
   }
 
   .common-reconfigure-container {
@@ -51,7 +63,7 @@
 
       &:hover,
       &:focus { border: 1px solid $lightestGray !important; }
-      
+
     }
   }
 

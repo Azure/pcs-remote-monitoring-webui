@@ -135,6 +135,7 @@ const lang = {
   INFO: 'Info',
   JOBNAME: 'Job Name',
   JOB_NAME: 'Job Name',
+  JOB_NAME_REFERENCE: 'Only letters and numbers are allowed in the job name',
   JOB_NAME_INPUT_PLACEHOLDER: 'Enter job name',
   KEY: 'KEY',
   LASTACTIVITYTIME: 'Last activity time',

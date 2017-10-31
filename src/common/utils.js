@@ -87,6 +87,10 @@ export function jsonEqual(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
+export function sanitizeJobName(jobName) {
+  return jobName.replace(/[\W_]/g, "");
+}
+
 export default {
   isFunction,
   debounce,

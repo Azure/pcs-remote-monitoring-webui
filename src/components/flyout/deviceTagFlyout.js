@@ -16,6 +16,7 @@ import CancelX from '../../assets/icons/CancelX.svg';
 import Apply from '../../assets/icons/Apply.svg';
 import ApiService from '../../common/apiService';
 import Config from '../../common/config';
+import {sanitizeJobName} from '../../common/utils';
 import Spinner from '../spinner/spinner';
 import DeepLinkSection from '../deepLinkSection/deepLinkSection';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
@@ -217,7 +218,7 @@ class DeviceTagFlyout extends React.Component {
   }
 
   onChangeInput(event) {
-    this.setState({ jobInputValue: event.target.value });
+    this.setState({ jobInputValue: sanitizeJobName(event.target.value || '') });
   }
 
   applyDeviceTagJobsData() {
@@ -232,7 +233,6 @@ class DeviceTagFlyout extends React.Component {
     newTags.forEach(tag => {
       tags[tag.name] = tag.value;
     });
-
     const payload = {
       JobId: this.state.jobInputValue ? this.state.jobInputValue + '-' + uuid(): uuid(),
       QueryCondition: `deviceId in [${deviceIds}]`,
@@ -382,6 +382,10 @@ class DeviceTagFlyout extends React.Component {
             </div>
             <input type="text" className="style-manage" placeholder={lang.ADJUST_TAGS} onChange={this.onChangeInput}
             value={this.state.jobInputValue}/>
+            <div className="jobname-reference">
+              <span className="asterisk">*</span>
+              {lang.JOB_NAME_REFERENCE}
+            </div>
           </label>
         </div>
         <div className="device-conditions-container">

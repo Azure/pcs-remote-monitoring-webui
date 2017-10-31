@@ -46,6 +46,19 @@
     }
   }
 
+  .jobname-reference {
+    display: flex;
+    font-size: 13px;
+    color: $lightestGray;
+    padding-top: 5px;
+    font-weight: normal;
+
+    .asterisk {
+      font-size: 26px;
+      margin-top: -5px;
+    }
+  }
+
   .style-manage {
     font-size: 12px;
     font-weight: normal;
@@ -55,7 +68,7 @@
     color: $lightestGray;
     font-size: 14px;
     font-weight: normal;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
   }
 
   .add-device-tag {

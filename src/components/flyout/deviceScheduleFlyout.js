@@ -11,6 +11,7 @@ import Select from 'react-select';
 import ApiService from '../../common/apiService';
 import DeepLinkSection from '../deepLinkSection/deepLinkSection';
 import lang from '../../common/lang';
+import {sanitizeJobName} from '../../common/utils';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
 import SummarySection from '../shared/summarySection/summarySection';
 
@@ -32,6 +33,7 @@ class DeviceScheduleFlyout extends React.Component {
 
     this.getAvailableMethods = this.getAvailableMethods.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
+    this.onChangeJobInput = this.onChangeJobInput.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.onConfirm = this.onConfirm.bind(this);
   }
@@ -64,6 +66,10 @@ class DeviceScheduleFlyout extends React.Component {
     this.setState({
       [event.target.name]: event.target.value
     });
+  }
+
+  onChangeJobInput(event) {
+    this.setState({ jobInputValue: sanitizeJobName(event.target.value || '') });
   }
 
   onConfirm() {
@@ -136,9 +142,13 @@ class DeviceScheduleFlyout extends React.Component {
                     placeholder={`${lang.JOB_NAME_INPUT_PLACEHOLDER}...`}
                     type="text"
                     name="jobInputValue"
-                    onChange={this.onChangeInput}
+                    onChange={this.onChangeJobInput}
                     value={this.state.jobInputValue}
                   />
+                  <div className="jobname-reference">
+                    <span className="asterisk">*</span>
+                    {lang.JOB_NAME_REFERENCE}
+                  </div>
                   {this.state.showFirmwareContent &&
                     <div className="firmware-uri-section">
                       <div className="content-title">
