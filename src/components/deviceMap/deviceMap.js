@@ -167,6 +167,18 @@ class DeviceMap extends Component {
     });
   }
 
+  renderStaticMap() {
+      return <div className="map-container">
+        <div className="static-map-modal">
+          <span className="static-text">
+            {lang.MAP_MODAL_CONTENT}
+            <a className="static-link" rel="noopener noreferrer" href="https://docs.microsoft.com/azure/iot-suite/iot-suite-faq" target='_blank'>{lang.MAP_MODAL_FAQS}</a>
+          </span>
+        </div>
+        <img src={StaticMapWithOutDevices} alt="StaticMap" className="static-bing-map"/>
+      </div>
+  }
+
   render() {
     const { BingMapKey } = this.props;
     return (
@@ -179,17 +191,9 @@ class DeviceMap extends Component {
         <Row>
           <RegionDetails {...this.props} />
           <Col md={9} className="bing-map">
-          { BingMapKey ?
-            (BingMapKey === config.STATUS_CODES.STATIC
-            ? <div className="map-container">
-                <div className="static-map-modal">
-                  <span className="static-text">
-                    {lang.MAP_MODAL_CONTENT}
-                    <a className="static-link" rel="noopener noreferrer" href="https://docs.microsoft.com/en-us/azure/iot-suite/iot-suite-faq" target='_blank'>{lang.MAP_MODAL_FAQS}</a>
-                  </span>
-                </div>
-                <img src={StaticMapWithOutDevices} alt="StaticMap" className="static-bing-map"/></div>
-            : <div id="deviceMap" className="dashboard_device_map" />) : null }
+          { BingMapKey && BingMapKey !== config.STATUS_CODES.STATIC
+            ? <div id="deviceMap" className="dashboard_device_map" />
+            : this.renderStaticMap()}
           </Col>
         </Row>
       </DashboardPanel>
