@@ -37,8 +37,8 @@ const typeOptions = [
     label: lang.NUMBER
   },
   {
-    value: 'String',
-    label: lang.STRING
+    value: 'Text',
+    label: lang.TEXT
   }
 ];
 
@@ -123,7 +123,7 @@ class DeviceTagFlyout extends React.Component {
           if (values.every(isNumeric)) {
             newState.commonTagTypes[tagName] = 'Number';
           } else {
-            newState.commonTagTypes[tagName] = 'String';
+            newState.commonTagTypes[tagName] = 'Text';
           }
           return newState;
         },

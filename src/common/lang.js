@@ -139,6 +139,7 @@ const lang = {
   JOB_NAME_INPUT_PLACEHOLDER: 'Enter job name',
   KEY: 'KEY',
   LASTACTIVITYTIME: 'Last activity time',
+  TEXT: 'Text',
   LASTCONNECTION: 'Last Connection',
   LASTDAY: 'Last day',
   LASTHOUR: 'Last hour',

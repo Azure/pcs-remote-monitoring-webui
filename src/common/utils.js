@@ -16,13 +16,13 @@ export function getTypeOf(val) {
   if (typeof val === 'number') {
     return 'Int';
   } else if (typeof val === 'string' && (getBoundaryChars(val) === '"' || getBoundaryChars(val) === "'")) {
-    return 'String';
+    return 'Text';
   }
-  return 'String';
+  return 'Text';
 }
 
 export function typeComputation(cond) {
-  cond.type = typeof cond.Value === 'number' ? 'number' : 'string';
+  cond.type = typeof cond.Value === 'number' ? 'Number' : 'Text';
 }
 
 export function getNonFunctionalProps(props) {
