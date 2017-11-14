@@ -20,7 +20,7 @@ const jobDoneSet = new Set([3, 4, 5]);
 class SystemStatusDetailsGrid extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {};
     this.defaultColumnDefs = [
       systemStatusColumnDefs.jobId,
       systemStatusColumnDefs.status, // Status of total jobs ( fail/ Queued/completed)
@@ -42,8 +42,14 @@ class SystemStatusDetailsGrid extends Component {
     ];
 
     this.onGridReady = this.onGridReady.bind(this);
+    this.onSoftSelectDeviceGrid = this.onSoftSelectDeviceGrid.bind(this);
     // A stream of job ids
     this.refreshStream = new Rx.Subject();
+  }
+
+  onSoftSelectDeviceGrid(device) {
+    this.setState({ softSelectedDeviceId: device.Id });
+    this.props.btnActions.onSoftSelectDeviceGrid(device);
   }
 
   componentDidMount() {
@@ -94,10 +100,12 @@ class SystemStatusDetailsGrid extends Component {
     const { detailsDevices, jobDetails, systemStatusGridSelectedDevices, btnActions, devices } = this.props;
     const hasJobs = (detailsDevices || []).length > 0;
     const deviceIds = new Set(detailsDevices.map(({ deviceId }) => deviceId));
-    let devicesGridProps = {
-      onSoftSelectChange: btnActions.onSoftSelectDeviceGrid,
+    const devicesGridProps = {
+      rowData: devices.filter(({ Id }) => deviceIds.has(Id)),
+      onSoftSelectChange: this.onSoftSelectDeviceGrid,
       onContextMenuChange: btnActions.onContextMenuChange,
-      rowData: devices.filter(({ Id }) => deviceIds.has(Id))
+      softSelectId: this.state.softSelectedDeviceId,
+      getSoftSelectId: btnActions.getSoftSelectId
     };
     const jobIdTrim = ((jobDetails || {}).jobId || '').substring(0, 20);
     return (
