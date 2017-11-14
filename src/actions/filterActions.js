@@ -6,6 +6,7 @@ import { loadDeviceSuccess } from './deviceActions';
 import { indicatorStart, indicatorEnd } from './indicatorActions';
 import ApiService from '../common/apiService';
 import * as telemetryActions from './telemetryActions';
+import * as kpiActions from './kpiActions';
 import lang from '../common/lang';
 
 function setDefaultDeviceGroupId(dispatch, deviceGroups){
@@ -62,6 +63,7 @@ export const loadRegionSpecificDevices = (selectedGroupConditions, groupId) => {
           if (state.deviceListReducer.showingDevicesPage || state.ruleReducer.showingRulesPage) return;
           if (data && data.items) {
             dispatch( telemetryActions.loadTelemetryMessagesByDeviceIds(lang.ALLDEVICES) );
+            dispatch(kpiActions.refreshAllChartData(null,null,null,null));
             dispatch(indicatorEnd('mapInitial'));
             dispatch(indicatorEnd('kpiInitial'));
           }
@@ -77,6 +79,7 @@ export const loadRegionSpecificDevices = (selectedGroupConditions, groupId) => {
           if (data && data.items) {
             const deviceIds = data.items.map(device => device.Id);
             dispatch( telemetryActions.loadTelemetryMessagesByDeviceIds(deviceIds) );
+            dispatch(kpiActions.refreshAllChartData(null,null,null,null));
             dispatch(indicatorEnd('mapInitial'));
             dispatch(indicatorEnd('kpiInitial'));
           }
