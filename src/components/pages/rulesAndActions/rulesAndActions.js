@@ -220,7 +220,7 @@ class RulesAndActionsPage extends Component {
     }
     const rulesAndActionsProps = {
       rowData,
-      softSelectId: this.props.softSelectId,
+      softSelectId: this.state.softSelectId,
       getSoftSelectId: this.getSoftSelectId,
       onGridReady: this.onGridReady,
       onHardSelectChange: this.onHardSelectChange,
