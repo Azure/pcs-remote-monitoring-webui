@@ -24,9 +24,7 @@ class SeverityCellRenderer extends React.Component {
     return (
       <div className={cellClasses}>
         <img src={svg} className="pcs-renderer-icon" alt='Connection Status Icon' />
-        <div className="pcs-renderer-text">
-          {value}
-        </div>
+        {this.props.colDef.hideSeverityValue ? null : <div className="pcs-renderer-text">{value}</div>}
       </div>
     );
   }

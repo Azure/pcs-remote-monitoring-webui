@@ -20,7 +20,6 @@ class AlarmsGrid extends Component {
     this.columnDefs = [
       alarmColumnDefs.name,
       alarmColumnDefs.severity,
-      alarmColumnDefs.created,
       alarmColumnDefs.occurrences,
       alarmColumnDefs.explore
     ];

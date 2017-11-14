@@ -192,7 +192,6 @@ class DeviceDetailFlyout extends Component {
           return {
             ruleName: this.ruleIDToNameMap[item.Rule.Id] || item.Rule.Id,
             ruleId: item.Rule.Id,
-            created: item.DateCreated,
             occurrences: item.Count,
             description: item.Rule.Description,
             severity: item.Rule.Severity,

@@ -111,6 +111,7 @@ const lang = {
   EQUALS: '= Equals',
   EVENT_NAME: 'Event Name',
   EXPLOREALARM: 'Explore Alarm',
+  EXPLORE: 'Explore',
   FAILED: 'Failed',
   FAILED_CAPITAL: 'Failed',
   FAILED_JOBS: 'Failed Jobs',

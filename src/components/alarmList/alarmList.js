@@ -47,7 +47,6 @@ class AlarmList extends Component {
             .from(alarms)
             .map(alarm => ({
               ruleName: ruleIdNameMap[alarm.Rule.Id] || alarm.Rule.Id,
-              created: alarm.Created,
               occurrences: alarm.Count,
               description: alarm.Rule.Description,
               severity: alarm.Rule.Severity,

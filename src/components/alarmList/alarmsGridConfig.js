@@ -2,7 +2,7 @@
 
 import React from 'react';
 import lang from '../../common/lang';
-import SeverityCellRenderer from '../cellRenderers/severityCellRenderer/severityCellRenderer';
+import severityCellRenderer from '../cellRenderers/severityCellRenderer/severityCellRenderer';
 import ElipsisCellRenderer from '../cellRenderers/elipsisCellRenderer/elipsisCellRenderer';
 import { gridValueFormatters } from '../pcsGrid/pcsGridConfig';
 
@@ -22,20 +22,18 @@ export const alarmColumnDefs = {
     headerName: lang.RULENAME,
     field: 'ruleName',
     tooltipField: "ruleName",
-    headerTooltip: lang.RULENAME
+    headerTooltip: lang.RULENAME,
+    width: 800
   },
   severity: {
     headerName: lang.SEVERITY,
     field: 'severity',
+    hideSeverityValue: true,
     tooltipField: "severity",
+    cellStyle: {'padding-top': '15px', 'padding-left':'25px'},
     headerTooltip: lang.SEVERITY,
-    cellRendererFramework: SeverityCellRenderer
-  },
-  created: {
-    headerName: lang.CREATED,
-    field: 'created',
-    tooltipField: "created",
-    headerTooltip: lang.CREATED
+    width: 300,
+    cellRendererFramework: severityCellRenderer
   },
   firmware: {
     headerName: lang.FIRMWARE,
@@ -44,17 +42,20 @@ export const alarmColumnDefs = {
     headerTooltip: lang.FIRMWARE,
   },
   occurrences: {
-    headerName: lang.OPENOCCURRENCES,
+    headerName: lang.OPEN,
     field: 'occurrences',
     tooltipField: "occurrences",
+    cellStyle: {'padding-left':'15px'},
+    width: 300,
     headerTooltip: lang.OPENOCCURRENCES,
     valueFormatter: ({ value }) => checkForEmpty(value)
   },
   explore: {
-    headerName: lang.EXPLOREALARM,
+    headerName: lang.EXPLORE,
     field: 'Connected',
     tooltipField: "Connected",
     headerTooltip: lang.EXPLOREALARM,
+    width: 300,
     cellRendererFramework: ({ data }) => <ElipsisCellRenderer to={`/maintenance/rule/${data.ruleId}`} />
   }
 };
