@@ -9,10 +9,10 @@ const kpiReducer = (state = initialState.dashboard.kpi, action) => {
       return {
         ...state,
         chartDataFetchComplete: true,
-        alarmsList: action.data.alarmsList.Items,
-        alarmListLastDuration: action.data.alarmListLastDuration.Items,
-        alarmsByRuleLastDuration: action.data.alarmsByRuleLastDuration.Items,
-        alarmsByRule: action.data.alarmsByRule.Items
+        alarmsList: ((action.data || {}).alarmsList || {}).Items,
+        alarmListLastDuration: ((action.data || {}).alarmListLastDuration || {}).Items,
+        alarmsByRuleLastDuration: ((action.data || {}).alarmsByRuleLastDuration || {}).Items,
+        alarmsByRule: ((action.data || {}).alarmsByRule || {}).Items
       };
     case types.KPI_REFRESH_CHART_DATA_START:
       return {

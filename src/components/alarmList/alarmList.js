@@ -41,7 +41,8 @@ class AlarmList extends Component {
     // After each call, kick off a refresh after waiting TELEMETRY_UPDATE_MS
     this.subscriptions.push(
       this.pollingManager.stream
-        .combineLatest(this.rulesAndActionsStream, (data, ruleIdNameMap) => ({ alarms: data.Items, ruleIdNameMap }))
+        .map(({ Items }) => Items || [])
+        .combineLatest(this.rulesAndActionsStream, (alarms, ruleIdNameMap) => ({ alarms, ruleIdNameMap }))
         .flatMap(({ alarms, ruleIdNameMap }) =>
           Rx.Observable
             .from(alarms)
@@ -118,7 +119,7 @@ class AlarmList extends Component {
 
   render() {
     // Pass an empty string to avoid two spinners appearing on top of each other
-    const alarmsGridProps = { 
+    const alarmsGridProps = {
       rowData: this.state.rowData || [],
       paginationPageSize: 5
     };
