@@ -85,6 +85,16 @@ $titleRowHeight: 36px;
     border-right: 1px solid #000;
   }
 
+  #pieChart,
+  .percentage-critical,
+  .bar-chart,
+  .line-header,
+  .pie-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .percentage-critical {
     margin-top: 40px;
     display: flex;

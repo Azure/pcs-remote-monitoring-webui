@@ -151,18 +151,18 @@ class DashboardPage extends Component {
         <PageContent>
           <Grid fluid className="layout">
             <Row>
-              <Col md={8}>
+              <Col md={7}>
                 <DeviceMap {...deviceMapProps} />
               </Col>
-              <Col md={4}>
+              <Col md={5}>
                 <AlarmList {...alarmListProps} />
               </Col>
             </Row>
             <Row>
-              <Col md={8}>
+              <Col md={7}>
                 <Telemetry {...telemetryProps} />
               </Col>
-              <Col md={4}>
+              <Col md={5}>
                 <KpiWidget {...kpiProps} />
               </Col>
             </Row>
