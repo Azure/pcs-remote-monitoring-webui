@@ -48,7 +48,8 @@ class PieChartGraph extends Component {
             '#707070',
             '#4D4D4D',
             '#333333',
-            '#98df8a'
+            '#c0c3c6',
+            '#94999e'
           ]
         }
       },

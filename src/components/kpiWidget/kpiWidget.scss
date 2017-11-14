@@ -2,6 +2,7 @@
 
 @import '../../../node_modules/c3/c3.css';
 @import '../../styles/variables/colors';
+@import '../../styles/fonts/font-variables';
 
 $titleRowHeight: 36px;
 .kpi-widget {
@@ -60,6 +61,9 @@ $titleRowHeight: 36px;
   }
 
   .c3-chart-arc path { stroke: NONE; }
+
+  .c3-axis,
+  .c3-axis-x { font-family: $fontSelawik; }
 
   .line-header,
   .pie-header {

@@ -58,8 +58,8 @@ class RegionDetails extends Component {
               <svg className=" total triangle">
                 <polygon points="25,2.5 48.5,49.8 2.5,49.8" fill="#fc540a" />
               </svg>
-              <div className="alarms">
-                {lang.ALARMS}
+              <div className="critical">
+                {lang.CRITICAL}
               </div>
             </Col>
             <Col md={6} className=" total-alarms-container warnings-container">
