@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import '../../styles/variables/colors';
+
 .maintenance-container {
-  color: #afb9c3;
+  color: $lightestGray;
   height: 100%;
 
   .selection-bar {
@@ -12,18 +14,18 @@
       padding: 5px;
       font-weight: bold;
       font-size: 32px;
-      margin-right: 32px;
+      margin-right: 72px;
 
       &:hover {
         cursor: pointer;
-        color: #fff;
+        color: $white;
       }
     }
 
     .selection-item-active {
       @extend .selection-item;
-      border-bottom: 10px solid #afb9c3;
-      color: #fff;
+      border-bottom: 4px solid $white;
+      color: $white;
     }
   }
 
