@@ -23,7 +23,7 @@ const mapDispatchToProps = dispatch => {
   return {
     openManageFiltersFlyout: deviceGroups => dispatch({
       type: actionTypes.FLYOUT_SHOW,
-      content: { type: 'Manage Filters', deviceGroups }
+      content: { type: 'Manage filters', deviceGroups }
     })
   };
 };

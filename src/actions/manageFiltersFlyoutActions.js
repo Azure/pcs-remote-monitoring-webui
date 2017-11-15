@@ -9,7 +9,7 @@ function showManageFilters(dispatch, getState) {
   dispatch({
     type: types.FLYOUT_SHOW,
     content: {
-      type: 'Manage Filters',
+      type: 'Manage filters',
       deviceGroups: state.filterReducer.deviceGroups
     }
   });

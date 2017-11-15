@@ -21,7 +21,7 @@ const getFlyout = (content, onClose) => {
     case 'Device detail':
       return <DeviceDetailFlyout content={content} onClose={onClose} />;
 
-    case 'Manage Filters':
+    case 'Manage filters':
       return <ManageFiltersFlyout content={content} onClose={onClose} />;
 
     case 'Rule Detail':

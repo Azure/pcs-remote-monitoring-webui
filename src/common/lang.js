@@ -158,7 +158,6 @@ const lang = {
   LOCATION: 'Location',
   MAINTENANCE: 'Maintenance',
   MAINTENANCE_SUMMARY: 'Maintenance summary',
-  MANAGEFILTER: 'Manage Filters',
   MANAGEFILTERS: 'Manage filters',
   MANUAL: 'Manual',
   MANUFACTURER: 'Manufacturer',
