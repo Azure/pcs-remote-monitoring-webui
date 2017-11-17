@@ -24,7 +24,7 @@ class AddDevice extends Component {
         <PcsBtn onClick={this.onClick} value={lang.ADDDEVICES} />
         <Flyout ref='flyout'>
           <Header>
-            {lang.PROVISIONDEVICES}
+            {lang.NEW_DEVICE}
           </Header>
           <Body>
             <DeviceProvisioningWorkflow finishCallback={this.addDeviceCallback} />

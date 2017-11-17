@@ -207,7 +207,7 @@ const lang = {
   PROPERTYNAME: 'Name',
   PROPERTYTYPE: 'Type',
   PROPERTYVALUE: 'Value',
-  PROVISIONDEVICES: 'Provision',
+  NEW_DEVICE: 'New device',
   PROVISION_LOADING: 'Loading...',
   PROVISION_SUMMARY:'Provision summary',
   QUEUED: 'Queued',

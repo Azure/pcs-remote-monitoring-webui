@@ -39,7 +39,7 @@ const getFlyout = (content, onClose) => {
     case 'Reconfigure':
       return <DeviceReconfigureFlyout content={content} onClose={onClose} />;
 
-    case 'Provision':
+    case 'New device':
       return <DeviceProvisioningWorkflow content={content} onClose={onClose} />;
 
     case 'Delete':

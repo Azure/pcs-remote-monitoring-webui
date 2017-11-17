@@ -76,7 +76,7 @@ class DevicesPage extends Component {
           {this.state.contextBtns}
           <SimControlCenter />
           <ManageFilterBtn />
-          <PcsBtn svg={AddSvg} onClick={this.props.openProvisionFlyout} value={lang.PROVISIONDEVICES} />
+          <PcsBtn svg={AddSvg} onClick={this.props.openProvisionFlyout} value={lang.NEW_DEVICE} />
         </ContextFilters>
         <PageContent className="devices-grid-container">
           <div className="timerange-selection">
@@ -109,7 +109,7 @@ const mapDispatchToProps = dispatch => {
 
   return {
     actions: bindActionCreators(actions, dispatch),
-    openProvisionFlyout: () => openFlyout('Provision')
+    openProvisionFlyout: () => openFlyout('New device')
   };
 };
 
