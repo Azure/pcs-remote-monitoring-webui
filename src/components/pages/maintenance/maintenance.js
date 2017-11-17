@@ -26,6 +26,7 @@ import DisableSvg from '../../../assets/icons/Disable.svg';
 import ChangestatusSvg from '../../../assets/icons/Change_status.svg';
 import CloseAlarmSvg from '../../../assets/icons/CloseAlarm.svg';
 import AckAlarmSvg from '../../../assets/icons/AcknowledgeAlarm.svg';
+import ChevronRight from '../../../assets/icons/ChevronRight.svg';
 
 import './maintenance.css';
 
@@ -331,13 +332,20 @@ class MaintenancePage extends Component {
 
 // --- Grid events handler ends here ----------------------------------
   render() {
+    console.log(this.props, 'props needeed');
     let breadcrumbs;
     const pathName = this.props.location.pathname;
+    const alarmsGridData = this.props.alarmsGridData;
     const parentLink = <Link to={'/maintenance'}>{lang.MAINTENANCE}</Link>;
-    if (pathName.indexOf('/rule/') > 0) {
-      breadcrumbs = <span>{parentLink} &rsaquo; Alarm details</span>;
+    if (pathName.indexOf('/rule/') > 0 && (alarmsGridData || []).length > 0 ) {
+      alarmsGridData.forEach(rule => {
+      if (rule.id === this.props.params.id){
+        this.props.params.name = rule.name;
+      }
+    });
+      breadcrumbs = <span>{parentLink} <img src={ChevronRight} alt="ChevronRight" className="chevron-right" /> {this.props.params.name}</span>;
     } else if (pathName.indexOf('/job/') > 0) {
-      breadcrumbs = <span>{parentLink} &rsaquo; System status details</span>;
+      breadcrumbs = <span>{parentLink} <img src={ChevronRight} alt="ChevronRight" className="chevron-right" />{this.props.params.jobId}</span>;
     } else {
       breadcrumbs = lang.MAINTENANCE;
     }

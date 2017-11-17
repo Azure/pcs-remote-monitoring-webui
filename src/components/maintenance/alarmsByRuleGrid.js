@@ -43,8 +43,8 @@ class AlarmsByRuleGrid extends Component {
       },
       { headerName: lang.TOTAL_COUNT, field: 'total_occrrences', filter: 'text' },
       { headerName: lang.OPEN, field: 'open_occrrences', filter: 'text' },
-      { headerName: lang.ACKNOWLEDGE, field: 'ack_occrrences', filter: 'text' },
-      { headerName: lang.CLOSE, field: 'close_occrrences', filter: 'text' },
+      { headerName: lang.ACK, field: 'ack_occrrences', filter: 'text' },
+      { headerName: lang.CLOSED, field: 'close_occrrences', filter: 'text' },
       { headerName: lang.LAST_OCCRRENCES, field: 'last_occrrences', filter: 'text' }
     ];
   }

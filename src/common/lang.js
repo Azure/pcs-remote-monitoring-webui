@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 const lang = {
+  ACK: 'Ack',
   ACKNOWLEDGE: 'Acknowledge',
   ACKNOWLEDGED: 'Acknowledged',
   ACTIONS: 'Actions',
@@ -15,7 +16,6 @@ const lang = {
   ALARMBYDEVICETYPE: 'Alarm by device type',
   ALARMED_DEVICE: 'Alarmed devices',
   ALARMED_TELEMETRY: 'Alarmed device\'s telemetry',
-  ALARMLOG: 'Alarm log',
   ALARMS: 'Alarms',
   ALARMSTATUS: 'System Alarms',
   ALARM_OCCURENCE: 'Alarm occurrences',
@@ -158,6 +158,7 @@ const lang = {
   LOCATION: 'Location',
   MAINTENANCE: 'Maintenance',
   MAINTENANCE_SUMMARY: 'Maintenance summary',
+  MAINTENANCE_LOG: 'Maintenance log',
   MANAGEFILTERS: 'Manage filters',
   MANUAL: 'Manual',
   MANUFACTURER: 'Manufacturer',
@@ -178,7 +179,8 @@ const lang = {
   NO: 'No',
   NOOFDEVICES: 'NO. Devices',
   NOTE: 'Note: Any changes made to rules will only apply to future events on the affected devices.',
-  NOTIFICATIONTYPE: 'Notification Type',
+  NOTIFICATIONS: 'Notifications',
+  NOTIFICATIONTYPE: 'Notification type',
   NOT_ABLE_TO_DELETE: 'Deleting simulated devices is not currently supported, this action will only be taken on the physical devices.',
   NOT_COMPLETED : 'Not Completed',
   NOW: 'Now',
@@ -264,7 +266,7 @@ const lang = {
   SYNCING: 'Syncing',
   SYSTEMKPI: 'System KPIs',
   SYSTEM_GENERATED_DEVICE_ID: 'System generated device IDs',
-  SYSTEM_STATUS: 'System Status',
+  JOBS: 'Jobs',
   TAG: 'Tag',
   TAGS: 'Tags',
   TAGS_DESCRIPTION: 'Tags applied to device',

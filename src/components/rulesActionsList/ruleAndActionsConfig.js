@@ -53,7 +53,7 @@ export const rulesAndActionsColumnDefs = {
     headerName: lang.NOTIFICATIONTYPE,
     field: 'Action.Type',
     filter: 'text',
-    valueFormatter: ({ value }) => value || lang.ALARMLOG
+    valueFormatter: ({ value }) => value || lang.MAINTENANCE_LOG
   },
   status: {
     headerName: lang.STATUS,

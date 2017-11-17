@@ -14,7 +14,7 @@ class MaintenanceWidget extends Component {
     super(props);
 
     this.state = {
-      selectedGrid: 'alarms',
+      selectedGrid: 'Notifications',
       timerange: 'PT1H',
       lastRefreshed: new Date()
     }
@@ -27,7 +27,7 @@ class MaintenanceWidget extends Component {
   }
 
   selectGrid(e) {
-    const selectedGrid = e.currentTarget.textContent === 'Alarms' ? 'alarms' : 'system';
+    const selectedGrid = e.currentTarget.textContent === 'Notifications' ? 'Notifications' : 'Jobs';
     this.setState({ selectedGrid });
   }
 
@@ -67,8 +67,8 @@ class MaintenanceWidget extends Component {
       jobs: jobDetailsProps,
       selectedGrid: this.state.selectedGrid
     };
-    const alarmSelected = this.state.selectedGrid === 'alarms' ? '-active' : '';
-    const systemSelected = this.state.selectedGrid === 'alarms' ? '' : '-active';
+    const alarmSelected = this.state.selectedGrid === 'Notifications' ? '-active' : '';
+    const systemSelected = this.state.selectedGrid === 'Notifications' ? '' : '-active';
     const alarmsByRuleGridProps = {
       devices: this.props.devices,
       timerange: this.state.timerange,
@@ -78,8 +78,8 @@ class MaintenanceWidget extends Component {
       <div className="maintenance-container">
         <MaintenanceSummary {...maintenanceProps} />
         <div className="selection-bar">
-          <div className={`selection-item${alarmSelected}`} onClick={this.selectGrid}>{lang.ALARMS}</div>
-          <div className={`selection-item${systemSelected}`} onClick={this.selectGrid}>{lang.SYSTEM_STATUS}</div>
+          <div className={`selection-item${alarmSelected}`} onClick={this.selectGrid}>{lang.NOTIFICATIONS}</div>
+          <div className={`selection-item${systemSelected}`} onClick={this.selectGrid}>{lang.JOBS}</div>
         </div>
         <div className={`grid-container${alarmSelected}`}><AlarmsByRuleGrid {...alarmsByRuleGridProps} /></div>
         <div className={`grid-container${systemSelected}`}><SystemStatusGrid {...systemStatusProps}/></div>

@@ -33,7 +33,7 @@ const alarmsColumnDefs = [
 const aggregatedRuleColumnDefs = [
   { headerName: lang.TOTAL, field: 'total_occrrences' },
   { headerName: lang.OPEN, field: 'open_occrrences' },
-  { headerName: lang.ACKNOWLEDGED, field: 'ack_occrrences' },
+  { headerName: lang.ACK, field: 'ack_occrrences' },
   { headerName: lang.CLOSED, field: 'close_occrrences' },
   { headerName: lang.LAST_EVENT, field: 'last_occrrences' },
   { headerName: lang.SEVERITY, field: 'severity' }
@@ -160,12 +160,12 @@ class RuleDetailsPage extends Component {
       selectedTelemetry: event.currentTarget.textContent === lang.TELEMETRY
     });
   }
-  
+
   onSoftSelectDeviceGrid(device) {
     this.setState({ softSelectedDeviceId: device.Id });
     this.props.btnActions.onSoftSelectDeviceGrid(device);
   }
-  
+
   render() {
     const ruleId = (this.props.params || {}).id;
     const ruleDetails = (this.props.alarmsGridData || []).filter(({ id }) => id === ruleId)[0];
