@@ -220,7 +220,7 @@ const lang = {
   RULEDETAIL: 'Rule Detail',
   RULENAME: 'Rule Name',
   RULESTATUS: 'Rule status',
-  RULES_ACTIONS: 'Rules & Actions',
+  RULES: 'Rules',
   RULE_DETAIL: 'Rule detail',
   RULE_NAME: 'Rule Name',
   RULE_SUBTITLE: 'Manage alarm occurences associated to this rule in the section below, and use the associated information to troubleshoot each occurence.',
