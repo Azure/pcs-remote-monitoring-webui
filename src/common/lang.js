@@ -192,7 +192,6 @@ const lang = {
   NUMBEROFDEVICES: 'Number of devices',
   OCCURRENCE: 'Occurrence',
   OFFLINE: 'Offline',
-  ONLINE: 'Online',
   OPEN: 'OPEN',
   OPENOCCURRENCES: 'Open Occurrences',
   OPEN_ALARMS: 'Open Alarms',

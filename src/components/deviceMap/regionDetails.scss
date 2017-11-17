@@ -1,7 +1,11 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import '../../styles/variables/colors';
+
 .device-location-conatiner {
-  background-color: #1b1d1f;
+  background-color: $gridTileDark;
   height: 356px;
-  color: #afb9c3;
+  color: $lightestGray;
   margin-left: 5px;
   margin-right: 10px;
 
@@ -10,13 +14,13 @@
   .device-subheading { font-size: 12px; }
 
   .alarm-warning-container {
-    margin-top: 100px;
+    margin-top: 125px;
 
     .total-alarms-container {
       display: inline-block;
 
       .total-alarms {
-        color: #fc540a;
+        color: $pcsRed;
         font-size: 23px;
         display: inline-block;
       }
@@ -25,14 +29,14 @@
         width: 30px;
         height: 12px;
         display: inline-block;
-        margin-left: -16px;
+        margin-left: -9px;
       }
 
       .total-warnings { margin-left: -15px !important; }
 
       .critical {
         font-size: 12px;
-        color: #ffffff;
+        color: $white;
       }
     }
 
@@ -42,12 +46,12 @@
       .rectangle {
         display: inline-block;
         padding-top: 3px;
-        margin-left: 2px;
+        padding-left: 3px;
       }
 
       .warnings {
         font-size: 12px;
-        color: #fff;
+        color: $white;
         margin-left: -15px;
       }
     }
@@ -55,21 +59,22 @@
 
   .total-container {
     display: inline-block;
-    color: #fff;
+    color: $white;
     padding-top: 20px;
 
     .total,
-    .total-online,
+    .total-connected,
     .total-offline { font-size: 23px; }
 
-    .online,
+    .total-connected { font-weight: bold; }
+
+    .connected,
     .offline,
     .warnings { font-size: 11px; }
 
-    .total-online,
-    .online { font-weight: bold !important; }
+    .connected { margin-left: -10px; }
 
     .total-offline,
-    .offline { color: #afb9c3 !important; }
+    .offline { color: $lightestGray !important; }
   }
 }

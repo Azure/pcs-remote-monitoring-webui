@@ -4,6 +4,8 @@ import { Row, Col } from 'react-bootstrap';
 import lang from '../../common/lang';
 import './regionDetails.css';
 import Config from '../../common/config';
+import WarningSvg from '../../assets/icons/Warning.svg';
+import CriticalSvg from '../../assets/icons/Critical.svg';
 
 class RegionDetails extends Component {
   render() {
@@ -43,64 +45,47 @@ class RegionDetails extends Component {
     }
     return (
       <Col md={3} className="device-location-conatiner">
-        <div>
-          <h3>
-            {selectedDeviceGroupName}
-          </h3>
-          <div className="device-subheading">
-            {lang.DEVICES}
-          </div>
-          <Row className="alarm-warning-container">
-            <Col md={6} className="total-alarms-container">
-              <div className="total-alarms">
-                {regionDetailsProps.totalAlarmDeviceCount}
-              </div>
-              <svg className=" total triangle">
-                <polygon points="25,2.5 48.5,49.8 2.5,49.8" fill="#fc540a" />
-              </svg>
-              <div className="critical">
-                {lang.CRITICAL}
-              </div>
-            </Col>
-            <Col md={6} className=" total-alarms-container warnings-container">
-              <div className=" total-alarms total-warnings">
-                {regionDetailsProps.totalWarningsDeviceCount}
-              </div>
-              <svg className="triangle rectangle">
-                <rect width="8" height="8" fill="#FDE870" />
-              </svg>
-              <div className=" total warnings">
-                {lang.WARNINGS}
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={4} className="total-container">
-              <div className="total">
-                {regionDetailsProps.onlineDevicesCount + regionDetailsProps.offlineDevicesCount}
-              </div>
-              <div className="warnings">
-                {lang.TOTAL}
-              </div>
-            </Col>
-            <Col md={4} className="total-container total-online-container">
-              <div className="total-online">
-                {regionDetailsProps.onlineDevicesCount}
-              </div>
-              <div className="online">
-                {lang.ONLINE}
-              </div>
-            </Col>
-            <Col md={4} className="total-container total-offline-container">
-              <div className="total-offline">
-                {regionDetailsProps.offlineDevicesCount}
-              </div>
-              <div className="offline">
-                {lang.OFFLINE}
-              </div>
-            </Col>
-          </Row>
-        </div>
+        <h3>{selectedDeviceGroupName}</h3>
+        <Row className="alarm-warning-container">
+          <Col md={6} className="total-alarms-container">
+            <div className="total-alarms">
+              {regionDetailsProps.totalAlarmDeviceCount}
+            </div>
+            <img src={CriticalSvg} alt={`${CriticalSvg}`} className="total triangle" />
+            <div className="critical">{lang.CRITICAL}</div>
+          </Col>
+          <Col md={6} className="total-alarms-container warnings-container">
+            <div className="total-alarms total-warnings">
+              {regionDetailsProps.totalWarningsDeviceCount}
+            </div>
+            <img src={WarningSvg} alt={`${WarningSvg}`} className="triangle rectangle" />
+            <div className="total warnings">
+              {lang.WARNINGS}
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={4} className="total-container">
+            <div className="total">
+              {regionDetailsProps.onlineDevicesCount + regionDetailsProps.offlineDevicesCount}
+            </div>
+            <div className="warnings">
+              {lang.TOTAL}
+            </div>
+          </Col>
+          <Col md={4} className="total-container total-online-container">
+            <div className="total-connected">
+              {regionDetailsProps.onlineDevicesCount}
+            </div>
+            <div className="connected">{lang.CONNECTED}</div>
+          </Col>
+          <Col md={4} className="total-container total-offline-container">
+            <div className="total-offline">
+              {regionDetailsProps.offlineDevicesCount}
+            </div>
+            <div className="offline">{lang.OFFLINE}</div>
+          </Col>
+        </Row>
       </Col>
     );
   }
