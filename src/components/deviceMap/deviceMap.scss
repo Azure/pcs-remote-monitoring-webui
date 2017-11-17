@@ -42,7 +42,10 @@
           text-decoration: none;
           color: $white;
 
-          &:hover { color: $lightestGray !important; }
+          &:hover {
+            color: $lightestGray !important;
+            text-decoration: underline;
+          }
         }
       }
     }
