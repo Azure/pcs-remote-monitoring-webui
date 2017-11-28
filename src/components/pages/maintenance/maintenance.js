@@ -332,7 +332,6 @@ class MaintenancePage extends Component {
 
 // --- Grid events handler ends here ----------------------------------
   render() {
-    console.log(this.props, 'props needeed');
     let breadcrumbs;
     const pathName = this.props.location.pathname;
     const alarmsGridData = this.props.alarmsGridData;
@@ -373,20 +372,11 @@ class MaintenancePage extends Component {
       <PageContainer>
         <TopNav breadcrumbs={breadcrumbs} projectName={lang.AZUREPROJECTNAME} />
         <ContextFilters disableDeviceFilter={(this.props.params || {}).id !== undefined}>
-          {this.state.showIndicator && <div className="spinner-container"><Spinner size="medium" pattern="bar" /></div>}
-          {pcsBtn({ // Change status button
-            svg: this.state.toggleButtonSvg,
-            onClick: this.showToggleRules,
-            value: this.state.toggleButtonText
-          }, showActionBtns && showContextBtns)}
-          {pcsBtn(this.contextButtons.edit, this.state.selectedRulesActions.length === 1 && showContextBtns)}
-          {pcsBtn(this.contextButtons.close, this.state.selectedAlarms.length > 0 && showContextBtns)}
-          {pcsBtn(this.contextButtons.acknowledge, this.state.selectedAlarms.length > 0 && showContextBtns)}
-          {this.state.contextBtns}
-          <ManageFilterBtn />
-        </ContextFilters>
-        <PageContent>
           <div className="timerange-selection">
+            <span className="last-refreshed-text"> {`${lang.LAST_REFRESHED} | `} </span>
+            <div className="last-refreshed-time">{this.state.lastRefreshed.toLocaleString()}</div>
+            <div onClick={this.refreshData} className="refresh-icon icon-sm" />
+            <div className="time-icon icon-sm" />
             <Select
               value={this.state.timerange}
               onChange={this.onTimeRangeChange}
@@ -411,10 +401,20 @@ class MaintenancePage extends Component {
                 }
               ]}
             />
-            <span className="last-refreshed-text"> {`${lang.LAST_REFRESHED} | `} </span>
-            <div className="last-refreshed-time">{this.state.lastRefreshed.toLocaleString()}</div>
-            <div onClick={this.refreshData} className="refresh-icon icon-sm" />
           </div>
+          {this.state.showIndicator && <div className="spinner-container"><Spinner size="medium" pattern="bar" /></div>}
+          {pcsBtn({ // Change status button
+            svg: this.state.toggleButtonSvg,
+            onClick: this.showToggleRules,
+            value: this.state.toggleButtonText
+          }, showActionBtns && showContextBtns)}
+          {pcsBtn(this.contextButtons.edit, this.state.selectedRulesActions.length === 1 && showContextBtns)}
+          {pcsBtn(this.contextButtons.close, this.state.selectedAlarms.length > 0 && showContextBtns)}
+          {pcsBtn(this.contextButtons.acknowledge, this.state.selectedAlarms.length > 0 && showContextBtns)}
+          {this.state.contextBtns}
+          <ManageFilterBtn />
+        </ContextFilters>
+        <PageContent>
           {React.cloneElement(this.props.children, {...alarmListProps})}
         </PageContent>
       </PageContainer>

@@ -1,12 +1,15 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import '../../styles/variables/colors';
+@import '../../styles/fonts/font-variables.scss';
+
 .summary-container {
-  color: #afb9c3;
+  color: $lightestGray;
+  margin-bottom: 43px;
 
   .summary-header {
-    padding: 5px;
     font-weight: bold;
-    font-size: 42px;
+    font-size: 48px;
   }
 
   .info-failed {
@@ -18,24 +21,29 @@
 
   .summary-body {
     display: flex;
-    font-size: 19px;
+    font-size: 14px;
+    margin-top: 24px;
 
     .score {
-      font-size: 64px;
+      font-size: 48px;
       padding-right: 8px;
+      font-family: $fontSelawikSemilight;
       margin-top: -16px;
+      color: $white;
     }
 
-    .score-label { width: 60px; }
+    .score-label {
+      width: 60px;
+      color: $lightestGray;
+    }
 
     .score-board {
       display: flex;
       flex-direction: row;
-      padding: 10px;
       margin-right: 72px;
 
-      .info-icon {
-        margin-top: 35px;
+      .info-failed {
+        margin-top: 23px;
         margin-right: 8px;
       }
 
@@ -44,22 +52,34 @@
 
         .details-content {
           display: block;
+
+          .alarm-count,
+          .job-count {
+            font-size: 16px;
+            color: $white;
+            font-weight: bold;
+          }
+
+          .alarm-text,
+          .job-text {
+            font-size: 14px;
+            color: $lightestGray;
+            padding-left: 5px;
+          }
         }
 
-        img {
-          margin-right: 8px;
-        }
+        img { margin-right: 8px; }
       }
     }
 
     .alarm-score-board {
       @extend .score-board;
-      color: #fff;
+      color: $white;
     }
 
     .system-score-board {
       @extend .score-board;
-      color: #fff;
+      color: $white;
     }
   }
 }

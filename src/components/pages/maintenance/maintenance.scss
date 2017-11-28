@@ -1,23 +1,33 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import '../../../styles/fonts/font-variables.scss';
+@import '../../../styles/variables/colors.scss';
+
 .timerange-selection {
   display: flex;
   justify-content: flex-end;
-  margin-top: -4px;
+  margin-top: 13px;
   margin-right: 10px;
 
   .Select-value-label ,
-  .Select-arrow-zone { color: #fff; }
+  .Select-arrow-zone { color: $white; }
 
   .Select-control { margin-top: 10px; }
 
   .Select {
     width: 120px;
     margin-top: -20px;
-    margin-right: 20px;
+    margin-right: 19px;
     font-size: 16px;
-    color: #fff !important;
+    color: $white !important;
   }
+
+  .Select-value {
+    padding-left: 8px !important;
+    padding-top: 2px !important;
+  }
+
+  .Select-arrow-zone { padding-top: 5px !important; }
 
   .Select-menu-outer {
     width : 120px;
@@ -26,13 +36,19 @@
 
   .last-refreshed-time {
     margin-right: 10px;
-    color: #fff;
+    color: $white;
   }
 
   .last-refreshed-text {
     margin-left: 10px;
     margin-right: 6px;
-    color: #afb9c3;
+    color: $lightestGray;
+  }
+
+  .time-icon{
+    background: url("../../../assets/icons/Timerange.svg") no-repeat center;
+    background-size: contain;
+    margin-left: 35px !important;
   }
 
   .refresh-icon {
@@ -47,7 +63,6 @@
     margin-left: 2px;
     margin-top: 5px;
   }
-
 }
 
 .chevron-right {
