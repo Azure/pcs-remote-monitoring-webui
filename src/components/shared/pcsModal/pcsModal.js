@@ -12,7 +12,7 @@ import './pcsModal.css';
 
 class PcsModal extends Component {
   render() {
-    const { actions, svg, children, to } = this.props;
+    const { actions, children, to } = this.props;
     const linkProps = {
       to,
       className: 'pcs-modal-clickable-container',
@@ -32,7 +32,6 @@ class PcsModal extends Component {
           </span>
         </div>
         <Link {...linkProps}>
-          {svg ? <div className="pcs-modal-icon"><img src={svg} alt="Modal icon" /></div> : ''}
           <div className="pcs-modal-content">{children}</div>
         </Link>
       </div>

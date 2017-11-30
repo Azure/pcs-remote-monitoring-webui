@@ -9,8 +9,6 @@ import Flyout from '../../flyout/flyout';
 import PcsModal from '../../shared/pcsModal/pcsModal';
 import lang from '../../../common/lang';
 
-import BlueShieldSvg from '../../../assets/icons/BlueShield.svg';
-
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import './main.css';
@@ -26,8 +24,7 @@ class Main extends Component {
     // On the first page load, open a modal to direct the user to more information
     this.props.actions.showModal(
       lang.PREVIEWNOTICE,
-      'https://github.com/Azure/azure-iot-pcs-remote-monitoring-dotnet/blob/master/README.md',
-      BlueShieldSvg
+      'https://github.com/Azure/azure-iot-pcs-remote-monitoring-dotnet/blob/master/README.md'
     );
   }
 
@@ -47,8 +44,8 @@ class Main extends Component {
         </div>
         <Flyout {...flyoutProp} />
         {
-          modal.visible 
-            ? <PcsModal svg={modal.svg} to={modal.to}>{modal.content}</PcsModal>
+          modal.visible
+            ? <PcsModal to={modal.to}>{modal.content}</PcsModal>
             : ''
         }
       </div>
@@ -57,7 +54,7 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => {
-  return { 
+  return {
     flyout: state.flyoutReducer,
     modal: state.modalReducer
   };
