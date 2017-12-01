@@ -23,7 +23,7 @@ const authPath = process.env.REACT_APP_AUTH_WEBSERVICE_PORT
   : '/auth';
 
 const Config = {
-  VERSION: '1.0.0-preview.3',
+  VERSION: '1.0.0-preview.4',
   STATUS_CODES: {
     CRITICAL: 'critical',
     WARNING: 'warning',
