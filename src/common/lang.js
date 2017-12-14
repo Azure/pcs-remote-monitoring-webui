@@ -52,7 +52,7 @@ const lang = {
   COPY: 'COPY',
   COPY_TO_CLIPBOARD: 'Copy all properties to clipboard',
   COPY_TO_CLIPBOARD_DESCRIPTION: 'Copy a list of all properties and methods associated',
-  COUNT: 'NO. Devices',
+  COUNT: 'Device count',
   CREATE: 'Create',
   CREATED: 'Created',
   CREATEDEVICE: 'Create device',
