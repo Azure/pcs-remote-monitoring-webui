@@ -75,7 +75,7 @@ class DeviceMap extends Component {
       });
 
       alarmList.forEach(alarm => {
-        if (device.Id === alarm.DeviceId) {
+        if (device.Id === alarm.DeviceId && alarm.Status === config.STATUS_CODES.OPEN) {
           device.Severity = alarm.Rule.Severity;
         }
       });
