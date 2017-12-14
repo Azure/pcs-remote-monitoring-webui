@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import lang from '../../common/lang';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
-import simControlCenter from '../../assets/icons/SIMControlCenter.svg';
+import simControlCenter from '../../assets/icons/SIMCenter.svg';
 
 import './simControlCenter.css';
 

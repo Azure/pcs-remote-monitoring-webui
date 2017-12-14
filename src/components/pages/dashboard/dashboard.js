@@ -144,6 +144,7 @@ class DashboardPage extends Component {
             <div className="last-refreshed-text"> {`${lang.LAST_REFRESHED} | `} </div>
             <div className="last-refreshed-time">{this.state.lastRefreshed.toLocaleString()}</div>
             <div onClick={this.refreshData} className="refresh-icon icon-sm" />
+            <div className="time-icon icon-sm" />
             <Select {...selectProps} />
           </div>
           <ManageFilterBtn />

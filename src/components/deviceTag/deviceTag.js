@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../actions/actionTypes';
-import Tag from '../../assets/icons/Tag.svg';
+import Tag from '../../assets/icons/TagIcon.svg';
 import lang from '../../common/lang';
 import './deviceTag.css';
 

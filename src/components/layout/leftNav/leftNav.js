@@ -6,9 +6,9 @@ import lang from '../../../common/lang';
 
 import HamburgerIcon from '../../../assets/icons/Hamburger.svg';
 import DashboardIcon from '../../../assets/icons/Dashboard.svg';
-import MaintenanceIcon from '../../../assets/icons/Maintenance.svg';
+import MaintenanceIcon from '../../../assets/icons/MaintenanceIcon.svg';
 import DevicesIcon from '../../../assets/icons/Devices.svg';
-import RulesActionsIcon from '../../../assets/icons/RulesActionsIcon.svg';
+import RulesIcon from '../../../assets/icons/RulesIcon.svg';
 import ContosoIcon from '../../../assets/icons/Contoso.svg';
 
 import './leftNav.css';
@@ -16,7 +16,7 @@ import './leftNav.css';
 const tabConfig = [
   { path: '/dashboard',    icon: DashboardIcon,    name: lang.DASHBOARD_LABEL },
   { path: '/devices',      icon: DevicesIcon,      name: lang.DEVICES },
-  { path: '/rulesActions', icon: RulesActionsIcon, name: lang.RULES },
+  { path: '/rulesActions', icon: RulesIcon,        name: lang.RULES },
   { path: '/maintenance',  icon: MaintenanceIcon,  name: lang.MAINTENANCE }
 ];
 

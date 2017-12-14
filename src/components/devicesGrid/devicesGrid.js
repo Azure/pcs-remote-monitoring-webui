@@ -11,8 +11,8 @@ import { isFunction } from '../../common/utils';
 import lang from '../../common/lang';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
 
-import TagSvg from '../../assets/icons/Tag.svg';
-import ScheduleSvg from '../../assets/icons/Schedule.svg';
+import TagSvg from '../../assets/icons/TagIcon.svg';
+import ScheduleSvg from '../../assets/icons/ScheduleJob.svg';
 import ReconfigureSvg from '../../assets/icons/Reconfigure.svg';
 import DeleteSvg from '../../assets/icons/Trash.svg';
 
