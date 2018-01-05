@@ -19,6 +19,19 @@ $checkboxPadding: 8px;
   position: relative;
   font-family: $fontSelawik;
 
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 4px;
+    background: #242628;
+
+    &-thumb {
+      background-color: #242628;
+      padding-top: 16px;
+    }
+  }
+
+  ::-webkit-scrollbar-corner { background: #242628; }
+
   > .pcs-grid-loading-container {
     display: flex;
     align-content: center;
