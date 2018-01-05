@@ -52,7 +52,7 @@
     }
     .icon-disabled{
       @extend .icon;
-      background: url("../../assets/icons/Disabled.svg") no-repeat center;
+      background: url("../../assets/icons/DisabledRule.svg") no-repeat center;
       background-size: contain;
     }
     .icon-enable{
@@ -163,5 +163,3 @@
   }
 
 }
-
-

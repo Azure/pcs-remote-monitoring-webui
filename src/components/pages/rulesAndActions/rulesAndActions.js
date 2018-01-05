@@ -16,7 +16,7 @@ import PcsBtn from '../../shared/pcsBtn/pcsBtn';
 import AddSvg from '../../../assets/icons/Add.svg';
 import EditSvg from '../../../assets/icons/Edit.svg';
 import EnableSvg from '../../../assets/icons/Enable.svg';
-import DisableSvg from '../../../assets/icons/Disable.svg';
+import DisableSvg from '../../../assets/icons/DisableRule.svg';
 import ChangestatusSvg from '../../../assets/icons/Change_status.svg';
 
 class RulesAndActionsPage extends Component {
@@ -112,7 +112,7 @@ class RulesAndActionsPage extends Component {
     const { actions } = this.props;
     actions.hideFlyout();
     this.setState(
-      { softSelectId: this.getSoftSelectId(rowData) }, 
+      { softSelectId: this.getSoftSelectId(rowData) },
       () => {
         const flyoutConfig = {
           onUpdateData: this.onUpdateData,

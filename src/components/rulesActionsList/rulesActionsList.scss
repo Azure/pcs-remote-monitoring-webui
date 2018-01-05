@@ -82,7 +82,7 @@
         background: url("../../assets/icons/Elipsis.svg") no-repeat center;
         background-size: contain;
       }
-      
+
       .button-text {
         display: inline-block;
         margin-left: 8px;
@@ -97,7 +97,7 @@
 
     .statusGroup-disabled {
       display: inline-block;
-      background: url("../../assets/icons/Disabled.svg") no-repeat center;
+      background: url("../../assets/icons/DisabledRule.svg") no-repeat center;
       background-size: contain;
       width: 16px;
       height: 16px;
@@ -130,7 +130,7 @@
 
   .severityGroup{
     @extend .statusGroup;
-    
+
     .severityGroup-text {
       display: inline-block;
       margin-left: 8px;
