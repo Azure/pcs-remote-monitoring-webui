@@ -1,17 +1,31 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '../../../actions';
 
 import './pageContent.css';
 
-/**
- * A presentational component for rendering page content 
- * (e.g. dynamic content other than persistent navigation etc.) 
- */
-export default function PageContent(props) {
+class PageContent extends Component {
+  render() {
     return (
-        <div className={`page-content ${props.className || ''}`}>
-            {props.children}
-        </div>
+      <div className={`page-content ${this.props.className || ''}`} onClick={this.props.actions.hideFlyout}>
+        {this.props.children}
+      </div>
     );
+  }
 }
+
+const mapStateToProps = state => {
+  return {
+    flyout: state.flyoutReducer,
+    modal: state.modalReducer
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return { actions: bindActionCreators(actions, dispatch) };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageContent);

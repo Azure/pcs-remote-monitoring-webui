@@ -372,7 +372,7 @@ class MaintenancePage extends Component {
       <PageContainer>
         <TopNav breadcrumbs={breadcrumbs} projectName={lang.AZUREPROJECTNAME} />
         <ContextFilters disableDeviceFilter={(this.props.params || {}).id !== undefined}>
-          <div className="timerange-selection">
+          <div className="timerange-selection" onClick={this.props.actions.hideFlyout}>
             <span className="last-refreshed-text"> {`${lang.LAST_REFRESHED} | `} </span>
             <div className="last-refreshed-time">{this.state.lastRefreshed.toLocaleString()}</div>
             <div onClick={this.refreshData} className="refresh-icon icon-sm" />
@@ -430,7 +430,9 @@ const mapStateToProps = state => {
     alarmsGridData: state.maintenanceReducer.alarmsByRuleGridRowData,
     jobs: state.systemStatusJobReducer.jobs,
     jobsLoadingInProgress: state.systemStatusJobReducer.loadingInProgress,
-    selectedDevices: state.flyoutReducer.devices
+    selectedDevices: state.flyoutReducer.devices,
+    flyout: state.flyoutReducer,
+    modal: state.modalReducer
   };
 };
 

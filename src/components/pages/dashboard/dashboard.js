@@ -140,7 +140,7 @@ class DashboardPage extends Component {
       <PageContainer>
         <TopNav breadcrumbs={'Dashboard'} projectName={lang.AZUREPROJECTNAME} />
         <ContextFilters>
-          <div className="timerange-selection dashboard">
+          <div className="timerange-selection dashboard" onClick={this.props.actions.hideFlyout}>
             <div className="last-refreshed-text"> {`${lang.LAST_REFRESHED} | `} </div>
             <div className="last-refreshed-time">{this.state.lastRefreshed.toLocaleString()}</div>
             <div onClick={this.refreshData} className="refresh-icon icon-sm" />
@@ -183,7 +183,9 @@ const mapStateToProps = state => {
     alarmListLastDuration: state.kpiReducer.alarmListLastDuration,
     alarmsByRule: state.kpiReducer.alarmsByRule,
     alarmsByRuleLastDuration: state.kpiReducer.alarmsByRuleLastDuration,
-    rulesAndActions: state.ruleReducer.rulesAndActions
+    rulesAndActions: state.ruleReducer.rulesAndActions,
+    flyout: state.flyoutReducer,
+    modal: state.modalReducer
   };
 };
 
