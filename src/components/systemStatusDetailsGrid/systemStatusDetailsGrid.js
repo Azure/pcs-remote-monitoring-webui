@@ -154,7 +154,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    devices: (state.deviceReducer.devices || {}).items || []
+    devices: (state.deviceReducer.devices || {}).Items || []
   };
 };
 

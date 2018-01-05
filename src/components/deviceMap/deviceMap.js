@@ -53,7 +53,7 @@ class DeviceMap extends Component {
     if (!devices || !telemetryByDeviceGroup || !alarmList)  return;
 
     //If control reaches here, that means map is loaded and also the data is also loaded.
-    devices.items.forEach(device => {
+    devices.Items.forEach(device => {
       telemetryByDeviceGroup.Items.forEach(telemetryGroup => {
         /**
         Bing Map renders the devices only if the devices have longitude and latitude.

@@ -21,7 +21,7 @@ class PieChartGraph extends Component {
   componentWillMount() { this.updatePieChartData(this.props); }
 
   componentWillUpdate(nextProps) { this.updatePieChartData(nextProps); }
-  
+
   updatePieChartData(nextProps) {
     if (!nextProps.pieChartData) {
       return;
@@ -90,7 +90,7 @@ const mapStateToProps = state => {
   ) {
     return {};
   }
-  const devices = state.deviceReducer.devices.items;
+  const devices = state.deviceReducer.devices.Items;
   const alarms = state.kpiReducer.alarmsList;
   const deviceIdVsAlarmCount = {};
   const deviceIdVsDeviceName = {};

@@ -61,7 +61,7 @@ export const loadRegionSpecificDevices = (selectedGroupConditions, groupId) => {
         .then(data => {
           dispatch(loadDeviceSuccess(data));
           if (state.deviceListReducer.showingDevicesPage || state.ruleReducer.showingRulesPage) return;
-          if (data && data.items) {
+          if (data && data.Items) {
             dispatch( telemetryActions.loadTelemetryMessagesByDeviceIds(lang.ALLDEVICES) );
             dispatch(kpiActions.refreshAllChartData(null,null,null,null));
             dispatch(indicatorEnd('mapInitial'));
@@ -76,8 +76,8 @@ export const loadRegionSpecificDevices = (selectedGroupConditions, groupId) => {
         .then(data => {
           dispatch(loadDeviceSuccess(data));
           if (state.deviceListReducer.showingDevicesPage || state.ruleReducer.showingRulesPage) return;
-          if (data && data.items) {
-            const deviceIds = data.items.map(device => device.Id);
+          if (data && data.Items) {
+            const deviceIds = data.Items.map(device => device.Id);
             dispatch( telemetryActions.loadTelemetryMessagesByDeviceIds(deviceIds) );
             dispatch(kpiActions.refreshAllChartData(null,null,null,null));
             dispatch(indicatorEnd('mapInitial'));

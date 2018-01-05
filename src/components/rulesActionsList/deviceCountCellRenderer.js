@@ -30,8 +30,8 @@ class DeviceCountCellRenderer extends React.Component {
             }
             ApiService.getDevicesForGroup(matchedGroup[0].Conditions)
                 .then(response => {
-                    if (response.items !== undefined) {
-                        this.props.node.setData(Object.assign({}, this.props.data, {apiCallStarted: true, Devices: response.items,  DeviceCount: response.items.length}));
+                    if (response.Items !== undefined) {
+                        this.props.node.setData(Object.assign({}, this.props.data, {apiCallStarted: true, Devices: response.Items,  DeviceCount: response.Items.length}));
                     }
                 })
                 .catch(err => {

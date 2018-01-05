@@ -92,7 +92,7 @@ class DashboardPage extends Component {
       timeRange: this.state.timeRange
     };
 
-    const devicesList = this.props.devices && this.props.devices.items ? this.props.devices.items : [];
+    const devicesList = this.props.devices && this.props.devices.Items ? this.props.devices.Items : [];
     const devices = devicesList.map(({ Id }) => Id)
     const alarmListProps = {
       devices,

@@ -16,10 +16,10 @@ const deviceReducer = (state = initialState.devices, action) => {
         ...state,
         devices: {
           ...state.devices,
-          items: state.devices.items.filter(device => action.devices.every(newDevice => newDevice.Id !== device.Id))
+          Items: state.devices.Items.filter(device => action.devices.every(newDevice => newDevice.Id !== device.Id))
         }
       };
-      
+
 
     case types.UPDATE_DEVICE_ITEMS:
       const devicesIds = new Set(action.items.map(({ Id }) => Id));
@@ -27,8 +27,8 @@ const deviceReducer = (state = initialState.devices, action) => {
         ...state,
         devices: {
           ...state.devices,
-          items: [
-            ...state.devices.items.filter(({ Id }) => !devicesIds.has(Id)),
+          Items: [
+            ...state.devices.Items.filter(({ Id }) => !devicesIds.has(Id)),
             ...action.items
           ]
         }

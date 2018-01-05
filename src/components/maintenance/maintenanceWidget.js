@@ -22,8 +22,8 @@ class MaintenanceWidget extends Component {
     this.selectGrid = this.selectGrid.bind(this);
   }
 
-  onSoftSelectChange({ jobId }) {
-    browserHistory.push({ pathname: `/maintenance/job/${jobId}`});
+  onSoftSelectChange({ JobId }) {
+    browserHistory.push({ pathname: `/maintenance/job/${JobId}`});
   }
 
   selectGrid(e) {
@@ -45,12 +45,12 @@ class MaintenanceWidget extends Component {
       succeeded: 0,
     };
 
-    (this.props.jobs || []).forEach(({ resultStatistics }) => {
-    	if (resultStatistics) {
-    		const { failedCount, succeededCount }  = resultStatistics;
-    		if (failedCount) ++jobDetailsProps.failed; // Check failed jobs
-    		if (failedCount + succeededCount) ++jobDetailsProps.total; // Check total jobs
-    		if (succeededCount) ++jobDetailsProps.succeeded; // Check succeeded jobs
+    (this.props.jobs || []).forEach(({ ResultStatistics }) => {
+    	if (ResultStatistics) {
+    		const { FailedCount, SucceededCount }  = ResultStatistics;
+    		if (FailedCount) ++jobDetailsProps.failed; // Check failed jobs
+    		if (FailedCount + SucceededCount) ++jobDetailsProps.total; // Check total jobs
+    		if (SucceededCount) ++jobDetailsProps.succeeded; // Check succeeded jobs
     	}
     });
 

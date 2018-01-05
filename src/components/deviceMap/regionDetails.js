@@ -16,10 +16,10 @@ class RegionDetails extends Component {
       totalWarningsDeviceCount: 0
     };
     if (this.props.devices) {
-      regionDetailsProps.onlineDevicesCount = this.props.devices.items.filter(item => {
+      regionDetailsProps.onlineDevicesCount = this.props.devices.Items.filter(item => {
         return item.Connected;
       }).length;
-      regionDetailsProps.offlineDevicesCount = this.props.devices.items.filter(item => {
+      regionDetailsProps.offlineDevicesCount = this.props.devices.Items.filter(item => {
         return !item.Connected;
       }).length;
     }

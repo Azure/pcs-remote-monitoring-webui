@@ -40,13 +40,13 @@ class Telemetry extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { devices } = nextProps;
-    if(!devices || !devices.items.length) return;
+    if(!devices || !devices.Items.length) return;
 
     if (this.timerID) {
       clearTimeout(this.timerID);
       this.timerID = 0;
     }
-    const deviceIds = devices.items.map(({ Id }) => Id);
+    const deviceIds = devices.Items.map(({ Id }) => Id);
     this.timerID = setTimeout(
       () => this.props.actions.loadTelemetryMessagesP1M(deviceIds),
       Config.INTERVALS.TELEMETRY_UPDATE_MS
@@ -62,7 +62,7 @@ class Telemetry extends Component {
       clearTimeout(this.timerID);
       this.timerID = 0;
     } else {
-      const devicesList = this.props.devices && this.props.devices.items ? this.props.devices.items : [];
+      const devicesList = this.props.devices && this.props.devices.Items ? this.props.devices.Items : [];
       const devices = devicesList.map(({ Id }) => Id);
       this.timerID = setTimeout(
         () => this.props.actions.loadTelemetryMessagesP1M(devices),

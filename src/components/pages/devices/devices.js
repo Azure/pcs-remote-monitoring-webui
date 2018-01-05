@@ -56,7 +56,7 @@ class DevicesPage extends Component {
 
   render() {
     // Extract the devices from the props
-    const devices = (this.state.rowData || {}).items;
+    const devices = (this.state.rowData || {}).Items;
 
     // Create the device grid props
     const deviceGridProps = {

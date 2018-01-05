@@ -37,7 +37,7 @@ export const refreshAllChartData = (
         secondDurationTo = currentState.kpiReducer.secondDurationTo;
     }
     const devices = currentState.deviceReducer.devices;
-    const deviceIdsCsv = (devices ? devices.items : []).map(({ Id })=> Id).join(',');
+    const deviceIdsCsv = (devices ? devices.Items : []).map(({ Id })=> Id).join(',');
     dispatch(indicatorStart(refreshFlag ? 'kpi' : 'kpiInitial'));
     dispatch({ type: types.KPI_REFRESH_CHART_DATA_START, payload: {
         firstDurationFrom,

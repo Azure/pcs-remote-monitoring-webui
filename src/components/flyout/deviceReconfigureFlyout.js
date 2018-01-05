@@ -38,7 +38,7 @@ class DeviceReconfigureFlyout extends React.Component {
       commonConfiguration: [],
       jobInputValue: '',
       jobApplied: false,
-      jobId: ''
+      JobId: ''
     };
 
     this.commonConfigValueChanged = this.commonConfigValueChanged.bind(this);
@@ -68,12 +68,12 @@ class DeviceReconfigureFlyout extends React.Component {
     const jobs = getRelatedJobs(devices, propertyUpdateJobs);
     const deviceIdSet = new Set(devices.map(({Id}) => Id));
     Rx.Observable.from(jobs)
-      .flatMap(({ jobId, deviceIds }) =>
+      .flatMap(({ JobId, deviceIds }) =>
         Rx.Observable
-          .fromPromise(ApiService.getJobStatus(jobId))
+          .fromPromise(ApiService.getJobStatus(JobId))
           // Get completed jobs
           .filter(({ status }) => status === 3)
-          .do(_ => this.props.actions.removePropertyJob(jobId))
+          .do(_ => this.props.actions.removePropertyJob(JobId))
           .flatMap(_ => deviceIds)
       )
       .distinct()
@@ -194,7 +194,7 @@ class DeviceReconfigureFlyout extends React.Component {
     const payload = {
       JobId: this.state.jobInputValue ? this.state.jobInputValue + '-' + uuid() : uuid(),
       QueryCondition: `deviceId in [${deviceIds}]`,
-      updateTwin: {
+      UpdateTwin: {
         Properties: {
           Desired: reportedProps
         }
@@ -202,15 +202,15 @@ class DeviceReconfigureFlyout extends React.Component {
     };
 
     this.setState({ showSpinner: true });
-    ApiService.scheduleJobs(payload).then(({ jobId }) => {
+    ApiService.scheduleJobs(payload).then(({ JobId }) => {
       this.props.actions.updatePropertyJobs({
-        jobId,
+        JobId,
         deviceIds: devices.map(({ Id }) => Id)
       });
       this.setState({
         showSpinner: false,
         jobApplied: true,
-        jobId
+        JobId
       });
     });
   }
@@ -276,7 +276,7 @@ class DeviceReconfigureFlyout extends React.Component {
     let totalAffectedDevices = this.props.devices ? this.props.devices.length : 0;
     const disabledButton = !this.state.jobInputValue;
     const deepLinkSectionProps = {
-      path: `/maintenance/job/${this.state.jobId}`,
+      path: `/maintenance/job/${this.state.JobId}`,
       description: lang.VIEW_JOB_STATUS,
       linkText: lang.VIEW
     };

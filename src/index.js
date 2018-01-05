@@ -46,7 +46,7 @@ ReactDOM.render(
             <Route path="/systemStatus" component={SystemStatusGrid} />
           </Route>
           <Route path="rule/:id" component={RuleDetailsPage} />
-          <Route path="job/(:jobId)" component={SystemStatusDetailsGrid} />
+          <Route path="job/(:JobId)" component={SystemStatusDetailsGrid} />
         </Route>
       </Route>
     </Router>
