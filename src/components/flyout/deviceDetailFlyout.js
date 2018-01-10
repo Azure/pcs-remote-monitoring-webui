@@ -15,6 +15,7 @@ import Timeline from '../charts/timeline';
 import AlarmsGrid from '../alarmList/alarmsGrid';
 import Config from '../../common/config';
 import * as actions from '../../actions';
+import Spinner from '../spinner/spinner';
 import PollingManager from '../../common/pollingManager';
 import CancelX from '../../assets/icons/CancelX.svg';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
@@ -168,12 +169,14 @@ class DeviceDetailFlyout extends Component {
   }
 
   getLastMessage(id) {
+    this.setState({ showSpinner: true });
     ApiService.getTelemetryMessages({
       limit: 1,
       order: 'desc',
       devices: id
     }).then(data => {
       this.setState({
+        showSpinner: false,
         rawMessage: (data.Items || [])[0],
         lastMessageReceived: ((data.Items || [])[0] || {}).Time || ''
       });
@@ -181,12 +184,14 @@ class DeviceDetailFlyout extends Component {
   }
 
   getAlarms(id) {
+    this.setState({ showSpinner: true });
     ApiService.getAlarms({
       limit: 5,
       order: 'desc',
       devices: id
     }).then(data => {
       this.setState({
+        showSpinner: false,
         showAlarmsGrid: data.Items.length > 0,
         alarmRowData: data.Items.map(item => {
           return {
@@ -482,6 +487,7 @@ class DeviceDetailFlyout extends Component {
               </div>
             </div>
           </div>
+          <div className="spinner-onalarmGrid">{this.state.showSpinner && <Spinner size="large"/>}</div>
           {
             this.state.showAlarmsGrid &&
             <div className="device-alarm-list">
@@ -490,6 +496,7 @@ class DeviceDetailFlyout extends Component {
           }
         </div>
         <Drawer toggle={true} title={lang.TELEMETRY}>
+          <div className="spinner-onalarmGrid">{this.state.showSpinner && <Spinner size="large"/>}</div>
           <div>
             {telemetryRadioBtnGroup}
           </div>
