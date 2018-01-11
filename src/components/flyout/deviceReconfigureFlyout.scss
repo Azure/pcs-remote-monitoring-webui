@@ -21,7 +21,10 @@
   .job-name-container {
     margin-top: 24px;
 
-    .label-key { font-weight: normal; }
+    .label-key {
+      font-weight: normal;
+      margin-bottom: 10px;
+    }
 
     input {
       width: 248px !important;
@@ -41,10 +44,15 @@
     }
   }
 
-  .style-manage {
+  input {
     font-size: 12px;
     font-weight: normal;
-    margin-top: 14px;
+    margin-top: 2px;
+    padding-left: 15px;
+
+    &:hover,
+    &:active,
+    &:focus { border: 1px solid $lightestGray !important; }
   }
 
   .common-reconfigure-container {

@@ -183,6 +183,17 @@
     }
   }
 
+  input {
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 2px;
+    padding-left: 15px;
+
+    &:hover,
+    &:active,
+    &:focus { border: 1px solid $lightestGray !important; }
+  }
+
   .device-tag-type {
     width: 80px;
     height: 40px;

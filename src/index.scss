@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 @import 'styles/fonts/font-face-imports';
+@import 'styles/variables/colors';
 
 html, body {
   width: 100%;
@@ -14,7 +15,13 @@ body {
   overflow: hidden;
 }
 
-input, 
-textarea { outline: none; }
+input,
+textarea,
+button { outline: none; }
 
 #root { height: 100%; }
+
+input {
+  background-color: $gridTileDark;
+  border: 1px solid #454a4e;
+}

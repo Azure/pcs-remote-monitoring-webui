@@ -2,12 +2,10 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import EditPencil from '../../assets/icons/EditPencil.svg';
 import Trash from '../../assets/icons/Trash.svg';
 import Add from '../../assets/icons/Add.svg';
 import Apply from '../../assets/icons/Apply.svg';
 import CancelX from '../../assets/icons/CancelX.svg';
-import Remove from '../../assets/icons/Remove.svg';
 import Select from 'react-select';
 import Config from '../../common/config';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
@@ -224,11 +222,16 @@ class ManageFiltersFlyout extends React.Component {
 
     return (
       <div className="editable-filters">
-        <div>
+        <div className="editable-filters-wrapper">
           <label>
-            <div className="label-names">
-              {lang.FILTERNAME}
-            </div>
+            {
+              !this.state.showCreateFilter
+              ? <div className="label-names">{lang.FILTERNAME}</div>
+              : <div className="new-filter-container">
+                  <img src={Add} alt="Add icon" className="newfilter-add-icon" />
+                  <span className="label-names">{lang.NEWFILTERNAME}</span>
+                </div>
+            }
             <input
               onChange={evt => {
                 group.DisplayName = evt.target.value || '';
@@ -260,6 +263,19 @@ class ManageFiltersFlyout extends React.Component {
           {(group.Conditions || []).map((cond, idx) => {
             return (
               <div key={idx}>
+                {
+                  !!idx &&
+                  <button
+                    onClick={() => {
+                      group.Conditions.splice(idx, 1);
+                      this.setEditingState(group.Id, { formChanged: true });
+                    }}
+                    type="button"
+                    className="remove-condition">
+                    <img src={CancelX} alt="Cancel Icon" className="cancel-icon" />
+                    {lang.REMOVECONDITIONS}
+                  </button>
+                }
                 <div>
                   <label>
                     <div className="label-names">
@@ -326,7 +342,6 @@ class ManageFiltersFlyout extends React.Component {
                       className="style-manage"
                     />
                   </label>
-
                   {this.checkIfConditionValueIsEmpty(group.Id, idx)
                     ? <div className="error-msg">
                         {lang.VALUECANNOTBEEMPTY}
@@ -360,17 +375,6 @@ class ManageFiltersFlyout extends React.Component {
                     />
                   </label>
                 </div>
-                <button
-                  onClick={() => {
-                    group.Conditions.splice(idx, 1);
-                    this.setEditingState(group.Id, { formChanged: true });
-                  }}
-                  type="button"
-                  className="add-condition"
-                >
-                  <img src={Remove} alt={`${Remove}`} className="Remove-icon" />
-                  {lang.REMOVECONDITIONS}
-                </button>
               </div>
             );
           })}
@@ -386,7 +390,7 @@ class ManageFiltersFlyout extends React.Component {
             type="button"
             className="add-condition"
           >
-            <img src={Add} alt={`${Add}`} className="add-icon" />
+            <img src={Add} alt="Add Icon" className="add-icon" />
             {lang.ADDCONDITIONS}
           </button>
         </div>
@@ -414,7 +418,7 @@ class ManageFiltersFlyout extends React.Component {
             >
               <img
                 src={newFilterFlag ? Apply : formChanged ? Apply : Trash}
-                alt={newFilterFlag ? `${Apply}` : `${Trash}`}
+                alt={newFilterFlag ? "Apply Icon" : "Trash Icon"}
                 className="apply-icon"
               />
               {newFilterFlag ? 'Save' : formChanged ? 'Save' : 'Delete Filter'}
@@ -435,7 +439,7 @@ class ManageFiltersFlyout extends React.Component {
               }}
               className="cancel-button"
             >
-              <img src={CancelX} alt={`${CancelX}`} className="cancel-icon" />
+              <img src={CancelX} alt="Cancel Icon" className="cancel-icon" />
               {lang.CANCEL}
             </button>
           </div>
@@ -486,20 +490,22 @@ class ManageFiltersFlyout extends React.Component {
     const newGroupObj = deviceGroups[0];
     return (
       <div className="manage-filter-container">
-        <div onClick={() => this.setState({ showCreateFilter: true })} className="create-filter">
-          <img src={Add} alt={`${Add}`} className="add-icon" />
-          {lang.CREATEFILTER}
-        </div>
-        {showCreateFilter
+        {
+          !showCreateFilter
+          ? <div onClick={() => this.setState({ showCreateFilter: true })} className="create-filter groupname-icons">
+              <img src={Add} alt="Add Icon" className="create-filter-icon add-icon" />
+              {lang.CREATEFILTER}
+            </div>
+          : null
+        }
+        {
+          showCreateFilter
           ? this.getFilterComponent(true, editingState[0] && editingState[0].formChanged, newGroupObj)
-          : null}
+          : null
+        }
         <div className="headers-for-deviceGroups">
-          <span className="filters-text">
-            {lang.FILTERS}
-          </span>
-          <span className="actions">
-            {lang.ACTIONS}
-          </span>
+          <span className="filters-text">{lang.FILTERS}</span>
+          <span className="actions">{lang.ACTIONS}</span>
         </div>
         <div>
           {deviceGroups.map((group, idx) => {
@@ -509,17 +515,14 @@ class ManageFiltersFlyout extends React.Component {
             }
             return (
               <div key={group.Id}>
-                <div className="groupname-icons">
+                <div className="groupname-icons" onClick={() => this.setEditingState(group.Id, { showEdit: true })}>
                   {group.DisplayName}
                   <span
                     onClick={() => this.setEditingState(group.Id, { showEdit: true })}
                     className="edit-delete-icons"
                   >
-                    <span onClick={() => this.setEditingState(group.Id, { showEdit: true })}>
-                      <img src={EditPencil} alt={`${EditPencil}`} className="edit-icon" />
-                    </span>
                     <span>
-                      <img src={Trash} alt={`${Trash}`} className="delete-icon" />
+                      <img src={Trash} alt="Trash Icon" className="delete-icon" />
                     </span>
                   </span>
                 </div>
