@@ -9,11 +9,6 @@
     .device-detail {
       display: flex;
 
-      .device-icon {
-        margin-right: 32px;
-        max-width: 100px;
-      }
-
       .device-name { font-size: large; }
 
       .device-status { font-size: x-small; }
@@ -40,6 +35,12 @@
   .show-device-detail-message:hover {
     font-weight: bold;
     cursor: pointer;
+  }
+
+  .device-renderer-icon {
+    height: 72px;
+    margin-right: 32px;
+    margin-left: 10px;
   }
 }
 

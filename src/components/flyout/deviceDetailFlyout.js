@@ -8,7 +8,6 @@ import Rx from 'rxjs';
 
 import Drawer from './drawer';
 import JsonViewer from '../jsonViewer/jsonViewer';
-import DeviceIcon from '../../assets/icons/DeviceIcon1.svg';
 import lang from '../../common/lang';
 import ApiService from '../../common/apiService';
 import Timeline from '../charts/timeline';
@@ -17,8 +16,15 @@ import Config from '../../common/config';
 import * as actions from '../../actions';
 import Spinner from '../spinner/spinner';
 import PollingManager from '../../common/pollingManager';
-import CancelX from '../../assets/icons/CancelX.svg';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
+
+import CancelX from '../../assets/icons/CancelX.svg';
+import ChillerSvg from '../../assets/icons/Chiller.svg';
+import ElevatorSvg from '../../assets/icons/Elevator.svg';
+import EngineSvg from '../../assets/icons/Engine.svg';
+import TruckSvg from '../../assets/icons/Truck.svg';
+import PrototypingDeviceSvg from '../../assets/icons/PrototypingDevice.svg';
+import DeviceIconSvg from '../../assets/icons/DeviceIcon.svg';
 
 import './deviceDetailFlyout.css';
 
@@ -463,12 +469,21 @@ class DeviceDetailFlyout extends Component {
       rowData: this.state.alarmRowData,
       pagination: false
     }
+    const deviceTypeMappings = {
+       Chiller: ChillerSvg,
+       Elevator: ElevatorSvg,
+       Engine: EngineSvg,
+       Prototyping: PrototypingDeviceSvg,
+       Truck: TruckSvg
+    };
+    const deviceIconType = device.Properties.Reported.Type;
+    const svg = deviceTypeMappings[deviceIconType] || DeviceIconSvg;
     return (
       <div className="device-detail-flyout">
         <div className="device-detail-tile">
           <div className="device-detail">
             <div className="device-icon">
-              <img src={DeviceIcon} height="72" alt={`${DeviceIcon}`} />
+              <img src={svg} className="device-renderer-icon" alt="device icon" />
             </div>
             <div>
               <div className="device-name">
@@ -476,15 +491,9 @@ class DeviceDetailFlyout extends Component {
               </div>
               <div className="device-status">
                 {deviceType}{' '}
-                {IsSimulated
-                  ? lang.SIMULATED
-                  : lang.PHYSICAL}
+                {IsSimulated ? lang.SIMULATED : lang.PHYSICAL}
               </div>
-              <div>
-                {device.Connected
-                  ? lang.CONNECTED
-                  : lang.DISCONNECTED}
-              </div>
+              <div>{device.Connected ? lang.CONNECTED : lang.DISCONNECTED}</div>
             </div>
           </div>
           <div className="spinner-onalarmGrid">{this.state.showSpinner && <Spinner size="large"/>}</div>
