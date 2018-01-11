@@ -1,4 +1,5 @@
 import * as types from '../actions/actionTypes';
+import {sortBy} from 'lodash';
 import initialState from './initialState';
 
 const filterReducer = (state = initialState, action) => {
@@ -6,7 +7,7 @@ const filterReducer = (state = initialState, action) => {
     case types.LOAD_DEVICE_GROUPS_SUCCESS:
       return {
         ...state,
-        deviceGroups: action.data
+        deviceGroups: sortBy(action.data, 'DisplayName')
       };
 
     case types.MANAGE_FILTERS_FLYOUT_DELETE_SUCCESS: {
@@ -22,7 +23,7 @@ const filterReducer = (state = initialState, action) => {
       const newDeviceGroup = [action.data].concat(state.deviceGroups);
       return {
         ...state,
-        deviceGroups: newDeviceGroup
+        deviceGroups: sortBy(newDeviceGroup, 'DisplayName')
       };
     }
 
@@ -45,7 +46,7 @@ const filterReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        deviceGroups: newDeviceGroup
+        deviceGroups: sortBy(newDeviceGroup, 'DisplayName')
       };
     }
 
