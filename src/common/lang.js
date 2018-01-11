@@ -79,6 +79,7 @@ const lang = {
   DEVICES: 'Devices',
   DEVICES_ARE_PROVISIONING: 'devices are provisioning...',
   DEVICES_TO_PROVISION: 'devices to provision',
+  DEVICES_PROVISIONED: 'devices provisioned',
   DEVICETYPE: 'Device Type',
   DEVICETYPES: 'Device Types',
   DEVICE_DELETED: 'devices deleted successfully!',

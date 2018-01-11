@@ -91,6 +91,15 @@ export function sanitizeJobName(jobName) {
   return jobName.replace(/[\W_]/g, "");
 }
 
+export function copyToClipboard(data) {
+  const textField = document.createElement('textarea');
+  textField.innerText = data;
+  document.body.appendChild(textField);
+  textField.select();
+  document.execCommand('copy');
+  textField.remove();
+};
+
 export default {
   isFunction,
   debounce,

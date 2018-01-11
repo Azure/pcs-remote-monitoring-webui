@@ -12,6 +12,10 @@ import DeviceSimulationService from '../../services/deviceSimulationService';
 import IotHubManagerService from '../../services/iotHubManagerService';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
 import lang from '../../common/lang';
+import { copyToClipboard } from '../../common/utils';
+import Apply from '../../assets/icons/Apply.svg';
+import Copy from '../../assets/icons/Copy.svg';
+import X from '../../assets/icons/X.svg';
 
 import './deviceProvisioningWorkflow.css';
 
@@ -48,7 +52,9 @@ const initialState = {
   secondaryKey: '',
   formIsValid: false,
   deviceModels: [],
-  isLoading: false
+  isLoading: false,
+  isDeviceProvisioned: false,
+  provisionedDevice: undefined
 }
 
 /**
@@ -212,9 +218,12 @@ class DeviceProvisioningWorkflow extends React.Component {
         Authentication: authOptions
       })
     ).subscribe(
-      _ => {
+      device => {
+        this.setState({
+          provisionedDevice: device,
+          isDeviceProvisioned: true
+        });
         this.props.actions.loadDevices(true);
-        this.props.onClose();
       },
       err => console.error(err)
     );
@@ -317,22 +326,104 @@ class DeviceProvisioningWorkflow extends React.Component {
    * @returns Returns JSX for the form summary
    */
   renderFormSummary() {
-    return (
-      <div className="form-summary-container">
-        <div className="form-summary-header">{lang.PROVISION_SUMMARY}</div>
-        <div className="form-summary-details">
-          <span className="device-cnt">{this.isInteger(this.state.numDevices) ? Math.floor(this.state.numDevices) : 0}</span>
-          {this.state.isLoading ?   lang.DEVICES_ARE_PROVISIONING : lang.DEVICES_TO_PROVISION }
+    if (this.state.isDeviceProvisioned) {
+      return this.renderDeviceProvisionedSummary();
+    } else {
+      return (
+        <div className="form-summary-container">
+          <div className="form-summary-header">{lang.PROVISION_SUMMARY}</div>
+          <div className="form-summary-details">
+            <span className="device-cnt">{this.isInteger(this.state.numDevices) ? Math.floor(this.state.numDevices) : 0}</span>
+            {this.state.isLoading ? lang.DEVICES_ARE_PROVISIONING : lang.DEVICES_TO_PROVISION }
+          </div>
+          <div className="form-action-btns">
+            <PcsBtn onClick={this.props.onClose} value={lang.CANCEL} />
+            <PcsBtn className="primary"
+              disabled={!this.state.formIsValid || this.state.isLoading}
+              onClick={this.apply}
+              value={this.state.isLoading ? lang.PROVISION_LOADING : lang.APPLY} />
+          </div>
         </div>
-        <div className="form-action-btns">
-          <PcsBtn onClick={this.props.onClose} value={lang.CANCEL}/>
-          <PcsBtn className="primary"
-            disabled={!this.state.formIsValid || this.state.isLoading}
-            onClick={this.apply}
-            value={this.state.isLoading ? lang.PROVISION_LOADING : lang.APPLY} />
+      );
+    }
+  }
+
+  /**
+   * Renders the summary portion of the physical device form once a device is provisioned
+   * 
+   * @returns Returns JSX for the form summary for a provisioned device, 
+   * including device id, keys and connection strings.
+   */
+  renderDeviceProvisionedSummary() {
+    const primaryConnectionString = this.createConnectionString(true);
+    const secondaryConnectionString = this.createConnectionString(false);
+    const {Id: id, Authentication: {PrimaryKey: primaryKey}, Authentication: {SecondaryKey: secondaryKey}} = this.state.provisionedDevice;
+    return (
+      <div className="form-summary-container device-summary-container">
+        <div className="form-summary-header">{lang.PROVISION_SUMMARY}</div>
+        <div className="form-summary-details device-summary-details">
+          <span className="provisioned-device-cnt">{this.isInteger(this.state.numDevices) ? Math.floor(this.state.numDevices) : 0}</span>
+          {lang.DEVICES_PROVISIONED}
+          <img src={Apply} alt='Check' className="check-icon" />
+          {this.renderDeviceDetail('Device ID', id)}
+          {this.renderDeviceDetail('Primary key', primaryKey)}
+          {this.renderDeviceDetail('Secondary key', secondaryKey)}
+          {this.renderDeviceDetail('Connection string primary key', primaryConnectionString)}
+          {this.renderDeviceDetail('Connection string secondary key', secondaryConnectionString)}
+        </div>
+        <div className="form-action-btns close-btn">
+          <PcsBtn svg={X} onClick={this.props.onClose}>{lang.CLOSE}</PcsBtn>
         </div>
       </div>
     );
+  }
+
+  /**
+   * Renders single device summary detail
+   * @param {string} headerText Header title
+   * @param {string} innerText Detail text
+   * 
+   * @returns Single device detail section, including header,
+   *  text and a copy to clipboard button
+   */
+  renderDeviceDetail(headerText, innerText) {
+    return (
+      <div className="device-detail-section">
+        <FlyoutSection header={headerText}>
+            <div className="device-detail-container">
+              <div className="device-detail">
+                {innerText}
+              </div>
+              <div onClick={() => copyToClipboard(innerText)} className="copy">
+                <img src={Copy} alt={'Copy'}  className="copy-icon" />
+              </div>
+            </div>
+        </FlyoutSection>
+      </div>
+    );
+  }
+
+  /**
+   * @returns the connection string based on provisioned device details. Will use the primary key if
+   *  usePrimaryKey is true, secondary key otherwise. If the details are not set properly,
+   *  returns an empty string. 
+   * 
+   * @param {boolean} usePrimaryKey whether to use primary key (true) or secondary key (false) in 
+   * returned connection string
+   */
+  createConnectionString(usePrimaryKey) {
+    const provisionedDevice = this.state.provisionedDevice;
+    const {
+      Id: id, 
+      IoTHubHostName: hostName, 
+      Authentication: {PrimaryKey: primaryKey},
+      Authentication: {SecondaryKey: secondaryKey}
+    } = this.state.provisionedDevice;
+    if (provisionedDevice && hostName && id && primaryKey && secondaryKey) {
+        const key = usePrimaryKey ? primaryKey : secondaryKey;
+        return `HostName=${hostName};DeviceId=${id};SharedAccessKey=${key}`;
+    }
+    return '';
   }
 
   /**

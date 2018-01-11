@@ -25,6 +25,11 @@
         font-size: 48pt;
         color: #fff;
       }
+
+      .provisioned-device-cnt {
+        font-size: 48px;
+        color: #fff;
+      }
     }
 
     .form-action-btns {
@@ -37,6 +42,61 @@
         height: 30px;
         margin-left: 28px;
       }
+    }
+
+    .device-summary-container, 
+    .device-summary-details {
+      width: 100%;
+      font-size: 14px;
+    }
+
+    .close-btn {
+      .pcs-btn-svg {
+        height: 10px;
+      }
+
+      .pcs-btn-value {
+        font-size: 14px;
+      }
+    }
+
+    .device-summary-details { padding-bottom: 48px; }
+
+    .device-detail-container {
+      font-size: 14px;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: baseline;
+      justify-content: space-between;
+      font-weight: normal;
+    }
+
+    .copy-icon, 
+    .check-icon { 
+      height: 14px; 
+    }
+
+    .check-icon { padding-left: 14px; }
+
+    .copy {
+      cursor: pointer;
+      margin-left: 16px;
+      margin-right: 32px;
+      min-width: 5%;
+    }
+
+    .device-detail {
+      word-wrap: break-word;
+      min-width: 50%;
+    }
+
+    .device-detail-section {
+      .pcs-content {
+        padding: 12px 10px 14px 10px;
+        width: 100%;
+      }
+
+      .pcs-header { font-size: 16px; }
     }
   }
 
