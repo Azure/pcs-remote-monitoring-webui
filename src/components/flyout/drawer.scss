@@ -1,40 +1,42 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import '../../styles/variables/colors';
+
 .drawer-wrapper {
   padding: 5px 0px 0px 5px;
-  .drawer-content {
-    padding: 10px;
-  }
+
+  .drawer-content { padding: 10px; }
+
   .drawer-description {
     padding: 5px;
-    color: #afb9c3;
+    color: $lightestGray;
     font-size: xx-small;
   }
+
   .drawer-header {
     padding: 5px 0px 0px 5px;
     border-top: 1px solid #454a4e;
     justify-content: space-between;
     display: flex;
     cursor: pointer;
-    &:hover {
-      color: #ffffff;
-      img {
-        opacity: 1;
-      }
-    }
 
-    img {
-      opacity: 0.7;
-    }
-    .chevron-close {
-      height: 16px;
-      width: 16px;
-      margin-left: 15px;
-    }
+    &:hover { color: $white; }    
+
+    .chevron-close,
     .chevron-open {
       height: 16px;
       width: 16px;
       margin-left: 15px;
+      margin-right: 8px;
+    }
+
+    .chevron-close {
+      -ms-transform: rotate(-90deg);
+      -webkit-transform: rotate(-90deg);
+      transform: rotate(-90deg);
+    }
+
+    .chevron-open {
       -ms-transform: rotate(90deg);
       -webkit-transform: rotate(90deg);
       transform: rotate(90deg);
