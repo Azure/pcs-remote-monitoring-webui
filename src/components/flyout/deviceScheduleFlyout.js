@@ -23,6 +23,7 @@ class DeviceScheduleFlyout extends React.Component {
     this.state = {
       methodValue: '',
       jobInputValue: '',
+      firmwareVersionValue: '',
       firmwareURIValue: '',
       showJobContent: false,
       showFirmwareContent: false,
@@ -54,6 +55,7 @@ class DeviceScheduleFlyout extends React.Component {
       methodValue: value,
       showJobContent: !!value,
       showFirmwareContent: value === lang.FIRMWARE_OPTION,
+      firmwareVersionValue: '',
       firmwareURIValue: ''
     };
     if (!newState.showJobContent) {
@@ -75,12 +77,20 @@ class DeviceScheduleFlyout extends React.Component {
   onConfirm() {
     const deviceIds = this.props.devices
       .map(({ Id }) => `'${Id}'`).join(',');
+
+    const jobParameters = {};
+    if (this.state.showFirmwareContent) {
+      jobParameters["Firmware"] = this.state.firmwareVersionValue;
+      jobParameters["FirmwareUri"] = this.state.firmwareURIValue;
+    }
+
     const payload = {
       JobId: this.state.jobInputValue ? this.state.jobInputValue + '-' + uuid(): uuid(),
       QueryCondition: `deviceId in [${deviceIds}]`,
       MaxExecutionTimeInSeconds: 0,
       MethodParameter: {
-        Name: this.state.methodValue
+        Name: this.state.methodValue,
+        JsonPayload: JSON.stringify(jobParameters)
       }
     };
     this.setState({ showSpinner: true });
@@ -150,7 +160,18 @@ class DeviceScheduleFlyout extends React.Component {
                     {lang.JOB_NAME_REFERENCE}
                   </div>
                   {this.state.showFirmwareContent &&
-                    <div className="firmware-uri-section">
+                    <div className="firmware-input-section">
+                      <div className="content-title">
+                        {lang.FIRMWAREVERSION}
+                      </div>
+                      <input
+                        className="user-input"
+                        name="firmwareVersionValue"
+                        placeholder={`${lang.FIRMWARE_VERSION_INPUT_PLACEHOLDER}...`}
+                        type="text"
+                        onChange={this.onChangeInput}
+                        value={this.state.firmwareVersionValue}
+                      />
                       <div className="content-title">
                         {lang.FIRMWARE_URL}
                       </div>

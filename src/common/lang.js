@@ -123,6 +123,7 @@ const lang = {
   FILTERS: 'Filters',
   FIRMWARE: 'Firmware',
   FIRMWAREVERSION: 'Firmware Version',
+  FIRMWARE_VERSION_INPUT_PLACEHOLDER: '1.0.1',
   FIRMWARE_OPTION: 'FirmwareUpdate',
   FIRMWARE_URL: 'Firmware URI',
   FIRMWARE_URL_INPUT_PLACEHOLDER: 'Enter firmware URI value',
