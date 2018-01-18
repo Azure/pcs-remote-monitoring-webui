@@ -82,11 +82,11 @@ class DeviceMap extends Component {
     });
     MapPane.setData({
       BingMapKey: props.BingMapKey,
-      deviceData: devices.items,
+      deviceData: devices.Items,
       container: this,
       actions
     });
-    let data = this.getDeviceData(devices.items);
+    let data = this.getDeviceData(devices.Items);
     MapPane.setDeviceLocationData(
       data.minLat,
       data.minLong,
