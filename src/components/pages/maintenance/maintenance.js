@@ -327,7 +327,8 @@ class MaintenancePage extends Component {
       onDeviceGridReady: this.onDeviceGridReady,
       onAlarmGridReady: this.onAlarmGridReady,
       onRuleGridReady: this.onRuleGridReady,
-      onContextMenuChange: this.onContextMenuChange
+      onContextMenuChange: this.onContextMenuChange,
+      onDeviceJobSoftSelectChange : this.onDeviceJobSoftSelectChange
     };
   };
 
