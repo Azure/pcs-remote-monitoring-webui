@@ -1,3 +1,7 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import '../../styles/variables/colors';
+
 .alarm-list {
   height: 404px;
   margin-left: -16px;
@@ -15,10 +19,16 @@
 
       .ag-cell { border-bottom: 2px solid #000 !important; }
 
+      .ag-header-cell-text {
+        font-size: 12px !important;
+        color: $lightestGray;
+      }
+
+      .ag-body-container { font-size: 14px !important; }
     }
   }
 
-  .Select-placeholder, 
+  .Select-placeholder,
   .Select--single > .Select-control .Select-value {
     padding-left: 15px;
     padding-top: 5px;
