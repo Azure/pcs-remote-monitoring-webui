@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import '../../styles/variables/colors';
+
 .rule-details-container {
-  color: #afb9c3;
+  color: $lightestGray;
   height: 100%;
 
   .timerange-selection {
@@ -16,7 +18,7 @@
     .last-refresed-time {
       margin-left: 5px;
       margin-right: 5px;
-      color: #fff;
+      color: $white;
     }
 
     .refresh-icon {
@@ -31,7 +33,7 @@
   }
 
   .section-header {
-    color: #fff;
+    color: $white;
     margin-bottom: 10px;
     margin-top: 10px;
   }
@@ -61,6 +63,12 @@
         .aggregated-rule-details-field {
           color: #fff;
           margin-top: 8px;
+
+          .severity-icon {
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+          }
         }
       }
     }

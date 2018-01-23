@@ -8,6 +8,9 @@ import RulesActionsList from '../rulesActionsList/rulesActionsList';
 import TelemetryWidget from '../telemetryWidget/telemetryWidget';
 import lang from '../../common/lang';
 import SeverityCellRenderer from '../cellRenderers/severityCellRenderer/severityCellRenderer';
+import CriticalSvg from '../../assets/icons/Critical.svg';
+import InfoSvg from '../../assets/icons/Info.svg';
+import WarningSvg from '../../assets/icons/Warning.svg';
 
 import './ruleDetails.css';
 
@@ -169,10 +172,16 @@ class RuleDetailsPage extends Component {
   render() {
     const ruleId = (this.props.params || {}).id;
     const ruleDetails = (this.props.alarmsGridData || []).filter(({ id }) => id === ruleId)[0];
-    const aggregatedRule = ruleDetails ? aggregatedRuleColumnDefs.map((col, idx) => (<div className="aggregated-rule-column" key={idx}>
-      <div className="aggregated-rule-details-header">{col.headerName}</div>
-      <div className="aggregated-rule-details-field">{ruleDetails[col.field]}</div>
-    </div>)) : null;
+    const aggregatedRule = ruleDetails ? aggregatedRuleColumnDefs.map((col, idx) => (
+      <div className="aggregated-rule-column" key={idx}>
+        <div className="aggregated-rule-details-header">{col.headerName}</div>
+        <div className="aggregated-rule-details-field">
+           {ruleDetails[col.field] === 'critical' && <img src={CriticalSvg} alt='Critical Severity' className="severity-icon" />}
+           {ruleDetails[col.field] === 'warning' && <img src={WarningSvg} alt='Warning Severity' className="severity-icon" />}
+           {ruleDetails[col.field] === 'info' && <img src={InfoSvg} alt='Info Severity' className="severity-icon" />}
+           {ruleDetails[col.field]}
+        </div>
+      </div>)) : null;
     const { btnActions } = this.props;
 
     const rulesAndActionsProps = {
