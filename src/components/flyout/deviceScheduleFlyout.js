@@ -142,7 +142,8 @@ class DeviceScheduleFlyout extends React.Component {
                 placeholder={lang.SELECT_PLACEHOLDER}
                 className="selectStyle-manage"
               />
-              {this.state.showJobContent &&
+              {
+                this.state.showJobContent &&
                 <div className="job-schedule-section">
                   <div className="content-title">
                     {lang.JOB_NAME}
@@ -183,30 +184,35 @@ class DeviceScheduleFlyout extends React.Component {
                         onChange={this.onChangeInput}
                         value={this.state.firmwareURIValue}
                       />
-                    </div>}
-                    <SummarySection count={devices.length} content={lang.AFFECTED_DEVICES} />
-                </div>}
-              <div className="btn-group">
-                <PcsBtn svg={CancelX} onClick={this.props.onClose}>{lang.CANCEL}</PcsBtn>
-                {this.state.showSpinner && <Spinner size="medium" />}
-                {this.state.jobApplied
-                  ? <PcsBtn svg={Apply} disabled>{lang.APPLIED}</PcsBtn>
-                  : <PcsBtn svg={Apply}
-                      className="primary"
-                      onClick={this.onConfirm}
-                      disabled={disabledButton}>{lang.APPLY}</PcsBtn>
-                }
-              </div>
+                    </div>
+                  }
+                  <SummarySection count={devices.length} content={this.state.jobApplied ? lang.DEVICES_SCHEDULED: lang.AFFECTED_DEVICES} />
+                </div>
+              }
+              {
+                !this.state.jobApplied &&
+                <div className="btn-group">
+                  <PcsBtn svg={CancelX} onClick={this.props.onClose}>{lang.CANCEL}</PcsBtn>
+                  {this.state.showSpinner && <Spinner size="medium" />}
+                  <PcsBtn svg={Apply}
+                    className="primary"
+                    onClick={this.onConfirm}
+                    disabled={disabledButton}>
+                    {lang.APPLY}
+                  </PcsBtn>
+                </div>
+              }
             </div>
-          : <div className="device-schdule-content">
-              <div className="content-title">
-                {lang.CHOOSE_NEW_DEVICES}
+            : <div className="device-schdule-content">
+                <div className="content-title">
+                  {lang.CHOOSE_NEW_DEVICES}
+                </div>
+                <div className="content-description">
+                  {lang.CHOOSE_NEW_DEVICES}
+                </div>
               </div>
-              <div className="content-description">
-                {lang.CHOOSE_NEW_DEVICES}
-              </div>
-            </div>}
-            {this.state.jobApplied ? <DeepLinkSection {...deepLinkSectionProps} /> : null}
+          }
+          {this.state.jobApplied ? <DeepLinkSection {...deepLinkSectionProps} /> : null}
       </div>
     );
   }

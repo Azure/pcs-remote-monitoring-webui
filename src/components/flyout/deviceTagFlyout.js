@@ -418,21 +418,22 @@ class DeviceTagFlyout extends React.Component {
               <div className="no-common-tags-sub-class">
                 {lang.PLEASE_CHOOSE_DEVICES_WITH_COMMON_TAGS}
               </div>
-            </div>}
-
-        <SummarySection count={totalAffectedDevices} content={lang.AFFECTED_DEVICES} />
-        <div className="button-container">
-          <PcsBtn svg={CancelX} onClick={this.props.onClose}>{lang.CANCEL}</PcsBtn>
-          {this.state.showSpinner && <Spinner size="medium" />}
-          {this.state.jobApplied
-            ? <PcsBtn svg={Apply} value={lang.APPLIED} disabled />
-            : <PcsBtn
-                className="primary"
-                svg={Apply}
-                value={lang.APPLY}
-                disabled={disabledButton}
-                onClick={this.applyDeviceTagJobsData}/> }
-        </div>
+            </div>
+        }
+        <SummarySection count={totalAffectedDevices} content={this.state.jobApplied ? lang.DEVICES_TAGGED : lang.AFFECTED_DEVICES} />
+        {
+          !this.state.jobApplied &&
+          <div className="button-container">
+            <PcsBtn svg={CancelX} onClick={this.props.onClose}>{lang.CANCEL}</PcsBtn>
+            {this.state.showSpinner && <Spinner size="medium" />}
+            <PcsBtn
+              className="primary"
+              svg={Apply}
+              value={lang.APPLY}
+              disabled={disabledButton}
+              onClick={this.applyDeviceTagJobsData}/>
+          </div>
+        }
         {this.state.jobApplied ? <DeepLinkSection {...deepLinkSectionProps}/> : null}
       </div>
     );
