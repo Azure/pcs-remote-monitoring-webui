@@ -4,20 +4,27 @@
 
 .devices-grid-container {
 
-    .last-refreshed-time {
-      margin-right: 10px;
-      color: $white;
-    }
+  .last-refreshed-time {
+    margin-right: 10px;
+    color: $white;
+  }
 
-    .last-refreshed-text {
-      margin-left: 10px;
-      margin-right: 6px;
-      color: $lightestGray;
-    }
+  .last-refreshed-text {
+    margin-left: 10px;
+    margin-right: 6px;
+    color: $lightestGray;
+  }
 
-    .icon-sm {
-      width: 14px;
-      height: 14px;
-      margin-left: 2px;
-    }
+  .icon-sm {
+    width: 14px;
+    height: 14px;
+    margin-left: 2px;
+  }
+
+  .no-results {
+    font-size: 18px;
+    color: $white;
+    display: flex;
+    justify-content: center;
+  }
 }

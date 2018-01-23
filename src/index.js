@@ -37,6 +37,7 @@ ReactDOM.render(
         <IndexRoute component={DashboardPage} />
         <Route path="/dashboard" component={DashboardPage} />
         <Route path="/devices" component={DevicesPage} />
+        <Route path="/devices/:status" component={DevicesPage} />
         <Route path="/rulesActions" component={RulesAndActionsPage} />
         <Route path="/maintenance" component={MaintenancePage}>
           <IndexRoute component={MaintenanceWidget} />
@@ -47,6 +48,9 @@ ReactDOM.render(
           </Route>
           <Route path="rule/:id" component={RuleDetailsPage} />
           <Route path="job/(:JobId)" component={SystemStatusDetailsGrid} />
+        </Route>
+        <Route path="/maintenanceBySeverity/:severity" component={MaintenancePage}>
+          <IndexRoute component={MaintenanceWidget} />
         </Route>
       </Route>
     </Router>

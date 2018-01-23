@@ -75,6 +75,17 @@
     .connected { margin-left: -10px; }
 
     .total-offline,
-    .offline { color: $lightestGray !important; }
+    .offline {
+      color: $lightestGray !important;
+      text-decoration: none;
+    }
   }
+
+  .total-devices {
+    color: $white !important;
+    text-decoration: none;
+  }
+
+  .total-alarms-container,
+  .total-container { cursor: pointer; }
 }

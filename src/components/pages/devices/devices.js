@@ -27,7 +27,7 @@ class DevicesPage extends Component {
     this.state = {
       softSelectedDeviceId: '',
       lastRefreshed: new Date(),
-      rowData: this.props.devices,
+      rowData: this.filterDevices(this.props.devices),
       contextBtns: ''
     };
     this.refreshData = this.refreshData.bind(this);
@@ -37,7 +37,7 @@ class DevicesPage extends Component {
     this.setState({ lastRefreshed: new Date(), rowData: undefined }, () => { this.props.actions.loadDevices(true); });
   }
 
-  componentWillReceiveProps(nextProps) { this.setState({ rowData: nextProps.devices }); }
+  componentWillReceiveProps(nextProps) { this.setState({ rowData: this.filterDevices(nextProps.devices) }); }
 
   componentDidMount() { this.props.actions.showingDevicesPage(); }
 
@@ -53,6 +53,18 @@ class DevicesPage extends Component {
 
   /** Listen for changes in the dynamic context filters and update accordingly */
   onContextMenuChange = contextBtns => this.setState({ contextBtns });
+
+  filterDevices(devices) {
+    if (!devices || !devices.Items) return devices;
+    const status = (this.props.params || {}).status || '';
+    const isConnected = status.toLowerCase() === 'connected';
+    return {
+      Items: devices.Items.filter((device) => {
+        if (!status) return true;
+        return device.Connected === isConnected;
+      })
+    };
+  }
 
   render() {
     // Extract the devices from the props
@@ -86,7 +98,7 @@ class DevicesPage extends Component {
             </div>
             <div onClick={this.refreshData} className="refresh-icon icon-sm" />
           </div>
-          <DevicesGrid {...deviceGridProps} />
+          { devices && devices.length === 0 ? <div className="no-results">{lang.NO_RESULTS_FOUND}</div> :  <DevicesGrid {...deviceGridProps}/> }
         </PageContent>
       </PageContainer>
     );
