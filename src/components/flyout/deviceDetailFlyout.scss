@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import '../../styles/variables/colors';
+
 .device-detail-flyout {
   overflow-x: hidden;
 
@@ -47,14 +49,14 @@
 // customize scroll bar for webkit based browser
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: #1b1d1f;
+  background-color: $gridTileDark;
 }
 
 ::-webkit-scrollbar {
   width: 6px;
-  background-color: #1b1d1f;
+  background-color: $gridTileLight;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: #232528;
-}
+::-webkit-scrollbar-thumb { background-color: $gridTileLight; }
+
+::-webkit-scrollbar-corner { background-color: $gridTileDark; }
