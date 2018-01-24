@@ -121,7 +121,7 @@ class AlarmList extends Component {
     // Pass an empty string to avoid two spinners appearing on top of each other
     const alarmsGridProps = {
       rowData: this.state.rowData || [],
-      paginationPageSize: 5
+      paginationPageSize: Config.ALARMGRID_ROWS
     };
 
     return (
@@ -133,7 +133,10 @@ class AlarmList extends Component {
         error={this.state.error}
         title={lang.ALARMSTATUS}>
         <div className="grid-container">
-          <AlarmsGrid {...alarmsGridProps} />
+          {
+            this.state.rowData &&
+            <AlarmsGrid {...alarmsGridProps} pagination={(this.state.rowData || []).length > Config.ALARMGRID_ROWS}/>
+          }
         </div>
       </DashboardPanel>
     );

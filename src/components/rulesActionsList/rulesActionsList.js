@@ -11,6 +11,7 @@ import {
   rulesAndActionsColumnDefs,
   defaultRulesAndActionsGridProps
 } from './ruleAndActionsConfig';
+import Config from '../../common/config';
 
 import "./rulesActionsList.css";
 
@@ -32,10 +33,10 @@ class RulesActionsList extends Component {
     ];
   }
 
-  /** 
-   * Get the grid api options 
-   * 
-   * @param {Object} gridReadyEvent An object containing access to the grid APIs   
+  /**
+   * Get the grid api options
+   *
+   * @param {Object} gridReadyEvent An object containing access to the grid APIs
    */
    onGridReady = gridReadyEvent => {
     this.gridApi = gridReadyEvent.api;
@@ -54,9 +55,15 @@ class RulesActionsList extends Component {
       ...this.props,
       onGridReady: this.onGridReady
     };
+
     return (
       <div className="rules-actions-container">
-        <PcsGrid {...gridProps} />
+        {
+          this.props.rowData && this.props.rowData.length === 0
+            ? null
+            : <PcsGrid {...gridProps}
+              pagination={(this.props.rowData || []).length > Config.DEVICES_RULESGRID_ROWS ? true : false}/>
+        }
       </div>
     )
   }

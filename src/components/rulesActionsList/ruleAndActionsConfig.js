@@ -6,8 +6,9 @@ import deviceCountCellRenderer from "./deviceCountCellRenderer";
 import LastTriggerCellRenderer from "./lastTriggerCellRenderer";
 import DeviceSourceCellRenderer from "./deviceSourceCellRenderer";
 import lang from "../../common/lang";
+import Config from '../../common/config';
 
-export const LastTriggerDefaultWidth = 310;
+export const LAST_TRIGGER_DEFAULT_WIDTH = 310;
 
 export const checkboxParams = {
   headerCheckboxSelection: true,
@@ -68,7 +69,7 @@ export const rulesAndActionsColumnDefs = {
   lastTrigger: {
     headerName: lang.LASTTRIGGER,
     cellRendererFramework: LastTriggerCellRenderer,
-    width: LastTriggerDefaultWidth
+    width: LAST_TRIGGER_DEFAULT_WIDTH
   }
 };
 
@@ -79,6 +80,5 @@ export const defaultRulesAndActionsGridProps = {
   suppressCellSelection: true,
   suppressClickEdit: true,
   suppressRowClickSelection: true,
-  pagination: true,
-  paginationPageSize: 50
+  paginationPageSize: Config.DEVICES_RULESGRID_ROWS,
 };

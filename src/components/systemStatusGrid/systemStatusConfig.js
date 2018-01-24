@@ -2,11 +2,12 @@
 
 import moment from 'moment';
 import lang from '../../common/lang';
+import Config from '../../common/config';
 import { EMPTY_FIELD_VAL, DEFAULT_TIME_FORMAT, gridValueFormatters } from '../pcsGrid/pcsGridConfig';
 
 const { checkForEmpty } = gridValueFormatters;
 
-export const DEFAULT_SYSTEM_GRID_PAGE_SIZE = 6;
+export const DEFAULT_SYSTEM_GRID_PAGE_SIZE = Config.ALARMGRID_ROWS;
 
 const getStatusCode = value => {
   switch (value) {

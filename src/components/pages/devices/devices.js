@@ -16,6 +16,7 @@ import lang from '../../../common/lang';
 import PcsBtn from '../../shared/pcsBtn/pcsBtn';
 import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
 import SimControlCenter from '../../simControlCenter/simControlCenter';
+import Config from '../../../common/config';
 
 import AddSvg from '../../../assets/icons/Add.svg';
 import './devices.css';
@@ -98,7 +99,12 @@ class DevicesPage extends Component {
             </div>
             <div onClick={this.refreshData} className="refresh-icon icon-sm" />
           </div>
-          { devices && devices.length === 0 ? <div className="no-results">{lang.NO_RESULTS_FOUND}</div> :  <DevicesGrid {...deviceGridProps}/> }
+          {
+            devices && devices.length === 0
+            ? <div className="no-results">{lang.NO_RESULTS_FOUND}</div>
+            : <DevicesGrid {...deviceGridProps}
+                pagination={(devices|| []).length > Config.DEVICES_RULESGRID_ROWS ? true :  false}/>
+          }
         </PageContent>
       </PageContainer>
     );

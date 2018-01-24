@@ -2,13 +2,12 @@
 
 import React from 'react';
 import lang from '../../common/lang';
+import Config from '../../common/config';
 import severityCellRenderer from '../cellRenderers/severityCellRenderer/severityCellRenderer';
 import ElipsisCellRenderer from '../cellRenderers/elipsisCellRenderer/elipsisCellRenderer';
 import { gridValueFormatters } from '../pcsGrid/pcsGridConfig';
 
 const { checkForEmpty } = gridValueFormatters;
-
-export const DEFAULT_ALARM_GRID_PAGE_SIZE = 8;
 
 export const checkboxParams = {
   headerCheckboxSelection: true,
@@ -67,7 +66,6 @@ export const getSoftSelectId = ({ Id }) => Id;
 export const defaultAlarmGridProps = {
   enableColResize: true,
   multiSelect: true,
-  pagination: true,
-  paginationPageSize: DEFAULT_ALARM_GRID_PAGE_SIZE,
+  paginationPageSize: Config.ALARMGRID_ROWS,
   rowSelection: 'multiple'
 };

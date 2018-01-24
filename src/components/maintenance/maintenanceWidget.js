@@ -7,6 +7,7 @@ import MaintenanceSummary from './maintenanceSummary';
 import SystemStatusGrid from '../systemStatusGrid/systemStatusGrid';
 import AlarmsByRuleGrid from './alarmsByRuleGrid';
 import lang from '../../common/lang';
+import Config from '../../common/config';
 
 import './maintenanceWidget.css';
 
@@ -106,10 +107,18 @@ class MaintenanceWidget extends Component {
           {
             alarmsByRuleGridProps.rowData && alarmsByRuleGridProps.rowData.length === 0
             ? <div className="no-results">{lang.NO_RESULTS_FOUND}</div>
-            : <AlarmsByRuleGrid {...alarmsByRuleGridProps} />
+            : <AlarmsByRuleGrid {...alarmsByRuleGridProps}
+               pagination={(alarmsByRuleGridProps.rowData || []).length > Config.ALARMGRID_ROWS ? true : false}/>
           }
         </div>
-        <div className={`grid-container${systemSelected}`}><SystemStatusGrid {...systemStatusProps}/></div>
+        <div className={`grid-container${systemSelected}`}>
+          {
+            systemStatusProps.jobs && systemStatusProps.jobs.length === 0
+            ? null
+            : <SystemStatusGrid {...systemStatusProps}
+               pagination={(systemStatusProps.jobs || []).length > Config.ALARMGRID_ROWS ? true : false}/>
+          }
+        </div>
       </div>
     );
   }

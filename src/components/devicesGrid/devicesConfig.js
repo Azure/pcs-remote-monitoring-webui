@@ -2,13 +2,12 @@
 
 import moment from 'moment';
 import lang from '../../common/lang';
+import Config from '../../common/config';
 import ConnectionStatusRenderer from '../cellRenderers/connectionStatusRenderer/connectionStatusRenderer';
 import IsSimulatedRenderer from '../cellRenderers/isSimulatedRenderer/isSimulatedRenderer';
 import { EMPTY_FIELD_VAL, DEFAULT_TIME_FORMAT, gridValueFormatters } from '../pcsGrid/pcsGridConfig';
 
 const { checkForEmpty } = gridValueFormatters;
-
-export const DEFAULT_DEVICE_GRID_PAGE_SIZE = 50;
 
 export const checkboxParams = {
   headerCheckboxSelection: true,
@@ -65,7 +64,6 @@ export const getSoftSelectId = ({ Id }) => Id;
 export const defaultDeviceGridProps = {
   enableColResize: true,
   multiSelect: true,
-  pagination: true,
-  paginationPageSize: DEFAULT_DEVICE_GRID_PAGE_SIZE,
+  paginationPageSize: Config.DEVICES_RULESGRID_ROWS,
   rowSelection: 'multiple'
 };
