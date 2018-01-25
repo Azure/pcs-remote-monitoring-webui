@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-$borderColor: #454a4e;
+@import '../../../styles/variables/colors';
 
 .context-filter-container {
   display: flex;
@@ -13,7 +13,7 @@ $borderColor: #454a4e;
     display: flex;
     flex-flow: row nowrap;
     align-items: stretch;
-    padding-left: 18px;
+    padding-left: 16px;
     border-right: 1px solid $borderColor;
 
     .filter-icon {
@@ -21,8 +21,6 @@ $borderColor: #454a4e;
 
       &.disabled { opacity: 0.5; }
     }
-
-    .select-container { width: 200px; }
 
     .select-container {
       width: 200px;
@@ -40,6 +38,21 @@ $borderColor: #454a4e;
 
     // Overrides for pcs-btn styles used in the PcsBtn component
     .pcs-btn:hover:enabled { background-color: #2e2e2e; }
+  }
+
+  .top-nav-filters {
+    .Select-menu-outer {
+      border-top: 1px solid $gridTileLight !important;
+      max-height: 415px !important;
+      border: 1px solid $borderColor;
+      margin-left: -28px;
+    }
+
+    .Select-option {
+      height: 48px;
+      padding: 14px 16px !important;
+      color: $white;
+    }
   }
 }
 
@@ -61,14 +74,14 @@ $borderColor: #454a4e;
 }
 
 .Select-control {
-  background-color: #121416;
+  background-color: $bgBlack;
   border: none;
-  color: #121416;
+  color: $bgBlack;
   cursor: default;
   display: table;
   border-spacing: 0;
   border-collapse: separate;
-  height: 36px;
+  height: 43px;
   outline: none;
   overflow: hidden;
   position: relative;
@@ -83,8 +96,8 @@ $borderColor: #454a4e;
 .is-open > .Select-control {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-  background: #121416;
-  color: #afb9c3;
+  background: $bgBlack;
+  color: $lightestGray;
 }
 
 .is-open > .Select-control .Select-arrow {
@@ -100,7 +113,7 @@ $borderColor: #454a4e;
 .Select-placeholder,
 .Select--single > .Select-control .Select-value {
   bottom: 0;
-  color: #afb9c3;
+  color: $lightestGray;
   left: 0;
   line-height: 36px;
   padding-left: 10px;
@@ -114,7 +127,7 @@ $borderColor: #454a4e;
   white-space: nowrap;
 }
 
-.Select-value-label { color: #afb9c3; }
+.Select-value-label { color: $lightestGray; }
 
 .Select-input {
   height: 34px;
@@ -163,23 +176,23 @@ $borderColor: #454a4e;
   display: inline-block;
   height: 0;
   width: 0;
+  bottom: 2px;
   position: relative;
+  margin-right: 8px;
 }
 
 .is-open .Select-arrow,
-.Select-arrow-zone:hover > .Select-arrow {
-  border-top-color: #666;
-}
+.Select-arrow-zone:hover > .Select-arrow { border-top-color: #666; }
 
 .Select-menu-outer {
-  background-color: #121416;
-  border: 1px solid #121416;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  background-color: $bgBlack;
+  border: 1px solid $bgBlack;
+  box-shadow: rgba(0,0,0,0.3);
   box-sizing: border-box;
-  max-height: 400px;
+  max-height: 430px;
   position: absolute;
-  border-top: 1px solid #454a4e;
-  width: 232px;
+  border-top: 1px solid $borderColor;
+  width: 230px;
   margin-left: -32px;
   top: 100%;
   z-index: 1;
@@ -198,15 +211,18 @@ $borderColor: #454a4e;
   }
 }
 
-.Select-menu { max-height: 400px; }
+.Select-menu { max-height: 430px; }
 
 .Select-option {
   box-sizing: border-box;
-  background-color: #121416;
-  color: #afb9c3;
+  background-color: $bgBlack;
+  color: $lightestGray;
   cursor: pointer;
   display: block;
   padding: 10px;
+  color: $white !important;
+
+  &:hover { background-color: #383B3E; }
 }
 
 .Select-option:last-child {
@@ -215,13 +231,13 @@ $borderColor: #454a4e;
 }
 
 .Select-option.is-selected {
-  background-color: #afb9c3;
-  color: #121416;
+  background-color: $gridTileLight;
+  color: $bgBlack;
 }
 
 .Select-option.is-focused {
-  background-color: #242628;
-  color: #afb9c3;
+  background-color: none;
+  border: 1px dotted $lightestGray;
 }
 
 .Select-noresults {

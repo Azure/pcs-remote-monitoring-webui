@@ -200,7 +200,6 @@
     display: inline-block;
     vertical-align: center;
     border: 1px solid #3e4145;
-    margin-top: 0px;
     margin-top: 15px;
 
     .Select-menu-outer {
@@ -210,9 +209,11 @@
       padding-top: 3px;
     }
 
+    .Select-control { height: 39px !important; }
+
     .Select-clear-zone { display: none; }
 
-    .Select-arrow-zone { padding-top: 0px; }
+    .Select-arrow-zone { top: 3px; }
 
     .Select,
     .Select div,

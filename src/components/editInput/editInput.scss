@@ -1,88 +1,92 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import '../../styles/variables/colors';
+
 .edit-input {
-    input:not([type="radio"]), 
-    textarea, 
-    select {
-        border: 1px #454a4e solid;
-        background-color: #1B1D1F;
-        width: 100%;
-        color: #afb9c3;
-        padding: 0px 8px;
+  input:not([type=radio]),
+  textarea,
+  select {
+    border: 1px $borderColor solid;
+    background-color: $gridTileDark;
+    width: 100%;
+    color: $lightestGray;
+    padding: 0px 8px;
+  }
+
+  .radio:not(:last-child) label { margin-bottom: 16px; }
+
+  textarea { padding: 7px 8px; }
+
+  input::-webkit-input-placeholder,
+  textarea::-webkit-input-placeholder { color: $lightestGray; }
+
+  input:-moz-placeholder,
+  textarea:-moz-placeholder { color: $lightestGray; }
+
+  label {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0;
+  }
+
+  .radio-img {
+    margin-right: 5px;
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .field-select {
+
+    .Select-control {
+      background-color: $gridTileDark;
+      border: 1px solid $borderColor !important;
+      padding: 0px 3px 0px 8px !important;
+      margin-bottom: 2px;
+      vertical-align: middle !important;
+      height: 10px;
+
+      input { border: none; }
     }
 
-    .radio:not(:last-child) label { margin-bottom: 16px; }
-
-    textarea { padding: 7px 8px; }
-
-    input::-webkit-input-placeholder, 
-    textarea::-webkit-input-placeholder { color: #afb9c3; }
-
-    input:-moz-placeholder, 
-    textarea:-moz-placeholder { color: #afb9c3; }
-
-    label {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        margin: 0;
+    .Select {
+      width: 100% !important;
+      margin-top: 0px !important;
     }
 
-    .radio-img {
-        margin-right: 5px;
-        height: 10px;
-        width: 10px;
-        display: inline-block;
-
-        img {
-            height: 100%;
-            width: 100%;
-        }
+    .Select-placeholder,
+    .Select-value,
+    .Select-arrow-zone {
+      padding-top: 2px !important;
+      line-height: 21px !important;
     }
 
-    .field-select {
-        
-        .Select-control {
-            background-color: #1b1d1f;
-            border: 1px solid #454a4e !important;
-            padding: 0px 3px 0px 8px !important;
-            margin-bottom: 2px;
-            vertical-align: middle !important;
-            height: 10px;
-
-            input { border: 0; }
-        }
-
-        .Select {
-            width: 100% !important;
-            margin-top: 0px !important;
-        }
-
-        .Select-placeholder,
-        .Select-value,
-        .Select-arrow-zone {
-            padding-top: 2px !important;
-            line-height: 21px !important;
-        }
-
-        .Select-menu-outer {
-            border: 1px solid #454A4E !important;
-            width: 100%;
-            margin-left: 1px !important;
-            max-height: 200px !important;
-        }
-
-        .Select-input {
-            margin-left: -16px;
-            padding-top: 2px;
-        }
-
-        .Select-placeholder, .Select--single > .Select-control .Select-value {
-          padding: 0px 10px;
-          line-height: 21px !important;
-        }
-
-        .Select-clear { display: none; }
+    .Select-menu-outer {
+      border: 1px solid $borderColor !important;
+      width: 100%;
+      margin-left: 1px !important;
+      max-height: 200px !important;
     }
+
+    .Select-input {
+      margin-left: -16px;
+      padding-top: 2px;
+    }
+
+    .Select-placeholder,
+    .Select--single > .Select-control .Select-value {
+      padding: 0px 10px;
+      line-height: 21px !important;
+      top: 5px;
+    }
+
+    .Select-clear { display: none; }
+  }
 }

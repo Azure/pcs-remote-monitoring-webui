@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import '../../../styles/variables/colors';
+
 .timerange-selection.dashboard {
   display: flex;
   justify-content: flex-end;
@@ -9,28 +11,28 @@
   .Select-control { margin-top: 10px; }
 
   .Select-value-label,
-  .Select-arrow-zone { color: #fff; }
+  .Select-arrow-zone { color: $white; }
 
   .Select {
     width: 120px;
     font-size: 16px;
-    color: #fff !important;
+    color: $white !important;
   }
 
   .Select-menu-outer {
-    width : 120px;
-    margin-left: 10px;
+    width : 140px;
+    margin-left: -20px;
   }
 
   .last-refreshed-time {
     margin-right: 10px;
-    color: #fff;
+    color: $white;
   }
 
   .last-refreshed-text {
     margin-left: 10px;
     margin-right: 6px;
-    color: #afb9c3;
+    color: $lightestGray;
   }
 
   .time-icon {
