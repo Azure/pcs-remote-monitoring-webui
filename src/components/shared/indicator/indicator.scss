@@ -1,0 +1,329 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.wait-indicator {
+  position: relative;
+  display: block;
+  overflow: hidden;
+
+  &.ring {
+    display: inline-block;
+
+    &.large {
+      @include square-px-rem(48px);
+
+      .dot span { @include square-px-rem(6px); }
+    }
+
+    &.medium {
+      @include square-px-rem(32px);
+
+      .dot span { @include square-px-rem(4px); }
+    }
+
+    &.normal {
+      @include square-px-rem(24px);
+
+      .dot span { @include square-px-rem(4px); }
+    }
+
+    &.small {
+      @include square-px-rem(16px);
+
+      .dot span { @include square-px-rem(2px); }
+    }
+
+    &.mini {
+      @include square-px-rem(12px);
+
+      .dot span { @include square-px-rem(1px); }
+    }
+
+    .dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 70%;
+      height: 70%;
+      text-align: left;
+      opacity: 0;
+      transform-origin: 0 0;
+      -webkit-transform-origin: 0 0;
+      animation-iteration-count: infinite;
+      animation-duration: 4000ms;
+    }
+
+    .dot:nth-child(1) {
+      transform: rotate(225deg) translate(-50%, -50%);
+      animation-delay: 0ms;
+      animation-name: orbit1;
+    }
+
+    .dot:nth-child(2) {
+      transform: rotate(215deg) translate(-50%, -50%);
+      animation-delay: 180ms;
+      animation-name: orbit2;
+    }
+
+    .dot:nth-child(3) {
+      transform: rotate(205deg) translate(-50%, -50%);
+      animation-delay: 360ms;
+      animation-name: orbit3;
+    }
+
+    .dot:nth-child(4) {
+      transform: rotate(195deg) translate(-50%, -50%);
+      animation-delay: 540ms;
+      animation-name: orbit4;
+    }
+
+    .dot:nth-child(5) {
+      transform: rotate(185deg) translate(-50%, -50%);
+      animation-delay: 720ms;
+      animation-name: orbit5;
+    }
+
+    .dot:nth-child(6) { display: none; }
+
+    .dot span {
+      content: '';
+      position: absolute;
+      -webkit-border-radius: 50%;
+      border-radius: 50%;
+    }
+
+    @mixin orbit($deg1, $deg2, $deg3, $deg4, $deg5) {
+      0% {
+        transform: rotate($deg1) translate(-50%, -50%);
+        animation-timing-function: ease-out;
+        opacity: 0;
+      }
+
+      1% { opacity: 1; }
+
+      6% {
+        transform: rotate($deg2) translate(-50%, -50%);
+        animation-timing-function: linear;
+      }
+
+      30% {
+        transform: rotate($deg3) translate(-50%, -50%);
+        animation-timing-function: linear;
+      }
+
+      37.5% {
+        transform: rotate(565deg) translate(-50%, -50%);
+        animation-timing-function: ease-out;
+      }
+
+      41.5% {
+        transform: rotate($deg4) translate(-50%, -50%);
+        animation-timing-function: linear;
+      }
+
+      70% {
+        transform: rotate($deg5) translate(-50%, -50%);
+        animation-timing-function: ease-out;
+      }
+
+      72% { opacity: 1; }
+
+      75% {
+        transform: rotate(945deg) translate(-50%, -50%);
+        animation-timing-function: ease-out;
+        opacity: 0;
+      }
+
+      100% {
+        transform: rotate(945deg) translate(-50%, -50%);
+        opacity: 0;
+      }
+    }
+
+    @keyframes orbit1 {
+      @include orbit(
+      	225deg,
+        360deg,
+        445deg,
+        690deg,
+        810deg
+      );
+    }
+    @keyframes orbit2 {
+      @include orbit(
+      	215deg,
+        350deg,
+        435deg,
+        680deg,
+        800deg
+      );
+    }
+    @keyframes orbit3 {
+      @include orbit(
+      	205deg,
+        340deg,
+        425deg,
+        670deg,
+        790deg
+      );
+    }
+    @keyframes orbit4 {
+      @include orbit(
+      	195deg,
+        330deg,
+        415deg,
+        660deg,
+        780deg
+      );
+    }
+    @keyframes orbit5 {
+      @include orbit(
+      	185deg,
+        320deg,
+        405deg,
+        650deg,
+        770deg
+      );
+    }
+
+    @keyframes orbit6 {
+      @include orbit(
+      	175deg,
+        310deg,
+        395deg,
+        640deg,
+        760deg
+      );
+    }
+  }
+
+  &.bar {
+    width: 100%;
+    max-width: 100%;
+    background-color: transparent;
+    display: inline-block;
+
+    &.large {
+      @include rem-fallback(height, 16px);
+
+      .dot span { @include square-px-rem(6px); }
+    }
+
+    &.medium {
+      @include rem-fallback(height, 8px);
+
+      .dot span { @include square-px-rem(4px); }
+    }
+
+    &.normal {
+      @include rem-fallback(height, 6px);
+
+      .dot span { @include square-px-rem(4px); }
+    }
+
+    &.small {
+      @include rem-fallback(height, 4px);
+
+      .dot span { @include square-px-rem(2px); }
+    }
+
+    &.mini {
+      @include rem-fallback(height, 2px);
+
+      .dot span { @include square-px-rem(1px); }
+    }
+
+    .dot {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      text-align: left;
+      opacity: 0;
+      transform: translateX(calc(0 '-' 3px));
+      transform-origin: 0 0;
+      -webkit-transform-origin: 0 0;
+      animation-iteration-count: infinite;
+      animation-duration: 3000ms;
+    }
+
+    .dot:nth-child(1) {
+      animation-delay: 0ms;
+      animation-name: slide1;
+    }
+
+    .dot:nth-child(2) {
+      animation-delay: 180ms;
+      animation-name: slide2;
+    }
+
+    .dot:nth-child(3) {
+      animation-delay: 360ms;
+      animation-name: slide3;
+    }
+
+    .dot:nth-child(4) {
+      animation-delay: 540ms;
+      animation-name: slide4;
+    }
+
+    .dot:nth-child(5) {
+      animation-delay: 720ms;
+      animation-name: slide5;
+    }
+
+    .dot:nth-child(6) {
+      animation-delay: 900ms;
+      animation-name: slide6;
+    }
+
+    .dot span {
+      content: '';
+      position: absolute;
+      -webkit-border-radius: 50%;
+      border-radius: 50%;
+    }
+
+    @mixin slide($percent) {
+      0% {
+        transform: translateX(0);
+        animation-timing-function: ease-out;
+        opacity: 0;
+      }
+
+      36% { opacity: .5; }
+
+      50% {
+        transform: translateX($percent);
+        animation-timing-function: ease-in;
+        opacity: 1;
+      }
+
+      64% { opacity: .5; }
+
+      100% {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+    }
+
+    @keyframes slide1 { @include slide(60%); }
+
+    @keyframes slide2 { @include slide(56%); }
+
+    @keyframes slide3 { @include slide(52%); }
+
+    @keyframes slide4 { @include slide(48%); }
+
+    @keyframes slide5 { @include slide(44%); }
+
+    @keyframes slide6 { @include slide(40%); }
+  }
+
+  // Apply theming
+  @include themify($themes) {
+    .dot .inner { background-color: themed('colorHighest'); }
+  }
+}

@@ -1,0 +1,56 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+$btnHeight: 28px;
+$btnIconSize: 14px;
+.btn {
+  display: flex;
+  flex-flow: row nowrap;
+  flex-shrink: 0;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  @include rem-fallback(padding, 0px, $btnHeight);
+
+  .btn-icon {
+    @include rem-fallback(height, $btnHeight);
+    @include rem-fallback(width, $btnIconSize);
+
+    svg { @include square-px-rem($btnIconSize); }
+
+    + .btn-text {
+      @include rem-fallback(padding-left, 5px);
+    }
+  }
+
+  .btn-text {
+    @include rem-fallback(line-height, $btnHeight);
+    @include rem-fallback(padding-right, (($btnHeight - $btnIconSize) / 2));
+    @include rem-font-size(14px);
+  }
+
+  @include themify($themes) {
+    color: themed('colorHighest');
+
+    .btn-icon svg { fill: themed('colorHighest'); }
+
+    &:hover {
+      color: themed('colorLowestSecond');
+      background-color: themed('colorLightestFirst');
+
+      .btn-icon svg { fill: themed('colorLowestSecond'); }
+    }
+
+    &:disabled {
+      background-color: transparent;
+      color: themed('colorMidFirst');
+      cursor: auto;
+
+      .btn-icon svg { fill: themed('colorMidFirst'); }
+    }
+
+  }
+}

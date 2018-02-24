@@ -1,56 +1,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-@import '../../../styles/variables/colors';
+@import 'src/styles/mixins';
 
-.timerange-selection.dashboard {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 13px;
-  margin-right: 10px;
-
-  .Select-control { margin-top: 10px; }
-
-  .Select-value-label,
-  .Select-arrow-zone { color: $white; }
-
-  .Select {
-    width: 120px;
-    font-size: 16px;
-    color: $white !important;
-  }
-
-  .Select-menu-outer {
-    width : 140px;
-    margin-left: -20px;
-  }
-
-  .last-refreshed-time {
-    margin-right: 10px;
-    color: $white;
-  }
-
-  .last-refreshed-text {
-    margin-left: 10px;
-    margin-right: 6px;
-    color: $lightestGray;
-  }
-
-  .time-icon {
-    background: url("../../../assets/icons/Timerange.svg") no-repeat center;
-    background-size: contain;
-    margin-left: 35px !important;
-  }
-
-  .refresh-icon {
-    background: url("../../../assets/icons/Refresh.svg") no-repeat center;
-    background-size: contain;
-    cursor: pointer;
-  }
-
-  .icon-sm {
-    width: 14px;
-    height: 14px;
-    margin-left: 2px;
-  }
-
+.dashboard-container {
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  @include rem-font-size(20px);
 }

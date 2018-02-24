@@ -1,4 +1,7 @@
 /* eslint-disable */
+
+// Copyright (c) Microsoft. All rights reserved.
+
 // Polyfills for cross browser support
 
 if (!String.prototype.startsWith) {
@@ -38,11 +41,37 @@ if (!String.prototype.includes) {
   String.prototype.includes = function(search, start) {
     'use strict';
     if (typeof start !== 'number') start = 0;
-    
+
     if (start + search.length > this.length) {
       return false;
     } else {
       return this.indexOf(search, start) !== -1;
+    }
+  };
+}
+
+if (!String.prototype.endsWith) {
+  String.prototype.endsWith = function(searchStr, Position) {
+    if (!(Position < this.length))
+      Position = this.length;
+    else
+      Position |= 0;
+    return this.substr(Position - searchStr.length, searchStr.length) === searchStr;
+  };
+}
+
+if (!String.prototype.padStart) {
+  String.prototype.padStart = function padStart(targetLength, padString) {
+    targetLength = targetLength >> 0; //floor if number or convert non-number to 0;
+    padString = String(padString || ' ');
+    if (this.length > targetLength) {
+      return String(this);
+    } else {
+      targetLength = targetLength - this.length;
+      if (targetLength > padString.length) {
+        padString += padString.repeat(targetLength / padString.length); //append to original to ensure we are longer than needed
+      }
+      return padString.slice(0, targetLength) + String(this);
     }
   };
 }

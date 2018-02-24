@@ -1,0 +1,42 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'variables';
+
+$themes: (
+  dark: (
+    // Lows
+    colorLowestFirst: $colorNoir,
+    colorLowestSecond: $colorMidnight,
+    colorLowestThird: $colorCharcoal,
+    // Mids
+    colorMidFirst: $colorAsh,
+    colorMidSecond: $colorLead,
+    colorMidThird: $colorGraphite,
+    // Highs
+    colorLightestFirst: $colorSmoke,
+    colorLightestSecond: $colorStone,
+    colorHighest: $colorWhite,
+    // Functional colors
+    colorAlarm: $colorAlarm,
+    colorWarning: $colorWarning,
+    colorSystem: $colorSystem,
+  ),
+  light: (
+    // Lows
+    colorLowestFirst: $colorWhite,
+    colorLowestSecond: $colorMagnesium,
+    colorLowestThird: $colorAluminum,
+    // Mids
+    colorMidFirst: $colorSterling,
+    colorMidSecond: $colorNickel,
+    colorMidThird: $colorSilver,
+    // Highs
+    colorLightestFirst: $colorBurnished,
+    colorLightestSecond: $colorPlatinum,
+    colorHighest: $colorStephanite,
+    // Functional colors
+    colorAlarm: $colorAlarm,
+    colorWarning: #F0D227,
+    colorSystem: $colorSystem,
+  ),
+);

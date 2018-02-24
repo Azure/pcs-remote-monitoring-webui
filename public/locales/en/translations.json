@@ -1,0 +1,13 @@
+{
+  "companyName": "Contoso",
+  "header": {
+    "appName": "Azure IoT Suite Remote Monitoring Preview",
+    "logout": "Logout"
+  },
+  "tabs": {
+    "dashboard": "dashboard",
+    "devices": "devices",
+    "rules": "rules",
+    "maintenance": "maintenance"
+  }
+}

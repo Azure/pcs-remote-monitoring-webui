@@ -1,0 +1,70 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'variables';
+
+// ========================== Pixel to REM conversion mixins - START
+
+// A function to convert Px to REM according to the base font Px size
+@function pxToRem($pxValue) {
+  $remSize: $pxValue / $baseFontSize;
+  @return #{$remSize}rem;
+}
+
+// A mixin that converts the provided Px values to REMs
+@mixin rem-fallback($property, $values...) {
+  $max: length($values);
+  $pxValues: '';
+  $remValues: '';
+
+  @for $i from 1 through $max {
+    $pxValue: nth($values, $i);
+    $pxValues: #{$pxValues + $pxValue};
+    $remValue: pxToRem($pxValue);
+    $remValues: #{$remValues + $remValue};
+
+    @if $i < $max {
+      $pxValues: #{$pxValues + " "};
+      $remValues: #{$remValues + " "};
+    }
+  }
+
+  #{$property}: $pxValues;
+  #{$property}: $remValues;
+}
+
+// A helper mixin for converting Px to REMs for the font-size property
+@mixin rem-font-size($pxFontSize) {
+  @include rem-fallback(font-size, $pxFontSize);
+}
+
+// A helper mixin for converting Px to REMs for height and width properties
+@mixin square-px-rem($pxValue) {
+  @include rem-fallback(height, $pxValue);
+  @include rem-fallback(width, $pxValue);
+}
+
+// ========================== Pixel to REM conversion mixins - END
+
+// ========================== Theming mixins - START
+
+// A mixin for adding themes
+@mixin themify($themes) {
+  @each $theme, $map in $themes {
+    .theme-#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+// A helper mixin for choosing a key from a theme
+@function themed($key) {
+  @return map-get($theme-map, $key);
+}
+
+// ========================== Theming mixins - END

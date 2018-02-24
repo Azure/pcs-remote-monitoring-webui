@@ -1,0 +1,10 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+
+.rules-container {
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  @include rem-font-size(20px);
+}

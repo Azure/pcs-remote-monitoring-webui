@@ -1,0 +1,105 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+$headerHeight: 48px;
+$svgSize: 16px;
+$imgSize: 30px;
+
+.app-header {
+  display: flex;
+  flex-flow: row nowrap;
+  flex-shrink: 0;
+
+  @include rem-fallback(height, $headerHeight);
+
+  .breadcrumbs { flex-grow: 1; }
+
+  .label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @include rem-fallback(line-height, $headerHeight);
+    @include rem-fallback(padding-left, 24px);
+    @include rem-fallback(padding-right, 24px);
+  }
+
+  .items-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    button {
+      border: 0;
+      padding: 0;
+      background-color: transparent;
+    }
+
+    .item-icon {
+      cursor: pointer;
+
+      @include square-px-rem($headerHeight);
+
+      svg { @include square-px-rem($svgSize); }
+
+      &.profile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img { @include square-px-rem($imgSize); }
+      }
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      z-index: 10; // Push above the main content container TODO: Remove with better dropdown
+      right: 0;
+      top: 100%;
+      border: 1px solid;
+      @include rem-fallback(width, 150px);
+
+      > button {
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+        @include rem-font-size(14px);
+        @include rem-fallback(padding, 5px, 8px);
+      }
+    }
+  }
+
+  // Apply theme properties
+  @include themify($themes) {
+    border-bottom: 1px solid themed('colorMidSecond');
+
+    .label { color: themed('colorLightestFirst'); }
+
+    .items-container {
+      border-left: 1px solid themed('colorMidSecond');
+
+      .item-icon {
+        svg { fill: themed('colorLightestFirst'); }
+
+        &:hover {
+          background-color: themed('colorLowestSecond');
+
+          svg { fill: themed('colorHighest'); }
+        }
+      }
+
+      .profile-dropdown {
+        background-color: themed('colorLowestFirst');
+        border-color: themed('colorMidSecond');
+
+        > button {
+          color: themed('colorLightestFirst');
+
+          &:hover { background-color: themed('colorLowestSecond'); }
+        }
+      }
+    }
+  }
+}

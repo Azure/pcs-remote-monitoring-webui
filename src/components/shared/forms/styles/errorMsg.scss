@@ -1,0 +1,25 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+$errorIconSize: 10px;
+.error-message {
+  display: flex;
+  flex-flow: row nowrap;
+  flex-shrink: 0;
+  @include rem-font-size(14px);
+
+  .error-icon {
+    @include square-px-rem($errorIconSize);
+    @include rem-fallback(margin-right, 10px);
+
+    svg { @include square-px-rem($errorIconSize); }
+  }
+
+  @include themify($themes) {
+    color: themed('colorHighest');
+
+    .error-icon svg { fill: themed('colorAlarm'); }
+  }
+}

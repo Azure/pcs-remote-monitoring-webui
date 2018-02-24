@@ -1,0 +1,23 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/variables';
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.page-not-found-container {
+  font-family: $fontSelawikBold;
+  text-align: center;
+  @include rem-font-size(24px);
+  @include rem-fallback(padding, 70px);
+
+  .quote {
+    font-family: $fontSelawikLight;
+    font-style: italic;
+    font-size: 1.2em;
+  }
+
+  // Apply theme properties
+  @include themify($themes) {
+    color: themed('colorLightestFirst');
+  }
+}
