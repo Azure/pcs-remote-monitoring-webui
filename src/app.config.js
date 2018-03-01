@@ -1,6 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
+const rootUrl = '';
 
 const Config = {
+  // TEMP: Base service urls
+  baseUrls: {
+    iotHubManager: `${rootUrl}/iothubmanager/v1/`
+  },
   // Constants
   defaultAjaxTimeout: 10000, // 10s
   maxRetryAttempts: 2,

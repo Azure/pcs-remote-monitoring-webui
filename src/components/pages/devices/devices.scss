@@ -7,4 +7,10 @@
   text-align: center;
   padding: 20px;
   @include rem-font-size(20px);
+
+  .device {
+    text-align: left;
+    padding: 8px;
+    @include rem-font-size(16px);
+  }
 }

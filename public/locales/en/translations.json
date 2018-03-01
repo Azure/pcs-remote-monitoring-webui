@@ -9,5 +9,9 @@
     "devices": "devices",
     "rules": "rules",
     "maintenance": "maintenance"
+  },
+  "devices": {
+    "noneFound": "No devices found.",
+    "refresh": "Refresh"
   }
 }
