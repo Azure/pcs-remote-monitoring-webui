@@ -1,0 +1,43 @@
+<!-- Copyright (c) Microsoft. All rights reserved. -->
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-23353.389 -7615.137 16.777 18.274">
+  <defs>
+    <style>
+      .disabled-icon .cls-1 {
+        fill: transparent;
+        stroke-width: 1.3px;
+      }
+
+      .disabled-icon .cls-1,
+      .disabled-icon .cls-3 {
+        stroke: inherit;
+      }
+
+      .disabled-icon .cls-2,
+      .disabled-icon .cls-5 {
+        fill: none;
+      }
+
+      .disabled-icon .cls-2 {
+        stroke: #1b1d1f;
+        stroke-width: 5px;
+      }
+
+      .disabled-icon .cls-3 {
+        stroke-width: 1.5px;
+      }
+
+      .disabled-icon .cls-4 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="Group_738" class="disabled-icon" data-name="Group 738" transform="translate(-23356 -7614)">
+    <g id="Ellipse_260" data-name="Ellipse 260" class="cls-1" transform="translate(3)">
+      <circle class="cls-4" cx="8" cy="8" r="8"/>
+      <circle class="cls-5" cx="8" cy="8" r="7.35"/>
+    </g>
+    <line id="Line_1743" data-name="Line 1743" class="cls-2" x2="13" y2="15" transform="translate(4.5 0.5)"/>
+    <path id="Path_971" data-name="Path 971" class="cls-3" d="M0,0,13.044,15.133" transform="translate(4.5 0.5)"/>
+  </g>
+</svg>

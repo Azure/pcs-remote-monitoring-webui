@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import DeviceGrid from './devicesGrid/devicesGrid';
 import { Btn } from 'components/shared';
 
 import './devices.css';
@@ -12,18 +13,14 @@ export class Devices extends Component {
   }
 
   renderDevices(devices, noDevicesMessage) {
-    if (devices && devices.length) {
-      return (
-        <ul>
-          {devices.map((device, index) => <li key={index} className="device">{device.id}</li>)}
-        </ul>
-      );
-    }
-    return noDevicesMessage;
+    return devices && devices.length
+      ? <DeviceGrid rowData={devices} />
+      : noDevicesMessage;
   }
 
   render() {
     const { t, devices, error, fetchDevices } = this.props;
+
     return (
       <div className="devices-container">
         { this.renderDevices(devices, error ? error : t('devices.noneFound')) }

@@ -1,0 +1,183 @@
+/*
+This file contains a class pcs-ag-dark that when combined with the ag-dark
+theme from AgGrid updates the ag-dark theme to match the PCS grid theme
+*/
+
+@import 'src/styles/variables';
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+$darkBgColor: #121416;
+$rowBgColor: #1b1d1f;
+$selectedRowBgColor: #242628;
+$selectedRowBorderColor: #7065fd;
+$rowHeight: 40px;
+$rowHeightWithPadding: ($rowHeight + 8px);
+$headerColor: #9fa8b1;
+$checkboxPadding: 8px;
+
+.pcs-grid-container.ag-dark.pcs-ag-dark {
+  position: relative;
+  font-family: $fontSelawik;
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 4px;
+
+    &-thumb { padding-top: 16px; }
+  }
+
+  > .pcs-grid-loading-container {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    padding: 20px 0px;
+
+    // When the grid loader is visible, we don't want to show the
+    // grid but we don't want to destroy the element either and
+    // pay the initialization cost again. With these styles we hide
+    // the grid when the loader is present.
+    & + div {
+      visibility: hidden; // Using visibility so AgGrid can autoSizeColumns correctly
+      height: 1px; // Height at 1px to avoid issues with a full grid creating ghost scroll effects
+    }
+  }
+
+  .ag-root { border: none; }
+
+  .ag-cell-focus {
+    border: none;
+    outline: none;
+    text-transform: capitalize;
+  }
+
+  .ag-cell {
+    text-transform: capitalize;
+    border: none !important;
+    height: $rowHeight;
+    line-height: $rowHeight;
+    padding: 0 2px;
+  }
+
+  .ag-row {
+    height: 48px;
+    cursor: pointer;
+  }
+
+  .ag-header {
+    border: none;
+    height: $rowHeight;
+
+    &:first-child { border-left: 4px solid transparent !important; }
+  }
+
+  .ag-header-cell {
+    text-align: left;
+    text-transform: uppercase;
+    border: none;
+    line-height: $rowHeightWithPadding;
+  }
+
+  .ag-selection-checkbox {
+    padding-right: $checkboxPadding;
+    padding-left: $checkboxPadding;
+  }
+
+  .ag-header-cell-label { padding: 0 4px; }
+
+  .ag-cell-no-focus.ag-cell.ag-cell-not-inline-editing.ag-cell-value {
+    text-transform: capitalize;
+    border-bottom: none;
+  }
+
+  .ag-cell-last-left-pinned.ag-cell-no-focus,
+  .ag-ltr .ag-cell-no-focus { border-right: none; }
+
+  /* Remove three pixels to offset the parent padding for font alignment */
+  .ag-header-select-all {
+    line-height: ($rowHeight - 3px);
+    padding-left: ($checkboxPadding + 2px);
+  }
+
+  .ag-paging-panel {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    padding: 0;
+
+    .ag-paging-row-summary-panel { display: none }
+
+    .ag-paging-button {
+      border: none;
+      padding: 6px 8px;
+    }
+  }
+
+  @include themify($themes) {
+    background-color: $darkBgColor;
+
+    ::-webkit-scrollbar {
+      background: #242628;
+
+      &-thumb { background-color: #242628; }
+    }
+
+    ::-webkit-scrollbar-corner { background: #242628; }
+
+    .ag-row,
+    .ag-body,
+    .ag-body-viewport,
+    .ag-row-even,
+    .ag-row-odd { background-color: $darkBgColor; }
+
+    .ag-cell {
+      background-color: $rowBgColor;
+      color: #fff;
+
+      &:first-child { border-left: 4px solid $rowBgColor !important; }
+    }
+
+    .ag-row {
+
+      &.ag-row-hover .ag-cell,
+      &.ag-row-focus .ag-cell {
+        border-color: $selectedRowBgColor !important;
+        background-color: $selectedRowBgColor;
+      }
+
+      &.pcs-row-soft-selected .ag-cell {
+        background-color: $selectedRowBgColor !important;
+        border-color: $selectedRowBorderColor !important;
+      }
+    }
+
+    .ag-body-container,
+    .ag-pinned-left-cols-container {
+      .ag-row-selected .ag-cell {
+        background-color: $selectedRowBgColor !important;
+        border-color: $selectedRowBorderColor !important;
+      }
+    }
+
+    .ag-header {
+      background-color: $darkBgColor;
+      color: $headerColor;
+    }
+
+    .ag-paging-panel {
+      color: $headerColor;
+
+      .ag-paging-button {
+        background-color: transparent;
+        color: $headerColor;
+
+        &:hover {
+          background-color: $rowBgColor;
+          color: #fff;
+        }
+      }
+    }
+
+    .ag-header-cell-moving { background-color: $darkBgColor; }
+  }
+}

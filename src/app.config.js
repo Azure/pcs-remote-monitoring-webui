@@ -1,16 +1,18 @@
 // Copyright (c) Microsoft. All rights reserved.
-const rootUrl = '';
+const baseUrl = 'https://maryellen-0226.azurewebsites.net';
 
 const Config = {
   // TEMP: Base service urls
-  baseUrls: {
-    iotHubManager: `${rootUrl}/iothubmanager/v1/`
+  serviceUrls: {
+    iotHubManager: `${baseUrl}/iothubmanager/v1/`
   },
   // Constants
   defaultAjaxTimeout: 10000, // 10s
   maxRetryAttempts: 2,
   retryWaitTime: 2000, // On retryable error, retry after 2s
-  retryableStatusCodes: new Set([ 0, 502, 503 ])
+  retryableStatusCodes: new Set([ 0, 502, 503 ]),
+  paginationPageSize: 50,
+  clickDebounceTime: 180
 };
 
 export default Config;

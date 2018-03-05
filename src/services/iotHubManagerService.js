@@ -4,7 +4,7 @@ import Config from 'app.config';
 import { HttpClient } from './httpClient';
 import { toDevicesModel } from './models';
 
-const ENDPOINT = Config.baseUrls.iotHubManager;
+const ENDPOINT = Config.serviceUrls.iotHubManager;
 
 /** Contains methods for calling the Device service */
 export class IoTHubManagerService {

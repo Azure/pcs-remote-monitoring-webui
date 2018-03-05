@@ -6,14 +6,20 @@
 
 export const toDevicesModel = (response = {}) => (response.Items || []).map(toDeviceModel);
 
-export const toDeviceModel = (response = {}) => ({
-  eTag: response.ETag,
-  id: response.Id,
-  c2dMessageCount: response.C2DMessageCount,
-  connected: response.Connected,
-  enabled: response.Enabled,
-  lastStatusUpdated: response.LastStatusUpdated,
-  iotHubHostName: response.IoTHubHostName,
-  isSimulated: response.IsSimulated
-  //TODO: Add more complicated parts of the model
-});
+export const toDeviceModel = (response = {}) => {
+  const reportedProperties = ((response.Properties || {}).Reported || {});
+  return {
+    id: response.Id,
+    lastActivity: response.LastActivity,
+    connected: response.Connected,
+    isSimulated: response.IsSimulated,
+    type: reportedProperties.Type,
+    firmware: reportedProperties.Firmware,
+    telemetry: reportedProperties.Telemetry,
+    c2dMessageCount: response.C2DMessageCount,
+    enabled: response.Enabled,
+    lastStatusUpdated: response.LastStatusUpdated,
+    iotHubHostName: response.IoTHubHostName,
+    eTag: response.ETag
+  }
+};

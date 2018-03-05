@@ -3,14 +3,17 @@
 import CaratIconPath from 'assets/icons/carat.svg';
 import ColonIconPath from 'assets/icons/colon.svg';
 import ContosoIconPath from 'assets/icons/contoso.svg';
+import DisabledIconPath from 'assets/icons/disabled.svg';
 import ErrorIconPath from 'assets/icons/errorAsterisk.svg';
 import HamburgerIconPath from 'assets/icons/hamburger.svg';
 import InfoBubbleIconPath from 'assets/icons/infoBubble.svg';
 import LinkToPath from 'assets/icons/linkTo.svg';
+import PhysicalDeviceIconPath from 'assets/icons/physicalDevice.svg';
 import PlusIconPath from 'assets/icons/plus.svg';
 import RadioSelectedIconPath from 'assets/icons/radioSelected.svg';
 import RadioUnselectedIconPath from 'assets/icons/radioUnselected.svg';
 import SettingsIconPath from 'assets/icons/settings.svg';
+import SimulatedDeviceIconPath from 'assets/icons/simulatedDevice.svg';
 import TabDashboardIconPath from 'assets/icons/tabDashboard.svg';
 import TabDevicesIconPath from 'assets/icons/tabDevices.svg';
 import TabMaintenanceIconPath from 'assets/icons/tabMaintenance.svg';
@@ -29,14 +32,17 @@ export const svgs = {
   carat: CaratIconPath,
   colon: ColonIconPath,
   contoso: ContosoIconPath,
+  disabled: DisabledIconPath,
   error: ErrorIconPath,
   hamburger: HamburgerIconPath,
   infoBubble: InfoBubbleIconPath,
   linkTo: LinkToPath,
+  physicalDevice: PhysicalDeviceIconPath,
   plus: PlusIconPath,
   radioSelected: RadioSelectedIconPath,
   radioUnselected: RadioUnselectedIconPath,
   settings: SettingsIconPath,
+  simulatedDevice: SimulatedDeviceIconPath,
   trash: TrashPath,
   x: XIconPath
 };
