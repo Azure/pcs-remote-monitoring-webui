@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { Observable } from 'rxjs';
+import update from 'immutability-helper';
 
 // A collection of helper objects for reducing store/redux-observable boilerplate
 
@@ -46,12 +47,12 @@ function chooseEpicParam(type, epic, rawEpic) {
  *  - The epic that handles actions of given type
  */
 export function createEpicCase(params) {
-  if (!params.type || (!params.epic && !params.rawEpic)) {
+  if ((!params.type && !params.rawType) || (!params.epic && !params.rawEpic)) {
     throw new Error('Error in createEpicCase: "type" and "epic" are required parameters');
   }
 
   // The scenario properties
-  const type = `EPIC_${params.type}`;
+  const type = params.rawType || `EPIC_${params.type}`;
   const action = createAction(type, params.staticPayload);
   const epic = chooseEpicParam(type, params.epic, params.rawEpic);
 
@@ -97,13 +98,13 @@ export function createEpicScenario(cases = {}) {
  *  - The reducer that handles actions of given type
  */
 function createReducerCase(params) {
-  if (!params.type || !params.reducer) {
+  if ((!params.type && !params.rawType && !params.multiType) || !params.reducer) {
     throw new Error('Error in createReducerCase: "type" and "reducer" are required parameters');
   }
 
   // The scenario properties
-  const type = `REDUX_${params.type}`;
-  const action = createAction(type, params.staticPayload);
+  const type = params.multiType || params.rawType || `REDUX_${params.type}`;
+  const action = !params.multiType ? createAction(type, params.staticPayload) : undefined;
   const reducer = params.reducer
 
   return { type, action, reducer };
@@ -140,9 +141,11 @@ export function createReducerScenario(cases = {}) {
   // Used for fast lookup of action types in the primary reducer method
   const actionReducers = Object.keys(reducers)
     .reduce((acc, actionName) => {
-      const type = actionTypes[actionName];
+      const actionType = actionTypes[actionName];
+      const matchTypes = Array.isArray(actionType) ? actionType : [ actionType ];
       const reducer = reducers[actionName];
-      return { ...acc, [type]: reducer };
+      const reducerMapping = matchTypes.reduce((acc, type) => ({ ...acc, [type]: reducer }), {});
+      return { ...acc, ...reducerMapping };
     }, {});
 
   // The full reducer for the scenario
@@ -155,3 +158,34 @@ export function createReducerScenario(cases = {}) {
 
   return { actionTypes, actions, reducers, getReducer };
 }
+
+/*
+ * Many reducers need to track loading states and error states.
+ * These methods make managing these states easily replicable
+ * across reducers.
+ */
+export const errorPendingInitialState = { pending: {}, errors: {} };
+
+// setPending and setError are intended to be used inside immutability-helper update
+export const setPending = (type, flag) => ({
+  pending: { [type]: { $set: flag }}
+});
+
+export const setError = (type, error) => ({
+  errors: { [type]: { $set: error }}
+});
+
+export const pendingReducer = (state, { type }) => update(state, {
+  ...setPending(type, true),
+  ...setError(type)
+});
+
+export const errorReducer = (state, { payload, error }) => update(state, {
+  ...setPending(payload, false),
+  ...setError(payload, error)
+});
+
+export const getPending = (state, type) => state.pending[type];
+export const getError = (state, type) => state.errors[type];
+
+export const toActionCreator = (actionCreator, fromAction) => payload => actionCreator(payload, { fromAction });

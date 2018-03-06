@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { translate } from 'react-i18next';
 import { PcsGrid } from 'components/shared';
 import { checkboxParams, deviceColumnDefs, defaultDeviceGridProps } from './devicesConfig';
-import { isFunc } from 'utilities';
+import { isFunc, translateColumnDefs } from 'utilities';
 
 import './devicesGrid.css';
 
@@ -74,12 +75,15 @@ class DevicesGrid extends Component {
     const gridProps = {
       /* Grid Properties */
       ...defaultDeviceGridProps,
-      columnDefs: this.columnDefs,
+      columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
       onRowDoubleClicked: ({ node }) => node.setSelected(!node.isSelected()),
       ...this.props, // Allow default property overrides
       /* Grid Events */
       onHardSelectChange: this.onHardSelectChange,
-      onGridReady: this.onGridReady
+      onGridReady: this.onGridReady,
+      context: {
+        t: this.props.t
+      }
     };
     delete gridProps.contextActions;
     return (
@@ -88,4 +92,4 @@ class DevicesGrid extends Component {
   }
 }
 
-export default DevicesGrid;
+export default translate()(DevicesGrid);

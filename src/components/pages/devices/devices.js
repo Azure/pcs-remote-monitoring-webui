@@ -12,18 +12,12 @@ export class Devices extends Component {
     this.props.fetchDevices();
   }
 
-  renderDevices(devices, noDevicesMessage) {
-    return devices && devices.length
-      ? <DeviceGrid rowData={devices} />
-      : noDevicesMessage;
-  }
-
   render() {
-    const { t, devices, error, fetchDevices } = this.props;
-
+    const { t, devices, error, isPending, fetchDevices } = this.props;
     return (
       <div className="devices-container">
-        { this.renderDevices(devices, error ? error : t('devices.noneFound')) }
+        { !!error && <span className="status">Error: {error.errorMessage}</span> }
+        { !error && <DeviceGrid rowData={isPending ? undefined : devices || []} /> }
         <Btn onClick={fetchDevices}>{t('devices.refresh')}</Btn>
       </div>
     );

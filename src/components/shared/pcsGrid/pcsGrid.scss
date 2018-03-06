@@ -133,6 +133,7 @@ $checkboxPadding: 8px;
     .ag-cell {
       background-color: $rowBgColor;
       color: #fff;
+      outline: none;
 
       &:first-child { border-left: 4px solid $rowBgColor !important; }
     }

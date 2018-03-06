@@ -12,6 +12,19 @@
   },
   "devices": {
     "noneFound": "No devices found.",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "grid": {
+      "connected": "connected",
+      "deviceName": "Device Name",
+      "deviceType": "Device Type",
+      "firmware": "Firmware",
+      "lastConnection": "Last Connection",
+      "no":  "no",
+      "offline": "offline",
+      "simulated": "Simulated",
+      "status": "Status",
+      "telemetry": "Telemetry",
+      "yes":  "yes"
+    }
   }
 }

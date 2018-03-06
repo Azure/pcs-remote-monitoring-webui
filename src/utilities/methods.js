@@ -1,4 +1,5 @@
 // Copyright (c) Microsoft. All rights reserved.
+import dot from 'dot-object';
 
 /** Tests if a value is a function */
 export const isFunc = value => typeof value === 'function';
@@ -19,3 +20,17 @@ export const stringToBoolean = value => {
   if (str === "true") return true;
   else if (str === "false") return false;
 };
+
+/** Takes an object and converts it to another structure using dot-notation */
+export const reshape = (reponse, model) => {
+  return Object.keys(model).reduce((acc, key) => dot.copy(key, model[key], reponse, acc), {});
+};
+
+/** A helper method for translating headerNames of columnDefs */
+export const translateColumnDefs = (t, columnDefs) => {
+  return columnDefs.map(columnDef =>
+    columnDef.headerName
+      ? { ...columnDef, headerName: t(columnDef.headerName) }
+      : columnDef
+  );
+}

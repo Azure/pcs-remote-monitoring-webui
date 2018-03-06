@@ -6,14 +6,16 @@ import { Devices } from './devices';
 import {
   epics as devicesEpics,
   getDevices,
-  getDevicesError
+  getDevicesError,
+  getDevicesPendingStatus
 } from 'store/reducers/devicesReducer';
 
 
 // Pass the devices status
 const mapStateToProps = state => ({
   devices: getDevices(state),
-  error: getDevicesError(state)
+  error: getDevicesError(state),
+  isPending: getDevicesPendingStatus(state)
 });
 
 // Wrap the dispatch method

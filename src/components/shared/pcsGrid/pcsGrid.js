@@ -132,7 +132,6 @@ export class PcsGrid extends Component {
       onRowClicked: this.onRowClicked,
       onRowDoubleClicked: this.onRowDoubleClicked
     };
-    console.log('gridParams', gridParams);
     const { rowData, pcsLoadingTemplate } = this.props;
 
     const loadingContainer =

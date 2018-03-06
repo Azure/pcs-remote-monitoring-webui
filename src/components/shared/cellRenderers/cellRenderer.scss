@@ -26,6 +26,8 @@ $iconSize: 19px;
     overflow: hidden;
     text-overflow: ellipsis;
     color: #afb9c3;
+
+    &.uppercase { text-transform: uppercase; }
   }
 
   &.highlight {

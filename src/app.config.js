@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft. All rights reserved.
-const baseUrl = 'https://maryellen-0226.azurewebsites.net';
+const baseUrl = '';
 
 const Config = {
   // TEMP: Base service urls
