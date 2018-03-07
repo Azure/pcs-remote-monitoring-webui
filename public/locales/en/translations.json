@@ -10,6 +10,7 @@
     "rules": "rules",
     "maintenance": "maintenance"
   },
+  "errorFormat": "Error: {{message}}",
   "devices": {
     "noneFound": "No devices found.",
     "refresh": "Refresh",
@@ -25,6 +26,12 @@
       "status": "Status",
       "telemetry": "Telemetry",
       "yes":  "yes"
+    }
+  },
+  "rules": {
+    "grid": {
+      "enabled": "enabled",
+      "disabled": "disabled"
     }
   }
 }

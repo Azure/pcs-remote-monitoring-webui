@@ -4,7 +4,9 @@ const baseUrl = '';
 const Config = {
   // TEMP: Base service urls
   serviceUrls: {
-    iotHubManager: `${baseUrl}/iothubmanager/v1/`
+    config: `${baseUrl}/config/v1/`,
+    iotHubManager: `${baseUrl}/iothubmanager/v1/`,
+    telemetry: `${baseUrl}/telemetry/v1/`
   },
   // Constants
   defaultAjaxTimeout: 10000, // 10s

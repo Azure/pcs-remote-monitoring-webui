@@ -40,17 +40,19 @@ class Navigation extends Component {
     };
 
     // Collapse the nav if the window width is too small
-    window.onresize = () => {
-      if (
-        window.innerWidth < minExpandedNavWindowWidth
-        && window.innerWidth < this.state.lastWidth // When the window is shrinking
-        && !this.state.collapsed
-      ) {
-        this.setState({ collapsed: true, lastWidth: window.innerWidth });
-      } else {
-        this.setState({ lastWidth: window.innerWidth });
-      }
-    };
+    window.addEventListener('resize', this.collapseNav);
+  }
+
+  collapseNav = () => {
+    if (
+      window.innerWidth < minExpandedNavWindowWidth
+      && window.innerWidth < this.state.lastWidth // When the window is shrinking
+      && !this.state.collapsed
+    ) {
+      this.setState({ collapsed: true, lastWidth: window.innerWidth });
+    } else {
+      this.setState({ lastWidth: window.innerWidth });
+    }
   }
 
   toggleExpanded = (event) => {

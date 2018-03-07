@@ -1,0 +1,12 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.pcs-renderer-cell.severity {
+  @include themify($themes) {
+    &.info .pcs-renderer-icon svg { fill: themed('colorSystem'); }
+    &.warning .pcs-renderer-icon svg { fill: themed('colorWarning'); }
+    &.critical .pcs-renderer-icon svg { fill: themed('colorAlarm'); }
+  }
+}

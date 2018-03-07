@@ -2,9 +2,11 @@
 
 import 'rxjs';
 import { Observable } from 'rxjs';
+import moment from 'moment';
 import { schema, normalize } from 'normalizr';
 import update from 'immutability-helper';
 import { createSelector } from 'reselect';
+import { redux as appRedux, getActiveDeviceGroupConditions } from './appReducer';
 import { IoTHubManagerService } from 'services';
 import {
   createReducerScenario,
@@ -26,10 +28,22 @@ export const epics = createEpicScenario({
   /** Loads the devices */
   fetchDevices: {
     type: 'DEVICES_FETCH',
-    epic: fromAction =>
-      IoTHubManagerService.getDevices()
+    epic: (fromAction, store) => {
+      const conditions = getActiveDeviceGroupConditions(store.getState());
+      return IoTHubManagerService.getDevices(conditions)
         .map(toActionCreator(redux.actions.updateDevices, fromAction))
         .catch(handleError(fromAction))
+    }
+  },
+
+  /* Update the devices if the selected device group changes */
+  refreshDevices: {
+    type: 'DEVICES_REFRESH',
+    rawEpic: ($actions) =>
+      $actions.ofType(appRedux.actionTypes.updateActiveDeviceGroup)
+        .map(({ payload }) => payload)
+        .distinctUntilChanged()
+        .map(_ => epics.actions.fetchDevices())
   }
 });
 // ========================= Epics - END
@@ -40,13 +54,14 @@ const deviceListSchema = new schema.Array(deviceSchema);
 // ========================= Schemas - END
 
 // ========================= Reducers - START
-const initialState = { ...errorPendingInitialState, entities: {}, items: [] };
+const initialState = { ...errorPendingInitialState, entities: {}, items: [], lastUpdated: '' };
 
 const updateDevicesReducer = (state, { payload, fromAction }) => {
   const { entities: { devices }, result } = normalize(payload, deviceListSchema);
   return update(state, {
     entities: { $set: devices },
     items: { $set: result },
+    lastUpdated: { $set: moment() },
     ...setPending(fromAction.type, false)
   });
 };
@@ -58,7 +73,7 @@ const fetchableTypes = [
 
 export const redux = createReducerScenario({
   updateDevices: { type: 'DEVICES_UPDATE', reducer: updateDevicesReducer },
-  registerError: { type: 'DEVICES_REGISTER_ERROR', reducer: errorReducer },
+  registerError: { type: 'DEVICES_REDUCER_ERROR', reducer: errorReducer },
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer },
 });
 
@@ -66,13 +81,14 @@ export const reducer = { devices: redux.getReducer(initialState) };
 // ========================= Reducers - END
 
 // ========================= Selectors - START
-export const accessReducer = state => state.devices;
-export const getEntities = state => accessReducer(state).entities;
-export const getItems = state => accessReducer(state).items;
+export const getDevicesReducer = state => state.devices;
+const getEntities = state => getDevicesReducer(state).entities;
+export const getItems = state => getDevicesReducer(state).items;
+export const getDevicesLastUpdated = state => getDevicesReducer(state).lastUpdated;
 export const getDevicesError = state =>
-  getError(accessReducer(state), epics.actionTypes.fetchDevices);
+  getError(getDevicesReducer(state), epics.actionTypes.fetchDevices);
 export const getDevicesPendingStatus = state =>
-  getPending(accessReducer(state), epics.actionTypes.fetchDevices);
+  getPending(getDevicesReducer(state), epics.actionTypes.fetchDevices);
 export const getDevices = createSelector(
   getEntities, getItems,
   (entities, items) => items.map(id => entities[id])

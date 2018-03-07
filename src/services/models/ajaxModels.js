@@ -27,7 +27,7 @@ export class AjaxError {
       return "You need to login to call the service.";
     } else if (this.status === 403) { // User not authorized
       return "You are not authorized to call the service.";
-    }else if (this.status === 404) { // Endpoint not found
+    } else if (this.status === 404) { // Endpoint not found
       return "Oops, we were not able to find the service.";
     } else if (this.status >= 300 && this.status < 400) { // Redirection
       return "Oops, we got a redirection error.";

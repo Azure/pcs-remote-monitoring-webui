@@ -5,11 +5,13 @@ import { combineEpics } from 'redux-observable';
 // Epics
 import { epics as appEpics } from './reducers/appReducer';
 import { epics as devicesEpics } from './reducers/devicesReducer';
+import { epics as rulesEpics } from './reducers/rulesReducer';
 
 // Extract the epic function from each property object
 const epics = [
   ...appEpics.getEpics(),
-  ...devicesEpics.getEpics()
+  ...devicesEpics.getEpics(),
+  ...rulesEpics.getEpics()
 ];
 
 const rootEpic = combineEpics(...epics);

@@ -63,5 +63,8 @@ export const defaultDeviceGridProps = {
   enableColResize: true,
   multiSelect: true,
   paginationPageSize: Config.paginationPageSize,
-  rowSelection: 'multiple'
+  rowSelection: 'multiple',
+  suppressCellSelection: true,
+  suppressClickEdit: true,
+  suppressRowClickSelection: true
 };

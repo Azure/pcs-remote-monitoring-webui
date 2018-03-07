@@ -10,8 +10,9 @@ const ENDPOINT = Config.serviceUrls.iotHubManager;
 export class IoTHubManagerService {
 
   /** Returns a list of devices */
-  static getDevices() {
-    return HttpClient.get(`${ENDPOINT}devices`)
+  static getDevices(conditions = []) {
+    const query = encodeURIComponent(JSON.stringify(conditions));
+    return HttpClient.get(`${ENDPOINT}devices?query=${query}`)
       .map(toDevicesModel);
   }
 }

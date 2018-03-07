@@ -2,23 +2,25 @@
 
 import React, { Component } from 'react';
 import DeviceGrid from './devicesGrid/devicesGrid';
-import { Btn } from 'components/shared';
+import { Btn, RefreshBar } from 'components/shared';
 
 import './devices.css';
 
 export class Devices extends Component {
-  constructor(props) {
-    super(props);
-    this.props.fetchDevices();
+
+  changeDeviceGroup = () => {
+    const { changeDeviceGroup, deviceGroups }  = this.props;
+    changeDeviceGroup(deviceGroups[1].id);
   }
 
   render() {
-    const { t, devices, error, isPending, fetchDevices } = this.props;
+    const { t, devices, error, isPending, lastUpdated, fetchDevices } = this.props;
     return (
       <div className="devices-container">
-        { !!error && <span className="status">Error: {error.errorMessage}</span> }
+        <RefreshBar refresh={fetchDevices} time={lastUpdated} isPending={isPending} />
+        { !!error && <span className="status">{t('errorFormat', { message: error.message })}</span> }
         { !error && <DeviceGrid rowData={isPending ? undefined : devices || []} /> }
-        <Btn onClick={fetchDevices}>{t('devices.refresh')}</Btn>
+        <Btn onClick={this.changeDeviceGroup}>Refresh Device Groups</Btn>
       </div>
     );
   }

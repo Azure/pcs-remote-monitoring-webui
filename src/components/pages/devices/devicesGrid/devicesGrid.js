@@ -78,14 +78,13 @@ class DevicesGrid extends Component {
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
       onRowDoubleClicked: ({ node }) => node.setSelected(!node.isSelected()),
       ...this.props, // Allow default property overrides
-      /* Grid Events */
-      onHardSelectChange: this.onHardSelectChange,
-      onGridReady: this.onGridReady,
       context: {
         t: this.props.t
-      }
+      },
+      /* Grid Events */
+      onHardSelectChange: this.onHardSelectChange,
+      onGridReady: this.onGridReady
     };
-    delete gridProps.contextActions;
     return (
       <PcsGrid {...gridProps} />
     );
