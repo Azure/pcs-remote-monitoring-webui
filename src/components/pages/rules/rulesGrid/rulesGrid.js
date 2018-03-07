@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { PcsGrid } from 'components/shared';
 import { rulesColumnDefs, checkboxParams, defaultRulesGridProps } from './rulesGridConfig';
-import { isFunc } from 'utilities';
+import { isFunc, translateColumnDefs } from 'utilities';
 
 class RulesGrid extends Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class RulesGrid extends Component {
     const gridProps = {
       /* Grid Properties */
       ...defaultRulesGridProps,
-      columnDefs: this.columnDefs,
+      columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
       ...this.props, // Allow default property overrides
       context: {
         t: this.props.t

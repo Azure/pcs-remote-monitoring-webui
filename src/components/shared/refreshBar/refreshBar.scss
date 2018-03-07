@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 @import 'src/styles/mixins';
+@import 'src/styles/themes';
 
 $rotateTime: 2s;
 
@@ -11,30 +12,33 @@ $rotateTime: 2s;
   font-size: 0.9em;
   @include rem-fallback(margin-top, 13px);
 
-  .time {
-    color: #fff;
-
-    .refresh-text { color: #afb9c3; }
-  }
-
   .btn.refresh-btn {
-    background: none;
     @include rem-fallback(padding, 0px, 5px);
 
-    .btn-icon {
-      @include square-px-rem(15px);
-
-      svg { fill: #afb9c3; }
-    }
-
-    &:hover .btn-icon svg { fill: #fff; }
+    .btn-icon { @include square-px-rem(15px); }
 
     &.refreshing {
       -webkit-animation: spin $rotateTime linear infinite;
       -moz-animation: spin $rotateTime linear infinite;
       animation: spin $rotateTime linear infinite;
+    }
+  }
 
-      .btn-icon svg { fill: #fff; }
+  @include themify($themes) {
+    .time {
+      color: themed('colorContentText');
+
+      .refresh-text { color: themed('colorContentTextDim'); }
+    }
+
+    .btn.refresh-btn {
+      background: none;
+
+      .btn-icon svg { fill: themed('colorContentTextDim'); }
+
+      &:hover .btn-icon svg { fill: themed('colorContentText'); }
+
+      &.refreshing .btn-icon svg { fill: themed('colorContentText'); }
     }
   }
 }

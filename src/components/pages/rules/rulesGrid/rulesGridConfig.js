@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import moment from 'moment';
-import { SeverityRenderer, RuleStatusRenderer } from 'components/shared/cellRenderers';
-import { DEFAULT_TIME_FORMAT, gridValueFormatters } from 'components/shared/pcsGrid/pcsGridConfig';
-
+import {
+  SeverityRenderer,
+  RuleStatusRenderer,
+  CountRenderer,
+  LastTriggerRenderer
+} from 'components/shared/cellRenderers';
 export const LAST_TRIGGER_DEFAULT_WIDTH = 310;
 
 export const checkboxParams = {
@@ -12,71 +14,60 @@ export const checkboxParams = {
   checkboxSelection: true
 };
 
-const { checkForEmpty } = gridValueFormatters;
-
 export const rulesColumnDefs = {
   ruleName: {
-    headerName: 'Rule Name',
+    headerName: 'rules.grid.ruleName',
     field: 'name',
     filter: 'text'
   },
   description: {
-    headerName: 'Description',
+    headerName: 'rules.grid.description',
     field: 'description',
     filter: 'text'
   },
   severity: {
-    headerName: 'Severity',
+    headerName: 'rules.grid.severity',
     field: 'severity',
     filter: 'text',
     cellRendererFramework: SeverityRenderer
   },
   filter: {
-    headerName: 'Filter',
+    headerName: 'rules.grid.filter',
     field: 'groupId',
-    filter: 'text',
-    // cellRendererFramework: DeviceSourceCellRenderer
+    filter: 'text'
   },
   trigger: {
-    headerName: 'Trigger',
+    headerName: 'rules.grid.trigger',
     field: 'conditions',
     filter: 'text',
-    valueFormatter: ({ value }) => {
+    valueFormatter: ({ value, context: { t } }) => {
       if (Array.isArray(value) && value.length) {
-        return value.map(trigger => trigger['field'] || 'Unknown').join(' and ');
+        return value.map(trigger => trigger['field'] || t('rules.grid.unknown')).join(' & ');
       }
-      return 'Unknown'
+      return t('rules.grid.unknown');
     }
   },
   notificationType: {
-    headerName: 'Notification Type',
+    headerName: 'rules.grid.notificationType',
     field: 'type',
     filter: 'text',
-    valueFormatter: ({ value }) => value || 'Maintenance log'
+    valueFormatter: ({ value, context: { t } }) => value || t('rules.grid.maintenanceLog')
   },
   status: {
-    headerName: 'Status',
+    headerName: 'rules.grid.status',
     field: 'enabled',
     filter: 'text',
     cellRendererFramework: RuleStatusRenderer
   },
   count: {
-    headerName: 'Count',
+    headerName: 'rules.grid.count',
     field: 'count',
-    valueFormatter: ({ value }) => value || 'loading...'
-    // cellRendererFramework: deviceCountCellRenderer,
+    cellRendererFramework: CountRenderer
   },
   lastTrigger: {
-    headerName: 'Last Trigger',
+    headerName: 'rules.grid.lastTrigger',
     field: 'lastTrigger',
-    valueFormatter: ({ value }) => {
-      if (value) {
-        const time = moment(value);
-        return checkForEmpty((time.unix() > 0) ? time.format(DEFAULT_TIME_FORMAT) : '');
-      }
-      return 'Loading...'
-    },
-    // cellRendererFramework: LastTriggerCellRenderer,
+    cellRendererFramework: LastTriggerRenderer,
     width: LAST_TRIGGER_DEFAULT_WIDTH
   }
 };

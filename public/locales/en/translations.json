@@ -11,6 +11,19 @@
     "maintenance": "maintenance"
   },
   "errorFormat": "Error: {{message}}",
+  "errorCode": {
+    "noResponse": "Oops, there was no response from the server.",
+    "notLoggedIn": "You need to login to call the service.",
+    "notAuthorized": "You are not authorized to call the service.",
+    "notFound": "Oops, we were not able to find the service.",
+    "redirection": "Oops, we got a redirection error.",
+    "retryFailure": "Oops, we got a temporary error from the service but were unable to recover. Try again later.",
+    "unknown": "{{message}}"
+  },
+  "refreshBar": {
+    "refreshing": "Refreshing",
+    "lastRefreshed": "Last refreshed"
+  },
   "devices": {
     "noneFound": "No devices found.",
     "refresh": "Refresh",
@@ -29,9 +42,25 @@
     }
   },
   "rules": {
+    "severity": {
+      "info": "Info",
+      "warning": "Warning",
+      "critical": "Critical"
+    },
     "grid": {
       "enabled": "enabled",
-      "disabled": "disabled"
+      "disabled": "disabled",
+      "ruleName": "Rule Name",
+      "description": "Description",
+      "severity": "Severity",
+      "filter": "Filter",
+      "trigger": "Trigger",
+      "notificationType": "Notification Type",
+      "status": "Status",
+      "count": "Count",
+      "lastTrigger": "Last Trigger",
+      "maintenanceLog": "Maintenance log",
+      "unknown": "Unknown"
     }
   }
 }

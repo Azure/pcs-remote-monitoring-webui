@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import { Rules } from './rules';
+import { RulesContainer } from './rules.container';
 import { mount } from 'enzyme';
-import { I18n } from 'react-i18next';
-
-import "mocha-steps";
-
-import 'polyfills';
+import MockApp from 'components/mocks/mockApp';
 
 describe('Rules Component', () => {
   it('Renders without crashing', () => {
-    const wrapper = mount(<Rules />);
+    const wrapper = mount(
+      <MockApp>
+        <RulesContainer />
+      </MockApp>
+    );
   });
 });

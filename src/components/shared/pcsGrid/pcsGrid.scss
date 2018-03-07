@@ -7,13 +7,8 @@ theme from AgGrid updates the ag-dark theme to match the PCS grid theme
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
-$darkBgColor: #121416;
-$rowBgColor: #1b1d1f;
-$selectedRowBgColor: #242628;
-$selectedRowBorderColor: #7065fd;
 $rowHeight: 40px;
 $rowHeightWithPadding: ($rowHeight + 8px);
-$headerColor: #9fa8b1;
 $checkboxPadding: 8px;
 
 .pcs-grid-container.ag-dark.pcs-ag-dark {
@@ -114,71 +109,71 @@ $checkboxPadding: 8px;
   }
 
   @include themify($themes) {
-    background-color: $darkBgColor;
+    background-color: transparent;
 
     ::-webkit-scrollbar {
-      background: #242628;
+      background: themed('colorGridScrollBar');
 
-      &-thumb { background-color: #242628; }
+      &-thumb { background-color: themed('colorGridScrollBar'); }
     }
 
-    ::-webkit-scrollbar-corner { background: #242628; }
+    ::-webkit-scrollbar-corner { background: themed('colorGridScrollBar'); }
 
     .ag-row,
     .ag-body,
     .ag-body-viewport,
     .ag-row-even,
-    .ag-row-odd { background-color: $darkBgColor; }
+    .ag-row-odd { background-color: transparent; }
 
     .ag-cell {
-      background-color: $rowBgColor;
-      color: #fff;
+      background-color: themed('colorGridRowBackground');
+      color: themed('colorGridCellText');
       outline: none;
 
-      &:first-child { border-left: 4px solid $rowBgColor !important; }
+      &:first-child { border-left: 4px solid themed('colorGridRowBackground') !important; }
     }
 
     .ag-row {
 
       &.ag-row-hover .ag-cell,
       &.ag-row-focus .ag-cell {
-        border-color: $selectedRowBgColor !important;
-        background-color: $selectedRowBgColor;
+        border-color: themed('colorGridRowHoverBackground') !important;
+        background-color: themed('colorGridRowHoverBackground');
       }
 
       &.pcs-row-soft-selected .ag-cell {
-        background-color: $selectedRowBgColor !important;
-        border-color: $selectedRowBorderColor !important;
+        background-color: themed('colorGridRowHoverBackground') !important;
+        border-color: themed('colorGridSelectedRowBorder') !important;
       }
     }
 
     .ag-body-container,
     .ag-pinned-left-cols-container {
       .ag-row-selected .ag-cell {
-        background-color: $selectedRowBgColor !important;
-        border-color: $selectedRowBorderColor !important;
+        background-color: themed('colorGridRowHoverBackground') !important;
+        border-color: themed('colorGridSelectedRowBorder') !important;
       }
     }
 
     .ag-header {
-      background-color: $darkBgColor;
-      color: $headerColor;
+      background-color: transparent;
+      color: themed('colorGridHeaderText');
     }
 
     .ag-paging-panel {
-      color: $headerColor;
+      color: themed('colorGridHeaderText');
 
       .ag-paging-button {
         background-color: transparent;
-        color: $headerColor;
+        color: themed('colorGridHeaderText');
 
         &:hover {
-          background-color: $rowBgColor;
-          color: #fff;
+          background-color: themed('colorGridRowBackground');
+          color: themed('colorGridCellText');
         }
       }
     }
 
-    .ag-header-cell-moving { background-color: $darkBgColor; }
+    .ag-header-cell-moving { background-color: transparent; }
   }
 }

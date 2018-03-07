@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 @import 'src/styles/mixins';
+@import 'src/styles/themes';
 
 $iconSize: 14px;
 
@@ -12,33 +13,40 @@ $iconSize: 14px;
   .pcs-renderer-icon {
     margin-right: 10px;
 
-    svg {
-      fill: #afb9c3;
-      @include square-px-rem($iconSize);
-
-      .disabled-icon { stroke: #afb9c3; }
-    }
-    // Pending: SVG fill color #6a737c
+    svg { @include square-px-rem($iconSize); }
   }
 
   .pcs-renderer-text {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #afb9c3;
 
     &.uppercase { text-transform: uppercase; }
   }
 
-  &.highlight {
+  @include themify($themes) {
+    .pcs-renderer-icon {
+      margin-right: 10px;
 
-    .pcs-renderer-icon svg {
-      fill: #fff;
+      svg {
+        fill: themed('colorCellRendererSvgFill');
 
-      .disabled-icon { stroke: #fff; }
+        .disabled-icon { stroke: themed('colorCellRendererSvgFill'); }
+      }
     }
 
-    .pcs-renderer-text { color: #fff;}
+    .pcs-renderer-text { color: themed('colorCellRendererText'); }
 
+    &.highlight {
+
+      .pcs-renderer-icon svg {
+        fill: themed('colorCellRendererSvgFillHighlight');
+
+        .disabled-icon { stroke: themed('colorCellRendererSvgFillHighlight'); }
+      }
+
+      .pcs-renderer-text { color: themed('colorCellRendererTextHighlight'); }
+
+    }
   }
 }

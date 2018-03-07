@@ -1,10 +1,14 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 @import 'src/styles/mixins';
+@import 'src/styles/themes';
 
 .dashboard-container {
-  color: #fff;
   text-align: center;
   padding: 20px;
   @include rem-font-size(20px);
+
+  @include themify($themes) {
+    color: themed('colorContentText');
+  }
 }

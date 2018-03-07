@@ -1,0 +1,8 @@
+{
+  "copyright": "Copyright (c) Microsoft. All rights reserved.",
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "baseUrl": "./src"
+  }
+}

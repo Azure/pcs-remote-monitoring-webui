@@ -4,6 +4,7 @@
 
 $themes: (
   dark: (
+    // TODO - Remove START
     // Lows
     colorLowestFirst: $colorNoir,
     colorLowestSecond: $colorMidnight,
@@ -16,27 +17,30 @@ $themes: (
     colorLightestFirst: $colorSmoke,
     colorLightestSecond: $colorStone,
     colorHighest: $colorWhite,
+    // TODO - Remove END
+
     // Functional colors
     colorAlarm: $colorAlarm,
     colorWarning: $colorWarning,
     colorSystem: $colorSystem,
-  ),
-  light: (
-    // Lows
-    colorLowestFirst: $colorWhite,
-    colorLowestSecond: $colorMagnesium,
-    colorLowestThird: $colorAluminum,
-    // Mids
-    colorMidFirst: $colorSterling,
-    colorMidSecond: $colorNickel,
-    colorMidThird: $colorSilver,
-    // Highs
-    colorLightestFirst: $colorBurnished,
-    colorLightestSecond: $colorPlatinum,
-    colorHighest: $colorStephanite,
-    // Functional colors
-    colorAlarm: $colorAlarm,
-    colorWarning: $colorWarning,
-    colorSystem: $colorSystem,
-  ),
+
+    // Grid - START
+    colorGridScrollBar: $colorCharcoal,
+    colorGridRowBackground: $colorMidnight,
+    colorGridCellText: $colorWhite,
+    colorGridRowHoverBackground: $colorCharcoal,
+    colorGridSelectedRowBorder: $colorSystem,
+    colorGridHeaderText: $colorSmoke,
+
+    colorCellRendererSvgFill: $colorSmoke,
+    colorCellRendererSvgFillHighlight: $colorWhite,
+    colorCellRendererText: $colorSmoke,
+    colorCellRendererTextHighlight: $colorWhite,
+    // Grid - END
+
+    // Page Content Colors - START
+    colorContentText: $colorWhite,
+    colorContentTextDim: $colorSmoke,
+    // Page Content Colors - END
+  )
 );

@@ -22,7 +22,7 @@ export const SeverityRenderer = ({ value, context: { t } }) => {
     <div className={cellClasses}>
       <Svg path={getSvg(cleanValue)} className="pcs-renderer-icon" />
       <div className="pcs-renderer-text">
-        { cleanValue }
+        { t(`rules.severity.${cleanValue}`) }
       </div>
     </div>
   );

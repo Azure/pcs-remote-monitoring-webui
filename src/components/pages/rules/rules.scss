@@ -1,9 +1,12 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 @import 'src/styles/mixins';
+@import 'src/styles/themes';
 
 .rules-container {
   padding: 20px;
 
-  .status { color: #fff;}
+  @include themify($themes) {
+    .status { color: themed('colorContentText'); }
+  }
 }

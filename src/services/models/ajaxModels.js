@@ -22,21 +22,19 @@ export class AjaxError {
    */
   get message() {
     if (this.status === 0) { // No response from the service (e.g. timeout, network disconnect, CORS, etc.)
-      return "Oops, there was no response from the server.";
+      return 'errorCode.noResponse';
     } else if (this.status === 401) { // User not logged in
-      return "You need to login to call the service.";
+      return 'errorCode.notLoggedIn';
     } else if (this.status === 403) { // User not authorized
-      return "You are not authorized to call the service.";
+      return 'errorCode.notAuthorized';
     } else if (this.status === 404) { // Endpoint not found
-      return "Oops, we were not able to find the service.";
+      return 'errorCode.notFound';
     } else if (this.status >= 300 && this.status < 400) { // Redirection
-      return "Oops, we got a redirection error.";
+      return 'errorCode.redirection';
     } else if (Config.retryableStatusCodes.has(this.status)) {
-      return `Oops, we got a temporary error from the service
-              but were unable to recover. Try again later.`;
-    } else {
-      return this.errorMessage;
+      return 'errorCode.retryFailure';
     }
+    return 'errorCode.unknown';
   }
 }
 

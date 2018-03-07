@@ -6,8 +6,6 @@ import { PcsGrid } from 'components/shared';
 import { checkboxParams, deviceColumnDefs, defaultDeviceGridProps } from './devicesConfig';
 import { isFunc, translateColumnDefs } from 'utilities';
 
-import './devicesGrid.css';
-
 /**
  * A grid for displaying devices
  *

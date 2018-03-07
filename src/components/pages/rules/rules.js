@@ -23,8 +23,13 @@ export class Rules extends Component {
     const { t, rules, error, isPending, lastUpdated, fetchRules } = this.props;
     return (
       <div className="rules-container">
-        <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} />
-        { !!error && <span className="status">{t('errorFormat', { message: error.message })}</span> }
+        <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} t={t} />
+        {
+          !!error &&
+          <span className="status">
+            { t('errorFormat', { message: t(error.message, { message: error.errorMessage }) }) }
+          </span>
+        }
         { !error && <RulesGrid rowData={isPending ? undefined : rules || []} /> }
         <Btn onClick={this.changeDeviceGroup}>Refresh Device Groups</Btn>
       </div>

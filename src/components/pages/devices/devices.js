@@ -17,8 +17,13 @@ export class Devices extends Component {
     const { t, devices, error, isPending, lastUpdated, fetchDevices } = this.props;
     return (
       <div className="devices-container">
-        <RefreshBar refresh={fetchDevices} time={lastUpdated} isPending={isPending} />
-        { !!error && <span className="status">{t('errorFormat', { message: error.message })}</span> }
+        <RefreshBar refresh={fetchDevices} time={lastUpdated} isPending={isPending} t={t} />
+        {
+          !!error &&
+          <span className="status">
+            { t('errorFormat', { message: t(error.message, { message: error.errorMessage }) }) }
+          </span>
+        }
         { !error && <DeviceGrid rowData={isPending ? undefined : devices || []} /> }
         <Btn onClick={this.changeDeviceGroup}>Refresh Device Groups</Btn>
       </div>
