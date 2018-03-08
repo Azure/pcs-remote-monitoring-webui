@@ -6,6 +6,7 @@ import { Devices } from './devices';
 import {
   epics as devicesEpics,
   getDevices,
+  getEntities,
   getDevicesError,
   getDevicesLastUpdated,
   getDevicesPendingStatus
@@ -15,6 +16,7 @@ import { redux as appRedux, getDeviceGroups } from 'store/reducers/appReducer';
 // Pass the devices status
 const mapStateToProps = state => ({
   devices: getDevices(state),
+  entities: getEntities(state),
   error: getDevicesError(state),
   isPending: getDevicesPendingStatus(state),
   deviceGroups: getDeviceGroups(state),

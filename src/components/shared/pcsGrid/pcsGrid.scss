@@ -111,14 +111,6 @@ $checkboxPadding: 8px;
   @include themify($themes) {
     background-color: transparent;
 
-    ::-webkit-scrollbar {
-      background: themed('colorGridScrollBar');
-
-      &-thumb { background-color: themed('colorGridScrollBar'); }
-    }
-
-    ::-webkit-scrollbar-corner { background: themed('colorGridScrollBar'); }
-
     .ag-row,
     .ag-body,
     .ag-body-viewport,

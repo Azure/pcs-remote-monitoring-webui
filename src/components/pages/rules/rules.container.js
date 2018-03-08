@@ -6,6 +6,7 @@ import { Rules } from './rules';
 import {
   epics as rulesEpics,
   getRules,
+  getEntities,
   getRulesError,
   getRulesLastUpdated,
   getRulesPendingStatus
@@ -15,6 +16,7 @@ import { redux as appRedux, getDeviceGroups } from 'store/reducers/appReducer';
 // Pass the devices status
 const mapStateToProps = state => ({
   rules: getRules(state),
+  entities: getEntities(state),
   error: getRulesError(state),
   isPending: getRulesPendingStatus(state),
   deviceGroups: getDeviceGroups(state),

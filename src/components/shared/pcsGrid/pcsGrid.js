@@ -28,7 +28,7 @@ export class PcsGrid extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { currentSoftSelectId: '' };
+    this.state = { currentSoftSelectId: undefined };
 
     this.defaultPcsGridProps = {
       domLayout: 'autoHeight',
@@ -57,7 +57,7 @@ export class PcsGrid extends Component {
 
   /** When new props are passed in, check if the soft select state needs to be updated */
   componentWillReceiveProps(nextProps) {
-    if (this.currentSoftSelectId !== nextProps.softSelectId) {
+    if (this.state.currentSoftSelectId !== nextProps.softSelectId) {
       this.setState({ currentSoftSelectId: nextProps.softSelectId }, this.refreshRows);
     }
   }
@@ -70,23 +70,13 @@ export class PcsGrid extends Component {
     }
   }
 
-  /** Refreshes the grid to update soft select CSS states */
+  /**
+   * Refreshes the grid to update soft select CSS states
+   * Forces and update event
+   */
   refreshRows = () => {
-    if (this.gridApi && this.gridApi.rowRenderer && this.gridApi.rowRenderer.refreshRows) {
-      this.gridApi.rowRenderer.refreshRows(this.gridApi.getRenderedNodes());
-    }
-  };
-
-  /** Computes the CSS classes to apply to each row, including soft select */
-  getRowClass = params => {
-    let rowClasses = '';
-    if (isFunc(this.props.getSoftSelectId)) {
-      rowClasses = this.props.getSoftSelectId(params.data) === this.props.softSelectId ? 'pcs-row-soft-selected' : '';
-    }
-    if (isFunc(this.props.getRowClass)) {
-      rowClasses += ` ${this.props.getRowClass(params)}`;
-    }
-    return rowClasses;
+    if (this.gridApi && isFunc(this.gridApi.updateRowData))
+      this.gridApi.updateRowData({ update: [] });
   }
 
   /** When a row is hard selected, try to fire a hard select event, plus any props callbacks */
@@ -105,7 +95,9 @@ export class PcsGrid extends Component {
     this.clickStream.next(
       () => {
         const { onSoftSelectChange, onRowClicked } = this.props;
-        if (isFunc(onSoftSelectChange)) onSoftSelectChange(rowEvent.data, rowEvent);
+        if (isFunc(onSoftSelectChange)) {
+          onSoftSelectChange(rowEvent.data, rowEvent);
+        }
         if (isFunc(onRowClicked)) onRowClicked(rowEvent);
       }
     );
@@ -126,11 +118,18 @@ export class PcsGrid extends Component {
       ...this.props,
       headerHeight: ROW_HEIGHT,
       rowHeight: ROW_HEIGHT,
-      getRowClass: this.getRowClass,
       onGridReady: this.onGridReady,
       onSelectionChanged: this.onSelectionChanged,
       onRowClicked: this.onRowClicked,
-      onRowDoubleClicked: this.onRowDoubleClicked
+      onRowDoubleClicked: this.onRowDoubleClicked,
+      rowClassRules: {
+        'pcs-row-soft-selected': ({ context, data }) => {
+          if (isFunc(this.props.getSoftSelectId)) {
+            return this.props.getSoftSelectId(data) === this.props.softSelectId
+          }
+          return false;
+        }
+      }
     };
     const { rowData, pcsLoadingTemplate } = this.props;
 

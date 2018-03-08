@@ -111,7 +111,7 @@ export const reducer = { rules: redux.getReducer(initialState) };
 
 // ========================= Selectors - START
 export const getRulesReducer = state => state.rules;
-const getEntities = state => getRulesReducer(state).entities;
+export const getEntities = state => getRulesReducer(state).entities;
 const getItems = state => getRulesReducer(state).items;
 export const getRulesLastUpdated = state => getRulesReducer(state).lastUpdated;
 export const getRulesError = state =>
