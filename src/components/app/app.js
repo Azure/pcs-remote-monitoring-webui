@@ -3,6 +3,8 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
+import { Settings } from './flyouts';
+
 // App Components
 import Header from './header/header';
 import Navigation from './navigation/navigation';
@@ -32,28 +34,39 @@ const tabConfigs = [ dashboardTab, devicesTab, rulesTab, maintenanceTab ];
 /** The base component for the app */
 class App extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = { openFlyout: '' };
+  }
+
   componentDidMount() {
     const { history, registerRouteEvent } = this.props;
     // Initialize listener to inject the route change event into the epic action stream
     history.listen(({ pathname }) => registerRouteEvent(pathname));
   }
 
+  closeFlyout = () => this.setState({ openFlyout: '' });
+
+  openSettings = () => this.setState({ openFlyout: 'settings' });
+
   render() {
     return (
       <div className="app">
         <Navigation tabs={tabConfigs} t={this.props.t} />
         <Main>
-          <Header logout={this.props.logout} t={this.props.t} />
+          <Header openSettings={this.openSettings} logout={this.props.logout} t={this.props.t} />
           <PageContent>
             <Switch>
               <Redirect exact from="/" to={dashboardTab.to} />
               <Route exact path={dashboardTab.to} component={DashboardPage} />
               <Route exact path={devicesTab.to} component={DevicesPage} />
               <Route exact path={rulesTab.to} component={RulesPage} />
-              <Route exact path={maintenanceTab.to} component={MaintenancePage} />
+              <Route path={maintenanceTab.to} component={MaintenancePage} />
               <Route component={PageNotFound} />
             </Switch>
           </PageContent>
+          { this.state.openFlyout === 'settings' && <Settings onClose={this.closeFlyout} /> }
         </Main>
       </div>
     );

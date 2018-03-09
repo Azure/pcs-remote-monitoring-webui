@@ -2,6 +2,9 @@
 
 import React, { Component } from 'react';
 
+import { Breadcrumbs } from './breadcrumbs';
+import { Svg } from 'components/shared';
+import { svgs } from 'utilities';
 import ProfileImagePath from 'assets/images/profile.png';
 
 import './header.css';
@@ -33,9 +36,14 @@ class Header extends Component {
   render() {
     return (
       <header className="app-header">
-        <div className="breadcrumbs">{ this.props.breadcrumbs || '' }</div>
+        <div className="breadcrumbs">
+          <Breadcrumbs t={this.props.t} />
+        </div>
         <div className="label">{ this.props.t('header.appName') }</div>
         <div className="items-container">
+          <button onClick={this.props.openSettings}>
+            <Svg path={svgs.settings} className="item-icon" />
+          </button>
           <button className="item-icon profile" onClick={this.toggleDropdown}>
             <img src={ProfileImagePath} alt={ this.props.t('header.logout') } />
           </button>

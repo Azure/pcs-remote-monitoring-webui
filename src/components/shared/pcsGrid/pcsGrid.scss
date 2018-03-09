@@ -90,7 +90,7 @@ $checkboxPadding: 8px;
 
   /* Remove three pixels to offset the parent padding for font alignment */
   .ag-header-select-all {
-    line-height: ($rowHeight - 3px);
+    line-height: inherit;
     padding-left: ($checkboxPadding + 2px);
   }
 

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import CaratIconPath from 'assets/icons/carat.svg';
+import ChevronRightIconPath from 'assets/icons/chevronRight.svg';
 import ColonIconPath from 'assets/icons/colon.svg';
 import ContosoIconPath from 'assets/icons/contoso.svg';
 import CriticalIconPath from 'assets/icons/critical.svg';
@@ -36,6 +37,7 @@ export const svgs = {
     rules: TabRulesIconPath
   },
   carat: CaratIconPath,
+  chevronRight: ChevronRightIconPath,
   colon: ColonIconPath,
   contoso: ContosoIconPath,
   critical: CriticalIconPath,

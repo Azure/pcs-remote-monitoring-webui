@@ -11,6 +11,7 @@
 
   // Apply theme properties
   @include themify($themes) {
+    color: themed('colorContentText');
     background-color: themed('colorLowestFirst');
 
     // Style text highlights

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import DeviceGrid from './devicesGrid/devicesGrid';
 import { Btn, RefreshBar } from 'components/shared';
 import { DeviceDetails } from './flyouts';
+
 import './devices.css';
 
 const closedFlyoutState = {

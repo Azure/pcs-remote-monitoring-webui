@@ -3,12 +3,66 @@
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
+// TODO: These styles are place holders until the actual maintenance page work is done.
 .maintenance-container {
-  text-align: center;
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
   padding: 20px;
-  @include rem-font-size(20px);
+
+  .header {
+    font-weight: 700;
+    @include rem-font-size(48px);
+  }
+
+  .tab-container {
+    display: flex;
+    flex-flow: row wrap;
+
+    .tab {
+      text-decoration: none;
+      padding: 5px 0px;
+      font-weight: 700;
+      margin-right: 72px;
+      @include rem-font-size(32px);
+    }
+  }
+
+  .grid-container {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+
+    .temp-row {
+      text-decoration: none;
+      margin: 10px 0px;
+      padding: 10px;
+    }
+  }
 
   @include themify($themes) {
-    color: themed('colorContentText');
+    color: themed('colorContentTextDim');
+
+    .tab-container {
+      border-bottom: 1px solid themed('colorContentTextDim');
+
+      .tab {
+        color: themed('colorContentTextDim');
+
+        &:hover { color: themed('colorContentText'); }
+
+        &.active {
+          color: themed('colorContentText');
+          border-bottom: 4px solid themed('colorContentText');
+        }
+      }
+    }
+
+    .temp-row {
+      background-color: themed('colorGridRowBackground');
+      color: themed('colorGridCellText');
+
+      &:hover { background-color: themed('colorGridRowHoverBackground'); }
+    }
   }
 }

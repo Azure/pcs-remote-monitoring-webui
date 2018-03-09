@@ -14,7 +14,28 @@ $imgSize: 30px;
 
   @include rem-fallback(height, $headerHeight);
 
-  .breadcrumbs { flex-grow: 1; }
+  .breadcrumbs {
+    display: flex;
+    flex-flow: row nowrap;
+    flex-grow: 1;
+    align-items: center;
+    padding-left: 20px;
+    @include rem-font-size(14px);
+
+    .chevron-icon {
+      margin-left: 10px;
+      margin-right: 10px;
+
+      svg { @include square-px-rem(14px); }
+    }
+
+    .crumb {
+      text-transform: capitalize;
+      text-decoration: none;
+    }
+
+    a.crumb:hover { text-decoration: underline; }
+  }
 
   .label {
     white-space: nowrap;
@@ -74,6 +95,11 @@ $imgSize: 30px;
   // Apply theme properties
   @include themify($themes) {
     border-bottom: 1px solid themed('colorMidSecond');
+
+    .breadcrumbs {
+      .chevron-icon svg { fill: themed('colorContentTextDim'); }
+      .crumb { color: themed('colorContentTextDim'); }
+    }
 
     .label { color: themed('colorLightestFirst'); }
 
