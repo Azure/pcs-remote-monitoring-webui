@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { translate } from 'react-i18next';
 import { PcsGrid } from 'components/shared';
 import { rulesColumnDefs, checkboxParams, defaultRulesGridProps } from './rulesGridConfig';
 import { isFunc, translateColumnDefs } from 'utilities';
 
-class RulesGrid extends Component {
+export class RulesGrid extends Component {
   constructor(props) {
     super(props);
 
@@ -50,5 +49,3 @@ class RulesGrid extends Component {
     );
   }
 }
-
-export default translate()(RulesGrid);

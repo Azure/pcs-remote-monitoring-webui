@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { translate } from 'react-i18next';
 import { PcsGrid } from 'components/shared';
-import { checkboxParams, deviceColumnDefs, defaultDeviceGridProps } from './devicesConfig';
+import { checkboxParams, deviceColumnDefs, defaultDeviceGridProps } from './devicesGridConfig';
 import { isFunc, translateColumnDefs } from 'utilities';
 
 /**
@@ -11,7 +10,7 @@ import { isFunc, translateColumnDefs } from 'utilities';
  *
  * Encapsulates the PcsGrid props
  */
-class DevicesGrid extends Component {
+export class DevicesGrid extends Component {
   constructor(props) {
     super(props);
 
@@ -88,5 +87,3 @@ class DevicesGrid extends Component {
     );
   }
 }
-
-export default translate()(DevicesGrid);

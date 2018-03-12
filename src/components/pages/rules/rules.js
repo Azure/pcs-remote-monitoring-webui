@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import RulesGrid from './rulesGrid/rulesGrid';
+import { RulesGrid } from './rulesGrid';
 import { Btn, RefreshBar } from 'components/shared';
 import { RuleDetails } from './flyouts';
 
@@ -18,7 +18,7 @@ export class Rules extends Component {
 
     this.state = closedFlyoutState;
 
-    if (!this.props.rules.length) {
+    if (!this.props.lastUpdated) {
       this.props.fetchRules();
     }
   }
@@ -51,6 +51,7 @@ export class Rules extends Component {
       onSoftSelectChange: this.onSoftSelectChange,
       softSelectId: this.state.selectedRuleId,
       getSoftSelectId: this.getSoftSelectId,
+      t: this.props.t
     };
     return (
       <div className="rules-container">

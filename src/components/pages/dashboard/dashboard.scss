@@ -4,11 +4,23 @@
 @import 'src/styles/themes';
 
 .dashboard-container {
-  text-align: center;
-  padding: 20px;
-  @include rem-font-size(20px);
+  height: 100%;
+  display: flex;
+  flex-grow: 1;
+  flex-flow: column nowrap;
+  align-items: stretch;
+
+  .grid-container {
+    padding: 10px;
+
+    .grid-cell { min-height: 400px; }
+  }
 
   @include themify($themes) {
     color: themed('colorContentText');
   }
+}
+
+@media (max-width: 1200px) {
+  .dashboard-container { height: auto; }
 }

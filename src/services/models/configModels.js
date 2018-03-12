@@ -2,11 +2,10 @@
 
 import { reshape } from 'utilities';
 
-export const toDeviceGroupsModel = (response = {}) => (response.items || []).map(toDeviceGroupModel);
-
-export const toDeviceGroupModel = (device = {}) => reshape(device, {
-  'id': 'id',
-  'displayName': 'displayName',
-  'conditions': 'conditions',
-  'eTag': 'eTag'
-});
+export const toDeviceGroupsModel = (response = {}) => (response.items || [])
+  .map((device = {}) => reshape(device, {
+    'id': 'id',
+    'displayName': 'displayName',
+    'conditions': 'conditions',
+    'eTag': 'eTag'
+  }));

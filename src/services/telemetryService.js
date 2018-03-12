@@ -3,7 +3,7 @@
 import { stringify } from 'query-string';
 import Config from 'app.config';
 import { HttpClient } from './httpClient';
-import { toRulesModel, toAlarmsModel } from './models';
+import { toRulesModel, toAlarmsModel, toAlarmsForRuleModel } from './models';
 
 const ENDPOINT = Config.serviceUrls.telemetry;
 
@@ -11,14 +11,20 @@ const ENDPOINT = Config.serviceUrls.telemetry;
 export class TelemetryService {
 
   /** Returns a list of rules */
-  static getRules() {
-    return HttpClient.get(`${ENDPOINT}rules`)
+  static getRules(params = {}) {
+    return HttpClient.get(`${ENDPOINT}rules?${stringify(params)}`)
       .map(toRulesModel);
   }
 
-  /** Returns a list of alarms created from a rule */
-  static getAlarmsByRule(id, params = {}) {
-    return HttpClient.get(`${ENDPOINT}alarmsbyrule/${id}?${stringify(params)}`)
+  /** Returns a list of alarms */
+  static getAlarms(params = {}) {
+    return HttpClient.get(`${ENDPOINT}alarmsbyrule?${stringify(params)}`)
       .map(toAlarmsModel);
+  }
+
+  /** Returns a list of alarms created from a given rule */
+  static getAlarmsForRule(id, params = {}) {
+    return HttpClient.get(`${ENDPOINT}alarmsbyrule/${id}?${stringify(params)}`)
+      .map(toAlarmsForRuleModel);
   }
 }

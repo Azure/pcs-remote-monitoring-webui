@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import DeviceGrid from './devicesGrid/devicesGrid';
+import { DevicesGrid } from './devicesGrid';
 import { Btn, RefreshBar } from 'components/shared';
 import { DeviceDetails } from './flyouts';
 
@@ -47,6 +47,7 @@ export class Devices extends Component {
       onSoftSelectChange: this.onSoftSelectChange,
       softSelectId: this.state.selectedDeviceId,
       getSoftSelectId: this.getSoftSelectId,
+      t: this.props.t
     };
     return (
       <div className="devices-container">
@@ -57,7 +58,7 @@ export class Devices extends Component {
             { t('errorFormat', { message: t(error.message, { message: error.errorMessage }) }) }
           </span>
         }
-        { !error && <DeviceGrid {...gridProps} /> }
+        { !error && <DevicesGrid {...gridProps} /> }
         <Btn onClick={this.changeDeviceGroup}>Refresh Device Groups</Btn>
         { this.state.flyoutOpen && <DeviceDetails onClose={this.closeFlyout} device={entities[this.state.selectedDeviceId]} /> }
       </div>

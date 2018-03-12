@@ -1,0 +1,43 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.panel-container {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .panel-header { padding: 10px; }
+
+  .panel-content {
+    flex-grow: 1;
+    padding: 10px;
+    overflow: auto;
+  }
+
+  .overlay-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    /* Use flex to center the loading indicator */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @include themify($themes) {
+    .panel-header { background-color: themed('colorLowestThird'); }
+    .panel-content { background-color: themed('colorLowestSecond') }
+  }
+}

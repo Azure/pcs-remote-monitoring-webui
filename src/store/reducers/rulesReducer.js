@@ -16,7 +16,6 @@ import {
   pendingReducer,
   errorReducer,
   setPending,
-  // toActionCreator,
   getPending,
   getError
  } from 'store/utilities';
@@ -56,7 +55,7 @@ export const epics = createEpicScenario({
   fetchRuleLastTriggered: {
     type: 'RULES_LAST_TRIGGER_FETCH',
     epic: (fromAction, store) =>
-      TelemetryService.getAlarmsByRule(fromAction.payload, {
+      TelemetryService.getAlarmsForRule(fromAction.payload, {
         order: 'desc',
         limit: 1,
         devices: getDeviceIds(store.getState()).join(',')

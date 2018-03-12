@@ -6,11 +6,13 @@ import { combineReducers } from 'redux';
 import { reducer as appReducer } from './reducers/appReducer';
 import { reducer as devicesReducer } from './reducers/devicesReducer';
 import { reducer as rulesReducer } from './reducers/rulesReducer';
+import { reducer as alarmReducer } from './reducers/alarmsReducer';
 
 const rootReducer = combineReducers({
   ...appReducer,
   ...devicesReducer,
-  ...rulesReducer
+  ...rulesReducer,
+  ...alarmReducer
 });
 
 export default rootReducer;
