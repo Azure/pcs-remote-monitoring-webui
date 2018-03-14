@@ -4,7 +4,7 @@ const chartConfig = {
   bindto: '',
   data: {
     json: [],
-    xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+    xFormat: '%Y-%m-%dT%H:%M:%S',
     keys: {
       x: 'Time',
       value: []

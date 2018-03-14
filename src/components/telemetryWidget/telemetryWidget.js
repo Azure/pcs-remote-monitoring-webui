@@ -5,6 +5,7 @@ import { Radio } from 'react-bootstrap';
 
 import ApiService from '../../common/apiService';
 import Timeline from '../charts/timeline';
+import { getStandardTimeFormat } from '../../common/utils';
 
 import './telemetry.css';
 
@@ -76,7 +77,7 @@ class TelemetryWidget extends Component {
             }
             const option = {
               [deviceName]: item.Data[telemetry],
-              Time: new Date(item.Time).toISOString()
+              Time: getStandardTimeFormat(item.Time)
             };
             radioBtnOptions[telemetry].chartData.push(option);
             if (radioBtnOptions[telemetry].deviceNames.every(e => e !== deviceName)) {

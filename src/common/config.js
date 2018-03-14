@@ -75,6 +75,8 @@ const Config = {
   configApiUrl: `${baseURL}${configPath}/v1/`,
   telemetryApiUrl: `${baseURL}${telemetryPath}/v1/`,
   authApiUrl: `${baseURL}${authPath}/v1/`,
+
+  DEFAULT_TIME_FORMAT: 'YYYY-MM-DDTHH:mm:ss'
 };
 
 export default Config;

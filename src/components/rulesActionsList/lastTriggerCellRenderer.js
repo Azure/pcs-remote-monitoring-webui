@@ -4,6 +4,7 @@ import React from "react";
 import ApiService from "../../common/apiService";
 import {connect} from "react-redux";
 import Spinner from "../spinner/spinner";
+import { getLocalTimeFormat } from '../../common/utils';
 
 class LastTriggerCellRenderer extends React.Component {
 
@@ -37,7 +38,7 @@ class LastTriggerCellRenderer extends React.Component {
                         this.setState(
                             {
                                 loading: false,
-                                lastTrigger: new Date(response.Items[0].DateCreated).toLocaleString()
+                                lastTrigger: getLocalTimeFormat(response.Items[0].DateCreated)
                             }
                         );
                     }

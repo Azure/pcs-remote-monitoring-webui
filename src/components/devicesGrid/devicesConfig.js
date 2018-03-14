@@ -5,7 +5,8 @@ import lang from '../../common/lang';
 import Config from '../../common/config';
 import ConnectionStatusRenderer from '../cellRenderers/connectionStatusRenderer/connectionStatusRenderer';
 import IsSimulatedRenderer from '../cellRenderers/isSimulatedRenderer/isSimulatedRenderer';
-import { EMPTY_FIELD_VAL, DEFAULT_TIME_FORMAT, gridValueFormatters } from '../pcsGrid/pcsGridConfig';
+import { EMPTY_FIELD_VAL, gridValueFormatters } from '../pcsGrid/pcsGridConfig';
+import { getLocalTimeFormat } from '../../common/utils';
 
 const { checkForEmpty } = gridValueFormatters;
 
@@ -52,7 +53,7 @@ export const deviceColumnDefs = {
     field: 'LastActivity',
     valueFormatter: ({ value }) => {
       const time = moment(value);
-      return checkForEmpty((time.unix() > 0) ? time.format(DEFAULT_TIME_FORMAT) : '');
+      return checkForEmpty((time.unix() > 0) ? getLocalTimeFormat(value, true /* isUTC */) : '');
     }
   }
 };

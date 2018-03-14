@@ -18,6 +18,7 @@ import lang from '../../../common/lang';
 import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
 import PcsBtn from '../../shared/pcsBtn/pcsBtn';
 import ApiService from '../../../common/apiService';
+import { getLocalTimeFormat } from '../../../common/utils';
 import AddSvg from '../../../assets/icons/Add.svg';
 import DeleteSvg from '../../../assets/icons/Delete.svg';
 import EditSvg from '../../../assets/icons/Edit.svg';
@@ -376,7 +377,7 @@ class MaintenancePage extends Component {
         <ContextFilters disableDeviceFilter={((this.props.params || {}).id || (this.props.params || {}).JobId) !== undefined}>
           <div className="timerange-selection" onClick={this.props.actions.hideFlyout}>
             <span className="last-refreshed-text"> {`${lang.LAST_REFRESHED} | `} </span>
-            <div className="last-refreshed-time">{this.state.lastRefreshed.toLocaleString()}</div>
+            <div className="last-refreshed-time">{getLocalTimeFormat(this.state.lastRefreshed)}</div>
             <div onClick={this.refreshData} className="refresh-icon icon-sm" />
             <div className="time-icon icon-sm" />
             <Select

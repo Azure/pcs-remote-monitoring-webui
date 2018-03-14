@@ -4,6 +4,7 @@ import moment from 'moment';
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 import Config from '../common/config';
+import { getStandardTimeFormat } from '../common/utils';
 
 const validTelemetryType = (telemetry, telemetryTypes) =>
   telemetryTypes.map(e => e.toUpperCase()).includes(telemetry.toUpperCase());
@@ -77,7 +78,7 @@ const telemetryReducer = (state = initialState.telemetry, action) => {
               const deviceName = item.DeviceId.split('.').join('-');
               const option = {
                 [deviceName]: item.Data[telemetry],
-                Time: new Date(item.Time).toISOString()
+                Time: getStandardTimeFormat(item.Time)
               };
               radioBtnOptions[telemetry].chartData.push(option);
               if (
@@ -146,7 +147,7 @@ const telemetryReducer = (state = initialState.telemetry, action) => {
               const deviceName = item.DeviceId.split('.').join('-');
               const option = {
                 [deviceName]: item.Data[telemetry],
-                Time: new Date(item.Time).toISOString()
+                Time: getStandardTimeFormat(item.Time)
               };
               const isNewData = !radioBtnOptions[telemetry].chartData.some(e => e.Time === option.Time && e.deviceName === option.deviceName);
               const isNewDevice = radioBtnOptions[telemetry].deviceNames.every(e => e !== deviceName);

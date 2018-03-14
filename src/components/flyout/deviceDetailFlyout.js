@@ -17,6 +17,7 @@ import * as actions from '../../actions';
 import Spinner from '../spinner/spinner';
 import PollingManager from '../../common/pollingManager';
 import PcsBtn from '../shared/pcsBtn/pcsBtn';
+import { getStandardTimeFormat } from '../../common/utils';
 
 import CancelX from '../../assets/icons/CancelX.svg';
 import ChillerSvg from '../../assets/icons/Chiller.svg';
@@ -52,7 +53,7 @@ const loadTelemetry = (data, deviceId) => {
           }
           const option = {
             [deviceName]: item.Data[telemetry],
-            Time: new Date(item.Time).toISOString()
+            Time: getStandardTimeFormat(item.Time)
           };
           radioBtnOptions[telemetry].chartData.push(option);
         }
@@ -84,7 +85,7 @@ class DeviceDetailFlyout extends Component {
           },
           data: {
             json: [],
-            xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+            xFormat: '%Y-%m-%dT%H:%M:%S',
             keys: {
               x: 'Time',
               value: []

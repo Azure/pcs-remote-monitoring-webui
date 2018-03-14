@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import moment from 'moment';
+import 'moment-timezone';
+import Config from './config';
+
 export function isFunction(value) {
   return typeof value === 'function';
 }
@@ -100,10 +104,41 @@ export function copyToClipboard(data) {
   textField.remove();
 };
 
+/* Returns date set to local timezone and in format of locale */
+export function getLocalTimeFormat(date, isUTC, timezone) {
+  const localDate = getLocalTime(date, isUTC, timezone);
+  return localDate.format("l") + " " + localDate.format("LTS");
+}
+
+/* Returns date set to local timezone and formatted in standard format of YYYY-MM-DDTHH:mm:ss */
+export function getStandardTimeFormat(date, isUTC, timezone) {
+  const localDate = getLocalTime(date, isUTC, timezone);
+  return localDate.format(Config.DEFAULT_TIME_FORMAT);
+}
+
+/* Return date as moment object, transformed to local time zone. 
+date: date in some time zone
+isUTC: bool if date is in UTC time zone. 
+      This is only needed to set if the date does
+      not have offset in string/object already
+timezone: desired timezone to set date to. 
+          If not set, function will guess timezone */
+export function getLocalTime(date, isUTC, timezone) {
+  if(!timezone) {
+    timezone = moment.tz.guess();
+  }
+  if (isUTC) {
+    date = moment.utc(date);
+  }
+  return moment.tz(date, timezone);
+}
+
 export default {
   isFunction,
   debounce,
   formatDate,
   formatString,
-  getRandomString
+  getRandomString,
+  getLocalTimeFormat,
+  getStandardTimeFormat
 };

@@ -4,6 +4,7 @@ import Rx from 'rxjs';
 import * as types from './actionTypes';
 import { loadFailed } from './ajaxStatusActions';
 import ApiService from '../common/apiService';
+import { getLocalTimeFormat } from '../common/utils';
 
 /**
  * Get occurrences count from alarms
@@ -13,7 +14,7 @@ import ApiService from '../common/apiService';
 const getOccurences = (alarms = [], ruleId) => {
   if(!ruleId) return;
   let occrrences = {
-    last_occrrences: (alarms[0] || {}).DateCreated || ''
+    last_occrrences: getLocalTimeFormat((alarms[0] || {}).DateCreated) || ''
   };
   alarms.forEach(({ Status }) => occrrences[Status] = (occrrences[Status] || 0) + 1);
   return {...occrrences, [ruleId]: alarms};

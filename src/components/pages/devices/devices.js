@@ -17,6 +17,7 @@ import PcsBtn from '../../shared/pcsBtn/pcsBtn';
 import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
 import SimControlCenter from '../../simControlCenter/simControlCenter';
 import Config from '../../../common/config';
+import { getLocalTimeFormat } from '../../../common/utils';
 
 import AddSvg from '../../../assets/icons/Add.svg';
 import './devices.css';
@@ -95,7 +96,7 @@ class DevicesPage extends Component {
           <div className="timerange-selection">
             <span className="last-refreshed-text">{`${lang.LAST_REFRESHED} | `}</span>
             <div className="last-refreshed-time">
-              {this.state.lastRefreshed.toLocaleString()}
+              {getLocalTimeFormat(this.state.lastRefreshed)}
             </div>
             <div onClick={this.refreshData} className="refresh-icon icon-sm" />
           </div>

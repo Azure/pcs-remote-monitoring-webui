@@ -8,6 +8,7 @@ import RulesActionsList from '../rulesActionsList/rulesActionsList';
 import TelemetryWidget from '../telemetryWidget/telemetryWidget';
 import lang from '../../common/lang';
 import SeverityCellRenderer from '../cellRenderers/severityCellRenderer/severityCellRenderer';
+import { getLocalTimeFormat } from '../../common/utils';
 import CriticalSvg from '../../assets/icons/Critical.svg';
 import InfoSvg from '../../assets/icons/Info.svg';
 import WarningSvg from '../../assets/icons/Warning.svg';
@@ -48,7 +49,7 @@ const timeline = {
     bindto: '#maintenance_chart',
     data: {
       json: [],
-      xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+      xFormat: '%Y-%m-%dT%H:%M:%S',
       keys: {
         x: 'Time',
         value: []
@@ -119,7 +120,7 @@ class RuleDetailsPage extends Component {
           description: item.Description,
           severity: item.Rule.Severity,
           trigger_device: item.DeviceId,
-          time: item.DateCreated,
+          time: getLocalTimeFormat(item.DateCreated, true /* isUTC */),
           status: item.Status
         };
       })
@@ -145,7 +146,7 @@ class RuleDetailsPage extends Component {
           description: item.Description,
           severity: item.Rule.Severity,
           trigger_device: item.DeviceId,
-          time: item.DateCreated,
+          time: getLocalTimeFormat(item.DateCreated, true /* isUTC */),
           status: item.Status
         };
       })

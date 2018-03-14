@@ -3,7 +3,8 @@
 import moment from 'moment';
 import lang from '../../common/lang';
 import Config from '../../common/config';
-import { EMPTY_FIELD_VAL, DEFAULT_TIME_FORMAT, gridValueFormatters } from '../pcsGrid/pcsGridConfig';
+import { EMPTY_FIELD_VAL,  gridValueFormatters } from '../pcsGrid/pcsGridConfig';
+import { getLocalTimeFormat } from '../../common/utils';
 
 const { checkForEmpty } = gridValueFormatters;
 
@@ -80,7 +81,7 @@ export const systemStatusColumnDefs = {
     valueFormatter: ({ value }) => {
       if (!value) return EMPTY_FIELD_VAL;
       const time = moment.utc(value);
-      return time.unix() < 0 ? EMPTY_FIELD_VAL : time.format(DEFAULT_TIME_FORMAT);
+      return time.unix() < 0 ? EMPTY_FIELD_VAL : getLocalTimeFormat(time);
     }
   },
   endTime: {
@@ -89,7 +90,7 @@ export const systemStatusColumnDefs = {
     valueFormatter: ({ value }) => {
       if (!value) return EMPTY_FIELD_VAL;
       const time = moment.utc(value);
-      return time.unix() < 0 ? EMPTY_FIELD_VAL : time.format(DEFAULT_TIME_FORMAT);
+      return time.unix() < 0 ? EMPTY_FIELD_VAL : getLocalTimeFormat(time);
     }
   }
 };
