@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { DevicesGrid } from './devicesGrid';
 import { Btn, RefreshBar } from 'components/shared';
-import { DeviceDetails } from './flyouts';
+import { DeviceDetailsContainer } from './flyouts/deviceDetails';
 
 import './devices.css';
 
@@ -60,7 +60,7 @@ export class Devices extends Component {
         }
         { !error && <DevicesGrid {...gridProps} /> }
         <Btn onClick={this.changeDeviceGroup}>Refresh Device Groups</Btn>
-        { this.state.flyoutOpen && <DeviceDetails onClose={this.closeFlyout} device={entities[this.state.selectedDeviceId]} /> }
+        { this.state.flyoutOpen && <DeviceDetailsContainer onClose={this.closeFlyout} device={entities[this.state.selectedDeviceId]} /> }
       </div>
     );
   }

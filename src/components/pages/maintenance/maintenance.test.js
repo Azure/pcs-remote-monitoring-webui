@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import { Maintenance } from './maintenance';
 import { mount } from 'enzyme';
-import { I18n } from 'react-i18next';
 
-import "mocha-steps";
+import { MaintenanceContainer } from './maintenance.container';
+import MockApp from 'components/mocks/mockApp';
 
-import 'polyfills';
-
-describe('Maintenance Component', () => {
+describe('Dashboard Component', () => {
   it('Renders without crashing', () => {
-    const wrapper = mount(<Maintenance />);
+    const wrapper = mount(
+      <MockApp>
+        <MaintenanceContainer />
+      </MockApp>
+    );
   });
 });

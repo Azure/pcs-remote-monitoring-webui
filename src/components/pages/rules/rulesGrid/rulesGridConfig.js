@@ -1,10 +1,13 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import React from "react";
+
 import {
   SeverityRenderer,
   RuleStatusRenderer,
   CountRenderer,
-  LastTriggerRenderer
+  LastTriggerRenderer,
+  LinkRenderer
 } from 'components/shared/cellRenderers';
 export const LAST_TRIGGER_DEFAULT_WIDTH = 310;
 
@@ -30,6 +33,12 @@ export const rulesColumnDefs = {
     field: 'severity',
     filter: 'text',
     cellRendererFramework: SeverityRenderer
+  },
+  severityIconOnly: {
+    headerName: 'rules.grid.severity',
+    field: 'severity',
+    filter: 'text',
+    cellRendererFramework: props => <SeverityRenderer {...props} iconOnly={true} />
   },
   filter: {
     headerName: 'rules.grid.filter',
@@ -69,7 +78,12 @@ export const rulesColumnDefs = {
     field: 'lastTrigger',
     cellRendererFramework: LastTriggerRenderer,
     width: LAST_TRIGGER_DEFAULT_WIDTH
-  }
+  },
+  explore: {
+    headerName: 'rules.grid.explore',
+    field: 'ruleId',
+    cellRendererFramework: props => <LinkRenderer {...props} to={`/maintenance/rule/${props.value}`} />
+  },
 };
 
 export const defaultRulesGridProps = {

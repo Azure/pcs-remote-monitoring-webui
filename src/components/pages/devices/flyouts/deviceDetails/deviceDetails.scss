@@ -1,0 +1,50 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.device-details-container {
+  @include rem-font-size(14px);
+
+  .accordion {
+    .section-content {
+      @include rem-fallback(padding, 0px, 12px, 0px, 12px);
+    }
+  }
+
+  .device-details-header {
+    @include rem-fallback(padding, 12px, 0px);
+
+    .device-name { @include rem-fallback(font-size, 18px); }
+    .device-simulated { @include rem-fallback(font-size, 10px); }
+    .device-connected { @include rem-fallback(font-size, 14px); }
+
+    .device-icon svg {
+      @include rem-fallback(height, 72px);
+      @include rem-fallback(margin-right, 24px);
+    }
+  }
+
+  .property-grid-container {
+    .row {
+      @include rem-fallback(padding-bottom, 12px);
+
+      .cell-header {
+        font-family: $fontSelawikBold;
+        text-transform: uppercase;
+        @include rem-fallback(font-size, 10px);
+        @include rem-fallback(padding-top, 16px);
+      }
+    }
+  }
+
+  @include themify($themes) {
+    .device-details-header {
+      .device-icon svg { fill: themed('colorContentTextDim'); }
+    }
+
+    .property-grid-container {
+      .row .cell-header { color: themed('colorContentTextDim'); }
+    }
+  }
+}

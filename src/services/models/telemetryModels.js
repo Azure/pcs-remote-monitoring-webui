@@ -17,7 +17,16 @@ export const toRulesModel = (response = {}) => (response.items || [])
     'action.type': 'type'
   }));
 
-export const toAlarmsModel = (response = {}) => (response.items || [])
+  export const toAlarmsModel = (response = {}) => (response.items || [])
+  .map((alarm = {}) => reshape(alarm, {
+    'rule.id': 'ruleId',
+    'created': 'created',
+    'status': 'status',
+    'rule.severity': 'severity',
+    'rule.description': 'description'
+  }));
+
+export const toActicveAlarmsModel = (response = {}) => (response.items || [])
   .map((alarm = {}) => reshape(alarm, {
     'rule.id': 'ruleId',
     'count': 'count',

@@ -33,12 +33,43 @@
       "deviceType": "Device Type",
       "firmware": "Firmware",
       "lastConnection": "Last Connection",
-      "no":  "no",
+      "no": "no",
       "offline": "offline",
       "simulated": "Simulated",
       "status": "Status",
       "telemetry": "Telemetry",
-      "yes":  "yes"
+      "yes": "yes"
+    },
+    "details": {
+      "title": "Device Details",
+      "noDevice": "Oops, we were not able to find the device.",
+      "connected": "Connected",
+      "notConnected": "Disconnected",
+      "simulated": "Simulated",
+      "notSimulated": "Physical",
+      "diagnostics": {
+        "title": "Diagnostics",
+        "description": "Diagnostic information from device"
+      },
+      "methods": {
+        "title": "Methods",
+        "description": "All methods available for device"
+      },
+      "properties": {
+        "title": "Properties",
+        "description": "Selected properties on device",
+        "keyHeader": "Property",
+        "valueHeader": "Value"
+      },
+      "tags": {
+        "title": "Tags",
+        "description": "Tags applied to device",
+        "keyHeader": "Key",
+        "valueHeader": "Value"
+      },
+      "telemetry": {
+        "title": "Telemetry"
+      }
     }
   },
   "rules": {
@@ -60,7 +91,8 @@
       "count": "Count",
       "lastTrigger": "Last Trigger",
       "maintenanceLog": "Maintenance log",
-      "unknown": "Unknown"
+      "unknown": "Unknown",
+      "explore": "Explore"
     }
   }
 }

@@ -16,12 +16,23 @@ $iconSize: 14px;
     svg { @include square-px-rem($iconSize); }
   }
 
+  .pcs-renderer-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include rem-fallback(height, 40px); // TODO: Needs to be set in a variable mapped to the PCS grid
+
+    svg { @include square-px-rem(16px); }
+  }
+
   .pcs-renderer-text {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 
     &.uppercase { text-transform: uppercase; }
+
+    > .icon-only { display: none !important; }
   }
 
   @include themify($themes) {
@@ -34,6 +45,9 @@ $iconSize: 14px;
         .disabled-icon { stroke: themed('colorCellRendererSvgFill'); }
       }
     }
+
+    .pcs-renderer-link svg { fill: themed('colorCellRendererSvgFill'); }
+    .pcs-renderer-link:hover svg { fill: themed('colorCellRendererSvgFillHighlight'); }
 
     .pcs-renderer-text { color: themed('colorCellRendererText'); }
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import './flyout.css';
+import './styles/flyout.css';
 
 export const Flyout = ({ children }) => (
   <div className="flyout-container">

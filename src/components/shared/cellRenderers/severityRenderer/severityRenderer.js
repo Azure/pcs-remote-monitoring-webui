@@ -14,16 +14,18 @@ const getSvg = value => {
   return svgs.info;
 };
 
-export const SeverityRenderer = ({ value, context: { t } }) => {
+export const SeverityRenderer = ({ value, context: { t }, iconOnly }) => {
   const cleanValue = value.toLowerCase();
   const cellClasses = `pcs-renderer-cell severity ${cleanValue || ''} ${cleanValue ? 'highlight' : ''}`;
-
   return (
     <div className={cellClasses}>
       <Svg path={getSvg(cleanValue)} className="pcs-renderer-icon" />
-      <div className="pcs-renderer-text">
-        { t(`rules.severity.${cleanValue}`) }
-      </div>
+      {
+        !iconOnly &&
+        <div className="pcs-renderer-text">
+          {t(`rules.severity.${cleanValue}`)}
+        </div>
+      }
     </div>
   );
 };

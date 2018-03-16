@@ -14,6 +14,7 @@
   }
 
   @include themify($themes) {
-    .section-header { color: themed('colorHighest'); }
+    .section-header { color: themed('colorContentText'); }
+    .section-desc { color: themed('colorContentTextDim'); }
   }
 }

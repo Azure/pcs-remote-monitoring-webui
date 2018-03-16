@@ -1,5 +1,5 @@
 // Copyright (c) Microsoft. All rights reserved.
-const baseUrl = '';
+const baseUrl = process.env.REACT_APP_BASE_SERVICE_URL || '';
 
 const Config = {
   // TEMP: Base service urls

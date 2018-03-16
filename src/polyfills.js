@@ -12,7 +12,7 @@ if (!String.prototype.startsWith) {
 
 if (!Array.prototype.includes) {
   Object.defineProperty(Array.prototype, 'includes', {
-    value: function(searchElement, fromIndex) {
+    value: function (searchElement, fromIndex) {
 
       if (this == null) throw new TypeError('"this" is null or not defined');
 
@@ -38,7 +38,7 @@ if (!Array.prototype.includes) {
 }
 
 if (!String.prototype.includes) {
-  String.prototype.includes = function(search, start) {
+  String.prototype.includes = function (search, start) {
     'use strict';
     if (typeof start !== 'number') start = 0;
 
@@ -51,7 +51,7 @@ if (!String.prototype.includes) {
 }
 
 if (!String.prototype.endsWith) {
-  String.prototype.endsWith = function(searchStr, Position) {
+  String.prototype.endsWith = function (searchStr, Position) {
     if (!(Position < this.length))
       Position = this.length;
     else
@@ -73,5 +73,18 @@ if (!String.prototype.padStart) {
       }
       return padString.slice(0, targetLength) + String(this);
     }
+  };
+}
+
+// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries
+if (!Object.entries) {
+  Object.entries = function (obj) {
+    var ownProps = Object.keys(obj),
+      i = ownProps.length,
+      resArray = new Array(i); // preallocate the Array
+    while (i--)
+      resArray[i] = [ownProps[i], obj[ownProps[i]]];
+
+    return resArray;
   };
 }

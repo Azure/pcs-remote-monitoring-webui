@@ -2,9 +2,9 @@
 
 // Exports the shared react components into as a library
 
-export * from './svg/svg';
-export * from './indicator/indicator';
+export * from './flyout';
 export * from './forms';
+export * from './indicator/indicator';
 export * from './pcsGrid/pcsGrid';
 export * from './refreshBar/refreshBar';
-export * from './flyout';
+export * from './svg/svg';

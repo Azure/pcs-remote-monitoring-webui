@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import { Dashboard } from './dashboard';
 import { mount } from 'enzyme';
-import { I18n } from 'react-i18next';
 
-import "mocha-steps";
-
-import 'polyfills';
+import { DashboardContainer } from './dashboard.container';
+import MockApp from 'components/mocks/mockApp';
 
 describe('Dashboard Component', () => {
   it('Renders without crashing', () => {
-    const wrapper = mount(<Dashboard />);
+    const wrapper = mount(
+      <MockApp>
+        <DashboardContainer />
+      </MockApp>
+    );
   });
 });

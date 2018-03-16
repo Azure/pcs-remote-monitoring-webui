@@ -39,10 +39,12 @@ $themes: (
     // Grid - END
 
     // Page Content Colors - START
+    colorContentBackground: $colorNoir,
     colorContentText: $colorWhite,
     colorContentTextDim: $colorSmoke,
     colorFlyoutBackground: $colorNoir,
     colorFlyoutText: $colorSmoke,
+    colorAccordionBorder: $colorStone
     // Page Content Colors - END
   )
 );

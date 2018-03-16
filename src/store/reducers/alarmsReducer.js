@@ -29,7 +29,7 @@ export const epics = createEpicScenario({
     type: 'ALARMS_FETCH',
     epic: fromAction =>
       // Call the get rules api to return the rules in alarm
-      TelemetryService.getAlarms({
+      TelemetryService.getActiveAlarms({
         from: `NOW-${'PT1H'}`,
         to: 'NOW',
         devices: ''
