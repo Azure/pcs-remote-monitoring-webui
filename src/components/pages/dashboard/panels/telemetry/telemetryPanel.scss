@@ -1,0 +1,46 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.telemetry-panel-container {
+  display: flex;
+  flex-flow: column nowrap;
+
+  .chart-container { flex-grow: 1; }
+
+  .options-container {
+    display: flex;
+    flex-flow: row wrap;
+
+    .telemetry-option {
+      display: block;
+      background: none;
+      text-transform: capitalize;
+      cursor: pointer;
+      border: none;
+      border-bottom: 2px solid transparent;
+      @include rem-font-size(14px);
+      @include rem-fallback(padding, 5px);
+      @include rem-fallback(margin, 0px, 5px, 5px, 10px);
+    }
+  }
+
+  @include themify($themes) {
+    // Overrides of the TSIChart Lib
+    text { fill: themed('colorContentText'); }
+
+    .linechart { background: transparent; }
+
+    .options-container .telemetry-option {
+      color: themed('colorContentTextDim');
+
+      &:hover { border-color: themed('colorContentTextDim'); }
+
+      &.active {
+        color: themed('colorContentText');
+        border-bottom: 2px solid themed('colorContentText');
+      }
+    }
+  }
+}

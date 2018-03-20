@@ -3,7 +3,13 @@
 import { stringify } from 'query-string';
 import Config from 'app.config';
 import { HttpClient } from './httpClient';
-import { toRulesModel, toAlarmsModel, toActicveAlarmsModel, toAlarmsForRuleModel } from './models';
+import {
+  toActiveAlarmsModel,
+  toAlarmsForRuleModel,
+  toAlarmsModel,
+  toRulesModel,
+  toMessagesModel
+} from './models';
 
 const ENDPOINT = Config.serviceUrls.telemetry;
 
@@ -25,7 +31,7 @@ export class TelemetryService {
   /** Returns a list of active alarms (open or ack) */
   static getActiveAlarms(params = {}) {
     return HttpClient.get(`${ENDPOINT}alarmsbyrule?${stringify(params)}`)
-      .map(toActicveAlarmsModel);
+      .map(toActiveAlarmsModel);
   }
 
   /** Returns a list of alarms created from a given rule */
@@ -33,4 +39,29 @@ export class TelemetryService {
     return HttpClient.get(`${ENDPOINT}alarmsbyrule/${id}?${stringify(params)}`)
       .map(toAlarmsForRuleModel);
   }
+
+  /** Returns a telemetry events */
+  static getTelemetryByMessages(params = {}) {
+    return HttpClient.get(`${ENDPOINT}messages?${stringify(params)}`)
+      .map(toMessagesModel);
+  }
+
+  static getTelemetryByDeviceIdP1M(deviceIds = '') {
+    return TelemetryService.getTelemetryByMessages({
+      from: 'NOW-PT1M',
+      to: 'NOW',
+      order: 'desc',
+      devices: encodeURIComponent(deviceIds)
+    });
+  }
+
+  static getTelemetryByDeviceIdP15M(deviceIds = '') {
+    return TelemetryService.getTelemetryByMessages({
+      from: 'NOW-PT15M',
+      to: 'NOW',
+      order: 'desc',
+      devices: encodeURIComponent(deviceIds)
+    });
+  }
+
 }

@@ -26,7 +26,7 @@ export const toRulesModel = (response = {}) => (response.items || [])
     'rule.description': 'description'
   }));
 
-export const toActicveAlarmsModel = (response = {}) => (response.items || [])
+export const toActiveAlarmsModel = (response = {}) => (response.items || [])
   .map((alarm = {}) => reshape(alarm, {
     'rule.id': 'ruleId',
     'count': 'count',
@@ -48,4 +48,11 @@ export const toAlarmsForRuleModel = (response = {}) => (response.items || [])
     'groupId': 'groupId',
     'status': 'status',
     'rule.id': 'ruleId'
+  }));
+
+export const toMessagesModel = (response = {}) => (response.items || [])
+  .map((message = {}) => reshape(message, {
+    'data': 'data',
+    'deviceId': 'deviceId',
+    'time': 'time'
   }));
