@@ -30,10 +30,6 @@
       position: relative;
     }
   }
-
-  @include themify($themes) {
-    .grid-cell .grid-cell-contents { background: themed('colorSystem'); }
-  }
 }
 
 @media (max-width: 1200px) {

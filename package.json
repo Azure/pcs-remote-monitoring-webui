@@ -28,7 +28,7 @@
     "redux-observable": "0.17.0",
     "reselect": "3.0.1",
     "rxjs": "5.5.2",
-    "tsiclient": "1.0.7"
+    "tsiclient": "1.0.10"
   },
   "devDependencies": {
     "enzyme": "3.2.0",

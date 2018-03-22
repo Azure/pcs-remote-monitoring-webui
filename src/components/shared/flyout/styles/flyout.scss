@@ -33,7 +33,8 @@ $flyoutPadding: 20px;
       @include rem-font-size($fontSize);
     }
 
-    .flyout-close-btn {
+    .flyout-close-btn,
+    .flyout-close-btn:hover {
       background-color: transparent;
       @include rem-fallback(padding, 0px, $fontSize);
 

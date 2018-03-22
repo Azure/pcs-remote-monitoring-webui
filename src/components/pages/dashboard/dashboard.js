@@ -6,7 +6,7 @@ import {
   MapPanel,
   AlarmsPanelContainer,
   TelemetryPanel,
-  KpisPanel
+  KpisPanelContainer
 } from './panels';
 
 import './dashboard.css';
@@ -26,7 +26,7 @@ export class Dashboard extends Component {
             <TelemetryPanel />
           </Cell>
           <Cell className="col-4">
-            <KpisPanel />
+            <KpisPanelContainer />
           </Cell>
         </Grid>
       </div>

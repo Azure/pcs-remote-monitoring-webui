@@ -17,13 +17,20 @@ export const toRulesModel = (response = {}) => (response.items || [])
     'action.type': 'type'
   }));
 
+  // TODO: Double check the response from alarmsByRule and alarms, might only need one model
   export const toAlarmsModel = (response = {}) => (response.items || [])
   .map((alarm = {}) => reshape(alarm, {
     'rule.id': 'ruleId',
     'created': 'created',
     'status': 'status',
     'rule.severity': 'severity',
-    'rule.description': 'description'
+    'rule.description': 'ruleDescription',
+    'deviceId': 'deviceId',
+    'dateCreated': 'dateCreated',
+    'dateModified': 'dateModified',
+    'description': 'description',
+    'id': 'id',
+    'groupId': 'groupId'
   }));
 
 export const toActiveAlarmsModel = (response = {}) => (response.items || [])

@@ -1,0 +1,61 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.kpis-panel-container {
+  display: flex;
+  flex-flow: row wrap;
+  height: 100%;
+
+  .kpi-cell {
+    display: flex;
+    flex-flow: column wrap;
+    width: 50%;
+    height: 50%;
+
+    &.full-width { width: 100%; }
+
+    .critical-alarms {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+      font-family: $fontSelawikLight;
+      @include rem-font-size(60px);
+
+      .kpi-percentage-container {
+        display: flex;
+        align-items: flex-end;
+
+        .kpi-percentage-sign { @include rem-font-size(40px); }
+      }
+    }
+  }
+
+  .chart-container {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @include themify($themes) {
+    // Overrides of the TSIChart Lib
+    text { fill: themed('colorContentText'); }
+
+    .tsi-barChart { background: transparent; }
+    .tsi-pieChart {
+      background: transparent;
+
+      .tsi-pieChartSVG path { stroke: themed('colorLowestSecond'); }
+    }
+
+    .kpi-cell {
+      .kpi-header { color: themed('colorContentTextDim'); }
+
+      .critical-alarms {
+        .kpi-header { color: themed('colorContentText'); }
+      }
+    }
+  }
+}

@@ -19,7 +19,7 @@ import './telemetryPanel.css';
 // TODO: find a way to import without the relative path
 import '../../../../../../node_modules/tsiclient/tsiclient.css';
 
-const telemetryChartId = 'device-telemetry-chart';
+const chartId = 'telemetry-chart-container';
 
 const chartColors = [
   '#01B8AA',
@@ -51,10 +51,10 @@ export class TelemetryPanel extends Component {
   }
 
   componentDidMount() {
-    this.getData();
-
     // Create line chart
-    this.lineChart = new this.tsiClient.ux.LineChart(document.getElementById(telemetryChartId));
+    this.lineChart = new this.tsiClient.ux.LineChart(document.getElementById(chartId));
+
+    this.getData();
   }
 
   componentWillUnmount() {
@@ -146,7 +146,7 @@ export class TelemetryPanel extends Component {
               })
             }
           </div>
-          <div className="chart-container" id={telemetryChartId} />
+          <div className="chart-container" id={chartId} />
         </PanelContent>
         { this.state.isPending && <PanelOverlay><Indicator /></PanelOverlay> }
       </Panel>
