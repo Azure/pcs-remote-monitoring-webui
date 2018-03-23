@@ -20,6 +20,14 @@
     "retryFailure": "Oops, we got a temporary error from the service but were unable to recover. Try again later.",
     "unknown": "{{message}}"
   },
+  "settingsFlyout": {
+    "title": "Settings",
+    "version": "Version {{version}}",
+    "viewRelNotes": "View release notes",
+    "theme": "Theme",
+    "changeTheme": "Change the application color theme",
+    "switchTheme": "Switch to {{nextTheme}} theme"
+  },
   "dashboard": {
     "panels": {
       "alarms": { "header": "System alarms" },

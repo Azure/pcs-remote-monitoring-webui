@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
-import { Settings } from './flyouts';
+import { SettingsContainer } from './flyouts';
 
 // App Components
 import Header from './header/header';
@@ -67,7 +67,7 @@ class App extends Component {
                 <Route component={PageNotFound} />
               </Switch>
             </PageContent>
-            { this.state.openFlyout === 'settings' && <Settings onClose={this.closeFlyout} /> }
+            { this.state.openFlyout === 'settings' && <SettingsContainer onClose={this.closeFlyout} /> }
           </Main>
         </div>
       </div>

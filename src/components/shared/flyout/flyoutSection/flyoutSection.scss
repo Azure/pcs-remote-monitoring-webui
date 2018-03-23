@@ -1,0 +1,52 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.flyout-section {
+
+  .flyout-section-header {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-size: inherit;
+    font-family: inherit;
+    @include rem-fallback(height, 48px);
+    @include rem-font-size(16px);
+
+    .collapse-section-icon {
+      transition: all 100ms linear;
+      @include rem-fallback(margin-right, 20px);
+
+      svg { @include square-px-rem(14px); }
+
+      &.collapsed { transform: rotate(90deg); }
+      &.expanded { transform: rotate(-90deg); }
+    }
+  }
+
+  button.flyout-section-header { cursor: pointer; }
+
+  .flyout-section-content {
+    @include rem-fallback(padding-bottom, 24px);
+    @include rem-font-size(14px);
+  }
+
+  @include themify($themes) {
+    border-top: 1px solid themed('colorMidSecond'); // TODO: Move to flyout scoped colors
+
+    .flyout-section-header {
+      color: themed('colorContentText');
+
+      .collapse-section-icon svg { fill: themed('colorContentTextDim'); }
+
+      &:hover .collapse-section-icon svg { fill: themed('colorContentText'); }
+    }
+  }
+}

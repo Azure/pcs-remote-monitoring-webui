@@ -66,7 +66,8 @@ const initialState = {
   ...errorPendingInitialState,
   deviceGroups: {},
   activeDeviceGroupId: undefined,
-  theme: 'dark'
+  theme: 'dark',
+  version: '0.0.1' // TODO: Version should be requested from the service
 };
 
 const updateDeviceGroupsReducer = (state, { payload, fromAction }) => {
@@ -103,6 +104,7 @@ export const reducer = { app: redux.getReducer(initialState) };
 
 // ========================= Selectors - START
 export const getAppReducer = state => state.app;
+export const getVersion = state => getAppReducer(state).version;
 export const getTheme = state => getAppReducer(state).theme;
 export const getDeviceGroupEntities = state => getAppReducer(state).deviceGroups;
 export const getActiveDeviceGroupId = state => getAppReducer(state).activeDeviceGroupId;

@@ -6,7 +6,6 @@ import { translate } from 'react-i18next';
 import { AuthService } from 'services';
 import {
   epics as appEpics,
-  redux as appRedux,
   getTheme
 } from 'store/reducers/appReducer';
 import App from './app';
@@ -18,7 +17,6 @@ const mapStateToProps = state => ({
 // Wrap with the router and wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
   registerRouteEvent: pathname => dispatch(appEpics.actions.detectRouteChange(pathname)),
-  changeTheme: theme => dispatch(appRedux.actions.changeTheme(theme)),
   logout: () => AuthService.logout()
 });
 

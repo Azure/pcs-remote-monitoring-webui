@@ -2,8 +2,10 @@
 
 import React from 'react';
 
-export const FlyoutHeader = ({ children }) => (
-  <div className="flyout-header">
+import { joinClasses } from 'utilities';
+
+export const FlyoutHeader = ({ className, children }) => (
+  <div className={joinClasses('flyout-header', className)}>
     { children }
   </div>
 );

@@ -2,8 +2,10 @@
 
 import React from 'react';
 
-export const FlyoutContent = ({ children }) => (
-  <div className="flyout-content">
+import { joinClasses } from 'utilities';
+
+export const FlyoutContent = ({ className, children }) => (
+  <div className={joinClasses('flyout-content', className)}>
     { children }
   </div>
 );
