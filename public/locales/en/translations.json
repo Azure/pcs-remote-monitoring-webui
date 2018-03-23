@@ -20,6 +20,30 @@
     "retryFailure": "Oops, we got a temporary error from the service but were unable to recover. Try again later.",
     "unknown": "{{message}}"
   },
+  "dashboard": {
+    "panels": {
+      "alarms": { "header": "System alarms" },
+      "kpis": {
+        "header": "System KPIs",
+        "topRule": "Top rules triggered",
+        "deviceTypeAlarms": "Alarm by device type",
+        "criticalAlarms": "Critical alarms",
+        "currentWindow": "Currently",
+        "previousWindow": "Previously"
+      },
+      "map": { "header": "Device locations" },
+      "overview": {
+        "header": "Device statistics",
+        "allDevices": "All devices",
+        "critical": "Critical",
+        "warnings": "Warnings",
+        "total": "Total",
+        "connected": "Connected",
+        "notConnected": "Offline"
+      },
+      "telemetry": { "header": "Telemetry" }
+    }
+  },
   "refreshBar": {
     "refreshing": "Refreshing",
     "lastRefreshed": "Last refreshed"

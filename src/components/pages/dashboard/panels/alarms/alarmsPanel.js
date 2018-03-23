@@ -2,10 +2,13 @@
 
 import React, { Component } from 'react';
 
+import { Indicator } from 'components/shared';
 import {
   Panel,
   PanelHeader,
-  PanelContent
+  PanelHeaderLabel,
+  PanelContent,
+  PanelOverlay
 } from 'components/pages/dashboard/panel';
 import { RulesGrid, rulesColumnDefs } from 'components/pages/rules/rulesGrid';
 import { translateColumnDefs } from 'utilities';
@@ -16,7 +19,10 @@ export class AlarmsPanel extends Component {
     super(props);
 
     this.columnDefs = [
-      rulesColumnDefs.ruleName,
+      {
+        ...rulesColumnDefs.ruleName,
+        minWidth: 200
+      },
       rulesColumnDefs.severity,
       {
         headerName: 'rules.grid.count',
@@ -26,24 +32,24 @@ export class AlarmsPanel extends Component {
     ];
   }
 
-  componentDidMount() {
-    if (!this.props.rulesLastUpdated) this.props.fetchRules();
-    this.props.fetchAlarms();
-  }
-
   render() {
     const { t, alarms, isPending } = this.props;
     const gridProps = {
       columnDefs: translateColumnDefs(t, this.columnDefs),
-      rowData: !isPending ? alarms : undefined,
+      rowData: alarms,
       t
     };
+    const showOverlay = isPending && !alarms.length;
     return (
       <Panel className="alarms-panel-container">
-        <PanelHeader>System alarms</PanelHeader>
+        <PanelHeader>
+          <PanelHeaderLabel>{t('dashboard.panels.alarms.header')}</PanelHeaderLabel>
+          { !showOverlay && isPending && <Indicator size="small" /> }
+        </PanelHeader>
         <PanelContent>
           <RulesGrid {...gridProps} />
         </PanelContent>
+        { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
       </Panel>
     );
   }

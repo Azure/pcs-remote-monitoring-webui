@@ -13,7 +13,11 @@
   .grid-container {
     padding: 10px;
 
-    .grid-cell { min-height: 400px; }
+    .grid-cell {
+      min-height: 400px;
+
+      &.devices-overview-cell { min-width: 314px; }
+    }
   }
 
   @include themify($themes) {

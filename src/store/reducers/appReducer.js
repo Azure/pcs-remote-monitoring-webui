@@ -65,7 +65,8 @@ const deviceGroupListSchema = new schema.Array(deviceGroupSchema);
 const initialState = {
   ...errorPendingInitialState,
   deviceGroups: {},
-  activeDeviceGroupId: undefined
+  activeDeviceGroupId: undefined,
+  theme: 'dark'
 };
 
 const updateDeviceGroupsReducer = (state, { payload, fromAction }) => {
@@ -80,6 +81,10 @@ const updateActiveDeviceGroupsReducer = (state, { payload }) => {
   return update(state, { activeDeviceGroupId: { $set: payload } });
 };
 
+const updateThemeReducer = (state, { payload }) => {
+  return update(state, { theme: { $set: payload } });
+};
+
 /* Action types that cause a pending flag */
 const fetchableTypes = [
   epics.actionTypes.fetchDeviceGroups
@@ -88,6 +93,7 @@ const fetchableTypes = [
 export const redux = createReducerScenario({
   updateDeviceGroups: { type: 'APP_DEVICE_GROUP_UPDATE', reducer: updateDeviceGroupsReducer },
   updateActiveDeviceGroup: { type: 'APP_ACTIVE_DEVICE_GROUP_UPDATE', reducer: updateActiveDeviceGroupsReducer },
+  changeTheme: { type: 'APP_CHANGE_THEME', reducer: updateThemeReducer },
   registerError: { type: 'APP_REDUCER_ERROR', reducer: errorReducer },
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer },
 });
@@ -97,6 +103,7 @@ export const reducer = { app: redux.getReducer(initialState) };
 
 // ========================= Selectors - START
 export const getAppReducer = state => state.app;
+export const getTheme = state => getAppReducer(state).theme;
 export const getDeviceGroupEntities = state => getAppReducer(state).deviceGroups;
 export const getActiveDeviceGroupId = state => getAppReducer(state).activeDeviceGroupId;
 export const getDeviceGroupsError = state =>

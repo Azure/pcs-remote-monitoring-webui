@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { Observable } from 'rxjs';
-// import update from 'immutability-helper';
 import 'tsiclient';
 
-import { TelemetryService } from 'services';
 import { Indicator } from 'components/shared';
 import {
   Panel,
   PanelHeader,
+  PanelHeaderLabel,
   PanelContent,
   PanelOverlay
 } from 'components/pages/dashboard/panel';
@@ -21,116 +19,82 @@ import '../../../../../../node_modules/tsiclient/tsiclient.css';
 
 const chartId = 'telemetry-chart-container';
 
-const chartColors = [
-  '#01B8AA',
-  '#F2C80F',
-  '#E81123',
-  '#3599B8',
-  '#33669A',
-  '#26FFDE',
-  '#E0E7EE',
-  '#FDA954',
-  '#FD625E',
-  '#FF4EC2',
-  '#FFEE91'
-];
 
 export class TelemetryPanel extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isPending: true,
-      telemetry: {},
       telemetryKeys: [],
-      telemetryKey: ''
+      telemetryKey: '',
+      renderChart: true
     };
 
-    // Initialize chart client
+    window.addEventListener('blur', this.handleWindowBlur);
+    window.addEventListener('focus', this.handleWindowFocus);
+
     this.tsiClient = new window.TsiClient();
   }
 
-  componentDidMount() {
-    // Create line chart
-    this.lineChart = new this.tsiClient.ux.LineChart(document.getElementById(chartId));
+  handleWindowBlur = () => this.setState({ renderChart: false });
+  handleWindowFocus = () => this.setState({ renderChart: true });
 
-    this.getData();
+  componentDidMount() {
+    this.lineChart = new this.tsiClient.ux.LineChart(document.getElementById(chartId));
   }
 
   componentWillUnmount() {
-    if (this.subscription) this.subscription.unsubscribe();
+    window.removeEventListener('blur', this.handleWindowBlur);
+    window.removeEventListener('focus', this.handleWindowFocus);
   }
 
-  componentWillUpdate(_, { telemetry, telemetryKey}) {
-    if (telemetry && telemetryKey && telemetry[telemetryKey]) {
-      const datum = Object.keys(telemetry[telemetryKey]).map(deviceId => ({
+  componentWillReceiveProps({ telemetry, isPending }) {
+    const telemetryKeys = Object.keys(telemetry).sort();
+    const currentKey = this.state.telemetryKey;
+    this.setState({
+      telemetryKeys,
+      telemetryKey: currentKey in telemetry ? currentKey : telemetryKeys[0]
+    });
+  }
+
+  componentWillUpdate(nextProps, { telemetryKey }) {
+    const { telemetry } = nextProps;
+    if (Object.keys(telemetry).length && telemetryKey && telemetry[telemetryKey]) {
+      const chartData = Object.keys(telemetry[telemetryKey]).map(deviceId => ({
         [deviceId]: telemetry[telemetryKey][deviceId]
       }));
       const noAnimate = telemetryKey === this.state.telemetryKey;
       // Set a timeout to allow the panel height to be calculated before updating the graph
       setTimeout(() => {
-        this.lineChart.render(
-          datum,
-          {
-            grid: false,
-            legend: 'compact',
-            noAnimate, // If the telemetryKey changes, animate
-            tooltip: true,
-            yAxisState: 'shared' // Default to all values being on the same axis
-          },
-          chartColors.map(color => ({ color }))
-        );
+        if (this && this.state && this.lineChart && this.state.renderChart) {
+          this.lineChart.render(
+            chartData,
+            {
+              grid: false,
+              legend: 'compact',
+              noAnimate, // If the telemetryKey changes, animate
+              tooltip: true,
+              yAxisState: 'shared' // Default to all values being on the same axis
+            },
+            this.props.colors.map(color => ({ color }))
+          );
+        }
       }, 10);
     }
-  }
-
-  getData() {
-    this.subscription = TelemetryService.getTelemetryByDeviceIdP15M()
-      .flatMap(response =>
-        Observable.interval(2000)
-          .flatMap(_ => TelemetryService.getTelemetryByDeviceIdP1M())
-          .startWith(response)
-      )
-      .flatMap(items =>
-        Observable.from(items)
-          .flatMap(({ data, deviceId, time }) =>
-            Observable.from(Object.keys(data))
-              .filter(key => key.indexOf('Unit') < 0)
-              .map(key => ({ key, deviceId, time, data: data[key] }))
-          )
-          .reduce((acc, { key, deviceId, time, data }) => ({
-            ...acc,
-            [key]: {
-              ...(acc[key] ? acc[key] : {}),
-              [deviceId]: {
-                ...(acc[key] && acc[key][deviceId] ? acc[key][deviceId] : {}),
-                '': {
-                  ...(acc[key] && acc[key][deviceId] && acc[key][deviceId][''] ? acc[key][deviceId][''] : {}),
-                  [time]: { val: data }
-                }
-              }
-            }
-          }), this.state.telemetry)
-      )
-      .subscribe(telemetry => {
-        const telemetryKeys = Object.keys(telemetry).sort();
-        this.setState({
-          telemetry,
-          telemetryKeys,
-          telemetryKey: this.state.telemetryKey || telemetryKeys[0],
-          isPending: false
-        });
-      }
-    );
   }
 
   setTelemetryKey = telemetryKey => () => this.setState({ telemetryKey });
 
   render() {
-    const { telemetryKeys, telemetry, telemetryKey } = this.state;
+    const { t, isPending, telemetry } = this.props;
+    const { telemetryKeys, telemetryKey } = this.state;
+    const showOverlay = isPending && !Object.keys(telemetry).length;
     return (
       <Panel>
-        <PanelHeader>Telemetry</PanelHeader>
+        <PanelHeader>
+          <PanelHeaderLabel>{t('dashboard.panels.telemetry.header')}</PanelHeaderLabel>
+          { !showOverlay && isPending && <Indicator size="small" /> }
+        </PanelHeader>
         <PanelContent className="telemetry-panel-container">
           <div className="options-container">
             {
@@ -148,7 +112,7 @@ export class TelemetryPanel extends Component {
           </div>
           <div className="chart-container" id={chartId} />
         </PanelContent>
-        { this.state.isPending && <PanelOverlay><Indicator /></PanelOverlay> }
+        { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
       </Panel>
     );
   }

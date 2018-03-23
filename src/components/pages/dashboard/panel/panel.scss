@@ -15,7 +15,19 @@
   left: 0;
   right: 0;
 
-  .panel-header { padding: 10px; }
+  .panel-header {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    .panel-header-label {
+      flex-shrink: 0;
+      font-size: 1em;
+      font-weight: normal;
+      margin: 0;
+      padding: 10px;
+    }
+  }
 
   .panel-content {
     flex-grow: 1;

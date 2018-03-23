@@ -30,7 +30,7 @@
     // Overrides of the TSIChart Lib
     text { fill: themed('colorContentText'); }
 
-    .linechart { background: transparent; }
+    .tsi-lineChart { background: transparent; }
 
     .options-container .telemetry-option {
       color: themed('colorContentTextDim');

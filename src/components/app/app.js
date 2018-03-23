@@ -52,22 +52,24 @@ class App extends Component {
 
   render() {
     return (
-      <div className="app">
-        <Navigation tabs={tabConfigs} t={this.props.t} />
-        <Main>
-          <Header openSettings={this.openSettings} logout={this.props.logout} t={this.props.t} />
-          <PageContent>
-            <Switch>
-              <Redirect exact from="/" to={dashboardTab.to} />
-              <Route exact path={dashboardTab.to} component={DashboardPage} />
-              <Route exact path={devicesTab.to} component={DevicesPage} />
-              <Route exact path={rulesTab.to} component={RulesPage} />
-              <Route path={maintenanceTab.to} component={MaintenancePage} />
-              <Route component={PageNotFound} />
-            </Switch>
-          </PageContent>
-          { this.state.openFlyout === 'settings' && <Settings onClose={this.closeFlyout} /> }
-        </Main>
+      <div className={`app-container theme-${this.props.theme}`}>
+        <div className="app">
+          <Navigation tabs={tabConfigs} t={this.props.t} />
+          <Main>
+            <Header openSettings={this.openSettings} logout={this.props.logout} t={this.props.t} />
+            <PageContent>
+              <Switch>
+                <Redirect exact from="/" to={dashboardTab.to} />
+                <Route exact path={dashboardTab.to} component={DashboardPage} />
+                <Route exact path={devicesTab.to} component={DevicesPage} />
+                <Route exact path={rulesTab.to} component={RulesPage} />
+                <Route path={maintenanceTab.to} component={MaintenancePage} />
+                <Route component={PageNotFound} />
+              </Switch>
+            </PageContent>
+            { this.state.openFlyout === 'settings' && <Settings onClose={this.closeFlyout} /> }
+          </Main>
+        </div>
       </div>
     );
   }

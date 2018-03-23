@@ -34,3 +34,10 @@ export const translateColumnDefs = (t, columnDefs) => {
       : columnDef
   );
 }
+
+/* A helper method for creating comparator methods for sorting arrays of objects */
+export const compareByProperty = (property) => (a, b) => {
+  if (b[property] > a[property]) return 1;
+  if (b[property] < a[property]) return -1;
+  return 0;
+};
