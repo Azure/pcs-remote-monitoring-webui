@@ -53,19 +53,22 @@
       },
       "methods": {
         "title": "Methods",
-        "description": "All methods available for device"
+        "description": "All methods available for device",
+        "noneExist": "No methods found for this device."
       },
       "properties": {
         "title": "Properties",
         "description": "Selected properties on device",
         "keyHeader": "Property",
-        "valueHeader": "Value"
+        "valueHeader": "Value",
+        "noneExist": "No properties found for this device."
       },
       "tags": {
         "title": "Tags",
         "description": "Tags applied to device",
         "keyHeader": "Key",
-        "valueHeader": "Value"
+        "valueHeader": "Value",
+        "noneExist": "No tags found for this device."
       },
       "telemetry": {
         "title": "Telemetry"

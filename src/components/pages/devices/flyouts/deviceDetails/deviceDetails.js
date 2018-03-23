@@ -34,6 +34,7 @@ export class DeviceDetails extends Component {
     this.columnDefs = [
       rulesColumnDefs.ruleName,
       rulesColumnDefs.severity,
+      rulesColumnDefs.alarmStatus,
       rulesColumnDefs.explore
     ];
   }
@@ -68,8 +69,8 @@ export class DeviceDetails extends Component {
       devices: deviceId
     })
       .subscribe(
-      alarms => this.setState({ alarms, isAlarmsPending: false, alarmsError: undefined }),
-      alarmsError => this.setState({ alarmsError, isAlarmsPending: false })
+        alarms => this.setState({ alarms, isAlarmsPending: false, alarmsError: undefined }),
+        alarmsError => this.setState({ alarmsError, isAlarmsPending: false })
       );
   }
 
@@ -81,6 +82,9 @@ export class DeviceDetails extends Component {
       t: this.props.t,
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs)
     };
+    const tags = Object.entries(device.tags || {});
+    const methods = device.methods ? device.methods.split(',') : [];
+    const properties = Object.entries(device.properties || {});
     return (
       <Flyout>
         <FlyoutHeader>
@@ -114,55 +118,71 @@ export class DeviceDetails extends Component {
               </Accordion>
 
               <Accordion title={t('devices.details.tags.title')} description={t('devices.details.tags.description')}>
-                <Grid>
-                  {
-                    (device.tags && device.tags.length) &&
+                {
+                  (tags.length === 0) &&
+                  t('devices.details.tags.noneExist')
+                }
+                {
+                  (tags.length > 0) &&
+                  <Grid>
                     <Row>
                       <HeaderCell className="col-3">{t('devices.details.tags.keyHeader')}</HeaderCell>
                       <HeaderCell className="col-7">{t('devices.details.tags.valueHeader')}</HeaderCell>
                     </Row>
-                  }
-                  {
-                    (Object.entries(device.tags) || []).map(([tagName, tagValue], idx) =>
-                      <Row key={idx}>
-                        <Cell className="col-3">{tagName}</Cell>
-                        <Cell className="col-7">{tagValue.toString()}</Cell>
-                      </Row>
-                    )
-                  }
-                </Grid>
+                    {
+                      tags.map(([tagName, tagValue], idx) =>
+                        <Row key={idx}>
+                          <Cell className="col-3">{tagName}</Cell>
+                          <Cell className="col-7">{tagValue.toString()}</Cell>
+                        </Row>
+                      )
+                    }
+                  </Grid>
+                }
               </Accordion>
 
               <Accordion title={t('devices.details.methods.title')} description={t('devices.details.methods.description')}>
-                <Grid>
-                  {
-                    ((device.methods || '').split(',') || []).map((methodName, idx) =>
-                      <Row key={idx}>
-                        <Cell>{methodName}</Cell>
-                      </Row>
-                    )
-                  }
-                </Grid>
+                {
+                  (methods.length === 0) &&
+                  t('devices.details.methods.noneExist')
+                }
+                {
+                  (methods.length > 0) &&
+                  <Grid>
+                    {
+                      methods.map((methodName, idx) =>
+                        <Row key={idx}>
+                          <Cell>{methodName}</Cell>
+                        </Row>
+                      )
+                    }
+                  </Grid>
+                }
               </Accordion>
 
               <Accordion title={t('devices.details.properties.title')} description={t('devices.details.properties.description')}>
-                <Grid>
-                  {
-                    (device.properties && device.properties.length) &&
+                {
+                  (properties.length === 0) &&
+                  t('devices.details.properties.noneExist')
+                }
+                {
+                  (properties.length > 0) &&
+                  <Grid>
+
                     <Row>
                       <HeaderCell className="col-3">{t('devices.details.properties.keyHeader')}</HeaderCell>
                       <HeaderCell className="col-7">{t('devices.details.properties.valueHeader')}</HeaderCell>
                     </Row>
-                  }
-                  {
-                    (Object.entries(device.properties) || []).map(([propertyName, propertyValue], idx) =>
-                      <Row key={idx}>
-                        <Cell className="col-3">{propertyName}</Cell>
-                        <Cell className="col-7">{propertyValue.toString()}</Cell>
-                      </Row>
-                    )
-                  }
-                </Grid>
+                    {
+                      properties.map(([propertyName, propertyValue], idx) =>
+                        <Row key={idx}>
+                          <Cell className="col-3">{propertyName}</Cell>
+                          <Cell className="col-7">{propertyValue.toString().replace(/,/g, ", ")}</Cell>
+                        </Row>
+                      )
+                    }
+                  </Grid>
+                }
               </Accordion>
 
               <Accordion title={t('devices.details.diagnostics.title')} description={t('devices.details.diagnostics.description')}>

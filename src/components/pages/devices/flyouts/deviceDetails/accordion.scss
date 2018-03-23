@@ -21,24 +21,25 @@
     }
 
     .accordion-toggle-btn {
+      cursor: pointer;
       background-color: transparent;
-      @include rem-fallback(padding, 0px);
+      border: 0;
 
-
-      .btn-icon svg { @include square-px-rem(16px); }
+      svg { @include square-px-rem(16px); }
+      .chevron-close { transform: rotate(-90deg); }
+      .chevron-open { transform: rotate(90deg); }
     }
-
-    .chevron-close { transform: rotate(-90deg); }
-    .chevron-open { transform: rotate(90deg); }
-   }
-
-  .section-desc {
-    @include rem-font-size(12px);
-    @include rem-fallback(line-height, 15px);
-    @include rem-fallback(padding, 0px 0px 10px 0px);
   }
 
-  .section-content { @include rem-fallback(padding, 0px, 12px, 0px, 12px); }
+  .section-content {
+    @include rem-fallback(padding, 0px, 48px, 12px, 12px);
+
+    .section-desc {
+      @include rem-font-size(12px);
+      @include rem-fallback(line-height, 15px);
+      @include rem-fallback(padding, 0px 0px 10px 0px);
+    }
+  }
 
   @include themify($themes) {
     .section-header {

@@ -4,10 +4,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Btn,
   SectionHeader,
   SectionDesc
 } from 'components/shared';
+import { Svg } from 'components/shared/svg/svg';
 import { svgs, joinClasses } from 'utilities';
 
 import './accordion.css';
@@ -28,21 +28,24 @@ export class Accordion extends Component {
 
   render() {
     const { className, title, description, children } = this.props;
-    const displayContent = this.state.showContent ? {} : { display: 'none' };
+    const { showContent } = this.state;
+
     return (
       <div className={joinClasses('accordion', className)}>
         <SectionHeader>
           <div className="accordion-title" onClick={this.toggleContent}>{title}</div>
-          <Btn onClick={this.toggleContent} svg={svgs.chevron} className={joinClasses("accordion-toggle-btn", this.state.showContent ? 'chevron-close' : 'chevron-open')} />
+          <button onClick={this.toggleContent} className="accordion-toggle-btn">
+            <Svg path={svgs.chevron} className={showContent ? 'chevron-close' : 'chevron-open'} />
+          </button>
         </SectionHeader>
 
-        <div className="section-content" style={displayContent}>
-          {
-            description &&
-            <SectionDesc>{description}</SectionDesc>
-          }
-          {children}
-        </div>
+        {
+          showContent &&
+          <div className="section-content">
+            {description && <SectionDesc>{description}</SectionDesc>}
+            {children}
+          </div>
+        }
       </div>
     );
   }

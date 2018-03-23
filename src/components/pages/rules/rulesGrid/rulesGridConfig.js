@@ -68,6 +68,11 @@ export const rulesColumnDefs = {
     filter: 'text',
     cellRendererFramework: RuleStatusRenderer
   },
+  alarmStatus: {
+    headerName: 'rules.grid.status',
+    field: 'status',
+    filter: 'text'
+  },
   count: {
     headerName: 'rules.grid.count',
     field: 'count',
