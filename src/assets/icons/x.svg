@@ -1,8 +1,8 @@
 <!-- Copyright (c) Microsoft. All rights reserved. -->
 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-18589.111 -21747.16 19.805 19.805">
-  <g id="Group_476" data-name="Group 476" transform="translate(-20467 -21884)">
-    <line id="Line_1676" data-name="Line 1676" class="cls-1" x2="26.493" transform="translate(1878.43 156.113) rotate(-45)"/>
-    <line id="Line_1677" data-name="Line 1677" class="cls-1" y2="26.493" transform="translate(1878.42 137.371) rotate(-45)"/>
+  <g data-name="Group 476" transform="translate(-20467 -21884)">
+    <line data-name="Line 1676" class="cls-1" x2="26.493" transform="translate(1878.43 156.113) rotate(-45)"/>
+    <line data-name="Line 1677" class="cls-1" y2="26.493" transform="translate(1878.42 137.371) rotate(-45)"/>
   </g>
 </svg>

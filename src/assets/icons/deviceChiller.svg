@@ -1,8 +1,8 @@
 <!-- Copyright (c) Microsoft. All rights reserved. -->
 
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.441 23.892">
-  <g id="Layer_2" data-name="Layer 2">
-    <g id="Random">
+  <g data-name="Layer 2">
+    <g>
 	    <path d="M15.97,5.27a3.445,3.445,0,0,1,.288-1.2H14.842V5.133Z" fill="none"/>
 	    <path d="M17.361,5.014a2.1,2.1,0,0,1,1.05-1.174,4.263,4.263,0,0,1,1.928-.391h.451a2.17,2.17,0,0,0-1.751-.3,2.22,2.22,0,0,0-2.045,1.962Z" fill="none"/><polygon points="11.503 4.725 11.503 1.894 12.938 1.894 12.938 1.317 10.597 1.072 10.608 4.616 11.503 4.725" fill="none"/>
 	    <rect x="12.51" y="2.901" width="1.326" height="1.792" fill="none"/>

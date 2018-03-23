@@ -1,10 +1,10 @@
 <!-- Copyright (c) Microsoft. All rights reserved. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-15950 -18562 16 16">
-  <g id="Group_4617" data-name="Group 4617" transform="translate(-17343 -18916)">
-    <g id="Ellipse_338" data-name="Ellipse 338" class="outer-border" transform="translate(1393 354)">
+  <g  data-name="Group 4617" transform="translate(-17343 -18916)">
+    <g data-name="Ellipse 338" class="outer-border" transform="translate(1393 354)">
       <circle class="radio-selected-cls-3" cx="8" cy="8" r="8"/>
       <circle class="radio-selected-cls-4" cx="8" cy="8" r="7.5"/>
     </g>
-    <circle id="Ellipse_340" data-name="Ellipse 340" class="inner-circle" cx="4" cy="4" r="4" transform="translate(1397 358)"/>
+    <circle data-name="Ellipse 340" class="inner-circle" cx="4" cy="4" r="4" transform="translate(1397 358)"/>
   </g>
 </svg>
