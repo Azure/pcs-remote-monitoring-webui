@@ -82,7 +82,7 @@ export class KpisPanel extends Component {
       if (nextState.renderChart) {
         this.pieChart.render(
           pieChartDatum,
-          { grid: false, timestamp: staticTime, legend: 'hidden', arcWidthRatio: .6 },
+          { grid: false, timestamp: staticTime, legend: 'hidden', arcWidthRatio: 1 },
           this.props.colors.map(color => ({ color }))
         );
       }

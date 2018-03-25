@@ -35,7 +35,7 @@ class Header extends Component {
 
   render() {
     return (
-      <header className="app-header">
+      <header className="app-header" role="banner">
         <div className="breadcrumbs">
           <Breadcrumbs t={this.props.t} />
         </div>

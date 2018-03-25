@@ -12,12 +12,12 @@ import {
   AlarmsPanel,
   TelemetryPanel,
   KpisPanel,
-  MapPanel
+  MapPanel,
+  transformTelemetryResponse
 } from './panels';
 
 import './dashboard.css';
 
-const maxDatums = 100; // Max telemetry messages for the telemetry graph
 const maxTopAlarms = 5; // TODO: Move to config
 
 const chartColors = [
@@ -70,48 +70,17 @@ export class Dashboard extends Component {
     this.props.fetchRules();
 
     // Telemetry stream - START
+    const onPendingStart = () => this.setState({ telemetryIsPending: true });
+
     const telemetry$ = TelemetryService.getTelemetryByDeviceIdP15M()
       .merge(
-        this.telemetryRefresh$
-          .delay(Config.telemetryRefreshInterval)
-          .do(_ => this.setState({ telemetryIsPending: true }))
+        this.telemetryRefresh$ // Previous request complete
+          .delay(Config.telemetryRefreshInterval) // Wait to refresh
+          .do(onPendingStart)
           .flatMap(_ => TelemetryService.getTelemetryByDeviceIdP1M())
       )
-      .flatMap(items =>
-        Observable.from(items)
-          .flatMap(({ data, deviceId, time }) =>
-            Observable.from(Object.keys(data))
-              .filter(metric => metric.indexOf('Unit') < 0)
-              .map(metric => ({ metric, deviceId, time, data: data[metric] }))
-          )
-          .reduce((acc, { metric, deviceId, time, data }) => ({
-            ...acc,
-            [metric]: {
-              ...(acc[metric] ? acc[metric] : {}),
-              [deviceId]: {
-                ...(acc[metric] && acc[metric][deviceId] ? acc[metric][deviceId] : {}),
-                '': {
-                  ...(acc[metric] && acc[metric][deviceId] && acc[metric][deviceId][''] ? acc[metric][deviceId][''] : {}),
-                  [time]: { val: data }
-                }
-              }
-            }
-          }), this.state.telemetry)
-      )
-      .map(telemetry => {
-        Object.keys(telemetry).forEach(metric => {
-          Object.keys(telemetry[metric]).forEach(deviceId => {
-            const datums = Object.keys(telemetry[metric][deviceId]['']);
-            if (datums.length > maxDatums) {
-              telemetry[metric][deviceId][''] = datums.sort()
-                .slice(datums.length - maxDatums, datums.length)
-                .reduce((acc, time) => ({ ...acc, [time]: telemetry[metric][deviceId][''][time]}), {});
-            }
-          })
-        });
-        return telemetry;
-      }) // Remove overflowing items
-      .map(telemetry => ({ telemetry, telemetryIsPending: false }));
+      .flatMap(transformTelemetryResponse(() => this.state.telemetry))
+      .map(telemetry => ({ telemetry, telemetryIsPending: false })); // Stream emits new state
       // Telemetry stream - END
 
       // KPI stream - START
