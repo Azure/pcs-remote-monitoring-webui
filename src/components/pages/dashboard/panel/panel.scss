@@ -33,6 +33,7 @@
     flex-grow: 1;
     padding: 10px;
     overflow: auto;
+    position: relative;
   }
 
   .panel-overlay-container {
@@ -46,10 +47,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &.error-overlay { background-color: #1b1d1f; }
+
+    .panel-error-container {
+      width: 90%;
+      text-align: center;
+    }
   }
 
   @include themify($themes) {
     .panel-header { background-color: themed('colorLowestThird'); }
     .panel-content { background-color: themed('colorLowestSecond') }
+    .panel-overlay-container .panel-error-container { color: themed('colorContentText') }
   }
 }

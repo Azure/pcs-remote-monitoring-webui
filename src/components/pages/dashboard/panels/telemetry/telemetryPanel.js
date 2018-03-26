@@ -9,7 +9,8 @@ import {
   PanelHeader,
   PanelHeaderLabel,
   PanelContent,
-  PanelOverlay
+  PanelOverlay,
+  PanelError
 } from 'components/pages/dashboard/panel';
 
 import { TelemetryChart } from './telemetryChart';
@@ -18,7 +19,7 @@ import './telemetryPanel.css';
 
 export class TelemetryPanel extends Component {
   render() {
-    const { t, isPending, telemetry, colors } = this.props;
+    const { t, isPending, telemetry, colors, error } = this.props;
     const showOverlay = isPending && !Object.keys(telemetry).length;
     const colorObjects = colors.map(color => ({ color }));
     return (
@@ -31,6 +32,7 @@ export class TelemetryPanel extends Component {
           <TelemetryChart telemetry={telemetry} colors={colorObjects} />
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
+        { error && <PanelError>{t(error.message)}</PanelError> }
       </Panel>
     );
   }

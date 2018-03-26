@@ -274,6 +274,7 @@ export class Dashboard extends Component {
           <Cell className="col-5">
             <MapPanel
               isPending={devicesIsPending}
+              error={devicesError || kpisError}
               t={t} />
           </Cell>
           <Cell className="col-3">

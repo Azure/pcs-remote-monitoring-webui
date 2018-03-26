@@ -8,13 +8,14 @@ import {
   PanelHeader,
   PanelHeaderLabel,
   PanelContent,
-  PanelOverlay
+  PanelOverlay,
+  PanelError
 } from 'components/pages/dashboard/panel';
 
 export class MapPanel extends Component {
   render() {
-    const showOverlay = false;
-    const { t, isPending } = this.props;
+    const { t, isPending, error } = this.props;
+    const showOverlay = isPending;
     return (
       <Panel className="map-panel-container">
         <PanelHeader>
@@ -24,6 +25,7 @@ export class MapPanel extends Component {
         <PanelContent>
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
+        { error && <PanelError>{t(error.message)}</PanelError> }
       </Panel>
     );
   }

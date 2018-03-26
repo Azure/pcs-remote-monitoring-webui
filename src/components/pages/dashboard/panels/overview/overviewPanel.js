@@ -10,7 +10,8 @@ import {
   PanelHeader,
   PanelHeaderLabel,
   PanelContent,
-  PanelOverlay
+  PanelOverlay,
+  PanelError
 } from 'components/pages/dashboard/panel';
 
 import './overviewPanel.css';
@@ -28,6 +29,7 @@ export class OverviewPanel extends Component {
   render() {
     const {
       t,
+      error,
       isPending,
       openCriticalCount,
       openWarningCount,
@@ -82,6 +84,7 @@ export class OverviewPanel extends Component {
           </div>
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
+        { error && <PanelError>{t(error.message)}</PanelError> }
       </Panel>
     );
   }

@@ -8,7 +8,8 @@ import {
   PanelHeader,
   PanelHeaderLabel,
   PanelContent,
-  PanelOverlay
+  PanelOverlay,
+  PanelError
 } from 'components/pages/dashboard/panel';
 import { RulesGrid, rulesColumnDefs } from 'components/pages/rules/rulesGrid';
 import { translateColumnDefs } from 'utilities';
@@ -33,7 +34,7 @@ export class AlarmsPanel extends Component {
   }
 
   render() {
-    const { t, alarms, isPending } = this.props;
+    const { t, alarms, isPending, error } = this.props;
     const gridProps = {
       columnDefs: translateColumnDefs(t, this.columnDefs),
       rowData: alarms,
@@ -50,6 +51,7 @@ export class AlarmsPanel extends Component {
           <RulesGrid {...gridProps} />
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
+        { error && <PanelError>{t(error.message)}</PanelError> }
       </Panel>
     );
   }

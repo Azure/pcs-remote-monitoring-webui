@@ -8,7 +8,7 @@ $errorIconSize: 10px;
   display: flex;
   flex-flow: row nowrap;
   flex-shrink: 0;
-  @include rem-font-size(14px);
+  font-size: 1em;
 
   .error-icon {
     @include square-px-rem($errorIconSize);

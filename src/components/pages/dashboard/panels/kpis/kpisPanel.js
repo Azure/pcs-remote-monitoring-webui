@@ -9,7 +9,8 @@ import {
   PanelHeader,
   PanelHeaderLabel,
   PanelContent,
-  PanelOverlay
+  PanelOverlay,
+  PanelError
 } from 'components/pages/dashboard/panel';
 
 import './kpisPanel.css';
@@ -91,7 +92,7 @@ export class KpisPanel extends Component {
   }
 
   render() {
-    const { t, isPending, criticalAlarmsChange } = this.props;
+    const { t, isPending, criticalAlarmsChange, error } = this.props;
     const showOverlay = isPending && !criticalAlarmsChange;
     return (
       <Panel>
@@ -122,6 +123,7 @@ export class KpisPanel extends Component {
           </div>
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
+        { error && <PanelError>{t(error.message)}</PanelError> }
       </Panel>
     );
   }
