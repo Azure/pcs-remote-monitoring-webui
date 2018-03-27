@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { PcsGrid } from 'components/shared';
+import { Btn, PcsGrid } from 'components/shared';
 import { rulesColumnDefs, checkboxParams, defaultRulesGridProps } from './rulesGridConfig';
 import { isFunc, translateColumnDefs } from 'utilities';
 
@@ -20,6 +20,12 @@ export class RulesGrid extends Component {
       rulesColumnDefs.count,
       rulesColumnDefs.lastTrigger
     ];
+
+    // TODO: This is a temporary example implementation. Remove with a better version
+    this.contextBtns = {
+      disable: <Btn key="disable">Disable</Btn>,
+      edit: <Btn key="edit">Edit</Btn>
+    };
   }
 
   onGridReady = gridReadyEvent => {
@@ -31,6 +37,30 @@ export class RulesGrid extends Component {
     }
   };
 
+  /**
+   * Handles context filter changes and calls any hard select props method
+   *
+   * @param {Array} selectedDevices A list of currently selected devices
+   */
+  onHardSelectChange = (selectedDevices) => {
+    const { onContextMenuChange, onHardSelectChange} = this.props;
+    if (isFunc(onContextMenuChange)) {
+      if (selectedDevices.length > 1) {
+        onContextMenuChange(this.contextBtns.disable);
+      } else if (selectedDevices.length === 1) {
+        onContextMenuChange([
+          this.contextBtns.disable,
+          this.contextBtns.edit
+        ]);
+      } else {
+        onContextMenuChange(null);
+      }
+    }
+    if (isFunc(onHardSelectChange)) {
+      onHardSelectChange(selectedDevices);
+    }
+  }
+
   render () {
     const gridProps = {
       /* Grid Properties */
@@ -41,6 +71,7 @@ export class RulesGrid extends Component {
         t: this.props.t
       },
       /* Grid Events */
+      onHardSelectChange: this.onHardSelectChange,
       onGridReady: this.onGridReady
     };
 

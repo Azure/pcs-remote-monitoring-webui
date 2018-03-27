@@ -2,13 +2,13 @@
 
 import React from 'react';
 
+import { joinClasses } from 'utilities';
+
 import './pageContent.css';
 
 /** A presentational component containing the content for a page */
-const PageContent = (props) => (
-  <div className={`page-content-container ${props.className || ''}`}>
-    {props.children}
+export const PageContent = ({ className, children }) => (
+  <div className={joinClasses('page-content-container', className)}>
+    {children}
   </div>
 );
-
-export default PageContent;

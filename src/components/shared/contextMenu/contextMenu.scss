@@ -1,0 +1,31 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+$headerHeight: 48px;
+
+.context-menu-container {
+  display: flex;
+  flex-flow: row nowrap;
+  flex-shrink: 0;
+  justify-content: flex-end; // Move buttons to the right of the context menu
+  @include rem-fallback(height, $headerHeight);
+
+  .last-updated-container {
+    margin: 0;
+    align-items: center;
+    @include rem-fallback(padding, 0px, 10px);
+  }
+
+  @include themify($themes) {
+    border-bottom: 1px solid themed('colorMidSecond');
+
+    .btn:hover {
+      background-color: themed('colorLowestSecond');
+      color: #fff;
+
+      svg { fill: themed('colorHighest'); }
+    }
+  }
+}

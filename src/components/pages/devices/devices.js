@@ -2,8 +2,9 @@
 
 import React, { Component } from 'react';
 import { DevicesGrid } from './devicesGrid';
-import { Btn, RefreshBar } from 'components/shared';
+import { Btn, RefreshBar, PageContent, ContextMenu } from 'components/shared';
 import { DeviceDetailsContainer } from './flyouts/deviceDetails';
+import { svgs } from 'utilities';
 
 import './devices.css';
 
@@ -16,7 +17,10 @@ export class Devices extends Component {
 
   constructor(props) {
     super(props);
-    this.state = closedFlyoutState;
+    this.state = {
+      ...closedFlyoutState,
+      contextBtns: null
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -38,6 +42,8 @@ export class Devices extends Component {
     selectedDeviceId: id
   });
 
+  onContextMenuChange = contextBtns => this.setState({ contextBtns });
+
   getSoftSelectId = ({ id }) => id;
 
   render() {
@@ -45,12 +51,17 @@ export class Devices extends Component {
     const gridProps = {
       rowData: isPending ? undefined : devices || [],
       onSoftSelectChange: this.onSoftSelectChange,
+      onContextMenuChange: this.onContextMenuChange,
       softSelectId: this.state.selectedDeviceId,
       getSoftSelectId: this.getSoftSelectId,
       t: this.props.t
     };
-    return (
-      <div className="devices-container">
+    return [
+      <ContextMenu key="context-menu">
+        { this.state.contextBtns }
+        <Btn svg={svgs.plus}>New device</Btn> { /* TODO: Translate */ }
+      </ContextMenu>,
+      <PageContent className="devices-container" key="page-content">
         <RefreshBar refresh={fetchDevices} time={lastUpdated} isPending={isPending} t={t} />
         {
           !!error &&
@@ -61,7 +72,7 @@ export class Devices extends Component {
         { !error && <DevicesGrid {...gridProps} /> }
         <Btn onClick={this.changeDeviceGroup}>Refresh Device Groups</Btn>
         { this.state.flyoutOpen && <DeviceDetailsContainer onClose={this.closeFlyout} device={entities[this.state.selectedDeviceId]} /> }
-      </div>
-    );
+      </PageContent>
+    ];
   }
 }

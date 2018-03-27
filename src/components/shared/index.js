@@ -8,3 +8,5 @@ export * from './indicator/indicator';
 export * from './pcsGrid/pcsGrid';
 export * from './refreshBar/refreshBar';
 export * from './svg/svg';
+export * from './pageContent/pageContent';
+export * from './contextMenu/contextMenu';

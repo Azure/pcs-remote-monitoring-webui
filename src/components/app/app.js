@@ -9,7 +9,6 @@ import { SettingsContainer } from './flyouts';
 import Header from './header/header';
 import Navigation from './navigation/navigation';
 import Main from './main/main';
-import PageContent from './pageContent/pageContent';
 
 // Page Components
 import  {
@@ -17,7 +16,7 @@ import  {
   DevicesContainer as DevicesPage,
   RulesContainer as RulesPage,
   MaintenanceContainer as MaintenancePage,
-  PageNotFound
+  PageNotFoundContainer as PageNotFound
 } from 'components/pages';
 
 import { svgs } from 'utilities';
@@ -57,16 +56,14 @@ class App extends Component {
           <Navigation tabs={tabConfigs} t={this.props.t} />
           <Main>
             <Header openSettings={this.openSettings} logout={this.props.logout} t={this.props.t} />
-            <PageContent>
-              <Switch>
-                <Redirect exact from="/" to={dashboardTab.to} />
-                <Route exact path={dashboardTab.to} component={DashboardPage} />
-                <Route exact path={devicesTab.to} component={DevicesPage} />
-                <Route exact path={rulesTab.to} component={RulesPage} />
-                <Route path={maintenanceTab.to} component={MaintenancePage} />
-                <Route component={PageNotFound} />
-              </Switch>
-            </PageContent>
+            <Switch>
+              <Redirect exact from="/" to={dashboardTab.to} />
+              <Route exact path={dashboardTab.to} component={DashboardPage} />
+              <Route exact path={devicesTab.to} component={DevicesPage} />
+              <Route exact path={rulesTab.to} component={RulesPage} />
+              <Route path={maintenanceTab.to} component={MaintenancePage} />
+              <Route component={PageNotFound} />
+            </Switch>
             { this.state.openFlyout === 'settings' && <SettingsContainer onClose={this.closeFlyout} /> }
           </Main>
         </div>

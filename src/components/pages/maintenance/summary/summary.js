@@ -6,9 +6,11 @@ import { NavLink } from 'react-router-dom';
 
 import { Notifications } from './notifications';
 import { Jobs } from './jobs';
+import { PageContent, ContextMenu } from 'components/shared';
 
-export const Summary = ({ match: { params: { path } } }) => (
-  <div className="maintenance-container">
+export const Summary = ({ match: { params: { path } } }) => [
+  <ContextMenu key="context-menu"></ContextMenu>,
+  <PageContent className="maintenance-container" key="page-content">
     <div className="header">Maintenance</div>
     <div className="tab-container">
       <NavLink to={'/maintenance/notifications'} className="tab" activeClassName="active">Notifications</NavLink>
@@ -20,5 +22,5 @@ export const Summary = ({ match: { params: { path } } }) => (
         <Route exact path={'/maintenance/jobs'} component={Jobs} />
       </Switch>
     </div>
-  </div>
-);
+  </PageContent>
+];

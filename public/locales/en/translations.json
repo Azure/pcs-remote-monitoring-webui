@@ -4,6 +4,10 @@
     "appName": "Azure IoT Suite Remote Monitoring Preview",
     "logout": "Logout"
   },
+  "pageNotFound": {
+    "title": "404 - Page not found",
+    "message": "Oops, we weren't able to find the page you requested"
+  },
   "tabs": {
     "dashboard": "dashboard",
     "devices": "devices",

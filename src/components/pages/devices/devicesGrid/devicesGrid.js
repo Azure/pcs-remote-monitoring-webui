@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { PcsGrid } from 'components/shared';
+import { Btn, PcsGrid } from 'components/shared';
 import { checkboxParams, deviceColumnDefs, defaultDeviceGridProps } from './devicesGridConfig';
 import { isFunc, translateColumnDefs } from 'utilities';
 
@@ -23,6 +23,14 @@ export class DevicesGrid extends Component {
       deviceColumnDefs.telemetry,
       deviceColumnDefs.status,
       deviceColumnDefs.lastConnection
+    ];
+
+    // TODO: This is a temporary example implementation. Remove with a better version
+    this.contextBtns = [
+      <Btn key="tag">Tag</Btn>,
+      <Btn key="schedule">Schedule</Btn>,
+      <Btn key="reconfigure">Reconfigure</Btn>,
+      <Btn key="delete">Delete</Btn>
     ];
   }
 
@@ -58,10 +66,9 @@ export class DevicesGrid extends Component {
    * @param {Array} selectedDevices A list of currently selected devices
    */
   onHardSelectChange = (selectedDevices) => {
-    const { contextActions, onContextMenuChange, onHardSelectChange} = this.props;
+    const { onContextMenuChange, onHardSelectChange} = this.props;
     if (isFunc(onContextMenuChange)) {
-      contextActions.actions.devicesSelectionChanged(selectedDevices);
-      onContextMenuChange(selectedDevices.length > 0 ? this.contextBtns : '');
+      onContextMenuChange(selectedDevices.length > 0 ? this.contextBtns : null);
     }
     if (isFunc(onHardSelectChange)) {
       onHardSelectChange(selectedDevices);

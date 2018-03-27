@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { Observable, Subject } from 'rxjs';
+import moment from 'moment';
 
 import Config from 'app.config';
 import { TelemetryService } from 'services';
@@ -15,6 +16,7 @@ import {
   MapPanel,
   transformTelemetryResponse
 } from './panels';
+import { ContextMenu, PageContent, RefreshBar } from 'components/shared';
 
 import './dashboard.css';
 
@@ -34,33 +36,38 @@ const chartColors = [
   '#FFEE91'
 ];
 
+const initialState = {
+  chartColors,
+
+  // Telemetry data
+  telemetry: {},
+  telemetryIsPending: true,
+  telemetryError: null,
+
+  // Kpis data
+  currentActiveAlarms: [],
+  topAlarms: [],
+  alarmsPerDeviceId: {},
+  criticalAlarmsChange: 0,
+  kpisIsPending: true,
+  kpisError: null,
+
+  // Map data
+  openWarningCount: undefined,
+  openCriticalCount: undefined,
+
+  lastRefreshed: undefined
+};
+
 export class Dashboard extends Component {
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      chartColors,
-
-      // Telemetry data
-      telemetry: {},
-      telemetryIsPending: true,
-      telemetryError: null,
-
-      // Kpis data
-      currentActiveAlarms: [],
-      topAlarms: [],
-      alarmsPerDeviceId: {},
-      criticalAlarmsChange: 0,
-      kpisIsPending: true,
-      kpisError: null,
-
-      // Map data
-      openWarningCount: undefined,
-      openCriticalCount: undefined
-    };
+    this.state = initialState;
 
     this.subscriptions = [];
+    this.dashboardRefresh$ = new Subject(); // Restarts all streams
     this.telemetryRefresh$ = new Subject();
     this.panelsRefresh$ = new Subject();
   }
@@ -180,23 +187,43 @@ export class Dashboard extends Component {
       // KPI stream - END
 
       this.subscriptions.push(
-        telemetry$.subscribe(
-          telemetryState => this.setState(telemetryState, () => this.telemetryRefresh$.next('r')),
-          telemetryError => this.setState({ telemetryError, telemetryIsPending: false })
-        )
+        this.dashboardRefresh$
+          .subscribe(() => this.setState(initialState))
       );
 
       this.subscriptions.push(
-        kpis$.subscribe(
-          kpiState => this.setState(kpiState, () => this.panelsRefresh$.next('r')),
-          kpisError => this.setState({ kpisError, kpisIsPending: false })
-        )
+        this.dashboardRefresh$
+          .switchMap(() => telemetry$)
+          .subscribe(
+            telemetryState => this.setState(
+              { ...telemetryState, lastRefreshed: moment() },
+              () => this.telemetryRefresh$.next('r')
+            ),
+            telemetryError => this.setState({ telemetryError, telemetryIsPending: false })
+          )
       );
+
+      this.subscriptions.push(
+        this.dashboardRefresh$
+          .switchMap(() => kpis$)
+          .subscribe(
+            kpiState => this.setState(
+              { ...kpiState, lastRefreshed: moment() },
+              () => this.panelsRefresh$.next('r')
+            ),
+            kpisError => this.setState({ kpisError, kpisIsPending: false })
+          )
+      );
+
+      // Start polling all panels
+      this.dashboardRefresh$.next('r');
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
+
+  refreshDashboard = () => this.dashboardRefresh$.next('r');
 
   render () {
     const {
@@ -223,7 +250,9 @@ export class Dashboard extends Component {
       kpisError,
 
       openWarningCount,
-      openCriticalCount
+      openCriticalCount,
+
+      lastRefreshed
     } = this.state;
 
     // Count the number of online and offline devices
@@ -258,8 +287,15 @@ export class Dashboard extends Component {
       };
     }, {});
 
-    return (
-      <div className="dashboard-container">
+    return [
+      <ContextMenu key="context-menu">
+        <RefreshBar
+          refresh={this.refreshDashboard}
+          time={lastRefreshed}
+          isPending={kpisIsPending || devicesIsPending}
+          t={t} />
+      </ContextMenu>,
+      <PageContent className="dashboard-container" key="page-content">
         <Grid>
           <Cell className="col-1 devices-overview-cell">
             <OverviewPanel
@@ -303,7 +339,7 @@ export class Dashboard extends Component {
               t={t} />
           </Cell>
         </Grid>
-      </div>
-    );
+      </PageContent>
+    ];
   }
 }

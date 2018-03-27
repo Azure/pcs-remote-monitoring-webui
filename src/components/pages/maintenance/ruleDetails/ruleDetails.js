@@ -2,8 +2,11 @@
 
 import React from 'react';
 
-export const RuleDetails = ({ match: { params: { id } } }) => (
-  <div className="maintenance-container">
+import { PageContent, ContextMenu } from 'components/shared';
+
+export const RuleDetails = ({ match: { params: { id } } }) => [
+  <ContextMenu key="context-menu"></ContextMenu>,
+  <PageContent className="maintenance-container" key="page-content">
     <div className="header">{id}</div>
-  </div>
-);
+  </PageContent>
+];
