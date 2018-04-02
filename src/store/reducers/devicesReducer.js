@@ -18,7 +18,7 @@ import {
   toActionCreator,
   getPending,
   getError
- } from 'store/utilities';
+} from 'store/utilities';
 
 // ========================= Epics - START
 const handleError = fromAction => error =>
@@ -66,6 +66,14 @@ const updateDevicesReducer = (state, { payload, fromAction }) => {
   });
 };
 
+const deleteDeviceReducer = (state, { payload }) => {
+  const itemIdx = state.items.indexOf(payload);
+  return update(state, {
+    entities: { $unset: [payload] },
+    items: { $splice: [[itemIdx, 1]] }
+  });
+};
+
 /* Action types that cause a pending flag */
 const fetchableTypes = [
   epics.actionTypes.fetchDevices
@@ -75,6 +83,7 @@ export const redux = createReducerScenario({
   updateDevices: { type: 'DEVICES_UPDATE', reducer: updateDevicesReducer },
   registerError: { type: 'DEVICES_REDUCER_ERROR', reducer: errorReducer },
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer },
+  deleteDevice: { type: 'DEVICE_DELETE', reducer: deleteDeviceReducer },
 });
 
 export const reducer = { devices: redux.getReducer(initialState) };

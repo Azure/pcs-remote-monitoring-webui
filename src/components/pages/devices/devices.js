@@ -31,7 +31,7 @@ export class Devices extends Component {
   }
 
   changeDeviceGroup = () => {
-    const { changeDeviceGroup, deviceGroups }  = this.props;
+    const { changeDeviceGroup, deviceGroups } = this.props;
     changeDeviceGroup(deviceGroups[1].id);
   }
 
@@ -42,7 +42,10 @@ export class Devices extends Component {
     selectedDeviceId: id
   });
 
-  onContextMenuChange = contextBtns => this.setState({ contextBtns });
+  onContextMenuChange = contextBtns => this.setState({
+    contextBtns,
+    flyoutOpen: false
+  });
 
   getSoftSelectId = ({ id }) => id;
 

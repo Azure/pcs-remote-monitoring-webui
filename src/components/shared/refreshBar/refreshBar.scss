@@ -14,8 +14,11 @@ $rotateTime: 2s;
 
   .btn.refresh-btn {
     @include rem-fallback(padding, 0px, 5px);
+    @include rem-fallback(min-width, 0px);
 
     .btn-icon { @include square-px-rem(15px); }
+
+    &:focus { outline: 0px; }
 
     &.refreshing {
       -webkit-animation: spin $rotateTime linear infinite;
@@ -33,10 +36,6 @@ $rotateTime: 2s;
 
     .btn.refresh-btn {
       background: none;
-
-      .btn-icon svg { fill: themed('colorContentTextDim'); }
-
-      &:hover .btn-icon svg { fill: themed('colorContentText'); }
 
       &.refreshing .btn-icon svg { fill: themed('colorContentText'); }
     }

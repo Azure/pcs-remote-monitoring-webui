@@ -38,6 +38,42 @@ $themes: (
     colorCellRendererTextHighlight: $colorWhite,
     // Grid - END
 
+    //Btn - START
+    colorBtnOutlineFocus: $colorSmoke,
+
+    colorBtnText: $colorWhite,
+    colorBtnBackground: transparent,
+    colorBtnSvgFill: $colorSmoke,
+
+    colorBtnTextHover: $colorWhite,
+    colorBtnBackgroundHover: transparent,
+    colorBtnSvgFillHover: $colorWhite,
+
+    colorBtnTextActive: $colorWhite,
+    colorBtnBackgroundActive: transparent,
+    colorBtnSvgFillActive: $colorSmoke,
+
+    colorBtnTextDisabled: $colorAsh,
+    colorBtnBackgroundDisabled: transparent,
+    colorBtnSvgFillDisabled: $colorAsh,
+
+    colorBtnPrimaryText: $colorNoir,
+    colorBtnPrimaryBackground: $colorSmoke,
+    colorBtnPrimarySvgFill: $colorNoir,
+
+    colorBtnPrimaryTextHover: $colorWhite,
+    colorBtnPrimaryBackgroundHover: $colorGraphite,
+    colorBtnPrimarySvgFillHover: $colorWhite,
+
+    colorBtnPrimaryTextActive: $colorSmoke,
+    colorBtnPrimaryBackgroundActive: $colorCharcoal,
+    colorBtnPrimarySvgFillActive: $colorSmoke,
+
+    colorBtnPrimaryTextDisabled: $colorSmoke,
+    colorBtnPrimaryBackgroundDisabled: transparent,
+    colorBtnPrimarySvgFillDisabled: $colorSmoke,
+    //Btn - END
+
     // Page Content Colors - START
     colorContentBackground: $colorNoir,
     colorContentText: $colorWhite,

@@ -7,6 +7,7 @@ import { DeviceIcon } from './deviceIcon';
 import { RulesGrid, rulesColumnDefs } from 'components/pages/rules/rulesGrid';
 import { translateColumnDefs } from 'utilities';
 import {
+  ErrorMsg,
   Flyout,
   FlyoutHeader,
   FlyoutTitle,
@@ -94,7 +95,9 @@ export class DeviceDetails extends Component {
         <FlyoutContent>
           {
             !device &&
-            <div className="device-details-container">{t("devices.details.noDevice")}</div>
+            <div className="device-details-container">
+              <ErrorMsg>{t("devices.details.noDevice")}</ErrorMsg>
+            </div>
           }
           {
             !!device &&

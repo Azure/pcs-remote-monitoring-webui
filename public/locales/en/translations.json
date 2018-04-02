@@ -109,6 +109,17 @@
       "telemetry": {
         "title": "Telemetry"
       }
+    },
+    "delete": {
+      "title": "Delete",
+      "header": "Delete device",
+      "description": "This action will delete the devices permanently from the platform.",
+      "simulatedNotSupported": "Deleting simulated devices is not currently supported, this action will only be taken on the physical devices.",
+      "affected": "Affected devices",
+      "cancel": "Cancel",
+      "apply": "Delete",
+      "applySuccess": "devices deleted successfully!",
+      "close": "Close"
     }
   },
   "rules": {

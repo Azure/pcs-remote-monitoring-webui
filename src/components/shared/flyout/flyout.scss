@@ -37,6 +37,7 @@ $flyoutPadding: 20px;
     .flyout-close-btn:hover {
       background-color: transparent;
       @include rem-fallback(padding, 0px, $fontSize);
+      @include rem-fallback(min-width, 0px);
 
       &:hover { background-color: transparent; }
       .btn-icon svg { @include square-px-rem($closeBtnSize);  }

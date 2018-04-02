@@ -3,7 +3,8 @@
 @import 'src/styles/themes';
 @import 'src/styles/mixins';
 
-$btnHeight: 28px;
+$btnHeight: 24px;
+$btnMinWidth: 120px;
 $btnIconSize: 14px;
 .btn {
   display: flex;
@@ -11,10 +12,11 @@ $btnIconSize: 14px;
   flex-shrink: 0;
   align-items: center;
   background-color: transparent;
-  border: none;
+  border: 0;
   cursor: pointer;
   font-family: inherit;
   @include rem-fallback(padding, 0px, $btnHeight);
+  @include rem-fallback(min-width, $btnMinWidth);
 
   .btn-icon {
     @include rem-fallback(height, $btnHeight);
@@ -22,9 +24,7 @@ $btnIconSize: 14px;
 
     svg { @include square-px-rem($btnIconSize); }
 
-    + .btn-text {
-      @include rem-fallback(padding-left, 5px);
-    }
+    + .btn-text { @include rem-fallback(padding-left, 5px); }
   }
 
   .btn-text {
@@ -33,25 +33,67 @@ $btnIconSize: 14px;
     @include rem-font-size(14px);
   }
 
-  @include themify($themes) {
-    color: themed('colorHighest');
+  &:disabled {
+    cursor: auto;
 
-    .btn-icon svg { fill: themed('colorHighest'); }
+    .btn-icon { display: none; }
+  }
+
+  @include themify($themes) {
+    color: themed('colorBtnText');
+    background-color: themed('colorBtnBackground');
+
+    .btn-icon svg { fill: themed('colorBtnSvgFill'); }
+
+    &:focus { outline: 1px dashed themed('colorBtnOutlineFocus'); }
 
     &:hover {
-      color: themed('colorLowestSecond');
-      background-color: themed('colorLightestFirst');
+      color: themed('colorBtnTextHover');
+      background-color: themed('colorBtnBackgroundHover');
 
-      .btn-icon svg { fill: themed('colorLowestSecond'); }
+      .btn-icon svg { fill: themed('colorBtnSvgFillHover'); }
+    }
+
+    &:active {
+      color: themed('colorBtnTextActive');
+      background-color: themed('colorBtnBackgroundActive');
+
+      .btn-icon svg { fill: themed('colorBtnSvgFillActive'); }
     }
 
     &:disabled {
-      background-color: transparent;
-      color: themed('colorMidFirst');
-      cursor: auto;
+      color: themed('colorBtnTextDisabled');
+      background-color: themed('colorBtnBackgroundDisabled');
 
-      .btn-icon svg { fill: themed('colorMidFirst'); }
+      .btn-icon svg { fill: themed('colorBtnSvgFillDisabled'); }
     }
 
+    &.btn-primary {
+      color: themed('colorBtnPrimaryText');
+      background-color: themed('colorBtnPrimaryBackground');
+
+      .btn-icon svg { fill: themed('colorBtnPrimarySvgFill'); }
+
+      &:hover {
+        color: themed('colorBtnPrimaryTextHover');
+        background-color: themed('colorBtnPrimaryBackgroundHover');
+
+        .btn-icon svg { fill: themed('colorBtnPrimarySvgFillHover'); }
+      }
+
+      &:active {
+        color: themed('colorBtnPrimaryTextActive');
+        background-color: themed('colorBtnPrimaryBackgroundActive');
+
+        .btn-icon svg { fill: themed('colorBtnPrimarySvgFillActive'); }
+      }
+
+      &:disabled {
+        color: themed('colorBtnPrimaryTextDisabled');
+        background-color: themed('colorBtnPrimaryBackgroundDisabled');
+
+        .btn-icon svg { fill: themed('colorBtnPrimarySvgFillDisabled'); }
+      }
+    }
   }
 }
