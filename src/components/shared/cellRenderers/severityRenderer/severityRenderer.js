@@ -15,7 +15,7 @@ const getSvg = value => {
 };
 
 export const SeverityRenderer = ({ value, context: { t }, iconOnly }) => {
-  const cleanValue = value.toLowerCase();
+  const cleanValue = (value || '').toLowerCase();
   const cellClasses = `pcs-renderer-cell severity ${cleanValue || ''} ${cleanValue ? 'highlight' : ''}`;
   return (
     <div className={cellClasses}>

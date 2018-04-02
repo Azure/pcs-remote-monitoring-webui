@@ -1,4 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
+
+import Config from 'app.config';
 import dot from 'dot-object';
 
 /** Tests if a value is a function */
@@ -17,8 +19,8 @@ export const joinClasses = (...classNames) => classNames.join(' ').trim();
 export const stringToBoolean = value => {
   if (typeof value !== 'string') return value;
   const str = value.toLowerCase();
-  if (str === "true") return true;
-  else if (str === "false") return false;
+  if (str === 'true') return true;
+  else if (str === 'false') return false;
 };
 
 /** Takes an object and converts it to another structure using dot-notation */
@@ -41,3 +43,9 @@ export const compareByProperty = (property) => (a, b) => {
   if (b[property] < a[property]) return -1;
   return 0;
 };
+
+/** Returns true if the value is defined */
+export const isDef = (val) => typeof val !== 'undefined';
+
+/** Return a generic config value if the value is undefined */
+export const renderUndefined = (value) => !isDef(value) ? Config.emptyValue : value;

@@ -1,8 +1,15 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { AlertGrid } from 'components/pages/maintenance/grids';
 
-export const Notifications = () => (
-  <NavLink to={'/maintenance/rule/id-for-rule-473465'} className="temp-row">RuleDetails</NavLink>
-);
+export const Notifications = ({ isPending, alerts, history, ...props }) => {
+  const gridProps = {
+    ...props,
+    rowData: isPending ? undefined : alerts,
+    onRowClicked: ({ data: { ruleId }}) => history.push(`/maintenance/rule/${ruleId}`)
+  };
+  return (
+    !isPending && alerts.length === 0 ? <div className="no-data-msg">No data</div> : <AlertGrid {...gridProps} />
+  );
+};

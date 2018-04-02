@@ -42,25 +42,29 @@ export class TelemetryService {
 
   /** Returns a telemetry events */
   static getTelemetryByMessages(params = {}) {
-    return HttpClient.get(`${ENDPOINT}messages?${stringify(params)}`)
+    const _params = {
+      ...params,
+      devices: (params.devices || []).map(encodeURIComponent).join()
+    };
+    return HttpClient.get(`${ENDPOINT}messages?${stringify(_params)}`)
       .map(toMessagesModel);
   }
 
-  static getTelemetryByDeviceIdP1M(deviceIds = '') {
+  static getTelemetryByDeviceIdP1M(devices = []) {
     return TelemetryService.getTelemetryByMessages({
       from: 'NOW-PT1M',
       to: 'NOW',
       order: 'desc',
-      devices: encodeURIComponent(deviceIds)
+      devices
     });
   }
 
-  static getTelemetryByDeviceIdP15M(deviceIds = '') {
+  static getTelemetryByDeviceIdP15M(devices = []) {
     return TelemetryService.getTelemetryByMessages({
       from: 'NOW-PT15M',
       to: 'NOW',
       order: 'desc',
-      devices: encodeURIComponent(deviceIds)
+      devices
     });
   }
 

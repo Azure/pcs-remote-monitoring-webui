@@ -36,7 +36,7 @@ export class PcsGrid extends Component {
       suppressClickEdit: true,
       suppressRowClickSelection: true, // Suppress so that a row is only selectable by checking the checkbox
       suppressLoadingOverlay: true,
-      suppressNoRowsOverlay: true,
+      suppressNoRowsOverlay: true
     };
 
     this.subscriptions = [];
@@ -123,12 +123,10 @@ export class PcsGrid extends Component {
       onRowClicked: this.onRowClicked,
       onRowDoubleClicked: this.onRowDoubleClicked,
       rowClassRules: {
-        'pcs-row-soft-selected': ({ context, data }) => {
-          if (isFunc(this.props.getSoftSelectId)) {
-            return this.props.getSoftSelectId(data) === this.props.softSelectId
-          }
-          return false;
-        }
+        'pcs-row-soft-selected': ({ data }) =>
+          isFunc(this.props.getSoftSelectId)
+            ? this.props.getSoftSelectId(data) === this.props.softSelectId
+            : false
       }
     };
     const { rowData, pcsLoadingTemplate } = this.props;

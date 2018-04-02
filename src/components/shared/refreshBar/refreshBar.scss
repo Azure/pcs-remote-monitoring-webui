@@ -16,6 +16,8 @@ $rotateTime: 2s;
     @include rem-fallback(padding, 0px, 5px);
     @include rem-fallback(min-width, 0px);
 
+    &:hover { background: none !important; }
+
     .btn-icon { @include square-px-rem(15px); }
 
     &:focus { outline: 0px; }

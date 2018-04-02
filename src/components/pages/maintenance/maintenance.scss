@@ -3,26 +3,42 @@
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
-// TODO: These styles are place holders until the actual maintenance page work is done.
 .maintenance-container {
   display: flex;
   flex-flow: column nowrap;
   padding: 20px;
 
-  .header {
+  .maintenance-header {
     font-weight: 700;
+    margin: 0;
+    margin-right: 10px;
     @include rem-font-size(48px);
   }
+
+  .header-container {
+    display: flex;
+    flex-flow: row wrap;
+    flex-shrink: 0;
+    align-items: flex-end;
+    padding-bottom: 10px;
+  }
+
+  .sub-heading { font-weight: normal; }
 
   .tab-container {
     display: flex;
     flex-flow: row wrap;
+    flex-shrink: 0;
 
     .tab {
       text-decoration: none;
       padding: 5px 0px;
+      padding-bottom: 10px;
       font-weight: 700;
       margin-right: 72px;
+      background: none;
+      border: none;
+      cursor: pointer;
       @include rem-font-size(32px);
     }
   }
@@ -37,6 +53,14 @@
       margin: 10px 0px;
       padding: 10px;
     }
+  }
+
+  .details-chart-container {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: stretch;
+    height: 300px;
+    flex-shrink: 0;
   }
 
   @include themify($themes) {

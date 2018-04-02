@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import Config from 'app.config';
+import { stringify } from 'query-string';
 import { HttpClient } from './httpClient';
-import { toDevicesModel } from './models';
+import { toDevicesModel, toJobsModel, toJobStatusModel } from './models';
 
 const ENDPOINT = Config.serviceUrls.iotHubManager;
 
@@ -14,6 +15,18 @@ export class IoTHubManagerService {
     const query = encodeURIComponent(JSON.stringify(conditions));
     return HttpClient.get(`${ENDPOINT}devices?query=${query}`)
       .map(toDevicesModel);
+  }
+
+  /** Returns a list of all jobs */
+  static getJobs(params) {
+    return HttpClient.get(`${ENDPOINT}jobs?${stringify(params)}`)
+      .map(toJobsModel);
+  }
+
+  /** Get returns the status details for a particular job */
+  static getJobStatus(jobId) {
+    return HttpClient.get(`${ENDPOINT}jobs/${jobId}?includeDeviceDetails=true`)
+      .map(toJobStatusModel);
   }
 
   /** Deletes a device */

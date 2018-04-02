@@ -24,3 +24,33 @@ export const toDevicesModel = (response = {}) => (response.items || [])
     'eTag': 'eTag',
     'tags': 'tags'
   }));
+
+export const toJobsModel = (response = []) => response.map(job => reshape(job, {
+  'jobId': 'jobId',
+  'createdTimeUtc': 'createdTimeUtc',
+  'endTimeUtc': 'endTimeUtc',
+  'maxExecutionTimeInSeconds': 'maxExecutionTimeInSeconds',
+  'methodParameter.name': 'methodName',
+  'queryCondition': 'queryCondition',
+  'resultStatistics.deviceCount': 'stats.deviceCount',
+  'resultStatistics.failedCount': 'stats.failedCount',
+  'resultStatistics.pendingCount': 'stats.pendingCount',
+  'resultStatistics.runningCount': 'stats.runningCount',
+  'resultStatistics.succeededCount': 'stats.succeededCount',
+  'startTimeUtc': 'startTimeUtc',
+  'status': 'status',
+  'type': 'type'
+}));
+
+export const toJobStatusModel = (response = {}) => reshape(response, {
+  'createdTimeUtc': 'createdTimeUtc',
+  'devices': 'devices',
+  'endTimeUtc': 'endTimeUtc',
+  'jobId': 'jobId',
+  'maxExecutionTimeInSeconds': 'maxExecutionTimeInSeconds',
+  'methodParameter.name': 'methodName',
+  'queryCondition': 'queryCondition',
+  'startTimeUtc': 'startTimeUtc',
+  'status': 'status',
+  'type': 'type'
+});

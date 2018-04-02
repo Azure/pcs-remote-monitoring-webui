@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 
 import { Indicator } from 'components/shared';
 import { Svg } from 'components/shared/svg/svg';
-import { svgs } from 'utilities';
+import { svgs, renderUndefined, isDef } from 'utilities';
 import {
   Panel,
   PanelHeader,
@@ -15,9 +15,6 @@ import {
 } from 'components/pages/dashboard/panel';
 
 import './overviewPanel.css';
-
-const isDef = (val) => typeof val !== 'undefined';
-const EMPTY = '--';
 
 export class OverviewPanel extends Component {
   constructor(props) {
@@ -53,7 +50,7 @@ export class OverviewPanel extends Component {
           <div className="stat-container">
             <div className="stat-cell col-third">
               <div className="stat-value critical">
-                <span>{ isDef(openCriticalCount) ? openCriticalCount : EMPTY }</span>
+                <span>{renderUndefined(openCriticalCount)}</span>
                 <Svg path={svgs.critical} className="severity-icon"/>
               </div>
               <div className="stat-label">{t('dashboard.panels.overview.critical')}</div>
@@ -61,24 +58,24 @@ export class OverviewPanel extends Component {
 
             <div className="stat-cell col-third">
               <div className="stat-value warning">
-                <span>{ isDef(openWarningCount) ? openWarningCount : EMPTY }</span>
+                <span>{renderUndefined(openWarningCount)}</span>
                 <Svg path={svgs.warning} className="severity-icon"/>
               </div>
               <div className="stat-label">{t('dashboard.panels.overview.warnings')}</div>
             </div>
 
             <div className="stat-cell col-third">
-              <div className="stat-value">{ total || EMPTY }</div>
+              <div className="stat-value">{renderUndefined(total)}</div>
               <div className="stat-label">{t('dashboard.panels.overview.total')}</div>
             </div>
 
             <div className="stat-cell col-third">
-              <div className="stat-value">{ isDef(onlineDeviceCount) ? onlineDeviceCount : EMPTY }</div>
+              <div className="stat-value">{renderUndefined(onlineDeviceCount)}</div>
               <div className="stat-label">{t('dashboard.panels.overview.connected')}</div>
             </div>
 
             <div className="stat-cell col-third">
-              <div className="stat-value">{ isDef(offlineDeviceCount) ? offlineDeviceCount : EMPTY }</div>
+              <div className="stat-value">{renderUndefined(offlineDeviceCount)}</div>
               <div className="stat-label">{t('dashboard.panels.overview.notConnected')}</div>
             </div>
           </div>

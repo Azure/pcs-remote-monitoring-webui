@@ -8,7 +8,6 @@ import update from 'immutability-helper';
 import { createSelector } from 'reselect';
 import { TelemetryService, IoTHubManagerService } from 'services';
 import { getActiveDeviceGroupId, getDeviceGroupEntities } from './appReducer';
-import { getItems as getDeviceIds } from './devicesReducer';
 import {
   createReducerScenario,
   createEpicScenario,
@@ -43,24 +42,25 @@ export const epics = createEpicScenario({
 
   fetchRuleCounts: {
     type: 'RULES_COUNT_FETCH',
-    epic: (fromAction, store) =>
+    epic: (fromAction, store, action$) =>
       Observable.of(getDeviceGroupEntities(store.getState()))
         .map(entities => entities[fromAction.payload.groupId])
         .flatMap(({ conditions }) => IoTHubManagerService.getDevices(conditions))
         .map(devices => devices.length)
         .map(count => redux.actions.updateRuleCount({ id: fromAction.payload.id, count }))
+        .takeUntil(action$.ofType(epics.actionTypes.fetchRules))
         .catch(handleError(fromAction)) // Needs to work with selector
   },
 
   fetchRuleLastTriggered: {
     type: 'RULES_LAST_TRIGGER_FETCH',
-    epic: (fromAction, store) =>
+    epic: (fromAction, store, action$) =>
       TelemetryService.getAlarmsForRule(fromAction.payload, {
         order: 'desc',
-        limit: 1,
-        devices: getDeviceIds(store.getState()).join(',')
+        limit: 1
       })
       .map(([alarm]) => redux.actions.updateRuleLastTrigger({ id: fromAction.payload, lastTrigger: alarm.dateModified }))
+      .takeUntil(action$.ofType(epics.actionTypes.fetchRules))
       .catch(handleError(fromAction)) // Needs to work with selector
   }
 });

@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import Config from 'app.config';
+
 import {
   SeverityRenderer,
   RuleStatusRenderer,
@@ -94,9 +96,7 @@ export const rulesColumnDefs = {
 export const defaultRulesGridProps = {
   enableColResize: true,
   multiSelect: true,
-  paginationPageSize: 20,
-  rowSelection: 'multiple',
-  suppressCellSelection: true,
-  suppressClickEdit: true,
-  suppressRowClickSelection: true
+  pagination: true,
+  paginationPageSize: Config.paginationPageSize,
+  rowSelection: 'multiple'
 };
