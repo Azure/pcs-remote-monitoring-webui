@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import Config from 'app.config';
-import { IsSimulatedRenderer, ConnectionStatusRenderer } from 'components/shared/cellRenderers';
+import { IsSimulatedRenderer, ConnectionStatusRenderer, TimeRenderer } from 'components/shared/cellRenderers';
 import { EMPTY_FIELD_VAL, DEFAULT_TIME_FORMAT, gridValueFormatters } from 'components/shared/pcsGrid/pcsGridConfig';
 
 const { checkForEmpty } = gridValueFormatters;
@@ -48,10 +48,7 @@ export const deviceColumnDefs = {
   lastConnection: {
     headerName: 'devices.grid.lastConnection',
     field: 'lastActivity',
-    valueFormatter: ({ value }) => {
-      const time = moment(value);
-      return checkForEmpty((time.unix() > 0) ? time.format(DEFAULT_TIME_FORMAT) : '');
-    }
+    cellRendererFramework: TimeRenderer
   }
 };
 

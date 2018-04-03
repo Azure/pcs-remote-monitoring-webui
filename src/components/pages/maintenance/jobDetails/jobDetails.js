@@ -93,11 +93,11 @@ export class JobDetails extends Component {
       <PageContent className="maintenance-container" key="page-content">
         <JobGrid {...jobGridProps} />
         <JobStatusGrid {...jobStatusGridProps} />
-        <h4 className="sub-heading">Devices</h4>
+        <h4 className="sub-heading">{this.props.t('maintenance.devices')}</h4>
         {
           this.state.selectedDevices
             ? <DevicesGrid rowData={this.state.selectedDevices} t={this.props.t} />
-            : 'No occurences selected'
+            : this.props.t('maintenance.noOccSelected')
         }
       </PageContent>
     ];

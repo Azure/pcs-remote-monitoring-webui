@@ -20,8 +20,6 @@ import { ContextMenu, PageContent, RefreshBar } from 'components/shared';
 
 import './dashboard.css';
 
-const maxTopAlarms = 5; // TODO: Move to config
-
 const chartColors = [
   '#01B8AA',
   '#F2C80F',
@@ -152,7 +150,7 @@ export class Dashboard extends Component {
           // ================== Top Alarms - START
           const currentTopAlarms = currentActiveAlarms
             .sort(compareByProperty('count'))
-            .slice(0, maxTopAlarms);
+            .slice(0, Config.maxTopAlarms);
 
           // Find the previous counts for the current top kpis
           const previousTopAlarmsMap = previousActiveAlarms.reduce(

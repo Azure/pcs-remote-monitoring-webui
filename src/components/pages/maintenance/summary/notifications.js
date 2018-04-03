@@ -10,6 +10,6 @@ export const Notifications = ({ isPending, alerts, history, ...props }) => {
     onRowClicked: ({ data: { ruleId }}) => history.push(`/maintenance/rule/${ruleId}`)
   };
   return (
-    !isPending && alerts.length === 0 ? <div className="no-data-msg">No data</div> : <AlertGrid {...gridProps} />
+    !isPending && alerts.length === 0 ? <div className="no-data-msg">{props.t('maintenance.noData')}</div> : <AlertGrid {...gridProps} />
   );
 };

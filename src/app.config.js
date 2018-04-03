@@ -14,9 +14,12 @@ const Config = {
   retryWaitTime: 2000, // On retryable error, retry after 2s
   retryableStatusCodes: new Set([ 0, 502, 503 ]),
   paginationPageSize: 50,
+  smallGridPageSize: 8,
   clickDebounceTime: 180, // ms
   dashboardRefreshInterval: 15000, // 15 seconds
-  telemetryRefreshInterval: 1000 // 1 seconds
+  telemetryRefreshInterval: 1000, // 1 seconds
+  emptyValue: '--',
+  maxTopAlarms: 5
 };
 
 export default Config;

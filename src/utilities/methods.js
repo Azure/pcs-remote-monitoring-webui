@@ -49,3 +49,16 @@ export const isDef = (val) => typeof val !== 'undefined';
 
 /** Return a generic config value if the value is undefined */
 export const renderUndefined = (value) => !isDef(value) ? Config.emptyValue : value;
+
+/** Converts a job status code to a translated string equivalent */
+export const getStatusCode = (code, t) => {
+  switch (code) {
+    case 1: return t('maintenance.jobStatus.enqueued');
+    case 2: return t('maintenance.jobStatus.running');
+    case 3: return t('maintenance.jobStatus.completed');
+    case 4: return t('maintenance.jobStatus.failed');
+    case 5: return t('maintenance.jobStatus.cancelled');
+    case 6: return t('maintenance.jobStatus.scheduled');
+    default: return t('maintenance.jobStatus.queued');
+  }
+}

@@ -39,26 +39,34 @@ export const Summary = ({
       t={props.t} />
   </ContextMenu>,
   <PageContent className="maintenance-container summary-container" key="page-content">
-    <h1 className="maintenance-header">Maintenance</h1>
+    <h1 className="maintenance-header">{props.t('maintenance.title')}</h1>
     <div className="stat-container">
       <div className="stat-group">
-        <StatCell value={renderUndefined(alertCount)} label={'Open Alarms'} />
+        <StatCell value={renderUndefined(alertCount)} label={props.t('maintenance.openAlarms')} />
         <div className="stat-column">
-          <StatCell className="critical" value={renderUndefined(criticalAlertCount)} label={'Critical'} svg={svgs.critical} />
-          <StatCell className="warning" value={renderUndefined(warningAlertCount)} label={'Warning'} svg={svgs.warning} />
+          <StatCell
+            className="critical"
+            value={renderUndefined(criticalAlertCount)}
+            label={props.t('maintenance.critical')}
+            svg={svgs.critical} />
+          <StatCell
+            className="warning"
+            value={renderUndefined(warningAlertCount)}
+            label={props.t('maintenance.warning')}
+            svg={svgs.warning} />
         </div>
       </div>
       <div className="stat-group">
-        <StatCell value={renderUndefined(failedJobsCount)} label={'Failed Jobs'} />
+        <StatCell value={renderUndefined(failedJobsCount)} label={props.t('maintenance.failedJobs')} />
         <div className="stat-column">
-          <StatCell value={renderUndefined(jobsCount)} label={'Total'} />
-          <StatCell value={renderUndefined(succeededJobsCount)} label={'Succeeded'} />
+          <StatCell value={renderUndefined(jobsCount)} label={props.t('maintenance.total')} />
+          <StatCell value={renderUndefined(succeededJobsCount)} label={props.t('maintenance.succeeded')} />
         </div>
       </div>
     </div>
     <div className="tab-container">
-      <NavLink to={'/maintenance/notifications'} className="tab" activeClassName="active">Notifications</NavLink>
-      <NavLink to={'/maintenance/jobs'} className="tab" activeClassName="active">Jobs</NavLink>
+      <NavLink to={'/maintenance/notifications'} className="tab" activeClassName="active">{props.t('maintenance.notifications')}</NavLink>
+      <NavLink to={'/maintenance/jobs'} className="tab" activeClassName="active">{props.t('maintenance.jobs')}</NavLink>
     </div>
     <div className="grid-container">
       <Switch>

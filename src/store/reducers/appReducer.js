@@ -78,13 +78,13 @@ const updateDeviceGroupsReducer = (state, { payload, fromAction }) => {
   });
 };
 
-const updateActiveDeviceGroupsReducer = (state, { payload }) => {
-  return update(state, { activeDeviceGroupId: { $set: payload } });
-};
+const updateActiveDeviceGroupsReducer = (state, { payload }) => update(state,
+  { activeDeviceGroupId: { $set: payload } }
+);
 
-const updateThemeReducer = (state, { payload }) => {
-  return update(state, { theme: { $set: payload } });
-};
+const updateThemeReducer = (state, { payload }) => update(state,
+  { theme: { $set: payload } }
+);
 
 /* Action types that cause a pending flag */
 const fetchableTypes = [

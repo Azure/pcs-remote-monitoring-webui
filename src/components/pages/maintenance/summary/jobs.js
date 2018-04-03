@@ -10,6 +10,6 @@ export const Jobs = ({ isPending, jobs, history, ...props }) => {
     onRowClicked: ({ data: { jobId }}) => history.push(`/maintenance/job/${jobId}`)
   };
   return (
-    !isPending && jobs.length === 0 ? <div className="no-data-msg">No data</div> : <JobGrid {...gridProps} />
+    !isPending && jobs.length === 0 ? <div className="no-data-msg">{props.t('maintenance.noData')}</div> : <JobGrid {...gridProps} />
   )
 };

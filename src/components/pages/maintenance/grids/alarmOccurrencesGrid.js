@@ -4,27 +4,27 @@ import React from 'react';
 import { PcsGrid } from 'components/shared';
 import { translateColumnDefs } from 'utilities';
 import { rulesColumnDefs, checkboxParams } from 'components/pages/rules/rulesGrid/rulesGridConfig';
-import { LastTriggerRenderer } from 'components/shared/cellRenderers';
+import { TimeRenderer } from 'components/shared/cellRenderers';
 
 const columnDefs = [
   {
     ...checkboxParams,
-    headerName: 'Occurrence', // TODO: Translate
+    headerName: 'maintenance.alarmOccGrid.occurrence',
     field: 'name'
   },
   rulesColumnDefs.description,
   rulesColumnDefs.severity,
   {
-    headerName: 'Trigger Device', // TODO: Translate
+    headerName: 'maintenance.alarmOccGrid.triggerDevice',
     field: 'deviceId'
   },
   {
-    headerName: 'Time', // TODO: Translate
+    headerName: 'maintenance.alarmOccGrid.time',
     field: 'dateCreated',
-    cellRendererFramework: LastTriggerRenderer
+    cellRendererFramework: TimeRenderer
   },
   {
-    headerName: 'Status', // TODO: Translate
+    headerName: 'maintenance.jobGrid.status',
     field: 'status'
   }
 ];

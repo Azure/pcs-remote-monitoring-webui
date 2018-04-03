@@ -2,51 +2,38 @@
 
 import React, { Component } from 'react';
 import { PcsGrid } from 'components/shared';
-import { isFunc, translateColumnDefs } from 'utilities';
-import { LastTriggerRenderer } from 'components/shared/cellRenderers';
-
-// TODO: Move to central location after translation story is finalized
-export const getStatusCode = code => {
-  switch (code) {
-    case 1: return 'Enqueued'; // TODO: translate
-    case 2: return 'Running';
-    case 3: return 'Completed';
-    case 4: return 'Failed';
-    case 5: return 'Cancelled';
-    case 6: return 'Scheduled';
-    default: return 'Queued';
-  }
-}
+import { isFunc, translateColumnDefs, getStatusCode } from 'utilities';
+import { TimeRenderer } from 'components/shared/cellRenderers';
 
 export const columnDefs = [
   {
-    headerName: 'Job Name', // TODO: Translate
+    headerName: 'maintenance.jobGrid.jobName',
     field: 'jobId'
   },
   {
-    headerName: 'Status', // TODO: Translate
+    headerName: 'maintenance.jobGrid.status',
     field: 'status',
-    valueFormatter: ({ value }) => getStatusCode(value)
+    valueFormatter: ({ value, context: { t } }) => getStatusCode(value, t)
   },
   {
-    headerName: 'Device ID Affected', // TODO: Translate
+    headerName: 'maintenance.jobStatusGrid.deviceIdAffected',
     field: 'devices',
     valueFormatter: ({ value = [] }) => value.map(({ deviceId }) => deviceId).join(', ')
   },
   {
-    headerName: 'Last Return Message', // TODO: Translate
+    headerName: 'maintenance.jobStatusGrid.lastReturnMsg',
     field: 'status',
-    valueFormatter: ({ value, data = {} }) => `${data.methodName} ${getStatusCode(value)}` // getStatusCode(value)
+    valueFormatter: ({ value, data = {}, context: { t } }) => `${data.methodName} ${getStatusCode(value, t)}`
   },
   {
-    headerName: 'Start Time', // TODO: Translate
+    headerName: 'maintenance.jobGrid.startTime',
     field: 'startTimeUtc',
-    cellRendererFramework: LastTriggerRenderer
+    cellRendererFramework: TimeRenderer
   },
   {
-    headerName: 'End Time', // TODO: Translate
+    headerName: 'maintenance.jobGrid.endTime',
     field: 'endTimeUtc',
-    cellRendererFramework: LastTriggerRenderer
+    cellRendererFramework: TimeRenderer
   }
 ];
 

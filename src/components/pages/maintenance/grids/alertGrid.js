@@ -4,32 +4,32 @@ import React, { Component } from 'react';
 import { PcsGrid } from 'components/shared';
 import { isFunc, translateColumnDefs } from 'utilities';
 import { rulesColumnDefs } from 'components/pages/rules/rulesGrid/rulesGridConfig';
-import { LastTriggerRenderer } from 'components/shared/cellRenderers';
+import { TimeRenderer } from 'components/shared/cellRenderers';
 
 const columnDefs = [
   rulesColumnDefs.ruleName,
   rulesColumnDefs.description,
   rulesColumnDefs.severity,
   {
-    headerName: 'Total Count', // TODO: Translate
+    headerName: 'maintenance.alertGrid.totalCount',
     field: 'counts.total'
   },
   {
-    headerName: 'Open', // TODO: Translate
+    headerName: 'maintenance.alertGrid.open',
     field: 'counts.open'
   },
   {
-    headerName: 'Ack', // TODO: Translate
+    headerName: 'maintenance.alertGrid.acknowledged',
     field: 'counts.acknowledged'
   },
   {
-    headerName: 'Closed', // TODO: Translate
+    headerName: 'maintenance.alertGrid.closed',
     field: 'counts.closed'
   },
   {
-    headerName: 'Last Occurrence', // TODO: Translate
+    headerName: 'maintenance.alertGrid.lastOccurrence',
     field: 'lastOccurrence',
-    cellRendererFramework: LastTriggerRenderer
+    cellRendererFramework: TimeRenderer
   }
 ];
 
