@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React from "react";
 import moment from 'moment';
 import { DEFAULT_TIME_FORMAT, EMPTY_FIELD_VAL, gridValueFormatters } from 'components/shared/pcsGrid/pcsGridConfig';
-import { Indicator } from 'components/shared';
 
 const { checkForEmpty } = gridValueFormatters;
 

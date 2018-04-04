@@ -3,13 +3,13 @@
 import React, { Component } from 'react';
 import { RulesGrid } from './rulesGrid';
 import { Btn, RefreshBar, PageContent, ContextMenu } from 'components/shared';
-import { RuleDetails } from './flyouts';
+import { RuleDetails, RuleNew } from './flyouts';
 import { svgs } from 'utilities';
 
 import './rules.css';
 
 const closedFlyoutState = {
-  flyoutOpen: false,
+  openFlyoutName: '',
   selectedRuleId: undefined
 };
 
@@ -42,8 +42,13 @@ export class Rules extends Component {
   closeFlyout = () => this.setState(closedFlyoutState);
 
   onSoftSelectChange = ({ id }) => this.setState({
-    flyoutOpen: true,
+    openFlyoutName: 'details',
     selectedRuleId: id
+  });
+
+  openNewRuleFlyout = () => this.setState({
+    openFlyoutName: 'newRule',
+    selectedRuleId: ''
   });
 
   onContextMenuChange = contextBtns => this.setState({ contextBtns });
@@ -63,7 +68,7 @@ export class Rules extends Component {
     return [
       <ContextMenu key="context-menu">
         { this.state.contextBtns }
-        <Btn svg={svgs.plus}>New rule</Btn>
+        <Btn svg={svgs.plus} onClick={this.openNewRuleFlyout}>New rule</Btn>
       </ContextMenu>,
       <PageContent className="rules-container" key="page-content">
         <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} t={t} />
@@ -75,7 +80,8 @@ export class Rules extends Component {
         }
         { !error && <RulesGrid {...gridProps} /> }
         <Btn onClick={this.changeDeviceGroup}>Refresh Device Groups</Btn>
-        { this.state.flyoutOpen && <RuleDetails onClose={this.closeFlyout} rule={entities[this.state.selectedRuleId]} /> }
+        { this.state.openFlyoutName === 'details' && <RuleDetails onClose={this.closeFlyout} rule={entities[this.state.selectedRuleId]} /> }
+        { this.state.openFlyoutName === 'newRule' && <RuleNew onClose={this.closeFlyout} t={this.props.t} /> }
       </PageContent>
     ];
   }
