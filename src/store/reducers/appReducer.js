@@ -67,7 +67,8 @@ const initialState = {
   deviceGroups: {},
   activeDeviceGroupId: undefined,
   theme: 'dark',
-  version: '0.0.1' // TODO: Version should be requested from the service
+  version: '0.0.1', // TODO: Version should be requested from the service
+  azureMapsKey: ''
 };
 
 const updateDeviceGroupsReducer = (state, { payload, fromAction }) => {
@@ -108,6 +109,7 @@ export const getVersion = state => getAppReducer(state).version;
 export const getTheme = state => getAppReducer(state).theme;
 export const getDeviceGroupEntities = state => getAppReducer(state).deviceGroups;
 export const getActiveDeviceGroupId = state => getAppReducer(state).activeDeviceGroupId;
+export const getAzureMapsKey = state => getAppReducer(state).azureMapsKey;
 export const getDeviceGroupsError = state =>
   getError(getAppReducer(state), epics.actionTypes.fetchDeviceGroups);
 export const getDeviceGroupsPendingStatus = state =>

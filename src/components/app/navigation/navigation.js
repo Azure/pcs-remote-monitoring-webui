@@ -56,7 +56,10 @@ class Navigation extends Component {
   }
 
   toggleExpanded = (event) => {
-    this.setState({ collapsed: !this.state.collapsed });
+    this.setState(
+      { collapsed: !this.state.collapsed },
+      () => window.dispatchEvent(new Event('resize'))
+    );
   }
 
   render() {

@@ -6,3 +6,4 @@ export * from './panelContent';
 export * from './panelOverlay';
 export * from './panelHeaderLabel';
 export * from './panelError';
+export * from './panelErrorBoundary';

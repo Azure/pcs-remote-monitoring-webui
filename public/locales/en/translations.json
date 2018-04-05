@@ -43,7 +43,11 @@
         "currentWindow": "Currently",
         "previousWindow": "Previously"
       },
-      "map": { "header": "Device locations" },
+      "map": {
+        "header": "Device locations",
+        "runtimeError": "An error occurred while rendering the map",
+        "notConfiguredError": "Azure maps is not correctly configured"
+      },
       "overview": {
         "header": "Device statistics",
         "allDevices": "All devices",

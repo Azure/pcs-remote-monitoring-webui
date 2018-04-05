@@ -8,6 +8,7 @@ import Config from 'app.config';
 import { TelemetryService } from 'services';
 import { compareByProperty } from 'utilities';
 import { Grid, Cell } from './grid';
+import { PanelErrorBoundary } from './panel';
 import {
   OverviewPanel,
   AlarmsPanel,
@@ -231,7 +232,8 @@ export class Dashboard extends Component {
       rulesIsPending,
       devicesIsPending,
       rulesError,
-      devicesError
+      devicesError,
+      azureMapsKey
     } = this.props;
     const {
       chartColors,
@@ -306,10 +308,14 @@ export class Dashboard extends Component {
               t={t} />
           </Cell>
           <Cell className="col-5">
-            <MapPanel
-              isPending={devicesIsPending}
-              error={devicesError || kpisError}
-              t={t} />
+            <PanelErrorBoundary msg={t('dashboard.panels.map.runtimeError')}>
+              <MapPanel
+                azureMapsKey={azureMapsKey}
+                devices={devices}
+                isPending={devicesIsPending}
+                error={devicesError || kpisError}
+                t={t} />
+            </PanelErrorBoundary>
           </Cell>
           <Cell className="col-3">
             <AlarmsPanel
