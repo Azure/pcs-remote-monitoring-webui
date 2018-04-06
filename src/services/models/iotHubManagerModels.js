@@ -7,23 +7,26 @@ import { reshape } from 'utilities';
 // TODO: Map to backend models and add links to github
 
 export const toDevicesModel = (response = {}) => (response.items || [])
-  .map((device = {}) => reshape(device, {
-    'id': 'id',
-    'lastActivity': 'lastActivity',
-    'connected': 'connected',
-    'isSimulated': 'isSimulated',
-    'properties.reported.firmware': 'firmware',
-    'properties.reported.supportedMethods': 'methods',
-    'properties.reported.telemetry': 'telemetry',
-    'properties.reported.type': 'type',
-    'properties.reported': 'properties',
-    'c2DMessageCount': 'c2DMessageCount',
-    'enabled': 'enabled',
-    'lastStatusUpdated': 'lastStatusUpdated',
-    'iotHubHostName': 'iotHubHostName',
-    'eTag': 'eTag',
-    'tags': 'tags'
-  }));
+  .map(toDeviceModel);
+
+export const toDeviceModel = (device = {}) => reshape(device, {
+  'id': 'id',
+  'lastActivity': 'lastActivity',
+  'connected': 'connected',
+  'isSimulated': 'isSimulated',
+  'properties.reported.firmware': 'firmware',
+  'properties.reported.supportedMethods': 'methods',
+  'properties.reported.telemetry': 'telemetry',
+  'properties.reported.type': 'type',
+  'properties.reported': 'properties',
+  'c2DMessageCount': 'c2DMessageCount',
+  'enabled': 'enabled',
+  'lastStatusUpdated': 'lastStatusUpdated',
+  'iotHubHostName': 'iotHubHostName',
+  'eTag': 'eTag',
+  'tags': 'tags',
+  'authentication': 'authentication'
+});
 
 export const toJobsModel = (response = []) => response.map(job => reshape(job, {
   'jobId': 'jobId',
@@ -54,3 +57,37 @@ export const toJobStatusModel = (response = {}) => reshape(response, {
   'status': 'status',
   'type': 'type'
 });
+
+export const AuthenticationTypeOptions = {
+  symmetric: 0,
+  x509: 1
+};
+
+export const toNewDeviceRequestModel = ({
+    count,
+    deviceId,
+    isGenerateId,
+    isSimulated,
+    deviceModel,
+    authenticationType,
+    isGenerateKeys,
+    primaryKey,
+    secondaryKey
+  }) => {
+  const isX509 = authenticationType === AuthenticationTypeOptions.x509;
+
+  return {
+    Id: isGenerateId ? '' : deviceId,
+    IsSimulated: isSimulated,
+    Authentication:
+      isGenerateKeys
+        ? {}
+        : {
+          AuthenticationType: authenticationType,
+          PrimaryKey: isX509 ? null : primaryKey,
+          SecondaryKey: isX509 ? null : secondaryKey,
+          PrimaryThumbprint: isX509 ? primaryKey : null,
+          SecondaryThumbprint: isX509 ? secondaryKey : null
+        }
+  };
+}

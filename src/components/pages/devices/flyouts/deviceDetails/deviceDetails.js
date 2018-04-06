@@ -27,6 +27,7 @@ import './deviceDetails.css';
 export class DeviceDetails extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       alarms: undefined,
       isAlarmsPending: false,
@@ -89,14 +90,14 @@ export class DeviceDetails extends Component {
     return (
       <Flyout>
         <FlyoutHeader>
-          <FlyoutTitle>{t('devices.details.title')}</FlyoutTitle>
+          <FlyoutTitle>{t('devices.flyouts.details.title')}</FlyoutTitle>
           <FlyoutCloseBtn onClick={onClose} />
         </FlyoutHeader>
         <FlyoutContent>
           {
             !device &&
             <div className="device-details-container">
-              <ErrorMsg>{t("devices.details.noDevice")}</ErrorMsg>
+              <ErrorMsg>{t("devices.flyouts.details.noDevice")}</ErrorMsg>
             </div>
           }
           {
@@ -108,29 +109,29 @@ export class DeviceDetails extends Component {
                   <Cell className="col-3"><DeviceIcon type={device.type} /></Cell>
                   <Cell className="col-7">
                     <div className="device-name">{device.id}</div>
-                    <div className="device-simulated">{device.isSimulated ? t('devices.details.simulated') : t('devices.details.notSimulated')}</div>
-                    <div className="device-connected">{device.connected ? t('devices.details.connected') : t('devices.details.notConnected')}</div>
+                    <div className="device-simulated">{device.isSimulated ? t('devices.flyouts.details.simulated') : t('devices.flyouts.details.notSimulated')}</div>
+                    <div className="device-connected">{device.connected ? t('devices.flyouts.details.connected') : t('devices.flyouts.details.notConnected')}</div>
                   </Cell>
                 </Row>
               </Grid>
 
               {(!this.state.isAlarmsPending && this.state.alarms && (this.state.alarms.length > 0)) && <RulesGrid {...rulesGridProps} />}
 
-              <Accordion title={t('devices.details.telemetry.title')}>
+              <Accordion title={t('devices.flyouts.details.telemetry.title')}>
                 TODO: Add chart when able.
               </Accordion>
 
-              <Accordion title={t('devices.details.tags.title')} description={t('devices.details.tags.description')}>
+              <Accordion title={t('devices.flyouts.details.tags.title')} description={t('devices.flyouts.details.tags.description')}>
                 {
                   (tags.length === 0) &&
-                  t('devices.details.tags.noneExist')
+                  t('devices.flyouts.details.tags.noneExist')
                 }
                 {
                   (tags.length > 0) &&
                   <Grid>
                     <Row>
-                      <HeaderCell className="col-3">{t('devices.details.tags.keyHeader')}</HeaderCell>
-                      <HeaderCell className="col-7">{t('devices.details.tags.valueHeader')}</HeaderCell>
+                      <HeaderCell className="col-3">{t('devices.flyouts.details.tags.keyHeader')}</HeaderCell>
+                      <HeaderCell className="col-7">{t('devices.flyouts.details.tags.valueHeader')}</HeaderCell>
                     </Row>
                     {
                       tags.map(([tagName, tagValue], idx) =>
@@ -144,37 +145,35 @@ export class DeviceDetails extends Component {
                 }
               </Accordion>
 
-              <Accordion title={t('devices.details.methods.title')} description={t('devices.details.methods.description')}>
+              <Accordion title={t('devices.flyouts.details.methods.title')} description={t('devices.flyouts.details.methods.description')}>
                 {
-                  (methods.length === 0) &&
-                  t('devices.details.methods.noneExist')
-                }
-                {
-                  (methods.length > 0) &&
-                  <Grid>
-                    {
-                      methods.map((methodName, idx) =>
-                        <Row key={idx}>
-                          <Cell>{methodName}</Cell>
-                        </Row>
-                      )
-                    }
-                  </Grid>
+                  (methods.length === 0)
+                    ? t('devices.flyouts.details.methods.noneExist')
+                    :
+                    <Grid>
+                      {
+                        methods.map((methodName, idx) =>
+                          <Row key={idx}>
+                            <Cell>{methodName}</Cell>
+                          </Row>
+                        )
+                      }
+                    </Grid>
                 }
               </Accordion>
 
-              <Accordion title={t('devices.details.properties.title')} description={t('devices.details.properties.description')}>
+              <Accordion title={t('devices.flyouts.details.properties.title')} description={t('devices.flyouts.details.properties.description')}>
                 {
                   (properties.length === 0) &&
-                  t('devices.details.properties.noneExist')
+                  t('devices.flyouts.details.properties.noneExist')
                 }
                 {
                   (properties.length > 0) &&
                   <Grid>
 
                     <Row>
-                      <HeaderCell className="col-3">{t('devices.details.properties.keyHeader')}</HeaderCell>
-                      <HeaderCell className="col-7">{t('devices.details.properties.valueHeader')}</HeaderCell>
+                      <HeaderCell className="col-3">{t('devices.flyouts.details.properties.keyHeader')}</HeaderCell>
+                      <HeaderCell className="col-7">{t('devices.flyouts.details.properties.valueHeader')}</HeaderCell>
                     </Row>
                     {
                       properties.map(([propertyName, propertyValue], idx) =>
@@ -188,7 +187,7 @@ export class DeviceDetails extends Component {
                 }
               </Accordion>
 
-              <Accordion title={t('devices.details.diagnostics.title')} description={t('devices.details.diagnostics.description')}>
+              <Accordion title={t('devices.flyouts.details.diagnostics.title')} description={t('devices.flyouts.details.diagnostics.description')}>
                 TODO: Add diagnostics.
               </Accordion>
             </div>

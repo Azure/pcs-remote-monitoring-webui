@@ -27,17 +27,12 @@
     @include rem-fallback(padding, 16px);
   }
 
-  .device-delete-affected {
-    display: flex;
-    align-items: baseline;
+  .wait-indicator { @include rem-fallback(margin-left, 8px); }
 
-    .device-delete-count {
-      @include rem-font-size(48px);
-      @include rem-fallback(padding-right, 8px);
-    }
+  .summary-icon svg {
+    @include square-px-rem(16px);
+    @include rem-fallback(margin-left, 8px);
   }
-
-  .device-delete-summary-container { @include rem-fallback(margin, 12px 0px); }
 
   .btn-toolbar {
     justify-content: flex-end;
@@ -53,11 +48,13 @@
       color: themed('colorContentText');
       border-color: themed('colorContentTextDim');
 
-      .info-icon svg { fill: themed('colorContentTextDim'); }
+      .info-icon svg { fill: themed('colorContentText'); }
     }
 
     .device-delete-error {
       border-color: themed('colorAlarm');
     }
+
+    .summary-icon svg { fill: themed('colorContentText'); }
   }
 }

@@ -20,10 +20,6 @@ export class DevicesGrid extends Component {
     // Set the initial state
     this.state = closedFlyoutState;
 
-    // Bind to this
-    this.closeFlyout = this.closeFlyout.bind(this);
-    this.openDeleteFlyout = this.openDeleteFlyout.bind(this);
-
     // Default device grid columns
     this.columnDefs = [
       { ...deviceColumnDefs.id, ...checkboxParams },
@@ -40,7 +36,7 @@ export class DevicesGrid extends Component {
       <Btn key="tag">Tag</Btn>,
       <Btn key="schedule">Schedule</Btn>,
       <Btn key="reconfigure">Reconfigure</Btn>,
-      <Btn key="delete" svg={svgs.trash} onClick={this.openDeleteFlyout}>{props.t('devices.delete.apply')}</Btn>
+      <Btn key="delete" svg={svgs.trash} onClick={this.openDeleteFlyout}>{props.t('devices.flyouts.delete.apply')}</Btn>
     ];
   }
 

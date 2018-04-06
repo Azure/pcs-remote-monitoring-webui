@@ -142,7 +142,7 @@ export function createReducerScenario(cases = {}) {
   const actionReducers = Object.keys(reducers)
     .reduce((acc, actionName) => {
       const actionType = actionTypes[actionName];
-      const matchTypes = Array.isArray(actionType) ? actionType : [ actionType ];
+      const matchTypes = Array.isArray(actionType) ? actionType : [actionType];
       const reducer = reducers[actionName];
       const reducerMapping = matchTypes.reduce((acc, type) => ({ ...acc, [type]: reducer }), {});
       return { ...acc, ...reducerMapping };
@@ -168,11 +168,11 @@ export const errorPendingInitialState = { pending: {}, errors: {} };
 
 // setPending and setError are intended to be used inside immutability-helper update
 export const setPending = (type, flag) => ({
-  pending: { [type]: { $set: flag }}
+  pending: { [type]: { $set: flag } }
 });
 
 export const setError = (type, error) => ({
-  errors: { [type]: { $set: error }}
+  errors: { [type]: { $set: error } }
 });
 
 export const pendingReducer = (state, { type }) => update(state, {

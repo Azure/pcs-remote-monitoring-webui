@@ -1,0 +1,91 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.devices-new-container {
+  @include rem-font-size(14px);
+  @include rem-fallback(padding, 12px, 0px);
+
+  .form-group-label { @include rem-fallback(font-size, 16px); }
+
+  .device-count { @include rem-fallback(margin-left, 20px); }
+
+  .device-id.form-control { @include rem-fallback(margin, -4px 0px 8px 0px); }
+
+  .radio-container {
+    margin-top: 0px;
+
+    .form-group-label { @include rem-fallback(font-size, 14px); }
+  }
+
+  .sub-settings {
+    @include rem-fallback(margin, 0px 44px);
+
+    .form-group-label {
+      @include rem-fallback(font-size, 14px);
+      @include rem-fallback(margin, 4px 0px);
+    }
+
+    input { width: 100%; }
+  }
+
+  .devices-new-error {
+    border: 1px transparent solid;
+    @include rem-fallback(margin, 12px 0px);
+    @include rem-fallback(padding, 16px);
+  }
+
+  .wait-indicator { @include rem-fallback(margin-left, 8px); }
+
+  .summary-icon svg {
+    @include square-px-rem(16px);
+    @include rem-fallback(margin-left, 8px);
+  }
+
+  .device-detail {
+    width: 100%;
+
+    .section-header { font-size: inherit; }
+
+    .device-detail-contents {
+      display: flex;
+      align-items: flex-start;
+      word-wrap: break-word;
+      flex-grow: 0;
+
+      .device-detail-value { flex-basis: 90%; }
+
+      .copy-icon {
+        flex-basis: 10%;
+
+        svg {
+          cursor: pointer;
+          @include square-px-rem(16px);
+        }
+      }
+    }
+  }
+
+  .btn-toolbar {
+    justify-content: flex-end;
+    @include rem-fallback(padding-top, 32px);
+  }
+
+  @include themify($themes) {
+    color: themed('colorContentTextDim');
+
+    .radio-container .form-group-label,
+    .sub-settings .form-group-label { color: themed('colorContentTextDim'); }
+
+    .devices-new-error { border-color: themed('colorAlarm'); }
+
+    .summary-icon svg { fill: themed('colorContentText'); }
+
+    .device-detail {
+      .section-header { color: themed('colorContentText'); }
+      .device-detail-value { color: themed('colorContentTextDim'); }
+      .copy-icon svg { fill: themed('colorContentTextDim'); }
+    }
+  }
+}

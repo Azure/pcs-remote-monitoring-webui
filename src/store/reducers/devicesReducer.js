@@ -74,6 +74,15 @@ const deleteDeviceReducer = (state, { payload }) => {
   });
 };
 
+const insertDeviceReducer = (state, { payload }) => {
+  const { entities: { devices }, result } = normalize([payload], deviceListSchema);
+  return update(state, {
+    entities: { $merge: devices },
+    items: { $splice: [[state.items.length, 0, result]] },
+    lastUpdated: { $set: moment() }
+  });
+};
+
 /* Action types that cause a pending flag */
 const fetchableTypes = [
   epics.actionTypes.fetchDevices
@@ -84,6 +93,7 @@ export const redux = createReducerScenario({
   registerError: { type: 'DEVICES_REDUCER_ERROR', reducer: errorReducer },
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer },
   deleteDevice: { type: 'DEVICE_DELETE', reducer: deleteDeviceReducer },
+  insertDevice: { type: 'DEVICE_INSERT', reducer: insertDeviceReducer }
 });
 
 export const reducer = { devices: redux.getReducer(initialState) };

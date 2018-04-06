@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import ApplyIconPath from 'assets/icons/apply.svg';
 import CancelXIconPath from 'assets/icons/cancelX.svg';
 import CaratIconPath from 'assets/icons/carat.svg';
 import CheckmarkIconPath from 'assets/icons/checkmark.svg';
@@ -7,6 +8,7 @@ import ChevronIconPath from 'assets/icons/chevron.svg';
 import ChevronRightIconPath from 'assets/icons/chevronRight.svg';
 import ColonIconPath from 'assets/icons/colon.svg';
 import ContosoIconPath from 'assets/icons/contoso.svg';
+import CopyIconPath from 'assets/icons/copy.svg';
 import CriticalIconPath from 'assets/icons/critical.svg';
 import DeviceChillerIconPath from 'assets/icons/deviceChiller.svg';
 import DeviceGenericIconPath from 'assets/icons/deviceIcon.svg';
@@ -59,6 +61,7 @@ export const svgs = {
     prototyping: DevicePrototypingIconPath,
     truck: DeviceTruckIconPath
   },
+  apply: ApplyIconPath,
   cancelX: CancelXIconPath,
   carat: CaratIconPath,
   checkmark: CheckmarkIconPath,
@@ -66,6 +69,7 @@ export const svgs = {
   chevronRight: ChevronRightIconPath,
   colon: ColonIconPath,
   contoso: ContosoIconPath,
+  copy: CopyIconPath,
   critical: CriticalIconPath,
   disabled: DisabledIconPath,
   disableToggle: DisableToggleIconPath,

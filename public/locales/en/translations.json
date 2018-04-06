@@ -90,50 +90,104 @@
       "telemetry": "Telemetry",
       "yes": "yes"
     },
-    "details": {
-      "title": "Device Details",
-      "noDevice": "Oops, we were not able to find the device.",
-      "connected": "Connected",
-      "notConnected": "Disconnected",
-      "simulated": "Simulated",
-      "notSimulated": "Physical",
-      "diagnostics": {
-        "title": "Diagnostics",
-        "description": "Diagnostic information from device"
+    "flyouts": {
+      "details": {
+        "title": "Device Details",
+        "noDevice": "Oops, we were not able to find the device.",
+        "connected": "Connected",
+        "notConnected": "Disconnected",
+        "simulated": "Simulated",
+        "notSimulated": "Physical",
+        "diagnostics": {
+          "title": "Diagnostics",
+          "description": "Diagnostic information from device"
+        },
+        "methods": {
+          "title": "Methods",
+          "description": "All methods available for device",
+          "noneExist": "No methods found for this device."
+        },
+        "properties": {
+          "title": "Properties",
+          "description": "Selected properties on device",
+          "keyHeader": "Property",
+          "valueHeader": "Value",
+          "noneExist": "No properties found for this device."
+        },
+        "tags": {
+          "title": "Tags",
+          "description": "Tags applied to device",
+          "keyHeader": "Key",
+          "valueHeader": "Value",
+          "noneExist": "No tags found for this device."
+        },
+        "telemetry": {
+          "title": "Telemetry"
+        }
       },
-      "methods": {
-        "title": "Methods",
-        "description": "All methods available for device",
-        "noneExist": "No methods found for this device."
+      "delete": {
+        "title": "Delete",
+        "header": "Delete device",
+        "description": "This action will delete the devices permanently from the platform.",
+        "simulatedNotSupported": "Deleting simulated devices is not currently supported, this action will only be taken on the physical devices.",
+        "summaryHeader": "Summary",
+        "affected": "Affected devices",
+        "cancel": "Cancel",
+        "apply": "Delete",
+        "pending": "Deleting devices... ",
+        "applySuccess": "devices deleted successfully!",
+        "close": "Close"
       },
-      "properties": {
-        "title": "Properties",
-        "description": "Selected properties on device",
-        "keyHeader": "Property",
-        "valueHeader": "Value",
-        "noneExist": "No properties found for this device."
-      },
-      "tags": {
-        "title": "Tags",
-        "description": "Tags applied to device",
-        "keyHeader": "Key",
-        "valueHeader": "Value",
-        "noneExist": "No tags found for this device."
-      },
-      "telemetry": {
-        "title": "Telemetry"
+      "new": {
+        "contextMenuName": "New device",
+        "title": "New Device",
+        "summaryHeader": "Provision summary",
+        "affected": "devices to provision",
+        "cancel": "Cancel",
+        "apply": "Apply",
+        "pending": "Provisioning devices... ",
+        "applySuccess": "devices provisioned successfully!",
+        "close": "Close",
+        "count": {
+          "label": "Number of devices"
+        },
+        "deviceType": {
+          "label": "Device Type",
+          "simulated": "Simulated",
+          "physical": "Physical"
+        },
+        "deviceId": {
+          "label": "Device ID",
+          "hint": "Enter device ID ",
+          "sysGenerated": "System generated device IDs"
+        },
+        "deviceIdExample": {
+          "label": "Device ID Example",
+          "format": "Simulated-{{deviceName}}-{#####}",
+          "deviceName": "{Device Name}"
+        },
+        "deviceModel": {
+          "label": "Device model",
+          "hint": "Select existing device type"
+        },
+        "authenticationType": {
+          "label": "Authentication type",
+          "symmetric": "Symmetric Key",
+          "x509": "X.509"
+        },
+        "authenticationKey": {
+          "label": "Authentication key",
+          "generateKeys": "Auto generate keys",
+          "manualKeys": "Enter keys manually",
+          "hint": "Enter your key here",
+          "primaryKey": "Primary Key",
+          "primaryKeyConnection": "Connection string primary Key",
+          "secondaryKey": "Secondary Key",
+          "secondaryKeyConnection": "Connection string secondary Key",
+          "primaryThumbprint": "Primary Thumbprint",
+          "secondaryThumbprint": "Secondary Thumbprint"
+        }
       }
-    },
-    "delete": {
-      "title": "Delete",
-      "header": "Delete device",
-      "description": "This action will delete the devices permanently from the platform.",
-      "simulatedNotSupported": "Deleting simulated devices is not currently supported, this action will only be taken on the physical devices.",
-      "affected": "Affected devices",
-      "cancel": "Cancel",
-      "apply": "Delete",
-      "applySuccess": "devices deleted successfully!",
-      "close": "Close"
     }
   },
   "rules": {

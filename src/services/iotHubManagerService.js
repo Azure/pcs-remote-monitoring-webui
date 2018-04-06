@@ -3,7 +3,7 @@
 import Config from 'app.config';
 import { stringify } from 'query-string';
 import { HttpClient } from './httpClient';
-import { toDevicesModel, toJobsModel, toJobStatusModel } from './models';
+import { toDevicesModel, toDeviceModel, toJobsModel, toJobStatusModel } from './models';
 
 const ENDPOINT = Config.serviceUrls.iotHubManager;
 
@@ -27,6 +27,12 @@ export class IoTHubManagerService {
   static getJobStatus(jobId) {
     return HttpClient.get(`${ENDPOINT}jobs/${jobId}?includeDeviceDetails=true`)
       .map(toJobStatusModel);
+  }
+
+  /** Provisions a device */
+  static provisionDevice(body) {
+    return HttpClient.post(`${ENDPOINT}devices`, body)
+      .map(toDeviceModel);
   }
 
   /** Deletes a device */

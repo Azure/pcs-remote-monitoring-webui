@@ -4,12 +4,13 @@ import React, { Component } from 'react';
 import { DevicesGrid } from './devicesGrid';
 import { Btn, RefreshBar, PageContent, ContextMenu } from 'components/shared';
 import { DeviceDetailsContainer } from './flyouts/deviceDetails';
+import { DeviceNewContainer } from './flyouts/deviceNew';
 import { svgs } from 'utilities';
 
 import './devices.css';
 
 const closedFlyoutState = {
-  flyoutOpen: false,
+  openFlyoutName: undefined,
   selectedDeviceId: undefined
 };
 
@@ -37,14 +38,16 @@ export class Devices extends Component {
 
   closeFlyout = () => this.setState(closedFlyoutState);
 
+  openNewDeviceFlyout = () => this.setState({ openFlyoutName: 'new-device' });
+
   onSoftSelectChange = ({ id }) => this.setState({
-    flyoutOpen: true,
+    openFlyoutName: 'details',
     selectedDeviceId: id
   });
 
   onContextMenuChange = contextBtns => this.setState({
     contextBtns,
-    flyoutOpen: false
+    openFlyoutName: undefined
   });
 
   getSoftSelectId = ({ id }) => id;
@@ -59,10 +62,13 @@ export class Devices extends Component {
       getSoftSelectId: this.getSoftSelectId,
       t: this.props.t
     };
+    const detailsFlyoutOpen = this.state.openFlyoutName === 'details';
+    const newDeviceFlyoutOpen = this.state.openFlyoutName === 'new-device';
+
     return [
       <ContextMenu key="context-menu">
         { this.state.contextBtns }
-        <Btn svg={svgs.plus}>New device</Btn> { /* TODO: Translate */ }
+        <Btn svg={svgs.plus} onClick={this.openNewDeviceFlyout}>{t('devices.flyouts.new.contextMenuName')}</Btn>
       </ContextMenu>,
       <PageContent className="devices-container" key="page-content">
         <RefreshBar refresh={fetchDevices} time={lastUpdated} isPending={isPending} t={t} />
@@ -74,7 +80,8 @@ export class Devices extends Component {
         }
         { !error && <DevicesGrid {...gridProps} /> }
         <Btn onClick={this.changeDeviceGroup}>Refresh Device Groups</Btn>
-        { this.state.flyoutOpen && <DeviceDetailsContainer onClose={this.closeFlyout} device={entities[this.state.selectedDeviceId]} /> }
+        { detailsFlyoutOpen && <DeviceDetailsContainer onClose={this.closeFlyout} device={entities[this.state.selectedDeviceId]} /> }
+        { newDeviceFlyoutOpen && <DeviceNewContainer onClose={this.closeFlyout} /> }
       </PageContent>
     ];
   }
