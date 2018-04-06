@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Svg } from 'components/shared';
+import { Svg, Indicator } from 'components/shared';
 
 import { svgs } from 'utilities';
 
@@ -29,7 +29,7 @@ const TabLink = (props) => (
 );
 
 /** The navigation component for the left navigation */
-class Navigation extends Component {
+export class Navigation extends Component {
 
   constructor(props) {
     super(props);
@@ -64,19 +64,28 @@ class Navigation extends Component {
 
   render() {
     const isExpanded = !this.state.collapsed;
+    const { name, logo, isDefaultLogo } = this.props;
     return (
       <nav className={`app-nav ${isExpanded && 'expanded'}`}>
         <div className="nav-item company">
-          <NavIcon path={svgs.contoso} />
-          <div className="nav-item-text">{this.props.t('companyName')}</div>
+        { logo
+          ? isDefaultLogo
+            ? <NavIcon path={logo} />
+            : <div className="nav-item-icon">
+                <img src={logo} alt="Logo" />
+              </div>
+          : <Indicator size="medium" />
+        }
+          <div className="nav-item-text">{name}</div>
         </div>
         <button className="nav-item hamburger" onClick={this.toggleExpanded} aria-label="Hamburger">
           <NavIcon path={svgs.hamburger} />
         </button>
-        { this.props.tabs.map((tabProps, i) => <TabLink {...tabProps} t={this.props.t} key={i} />) }
+        {this.props.tabs.map((tabProps, i) => <TabLink {...tabProps} t={this.props.t} key={i} />)}
       </nav>
     );
   }
 }
+
 
 export default Navigation;

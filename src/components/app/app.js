@@ -3,11 +3,11 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
-import { SettingsContainer } from './flyouts';
+import { SettingsContainer } from './flyouts/settings';
 
 // App Components
 import Header from './header/header';
-import Navigation from './navigation/navigation';
+import NavigationContainer from './navigation/navigationContainer';
 import Main from './main/main';
 
 // Page Components
@@ -53,7 +53,7 @@ class App extends Component {
     return (
       <div className={`app-container theme-${this.props.theme}`}>
         <div className="app">
-          <Navigation tabs={tabConfigs} t={this.props.t} />
+          <NavigationContainer tabs={tabConfigs} t={this.props.t} />
           <Main>
             <Header openSettings={this.openSettings} logout={this.props.logout} t={this.props.t} />
             <Switch>

@@ -30,7 +30,17 @@
     "viewRelNotes": "View release notes",
     "theme": "Theme",
     "changeTheme": "Change the application color theme",
-    "switchTheme": "Switch to {{nextTheme}} theme"
+    "switchTheme": "Switch to {{nextTheme}} theme",
+    "apply": "Apply",
+    "cancel": "Cancel",
+    "close": "Close",
+    "flowing": "Flowing",
+    "start": "Start",
+    "stop": "Stop",
+    "stopped": "Stopped",
+    "simulationData": "Simulation Data",
+    "loading": "Loading",
+    "simulationDescription": "Start or stop simulation of devices. Stopping device simulation will minimize the cost of the solution; no simulated telemetry will be sent to your IoT Hub and alarms will not be generated for simulated devices."
   },
   "dashboard": {
     "panels": {
@@ -148,6 +158,21 @@
       "unknown": "Unknown",
       "explore": "Explore"
     }
+  },
+  "fileInput" : {
+    "upload": "Upload"
+  },
+  "applicationSettings": {
+    "nameAndLogo": "Name and Logo",
+    "nameLogoDescription": "Edit logo and name in the site header.",
+    "replaceLogo": "Replace logo image",
+    "logoDescription": "Recommended logo size 24 x 24 px.\nSupported file formats:\n\t.SVG\n\t.PNG\n\t.JPEG",
+    "applicationName": "Application Name",
+    "currentLogo": "Current Logo",
+    "edit": "Edit",
+    "checkmark": "Checkmark",
+    "uploadError": "Unable to upload file, please check the file type and try again",
+    "error": "Error"
   },
   "maintenance": {
     "acknowledged": "ack",

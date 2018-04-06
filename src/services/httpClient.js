@@ -16,8 +16,12 @@ export class HttpClient {
    *
    * @param {string} url The url path to the make the request to
    */
-  static get(url, options = {}, withAuth = true) {
-    return HttpClient.ajax(url, { ...options, method: 'GET' }, withAuth);
+  static get(url, options = {}, withAuth = true, getJson = true) {
+    if (getJson) {
+      return HttpClient.ajax(url, { ...options, method: 'GET' }, withAuth);
+    } else {
+      return HttpClient.ajaxNonJson(url, { ...options, method: 'GET' }, withAuth);
+    }
   }
 
   /**
@@ -34,8 +38,12 @@ export class HttpClient {
    *
    * @param {string} url The url path to the make the request to
    */
-  static put(url, body = {}, options = {}, withAuth = true) {
-    return HttpClient.ajax(url, { ...options, body, method: 'PUT' }, withAuth);
+  static put(url, body = {}, options = {}, withAuth = true, isJson = true) {
+    if (isJson) {
+      return HttpClient.ajax(url, { ...options, body, method: 'PUT' }, withAuth);
+    } else {
+      return HttpClient.ajaxNonJson(url, { ...options, body, method: 'PUT' }, withAuth);
+    }
   }
 
   /**
@@ -77,13 +85,33 @@ export class HttpClient {
   }
 
   /**
+  * Constructs an Ajax request for a request that does not return json
+  *
+  * @param {string} url The url path to the make the request to
+  * @param {AjaxRequest} [options={}] See https://github.com/ReactiveX/rxjs/blob/master/src/observable/dom/AjaxObservable.ts
+  * @param {boolean} withAuth Allows a backdoor to not avoid wrapping auth headers
+  * @return an Observable of the AjaxReponse
+  */
+  static ajaxNonJson(url, options = {}, withAuth = true) {
+    const { retryWaitTime, maxRetryAttempts } = Config;
+    const request = HttpClient.createAjaxRequest({ ...options, url }, withAuth, false);
+    return Observable.ajax(request)
+      // Classify errors as retryable or not
+      .catch(ajaxError => Observable.throw(classifyError(ajaxError)))
+      // Retry any retryable errors
+      .retryWhen(retryHandler(maxRetryAttempts, retryWaitTime));
+  }
+
+  /**
    * A helper method that adds "application/json" headers
    */
-  static withHeaders(request, withAuth) {
+  static withHeaders(request, withAuth, addJson = true) {
     const headers = request.headers || {};
-    // Add JSON headers
-    headers['Accept'] = 'application/json';
-    headers['Content-Type'] = 'application/json';
+    if (addJson) {
+      // Add JSON headers
+      headers['Accept'] = 'application/json';
+      headers['Content-Type'] = 'application/json';
+    }
     // Add auth headers if needed
     if (withAuth) {
       // Required by the backend web services when the Authorization header is
@@ -100,9 +128,9 @@ export class HttpClient {
   /**
    * A helper method for constructing ajax request objects
    */
-  static createAjaxRequest(options, withAuth) {
+  static createAjaxRequest(options, withAuth, addJson = true) {
     return {
-      ...HttpClient.withHeaders(options, withAuth),
+      ...HttpClient.withHeaders(options, withAuth, addJson),
       timeout: options.timeout || Config.defaultAjaxTimeout
     };
   }
@@ -115,7 +143,7 @@ export class HttpClient {
 export const retryHandler = (retryAttempts, retryDelay) =>
   error$ =>
     error$.zip(Observable.range(0, retryAttempts + 1)) // Plus 1 to not count initial call
-      .flatMap(([ error, attempt ]) =>
+      .flatMap(([error, attempt]) =>
         (!isRetryable(error) || attempt === retryAttempts)
           ? Observable.throw(error)
           : Observable.of(error)

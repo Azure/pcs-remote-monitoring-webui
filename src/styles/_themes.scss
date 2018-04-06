@@ -23,6 +23,7 @@ $themes: (
     colorAlarm: $colorAlarm,
     colorWarning: $colorWarning,
     colorSystem: $colorSystem,
+    colorError: $colorError,
 
     // Grid - START
     colorGridScrollBar: $colorCharcoal,
@@ -80,7 +81,14 @@ $themes: (
     colorContentTextDim: $colorSmoke,
     colorFlyoutBackground: $colorNoir,
     colorFlyoutText: $colorSmoke,
-    colorAccordionBorder: $colorStone
+    colorAccordionBorder: $colorStone,
     // Page Content Colors - END
+
+    // Toggle Colors - START
+    colorEnableToggleBackground: $colorGunmetal,
+    colorToggle: $colorWhite,
+    colorDisableToggleBackground: $colorNoir,
+    colorDisabledLine: $colorSmoke
+    // Toggle Colors - END
   )
 );
