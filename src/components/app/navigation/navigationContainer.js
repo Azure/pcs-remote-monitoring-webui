@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   getLogo,
   getName,
   isDefaultLogo,
 } from 'store/reducers/appReducer';
-import { Navigation } from './navigation';
+import Navigation from './navigation';
 
 const mapStateToProps = state => ({
   logo: getLogo(state),
@@ -14,6 +15,6 @@ const mapStateToProps = state => ({
   isDefaultLogo: isDefaultLogo(state)
 });
 
-const NavigationContainer = connect(mapStateToProps)(Navigation);
+const NavigationContainer = withRouter(connect(mapStateToProps)(Navigation));
 
 export default NavigationContainer;

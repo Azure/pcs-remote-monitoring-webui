@@ -125,7 +125,6 @@ export class MapPanel extends Component {
   }
 
   zoomToPins(pins) {
-    console.log('Zooming to pins', pins);
     const lons = [];
     const lats = [];
     pins.forEach(({ geometry: { coordinates: [ longitude, latitude ] } }) => {
@@ -161,7 +160,6 @@ export class MapPanel extends Component {
 
   render() {
     const { t, isPending, mapKeyIsPending, error } = this.props;
-    console.log('mapKeyIsPending', mapKeyIsPending);
     const showOverlay = !error && isPending && mapKeyIsPending;
     return (
       <Panel className="map-panel-container">

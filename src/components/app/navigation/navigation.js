@@ -29,7 +29,7 @@ const TabLink = (props) => (
 );
 
 /** The navigation component for the left navigation */
-export class Navigation extends Component {
+class Navigation extends Component {
 
   constructor(props) {
     super(props);
@@ -86,6 +86,5 @@ export class Navigation extends Component {
     );
   }
 }
-
 
 export default Navigation;

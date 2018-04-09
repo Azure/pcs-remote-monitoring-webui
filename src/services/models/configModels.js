@@ -9,3 +9,9 @@ export const toDeviceGroupsModel = (response = {}) => (response.items || [])
     'conditions': 'conditions',
     'eTag': 'eTag'
   }));
+
+  export const toSolutionSettingThemeModel = (response = {}) => reshape(response, {
+    'AzureMapsKey': 'azureMapsKey',
+    'description': 'description',
+    'name': 'name'
+  });

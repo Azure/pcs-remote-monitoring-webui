@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { Observable } from 'rxjs';
-
 import Config from 'app.config';
 import { HttpClient } from './httpClient';
-import { toDeviceGroupsModel } from './models';
+import { toDeviceGroupsModel, toSolutionSettingThemeModel } from './models';
 import { stringToBoolean } from 'utilities';
 
 const ENDPOINT = Config.serviceUrls.config;
@@ -20,8 +18,9 @@ export class ConfigService {
 
   /** Returns the azure map key for the account */
   static getAzureMapKey() {
-    return Observable.of('') // TODO: Implement the real service call
-      .delay(2000);
+    return HttpClient.get(`${ENDPOINT}solution-settings/theme`)
+      .map(toSolutionSettingThemeModel)
+      .map(response => response.azureMapsKey);
   }
 
   static getLogo() {
