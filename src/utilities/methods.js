@@ -16,7 +16,7 @@ export const isEmptyObject = obj => Object.keys(obj).length === 0 && obj.constru
 export const int = (num) => parseInt(num, 10);
 
 /** Merges css classnames into a single string */
-export const joinClasses = (...classNames) => classNames.join(' ').trim();
+export const joinClasses = (...classNames) => classNames.filter(name => !!name).join(' ').trim();
 
 /** Convert a string of type 'true' or 'false' to its boolean equivalent */
 export const stringToBoolean = value => {

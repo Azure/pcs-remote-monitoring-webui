@@ -12,16 +12,14 @@ export class FileInput extends Component {
   constructor(props) {
     super(props);
 
-    this.fileInput = null;
-
-    this.setFileInputRef = element => {
-      this.fileInput = element;
-    };
-
-    this.clickFileInput = () => {
-      if (this.fileInput) this.fileInput.click();
-    };
+    this.fileInput = undefined;
   }
+
+  setFileInputRef = element => this.fileInput = element;
+
+  clickFileInput = () => {
+    if (this.fileInput) this.fileInput.click();
+  };
 
   render() {
     const { t, className, accept, onChange } = this.props;

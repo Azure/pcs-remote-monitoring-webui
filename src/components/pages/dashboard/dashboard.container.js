@@ -2,7 +2,11 @@
 
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { getAzureMapsKey } from 'store/reducers/appReducer';
+import {
+  getAzureMapsKey,
+  getAzureMapsKeyError,
+  getAzureMapsKeyPendingStatus
+} from 'store/reducers/appReducer';
 import { epics as rulesEpics } from 'store/reducers/rulesReducer';
 import {
   getEntities as getRuleEntities,
@@ -18,13 +22,15 @@ import {
 import { Dashboard } from './dashboard';
 
 const mapStateToProps = state => ({
-  rules: getRuleEntities(state),
+  azureMapsKey: getAzureMapsKey(state),
+  azureMapsKeyError: getAzureMapsKeyError(state),
+  azureMapsKeyIsPending: getAzureMapsKeyPendingStatus(state),
   devices: getDeviceEntities(state),
-  rulesIsPending: getRulesPendingStatus(state),
-  devicesIsPending: getDevicesPendingStatus(state),
-  rulesError: getRulesError(state),
   devicesError: getDevicesError(state),
-  azureMapsKey: getAzureMapsKey(state)
+  devicesIsPending: getDevicesPendingStatus(state),
+  rules: getRuleEntities(state),
+  rulesError: getRulesError(state),
+  rulesIsPending: getRulesPendingStatus(state)
 });
 
 // Wrap the dispatch method

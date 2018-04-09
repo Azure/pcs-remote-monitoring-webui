@@ -186,8 +186,7 @@ export class DeviceNew extends LinkedComponent {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { t } = nextProps;
-    const { formData, isPending, changesApplied } = nextState;
+    const { formData } = nextState;
 
     // When the device type is Physical, only allow 1 to be created
     if (formData.isSimulated === DeviceTypeOptions.physical.value && formData.count !== 1) {

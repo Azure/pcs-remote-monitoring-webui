@@ -18,9 +18,7 @@
         background-color: themed('colorLightestFirst');
         color: themed('colorLowestFirst');
 
-        svg {
-          fill: themed('colorLowestFirst');
-        }
+        svg { fill: themed('colorLowestFirst'); }
       }
     }
 

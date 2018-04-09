@@ -19,21 +19,19 @@ export const epics = createEpicScenario({
   /** Loads the simulation status */
   fetchSimulationStatus: {
     type: 'SIMULATION_STATUS_FETCH',
-    epic: (fromAction) => {
-      return DeviceSimulationService.getSimulatedDevices()
+    epic: (fromAction) =>
+      DeviceSimulationService.getSimulatedDevices()
         .map(toActionCreator(redux.actions.getSimulationStatus, fromAction))
         .catch(handleError(fromAction))
-    }
   },
 
   /** Toggles the simulation status */
   toggleSimulationStatus: {
     type: 'SIMULATION_TOGGLE_STATUS',
-    epic: (fromAction) => {
-      return DeviceSimulationService.toggleSimulation(fromAction.payload.etag, fromAction.payload.enabled)
+    epic: (fromAction) =>
+      DeviceSimulationService.toggleSimulation(fromAction.payload.etag, fromAction.payload.enabled)
         .map(toActionCreator(redux.actions.getSimulationStatus, fromAction))
         .catch(handleError(fromAction))
-    }
   }
 });
 // ========================= Epics - END
@@ -45,15 +43,13 @@ const initialState = {
   simulationEtag: undefined
 };
 
-const simulationStatusReducer = (state, { payload, fromAction }) => {
-  return update(state, {
-    simulationEnabled: { $set: payload.enabled },
-    simulationEtag: { $set: payload.etag }
-  })
-};
+const simulationStatusReducer = (state, { payload, fromAction }) => update(state, {
+  simulationEnabled: { $set: payload.enabled },
+  simulationEtag: { $set: payload.etag }
+});
 
 export const redux = createReducerScenario({
-  getSimulationStatus: { type: 'SIMULATION_STATUS', reducer: simulationStatusReducer}
+  getSimulationStatus: { type: 'SIMULATION_STATUS', reducer: simulationStatusReducer }
 });
 
 export const reducer = { deviceSimulation: redux.getReducer(initialState) };

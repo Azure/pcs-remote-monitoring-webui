@@ -17,7 +17,7 @@ export class DeviceSimulationService {
    */
   static toggleSimulation(Etag, Enabled) {
     return HttpClient.patch(`${ENDPOINT}simulations/${SIMULATION_ID}`, { Etag, Enabled })
-    .map(toSimulationStatusModel);
+      .map(toSimulationStatusModel);
   }
 
   /**

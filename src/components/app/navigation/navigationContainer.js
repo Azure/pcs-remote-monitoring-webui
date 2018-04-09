@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
 import {
   getLogo,
   getName,
@@ -15,6 +14,6 @@ const mapStateToProps = state => ({
   isDefaultLogo: isDefaultLogo(state)
 });
 
-const NavigationContainer = translate()(connect(mapStateToProps)(Navigation));
+const NavigationContainer = connect(mapStateToProps)(Navigation);
 
 export default NavigationContainer;
