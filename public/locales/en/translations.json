@@ -94,6 +94,7 @@
       "details": {
         "title": "Device Details",
         "noDevice": "Oops, we were not able to find the device.",
+        "close": "Close",
         "connected": "Connected",
         "notConnected": "Disconnected",
         "simulated": "Simulated",
@@ -112,7 +113,9 @@
           "description": "Selected properties on device",
           "keyHeader": "Property",
           "valueHeader": "Value",
-          "noneExist": "No properties found for this device."
+          "noneExist": "No properties found for this device.",
+          "copy": "Copy",
+          "copyAllProperties": "Copy a list of all properties for the device"
         },
         "tags": {
           "title": "Tags",

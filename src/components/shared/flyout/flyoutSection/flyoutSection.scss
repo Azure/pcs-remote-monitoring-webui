@@ -39,7 +39,7 @@
   }
 
   @include themify($themes) {
-    border-top: 1px solid themed('colorMidSecond'); // TODO: Move to flyout scoped colors
+    border-top: 1px solid themed('colorFlyoutSectionBorder');
 
     .flyout-section-header {
       color: themed('colorContentText');

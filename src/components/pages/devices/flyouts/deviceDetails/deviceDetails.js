@@ -5,24 +5,29 @@ import React, { Component } from 'react';
 import { TelemetryService } from 'services';
 import { DeviceIcon } from './deviceIcon';
 import { RulesGrid, rulesColumnDefs } from 'components/pages/rules/rulesGrid';
-import { translateColumnDefs } from 'utilities';
 import {
+  copyToClipboard,
+  svgs,
+  translateColumnDefs
+} from 'utilities';
+import {
+  Btn,
+  BtnToolbar,
   ErrorMsg,
-  Flyout,
-  FlyoutHeader,
-  FlyoutTitle,
-  FlyoutCloseBtn,
-  FlyoutContent
+  SectionDesc
 } from 'components/shared';
+import Flyout from 'components/shared/flyout';
 import {
   PropertyGrid as Grid,
+  PropertyGridBody as GridBody,
+  PropertyGridHeader as GridHeader,
   PropertyRow as Row,
-  PropertyHeaderCell as HeaderCell,
   PropertyCell as Cell
 } from './propertyGrid';
-import { Accordion } from './accordion';
 
 import './deviceDetails.css';
+
+const Section = Flyout.Section;
 
 export class DeviceDetails extends Component {
   constructor(props) {
@@ -88,12 +93,12 @@ export class DeviceDetails extends Component {
     const methods = device.methods ? device.methods.split(',') : [];
     const properties = Object.entries(device.properties || {});
     return (
-      <Flyout>
-        <FlyoutHeader>
-          <FlyoutTitle>{t('devices.flyouts.details.title')}</FlyoutTitle>
-          <FlyoutCloseBtn onClick={onClose} />
-        </FlyoutHeader>
-        <FlyoutContent>
+      <Flyout.Container>
+        <Flyout.Header>
+          <Flyout.Title>{t('devices.flyouts.details.title')}</Flyout.Title>
+          <Flyout.CloseBtn onClick={onClose} />
+        </Flyout.Header>
+        <Flyout.Content className="device-details-container">
           {
             !device &&
             <div className="device-details-container">
@@ -117,39 +122,53 @@ export class DeviceDetails extends Component {
 
               {(!this.state.isAlarmsPending && this.state.alarms && (this.state.alarms.length > 0)) && <RulesGrid {...rulesGridProps} />}
 
-              <Accordion title={t('devices.flyouts.details.telemetry.title')}>
-                TODO: Add chart when able.
-              </Accordion>
+              <Section.Container>
+                <Section.Header>{t('devices.flyouts.details.telemetry.title')}</Section.Header>
+                <Section.Content>TODO: Add chart when able.</Section.Content>
+              </Section.Container>
 
-              <Accordion title={t('devices.flyouts.details.tags.title')} description={t('devices.flyouts.details.tags.description')}>
-                {
-                  (tags.length === 0) &&
-                  t('devices.flyouts.details.tags.noneExist')
-                }
-                {
-                  (tags.length > 0) &&
-                  <Grid>
-                    <Row>
-                      <HeaderCell className="col-3">{t('devices.flyouts.details.tags.keyHeader')}</HeaderCell>
-                      <HeaderCell className="col-7">{t('devices.flyouts.details.tags.valueHeader')}</HeaderCell>
-                    </Row>
-                    {
-                      tags.map(([tagName, tagValue], idx) =>
-                        <Row key={idx}>
-                          <Cell className="col-3">{tagName}</Cell>
-                          <Cell className="col-7">{tagValue.toString()}</Cell>
+              <Section.Container>
+                <Section.Header>{t('devices.flyouts.details.tags.title')}</Section.Header>
+                <Section.Content>
+                  <SectionDesc>{t('devices.flyouts.details.tags.description')}</SectionDesc>
+                  {
+                    (tags.length === 0) &&
+                    t('devices.flyouts.details.tags.noneExist')
+                  }
+                  {
+                    (tags.length > 0) &&
+                    <Grid>
+                      <GridHeader>
+                        <Row>
+                          <Cell className="col-3">{t('devices.flyouts.details.tags.keyHeader')}</Cell>
+                          <Cell className="col-7">{t('devices.flyouts.details.tags.valueHeader')}</Cell>
                         </Row>
-                      )
-                    }
-                  </Grid>
-                }
-              </Accordion>
+                      </GridHeader>
+                      <GridBody>
+                        {
+                          tags.map(([tagName, tagValue], idx) =>
+                            <Row key={idx}>
+                              <Cell className="col-3">{tagName}</Cell>
+                              <Cell className="col-7">{tagValue.toString()}</Cell>
+                            </Row>
+                          )
+                        }
+                      </GridBody>
+                    </Grid>
+                  }
+                </Section.Content>
+              </Section.Container>
 
-              <Accordion title={t('devices.flyouts.details.methods.title')} description={t('devices.flyouts.details.methods.description')}>
-                {
-                  (methods.length === 0)
-                    ? t('devices.flyouts.details.methods.noneExist')
-                    :
+              <Section.Container>
+                <Section.Header>{t('devices.flyouts.details.methods.title')}</Section.Header>
+                <Section.Content>
+                  <SectionDesc>{t('devices.flyouts.details.methods.description')}</SectionDesc>
+                  {
+                    (methods.length === 0) &&
+                    t('devices.flyouts.details.methods.noneExist')
+                  }
+                  {
+                    (methods.length > 0) &&
                     <Grid>
                       {
                         methods.map((methodName, idx) =>
@@ -159,41 +178,63 @@ export class DeviceDetails extends Component {
                         )
                       }
                     </Grid>
-                }
-              </Accordion>
+                  }
+                </Section.Content>
+              </Section.Container>
 
-              <Accordion title={t('devices.flyouts.details.properties.title')} description={t('devices.flyouts.details.properties.description')}>
-                {
-                  (properties.length === 0) &&
-                  t('devices.flyouts.details.properties.noneExist')
-                }
-                {
-                  (properties.length > 0) &&
-                  <Grid>
-
-                    <Row>
-                      <HeaderCell className="col-3">{t('devices.flyouts.details.properties.keyHeader')}</HeaderCell>
-                      <HeaderCell className="col-7">{t('devices.flyouts.details.properties.valueHeader')}</HeaderCell>
-                    </Row>
-                    {
-                      properties.map(([propertyName, propertyValue], idx) =>
-                        <Row key={idx}>
-                          <Cell className="col-3">{propertyName}</Cell>
-                          <Cell className="col-7">{propertyValue.toString().replace(/,/g, ", ")}</Cell>
+              <Section.Container>
+                <Section.Header>{t('devices.flyouts.details.properties.title')}</Section.Header>
+                <Section.Content>
+                  <SectionDesc>{t('devices.flyouts.details.properties.description')}</SectionDesc>
+                  {
+                    (properties.length === 0) &&
+                    t('devices.flyouts.details.properties.noneExist')
+                  }
+                  {
+                    (properties.length > 0) && [
+                      <Grid key="properties">
+                        <GridHeader>
+                          <Row>
+                            <Cell className="col-3">{t('devices.flyouts.details.properties.keyHeader')}</Cell>
+                            <Cell className="col-7">{t('devices.flyouts.details.properties.valueHeader')}</Cell>
+                          </Row>
+                        </GridHeader>
+                        <GridBody>
+                          {
+                            properties.map(([propertyName, propertyValue], idx) =>
+                              <Row key={idx}>
+                                <Cell className="col-3">{propertyName}</Cell>
+                                <Cell className="col-7">{propertyValue.toString().replace(/,/g, ", ")}</Cell>
+                              </Row>
+                            )
+                          }
+                        </GridBody>
+                      </Grid>,
+                      <Grid key="properties-actions" className="device-properties-actions">
+                        <Row>
+                          <Cell className="col-8">{t('devices.flyouts.details.properties.copyAllProperties')}</Cell>
+                          <Cell className="col-2"><Btn svg={svgs.copy} onClick={() => copyToClipboard(JSON.stringify(properties))} >{t('devices.flyouts.details.properties.copy')}</Btn></Cell>
                         </Row>
-                      )
-                    }
-                  </Grid>
-                }
-              </Accordion>
+                      </Grid>
+                    ]
+                  }
+                </Section.Content>
+              </Section.Container>
 
-              <Accordion title={t('devices.flyouts.details.diagnostics.title')} description={t('devices.flyouts.details.diagnostics.description')}>
-                TODO: Add diagnostics.
-              </Accordion>
+              <Section.Container>
+                <Section.Header>{t('devices.flyouts.details.diagnostics.title')}</Section.Header>
+                <Section.Content>
+                  <SectionDesc>{t('devices.flyouts.details.diagnostics.description')}</SectionDesc>
+                  TODO: Add diagnostics.
+                </Section.Content>
+              </Section.Container>
             </div>
           }
-        </FlyoutContent>
-      </Flyout>
+          <BtnToolbar>
+            <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.details.close')}</Btn>
+          </BtnToolbar>
+        </Flyout.Content>
+      </Flyout.Container>
     );
   }
 }

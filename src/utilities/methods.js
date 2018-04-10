@@ -66,6 +66,7 @@ export const getStatusCode = (code, t) => {
   }
 }
 
+/* A helper method to copy text to the clipbaord */
 export const copyToClipboard = (data) => {
   const textField = document.createElement('textarea');
   textField.innerText = data;

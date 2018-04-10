@@ -7,11 +7,11 @@ import { joinClasses } from 'utilities';
 
 import './propertyGrid.css';
 
-export const PropertyHeaderCell = (props) => (
-  <div className={joinClasses('cell cell-header', props.className)}>{props.children}</div>
+export const PropertyGridHeader = (props) => (
+  <div className={joinClasses('grid-header', props.className)}>{props.children}</div>
 );
 
-PropertyHeaderCell.propTypes = {
+PropertyGridHeader.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string
 };

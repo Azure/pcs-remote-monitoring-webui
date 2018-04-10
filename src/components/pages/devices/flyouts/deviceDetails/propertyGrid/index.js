@@ -2,5 +2,6 @@
 
 export * from './propertyCell';
 export * from './propertyGrid';
-export * from './propertyHeaderCell';
+export * from './propertyGridBody';
+export * from './propertyGridHeader';
 export * from './propertyRow';
