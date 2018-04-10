@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import update from 'immutability-helper';
 import { Observable } from 'rxjs';
 import 'tsiclient';
 
@@ -12,11 +13,14 @@ import '../../../../../../node_modules/tsiclient/tsiclient.css';
 
 const maxDatums = 100; // Max telemetry messages for the telemetry graph
 
+// Extend the immutability helper to include object autovivification
+update.extend('$auto', (val, obj) => update(obj || {}, val));
+
 /**
  *  A helper function containing the logic to convert a getTelemetry response
  *  object into the chart object structure.
  *
- * @param getCurrentTelemetry A function that returns the an object of formatted telemetry messages
+ * @param getCurrentTelemetry A function that returns an object of formatted telemetry messages
  * @param items An array of telemetry messages from the getTelemetry response object
  */
 export const transformTelemetryResponse = getCurrentTelemetry => items =>
@@ -26,19 +30,21 @@ export const transformTelemetryResponse = getCurrentTelemetry => items =>
         .filter(metric => metric.indexOf('Unit') < 0)
         .map(metric => ({ metric, deviceId, time, data: data[metric] }))
     )
-    .reduce((acc, { metric, deviceId, time, data }) => ({
-      ...acc,
-      [metric]: {
-        ...(acc[metric] ? acc[metric] : {}),
-        [deviceId]: {
-          ...(acc[metric] && acc[metric][deviceId] ? acc[metric][deviceId] : {}),
-          '': {
-            ...(acc[metric] && acc[metric][deviceId] && acc[metric][deviceId][''] ? acc[metric][deviceId][''] : {}),
-            [time]: { val: data }
-          }
-        }
-      }
-    }), getCurrentTelemetry())
+    .reduce(
+      (acc, { metric, deviceId, time, data }) =>
+        update(acc, {
+          [metric]: { $auto: {
+            [deviceId]: { $auto: {
+              '': { $auto: {
+                [time]: { $auto: {
+                  val: { $set: data }
+                }}
+              }}
+            }}
+          }}
+        }),
+      getCurrentTelemetry()
+    )
     // Remove overflowing items
     .map(telemetry => {
       Object.keys(telemetry).forEach(metric => {
