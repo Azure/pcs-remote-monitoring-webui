@@ -6,13 +6,13 @@ import PropTypes from 'prop-types';
 import { joinClasses } from 'utilities';
 
 export const FormLabel = (props) => {
-  const { formGroupId, className, children, htmlFor, ...rest } = props;
+  const { formGroupId, className, children, htmlFor, isRequired, ...rest } = props;
   const labelProps = {
     ...rest,
     className: joinClasses('form-group-label', className),
     htmlFor: htmlFor || formGroupId
   };
-  return <label {...labelProps}>{children}</label>;
+  return <label {...labelProps}>{children}{isRequired ? " *" : ""}</label>;
 };
 
 FormLabel.propTypes = {

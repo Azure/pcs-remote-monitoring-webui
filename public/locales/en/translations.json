@@ -42,9 +42,39 @@
     "loading": "Loading",
     "simulationDescription": "Start or stop simulation of devices. Stopping device simulation will minimize the cost of the solution; no simulated telemetry will be sent to your IoT Hub and alarms will not be generated for simulated devices."
   },
+  "rulesFlyout": {
+    "newRule": "New rule",
+    "ruleName": "Rule name",
+    "namePlaceholder": "Enter rule name",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter rule description",
+    "deviceGroup": "Device group",
+    "deviceGroupPlaceholder": "Select device group",
+    "conditions": "Conditions",
+    "addCondition": "Add condition",
+    "condition": {
+      "condition": "Condition",
+      "field": "Field",
+      "fieldPlaceholder": "Select field",
+      "calculation": "Calculation",
+      "calculationPlaceholder": "select",
+      "timePeriod": "Time Period",
+      "operator": "Operator",
+      "operatorPlaceholder": ">=",
+      "value": "Value",
+      "valuePlaceholder": "Enter value"
+    },
+    "severityLevel": "Severity level",
+    "ruleStatus": "Rule status",
+    "devicesAffected": "devices affected by this rule",
+    "apply": "Apply",
+    "cancel": "Cancel"
+  },
   "dashboard": {
     "panels": {
-      "alarms": { "header": "System alarms" },
+      "alarms": {
+        "header": "System alarms"
+      },
       "kpis": {
         "header": "System KPIs",
         "topRule": "Top rules triggered",
@@ -67,7 +97,9 @@
         "connected": "Connected",
         "notConnected": "Offline"
       },
-      "telemetry": { "header": "Telemetry" }
+      "telemetry": {
+        "header": "Telemetry"
+      }
     }
   },
   "refreshBar": {
@@ -216,7 +248,7 @@
       "explore": "Explore"
     }
   },
-  "fileInput" : {
+  "fileInput": {
     "upload": "Upload"
   },
   "applicationSettings": {

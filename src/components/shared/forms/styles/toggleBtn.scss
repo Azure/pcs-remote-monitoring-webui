@@ -4,6 +4,9 @@
 
 .toggle-btn-div {
 
+  display: flex;
+  flex-flow: row nowrap;
+
   .pcs-toggle {
     display: inline-block;
 
@@ -32,5 +35,26 @@
     .enable-toggle { fill: themed('colorEnableToggleBackground'); }
 
     .disabled { stroke: themed('colorDisabledLine'); }
+  }
+  .input-contents {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    @include rem-fallback(margin-left, 10px);
+
+    > .form-group-label {
+      @include rem-font-size(14px);
+      // If there is div content after the label, adding some padding above it
+      + div { @include rem-fallback(margin-top, 12px); }
+
+      @include themify($themes) {
+        color: themed('colorHighest');
+      }
+    }
+
+    > input[type=text],
+    > input[type=number],
+    > input[type=password],
+    > textarea { @include rem-font-size(14px); }
   }
 }
