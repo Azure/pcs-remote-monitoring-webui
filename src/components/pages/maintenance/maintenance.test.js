@@ -1,17 +1,25 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
-import { MaintenanceContainer } from './maintenance.container';
-import MockApp from 'components/mocks/mockApp';
+import { Maintenance } from './maintenance';
 
 describe('Dashboard Component', () => {
   it('Renders without crashing', () => {
-    const wrapper = mount(
-      <MockApp>
-        <MaintenanceContainer />
-      </MockApp>
+
+    const fakeProps = {
+      rulesEntities: {},
+      rulesError: undefined,
+      rulesIsPending: false,
+      rulesLastUpdated: undefined,
+      deviceEntities: {},
+      fetchRules: () => {},
+      t: () => {}
+    };
+
+    const wrapper = shallow(
+      <Maintenance {...fakeProps} />
     );
   });
 });

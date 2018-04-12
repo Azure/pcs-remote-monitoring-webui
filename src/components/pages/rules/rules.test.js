@@ -1,16 +1,28 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import { RulesContainer } from './rules.container';
-import { mount } from 'enzyme';
-import MockApp from 'components/mocks/mockApp';
+import { shallow } from 'enzyme';
+
+import { Rules } from './rules';
 
 describe('Rules Component', () => {
   it('Renders without crashing', () => {
-    const wrapper = mount(
-      <MockApp>
-        <RulesContainer />
-      </MockApp>
+
+    // Pass the devices status
+    const fakeProps = {
+      rules: [],
+      entities: {},
+      error: undefined,
+      isPending: false,
+      deviceGroups: [],
+      lastUpdated: undefined,
+      fetchRules: () => {},
+      changeDeviceGroup: (id) => {},
+      t: () => {}
+    };
+
+    const wrapper = shallow(
+      <Rules {...fakeProps} />
     );
   });
 });

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
 
   static authContext; // Created on AuthService.initialize()
-  static authEnabled = true;
+  static authEnabled = false;
   static aadInstance = '';
   static appId = '00000000-0000-0000-0000-000000000000';
   static tenantId = '00000000-0000-0000-0000-000000000000';

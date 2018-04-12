@@ -21,7 +21,6 @@ export const FlyoutSectionHeader = withAccordion(
         : <div {...sectionProps}>
             { children }
           </div>
-
     );
   }
 );

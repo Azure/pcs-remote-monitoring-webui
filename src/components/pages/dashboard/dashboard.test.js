@@ -1,17 +1,29 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
-import { DashboardContainer } from './dashboard.container';
-import MockApp from 'components/mocks/mockApp';
+import { Dashboard } from './dashboard';
 
 describe('Dashboard Component', () => {
   it('Renders without crashing', () => {
-    const wrapper = mount(
-      <MockApp>
-        <DashboardContainer />
-      </MockApp>
+
+    const fakeProps = {
+      azureMapsKey: '',
+      azureMapsKeyError: undefined,
+      azureMapsKeyIsPending: false,
+      devices: {},
+      devicesError: undefined,
+      devicesIsPending: false,
+      rules: {},
+      rulesError: undefined,
+      rulesIsPending: false,
+      fetchRules: () => {},
+      t: () => {}
+    };
+
+    const wrapper = shallow(
+      <Dashboard {...fakeProps} />
     );
   });
 });

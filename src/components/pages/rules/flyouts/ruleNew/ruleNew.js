@@ -8,7 +8,6 @@ import {
   FormGroup,
   FormLabel,
   Radio,
-  Svg,
   ToggleBtn
 } from 'components/shared';
 import { SeverityRenderer } from 'components/shared/cellRenderers';

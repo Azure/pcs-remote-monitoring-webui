@@ -36,6 +36,6 @@ const mapStateToProps = state => ({
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
   fetchRules: () => dispatch(rulesEpics.actions.fetchRules())
-})
+});
 
 export const DashboardContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Dashboard));

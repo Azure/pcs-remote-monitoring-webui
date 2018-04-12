@@ -1,16 +1,27 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
-import { DevicesContainer } from './devices.container';
-import { mount } from 'enzyme';
-import MockApp from 'components/mocks/mockApp';
+import { shallow } from 'enzyme';
+
+import { Devices } from './devices';
 
 describe('Devices Component', () => {
   it('Renders without crashing', () => {
-    const wrapper = mount(
-      <MockApp>
-        <DevicesContainer />
-      </MockApp>
+
+    const fakeProps = {
+      devices: {},
+      entities: {},
+      error: undefined,
+      isPending: false,
+      deviceGroups: [],
+      lastUpdated: undefined,
+      fetchDevices: () => {},
+      changeDeviceGroup: (id) => {},
+      t: () => {},
+    };
+
+    const wrapper = shallow(
+      <Devices {...fakeProps} />
     );
   });
 });

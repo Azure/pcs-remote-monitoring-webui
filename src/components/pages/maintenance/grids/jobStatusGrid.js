@@ -5,7 +5,7 @@ import { PcsGrid } from 'components/shared';
 import { isFunc, translateColumnDefs, getStatusCode } from 'utilities';
 import { TimeRenderer } from 'components/shared/cellRenderers';
 
-export const columnDefs = [
+const columnDefs = [
   {
     headerName: 'maintenance.jobGrid.jobName',
     field: 'jobId'

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { Observable } from 'rxjs';
-import camelcaseKeys from 'camelcase-keys';
+import camelcase from 'camelcase-object';
 import { AuthService } from './authService';
 import Config from 'app.config';
 import { AjaxError, RetryableAjaxError } from './models';
@@ -77,7 +77,7 @@ export class HttpClient {
     const request = HttpClient.createAjaxRequest({ ...options, url }, withAuth);
     return Observable.ajax(request)
       // If success, extract the response object and enforce camelCase keys
-      .map(({ response }) => camelcaseKeys((response || {}), { deep: true }))
+      .map(({ response }) => camelcase((response || {}), { deep: true }))
       // Classify errors as retryable or not
       .catch(ajaxError => Observable.throw(classifyError(ajaxError)))
       // Retry any retryable errors
