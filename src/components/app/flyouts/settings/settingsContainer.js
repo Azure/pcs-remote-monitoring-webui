@@ -9,11 +9,17 @@ import {
   getLogo,
   isDefaultLogo,
   getName,
-  getReleaseNotes
+  getReleaseNotes,
+  setLogoError,
+  setLogoPendingStatus
 } from 'store/reducers/appReducer';
 import {
   isSimulationEnabled,
-  getSimulationEtag
+  getSimulationEtag,
+  getSimulationPendingStatus,
+  getToggleSimulationError,
+  getToggleSimulationPendingStatus,
+  getSimulationError,
 } from 'store/reducers/deviceSimulationReducer';
 import { Settings } from './settings';
 import { epics as appEpics } from 'store/reducers/appReducer';
@@ -27,7 +33,13 @@ const mapStateToProps = state => ({
   isDefaultLogo: isDefaultLogo(state),
   releaseNotesUrl: getReleaseNotes(state),
   isSimulationEnabled: isSimulationEnabled(state),
-  simulationEtag: getSimulationEtag(state)
+  simulationEtag: getSimulationEtag(state),
+  simulationTogglePending: getToggleSimulationPendingStatus(state),
+  simulationToggleError: getToggleSimulationError(state),
+  setLogoPending: setLogoPendingStatus(state),
+  setLogoError: setLogoError(state),
+  getSimulationPending: getSimulationPendingStatus(state),
+  getSimulationError: getSimulationError(state)
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -75,3 +75,9 @@ export const copyToClipboard = (data) => {
   document.execCommand('copy');
   textField.remove();
 };
+
+export const isValidExtension = (file) => {
+  if (!file) return false;
+  const fileExt = file.name.split('.').pop();
+  return Config.validExtensions.indexOf('.' + fileExt) > -1;
+};

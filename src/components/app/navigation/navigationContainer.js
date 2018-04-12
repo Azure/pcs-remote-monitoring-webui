@@ -6,13 +6,15 @@ import {
   getLogo,
   getName,
   isDefaultLogo,
+  getLogoPendingStatus,
 } from 'store/reducers/appReducer';
 import Navigation from './navigation';
 
 const mapStateToProps = state => ({
   logo: getLogo(state),
   name: getName(state),
-  isDefaultLogo: isDefaultLogo(state)
+  isDefaultLogo: isDefaultLogo(state),
+  getLogoPending: getLogoPendingStatus(state)
 });
 
 const NavigationContainer = withRouter(connect(mapStateToProps)(Navigation));

@@ -40,7 +40,10 @@
     "stopped": "Stopped",
     "simulationData": "Simulation Data",
     "loading": "Loading",
-    "simulationDescription": "Start or stop simulation of devices. Stopping device simulation will minimize the cost of the solution; no simulated telemetry will be sent to your IoT Hub and alarms will not be generated for simulated devices."
+    "simulationDescription": "Start or stop simulation of devices. Stopping device simulation will minimize the cost of the solution; no simulated telemetry will be sent to your IoT Hub and alarms will not be generated for simulated devices.",
+    "toggleError": "Error updating simulation status",
+    "setLogoError": "Error updating logo",
+    "simulationLoadError": "Error loading simulation status"
   },
   "rulesFlyout": {
     "newRule": "New rule",

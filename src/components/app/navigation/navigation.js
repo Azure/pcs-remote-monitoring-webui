@@ -64,24 +64,25 @@ class Navigation extends Component {
 
   render() {
     const isExpanded = !this.state.collapsed;
-    const { name, logo, isDefaultLogo } = this.props;
+    const { name, logo, isDefaultLogo, t, getLogoPending } = this.props;
     return (
       <nav className={`app-nav ${isExpanded && 'expanded'}`}>
         <div className="nav-item company">
-        { logo
-          ? isDefaultLogo
-            ? <NavIcon path={logo} />
-            : <div className="nav-item-icon">
-                <img src={logo} alt="Logo" />
-              </div>
-          : <Indicator size="medium" />
-        }
-          <div className="nav-item-text">{name}</div>
+          {
+            getLogoPending
+              ? <Indicator size="medium" />
+              : isDefaultLogo
+                ? <NavIcon path={logo} />
+                : <div className="nav-item-icon">
+                    <img src={logo} alt="Logo" />
+                  </div>
+          }
+          {!getLogoPending && <div className="nav-item-text">{t(name)}</div>}
         </div>
         <button className="nav-item hamburger" onClick={this.toggleExpanded} aria-label="Hamburger">
           <NavIcon path={svgs.hamburger} />
         </button>
-        {this.props.tabs.map((tabProps, i) => <TabLink {...tabProps} t={this.props.t} key={i} />)}
+        {this.props.tabs.map((tabProps, i) => <TabLink {...tabProps} t={t} key={i} />)}
       </nav>
     );
   }

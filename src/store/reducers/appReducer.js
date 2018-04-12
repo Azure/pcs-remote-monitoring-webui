@@ -108,8 +108,8 @@ const initialState = {
   theme: 'dark',
   version: undefined,
   releaseNotesUrl: undefined,
-  logo: undefined,
-  name: undefined,
+  logo: svgs.contoso,
+  name: 'companyName',
   isDefaultLogo: true,
   azureMapsKey: ''
 };
@@ -135,10 +135,11 @@ const updateThemeReducer = (state, { payload }) => update(state,
   { theme: { $set: payload } }
 );
 
-const logoReducer = (state, { payload }) => update(state, {
+const logoReducer = (state, { payload, fromAction }) => update(state, {
   logo: { $set: payload.logo ? payload.logo : svgs.contoso },
-  name: { $set: payload.name ? payload.name : 'Contoso' },
-  isDefaultLogo: { $set: payload.logo ? false : true }
+  name: { $set: payload.name ? payload.name : 'companyName' },
+  isDefaultLogo: { $set: payload.logo ? false : true },
+  ...setPending(fromAction.type, false)
 });
 
 const releaseReducer = (state, { payload }) => update(state, {
@@ -149,7 +150,9 @@ const releaseReducer = (state, { payload }) => update(state, {
 /* Action types that cause a pending flag */
 const fetchableTypes = [
   epics.actionTypes.fetchDeviceGroups,
-  epics.actionTypes.fetchAzureMapsKey
+  epics.actionTypes.fetchAzureMapsKey,
+  epics.actionTypes.updateLogo,
+  epics.actionTypes.fetchLogo
 ];
 
 export const redux = createReducerScenario({
@@ -197,4 +200,12 @@ export const getLogo = state => getAppReducer(state).logo;
 export const getName = state => getAppReducer(state).name;
 export const isDefaultLogo = state => getAppReducer(state).isDefaultLogo;
 export const getReleaseNotes = state => getAppReducer(state).releaseNotesUrl;
+export const setLogoError = state =>
+  getError(getAppReducer(state), epics.actionTypes.updateLogo);
+export const setLogoPendingStatus = state =>
+  getPending(getAppReducer(state), epics.actionTypes.updateLogo);
+export const getLogoError = state =>
+  getError(getAppReducer(state), epics.actionTypes.fetchLogo);
+export const getLogoPendingStatus = state =>
+  getPending(getAppReducer(state), epics.actionTypes.fetchLogo);
 // ========================= Selectors - END

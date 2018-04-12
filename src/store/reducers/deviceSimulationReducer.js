@@ -9,6 +9,11 @@ import {
   createEpicScenario,
   errorPendingInitialState,
   toActionCreator,
+  pendingReducer,
+  errorReducer,
+  setPending,
+  getPending,
+  getError
 } from 'store/utilities';
 
 // ========================= Epics - START
@@ -36,6 +41,12 @@ export const epics = createEpicScenario({
 });
 // ========================= Epics - END
 
+/* Action types that cause a pending flag */
+const fetchableTypes = [
+  epics.actionTypes.toggleSimulationStatus,
+  epics.actionTypes.fetchSimulationStatus,
+];
+
 // ========================= Reducers - START
 const initialState = {
   ...errorPendingInitialState,
@@ -43,13 +54,18 @@ const initialState = {
   simulationEtag: undefined
 };
 
-const simulationStatusReducer = (state, { payload, fromAction }) => update(state, {
-  simulationEnabled: { $set: payload.enabled },
-  simulationEtag: { $set: payload.etag }
-});
+const simulationStatusReducer = (state, { payload, fromAction }) => {
+  return update(state, {
+    simulationEnabled: { $set: payload.enabled },
+    simulationEtag: { $set: payload.etag },
+    ...setPending(fromAction.type, false)
+  })
+};
 
 export const redux = createReducerScenario({
-  getSimulationStatus: { type: 'SIMULATION_STATUS', reducer: simulationStatusReducer }
+  getSimulationStatus: { type: 'SIMULATION_STATUS', reducer: simulationStatusReducer },
+  registerError: { type: 'SIMULATION_REDUCER_ERROR', reducer: errorReducer },
+  isFetching: { multiType: fetchableTypes, reducer: pendingReducer },
 });
 
 export const reducer = { deviceSimulation: redux.getReducer(initialState) };
@@ -59,4 +75,12 @@ export const reducer = { deviceSimulation: redux.getReducer(initialState) };
 export const getSimulationReducer = state => state.deviceSimulation;
 export const isSimulationEnabled = state => getSimulationReducer(state).simulationEnabled;
 export const getSimulationEtag = state => getSimulationReducer(state).simulationEtag;
+export const getSimulationError = state =>
+  getError(getSimulationReducer(state), epics.actionTypes.fetchSimulationStatus);
+export const getSimulationPendingStatus = state =>
+  getPending(getSimulationReducer(state), epics.actionTypes.fetchSimulationStatus);
+export const getToggleSimulationError = state =>
+  getError(getSimulationReducer(state), epics.actionTypes.toggleSimulationStatus);
+export const getToggleSimulationPendingStatus = state =>
+  getPending(getSimulationReducer(state), epics.actionTypes.toggleSimulationStatus);
 // ========================= Selectors - END

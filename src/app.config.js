@@ -24,11 +24,6 @@ const Config = {
   telemetryRefreshInterval: 1000, // 1 seconds
   simulationId: '1',
   validExtensions: validExtensions.join(),
-  isValidExtension: (file) => {
-    if (!file) return false;
-    const fileExt = file.name.split('.').pop();
-    return validExtensions.indexOf('.' + fileExt) > -1;
-  },
   emptyValue: '--',
   maxTopAlarms: 5
 };

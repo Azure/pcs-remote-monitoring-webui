@@ -16,12 +16,8 @@ export class HttpClient {
    *
    * @param {string} url The url path to the make the request to
    */
-  static get(url, options = {}, withAuth = true, getJson = true) {
-    if (getJson) {
-      return HttpClient.ajax(url, { ...options, method: 'GET' }, withAuth);
-    } else {
-      return HttpClient.ajaxNonJson(url, { ...options, method: 'GET' }, withAuth);
-    }
+  static get(url, options = {}, withAuth = true) {
+    return HttpClient.ajax(url, { ...options, method: 'GET' }, withAuth);
   }
 
   /**
@@ -38,12 +34,8 @@ export class HttpClient {
    *
    * @param {string} url The url path to the make the request to
    */
-  static put(url, body = {}, options = {}, withAuth = true, isJson = true) {
-    if (isJson) {
-      return HttpClient.ajax(url, { ...options, body, method: 'PUT' }, withAuth);
-    } else {
-      return HttpClient.ajaxNonJson(url, { ...options, body, method: 'PUT' }, withAuth);
-    }
+  static put(url, body = {}, options = {}, withAuth = true) {
+    return HttpClient.ajax(url, { ...options, body, method: 'PUT' }, withAuth);
   }
 
   /**
@@ -76,53 +68,36 @@ export class HttpClient {
     const { retryWaitTime, maxRetryAttempts } = Config;
     const request = HttpClient.createAjaxRequest({ ...options, url }, withAuth);
     return Observable.ajax(request)
-      // If success, extract the response object and enforce camelCase keys
-      .map(({ response }) => camelcase((response || {}), { deep: true }))
+      // If success, extract the response object and enforce camelCase keys if json response
+      .map(ajaxResponse =>
+        ajaxResponse.responseType === 'json'
+          ? camelcase((ajaxResponse.response || {}), { deep: true })
+          : ajaxResponse
+      )
       // Classify errors as retryable or not
       .catch(ajaxError => Observable.throw(classifyError(ajaxError)))
       // Retry any retryable errors
       .retryWhen(retryHandler(maxRetryAttempts, retryWaitTime));
   }
-
-  /**
-  * Constructs an Ajax request for a request that does not return json
-  *
-  * @param {string} url The url path to the make the request to
-  * @param {AjaxRequest} [options={}] See https://github.com/ReactiveX/rxjs/blob/master/src/observable/dom/AjaxObservable.ts
-  * @param {boolean} withAuth Allows a backdoor to not avoid wrapping auth headers
-  * @return an Observable of the AjaxReponse
-  */
-  static ajaxNonJson(url, options = {}, withAuth = true) {
-    const { retryWaitTime, maxRetryAttempts } = Config;
-    const request = HttpClient.createAjaxRequest({ ...options, url }, withAuth, false);
-    return Observable.ajax(request)
-      // Classify errors as retryable or not
-      .catch(ajaxError => Observable.throw(classifyError(ajaxError)))
-      // Retry any retryable errors
-      .retryWhen(retryHandler(maxRetryAttempts, retryWaitTime));
-  }
-
-  /**
-   * A helper method that adds "application/json" headers
-   */
-  static withHeaders(request, withAuth, addJson = true) {
-    const headers = request.headers || {};
-    if (addJson) {
-      // Add JSON headers
-      headers['Accept'] = 'application/json';
-      headers['Content-Type'] = 'application/json';
-    }
-    // Add auth headers if needed
+   /**
+    * A helper method that adds "application/json" and auth headers if necessary
+    */
+  static withHeaders(request, withAuth) {
+    const authHeaders = {};
     if (withAuth) {
-      // Required by the backend web services when the Authorization header is
-      // not valid, to tell the CSRF protection to allow this request through
-      // (assuming that Auth is not mandatory, e.g. during development).
-      headers['Csrf-Token'] = 'nocheck';
+      authHeaders['Csrf-Token'] = 'nocheck';
       AuthService.getAccessToken(accessToken => {
-        if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
+        if (accessToken) authHeaders['Authorization'] = `Bearer ${accessToken}`;
       });
     }
-    return { ...request, headers };
+    return {
+      ...request,
+      headers: {
+        ...jsonHeaders,
+        ...request.headers,
+        ...authHeaders
+      }
+    };
   }
 
   /**
@@ -160,3 +135,9 @@ export function classifyError(error) {
   }
   return AjaxError.from(error);
 }
+
+/** Headers for a json request */
+const jsonHeaders = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+};

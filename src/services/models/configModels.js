@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { reshape } from 'utilities';
+import { reshape, stringToBoolean } from 'utilities';
 
 export const toDeviceGroupsModel = (response = {}) => (response.items || [])
   .map((device = {}) => reshape(device, {
@@ -10,8 +10,25 @@ export const toDeviceGroupsModel = (response = {}) => (response.items || [])
     'eTag': 'eTag'
   }));
 
-  export const toSolutionSettingThemeModel = (response = {}) => reshape(response, {
-    'AzureMapsKey': 'azureMapsKey',
-    'description': 'description',
-    'name': 'name'
-  });
+export const prepareLogoResponse = (responseWrapper) => {
+  const returnObj = {};
+  const xhr = responseWrapper.xhr;
+  const isDefault = xhr.getResponseHeader("IsDefault");
+  if (!stringToBoolean(isDefault)) {
+    const appName = xhr.getResponseHeader("Name");
+    if (appName) {
+      returnObj['name'] = appName;
+    }
+    const blob = responseWrapper.response;
+    if (blob && blob.size > 0) {
+      returnObj['logo'] = URL.createObjectURL(blob);
+    }
+  }
+  return returnObj;
+}
+
+export const toSolutionSettingThemeModel = (response = {}) => reshape(response, {
+  'AzureMapsKey': 'azureMapsKey',
+  'description': 'description',
+  'name': 'name'
+});
