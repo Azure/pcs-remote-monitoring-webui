@@ -12,23 +12,23 @@ export const toDevicesModel = (response = {}) => (response.items || [])
 
 export const toDeviceModel = (device = {}) => {
   const modelData = reshape(device, {
-    'id': 'id',
-    'lastActivity': 'lastActivity',
-    'connected': 'connected',
-    'isSimulated': 'isSimulated',
-    'properties.reported.firmware': 'firmware',
-    'properties.reported.supportedMethods': 'methods',
-    'properties.reported.telemetry': 'telemetry',
-    'properties.reported.type': 'type',
-    'properties.reported': 'properties',
-    'c2DMessageCount': 'c2DMessageCount',
-    'enabled': 'enabled',
-    'lastStatusUpdated': 'lastStatusUpdated',
-    'iotHubHostName': 'iotHubHostName',
-    'eTag': 'eTag',
-    'tags': 'tags',
-    'authentication': 'authentication'
-  });
+  'id': 'id',
+  'lastActivity': 'lastActivity',
+  'connected': 'connected',
+  'isSimulated': 'isSimulated',
+  'properties.reported.firmware': 'firmware',
+  'properties.reported.supportedMethods': 'methods',
+  'properties.reported.telemetry': 'telemetry',
+  'properties.reported.type': 'type',
+  'properties.reported': 'properties',
+  'c2DMessageCount': 'c2DMessageCount',
+  'enabled': 'enabled',
+  'lastStatusUpdated': 'lastStatusUpdated',
+  'iotHubHostName': 'iotHubHostName',
+  'eTag': 'eTag',
+  'tags': 'tags',
+  'authentication': 'authentication'
+});
   return update(modelData, {
     properties: { $unset: ['telemetry', 'supportedMethods'] }
   });

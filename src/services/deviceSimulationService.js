@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import { Observable } from 'rxjs';
+
 import Config from 'app.config';
 import { HttpClient } from './httpClient';
-import { toSimulationStatusModel } from './models';
+import { toDeviceModelSelectOptions, toDeviceSimulationModel, toDeviceSimulationRequestModel } from './models';
 
 const ENDPOINT = Config.serviceUrls.deviceSimulation;
 const SIMULATION_ID = Config.simulationId;
@@ -13,11 +15,11 @@ const SIMULATION_ID = Config.simulationId;
 export class DeviceSimulationService {
 
   /**
-   * Toggles simulation status
+   * Returns a list of devicemodels
    */
-  static toggleSimulation(Etag, Enabled) {
-    return HttpClient.patch(`${ENDPOINT}simulations/${SIMULATION_ID}`, { Etag, Enabled })
-      .map(toSimulationStatusModel);
+  static getDeviceModelSelectOptions() {
+    return HttpClient.get(`${ENDPOINT}devicemodels`)
+      .map(toDeviceModelSelectOptions);
   }
 
   /**
@@ -25,6 +27,44 @@ export class DeviceSimulationService {
    */
   static getSimulatedDevices() {
     return HttpClient.get(`${ENDPOINT}simulations/${SIMULATION_ID}`)
-      .map(toSimulationStatusModel);
+      .map(toDeviceSimulationModel);
+  }
+
+  /**
+   * Updates simulated device
+   */
+  static updateSimulatedDevices(simulation) {
+    return HttpClient.put(`${ENDPOINT}simulations/${SIMULATION_ID}`, simulation)
+      .map(toDeviceSimulationModel)
+  }
+
+  /**
+   * Toggles simulation status
+   */
+  static toggleSimulation(Etag, Enabled) {
+    return HttpClient.patch(`${ENDPOINT}simulations/${SIMULATION_ID}`, { Etag, Enabled })
+      .map(toDeviceSimulationModel);
+  }
+
+  /**
+   * Gets the simulated device models, increments the given one, then updates on the server
+   */
+  static incrementSimulatedDeviceModel(deviceModelId, increment) {
+    return DeviceSimulationService.getSimulatedDevices()
+      .flatMap(simulations =>
+        Observable.from(simulations.deviceModels)
+          .reduce(
+            (acc, { id, count }) => ({
+              ...acc,
+              [id]: {
+                id,
+                count: ((acc[id] || {}).count || 0) + count
+              }
+            }),
+            { [deviceModelId]: { id: deviceModelId, count: increment } }
+          )
+          .map(deviceModels => ({ ...simulations, deviceModels: Object.values(deviceModels) }))
+      )
+      .flatMap(simulation => DeviceSimulationService.updateSimulatedDevices(toDeviceSimulationRequestModel(simulation)));
   }
 }

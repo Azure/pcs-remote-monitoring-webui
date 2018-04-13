@@ -192,6 +192,10 @@
         "pending": "Provisioning devices... ",
         "applySuccess": "devices provisioned successfully!",
         "close": "Close",
+        "validation": {
+          "required": "Is required",
+          "greaterThanZero": "Must be greater than zero"
+        },
         "count": {
           "label": "Number of devices"
         },

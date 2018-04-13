@@ -3,7 +3,7 @@
 import React from 'react';
 import update from 'immutability-helper';
 
-import { IoTHubManagerService } from 'services';
+import { DeviceSimulationService, IoTHubManagerService } from 'services';
 import { AuthenticationTypeOptions, toNewDeviceRequestModel } from 'services/models';
 import {
   copyToClipboard,
@@ -129,6 +129,7 @@ const ProvisionedDevice = ({ device, t }) => {
 export class DeviceNew extends LinkedComponent {
   constructor(props) {
     super(props);
+
     this.state = {
       isPending: false,
       error: undefined,
@@ -138,7 +139,7 @@ export class DeviceNew extends LinkedComponent {
         count: 1,
         deviceId: '',
         isGenerateId: DeviceIdTypeOptions.manual.value,
-        isSimulated: DeviceTypeOptions.physical.value,
+        isSimulated: DeviceTypeOptions.simulated.value,
         deviceModel: undefined,
         authenticationType: AuthTypeOptions.symmetric.value,
         isGenerateKeys: AuthKeyTypeOptions.generate.value,
@@ -148,9 +149,11 @@ export class DeviceNew extends LinkedComponent {
       provisionedDevice: {}
     };
 
+    if (props.deviceModelOptions === undefined) {
+      props.fetchDeviceModelOptions();
+    }
+
     // Linked components
-    // TODO: Implement more extensive validation.
-    // TODO: Translate validation messages... hopefully, in a way that doesn't require every form to duplicate the same messages.
     this.formDataLink = this.linkTo('formData');
 
     this.deviceTypeLink = this.formDataLink.forkTo('isSimulated')
@@ -159,15 +162,23 @@ export class DeviceNew extends LinkedComponent {
     this.countLink = this.formDataLink.forkTo('count')
       .reject(nonInteger)
       .map(stringToInt)
-      .check(Validator.notEmpty, 'Number of devices is required.')
-      .check(num => num > 0, 'Number of devices must be greater than zero.');
-
-    this.deviceIdLink = this.formDataLink.forkTo('deviceId');
+      .check(Validator.notEmpty, () => this.props.t('devices.flyouts.new.validation.required'))
+      .check(num => num > 0, () => this.props.t('devices.flyouts.new.validation.greaterThanZero'));
 
     this.isGenerateIdLink = this.formDataLink.forkTo('isGenerateId')
       .map(stringToBoolean);
 
-    this.deviceModelLink = this.formDataLink.forkTo('deviceModel');
+    this.deviceIdLink = this.formDataLink.forkTo('deviceId')
+      .check(
+        devId => (!this.deviceTypeLink.value && !this.isGenerateIdLink.value ? Validator.notEmpty(devId) : true),
+        () => this.props.t('devices.flyouts.new.validation.required')
+      );
+
+    this.deviceModelLink = this.formDataLink.forkTo('deviceModel')
+      .check(
+        devModel => this.deviceTypeLink.value ? Validator.notEmpty(devModel) : true,
+        () => this.props.t('devices.flyouts.new.validation.required')
+      );
 
     this.authenticationTypeLink = this.formDataLink.forkTo('authenticationType')
       .reject(nonInteger)
@@ -176,13 +187,21 @@ export class DeviceNew extends LinkedComponent {
     this.isGenerateKeysLink = this.formDataLink.forkTo('isGenerateKeys')
       .map(stringToBoolean);
 
-    this.primaryKeyLink = this.formDataLink.forkTo('primaryKey');
+    this.primaryKeyLink = this.formDataLink.forkTo('primaryKey')
+      .check(
+        priKey => (!this.deviceTypeLink.value && !this.isGenerateKeysLink.value ? Validator.notEmpty(priKey) : true),
+        () => this.props.t('devices.flyouts.new.validation.required')
+      );
 
-    this.secondaryKeyLink = this.formDataLink.forkTo('secondaryKey');
+    this.secondaryKeyLink = this.formDataLink.forkTo('secondaryKey')
+      .check(
+        secKey => (!this.deviceTypeLink.value && !this.isGenerateKeysLink.value ? Validator.notEmpty(secKey) : true),
+        () => this.props.t('devices.flyouts.new.validation.required')
+      );
   }
 
   componentWillUnmount() {
-    if (this.subscription) this.subscription.unsubscribe();
+    if (this.provisionSubscription) this.provisionSubscription.unsubscribe();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -221,19 +240,35 @@ export class DeviceNew extends LinkedComponent {
   }
 
   apply = () => {
+    const { formData } = this.state;
+
     if (this.formIsValid()) {
       this.setState({ isPending: true });
 
-      this.subscription = IoTHubManagerService.provisionDevice(toNewDeviceRequestModel(this.state.formData))
-        .subscribe(
-          provisionedDevice => {
-            this.setState({ provisionedDevice, successCount: this.state.formData.count, isPending: false, changesApplied: true });
-            this.props.insertDevice(provisionedDevice);
-          },
-          errorResponse => {
-            this.setState({ error: errorResponse.errorMessage, isPending: false, changesApplied: true });
-          }
-        );
+      if (this.state.formData.isSimulated) {
+        this.provisionSubscription = DeviceSimulationService.incrementSimulatedDeviceModel(formData.deviceModel.value, formData.count)
+          .subscribe(
+            () => {
+              this.setState({ successCount: formData.count, isPending: false, changesApplied: true });
+              this.props.fetchDevices();
+            },
+            errorResponse => {
+              this.setState({ error: errorResponse.errorMessage, isPending: false, changesApplied: true });
+            }
+          );
+
+      } else {
+        this.provisionSubscription = IoTHubManagerService.provisionDevice(toNewDeviceRequestModel(formData))
+          .subscribe(
+            provisionedDevice => {
+              this.setState({ provisionedDevice, successCount: formData.count, isPending: false, changesApplied: true });
+              this.props.insertDevice(provisionedDevice);
+            },
+            errorResponse => {
+              this.setState({ error: errorResponse.errorMessage, isPending: false, changesApplied: true });
+            }
+          );
+      }
     }
   }
 
@@ -250,9 +285,12 @@ export class DeviceNew extends LinkedComponent {
     }
   }
 
-
   render() {
-    const { t, onClose } = this.props;
+    const {
+      t,
+      onClose,
+      deviceModelOptions
+    } = this.props;
     const {
       formData,
       provisionedDevice,
@@ -263,7 +301,7 @@ export class DeviceNew extends LinkedComponent {
     } = this.state;
 
     const isGenerateId = this.isGenerateIdLink.value === DeviceIdTypeOptions.generate.value;
-    const deviceName = this.deviceModelLink.value || t('devices.flyouts.new.deviceIdExample.deviceName');
+    const deviceName = (this.deviceModelLink.value ? this.deviceModelLink.value.value : undefined) || t('devices.flyouts.new.deviceIdExample.deviceName');
     const isSimulatedDevice = this.deviceTypeLink.value === DeviceTypeOptions.simulated.value;
     const isX509 = this.authenticationTypeLink.value === AuthTypeOptions.x509.value;
     const isGenerateKeys = this.isGenerateKeysLink.value === AuthKeyTypeOptions.generate.value;
@@ -288,7 +326,6 @@ export class DeviceNew extends LinkedComponent {
                 {t(DeviceTypeOptions.physical.labelName)}
               </Radio>
             </FormGroup>
-
             {
               isSimulatedDevice && [
                 <FormGroup key="deviceCount">
@@ -301,7 +338,7 @@ export class DeviceNew extends LinkedComponent {
                 </FormGroup>,
                 <FormGroup key="deviceModel">
                   <FormLabel>{t('devices.flyouts.new.deviceModel.label')}</FormLabel>
-                  <div className="device-model-temp">{t('devices.flyouts.new.deviceModel.hint')} -- TODO: Add options</div>
+                  <FormControl link={this.deviceModelLink} type="select" options={deviceModelOptions} placeholder={t('devices.flyouts.new.deviceModel.hint')} />
                 </FormGroup>
               ]
             }
@@ -362,15 +399,14 @@ export class DeviceNew extends LinkedComponent {
             {
               !changesApplied &&
               <BtnToolbar>
-                {/* TODO: Temporarily disable the Apply button for simulated devices. That'll be implemented in another PR. */}
-                <Btn svg={svgs.trash} primary={true} disabled={isPending || !this.formIsValid() || isSimulatedDevice} onClick={this.apply}>{t('devices.flyouts.new.apply')}</Btn>
+                <Btn primary={true} disabled={isPending || !this.formIsValid()} onClick={this.apply}>{t('devices.flyouts.new.apply')}</Btn>
                 <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.new.cancel')}</Btn>
               </BtnToolbar>
             }
             {
               !!changesApplied && [
-                <ProvisionedDevice device={provisionedDevice} t={t} />,
-                <BtnToolbar>
+                <ProvisionedDevice key="provDevice" device={provisionedDevice} t={t} />,
+                <BtnToolbar key="buttons">
                   <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.new.close')}</Btn>
                 </BtnToolbar>
               ]

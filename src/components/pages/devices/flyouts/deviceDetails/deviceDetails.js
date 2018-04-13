@@ -232,20 +232,18 @@ export class DeviceDetails extends Component {
                 <Section.Content>
                   <SectionDesc>{t('devices.flyouts.details.methods.description')}</SectionDesc>
                   {
-                    (methods.length === 0) &&
-                    t('devices.flyouts.details.methods.noneExist')
-                  }
-                  {
-                    (methods.length > 0) &&
-                    <Grid>
-                      {
-                        methods.map((methodName, idx) =>
-                          <Row key={idx}>
-                            <Cell>{methodName}</Cell>
-                          </Row>
-                        )
-                      }
-                    </Grid>
+                    (methods.length === 0)
+                      ? t('devices.flyouts.details.methods.noneExist')
+                      : 
+                      <Grid>
+                        {
+                          methods.map((methodName, idx) =>
+                            <Row key={idx}>
+                              <Cell>{methodName}</Cell>
+                            </Row>
+                          )
+                        }
+                      </Grid>
                   }
                 </Section.Content>
               </Section.Container>

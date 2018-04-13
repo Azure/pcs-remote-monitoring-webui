@@ -37,6 +37,15 @@ export const epics = createEpicScenario({
       DeviceSimulationService.toggleSimulation(fromAction.payload.etag, fromAction.payload.enabled)
         .map(toActionCreator(redux.actions.getSimulationStatus, fromAction))
         .catch(handleError(fromAction))
+  },
+
+  /** Loads the options for Device Models */
+  fetchSimulationDeviceModelOptions: {
+    type: 'SIMULATION_DEVICE_MODEL_OPTIONS_FETCH',
+    epic: (fromAction) =>
+      DeviceSimulationService.getDeviceModelSelectOptions()
+        .map(toActionCreator(redux.actions.getDeviceModelOptions, fromAction))
+        .catch(handleError(fromAction))
   }
 });
 // ========================= Epics - END
@@ -51,7 +60,8 @@ const fetchableTypes = [
 const initialState = {
   ...errorPendingInitialState,
   simulationEnabled: undefined,
-  simulationEtag: undefined
+  simulationEtag: undefined,
+  simulationDeviceModelOptions: undefined
 };
 
 const simulationStatusReducer = (state, { payload, fromAction }) => {
@@ -62,8 +72,13 @@ const simulationStatusReducer = (state, { payload, fromAction }) => {
   })
 };
 
+const simulationDeviceModelOptionsReducer = (state, { payload, fromAction }) => update(state, {
+  simulationDeviceModelOptions: { $set: payload }
+});
+
 export const redux = createReducerScenario({
   getSimulationStatus: { type: 'SIMULATION_STATUS', reducer: simulationStatusReducer },
+  getDeviceModelOptions: { type: 'SIMULATION_DEVICE_MODEL_OPTIONS', reducer: simulationDeviceModelOptionsReducer },
   registerError: { type: 'SIMULATION_REDUCER_ERROR', reducer: errorReducer },
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer },
 });
@@ -75,6 +90,7 @@ export const reducer = { deviceSimulation: redux.getReducer(initialState) };
 export const getSimulationReducer = state => state.deviceSimulation;
 export const isSimulationEnabled = state => getSimulationReducer(state).simulationEnabled;
 export const getSimulationEtag = state => getSimulationReducer(state).simulationEtag;
+export const getSimulationDeviceModelOptions = state => getSimulationReducer(state).simulationDeviceModelOptions;
 export const getSimulationError = state =>
   getError(getSimulationReducer(state), epics.actionTypes.fetchSimulationStatus);
 export const getSimulationPendingStatus = state =>
