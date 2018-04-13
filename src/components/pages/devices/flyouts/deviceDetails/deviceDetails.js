@@ -1,12 +1,15 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { Subject } from 'rxjs';
 
+import Config from 'app.config';
 import { TelemetryService } from 'services';
 import { DeviceIcon } from './deviceIcon';
 import { RulesGrid, rulesColumnDefs } from 'components/pages/rules/rulesGrid';
 import {
   copyToClipboard,
+  int,
   svgs,
   translateColumnDefs
 } from 'utilities';
@@ -17,6 +20,8 @@ import {
   SectionDesc
 } from 'components/shared';
 import Flyout from 'components/shared/flyout';
+import { TelemetryChart, chartColorObjects } from 'components/pages/dashboard/panels/telemetry';
+import { transformTelemetryResponse } from 'components/pages/dashboard/panels';
 import {
   PropertyGrid as Grid,
   PropertyGridBody as GridBody,
@@ -36,29 +41,88 @@ export class DeviceDetails extends Component {
     this.state = {
       alarms: undefined,
       isAlarmsPending: false,
-      alarmsError: undefined
+      alarmsError: undefined,
+
+      telemetry: {},
+      telemetryIsPending: true,
+      telemetryError: null,
+
+      showRawMessage: false
     };
+
     this.columnDefs = [
       rulesColumnDefs.ruleName,
       rulesColumnDefs.severity,
       rulesColumnDefs.alarmStatus,
       rulesColumnDefs.explore
     ];
+
+    this.resetTelemetry$ = new Subject();
+    this.telemetryRefresh$ = new Subject();
   }
 
   componentDidMount() {
     if (!this.props.rulesLastUpdated) this.props.fetchRules();
-    this.fetchAlarms((this.props.device || {}).id);
+
+    const {
+      device = {},
+      device: {
+        telemetry: {
+          interval = '0'
+        } = {}
+      } = {}
+    } = this.props;
+
+    const deviceId = device.id;
+    this.fetchAlarms(deviceId);
+
+    const [hours = 0, minutes = 0, seconds = 0] = interval.split(':').map(int);
+    const refreshInterval = ((((hours * 60) + minutes) * 60) + seconds) * 1000;
+
+    // Telemetry stream - START
+    const onPendingStart = () => this.setState({ telemetryIsPending: true });
+
+    const telemetry$ =
+      this.resetTelemetry$
+        .do(_ => this.setState({ telemetry: {} }))
+        .switchMap(deviceId =>
+          TelemetryService.getTelemetryByDeviceIdP15M([deviceId])
+            .merge(
+              this.telemetryRefresh$ // Previous request complete
+                .delay(refreshInterval || Config.dashboardRefreshInterval) // Wait to refresh
+                .do(onPendingStart)
+                .flatMap(_ => TelemetryService.getTelemetryByDeviceIdP1M([deviceId]))
+            )
+            .flatMap(messages =>
+              transformTelemetryResponse(() => this.state.telemetry)(messages)
+                .map(telemetry => ({ telemetry, lastMessage: messages[0] }))
+            )
+            .map(newState => ({ ...newState, telemetryIsPending: false })) // Stream emits new state
+        )
+    // Telemetry stream - END
+
+    this.telemetrySubscription = telemetry$.subscribe(
+      telemetryState => this.setState(
+        telemetryState,
+        () => this.telemetryRefresh$.next('r')
+      ),
+      telemetryError => this.setState({ telemetryError, telemetryIsPending: false })
+    );
+
+    this.resetTelemetry$.next(deviceId);
   }
 
   componentWillReceiveProps(nextProps) {
     if ((this.props.device || {}).id !== nextProps.device.id) {
-      this.fetchAlarms((nextProps.device || {}).id);
+      const deviceId = (nextProps.device || {}).id;
+      this.resetTelemetry$.next(deviceId);
+      this.fetchAlarms(deviceId);
     }
   }
 
   componentWillUnmount() {
     this.alarmSubscription.unsubscribe();
+    this.telemetrySubscription.unsubscribe();
   }
 
   applyRuleNames = (alarms, rules) =>
@@ -83,6 +147,7 @@ export class DeviceDetails extends Component {
 
   render() {
     const { t, onClose, device } = this.props;
+    const { telemetry, lastMessage } = this.state;
     const isPending = this.state.isAlarmsPending && this.props.isRulesPending;
     const rulesGridProps = {
       rowData: isPending ? undefined : this.applyRuleNames(this.state.alarms || [], this.props.rules || []),
@@ -92,6 +157,7 @@ export class DeviceDetails extends Component {
     const tags = Object.entries(device.tags || {});
     const methods = device.methods ? device.methods.split(',') : [];
     const properties = Object.entries(device.properties || {});
+
     return (
       <Flyout.Container>
         <Flyout.Header>
@@ -124,7 +190,9 @@ export class DeviceDetails extends Component {
 
               <Section.Container>
                 <Section.Header>{t('devices.flyouts.details.telemetry.title')}</Section.Header>
-                <Section.Content>TODO: Add chart when able.</Section.Content>
+                <Section.Content>
+                  <TelemetryChart telemetry={telemetry} colors={chartColorObjects} />
+                </Section.Content>
               </Section.Container>
 
               <Section.Container>
@@ -225,7 +293,42 @@ export class DeviceDetails extends Component {
                 <Section.Header>{t('devices.flyouts.details.diagnostics.title')}</Section.Header>
                 <Section.Content>
                   <SectionDesc>{t('devices.flyouts.details.diagnostics.description')}</SectionDesc>
-                  TODO: Add diagnostics.
+
+                  <Grid className="device-details-diagnostics">
+                    <GridHeader>
+                      <Row>
+                        <Cell className="col-3">{t('devices.flyouts.details.diagnostics.keyHeader')}</Cell>
+                        <Cell className="col-7">{t('devices.flyouts.details.diagnostics.valueHeader')}</Cell>
+                      </Row>
+                    </GridHeader>
+                    <GridBody>
+                      <Row>
+                        <Cell className="col-3">{t('devices.flyouts.details.diagnostics.status')}</Cell>
+                        <Cell className="col-7">{device.connected ? t('devices.flyouts.details.connected') : t('devices.flyouts.details.notConnected')}</Cell>
+                      </Row>
+                      {
+                        device.connected && [
+                        <Row key="diag-row-time">
+                          <Cell className="col-3">{t('devices.flyouts.details.diagnostics.lastMessage')}</Cell>
+                          <Cell className="col-7">{(lastMessage || {}).time}</Cell>
+                        </Row>,
+                        <Row key="diag-row-msg">
+                          <Cell className="col-3">{t('devices.flyouts.details.diagnostics.message')}</Cell>
+                          <Cell className="col-7">
+                            <Btn className="raw-message-button" onClick={() => this.setState({ showRawMessage: !this.state.showRawMessage })}>{t('devices.flyouts.details.diagnostics.showMessage')}</Btn>
+                          </Cell>
+                        </Row>
+                        ]
+                      }
+                      {
+                        this.state.showRawMessage &&
+                        <Row>
+                          <pre>{JSON.stringify(lastMessage, null, 2)}</pre>
+                        </Row>
+                      }
+                    </GridBody>
+                  </Grid>
+
                 </Section.Content>
               </Section.Container>
             </div>

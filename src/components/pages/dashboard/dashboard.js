@@ -15,29 +15,14 @@ import {
   TelemetryPanel,
   KpisPanel,
   MapPanel,
-  transformTelemetryResponse
+  transformTelemetryResponse,
+  chartColors
 } from './panels';
 import { ContextMenu, PageContent, RefreshBar } from 'components/shared';
 
 import './dashboard.css';
 
-const chartColors = [
-  '#01B8AA',
-  '#F2C80F',
-  '#E81123',
-  '#3599B8',
-  '#33669A',
-  '#26FFDE',
-  '#E0E7EE',
-  '#FDA954',
-  '#FD625E',
-  '#FF4EC2',
-  '#FFEE91'
-];
-
 const initialState = {
-  chartColors,
-
   // Telemetry data
   telemetry: {},
   telemetryIsPending: true,
@@ -255,8 +240,6 @@ export class Dashboard extends Component {
       t
     } = this.props;
     const {
-      chartColors,
-
       telemetry,
       telemetryIsPending,
       telemetryError,

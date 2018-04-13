@@ -48,6 +48,12 @@
     @include rem-fallback(padding, 12px, 0px, 0px, 0px);
   }
 
+  .raw-message-button {
+    text-align: left;
+    padding: 0;
+    margin-right: 10px;
+  }
+
   .btn-toolbar {
     justify-content: flex-end;
     @include rem-fallback(padding-top, 32px);

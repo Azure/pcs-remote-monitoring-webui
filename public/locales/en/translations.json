@@ -136,7 +136,13 @@
         "notSimulated": "Physical",
         "diagnostics": {
           "title": "Diagnostics",
-          "description": "Diagnostic information from device"
+          "description": "Diagnostic information from device",
+          "keyHeader": "Property",
+          "valueHeader": "Value",
+          "status": "Status",
+          "lastMessage": "Last message",
+          "message": "Message",
+          "showMessage": "Click here to see raw message"
         },
         "methods": {
           "title": "Methods",

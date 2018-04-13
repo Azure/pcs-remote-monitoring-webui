@@ -8,7 +8,7 @@ import { RulesGrid } from 'components/pages/rules/rulesGrid';
 import { PageContent, ContextMenu, RefreshBar } from 'components/shared';
 import { joinClasses, renderUndefined } from 'utilities';
 import { DevicesGrid } from 'components/pages/devices/devicesGrid';
-import { TelemetryChart, transformTelemetryResponse } from 'components/pages/dashboard/panels/telemetry';
+import { TelemetryChart, transformTelemetryResponse, chartColorObjects } from 'components/pages/dashboard/panels/telemetry';
 import { TelemetryService } from 'services';
 import { TimeRenderer, SeverityRenderer } from 'components/shared/cellRenderers';
 import { AlarmOccurrencesGrid } from 'components/pages/maintenance/grids';
@@ -21,28 +21,13 @@ const tabIds = {
   telemetry: 'telemetry'
 };
 
-// TODO: Move colors to the redux store
-const chartColors = [
-  '#01B8AA',
-  '#F2C80F',
-  '#E81123',
-  '#3599B8',
-  '#33669A',
-  '#26FFDE',
-  '#E0E7EE',
-  '#FDA954',
-  '#FD625E',
-  '#FF4EC2',
-  '#FFEE91'
-];
-
 const idDelimiter = ' ';
 
 export class RuleDetails extends Component {
 
   constructor(props) {
     super(props);
-    this.colors = chartColors.map(color => ({ color }));
+
     this.state = {
       selectedAlert: undefined,
       selectedRule: undefined,
@@ -242,7 +227,7 @@ export class RuleDetails extends Component {
           [
             <h4 className="sub-heading" key="header">{t('maintenance.alarmedDeviceTelemetry')}</h4>,
             <div className="details-chart-container" key="chart">
-              <TelemetryChart telemetry={this.state.telemetry} colors={this.colors} />
+              <TelemetryChart telemetry={this.state.telemetry} colors={chartColorObjects} />
             </div>
           ]
         }

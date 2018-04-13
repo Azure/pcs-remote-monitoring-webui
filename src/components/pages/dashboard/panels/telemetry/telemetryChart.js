@@ -16,6 +16,21 @@ const maxDatums = 100; // Max telemetry messages for the telemetry graph
 // Extend the immutability helper to include object autovivification
 update.extend('$auto', (val, obj) => update(obj || {}, val));
 
+export const chartColors = [
+  '#01B8AA',
+  '#F2C80F',
+  '#E81123',
+  '#3599B8',
+  '#33669A',
+  '#26FFDE',
+  '#E0E7EE',
+  '#FDA954',
+  '#FD625E',
+  '#FF4EC2',
+  '#FFEE91'
+];
+export const chartColorObjects = chartColors.map(color => ({ color }));
+
 /**
  *  A helper function containing the logic to convert a getTelemetry response
  *  object into the chart object structure.
