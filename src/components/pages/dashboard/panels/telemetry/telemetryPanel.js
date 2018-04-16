@@ -21,7 +21,6 @@ export class TelemetryPanel extends Component {
   render() {
     const { t, isPending, telemetry, colors, error } = this.props;
     const showOverlay = isPending && !Object.keys(telemetry).length;
-    const colorObjects = colors.map(color => ({ color }));
     return (
       <Panel>
         <PanelHeader>
@@ -29,10 +28,10 @@ export class TelemetryPanel extends Component {
           { !showOverlay && isPending && <Indicator size="small" /> }
         </PanelHeader>
         <PanelContent className="telemetry-panel-container">
-          <TelemetryChart telemetry={telemetry} colors={colorObjects} />
+          <TelemetryChart telemetry={telemetry} colors={colors} />
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
-        { error && <PanelError>{t(error.message)}</PanelError> }
+        { error && <PanelError>{ t('errorFormat', { message: t(error.message, { message: error.errorMessage }) }) }</PanelError> }
       </Panel>
     );
   }

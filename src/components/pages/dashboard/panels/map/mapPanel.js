@@ -174,7 +174,7 @@ export class MapPanel extends Component {
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
         { !mapKeyIsPending && !this.props.azureMapsKey && <PanelError>{t('dashboard.panels.map.notConfiguredError')}</PanelError> }
-        { error && <PanelError>{t(error.message)}</PanelError> }
+        { error && <PanelError>{ t('errorFormat', { message: t(error.message, { message: error.errorMessage }) }) }</PanelError> }
       </Panel>
     );
   }

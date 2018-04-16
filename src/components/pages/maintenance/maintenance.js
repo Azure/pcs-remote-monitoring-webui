@@ -8,6 +8,7 @@ import moment from 'moment';
 import { Summary } from './summary/summary';
 import { RuleDetails } from './ruleDetails/ruleDetails';
 import { JobDetails } from './jobDetails/jobDetails';
+import { getIntervalParams } from 'utilities';
 
 import { TelemetryService, IoTHubManagerService } from 'services';
 
@@ -19,6 +20,8 @@ export class Maintenance extends Component {
     super(props);
 
     this.state = {
+      timeInterval: 'PT1H',
+
       alertsIsPending: true,
       alerts: [],
       alertsError: undefined,
@@ -48,7 +51,10 @@ export class Maintenance extends Component {
   }
 
   getData = () => {
-    const params = { from: 'NOW-PT1H', to: 'NOW' };
+    const deviceIds = Object.keys(this.props.deviceEntities);
+    const devices = deviceIds.length ? deviceIds.join(',') : undefined;
+    const [ timeParams ] = getIntervalParams(this.state.timeInterval);
+    const params = { ...timeParams, devices };
     this.setState({
       alertsIsPending: true,
       jobsIsPending: true,
@@ -126,6 +132,12 @@ export class Maintenance extends Component {
     );
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.deviceLastUpdated !== this.props.deviceLastUpdated) {
+      this.getData();
+    }
+  }
+
   componentWillUnmount() {
     this.clearSubscriptions();
   }
@@ -134,6 +146,8 @@ export class Maintenance extends Component {
     this.subscriptions.forEach(sub => sub.unsubscribe());
     this.subscriptions = [];
   }
+
+  onTimeIntervalChange = (timeInterval) => this.setState({ timeInterval }, () => this.getData());
 
   render() {
     const { rulesEntities, deviceEntities, rulesIsPending, t, history } = this.props;
@@ -188,6 +202,9 @@ export class Maintenance extends Component {
           render={() =>
             <Summary
             {...generalProps}
+
+            onTimeIntervalChange={this.onTimeIntervalChange}
+            timeInterval={this.state.timeInterval}
 
             criticalAlertCount={criticalAlertCount}
             warningAlertCount={warningAlertCount}

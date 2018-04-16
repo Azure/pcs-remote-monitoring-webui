@@ -40,10 +40,10 @@ export const translateColumnDefs = (t, columnDefs) => {
   );
 }
 
-/* A helper method for creating comparator methods for sorting arrays of objects */
-export const compareByProperty = (property) => (a, b) => {
-  if (b[property] > a[property]) return 1;
-  if (b[property] < a[property]) return -1;
+/** A helper method for creating comparator methods for sorting arrays of objects */
+export const compareByProperty = (property, reverse) => (a, b) => {
+  if (b[property] > a[property]) return reverse ? -1 : 1;
+  if (b[property] < a[property]) return reverse ? 1 : -1;
   return 0;
 };
 
@@ -80,4 +80,33 @@ export const isValidExtension = (file) => {
   if (!file) return false;
   const fileExt = file.name.split('.').pop();
   return Config.validExtensions.indexOf('.' + fileExt) > -1;
+};
+
+// Helper construct from and to parameters for time intervals
+export const getIntervalParams = (timeInterval) => {
+  switch(timeInterval) {
+    case 'P1D':
+      return [
+        { from: 'NOW-P1D', to: 'NOW' },
+        { from: 'NOW-P2D', to: 'NOW-P1D' }
+      ];
+
+    case 'P7D':
+      return [
+        { from: 'NOW-P7D', to: 'NOW' },
+        { from: 'NOW-P14D', to: 'NOW-P7D' }
+      ];
+
+    case 'P1M':
+      return [
+        { from: 'NOW-P1M', to: 'NOW' },
+        { from: 'NOW-P2M', to: 'NOW-P1M' }
+      ];
+
+    default: // Use PT1H as the default case
+      return [
+        { from: 'NOW-PT1H', to: 'NOW' },
+        { from: 'NOW-PT2H', to: 'NOW-PT1H' }
+      ];
+  }
 };

@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { DevicesGrid } from './devicesGrid';
+import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
 import { Btn, RefreshBar, PageContent, ContextMenu } from 'components/shared';
 import { DeviceDetailsContainer } from './flyouts/deviceDetails';
 import { DeviceNewContainer } from './flyouts/deviceNew';
@@ -67,6 +68,7 @@ export class Devices extends Component {
 
     return [
       <ContextMenu key="context-menu">
+        <DeviceGroupDropdown />
         { this.state.contextBtns }
         <Btn svg={svgs.plus} onClick={this.openNewDeviceFlyout}>{t('devices.flyouts.new.contextMenuName')}</Btn>
       </ContextMenu>,

@@ -48,7 +48,10 @@
     align-items: center;
     justify-content: center;
 
-    &.error-overlay { background-color: #1b1d1f; }
+    &.error-overlay {
+      background-color: #1b1d1f;
+      overflow: auto;
+    }
 
     .panel-error-container {
       width: 90%;

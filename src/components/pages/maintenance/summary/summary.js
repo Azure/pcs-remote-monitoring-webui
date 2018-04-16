@@ -5,6 +5,8 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
+import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
+import { TimeIntervalDropdown } from 'components/app/timeIntervalDropdown';
 import { Notifications } from './notifications';
 import { Jobs } from './jobs';
 import { PageContent, ContextMenu, RefreshBar, Svg } from 'components/shared';
@@ -29,13 +31,20 @@ export const Summary = ({
   failedJobsCount,
   succeededJobsCount,
   jobsCount,
+  onTimeIntervalChange,
+  timeInterval,
   ...props
 }) => [
   <ContextMenu key="context-menu">
+    <DeviceGroupDropdown />
     <RefreshBar
       refresh={props.refreshData}
       time={props.lastUpdated}
       isPending={alertProps.isPending || jobProps.isPending}
+      t={props.t} />
+    <TimeIntervalDropdown
+      onChange={onTimeIntervalChange}
+      value={timeInterval}
       t={props.t} />
   </ContextMenu>,
   <PageContent className="maintenance-container summary-container" key="page-content">

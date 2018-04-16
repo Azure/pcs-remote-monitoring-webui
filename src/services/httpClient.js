@@ -71,7 +71,7 @@ export class HttpClient {
       // If success, extract the response object and enforce camelCase keys if json response
       .map(ajaxResponse =>
         ajaxResponse.responseType === 'json'
-          ? camelcase((ajaxResponse.response || {}), { deep: true })
+          ? camelCaseKeys(ajaxResponse.response)
           : ajaxResponse
       )
       // Classify errors as retryable or not
@@ -103,9 +103,9 @@ export class HttpClient {
   /**
    * A helper method for constructing ajax request objects
    */
-  static createAjaxRequest(options, withAuth, addJson = true) {
+  static createAjaxRequest(options, withAuth) {
     return {
-      ...HttpClient.withHeaders(options, withAuth, addJson),
+      ...HttpClient.withHeaders(options, withAuth),
       timeout: options.timeout || Config.defaultAjaxTimeout
     };
   }
@@ -113,6 +113,12 @@ export class HttpClient {
 }
 
 // HttpClient helper methods
+
+/**
+ * The camelcase objects package will convert a base level array into an object.
+ * This method prevents that from happening
+ */
+const camelCaseKeys = (response = {}) => camelcase({ response }, { deep: true }).response;
 
 /** A helper function containing the logic for retrying ajax requests */
 export const retryHandler = (retryAttempts, retryDelay) =>

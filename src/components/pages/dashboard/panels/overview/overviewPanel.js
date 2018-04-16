@@ -81,7 +81,7 @@ export class OverviewPanel extends Component {
           </div>
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
-        { error && <PanelError>{t(error.message)}</PanelError> }
+        { error && <PanelError>{ t('errorFormat', { message: t(error.message, { message: error.errorMessage }) }) }</PanelError> }
       </Panel>
     );
   }

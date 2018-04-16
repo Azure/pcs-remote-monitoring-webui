@@ -11,7 +11,7 @@ import {
   getRulesLastUpdated
 } from 'store/reducers/rulesReducer';
 
-import { getEntities as getDeviceEntities} from 'store/reducers/devicesReducer';
+import { getEntities as getDeviceEntities, getDevicesLastUpdated } from 'store/reducers/devicesReducer';
 
 // Pass the devices status
 const mapStateToProps = state => ({
@@ -19,7 +19,8 @@ const mapStateToProps = state => ({
   rulesError: getRulesError(state),
   rulesIsPending: getRulesPendingStatus(state),
   rulesLastUpdated: getRulesLastUpdated(state),
-  deviceEntities: getDeviceEntities(state)
+  deviceEntities: getDeviceEntities(state),
+  deviceLastUpdated: getDevicesLastUpdated(state)
 });
 
 // Wrap the dispatch method

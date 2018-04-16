@@ -13,7 +13,7 @@ const Config = {
     gitHubReleases: 'https://api.github.com/repos/Azure/azure-iot-pcs-remote-monitoring-dotnet/releases'
   },
   // Constants
-  defaultAjaxTimeout: 10000, // 10s
+  defaultAjaxTimeout: 20000, // 20s
   maxRetryAttempts: 2,
   retryWaitTime: 2000, // On retryable error, retry after 2s
   retryableStatusCodes: new Set([ 0, 502, 503 ]),

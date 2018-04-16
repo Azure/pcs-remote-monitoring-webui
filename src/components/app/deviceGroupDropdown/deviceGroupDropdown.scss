@@ -1,0 +1,31 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+
+.device-group-dropdown {
+  @include rem-fallback(width, 200px);
+  margin-right: auto; /* Push to the right of the other context menu buttons*/
+
+  .Select-menu-outer {
+    margin-top: 1px !important;
+    border-top: none !important;
+  }
+
+  .Select-control {
+    border-top: none !important;
+    border-left: none !important;
+    border-bottom: none !important;
+    height: 100% !important;
+
+    .Select-placeholder {
+      display: flex;
+      align-items: center;
+    }
+
+    .Select-input {
+      height: 100%;
+
+      input { height: 100%; }
+    }
+  }
+}

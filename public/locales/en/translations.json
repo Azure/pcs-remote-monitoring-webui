@@ -22,7 +22,7 @@
     "notFound": "Oops, we were not able to find the service.",
     "redirection": "Oops, we got a redirection error.",
     "retryFailure": "Oops, we got a temporary error from the service but were unable to recover. Try again later.",
-    "unknown": "{{message}}"
+    "unknown": "An unknown error occurred. {{message}}"
   },
   "settingsFlyout": {
     "title": "Settings",
@@ -337,5 +337,11 @@
       "scheduled": "Scheduled",
       "queued": "Queued"
     }
+  },
+  "timeInterval": {
+    "PT1H": "Last hour",
+    "P1D": "Last day",
+    "P7D": "Last week",
+    "P1M": "Last month"
   }
 }

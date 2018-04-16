@@ -51,7 +51,7 @@ export class AlarmsPanel extends Component {
           <RulesGrid {...gridProps} />
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
-        { error && <PanelError>{t(error.message)}</PanelError> }
+        { error && <PanelError>{ t('errorFormat', { message: t(error.message, { message: error.errorMessage }) }) }</PanelError> }
       </Panel>
     );
   }

@@ -63,7 +63,7 @@ export class KpisPanel extends Component {
         this.barChart.render(
           barChartDatum,
           { grid: false, legend: 'hidden', tooltip: true, yAxisState: 'shared' },
-          this.props.colors.map(color => ({ color }))
+          this.props.colors
         );
       }
     }
@@ -84,7 +84,7 @@ export class KpisPanel extends Component {
         this.pieChart.render(
           pieChartDatum,
           { grid: false, timestamp: staticTime, legend: 'hidden', arcWidthRatio: 1 },
-          this.props.colors.map(color => ({ color }))
+          this.props.colors
         );
       }
     }
@@ -123,7 +123,7 @@ export class KpisPanel extends Component {
           </div>
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
-        { error && <PanelError>{t(error.message)}</PanelError> }
+        { error && <PanelError>{ t('errorFormat', { message: t(error.message, { message: error.errorMessage }) }) }</PanelError> }
       </Panel>
     );
   }

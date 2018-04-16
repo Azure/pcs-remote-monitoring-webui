@@ -43,7 +43,11 @@
     // Overrides of the TSIChart Lib
     text { fill: themed('colorContentText'); }
 
-    .tsi-barChart { background: transparent; }
+    .tsi-barChart {
+      background: transparent;
+
+      text { fill: themed('colorContentText') !important; }
+    }
     .tsi-pieChart {
       background: transparent;
 

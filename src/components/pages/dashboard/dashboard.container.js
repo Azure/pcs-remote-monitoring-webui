@@ -14,9 +14,10 @@ import {
   getRulesError
 } from 'store/reducers/rulesReducer';
 import {
-  getEntities as getDeviceEntities,
+  getDevicesError,
+  getDevicesLastUpdated,
   getDevicesPendingStatus,
-  getDevicesError
+  getEntities as getDeviceEntities
 } from 'store/reducers/devicesReducer';
 
 import { Dashboard } from './dashboard';
@@ -30,7 +31,8 @@ const mapStateToProps = state => ({
   devicesIsPending: getDevicesPendingStatus(state),
   rules: getRuleEntities(state),
   rulesError: getRulesError(state),
-  rulesIsPending: getRulesPendingStatus(state)
+  rulesIsPending: getRulesPendingStatus(state),
+  deviceLastUpdated: getDevicesLastUpdated(state)
 });
 
 // Wrap the dispatch method
