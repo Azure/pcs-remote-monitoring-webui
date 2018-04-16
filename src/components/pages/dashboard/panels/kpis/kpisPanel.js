@@ -62,7 +62,7 @@ export class KpisPanel extends Component {
       if (nextState.renderChart) {
         this.barChart.render(
           barChartDatum,
-          { grid: false, legend: 'hidden', tooltip: true, yAxisState: 'shared' },
+          { grid: false, legend: 'hidden', yAxisState: 'shared' },
           this.props.colors
         );
       }
