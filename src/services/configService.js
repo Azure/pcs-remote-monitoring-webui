@@ -39,7 +39,7 @@ export class ConfigService {
       responseType: 'blob'
     };
 
-    if(!logo) {
+    if (!logo) {
       logo = '';
     }
 

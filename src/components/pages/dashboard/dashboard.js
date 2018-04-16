@@ -91,9 +91,7 @@ export class Dashboard extends Component {
         .startWith(0)
         .do(_ => this.setState({ kpisIsPending: true }))
         .flatMap(_ => {
-
           const devices = deviceIds.length ? deviceIds.join(',') : undefined;
-
           const [ currentIntervalParams, previousIntervalParams ] = getIntervalParams(timeInterval);
 
           const currentParams = { ...currentIntervalParams, devices };
@@ -239,7 +237,7 @@ export class Dashboard extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.deviceLastUpdated !== this.props.deviceLastUpdated) {
+    if (nextProps.deviceLastUpdated !== this.props.deviceLastUpdated) {
       this.dashboardRefresh$.next(
         refreshEvent(
           Object.keys(nextProps.devices),

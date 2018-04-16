@@ -133,7 +133,7 @@ export class Maintenance extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.deviceLastUpdated !== this.props.deviceLastUpdated) {
+    if (nextProps.deviceLastUpdated !== this.props.deviceLastUpdated) {
       this.getData();
     }
   }
