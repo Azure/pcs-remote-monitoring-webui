@@ -1,0 +1,47 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.grid-container {
+  display: flex;
+  flex-flow: row wrap;
+  height: 100%;
+
+  .grid-cell {
+    display: flex;
+    flex-basis: 50%;
+    flex-grow: 1;
+
+    &.col-1 { flex-basis: 10%; }
+    &.col-2 { flex-basis: 20%; }
+    &.col-3 { flex-basis: 30%; }
+    &.col-4 { flex-basis: 40%; }
+    &.col-5 { flex-basis: 50%; }
+    &.col-6 { flex-basis: 60%; }
+    &.col-7 { flex-basis: 70%; }
+    &.col-8 { flex-basis: 80%; }
+    &.col-9 { flex-basis: 90%; }
+
+    .grid-cell-contents {
+      display: flex;
+      margin: 10px;
+      flex-grow: 1;
+      position: relative;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .grid-container .grid-cell {
+    &.col-1,
+    &.col-2,
+    &.col-3,
+    &.col-4,
+    &.col-5,
+    &.col-6,
+    &.col-7,
+    &.col-8,
+    &.col-9 { flex-basis: 100%; }
+  }
+}

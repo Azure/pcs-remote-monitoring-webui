@@ -1,0 +1,69 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+$navHeight: 48px;
+$borderColor: #383b3e;
+$closeBtnSize: 20px;
+$fontSize: 16px;
+$flyoutPadding: 20px;
+
+.flyout-container {
+  position: fixed;
+  display: flex;
+  flex-flow: column nowrap;
+  width: 500px;
+  bottom: 0;
+  right: 0;
+  animation: 0.2s ease 0s 1 slideInFromRight;
+  box-shadow: -3px 3px 14px rgba(0, 0, 0, 0.6);
+  @include rem-fallback(top, $navHeight);
+
+  .flyout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-shrink: 0;
+    @include rem-fallback(height, $navHeight);
+
+    .flyout-title {
+      padding-left: $flyoutPadding;
+      @include rem-fallback(line-height, $navHeight);
+      @include rem-font-size($fontSize);
+    }
+
+    .flyout-close-btn,
+    .flyout-close-btn:hover {
+      background-color: transparent;
+      @include rem-fallback(padding, 0px, $fontSize);
+      @include rem-fallback(min-width, 0px);
+
+      &:hover { background-color: transparent; }
+      .btn-icon svg { @include square-px-rem($closeBtnSize);  }
+    }
+  }
+
+  .flyout-content {
+    flex-grow: 1;
+    overflow: auto;
+    padding-left: $flyoutPadding;
+    padding-right: $flyoutPadding;
+    padding-bottom: $flyoutPadding;
+  }
+
+  @include themify($themes) {
+    color: themed('colorFlyoutText');
+    background-color: themed('colorFlyoutBackground');
+    border-top: 1px solid $borderColor;
+
+    .flyout-header { border-bottom: 1px solid $borderColor; }
+
+    .flyout-close-btn .btn-icon svg { stroke: themed('colorFlyoutText'); }
+  }
+}
+
+@keyframes slideInFromRight {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(0); }
+}

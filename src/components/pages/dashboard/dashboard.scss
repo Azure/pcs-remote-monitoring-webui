@@ -1,56 +1,30 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-@import '../../../styles/variables/colors';
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
 
-.timerange-selection.dashboard {
+.dashboard-container {
+  height: 100%;
   display: flex;
-  justify-content: flex-end;
-  margin-top: 13px;
-  margin-right: 10px;
+  flex-grow: 1;
+  flex-flow: column nowrap;
+  align-items: stretch;
 
-  .Select-control { margin-top: 10px; }
+  .grid-container {
+    padding: 10px;
 
-  .Select-value-label,
-  .Select-arrow-zone { color: $white; }
+    .grid-cell {
+      min-height: 400px;
 
-  .Select {
-    width: 120px;
-    font-size: 16px;
-    color: $white !important;
+      &.devices-overview-cell { min-width: 314px; }
+    }
   }
 
-  .Select-menu-outer {
-    width : 140px;
-    margin-left: -20px;
+  @include themify($themes) {
+    color: themed('colorContentText');
   }
+}
 
-  .last-refreshed-time {
-    margin-right: 10px;
-    color: $white;
-  }
-
-  .last-refreshed-text {
-    margin-left: 10px;
-    margin-right: 6px;
-    color: $lightestGray;
-  }
-
-  .time-icon {
-    background: url("../../../assets/icons/Timerange.svg") no-repeat center;
-    background-size: contain;
-    margin-left: 35px !important;
-  }
-
-  .refresh-icon {
-    background: url("../../../assets/icons/Refresh.svg") no-repeat center;
-    background-size: contain;
-    cursor: pointer;
-  }
-
-  .icon-sm {
-    width: 14px;
-    height: 14px;
-    margin-left: 2px;
-  }
-
+@media (max-width: 1200px) {
+  .dashboard-container { height: auto; }
 }

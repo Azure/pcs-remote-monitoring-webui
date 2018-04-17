@@ -1,448 +1,242 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router';
-import { bindActionCreators } from "redux";
-import Select from 'react-select';
-import * as _ from 'lodash';
-import Rx from 'rxjs';
+import { Observable } from 'rxjs';
+import { Route, Redirect, Switch } from 'react-router-dom';
+import moment from 'moment';
 
-import Spinner from '../../spinner/spinner';
-import PageContainer from '../../layout/pageContainer/pageContainer.js';
-import PageContent from '../../layout/pageContent/pageContent.js';
-import TopNav from '../../layout/topNav/topNav.js';
-import ContextFilters from '../../layout/contextFilters/contextFilters.js';
-import * as actions from "../../../actions";
-import lang from '../../../common/lang';
-import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
-import PcsBtn from '../../shared/pcsBtn/pcsBtn';
-import ApiService from '../../../common/apiService';
-import { getLocalTimeFormat } from '../../../common/utils';
-import AddSvg from '../../../assets/icons/Add.svg';
-import DeleteSvg from '../../../assets/icons/Delete.svg';
-import EditSvg from '../../../assets/icons/Edit.svg';
-import EnableSvg from '../../../assets/icons/Enable.svg';
-import DisableSvg from '../../../assets/icons/Disable.svg';
-import ChangestatusSvg from '../../../assets/icons/Change_status.svg';
-import CloseAlarmSvg from '../../../assets/icons/CloseAlarm.svg';
-import AckAlarmSvg from '../../../assets/icons/AcknowledgeAlarm.svg';
-import ChevronRight from '../../../assets/icons/ChevronRight.svg';
+import { Summary } from './summary/summary';
+import { RuleDetails } from './ruleDetails/ruleDetails';
+import { JobDetails } from './jobDetails/jobDetails';
+import { getIntervalParams } from 'utilities';
+
+import { TelemetryService, IoTHubManagerService } from 'services';
 
 import './maintenance.css';
 
-class MaintenancePage extends Component {
+export class Maintenance extends Component {
+
   constructor(props) {
     super(props);
+
     this.state = {
-      systemStatusDetailsDevices: [],
-      jobDetails: {},
-      selectedDetailsDevices: [],
-      selectedGrid: 'alarms',
-      timerange: 'PT1H',
-      lastRefreshed: new Date(),
-      rulesAndActions: [],
-      selectedRulesActions: [],
-      selectedAlarms: [],
-      selectedDevices: [],
-      currentNode: null,
-      showBoth: false,
-      toggleButtonText: lang.DISABLE,
-      toggleButtonSvg: ChangestatusSvg,
-      softSelectId: '',
-      softSelectedDeviceId: '',
-      contextBtns: '',
-      showIndicator: false
-    }
-    this.refreshData = this.refreshData.bind(this);
-    this.contextButtons = {
-      newRule: {
-        svg: AddSvg,
-        onClick: this.newRule,
-        value: lang.NEWRULE
-      },
-      delete: {
-        svg: DeleteSvg,
-        onClick: this.showDeleteRulesModal,
-        value: lang.DELETE
-      },
-      edit: {
-        svg: EditSvg,
-        onClick: this.showEditRulesFlyout,
-        value: lang.EDIT
-      },
-      close: {
-        svg: CloseAlarmSvg,
-        onClick: () => this.updateAlarm('closed'),
-        value: lang.CLOSE
-      },
-      acknowledge: {
-        svg: AckAlarmSvg,
-        onClick: () => this.updateAlarm('acknowledged'),
-        value: lang.ACKNOWLEDGE
-      }
+      timeInterval: 'PT1H',
+
+      alertsIsPending: true,
+      alerts: [],
+      alertsError: undefined,
+      alertCount: undefined,
+      criticalAlertCount: undefined,
+      warningAlertCount: undefined,
+
+      jobsIsPending: true,
+      jobs: [],
+      jobsError: undefined,
+      jobsCount: undefined,
+      failedJobsCount: undefined,
+      succeededJobsCount: undefined,
+
+      lastUpdated: undefined
     };
-    this.onDeviceJobSoftSelectChange = this.onDeviceJobSoftSelectChange.bind(this);
-    this.onTimeRangeChange = this.onTimeRangeChange.bind(this);
-    this.deselectOtherGrids = this.deselectOtherGrids.bind(this);
+
+    if (!this.props.rulesLastUpdated) {
+      this.props.fetchRules();
+    }
+
+    this.subscriptions = [];
   }
 
   componentDidMount() {
-    const deviceIds = ((this.props.devices || {}).Items || []).map(({Id}) => Id) || [];
-    this.props.actions.loadMaintenanceData({
-      from: `NOW-${this.state.timerange}`,
-      to: 'NOW',
-      devices: deviceIds
-    });
-    this.props.actions.loadJobsForTimePeriod(`NOW-${this.state.timerange}`);
+    this.getData();
   }
 
-  onTimeRangeChange(selectedOption) {
-    if (!selectedOption) return;
-    this.setState({ timerange: selectedOption.value, lastRefreshed: new Date() }, this.refreshData);
-  }
-
-  refreshData() {
-    const deviceIds = ((this.props.devices || {}).Items || []).map(({Id}) => Id) || [];
-    this.props.actions.loadMaintenanceData({
-      from: `NOW-${this.state.timerange}`,
-      to: 'NOW',
-      devices: deviceIds
-    });
-    this.props.actions.loadJobsForTimePeriod(`NOW-${this.state.timerange}`);
-    this.setState({ lastRefreshed: new Date() });
-  }
-
-  updateAlarm = (Status) => {
-    const { selectedAlarms } = this.state;
-    Rx.Observable.from(selectedAlarms)
-      .do(_ => this.setState({ showIndicator: true }))
-      .map(alarm => ({...alarm, Status}))
-      .flatMap(ApiService.updateAlarmsStatus)
-      .reduce((alarms, alarm) => [...alarms, alarm], [])
-      .zip(Rx.Observable.of(undefined).delay(2000), alarms => alarms)
-      .subscribe(
-        alarms => {
-          if (alarms && alarms.length > 0) {
-            const alarmIds = new Set(alarms.map(({Id}) => Id));
-            const status = alarms[0].Status;
-            const ruleId = alarms[0].Rule.Id;
-            this.props.actions.updateAlarmsStatus({ alarmIds, status, ruleId });
-          }
-          this.setState({ showIndicator: false });
-        },
-        error => {
-          console.log('error', error);
-          this.setState({ showIndicator: false });
-        }
-      );
-  }
-
-// --- Grid events handler starts here ----------------------------------
-
-  onContextMenuChange = contextBtns => this.setState({ contextBtns });
-
-  onSoftSelectDeviceGrid = device => {
-    this.setState(
-      { softSelectedDeviceId: this.getSoftSelectId(device) },
-      () => this.props.actions.showFlyout({ device, type: 'Device detail' })
-    );
-  }
-
-  onRuleDetailSoftSelectionChange = (rowData, row) => {
-    const { actions } = this.props;
-    actions.hideFlyout();
-    this.setState(
-      { softSelectId: this.getSoftSelectId(rowData) },
-      () => {
-        const flyoutConfig = {
-          onUpdateData: this.onUpdateData,
-          title: lang.RULEDETAIL,
-          type: 'New Rule',
-          rule: rowData
-        };
-        actions.showFlyout(flyoutConfig);
-        this.setState({ currentNode: row.node });
-      }
-    );
-  };
-
-  showToggleRules = () => {
-    const { actions } = this.props;
-    const flyoutConfig = {
-      onUpdateData: this.onUpdateData,
-      selectedRules: this.state.selectedRulesActions,
-      type: 'Rule Detail'
-    };
-    actions.showFlyout(flyoutConfig);
-  };
-
-  newRule = () => {
-    this.gridApi.deselectAll();
-    const flyoutConfig = {
-      onUpdateData: this.onUpdateData,
-      title: lang.NEWRULE,
-      type: 'New Rule'
-    };
-    this.props.actions.showFlyout(flyoutConfig);
-    this.setState({ currentNode: null });
-  };
-
-  onRuleDetailHardSelectChange = selectedRulesActions => {
-    if (this.props.selectedDevices && this.props.selectedDevices.length > 0) {
-      this.props.actions.devicesSelectionChanged([]);
-    }
-    let status;
-
-    // All selected rows have same status field?
-    let showBoth = !selectedRulesActions.every(row => {
-      if (status === undefined) {
-        status = row.Enabled
-      } else if (status !== row.Enabled) {
-        return false
-      }
-      return true;
-    });
-
-    const { actions } = this.props;
-    actions.rulesSelectionChanged(selectedRulesActions);
-    if (selectedRulesActions.length > 0) {
-      this.deselectOtherGrids('ruleGrid');
-    }
+  getData = () => {
+    const deviceIds = Object.keys(this.props.deviceEntities);
+    const devices = deviceIds.length ? deviceIds.join(',') : undefined;
+    const [ timeParams ] = getIntervalParams(this.state.timeInterval);
+    const params = { ...timeParams, devices };
     this.setState({
-      selectedRulesActions,
-      showBoth: showBoth,
-      toggleButtonText: showBoth ? lang.CHANGESTATUS : status ? lang.DISABLE : lang.ENABLE,
-      toggleButtonSvg: showBoth ? ChangestatusSvg : status ? DisableSvg : EnableSvg
+      alertsIsPending: true,
+      jobsIsPending: true,
+      alertCount: undefined,
+      alertsError: undefined,
+      criticalAlertCount: undefined,
+      warningAlertCount: undefined,
+      jobsCount: undefined,
+      failedJobsCount: undefined,
+      succeededJobsCount: undefined,
+      jobsError: undefined
     });
-  };
+    this.clearSubscriptions();
+    this.subscriptions.push(
+      TelemetryService.getActiveAlarms(params)
+        .flatMap(alarms => alarms)
+        .flatMap(alarm =>
+          // Get the last occurrence of the alarm and the counts per alarm status
+          TelemetryService.getAlarmsForRule(alarm.ruleId, { ...params, order: 'desc' })
+            .flatMap(alarms =>
+              Observable.from(alarms)
+                .reduce(
+                  (acc, { status }) => ({ ...acc, [status]: (acc[status] || 0) + 1 }),
+                  {}
+                )
+                .map(countPerStatus => ({ alarms, lastOccurrence: (alarms[0] || {}).dateCreated, countPerStatus }))
+            )
+            .map(statsPerStatus => ({ ...alarm, ...statsPerStatus }))
+        )
+        .toArray()
+        .subscribe(
+          alerts => {
+            const { criticalAlertCount, warningAlertCount } = alerts.reduce(
+              (acc, { severity, alarms }) => ({
+                criticalAlertCount: acc.criticalAlertCount + (severity === 'critical' ? alarms.length : 0),
+                warningAlertCount: acc.warningAlertCount + (severity === 'warning' ? alarms.length : 0)
+              }),
+              { criticalAlertCount: 0, warningAlertCount: 0 }
+            );
+            this.setState({
+              alerts,
+              alertsIsPending: false,
+              lastUpdated: moment(),
+              criticalAlertCount,
+              warningAlertCount,
+              alertCount: criticalAlertCount + warningAlertCount
+            })
+          },
+          alertsError => this.setState({ alertsError, alertsIsPending: false })
+        )
+    );
 
-  onAlarmOccGridHardSelectChange = selectedAlarms => {
-    if (this.props.selectedDevices && this.props.selectedDevices.length > 0) {
-      this.props.actions.devicesSelectionChanged([]);
-    }
-    if (selectedAlarms.length > 0) {
-      this.deselectOtherGrids('alarmGrid');
-    }
-    this.setState({ selectedAlarms });
-  };
-
-  onDeviceGridHardSelectChange = selectedDevices => {
-    if (selectedDevices.length > 0) {
-      this.deselectOtherGrids('deviceGrid');
-    }
-    this.setState({ selectedDevices });
-  }
-
-  getSoftSelectId = ({ Id }) => Id;
-
-  onAlarmGridReady = gridReadyEvent => this.alarmGridApi = gridReadyEvent.api;
-
-  onRuleGridReady = gridReadyEvent => this.ruleGridApi = gridReadyEvent.api;
-
-  onDeviceGridReady = gridReadyEvent => this.deviceGridApi = gridReadyEvent.api;
-
-  deselectOtherGrids = (gridName) => {
-    if (gridName !== 'alarmGrid') this.alarmGridApi.deselectAll();
-    if (gridName !== 'ruleGrid') this.ruleGridApi.deselectAll();
-    if (gridName !== 'deviceGrid') this.deviceGridApi.deselectAll();
-  }
-
-  componentWillMount() {
-    this.selectJobAndSetState(this.props);
+    this.subscriptions.push(
+      IoTHubManagerService.getJobs(params)
+        .subscribe(
+          jobs => {
+            const { failedJobsCount, succeededJobsCount } = jobs.reduce(
+              (acc, { stats = {} }) => ({
+                failedJobsCount: acc.failedJobsCount + (stats.failedCount || 0),
+                succeededJobsCount: acc.succeededJobsCount + (stats.succeededCount || 0)
+              }),
+              { failedJobsCount: 0, succeededJobsCount: 0 }
+            );
+            this.setState({
+              jobs,
+              jobsIsPending: false,
+              lastUpdated: moment(),
+              failedJobsCount,
+              succeededJobsCount,
+              jobsCount: failedJobsCount + succeededJobsCount
+            })
+          },
+          jobsError => this.setState({ jobsError, jobsIsPending: false })
+        )
+    );
   }
 
   componentWillReceiveProps(nextProps) {
-    const { devices, params } = nextProps;
-    if (!params.id && !params.JobId) this.setState({ contextBtns: true });
-    if (devices && devices.Items.length && !_.isEqual(devices, this.props.devices)) {
-      const deviceIds = devices.Items.map(({Id}) => Id);
-      this.props.actions.loadMaintenanceData({
-        from: `NOW-${this.state.timerange}`,
-        to: 'NOW',
-        devices: deviceIds
-      });
+    if (nextProps.deviceLastUpdated !== this.props.deviceLastUpdated) {
+      this.getData();
     }
-    this.selectJobAndSetState(nextProps);
   }
 
-  // Retrieving the deviceIds from "queryCondition": "deviceId in ['Simulated.prototype-01.0','Simulated.prototype-01.1']".
-  selectJobAndSetState(props) {
-    if (!props.params || !props.params.JobId) {
-      return;
-    }
-    ApiService.getJobStatus(props.params.JobId)
-      .then(jobDetails => {
-        const { Devices } = jobDetails;
-        const systemStatusDetailsDevices = Devices.map(device => ({
-          deviceId: device.DeviceId,
-          StartTimeUtc: device.StartTimeUtc,
-          Status: device.Status,
-          EndTimeUtc: device.EndTimeUtc,
-          JobId: jobDetails.JobId,
-          methodName: (jobDetails.MethodParameter || {}).Name || ''
-        }));
-        this.setState({ systemStatusDetailsDevices, jobDetails });
-      });
+  componentWillUnmount() {
+    this.clearSubscriptions();
   }
 
-  onDeviceJobSoftSelectChange({deviceId}) {
-    const selectedDeviceIdInJob = deviceId;
-    let deviceJob;
-    if (!this.props.devices || !this.props.devices.Items) { return false; }
-    this.props.devices.Items.some(device => {
-      if (device.Id === selectedDeviceIdInJob) {
-        deviceJob = device;
-        return true;
-      }
-      return false;
-    });
-    this.setState({ selectedDetailsDevices: [deviceJob] });
+  clearSubscriptions() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions = [];
   }
 
-  showEditRulesFlyout = () => {
-    const { actions } = this.props;
-    actions.hideFlyout();
-    const flyoutConfig = {
-      onUpdateData: this.onUpdateData,
-      title: lang.RULEDETAIL,
-      type: 'New Rule',
-      rule: this.state.selectedRulesActions[0],
-      inEdit: true
-    };
-    actions.showFlyout(flyoutConfig);
-    this.setState({ currentNode: this.state.selectedRulesActions[0].node });
-  };
+  onTimeIntervalChange = (timeInterval) => this.setState({ timeInterval }, () => this.getData());
 
-  getGridActions = () => {
-    return {
-      showToggleRules: this.showToggleRules,
-      newRule: this.newRule,
-      onRuleDetailHardSelectChange: this.onRuleDetailHardSelectChange,
-      onRuleDetailSoftSelectionChange: this.onRuleDetailSoftSelectionChange,
-      onAlarmOccGridHardSelectChange: this.onAlarmOccGridHardSelectChange,
-      onAlarmOccGridSoftSelectionChange: this.onAlarmOccGridSoftSelectionChange,
-      onDeviceGridHardSelectChange: this.onDeviceGridHardSelectChange,
-      onSoftSelectDeviceGrid: this.onSoftSelectDeviceGrid,
-      getSoftSelectId: this.getSoftSelectId,
-      onDeviceGridReady: this.onDeviceGridReady,
-      onAlarmGridReady: this.onAlarmGridReady,
-      onRuleGridReady: this.onRuleGridReady,
-      onContextMenuChange: this.onContextMenuChange,
-      onDeviceJobSoftSelectChange : this.onDeviceJobSoftSelectChange
-    };
-  };
-
-// --- Grid events handler ends here ----------------------------------
   render() {
-    let breadcrumbs;
-    const pathName = this.props.location.pathname;
-    const alarmsGridData = this.props.alarmsGridData;
-    const parentLink = <Link to={'/maintenance'}>{lang.MAINTENANCE}</Link>;
-    if (pathName.indexOf('/rule/') > 0 && (alarmsGridData || []).length > 0 ) {
-      alarmsGridData.forEach(rule => {
-      if (rule.id === this.props.params.id){
-        this.props.params.name = rule.name;
+    const { rulesEntities, deviceEntities, rulesIsPending, t, history } = this.props;
+    const {
+      alerts,
+      alertCount,
+      criticalAlertCount,
+      warningAlertCount,
+      alertsIsPending,
+      alertsError,
+
+      jobs,
+      jobsIsPending,
+      jobsError,
+      failedJobsCount,
+      succeededJobsCount,
+      jobsCount
+    } = this.state;
+
+    // Add the rule name to the rules data by merging from the redux store
+    const alertsWithRulename = alerts.map((alert) => ({
+      ...alert,
+      name: (rulesEntities[alert.ruleId] || {}).name,
+      counts: {
+        open: alert.countPerStatus.open || 0,
+        closed: alert.countPerStatus.closed || 0,
+        acknowledged: alert.countPerStatus.acknowledged || 0,
+        total: alert.alarms.length
       }
-    });
-      breadcrumbs = <span>{parentLink} <img src={ChevronRight} alt="ChevronRight" className="chevron-right" /> {this.props.params.name}</span>;
-    } else if (pathName.indexOf('/job/') > 0) {
-      breadcrumbs = <span>{parentLink} <img src={ChevronRight} alt="ChevronRight" className="chevron-right" />{this.props.params.JobId}</span>;
-    } else {
-      breadcrumbs = lang.MAINTENANCE;
-    }
-    const pcsBtn = (props, visible = true) => visible ? <PcsBtn {...props} /> : '';
-    const showContextBtns = this.state.contextBtns === '';
-    const showActionBtns = this.state.selectedRulesActions.length > 0;
-    const devicesList = this.props.devices && this.props.devices.Items ? this.props.devices.Items : [];
-    const alarmListProps = {
-      alarms: (this.props.alarmsGridData || [])
-        .map(row => row[row.Rule.Id])
-        .reduce((acc, cur) => acc.concat(cur), []),
-      devices: devicesList,
-      jobsLoadingInProgress: this.props.jobsLoadingInProgress,
-      jobDetails: this.state.jobDetails,
-      detailsDevices: this.state.systemStatusDetailsDevices,
-      systemStatusGridSelectedDevices: this.state.selectedDetailsDevices,
-      onDeviceJobSoftSelectChange : this.onDeviceJobSoftSelectChange,
-      systemStatusGridColumnDefs: this.systemStatusColumnDefsArray,
-      alarmsGridData: this.props.loadingInProgress ? null : this.props.alarmsGridData,
-      actions: this.props.actions,
-      jobs: this.props.jobs,
-      btnActions: this.getGridActions() //TODO: add all grid related actions
+    }));
+
+    const generalProps = {
+      t,
+      history,
+      refreshData: this.getData,
+      lastUpdated: this.state.lastUpdated
     };
+    const alertProps = {
+      isPending: rulesIsPending || alertsIsPending,
+      error: alertsError,
+      alerts: alertsWithRulename
+    };
+    const jobProps = {
+      isPending: jobsIsPending,
+      jobs,
+      error: jobsError
+    };
+
     return (
-      <PageContainer>
-        <TopNav breadcrumbs={breadcrumbs} projectName={lang.AZUREPROJECTNAME} />
-        <ContextFilters disableDeviceFilter={((this.props.params || {}).id || (this.props.params || {}).JobId) !== undefined}>
-          <div className="timerange-selection" onClick={this.props.actions.hideFlyout}>
-            <span className="last-refreshed-text"> {`${lang.LAST_REFRESHED} | `} </span>
-            <div className="last-refreshed-time">{getLocalTimeFormat(this.state.lastRefreshed)}</div>
-            <div onClick={this.refreshData} className="refresh-icon icon-sm" />
-            <div className="time-icon icon-sm" />
-            <Select
-              value={this.state.timerange}
-              onChange={this.onTimeRangeChange}
-              searchable={false}
-              clearable={false}
-              options={[
-                {
-                  value: 'PT1H',
-                  label: lang.LASTHOUR
-                },
-                {
-                  value: 'P1D',
-                  label: lang.LASTDAY
-                },
-                {
-                  value: 'P7D',
-                  label: lang.LASTWEEK
-                },
-                {
-                  value: 'P1M',
-                  label: lang.LASTMONTH
-                }
-              ]}
-            />
-          </div>
-          {this.state.showIndicator && <div className="spinner-container"><Spinner size="medium" pattern="bar" /></div>}
-          {pcsBtn({ // Change status button
-            svg: this.state.toggleButtonSvg,
-            onClick: this.showToggleRules,
-            value: this.state.toggleButtonText
-          }, showActionBtns && showContextBtns)}
-          {pcsBtn(this.contextButtons.edit, this.state.selectedRulesActions.length === 1 && showContextBtns)}
-          {pcsBtn(this.contextButtons.close, this.state.selectedAlarms.length > 0 && showContextBtns)}
-          {pcsBtn(this.contextButtons.acknowledge, this.state.selectedAlarms.length > 0 && showContextBtns)}
-          {this.state.contextBtns}
-          <ManageFilterBtn />
-        </ContextFilters>
-        <PageContent>
-          {React.cloneElement(this.props.children, {...alarmListProps})}
-        </PageContent>
-      </PageContainer>
+      <Switch>
+        <Route exact path={'/maintenance/:path(notifications|jobs)'}
+          render={() =>
+            <Summary
+            {...generalProps}
+
+            onTimeIntervalChange={this.onTimeIntervalChange}
+            timeInterval={this.state.timeInterval}
+
+            criticalAlertCount={criticalAlertCount}
+            warningAlertCount={warningAlertCount}
+            alertCount={alertCount}
+
+            failedJobsCount={failedJobsCount}
+            succeededJobsCount={succeededJobsCount}
+            jobsCount={jobsCount}
+
+            alertProps={alertProps}
+            jobProps={jobProps} />
+          } />
+        <Route exact path={'/maintenance/rule/:id'}
+          render={(routeProps) =>
+            <RuleDetails
+              {...generalProps}
+              {...alertProps}
+              {...routeProps}
+              rulesEntities={rulesEntities}
+              deviceEntities={deviceEntities} />
+          } />
+        <Route exact path={'/maintenance/job/:id'}
+          render={(routeProps) =>
+            <JobDetails
+              {...generalProps}
+              {...jobProps}
+              {...routeProps}
+              deviceEntities={deviceEntities} />
+          }  />
+        <Redirect to="/maintenance/notifications" />
+      </Switch>
     );
   }
-}
 
-const mapStateToProps = state => {
-  return {
-    alarmList: state.deviceReducer.alarmsList,
-    devices: state.deviceReducer.devices,
-    loadingInProgress: state.maintenanceReducer.loadingInProgress,
-    alarmsGridData: state.maintenanceReducer.alarmsByRuleGridRowData,
-    jobs: state.systemStatusJobReducer.jobs,
-    jobsLoadingInProgress: state.systemStatusJobReducer.loadingInProgress,
-    selectedDevices: state.flyoutReducer.devices,
-    flyout: state.flyoutReducer,
-    modal: state.modalReducer
-  };
 };
-
-const mapDispatchToProps = dispatch => {
-  return {
-    actions: bindActionCreators(actions, dispatch)
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MaintenancePage);

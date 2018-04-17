@@ -1,0 +1,9 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.telemetry-panel-container {
+  display: flex;
+  flex-flow: column nowrap;
+}

@@ -1,0 +1,103 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+$horizontalPadding: 8px;
+$verticalPadding: 5px;
+$inputHeight: 24px;
+$defaultInputWidth: 124px;
+$smallInputWidth: 80px;
+$longInputWidth: 248px;
+$textareaWidth: 348px;
+$textareaHeight: 60px;
+
+.form-control-container {
+  input.form-control,
+  textarea.form-control {
+    font-size: inherit;
+    font-family: inherit;
+    background: transparent;
+    @include rem-fallback(padding-left, $horizontalPadding);
+    @include rem-fallback(padding-top, $verticalPadding);
+    @include rem-fallback(padding-bottom, $verticalPadding);
+
+    &:disabled {
+      -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+          -moz-user-select: none;
+            -ms-user-select: none;
+                user-select: none;
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    @include themify($themes) {
+      color: themed('colorLightestFirst');
+      border: 1px solid themed('colorMidThird');
+
+      // Set RGBa opacity to .99 to get correct color in the selection styling
+      &::selection {
+        color: themed('colorHighest');
+        background: rgba(themed('colorSystem'), .99);
+      }
+
+      &::-moz-selection {
+        color: themed('colorHighest');
+        background: rgba(themed('colorSystem'), .99);
+      }
+
+      &::-webkit-input-placeholder { color: themed('colorLightestSecond'); }
+          &:-ms-input-placeholder { color: themed('colorLightestSecond'); }
+              &::-moz-placeholder { color: themed('colorLightestSecond'); }
+                &:-moz-placeholder { color: themed('colorLightestSecond'); }
+
+      &:hover,
+      &:focus { border-color: themed('colorLightestFirst'); }
+
+      &.error { border-color: themed('colorAlarm'); }
+
+      &:disabled {
+        background-color: themed('colorMidThird');
+        color: themed('colorMidThird');
+        border: 1px solid themed('colorMidThird');
+
+        &::-webkit-input-placeholder { color: themed('colorMidThird'); }
+            &:-ms-input-placeholder { color: themed('colorMidThird'); }
+                &::-moz-placeholder { color: themed('colorMidThird'); }
+                  &:-moz-placeholder { color: themed('colorMidThird'); }
+      }
+    }
+  }
+
+  input.form-control {
+    @include rem-fallback(height, $inputHeight - (2 * $verticalPadding));
+    @include rem-fallback(width, $defaultInputWidth - $horizontalPadding);
+
+    &.small { @include rem-fallback(width, $smallInputWidth - $horizontalPadding); }
+
+    &.long { @include rem-fallback(width, $longInputWidth - $horizontalPadding); }
+  }
+
+  textarea.form-control {
+    resize: none;
+    min-height: 1em;
+    @include rem-fallback(padding-right, $horizontalPadding);
+    @include rem-fallback(height, $textareaHeight);
+    @include rem-fallback(width, $textareaWidth - (2 * $horizontalPadding));
+  }
+
+  .error-message {
+    margin-top: 4px;
+    @include rem-font-size(14px);
+
+    svg {
+      @include square-px-rem(10px);
+    }
+  }
+}

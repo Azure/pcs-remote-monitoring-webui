@@ -1,0 +1,49 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+$rotateTime: 2s;
+
+.last-updated-container {
+  display: flex;
+  justify-content: flex-end;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  @include rem-fallback(margin-top, 13px);
+
+  .btn.refresh-btn {
+    @include rem-fallback(padding, 0px, 5px);
+    @include rem-fallback(min-width, 0px);
+
+    &:hover { background: none !important; }
+
+    .btn-icon { @include square-px-rem(15px); }
+
+    &:focus { outline: 0px; }
+
+    &.refreshing {
+      -webkit-animation: spin $rotateTime linear infinite;
+      -moz-animation: spin $rotateTime linear infinite;
+      animation: spin $rotateTime linear infinite;
+    }
+  }
+
+  @include themify($themes) {
+    .time {
+      color: themed('colorContentText');
+
+      .refresh-text { color: themed('colorContentTextDim'); }
+    }
+
+    .btn.refresh-btn {
+      background: none;
+
+      &.refreshing .btn-icon svg { fill: themed('colorContentText'); }
+    }
+  }
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

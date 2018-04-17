@@ -1,0 +1,20 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.form-section {
+  @include rem-fallback(padding-top, 32px);
+
+  .section-header { @include rem-fallback(margin-bottom, 12px); }
+
+  .section-desc {
+    @include rem-font-size(14px);
+    @include rem-fallback(margin-bottom, 16px);
+  }
+
+  @include themify($themes) {
+    .section-header { color: themed('colorContentText'); }
+    .section-desc { color: themed('colorContentTextDim'); }
+  }
+}

@@ -1,78 +1,91 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-@import '../../../styles/fonts/font-variables.scss';
-@import '../../../styles/variables/colors.scss';
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
 
-.timerange-selection {
+.maintenance-container {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 13px;
-  margin-right: 10px;
+  flex-flow: column nowrap;
+  padding: 20px;
 
-  .Select-value-label ,
-  .Select-arrow-zone { color: $white; }
-
-  .Select-control { margin-top: 10px; }
-
-  .Select {
-    width: 120px;
-    margin-top: -20px;
-    margin-right: 19px;
-    font-size: 16px;
-    color: $white !important;
-  }
-
-  .Select-value {
-    padding-left: 8px !important;
-    padding-top: 2px !important;
-  }
-
-  .Select-arrow-zone { padding-top: 5px !important; }
-
-  .Select-menu-outer {
-    width : 120px;
-    margin-left: 10px;
-  }
-
-  .last-refreshed-time {
+  .maintenance-header {
+    font-weight: 700;
+    margin: 0;
     margin-right: 10px;
-    color: $white;
+    @include rem-font-size(48px);
   }
 
-  .last-refreshed-text {
-    margin-left: 10px;
-    margin-right: 6px;
-    color: $lightestGray;
+  .header-container {
+    display: flex;
+    flex-flow: row wrap;
+    flex-shrink: 0;
+    align-items: flex-end;
+    padding-bottom: 10px;
   }
 
-  .time-icon{
-    background: url("../../../assets/icons/Timerange.svg") no-repeat center;
-    background-size: contain;
-    margin-left: 35px !important;
+  .sub-heading { font-weight: normal; }
+
+  .tab-container {
+    display: flex;
+    flex-flow: row wrap;
+    flex-shrink: 0;
+
+    .tab {
+      text-decoration: none;
+      padding: 5px 0px;
+      padding-bottom: 10px;
+      font-weight: 700;
+      margin-right: 72px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      @include rem-font-size(32px);
+    }
   }
 
-  .refresh-icon {
-    background: url("../../../assets/icons/Refresh.svg") no-repeat center;
-    background-size: contain;
-    cursor: pointer;
+  .grid-container {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+
+    .temp-row {
+      text-decoration: none;
+      margin: 10px 0px;
+      padding: 10px;
+    }
   }
 
-  .icon-sm {
-    width: 14px;
-    height: 14px;
-    margin-left: 2px;
-    margin-top: 5px;
+  .details-chart-container {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: stretch;
+    height: 300px;
+    flex-shrink: 0;
   }
-}
 
-.chevron-right {
-  width: 12px;
-  height: 12px;
-  margin-left: 2px;
-}
+  @include themify($themes) {
+    color: themed('colorContentTextDim');
 
-.spinner-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
+    .tab-container {
+      border-bottom: 1px solid themed('colorContentTextDim');
+
+      .tab {
+        color: themed('colorContentTextDim');
+
+        &:hover { color: themed('colorContentText'); }
+
+        &.active {
+          color: themed('colorContentText');
+          border-bottom: 4px solid themed('colorContentText');
+        }
+      }
+    }
+
+    .temp-row {
+      background-color: themed('colorGridRowBackground');
+      color: themed('colorGridCellText');
+
+      &:hover { background-color: themed('colorGridRowHoverBackground'); }
+    }
+  }
 }

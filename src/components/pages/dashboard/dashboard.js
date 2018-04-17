@@ -1,199 +1,402 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import Rx from 'rxjs';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import Select from 'react-select';
-import { Grid, Row, Col } from 'react-bootstrap';
-import PageContainer from '../../layout/pageContainer/pageContainer.js';
-import PageContent from '../../layout/pageContent/pageContent.js';
-import TopNav from '../../layout/topNav/topNav.js';
-import ContextFilters from '../../layout/contextFilters/contextFilters.js';
-import Telemetry from '../../telemetryWidget/telemetry';
-import AlarmList from '../../alarmList/alarmList';
-import KpiWidget from '../../kpiWidget/kpiWidget';
-import * as actions from '../../../actions';
-import DeviceMap from '../../deviceMap/deviceMap.js';
-import lang from '../../../common/lang';
-import ManageFilterBtn from '../../shared/contextBtns/manageFiltersBtn';
-import { getLocalTimeFormat } from '../../../common/utils';
+import { Observable, Subject } from 'rxjs';
+import moment from 'moment';
+
+import Config from 'app.config';
+import { TelemetryService } from 'services';
+import { compareByProperty, getIntervalParams } from 'utilities';
+import { Grid, Cell } from './grid';
+import { PanelErrorBoundary } from './panel';
+import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
+import { TimeIntervalDropdown } from 'components/app/timeIntervalDropdown';
+import {
+  OverviewPanel,
+  AlarmsPanel,
+  TelemetryPanel,
+  KpisPanel,
+  MapPanel,
+  transformTelemetryResponse,
+  chartColorObjects
+} from './panels';
+import { ContextMenu, PageContent, RefreshBar } from 'components/shared';
 
 import './dashboard.css';
 
-class DashboardPage extends Component {
+const initialState = {
+  timeInterval: 'PT1H',
+
+  // Telemetry data
+  telemetry: {},
+  telemetryIsPending: true,
+  telemetryError: null,
+
+  // Kpis data
+  currentActiveAlarms: [],
+  topAlarms: [],
+  alarmsPerDeviceId: {},
+  criticalAlarmsChange: 0,
+  kpisIsPending: true,
+  kpisError: null,
+
+  // Summary data
+  openWarningCount: undefined,
+  openCriticalCount: undefined,
+
+  // Map data
+  devicesInAlarm: {},
+
+  lastRefreshed: undefined
+};
+
+const refreshEvent = (deviceIds = [], timeInterval) => ({ deviceIds, timeInterval });
+
+export class Dashboard extends Component {
+
   constructor(props) {
     super(props);
 
-    this.state = {
-      timeRange: 'PT1H',
-      lastRefreshed: new Date(),
-    };
+    this.state = initialState;
 
-    this.emitter = new Rx.Subject();
-    this.loadMapData = this.loadMapData.bind(this);
-    this.onTimeRangeChange = this.onTimeRangeChange.bind(this);
-    this.refreshData = this.refreshData.bind(this);
+    this.subscriptions = [];
+    this.dashboardRefresh$ = new Subject(); // Restarts all streams
+    this.telemetryRefresh$ = new Subject();
+    this.panelsRefresh$ = new Subject();
   }
 
   componentDidMount() {
-    const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
-    this.props.actions.loadRulesList();
-    this.props.actions.loadMapkey();
-    if (this.props.selectedDeviceGroup === '') {
-      // Default query messages and alarms for all devices
-      this.props.actions.loadDashboardData(lang.ALLDEVICES, this.state.timeRange);
-      this.props.actions.loadTelemetryMessagesByDeviceIds(lang.ALLDEVICES);
-    } else {
-      this.props.actions.loadTelemetryMessagesByDeviceIds(deviceIds);
-      this.loadMapData();
-    }
+    // Load the rules
+    this.props.fetchRules();
+
+    // Telemetry stream - START
+    const onPendingStart = () => this.setState({ telemetryIsPending: true });
+
+    const getTelemetryStream = ({ deviceIds = [] }) => TelemetryService.getTelemetryByDeviceIdP15M(deviceIds)
+      .merge(
+        this.telemetryRefresh$ // Previous request complete
+          .delay(Config.telemetryRefreshInterval) // Wait to refresh
+          .do(onPendingStart)
+          .flatMap(_ => TelemetryService.getTelemetryByDeviceIdP1M(deviceIds))
+      )
+      .flatMap(transformTelemetryResponse(() => this.state.telemetry))
+      .map(telemetry => ({ telemetry, telemetryIsPending: false })); // Stream emits new state
+      // Telemetry stream - END
+
+      // KPI stream - START
+
+      // TODO: Add device ids to params - START
+      const getKpiStream = ({ deviceIds = [], timeInterval }) => this.panelsRefresh$
+        .delay(Config.dashboardRefreshInterval)
+        .startWith(0)
+        .do(_ => this.setState({ kpisIsPending: true }))
+        .flatMap(_ => {
+          const devices = deviceIds.length ? deviceIds.join(',') : undefined;
+          const [ currentIntervalParams, previousIntervalParams ] = getIntervalParams(timeInterval);
+
+          const currentParams = { ...currentIntervalParams, devices };
+          const previousParams = { ...previousIntervalParams, devices };
+
+          return Observable.forkJoin(
+            TelemetryService.getActiveAlarms(currentParams),
+            TelemetryService.getActiveAlarms(previousParams),
+
+            TelemetryService.getAlarms(currentParams),
+            TelemetryService.getAlarms(previousParams)
+          )
+        }).map(([
+          currentActiveAlarms,
+          previousActiveAlarms,
+
+          currentAlarms,
+          previousAlarms
+        ]) => {
+          // Process all the data out of the currentAlarms list
+          const currentAlarmsStats = currentAlarms.reduce((acc, alarm) => {
+              const isOpen = alarm.status === 'open';
+              const isWarning = alarm.severity === 'warning';
+              const isCritical = alarm.severity === 'critical';
+              let updatedAlarmsPerDeviceId = acc.alarmsPerDeviceId;
+              if (alarm.deviceId) {
+                updatedAlarmsPerDeviceId = {
+                  ...updatedAlarmsPerDeviceId,
+                  [alarm.deviceId]: (updatedAlarmsPerDeviceId[alarm.deviceId] || 0) + 1
+                };
+              }
+              return {
+                openWarningCount: (acc.openWarningCount || 0) + (isWarning && isOpen ? 1 : 0),
+                openCriticalCount: (acc.openCriticalCount || 0) + (isCritical && isOpen ? 1 : 0),
+                totalCriticalCount: (acc.totalCriticalCount || 0) + (isCritical ? 1 : 0),
+                alarmsPerDeviceId: updatedAlarmsPerDeviceId
+              };
+            },
+            { alarmsPerDeviceId: {} }
+          );
+
+          // ================== Critical Alarms Count - START
+          const currentCriticalAlarms = currentAlarmsStats.totalCriticalCount;
+          const previousCriticalAlarms = previousAlarms.reduce(
+            (cnt, { severity }) => severity === 'critical' ? cnt + 1 : cnt,
+            0
+          );
+          const criticalAlarmsChange = ((currentCriticalAlarms - previousCriticalAlarms) / currentCriticalAlarms * 100).toFixed(2);
+          // ================== Critical Alarms Count - END
+
+          // ================== Top Alarms - START
+          const currentTopAlarms = currentActiveAlarms
+            .sort(compareByProperty('count'))
+            .slice(0, Config.maxTopAlarms);
+
+          // Find the previous counts for the current top kpis
+          const previousTopAlarmsMap = previousActiveAlarms.reduce(
+            (acc, { ruleId, count }) =>
+              (ruleId in acc)
+                ? { ...acc, [ruleId]: count }
+                : acc
+            ,
+            currentTopAlarms.reduce((acc, { ruleId }) => ({ ...acc, [ruleId]: 0 }), {})
+          );
+
+          const topAlarms = currentTopAlarms.map(({ ruleId, count }) => ({
+            ruleId,
+            count,
+            previousCount: previousTopAlarmsMap[ruleId] || 0
+          }));
+          // ================== Top Alarms - END
+
+          const devicesInAlarm = currentAlarms
+            .filter(({ status }) => status === 'open')
+            .reduce((acc, { deviceId, severity, ruleId}) => {
+              return {
+                ...acc,
+                [deviceId]: { severity, ruleId }
+              };
+            }, {});
+
+          return ({
+            kpisIsPending: false,
+
+            // Kpis data
+            currentActiveAlarms,
+            topAlarms,
+            criticalAlarmsChange,
+            alarmsPerDeviceId: currentAlarmsStats.alarmsPerDeviceId,
+
+            // Summary data
+            openWarningCount: currentAlarmsStats.openWarningCount,
+            openCriticalCount: currentAlarmsStats.openCriticalCount,
+
+            // Map data
+            devicesInAlarm
+          });
+        });
+      // KPI stream - END
+
+      this.subscriptions.push(
+        this.dashboardRefresh$
+          .subscribe(() => this.setState(initialState))
+      );
+
+      this.subscriptions.push(
+        this.dashboardRefresh$
+          .switchMap(getTelemetryStream)
+          .subscribe(
+            telemetryState => this.setState(
+              { ...telemetryState, lastRefreshed: moment() },
+              () => this.telemetryRefresh$.next('r')
+            ),
+            telemetryError => this.setState({ telemetryError, telemetryIsPending: false })
+          )
+      );
+
+      this.subscriptions.push(
+        this.dashboardRefresh$
+          .switchMap(getKpiStream)
+          .subscribe(
+            kpiState => this.setState(
+              { ...kpiState, lastRefreshed: moment() },
+              () => this.panelsRefresh$.next('r')
+            ),
+            kpisError => this.setState({ kpisError, kpisIsPending: false })
+          )
+      );
+
+      // Start polling all panels
+      if (this.props.deviceLastUpdated) {
+        this.dashboardRefresh$.next(
+          refreshEvent(
+            Object.keys(this.props.devices || {}),
+            this.state.timeInterval
+          )
+        );
+      }
   }
 
   componentWillUnmount() {
-    if (this.timerID) {
-      clearInterval(this.timerID);
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.deviceLastUpdated !== this.props.deviceLastUpdated) {
+      this.dashboardRefresh$.next(
+        refreshEvent(
+          Object.keys(nextProps.devices),
+          this.state.timeInterval
+        ),
+      );
     }
   }
 
-  loadMapData() {
-      const deviceIds = ((this.props.devices || {}).items || []).map(({Id}) => Id) || [];
-      this.props.actions.loadDashboardData(deviceIds, this.state.timeRange);
-  }
+  refreshDashboard = () => this.dashboardRefresh$.next(
+    refreshEvent(
+      Object.keys(this.props.devices),
+      this.state.timeInterval
+    )
+  );
 
-  loadRefreshData(){
-     this.loadMapData();
-     this.props.actions.refreshAllChartData();
-     this.emitter.next('dashboardRefresh');
-  }
+  onTimeIntervalChange = (timeInterval) => this.setState(
+    { timeInterval },
+    () => this.dashboardRefresh$.next(
+      refreshEvent(
+        Object.keys(this.props.devices),
+        timeInterval
+      )
+    )
+  );
 
-  onTimeRangeChange(selectedOption) {
-    if (!selectedOption) return;
-    this.setState({
-        timeRange: selectedOption.value,
-        lastRefreshed: new Date()
-      },
-      () => this.loadMapData()
-    );
-  }
+  render () {
+    const {
+      azureMapsKey,
+      azureMapsKeyError,
+      azureMapsKeyIsPending,
 
-  refreshData() {
-    this.setState(
-      { lastRefreshed: new Date() },
-      () => this.loadRefreshData()
-    );
-  }
-
-  render() {
-    const deviceMapProps = {
-      alarmList: this.props.alarmList,
-      devices: this.props.devices,
-      telemetryByDeviceGroup: this.props.telemetryByDeviceGroup,
-      BingMapKey: this.props.BingMapKey,
-      timeRange: this.state.timeRange
-    };
-
-    const devicesList = this.props.devices && this.props.devices.Items ? this.props.devices.Items : [];
-    const devices = devicesList.map(({ Id }) => Id)
-    const alarmListProps = {
       devices,
-      timeRange: this.state.timeRange,
-      dashboardRefresh: this.emitter,
-      rulesAndActions: this.props.rulesAndActions
-    };
-    const telemetryProps = {
-      chartId: 'dashboard_telemetry_chart',
-      devices: this.props.devices,
-    };
-    const kpiProps = {
-      devices,
-      alarmList: this.props.alarmList,
-      alarmsByRule: this.props.alarmsByRule,
-      timeRange: this.state.timeRange,
-      rulesAndActions: this.props.rulesAndActions
-    };
-    const selectProps = {
-      value: this.state.timeRange,
-      onChange: this.onTimeRangeChange,
-      searchable: false,
-      clearable: false,
-      options: [
-        {
-          value: 'PT1H',
-          label: lang.LASTHOUR
-        },
-        {
-          value: 'P1D',
-          label: lang.LASTDAY
-        },
-        {
-          value: 'P7D',
-          label: lang.LASTWEEK
-        },
-        {
-          value: 'P1M',
-          label: lang.LASTMONTH
-        }
-      ]
-    };
+      devicesError,
+      devicesIsPending,
 
-    return (
-      <PageContainer>
-        <TopNav breadcrumbs={'Dashboard'} projectName={lang.AZUREPROJECTNAME} />
-        <ContextFilters>
-          <div className="timerange-selection dashboard" onClick={this.props.actions.hideFlyout}>
-            <div className="last-refreshed-text"> {`${lang.LAST_REFRESHED} | `} </div>
-            <div className="last-refreshed-time">{getLocalTimeFormat(this.state.lastRefreshed)}</div>
-            <div onClick={this.refreshData} className="refresh-icon icon-sm" />
-            <div className="time-icon icon-sm" />
-            <Select {...selectProps} />
-          </div>
-          <ManageFilterBtn />
-        </ContextFilters>
-        <PageContent>
-          <Grid fluid className="layout">
-            <Row>
-              <Col md={7}>
-                <DeviceMap {...deviceMapProps} />
-              </Col>
-              <Col md={5}>
-                <AlarmList {...alarmListProps} />
-              </Col>
-            </Row>
-            <Row>
-              <Col md={7}>
-                <Telemetry {...telemetryProps} />
-              </Col>
-              <Col md={5}>
-                <KpiWidget {...kpiProps} />
-              </Col>
-            </Row>
-          </Grid>
-        </PageContent>
-      </PageContainer>
-    );
+      rules,
+      rulesError,
+      rulesIsPending,
+      t
+    } = this.props;
+    const {
+      timeInterval,
+
+      telemetry,
+      telemetryIsPending,
+      telemetryError,
+
+      currentActiveAlarms,
+      topAlarms,
+      alarmsPerDeviceId,
+      criticalAlarmsChange,
+      kpisIsPending,
+      kpisError,
+
+      openWarningCount,
+      openCriticalCount,
+
+      devicesInAlarm,
+
+      lastRefreshed
+    } = this.state;
+
+    // Count the number of online and offline devices
+    const deviceIds = Object.keys(devices);
+    const onlineDeviceCount =
+      deviceIds.length
+        ? deviceIds.reduce((count, deviceId) => devices[deviceId].connected ? count + 1 : count, 0)
+        : undefined;
+    const offlineDeviceCount =
+      deviceIds.length
+        ? deviceIds.length - onlineDeviceCount
+        : undefined;
+
+    // Add the alarm rule name to the list of top alarms
+    const topAlarmsWithName = topAlarms.map(alarm => ({
+      ...alarm,
+      name: (rules[alarm.ruleId] || {}).name || alarm.ruleId,
+    }));
+
+    // Add the alarm rule name to the list of currently active alarms
+    const currentActiveAlarmsWithName = currentActiveAlarms.map(alarm => ({
+      ...alarm,
+      name: (rules[alarm.ruleId] || {}).name || alarm.ruleId
+    }));
+
+    // Convert the list of alarms by device id to alarms by device type
+    const alarmsPerDeviceType = Object.keys(alarmsPerDeviceId).reduce((acc, deviceId) => {
+      const deviceType = (devices[deviceId] || {}).type || deviceId;
+      return {
+        ...acc,
+        [deviceType]: (acc[deviceType] || 0) + alarmsPerDeviceId[deviceId]
+      };
+    }, {});
+
+    return [
+      <ContextMenu key="context-menu">
+        <DeviceGroupDropdown />
+        <RefreshBar
+          refresh={this.refreshDashboard}
+          time={lastRefreshed}
+          isPending={kpisIsPending || devicesIsPending}
+          t={t} />
+        <TimeIntervalDropdown
+          onChange={this.onTimeIntervalChange}
+          value={timeInterval}
+          t={t} />
+      </ContextMenu>,
+      <PageContent className="dashboard-container" key="page-content">
+        <Grid>
+          <Cell className="col-1 devices-overview-cell">
+            <OverviewPanel
+              openWarningCount={openWarningCount}
+              openCriticalCount={openCriticalCount}
+              onlineDeviceCount={onlineDeviceCount}
+              offlineDeviceCount={offlineDeviceCount}
+              isPending={kpisIsPending || devicesIsPending}
+              error={devicesError || kpisError}
+              t={t} />
+          </Cell>
+          <Cell className="col-5">
+            <PanelErrorBoundary msg={t('dashboard.panels.map.runtimeError')}>
+              <MapPanel
+                azureMapsKey={azureMapsKey}
+                devices={devices}
+                devicesInAlarm={devicesInAlarm}
+                mapKeyIsPending={azureMapsKeyIsPending}
+                isPending={devicesIsPending || kpisIsPending}
+                error={azureMapsKeyError || devicesError || kpisError}
+                t={t} />
+            </PanelErrorBoundary>
+          </Cell>
+          <Cell className="col-3">
+            <AlarmsPanel
+              alarms={currentActiveAlarmsWithName}
+              isPending={kpisIsPending || rulesIsPending}
+              error={rulesError || kpisError}
+              t={t} />
+          </Cell>
+          <Cell className="col-6">
+            <TelemetryPanel
+              telemetry={telemetry}
+              isPending={telemetryIsPending}
+              error={telemetryError}
+              colors={chartColorObjects}
+              t={t} />
+          </Cell>
+          <Cell className="col-4">
+            <KpisPanel
+              topAlarms={topAlarmsWithName}
+              alarmsPerDeviceId={alarmsPerDeviceType}
+              criticalAlarmsChange={criticalAlarmsChange}
+              isPending={kpisIsPending || rulesIsPending || devicesIsPending}
+              error={devicesError || rulesError || kpisError}
+              colors={chartColorObjects}
+              t={t} />
+          </Cell>
+        </Grid>
+      </PageContent>
+    ];
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    devices: state.deviceReducer.devices,
-    BingMapKey: state.mapReducer.BingMapKey,
-    selectedDeviceGroup: state.filterReducer.selectedDeviceGroupId,
-    alarmList: state.kpiReducer.alarmsList,
-    alarmListLastDuration: state.kpiReducer.alarmListLastDuration,
-    alarmsByRule: state.kpiReducer.alarmsByRule,
-    alarmsByRuleLastDuration: state.kpiReducer.alarmsByRuleLastDuration,
-    rulesAndActions: state.ruleReducer.rulesAndActions,
-    flyout: state.flyoutReducer,
-    modal: state.modalReducer
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    actions: bindActionCreators(actions, dispatch)
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);

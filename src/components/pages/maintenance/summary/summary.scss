@@ -1,0 +1,71 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.summary-container {
+
+  .no-data-msg {
+    text-align: center;
+    @include rem-fallback(padding, 20px);
+    @include rem-font-size(20px);
+  }
+
+  .stat-container {
+    display: flex;
+    flex-flow: row wrap;
+    flex-shrink: 0;
+    @include rem-fallback(margin, 30px, 0px);
+
+    .stat-group {
+      display: flex;
+      flex-flow: row wrap;
+      flex-shrink: 0;
+
+      .stat-column {
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: flex-end;
+        flex-shrink: 0;
+      }
+
+      .stat-cell {
+        display: flex;
+        flex-flow: row wrap;
+        flex-shrink: 0;
+        @include rem-fallback(margin-right, 40px);
+
+        .stat-icon {
+          margin-right: 0.2em;
+
+          svg { @include square-px-rem(14px); }
+        }
+
+        .stat-value {
+          @include rem-font-size(48px);
+          padding-right: 0.2em;
+        }
+
+        .stat-label {
+          align-self: flex-end;
+          flex-grow: 1;
+        }
+      }
+
+      .stat-column .stat-cell {
+        + .stat-cell { @include rem-fallback(margin-top, 5px); }
+
+        .stat-value { font-size: inherit; }
+        .stat-label { align-self: flex-end; }
+      }
+    }
+  }
+
+  @include themify($themes) {
+    .stat-container .stat-group .stat-cell {
+      &.warning .stat-icon svg { fill: themed('colorWarning'); }
+      &.critical .stat-icon svg { fill: themed('colorAlarm'); }
+      .stat-value { color: themed('colorContentText'); }
+    }
+  }
+}

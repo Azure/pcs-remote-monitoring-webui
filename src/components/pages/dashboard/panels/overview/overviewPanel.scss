@@ -1,0 +1,99 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.device-stats-container {
+  display: flex;
+  flex-flow: column nowrap;
+  // justify-content: space-between;
+  padding: 0 !important;
+
+  .stat-header {
+    padding: 10px;
+    font-family: $fontSelawikSemibold;
+    @include rem-font-size(40px);
+  }
+
+  .stat-container {
+    display: flex;
+    // flex-flow: row wrap;
+    flex-flow: column nowrap;
+    flex-shrink: 0;
+    padding: 0px 10px 20px 10px;
+
+    .stat-cell {
+      display: flex;
+      // flex-flow: column nowrap;
+      flex-flow: row wrap;
+      flex-shrink: 0;
+      flex-grow: 1;
+      align-items: flex-end;
+      padding: 10px 10px 10px 0px;
+      flex-basis: 100%;
+
+      .stat-value {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: flex-end;
+        flex-shrink: 0;
+        // flex-grow: 1;
+        // padding: 10px;
+        font-family: $fontSelawikLight;
+        @include rem-font-size(35px);
+
+        > span {
+          font-size: 1em;
+          line-height: 1em;
+          flex-shrink: 0;
+        }
+
+        &.critical,
+        &.warning { font-family: $fontSelawikSemibold; }
+
+        .severity-icon {
+          flex-shrink: 0;
+          margin-left: 8px;
+          margin-bottom: 3px;
+          @include square-px-rem(10px);
+
+          svg { @include square-px-rem(10px); }
+        }
+      }
+
+      .stat-label {
+        // padding: 10px;
+        padding-left: 8px;
+        @include rem-font-size(14px);
+      }
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .stat-container {
+      flex-flow: row wrap;
+
+      .stat-cell { flex-basis: 48%; }
+    }
+  }
+
+  @include themify($themes) {
+    color: themed('colorContentTextDim');
+
+    .stat-value {
+      color: themed('colorContentText');
+
+      &.critical {
+        color: themed('colorAlarm');
+
+        .severity-icon svg { fill: themed('colorAlarm');  }
+      }
+
+      &.warning {
+        color: themed('colorWarning');
+
+        .severity-icon svg { fill: themed('colorWarning');  }
+      }
+    }
+  }
+}

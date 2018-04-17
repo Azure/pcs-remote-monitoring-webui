@@ -28,9 +28,10 @@ cd %APP_HOME%
     mkdir out\docker\src
     mkdir out\docker\build
 
+    copy .env            out\docker\
+    copy package.json    out\docker\
     xcopy /s src\*       out\docker\src\
     xcopy /s public\*    out\docker\public\
-    copy package.json    out\docker\
 
     copy scripts\docker\.dockerignore               out\docker\
     copy scripts\docker\Dockerfile                  out\docker\
@@ -38,8 +39,10 @@ cd %APP_HOME%
     copy scripts\docker\content\nginx.conf          out\docker\
 
     cd out\docker\
+
+    :: note: images built in Windows don't contain a label with a datetime
     docker build --compress --tag %DOCKER_TAG% --label "%DOCKER_LABEL2%" .
-        
+
     IF %ERRORLEVEL% NEQ 0 GOTO FAIL
 
 :: - - - - - - - - - - - - - -

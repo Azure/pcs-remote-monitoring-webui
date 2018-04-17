@@ -1,0 +1,54 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.settings-workflow-container {
+  .app-version {
+    border: none;
+    @include rem-fallback(margin-top, 20px);
+  }
+
+  .toggle-theme-btn {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    text-decoration: underline;
+    display: block;
+    cursor: pointer;
+    @include rem-fallback(margin, 20px, 0px);
+    @include rem-font-size(16px);
+
+    &:hover { text-decoration: none; }
+  }
+
+  .flyout-section-content { @include rem-font-size(12px); }
+
+  .simulation-toggle {
+    display: flex;
+    justify-content: flex-start;
+    @include rem-fallback(margin-top, 18px);
+    @include rem-font-size(14px);
+
+    .simulation-toggle-button { @include rem-fallback(margin-right, 10px); }
+
+    .simulation-toggle-label { display: inline-block; }
+  }
+
+  .btn-container {
+    display: flex;
+    justify-content: flex-end;
+    @include rem-fallback(margin-top, 48px);
+    @include rem-fallback(height, 30px);
+    @include rem-font-size(14px);
+
+    svg { @include rem-fallback(height, 10px); }
+  }
+
+  @include themify($themes) {
+    .close-button .btn-icon svg { stroke: themed('colorFlyoutText'); }
+    .toggle-theme-btn { color: themed('colorContentText'); }
+    .flyout-section-content a { color: themed('colorContentText');}
+  }
+}

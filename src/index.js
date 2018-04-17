@@ -1,61 +1,42 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React from "react";
-import ReactDOM from "react-dom";
-import { Router, Route, IndexRoute, browserHistory } from "react-router";
-import { Provider } from "react-redux";
-import * as actionTypes from './actions/actionTypes';
-import Main from "./components/layout/main/main.js";
-import DashboardPage from "./components/pages/dashboard/dashboard.js";
-import DevicesPage from "./components/pages/devices/devices.js";
-import RulesAndActionsPage from "./components/pages/rulesAndActions/rulesAndActions.js";
-import MaintenancePage from "./components/pages/maintenance/maintenance.js";
-import RuleDetailsPage from "./components/maintenance/ruleDetails.js";
-import MaintenanceWidget from "./components/maintenance/maintenanceWidget.js";
-import AlarmsByRuleGrid from "./components/maintenance/alarmsByRuleGrid.js";
-import SystemStatusDetailsGrid from "./components/systemStatusDetailsGrid/systemStatusDetailsGrid.js";
-import SystemStatusGrid from "./components/systemStatusGrid/systemStatusGrid.js";
-import registerServiceWorker from "./registerServiceWorker";
-import initialState from "./reducers/initialState";
-import configureStore from "./store/configureStore";
-import auth from "./common/auth";
-import "./polyfills";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import "./index.css";
+import configureStore from 'store/configureStore';
+import AppContainer from 'components/app/app.container';
+import registerServiceWorker from 'registerServiceWorker';
+import { AuthService } from 'services';
+import { epics as appEpics } from 'store/reducers/appReducer';
 
-const app = document.getElementById("root");
-const store = configureStore(initialState);
-const closeOpenFlyouts = () => store.dispatch({ type: actionTypes.FLYOUT_HIDE });
+// Initialize internationalization
+import './i18n';
 
-// Start sign in process if required
-auth.onLoad();
+// Include cross browser polyfills
+import './polyfills';
 
-ReactDOM.render(
-  <Provider store={store}>
-    <Router history={browserHistory}>
-      <Route path="/" component={Main} onChange={closeOpenFlyouts}>
-        <IndexRoute component={DashboardPage} />
-        <Route path="/dashboard" component={DashboardPage} />
-        <Route path="/devices" component={DevicesPage} />
-        <Route path="/devices/:status" component={DevicesPage} />
-        <Route path="/rulesActions" component={RulesAndActionsPage} />
-        <Route path="/maintenance" component={MaintenancePage}>
-          <IndexRoute component={MaintenanceWidget} />
-          <Route path="/maintenance/:id" component={MaintenanceWidget}>
-            <IndexRoute component={AlarmsByRuleGrid} />
-            <Route path="/alarmsByRule" component={AlarmsByRuleGrid} />
-            <Route path="/systemStatus" component={SystemStatusGrid} />
-          </Route>
-          <Route path="rule/:id" component={RuleDetailsPage} />
-          <Route path="job/(:JobId)" component={SystemStatusDetailsGrid} />
-        </Route>
-        <Route path="/maintenanceBySeverity/:severity" component={MaintenancePage}>
-          <IndexRoute component={MaintenanceWidget} />
-        </Route>
-      </Route>
-    </Router>
-  </Provider>,
-  app
-);
+// Include base page css
+import './index.css';
 
-registerServiceWorker();
+// Initialize the user authentication
+AuthService.onLoad(() => {
+  // Create the redux store and redux-observable streams
+  const store = configureStore();
+
+  // Initialize the app redux state
+  store.dispatch(appEpics.actions.initializeApp());
+
+  // Create the React app
+  ReactDOM.render(
+    <Provider store={store}>
+      <Router>
+        <AppContainer />
+      </Router>
+    </Provider>,
+    document.getElementById('root')
+  );
+
+  registerServiceWorker();
+});

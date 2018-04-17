@@ -1,0 +1,97 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'variables';
+
+$themes: (
+  dark: (
+    // TODO - Remove START
+    // Lows
+    colorLowestFirst: $colorNoir,
+    colorLowestSecond: $colorMidnight,
+    colorLowestThird: $colorCharcoal,
+    // Mids
+    colorMidFirst: $colorAsh,
+    colorMidSecond: $colorLead,
+    colorMidThird: $colorGraphite,
+    // Highs
+    colorLightestFirst: $colorSmoke,
+    colorLightestSecond: $colorStone,
+    colorHighest: $colorWhite,
+    // TODO - Remove END
+
+    // Functional colors
+    colorAlarm: $colorAlarm,
+    colorWarning: $colorWarning,
+    colorSystem: $colorSystem,
+    colorError: $colorError,
+
+    // Grid - START
+    colorGridScrollBar: $colorCharcoal,
+    colorGridRowBackground: $colorMidnight,
+    colorGridCellText: $colorWhite,
+    colorGridRowHoverBackground: $colorCharcoal,
+    colorGridSelectedRowBorder: $colorSystem,
+    colorGridHeaderText: $colorSmoke,
+
+    colorCellRendererSvgFill: $colorSmoke,
+    colorCellRendererSvgFillHighlight: $colorWhite,
+    colorCellRendererText: $colorSmoke,
+    colorCellRendererTextHighlight: $colorWhite,
+    // Grid - END
+
+    //Btn - START
+    colorBtnOutlineFocus: $colorSmoke,
+
+    colorBtnText: $colorWhite,
+    colorBtnBackground: transparent,
+    colorBtnSvgFill: $colorSmoke,
+
+    colorBtnTextHover: $colorWhite,
+    colorBtnBackgroundHover: transparent,
+    colorBtnSvgFillHover: $colorWhite,
+
+    colorBtnTextActive: $colorWhite,
+    colorBtnBackgroundActive: transparent,
+    colorBtnSvgFillActive: $colorSmoke,
+
+    colorBtnTextDisabled: $colorAsh,
+    colorBtnBackgroundDisabled: transparent,
+    colorBtnSvgFillDisabled: $colorAsh,
+
+    colorBtnPrimaryText: $colorNoir,
+    colorBtnPrimaryBackground: $colorSmoke,
+    colorBtnPrimarySvgFill: $colorNoir,
+
+    colorBtnPrimaryTextHover: $colorWhite,
+    colorBtnPrimaryBackgroundHover: $colorGraphite,
+    colorBtnPrimarySvgFillHover: $colorWhite,
+
+    colorBtnPrimaryTextActive: $colorSmoke,
+    colorBtnPrimaryBackgroundActive: $colorCharcoal,
+    colorBtnPrimarySvgFillActive: $colorSmoke,
+
+    colorBtnPrimaryTextDisabled: $colorSmoke,
+    colorBtnPrimaryBackgroundDisabled: transparent,
+    colorBtnPrimarySvgFillDisabled: $colorSmoke,
+    //Btn - END
+
+    // Page Content Colors - START
+    colorContentBackground: $colorNoir,
+    colorContentText: $colorWhite,
+    colorContentTextDim: $colorSmoke,
+    colorFlyoutBackground: $colorNoir,
+    colorFlyoutText: $colorSmoke,
+    colorFlyoutSectionBorder: $colorLead,
+    colorPropertyGridBorder: $colorLead,
+    colorPropertyGridBottomBorder: $colorCharcoal,
+
+    // Page Content Colors - END
+
+    // Toggle Colors - START
+    colorEnableToggleBackground: $colorGunmetal,
+    colorToggle: $colorWhite,
+    colorDisableToggleBackground: $colorNoir,
+    colorDisabledLine: $colorSmoke
+    // Toggle Colors - END
+  )
+);

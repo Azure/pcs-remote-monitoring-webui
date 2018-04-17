@@ -1,0 +1,47 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+$zoomBtnPadding: 10px;
+$zoomBtnSize: 40px;
+$zoomBtnFont: 20px;
+
+.map-panel-container {
+  display: flex;
+  flex-flow: column nowrap;
+  flex-grow: 1;
+  padding: 0 !important;
+
+  .zoom-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    font-size: $zoomBtnFont;
+    width: $zoomBtnSize;
+    height: $zoomBtnSize;
+    line-height: $zoomBtnSize;
+    border: none;
+    cursor: pointer;
+
+    &.zoom-in {
+      top: $zoomBtnPadding;
+      right: $zoomBtnPadding;
+    }
+
+    &.zoom-out {
+      top: 2 * $zoomBtnPadding + $zoomBtnSize;
+      right: $zoomBtnPadding;
+    }
+  }
+
+  #map { flex-grow: 1 }
+
+  @include themify($themes) {
+    .zoom-btn {
+      color: themed('colorContentText');
+      background-color: themed('colorContentBackground');
+    }
+  }
+}

@@ -1,0 +1,347 @@
+{
+  "companyName": "Contoso",
+  "header": {
+    "appName": "Azure IoT Suite Remote Monitoring Preview",
+    "logout": "Logout"
+  },
+  "pageNotFound": {
+    "title": "404 - Page not found",
+    "message": "Oops, we weren't able to find the page you requested"
+  },
+  "tabs": {
+    "dashboard": "dashboard",
+    "devices": "devices",
+    "rules": "rules",
+    "maintenance": "maintenance"
+  },
+  "errorFormat": "Error: {{message}}",
+  "errorCode": {
+    "noResponse": "Oops, there was no response from the server.",
+    "notLoggedIn": "You need to login to call the service.",
+    "notAuthorized": "You are not authorized to call the service.",
+    "notFound": "Oops, we were not able to find the service.",
+    "redirection": "Oops, we got a redirection error.",
+    "retryFailure": "Oops, we got a temporary error from the service but were unable to recover. Try again later.",
+    "unknown": "An unknown error occurred. {{message}}"
+  },
+  "settingsFlyout": {
+    "title": "Settings",
+    "version": "Version {{version}}",
+    "viewRelNotes": "View release notes",
+    "theme": "Theme",
+    "changeTheme": "Change the application color theme",
+    "switchTheme": "Switch to {{nextTheme}} theme",
+    "apply": "Apply",
+    "cancel": "Cancel",
+    "close": "Close",
+    "flowing": "Flowing",
+    "start": "Start",
+    "stop": "Stop",
+    "stopped": "Stopped",
+    "simulationData": "Simulation Data",
+    "loading": "Loading",
+    "simulationDescription": "Start or stop simulation of devices. Stopping device simulation will minimize the cost of the solution; no simulated telemetry will be sent to your IoT Hub and alarms will not be generated for simulated devices.",
+    "toggleError": "Error updating simulation status",
+    "setLogoError": "Error updating logo",
+    "simulationLoadError": "Error loading simulation status"
+  },
+  "rulesFlyout": {
+    "newRule": "New rule",
+    "ruleName": "Rule name",
+    "namePlaceholder": "Enter rule name",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter rule description",
+    "deviceGroup": "Device group",
+    "deviceGroupPlaceholder": "Select device group",
+    "conditions": "Conditions",
+    "addCondition": "Add condition",
+    "condition": {
+      "condition": "Condition",
+      "field": "Field",
+      "fieldPlaceholder": "Select field",
+      "calculation": "Calculation",
+      "calculationPlaceholder": "select",
+      "timePeriod": "Time Period",
+      "operator": "Operator",
+      "operatorPlaceholder": ">=",
+      "value": "Value",
+      "valuePlaceholder": "Enter value"
+    },
+    "severityLevel": "Severity level",
+    "ruleStatus": "Rule status",
+    "devicesAffected": "devices affected by this rule",
+    "apply": "Apply",
+    "cancel": "Cancel"
+  },
+  "dashboard": {
+    "panels": {
+      "alarms": {
+        "header": "System alarms"
+      },
+      "kpis": {
+        "header": "System KPIs",
+        "topRule": "Top rules triggered",
+        "deviceTypeAlarms": "Alarm by device type",
+        "criticalAlarms": "Critical alarms",
+        "currentWindow": "Currently",
+        "previousWindow": "Previously"
+      },
+      "map": {
+        "header": "Device locations",
+        "runtimeError": "An error occurred while rendering the map",
+        "notConfiguredError": "Azure maps is not correctly configured"
+      },
+      "overview": {
+        "header": "Device statistics",
+        "allDevices": "All devices",
+        "critical": "Critical",
+        "warnings": "Warnings",
+        "total": "Total",
+        "connected": "Connected",
+        "notConnected": "Offline"
+      },
+      "telemetry": {
+        "header": "Telemetry"
+      }
+    }
+  },
+  "refreshBar": {
+    "refreshing": "Refreshing",
+    "lastRefreshed": "Last refreshed"
+  },
+  "devices": {
+    "noneFound": "No devices found.",
+    "refresh": "Refresh",
+    "grid": {
+      "connected": "connected",
+      "deviceName": "Device Name",
+      "deviceType": "Device Type",
+      "firmware": "Firmware",
+      "lastConnection": "Last Connection",
+      "no": "no",
+      "offline": "offline",
+      "simulated": "Simulated",
+      "status": "Status",
+      "telemetry": "Telemetry",
+      "yes": "yes"
+    },
+    "flyouts": {
+      "details": {
+        "title": "Device Details",
+        "noDevice": "Oops, we were not able to find the device.",
+        "close": "Close",
+        "connected": "Connected",
+        "notConnected": "Disconnected",
+        "simulated": "Simulated",
+        "notSimulated": "Physical",
+        "diagnostics": {
+          "title": "Diagnostics",
+          "description": "Diagnostic information from device",
+          "keyHeader": "Property",
+          "valueHeader": "Value",
+          "status": "Status",
+          "lastMessage": "Last message",
+          "message": "Message",
+          "showMessage": "Click here to see raw message"
+        },
+        "methods": {
+          "title": "Methods",
+          "description": "All methods available for device",
+          "noneExist": "No methods found for this device."
+        },
+        "properties": {
+          "title": "Properties",
+          "description": "Selected properties on device",
+          "keyHeader": "Property",
+          "valueHeader": "Value",
+          "noneExist": "No properties found for this device.",
+          "copy": "Copy",
+          "copyAllProperties": "Copy a list of all properties for the device"
+        },
+        "tags": {
+          "title": "Tags",
+          "description": "Tags applied to device",
+          "keyHeader": "Key",
+          "valueHeader": "Value",
+          "noneExist": "No tags found for this device."
+        },
+        "telemetry": {
+          "title": "Telemetry"
+        }
+      },
+      "delete": {
+        "title": "Delete",
+        "header": "Delete device",
+        "description": "This action will delete the devices permanently from the platform.",
+        "simulatedNotSupported": "Deleting simulated devices is not currently supported, this action will only be taken on the physical devices.",
+        "summaryHeader": "Summary",
+        "affected": "Affected devices",
+        "cancel": "Cancel",
+        "apply": "Delete",
+        "pending": "Deleting devices... ",
+        "applySuccess": "devices deleted successfully!",
+        "close": "Close"
+      },
+      "new": {
+        "contextMenuName": "New device",
+        "title": "New Device",
+        "summaryHeader": "Provision summary",
+        "affected": "devices to provision",
+        "cancel": "Cancel",
+        "apply": "Apply",
+        "pending": "Provisioning devices... ",
+        "applySuccess": "devices provisioned successfully!",
+        "close": "Close",
+        "validation": {
+          "required": "Is required",
+          "greaterThanZero": "Must be greater than zero"
+        },
+        "count": {
+          "label": "Number of devices"
+        },
+        "deviceType": {
+          "label": "Device Type",
+          "simulated": "Simulated",
+          "physical": "Physical"
+        },
+        "deviceId": {
+          "label": "Device ID",
+          "hint": "Enter device ID ",
+          "sysGenerated": "System generated device IDs"
+        },
+        "deviceIdExample": {
+          "label": "Device ID Example",
+          "format": "Simulated-{{deviceName}}-{#####}",
+          "deviceName": "{Device Name}"
+        },
+        "deviceModel": {
+          "label": "Device model",
+          "hint": "Select existing device type"
+        },
+        "authenticationType": {
+          "label": "Authentication type",
+          "symmetric": "Symmetric Key",
+          "x509": "X.509"
+        },
+        "authenticationKey": {
+          "label": "Authentication key",
+          "generateKeys": "Auto generate keys",
+          "manualKeys": "Enter keys manually",
+          "hint": "Enter your key here",
+          "primaryKey": "Primary Key",
+          "primaryKeyConnection": "Connection string primary Key",
+          "secondaryKey": "Secondary Key",
+          "secondaryKeyConnection": "Connection string secondary Key",
+          "primaryThumbprint": "Primary Thumbprint",
+          "secondaryThumbprint": "Secondary Thumbprint"
+        }
+      }
+    }
+  },
+  "rules": {
+    "severity": {
+      "info": "Info",
+      "warning": "Warning",
+      "critical": "Critical"
+    },
+    "grid": {
+      "enabled": "enabled",
+      "disabled": "disabled",
+      "ruleName": "Rule Name",
+      "description": "Description",
+      "severity": "Severity",
+      "filter": "Filter",
+      "trigger": "Trigger",
+      "notificationType": "Notification Type",
+      "status": "Status",
+      "count": "Count",
+      "lastTrigger": "Last Trigger",
+      "maintenanceLog": "Maintenance log",
+      "unknown": "Unknown",
+      "explore": "Explore"
+    }
+  },
+  "fileInput": {
+    "upload": "Upload"
+  },
+  "applicationSettings": {
+    "nameAndLogo": "Name and Logo",
+    "nameLogoDescription": "Edit logo and name in the site header.",
+    "replaceLogo": "Replace logo image",
+    "logoDescription": "Recommended logo size 24 x 24 px.\nSupported file formats:\n\t.SVG\n\t.PNG\n\t.JPEG",
+    "applicationName": "Application Name",
+    "currentLogo": "Current Logo",
+    "edit": "Edit",
+    "checkmark": "Checkmark",
+    "uploadError": "Unable to upload file, please check the file type and try again",
+    "error": "Error"
+  },
+  "maintenance": {
+    "acknowledged": "ack",
+    "alarmOccurrences": "Alarm Occurrences",
+    "alarmedDeviceTelemetry": "Alarmed device's telemetry",
+    "alarmedDevices": "Alarmed devices",
+    "all": "All",
+    "closed": "closed",
+    "critical": "Critical",
+    "devices": "Devices",
+    "failedJobs": "Failed jobs",
+    "jobs": "Jobs",
+    "lastEvent": "Last Event",
+    "noData": "No data",
+    "noOccSelected": "No occurences selected",
+    "notifications": "Notifications",
+    "open": "open",
+    "openAlarms": "Open Alarms",
+    "relatedInfo": "Related information",
+    "ruleDetail": "Rule Detail",
+    "ruleDetailsDesc": "Manage alarm occurences associated to this rule in the section below, and use the associated information to troubleshoot each occurence.",
+    "severity": "Severity",
+    "succeeded": "Succeeded",
+    "telemetry": "Telemetry",
+    "title": "Maintenance",
+    "total": "Total",
+    "warning": "Warning",
+    "alertGrid": {
+      "totalCount": "Total Count",
+      "open": "Open",
+      "acknowledged": "Ack",
+      "closed": "Closed",
+      "lastOccurrence": "Last Occurrence"
+    },
+    "jobGrid": {
+      "jobName": "Job Name",
+      "status": "Status",
+      "operation": "Operation",
+      "noDevices": "No. of Devices",
+      "succeeded": "Succeeded",
+      "failed": "Failed",
+      "startTime": "Start Time",
+      "endTime": "End Time"
+    },
+    "jobStatusGrid": {
+      "deviceIdAffected": "Device ID Affected",
+      "lastReturnMsg": "Last Return Message"
+    },
+    "alarmOccGrid": {
+      "occurrence": "Occurrence",
+      "triggerDevice": "Trigger Device",
+      "time": "Time"
+    },
+    "jobStatus": {
+      "enqueued": "Enqueued",
+      "running": "Running",
+      "completed": "Completed",
+      "failed": "Failed",
+      "cancelled": "Cancelled",
+      "scheduled": "Scheduled",
+      "queued": "Queued"
+    }
+  },
+  "timeInterval": {
+    "PT1H": "Last hour",
+    "P1D": "Last day",
+    "P7D": "Last week",
+    "P1M": "Last month"
+  }
+}

@@ -1,0 +1,79 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.device-details-container {
+  @include rem-font-size(14px);
+
+  .pcs-grid-container { @include rem-fallback(padding, 0px, 0px, 12px, 0px); }
+
+  .flyout-section-content {
+    @include rem-fallback(padding, 0px, 48px, 12px, 0px);
+
+    .section-desc {
+      @include rem-font-size(12px);
+      @include rem-fallback(line-height, 15px);
+      @include rem-fallback(padding, 0px 0px 10px 0px);
+    }
+  }
+
+  .device-details-header {
+    @include rem-fallback(padding, 12px, 0px);
+
+    .device-name { @include rem-fallback(font-size, 18px); }
+    .device-simulated { @include rem-fallback(font-size, 10px); }
+    .device-connected { @include rem-fallback(font-size, 14px); }
+
+    .device-icon svg {
+      @include rem-fallback(height, 72px);
+      @include rem-fallback(margin-right, 24px);
+    }
+  }
+
+  .property-grid-container {
+    @include rem-fallback(padding-left, 8px);
+
+    .grid-header .cell {
+      font-family: $fontSelawikBold;
+      text-transform: uppercase;
+      @include rem-fallback(font-size, 10px);
+      @include rem-fallback(padding-top, 4px);
+    }
+  }
+
+  .device-properties-actions .row {
+    border: 0;
+    @include rem-fallback(font-size, 12px);
+    @include rem-fallback(padding, 12px, 0px, 0px, 0px);
+  }
+
+  .raw-message-button {
+    text-align: left;
+    padding: 0;
+    margin-right: 10px;
+  }
+
+  .btn-toolbar {
+    justify-content: flex-end;
+    @include rem-fallback(padding-top, 32px);
+  }
+
+  @include themify($themes) {
+    .device-details-header {
+      .device-icon svg { fill: themed('colorContentTextDim'); }
+    }
+
+    .property-grid-container {
+      .grid-header .cell { color: themed('colorContentTextDim'); }
+    }
+
+    .flyout-section-content {
+      color: themed('colorContentText');
+
+      .section-desc { color: themed('colorContentTextDim'); }
+    }
+
+    .device-properties-actions .row { color: themed('colorContentTextDim'); }
+  }
+}

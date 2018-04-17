@@ -1,82 +1,43 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import Http from '../common/httpClient';
-import Config from '../common/config';
+import Config from 'app.config';
+import { stringify } from 'query-string';
+import { HttpClient } from './httpClient';
+import { toDevicesModel, toDeviceModel, toJobsModel, toJobStatusModel } from './models';
 
-/**
- * Contains methods for calling the Iot Hub Manager service
- */
-class IotHubManagerService {
+const ENDPOINT = Config.serviceUrls.iotHubManager;
 
-  static ENDPOINT = Config.iotHubManagerApiUrl;
+/** Contains methods for calling the Device service */
+export class IoTHubManagerService {
 
-  static AUTH_TYPE = {
-    Sas: 0,
-    SelfSigned: 1
-  };
-
-   /**
-   * Creates a physical device
-   *
-   * @param {string} params Parameters for creating a new device
-   *    Id: The ID of the new device. Is auto generated if left empty
-   *    Authentication: An object containg auth parameters. Generates a symmetric key if left empty
-   *      AuthenticationType: Either symmetric or x509 auth (use the AUTH_TYPE enum)
-   *      PrimaryKey/PrimaryThumprint: The value for the primary key or thumprint
-   *      SecondaryKey/SecondaryThumbprint: The value for the secondary key or thumprint
-   */
-  static createPhysicalDevice(params) {
-    return IotHubManagerService.createDevice({ ...params, IsSimulated: false });
+  /** Returns a list of devices */
+  static getDevices(conditions = []) {
+    const query = encodeURIComponent(JSON.stringify(conditions));
+    return HttpClient.get(`${ENDPOINT}devices?query=${query}`)
+      .map(toDevicesModel);
   }
 
-  /**
-   * Creates a simlated device
-   *
-   * @param {string} params Parameters for creating a new device
-   *    Id: The ID of the new device. Is auto generated if left empty
-   *    Authentication: An object containg auth parameters. Generates a symmetric key if left empty
-   *      AuthenticationType: Either symmetric or x509 auth (use the AUTH_TYPE enum)
-   *      PrimaryKey/PrimaryThumprint: The value for the primary key or thumprint
-   *      SecondaryKey/SecondaryThumbprint: The value for the secondary key or thumprint
-   */
-  static createSimulatedDevice(params) {
-    return IotHubManagerService.createDevice({ ...params, IsSimulated: true });
+  /** Returns a list of all jobs */
+  static getJobs(params) {
+    return HttpClient.get(`${ENDPOINT}jobs?${stringify(params)}`)
+      .map(toJobsModel);
   }
 
-  /**
-   * Creates a device
-   *
-   * @param {string} params Parameters for creating a new device
-   *    Id: The ID of the new device. Is auto generated if left empty
-   *    IsSimulated: A flag for whether or not a device is simulated
-   *    Authentication: An object containg auth parameters. Generates a symmetric key if left empty
-   *      AuthenticationType: Either symmetric or x509 auth (use the AUTH_TYPE enum)
-   *      PrimaryKey/PrimaryThumprint: The value for the primary key or thumprint
-   *      SecondaryKey/SecondaryThumbprint: The value for the secondary key or thumprint
-   */
-  static createDevice(params) {
-    return Http.post(`${IotHubManagerService.ENDPOINT}devices`, params);
+  /** Get returns the status details for a particular job */
+  static getJobStatus(jobId) {
+    return HttpClient.get(`${ENDPOINT}jobs/${jobId}?includeDeviceDetails=true`)
+      .map(toJobStatusModel);
   }
 
-  /**
-   * Returns the list of devices
-   */
-  static getDevices() {
-    return Http.get(`${IotHubManagerService.ENDPOINT}devices`)
+  /** Provisions a device */
+  static provisionDevice(body) {
+    return HttpClient.post(`${ENDPOINT}devices`, body)
+      .map(toDeviceModel);
   }
 
-  /**
-   * Returns the list of Jobs
-   */
-  static getJobsForTimePeriod(from) {
-    return Http.get(`${IotHubManagerService.ENDPOINT}jobs?from=${from}&to=NOW`);
-  }
-
-  static serializeParamObject(params) {
-    return Object.keys(params)
-      .map(param => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
-      .join('&');
+  /** Deletes a device */
+  static deleteDevice(id) {
+    return HttpClient.delete(`${ENDPOINT}devices/${id}`)
+      .map(() => ({ deletedDeviceId: id }));
   }
 }
-
-export default IotHubManagerService;

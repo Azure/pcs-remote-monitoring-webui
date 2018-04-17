@@ -1,0 +1,23 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+.app-main {
+  display: flex;
+  flex-grow: 1;
+  flex-flow: column nowrap;
+  height: 100%;
+  position: relative;
+
+  .main-container {
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100%;
+    width: 100%;
+    // Add positioning to fix bug in AgGrid when used inside flexbox
+    // Issue: When the page is resized, the width expands but never contracts
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}

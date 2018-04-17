@@ -1,0 +1,103 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/variables';
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+$navItemHeight: 48px;
+$leftNavExpandedWidth: 220px;
+$svgSize: 16px;
+$companySvgSize: 23px;
+
+.app-nav {
+  display: flex;
+  flex-flow: column nowrap;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  .nav-item {
+    display: flex;
+    flex-flow: row nowrap;
+    flex-shrink: 0;
+    align-items: center;
+    text-decoration: none;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+
+    @include rem-fallback(height, $navItemHeight);
+
+    &.hamburger { @include rem-fallback(margin-bottom, 24px); }
+
+    .nav-item-icon {
+      @include square-px-rem($navItemHeight);
+
+      img,
+      svg {
+        @include square-px-rem($svgSize);
+        margin: 10px;
+      }
+    }
+
+    &.company .nav-item-icon img { @include square-px-rem($companySvgSize); }
+    &.company .nav-item-icon svg { @include square-px-rem($companySvgSize); }
+
+    .nav-item-text {
+      display: none;
+      flex-grow: 1;
+      flex-shrink: 0;
+      text-transform: capitalize;
+      @include rem-fallback(padding-left, $navItemHeight - (2 * $svgSize));
+
+      @include rem-fallback(line-height, $navItemHeight);
+    }
+
+    .nav-item-icon + .nav-item-text { padding-left: 0; }
+  }
+
+  a.nav-item {
+    cursor: pointer;
+
+    &.active,
+    &:focus,
+    &:hover { font-family: $fontSelawikSemibold; }
+  }
+
+  // Don't include the hamburger style with the a.nav-item to prevent the svg
+  // from popping when the font family changes
+  .nav-item.hamburger { cursor: pointer; }
+
+  &.expanded {
+    width: $leftNavExpandedWidth;
+
+    .nav-item .nav-item-text { display: block }
+  }
+
+  // Apply theme properties
+  @include themify($themes) {
+    background-color: themed('colorLowestThird');
+    color: themed('colorHighest');
+
+    .nav-item {
+      color: themed('colorHighest');
+
+      .nav-item-icon svg { fill: themed('colorLightestFirst'); }
+
+      &.company .nav-item-icon svg { fill: themed('colorHighest'); }
+    }
+
+    a.nav-item,
+    .nav-item.hamburger {
+      color: themed('colorLightestFirst');
+
+      &.active,
+      &:hover {
+        color: themed('colorHighest');
+        background-color: themed('colorLowestSecond');
+
+        .nav-item-icon svg { fill: themed('colorHighest'); }
+      }
+    }
+  }
+}

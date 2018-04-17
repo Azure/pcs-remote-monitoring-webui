@@ -1,64 +1,70 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import Http from '../common/httpClient';
-import Config from '../common/config';
+import { Observable } from 'rxjs';
+
+import Config from 'app.config';
+import { HttpClient } from './httpClient';
+import { toDeviceModelSelectOptions, toDeviceSimulationModel, toDeviceSimulationRequestModel } from './models';
+
+const ENDPOINT = Config.serviceUrls.deviceSimulation;
+const SIMULATION_ID = Config.simulationId;
 
 /**
  * Contains methods for calling the device simulation microservice
  */
-class DeviceSimulationService {
-
-  static ENDPOINT = Config.deviceSimulationApiUrl;
+export class DeviceSimulationService {
 
   /**
-   * Get the list of supported simulated device models
+   * Returns a list of devicemodels
    */
-  static getDevicemodels() {
-    return Http.get(`${DeviceSimulationService.ENDPOINT}devicemodels`)
-      .then(data => data.Items);
+  static getDeviceModelSelectOptions() {
+    return HttpClient.get(`${ENDPOINT}devicemodels`)
+      .map(toDeviceModelSelectOptions);
   }
 
   /**
    * Get the list of running simulated devices
    */
   static getSimulatedDevices() {
-    return Http.get(`${DeviceSimulationService.ENDPOINT}simulations/1`);
+    return HttpClient.get(`${ENDPOINT}simulations/${SIMULATION_ID}`)
+      .map(toDeviceSimulationModel);
+  }
+
+  /**
+   * Updates simulated device
+   */
+  static updateSimulatedDevices(simulation) {
+    return HttpClient.put(`${ENDPOINT}simulations/${SIMULATION_ID}`, simulation)
+      .map(toDeviceSimulationModel)
   }
 
   /**
    * Toggles simulation status
    */
   static toggleSimulation(Etag, Enabled) {
-    return Http.patch(`${DeviceSimulationService.ENDPOINT}simulations/1`, { Etag, Enabled });
+    return HttpClient.patch(`${ENDPOINT}simulations/${SIMULATION_ID}`, { Etag, Enabled })
+      .map(toDeviceSimulationModel);
   }
 
   /**
-   * Creates new simulated devices
-   * 
-   * @param {string} Id The device model Id to be created
-   * @param {string} count The number of simulated devices to create
+   * Gets the simulated device models, increments the given one, then updates on the server
    */
-  static createSimulatedDevices(Id, count) {
+  static incrementSimulatedDeviceModel(deviceModelId, increment) {
     return DeviceSimulationService.getSimulatedDevices()
-      .then(simulations => {
-          const DeviceModels = simulations.DeviceModels.reduce(
-            (deviceAccumulator, currDevice) => {
-              if (currDevice.Id === Id) {
-                deviceAccumulator[0].Count += currDevice.Count;
-              } else {
-                deviceAccumulator.push(currDevice);
+      .flatMap(simulations =>
+        Observable.from(simulations.deviceModels)
+          .reduce(
+            (acc, { id, count }) => ({
+              ...acc,
+              [id]: {
+                id,
+                count: ((acc[id] || {}).count || 0) + count
               }
-              return deviceAccumulator;
-            }, 
-            [{ Id, Count: parseInt(count, 10) }] // Default new device
-          );
-          return Http.put(
-            `${DeviceSimulationService.ENDPOINT}simulations/1`,
-            { ...simulations, DeviceModels }
-          );
-      });
+            }),
+            { [deviceModelId]: { id: deviceModelId, count: increment } }
+          )
+          .map(deviceModels => ({ ...simulations, deviceModels: Object.values(deviceModels) }))
+      )
+      .flatMap(simulation => DeviceSimulationService.updateSimulatedDevices(toDeviceSimulationRequestModel(simulation)));
   }
-
 }
-
-export default DeviceSimulationService;

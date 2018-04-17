@@ -1,0 +1,135 @@
+// Copyright (c) Microsoft. All rights reserved.
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.setting-section {
+  .upload-logo-name-container {
+    .upload-logo-container {
+      .image-preview {
+        @include square-px-rem(24px);
+        @include rem-fallback(margin-bottom, 8px);
+
+        .logo-svg,
+        .logo-img  {
+          justify-content: flex-start;
+          @include square-px-rem(24px);
+        }
+      }
+
+      .section-subtitle { @include rem-font-size(16px); }
+
+      .replace-logo {
+        font-family: $fontSelawikLight;
+        @include rem-font-size(14px);
+      }
+    }
+
+    .name-input-container {
+      @include rem-font-size(14px);
+
+      .section-subtitle {
+        font-family: $fontSelawikLight;
+        @include rem-fallback(margin-bottom, 16px);
+      }
+
+      .name-input { width: 50%; }
+    }
+
+    .upload-btn-container {
+      display: flex;
+      @include rem-fallback(margin-bottom, 12px);
+      @include rem-fallback(margin-top, 12px);
+
+      .file-upload-feedback {
+        @include rem-fallback(padding-left, 16px);
+        @include rem-fallback(padding-right, 12px);
+
+        .checkmark svg,
+        .invalid-file-x svg {
+          @include rem-fallback(margin-top, 6px);
+          @include square-px-rem(14px);
+        }
+      }
+
+      .file-name-valid,
+      .file-name-invalid {
+        font-family: $fontSelawikLight;
+        @include rem-fallback(margin-top, 4px);
+        @include rem-font-size(14px);
+      }
+    }
+
+    .show-line-breaks {
+      white-space: pre-wrap;
+      @include rem-fallback(tab-size, 16px);
+    }
+
+    .upload-error-message {
+      display: flex;
+      font-family: $fontSelawikLight;
+      @include rem-fallback(margin-top, 4px);
+      @include rem-fallback(margin-bottom, 16px);
+      @include rem-font-size(14px);
+
+      .upload-error-asterisk svg {
+        @include square-px-rem(11px);
+        @include rem-fallback(margin-right, 4px);
+      }
+    }
+  }
+
+  .current-logo-container {
+    display: flex;
+    justify-content: space-between;
+    @include rem-fallback(margin-bottom, 12px);
+    @include rem-fallback(margin-top, 12px);
+    @include rem-font-size(16px);
+
+    .name-container { @include rem-fallback(margin-bottom, 24px); }
+
+    .current-logo-name {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .current-logo {
+      @include rem-fallback(margin-right, 12px);
+      @include square-px-rem(24px);
+    }
+
+    .edit-button {
+      .btn-icon { @include square-px-rem(16px); }
+
+      .btn-text { @include rem-font-size(16px); }
+    }
+  }
+
+  .logo-svg svg { @include square-px-rem(24px); }
+
+  @include themify($themes) {
+    .logo-svg,
+    .checkmark svg {
+      fill: themed('colorHighest');
+    }
+
+    .upload-logo-container .replace-logo,
+    .upload-error-message {
+      color: themed('colorContentText')
+    }
+
+    .edit-name-button .btn-icon svg { fill: themed('colorLightestFirst'); }
+
+    .file-name-valid,
+    .name-container {
+      color: themed('colorHighest');
+    }
+
+    .invalid-file-x {
+      fill: themed('colorError');
+      stroke: themed('colorError');
+    }
+
+    .upload-error-asterisk { fill: themed('colorError'); }
+  }
+
+}
