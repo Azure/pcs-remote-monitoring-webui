@@ -12,6 +12,10 @@ MAINTAINER Devis Lucato (https://github.com/dluc)
 
 LABEL Tags="Azure,IoT,Solutions,React,SPA"
 
+ARG user=app
+
+RUN addgroup $user && adduser -D -G $user $user
+
 COPY ./ /app
 WORKDIR /app
 
@@ -22,7 +26,9 @@ RUN echo "Installing web server..." \
  && apk del --force --purge alpine-keys apk-tools \
  && rm -rf /var/cache/apk /etc/apk /lib/apk
 
-EXPOSE 80 443
+EXPOSE 10080 10443
 VOLUME /app/logs
 
 ENTRYPOINT ["/bin/sh", "/app/run.sh"]
+
+USER $user

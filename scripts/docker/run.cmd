@@ -13,12 +13,12 @@ IF "%1"=="testing" goto :TESTING
 
 :STABLE
   echo Starting Remote Monitoring Web UI [%STABLE_VERSION%] ...
-  docker run -it -p 10080:80 -p 10443:443 %DOCKER_IMAGE%:%STABLE_VERSION%
+  docker run -it -p 10080:10080 -p 10443:10443 %DOCKER_IMAGE%:%STABLE_VERSION%
   goto :END
 
 :TESTING
   echo Starting Remote Monitoring Web UI [testing version] ...
-  docker run -it -p 10080:80 -p 10443:443 %DOCKER_IMAGE%:testing
+  docker run -it -p 10080:10080 -p 10443:10443 %DOCKER_IMAGE%:testing
   goto :END
 
 

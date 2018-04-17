@@ -69,7 +69,7 @@ services:
       - PCS_TELEMETRY_WEBSERVICE_URL=http://telemetry:9004/v1
       - PCS_DEVICETELEMETRY_WEBSERVICE_URL=http://telemetry:9004/v1
       - PCS_IOTHUBMANAGER_WEBSERVICE_URL=http://iothubmanager:9002/v1
-      - PCS_BINGMAP_KEY
+      - PCS_AZUREMAPS_KEY
       - PCS_AUTH_ISSUER
       - PCS_AUTH_AUDIENCE
       - PCS_AUTH_REQUIRED
