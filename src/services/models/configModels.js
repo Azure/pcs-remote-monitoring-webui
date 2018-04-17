@@ -28,7 +28,7 @@ export const prepareLogoResponse = (responseWrapper) => {
 }
 
 export const toSolutionSettingThemeModel = (response = {}) => reshape(response, {
-  'AzureMapsKey': 'azureMapsKey',
+  'azureMapsKey': 'azureMapsKey',
   'description': 'description',
   'name': 'name'
 });
