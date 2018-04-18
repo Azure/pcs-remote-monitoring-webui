@@ -182,6 +182,32 @@
         "applySuccess": "devices deleted successfully!",
         "close": "Close"
       },
+      "jobs": {
+        "title": "Jobs",
+        "summaryHeader": "Summary",
+        "affected": "Affected devices",
+        "cancel": "Cancel",
+        "apply": "Apply",
+        "pending": "Submitting job...",
+        "applySuccess": "Job submitted successfully!",
+        "close": "Close",
+        "selectJob": "Select job",
+        "tags": {
+          "radioLabel": "Tag",
+          "title": "Tags on selected devices",
+          "description": "Tags in common on selected devices"
+        },
+        "methods": {
+          "radioLabel": "Run method",
+          "title": "Run method",
+          "description": "All available methods for device or group of devices"
+        },
+        "properties": {
+          "radioLabel": "Reconfigure",
+          "title": "Reconfigure",
+          "description": "Available properties and values to change"
+        }
+      },
       "new": {
         "contextMenuName": "New device",
         "title": "New Device",

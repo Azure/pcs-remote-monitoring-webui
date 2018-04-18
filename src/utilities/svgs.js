@@ -31,6 +31,7 @@ import PhysicalDeviceIconPath from 'assets/icons/physicalDevice.svg';
 import PlusIconPath from 'assets/icons/plus.svg';
 import RadioSelectedIconPath from 'assets/icons/radioSelected.svg';
 import RadioUnselectedIconPath from 'assets/icons/radioUnselected.svg';
+import ReconfigureIconPath from 'assets/icons/reconfigure.svg';
 import RefreshIconPath from 'assets/icons/refresh.svg';
 import RuleDisabledIconPath from 'assets/icons/ruleDisabled.svg';
 import RuleEnabledIconPath from 'assets/icons/ruleEnabled.svg';
@@ -86,6 +87,7 @@ export const svgs = {
   plus: PlusIconPath,
   radioSelected: RadioSelectedIconPath,
   radioUnselected: RadioUnselectedIconPath,
+  reconfigure: ReconfigureIconPath,
   refresh: RefreshIconPath,
   ruleDisabled: RuleDisabledIconPath,
   ruleEnabled: RuleEnabledIconPath,
