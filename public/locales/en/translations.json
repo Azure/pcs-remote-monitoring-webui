@@ -45,34 +45,6 @@
     "setLogoError": "Error updating logo",
     "simulationLoadError": "Error loading simulation status"
   },
-  "rulesFlyout": {
-    "newRule": "New rule",
-    "ruleName": "Rule name",
-    "namePlaceholder": "Enter rule name",
-    "description": "Description",
-    "descriptionPlaceholder": "Enter rule description",
-    "deviceGroup": "Device group",
-    "deviceGroupPlaceholder": "Select device group",
-    "conditions": "Conditions",
-    "addCondition": "Add condition",
-    "condition": {
-      "condition": "Condition",
-      "field": "Field",
-      "fieldPlaceholder": "Select field",
-      "calculation": "Calculation",
-      "calculationPlaceholder": "select",
-      "timePeriod": "Time Period",
-      "operator": "Operator",
-      "operatorPlaceholder": ">=",
-      "value": "Value",
-      "valuePlaceholder": "Enter value"
-    },
-    "severityLevel": "Severity level",
-    "ruleStatus": "Rule status",
-    "devicesAffected": "devices affected by this rule",
-    "apply": "Apply",
-    "cancel": "Cancel"
-  },
   "dashboard": {
     "panels": {
       "alarms": {
@@ -285,6 +257,47 @@
       "maintenanceLog": "Maintenance log",
       "unknown": "Unknown",
       "explore": "Explore"
+    },
+    "flyouts": {
+      "ruleEditor": {
+        "newRule": "New rule",
+        "ruleName": "Rule name",
+        "namePlaceholder": "Enter rule name",
+        "description": "Description",
+        "descriptionPlaceholder": "Enter rule description",
+        "deviceGroup": "Device group",
+        "deviceGroupPlaceholder": "Select device group",
+        "conditions": "Conditions",
+        "addCondition": "Add condition",
+        "delete": "Delete",
+        "condition": {
+          "condition": "Condition",
+          "field": "Field",
+          "fieldPlaceholder": "Select field",
+          "calculation": "Calculation",
+          "calculationPlaceholder": "Select",
+          "timePeriod": "Time Period",
+          "operator": "Operator",
+          "operatorPlaceholder": ">=",
+          "value": "Value",
+          "valuePlaceholder": "Enter value"
+        },
+        "calculation": {
+          "average": "Average",
+          "instant": "Instant"
+        },
+        "validation": {
+          "required": "Is required",
+          "greaterThanZero": "Must be greater than zero"
+        },
+        "severityLevel": "Severity level",
+        "ruleStatus": "Rule status",
+        "ruleEnabled": "Enabled",
+        "ruleDisabled": "Disabled",
+        "devicesAffected": "devices affected by this rule",
+        "apply": "Apply",
+        "cancel": "Cancel"
+      }
     }
   },
   "fileInput": {

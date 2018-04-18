@@ -14,9 +14,9 @@ export class AccordionProvider extends Component {
 
   constructor(props) {
     super(props);
-    const { isCollapsable = true } = this.props;
+    const { isCollapsable = true, isClosed = true } = this.props;
     this.state = {
-      accordionIsOpen: true,
+      accordionIsOpen: isClosed,
       accordionIsCollapsable: isCollapsable
     };
   }

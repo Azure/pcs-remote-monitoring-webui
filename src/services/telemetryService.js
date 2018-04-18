@@ -22,6 +22,18 @@ export class TelemetryService {
       .map(toRulesModel);
   }
 
+  /** creates a new rule */
+  static createRule(rule) {
+    return HttpClient.post(`${ENDPOINT}rules`, rule)
+      .map(toRulesModel);
+  }
+
+  /** updates an existing rule */
+  static updateRule(rule) {
+    return HttpClient.put(`${ENDPOINT}rules`, rule)
+      .map(toRulesModel);
+  }
+
   /** Returns a list of alarms (all statuses) */
   static getAlarms(params = {}) {
     return HttpClient.get(`${ENDPOINT}alarms?${stringify(params)}`)

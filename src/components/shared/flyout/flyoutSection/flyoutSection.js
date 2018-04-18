@@ -7,8 +7,8 @@ import { joinClasses } from 'utilities';
 
 import './flyoutSection.css';
 
-export const FlyoutSection = ({ collapsable, className, children }) => (
-  <AccordionProvider isCollapsable={collapsable}>
+export const FlyoutSection = ({ collapsable, className, children, closed }) => (
+  <AccordionProvider isCollapsable={collapsable} isClosed={closed}>
     <div className={joinClasses('flyout-section', className)}>
       { children }
     </div>
