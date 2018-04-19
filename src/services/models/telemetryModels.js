@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { reshape } from 'utilities';
+import { camelCaseReshape, getItems } from 'utilities';
 
-export const toRulesModel = (response = {}) => (response.items || [])
-  .map((device = {}) => reshape(device, {
+export const toRulesModel = (response = {}) => getItems(response)
+  .map((device = {}) => camelCaseReshape(device, {
     'id': 'id',
     'conditions': 'conditions',
     'dateCreated': 'dateCreated',
@@ -18,8 +18,8 @@ export const toRulesModel = (response = {}) => (response.items || [])
   }));
 
 // TODO: Double check the response from alarmsByRule and alarms, might only need one model
-export const toAlarmsModel = (response = {}) => (response.items || [])
-  .map((alarm = {}) => reshape(alarm, {
+export const toAlarmsModel = (response = {}) => getItems(response)
+  .map((alarm = {}) => camelCaseReshape(alarm, {
     'rule.id': 'ruleId',
     'created': 'created',
     'status': 'status',
@@ -33,8 +33,8 @@ export const toAlarmsModel = (response = {}) => (response.items || [])
     'groupId': 'groupId'
   }));
 
-export const toActiveAlarmsModel = (response = {}) => (response.items || [])
-  .map((alarm = {}) => reshape(alarm, {
+export const toActiveAlarmsModel = (response = {}) => getItems(response)
+  .map((alarm = {}) => camelCaseReshape(alarm, {
     'rule.id': 'ruleId',
     'count': 'count',
     'created': 'created',
@@ -43,8 +43,8 @@ export const toActiveAlarmsModel = (response = {}) => (response.items || [])
     'rule.description': 'description'
   }));
 
-export const toAlarmsForRuleModel = (response = {}) => (response.items || [])
-  .map((alarm = {}) => reshape(alarm, {
+export const toAlarmsForRuleModel = (response = {}) => getItems(response)
+  .map((alarm = {}) => camelCaseReshape(alarm, {
     'id': 'id',
     'dateCreated': 'dateCreated',
     'dateModified': 'dateModified',
@@ -57,8 +57,8 @@ export const toAlarmsForRuleModel = (response = {}) => (response.items || [])
     'rule.id': 'ruleId'
   }));
 
-export const toMessagesModel = (response = {}) => (response.items || [])
-  .map((message = {}) => reshape(message, {
+export const toMessagesModel = (response = {}) => getItems(response)
+  .map((message = {}) => camelCaseReshape(message, {
     'data': 'data',
     'deviceId': 'deviceId',
     'time': 'time'

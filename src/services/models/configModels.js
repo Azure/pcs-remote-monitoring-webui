@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { reshape, stringToBoolean } from 'utilities';
+import { camelCaseReshape, getItems, stringToBoolean } from 'utilities';
 
-export const toDeviceGroupsModel = (response = {}) => (response.items || [])
-  .map((device = {}) => reshape(device, {
+export const toDeviceGroupsModel = (response = {}) => getItems(response)
+  .map((device = {}) => camelCaseReshape(device, {
     'id': 'id',
     'displayName': 'displayName',
     'conditions': 'conditions',
@@ -27,7 +27,7 @@ export const prepareLogoResponse = (responseWrapper) => {
   return returnObj;
 }
 
-export const toSolutionSettingThemeModel = (response = {}) => reshape(response, {
+export const toSolutionSettingThemeModel = (response = {}) => camelCaseReshape(response, {
   'azureMapsKey': 'azureMapsKey',
   'description': 'description',
   'name': 'name'

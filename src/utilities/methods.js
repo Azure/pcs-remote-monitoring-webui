@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import Config from 'app.config';
+import camelcase from 'camelcase-object';
 import dot from 'dot-object';
 
 /** Tests if a value is a function */
@@ -26,9 +27,23 @@ export const stringToBoolean = value => {
   else if (str === 'false') return false;
 };
 
+/** Returns either Items or items from the given object, allowing for either casing from the server */
+export const getItems = (response) => response.Items || response.items || [];
+
+/**
+ * The camelcase objects package will convert a base level array into an object.
+ * This method prevents that from happening
+ */
+export const camelCaseKeys = (response = {}) => camelcase({ response }, { deep: true }).response;
+
 /** Takes an object and converts it to another structure using dot-notation */
-export const reshape = (reponse, model) => {
-  return Object.keys(model).reduce((acc, key) => dot.copy(key, model[key], reponse, acc), {});
+export const reshape = (response, model) => {
+  return Object.keys(model).reduce((acc, key) => dot.copy(key, model[key], response, acc), {});
+};
+
+/** Takes an object, camel cases the keys, and converts it to another structure using dot-notation */
+export const camelCaseReshape = (response, model) => {
+  return reshape(camelCaseKeys(response), model);
 };
 
 /** A helper method for translating headerNames of columnDefs */
@@ -84,7 +99,7 @@ export const isValidExtension = (file) => {
 
 // Helper construct from and to parameters for time intervals
 export const getIntervalParams = (timeInterval) => {
-  switch(timeInterval) {
+  switch (timeInterval) {
     case 'P1D':
       return [
         { from: 'NOW-P1D', to: 'NOW' },

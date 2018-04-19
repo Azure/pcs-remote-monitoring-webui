@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { reshape } from 'utilities';
+import { camelCaseReshape } from 'utilities';
 
 const emptyResponse = { name: undefined, htmlUrl: undefined };
 
-export const toGitHubModel =([ response = emptyResponse ] = []) => reshape(response, {
-    'name': 'version',
-    'htmlUrl': 'releaseNotesUrl'
+export const toGitHubModel = ([response = emptyResponse] = []) => camelCaseReshape(response, {
+  'name': 'version',
+  'htmlUrl': 'releaseNotesUrl'
 });

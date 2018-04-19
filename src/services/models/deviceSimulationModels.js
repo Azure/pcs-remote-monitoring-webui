@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { reshape } from 'utilities';
+import { camelCaseReshape, getItems, reshape } from 'utilities';
 
-export const toDeviceSimulationModel = (response = {}) => reshape(response, {
+export const toDeviceSimulationModel = (response = {}) => camelCaseReshape(response, {
   'etag': 'etag',
   'id': 'id',
   'enabled': 'enabled',
@@ -27,8 +27,8 @@ export const toDeviceModelsRequestModel = (deviceModel = {}) => reshape(deviceMo
   'count': 'Count'
 });
 
-export const toDeviceModelSelectOptions = (response = {}) => (response.items || [])
-  .map((deviceModel = {}) => reshape(deviceModel, {
+export const toDeviceModelSelectOptions = (response = {}) => getItems(response)
+  .map((deviceModel = {}) => camelCaseReshape(deviceModel, {
     'id': 'value',
     'name': 'label'
   }));

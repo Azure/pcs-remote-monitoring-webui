@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { Observable } from 'rxjs';
-import camelcase from 'camelcase-object';
 import { AuthService } from './authService';
 import Config from 'app.config';
 import { AjaxError, RetryableAjaxError } from './models';
@@ -71,7 +70,7 @@ export class HttpClient {
       // If success, extract the response object and enforce camelCase keys if json response
       .map(ajaxResponse =>
         ajaxResponse.responseType === 'json'
-          ? camelCaseKeys(ajaxResponse.response)
+          ? ajaxResponse.response
           : ajaxResponse
       )
       // Classify errors as retryable or not
@@ -79,9 +78,9 @@ export class HttpClient {
       // Retry any retryable errors
       .retryWhen(retryHandler(maxRetryAttempts, retryWaitTime));
   }
-   /**
-    * A helper method that adds "application/json" and auth headers if necessary
-    */
+  /**
+   * A helper method that adds "application/json" and auth headers if necessary
+   */
   static withHeaders(request, withAuth) {
     const authHeaders = {};
     if (withAuth) {
@@ -113,12 +112,6 @@ export class HttpClient {
 }
 
 // HttpClient helper methods
-
-/**
- * The camelcase objects package will convert a base level array into an object.
- * This method prevents that from happening
- */
-const camelCaseKeys = (response = {}) => camelcase({ response }, { deep: true }).response;
 
 /** A helper function containing the logic for retrying ajax requests */
 export const retryHandler = (retryAttempts, retryDelay) =>
