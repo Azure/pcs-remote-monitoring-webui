@@ -45,6 +45,76 @@
     "setLogoError": "Error updating logo",
     "simulationLoadError": "Error loading simulation status"
   },
+  "deviceGroupsFlyout": {
+    "actions": "Actions",
+    "cancel": "Cancel",
+    "title": "Manage device groups",
+    "create": "Create new device group",
+    "deviceGroupName": "Device group name",
+    "new": "New device group",
+    "edit": "Edit a device group",
+    "name": "Name",
+    "namePlaceHolder": "Device group name",
+    "save": "Save",
+    "errorMsg": {
+      "nameCantBeEmpty": "Name is required",
+      "fieldCantBeEmpty": "Field is required",
+      "operatorCantBeEmpty": "Operator is required",
+      "valueCantBeEmpty": "Value is required",
+      "typeCantBeEmpty": "Type is required"
+    },
+    "conditions": {
+      "condition": "Condition {{headerCount}}",
+      "delete": "Delete",
+      "field": "Field",
+      "operator": "Operator",
+      "operatorPlaceholder": "> =",
+      "value": "Value",
+      "valuePlaceholder": "Enter value",
+      "type": "Type",
+      "typePlaceholder": "Select type"
+    },
+    "options": {
+      "EQ": "= Equals",
+      "GT": "> Greater than",
+      "LT": "< Less than",
+      "GE": ">= Greater than/equal",
+      "LE": "<= Less than/equal",
+      "[]": "[] In",
+      "[]": "[ Starts with",
+      "]": "] Ends with",
+      "Number": "Number",
+      "Text": "Text"
+    }
+  },
+  "rulesFlyout": {
+    "newRule": "New rule",
+    "ruleName": "Rule name",
+    "namePlaceholder": "Enter rule name",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter rule description",
+    "deviceGroup": "Device group",
+    "deviceGroupPlaceholder": "Select device group",
+    "conditions": "Conditions",
+    "addCondition": "Add condition",
+    "condition": {
+      "condition": "Condition",
+      "field": "Field",
+      "fieldPlaceholder": "Select field",
+      "calculation": "Calculation",
+      "calculationPlaceholder": "select",
+      "timePeriod": "Time Period",
+      "operator": "Operator",
+      "operatorPlaceholder": ">=",
+      "value": "Value",
+      "valuePlaceholder": "Enter value"
+    },
+    "severityLevel": "Severity level",
+    "ruleStatus": "Rule status",
+    "devicesAffected": "devices affected by this rule",
+    "apply": "Apply",
+    "cancel": "Cancel"
+  },
   "dashboard": {
     "panels": {
       "alarms": {
