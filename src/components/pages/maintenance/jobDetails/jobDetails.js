@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 
 import Config from 'app.config';
-import { PageContent, ContextMenu, RefreshBar } from 'components/shared';
+import { AjaxError, PageContent, ContextMenu, RefreshBar } from 'components/shared';
 import { DevicesGrid } from 'components/pages/devices/devicesGrid';
 import { JobGrid, JobStatusGrid } from 'components/pages/maintenance/grids';
 
@@ -91,13 +91,19 @@ export class JobDetails extends Component {
           t={this.props.t} />
       </ContextMenu>,
       <PageContent className="maintenance-container" key="page-content">
-        <JobGrid {...jobGridProps} />
-        <JobStatusGrid {...jobStatusGridProps} />
-        <h4 className="sub-heading">{this.props.t('maintenance.devices')}</h4>
         {
-          this.state.selectedDevices
-            ? <DevicesGrid rowData={this.state.selectedDevices} t={this.props.t} />
-            : this.props.t('maintenance.noOccSelected')
+          !this.props.error
+            ? <div>
+                <JobGrid {...jobGridProps} />
+                <JobStatusGrid {...jobStatusGridProps} />
+                <h4 className="sub-heading">{this.props.t('maintenance.devices')}</h4>
+                {
+                  this.state.selectedDevices
+                    ? <DevicesGrid rowData={this.state.selectedDevices} t={this.props.t} />
+                    : this.props.t('maintenance.noOccurrenceSelected')
+                }
+              </div>
+            : <AjaxError t={this.props.t} error={this.props.error} />
         }
       </PageContent>
     ];

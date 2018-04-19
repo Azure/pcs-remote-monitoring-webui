@@ -11,7 +11,7 @@ import {
   getRulesLastUpdated,
   getRulesPendingStatus
 } from 'store/reducers/rulesReducer';
-import { redux as appRedux, getDeviceGroups } from 'store/reducers/appReducer';
+import { getDeviceGroups } from 'store/reducers/appReducer';
 
 // Pass the devices status
 const mapStateToProps = state => ({
@@ -25,8 +25,7 @@ const mapStateToProps = state => ({
 
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
-  fetchRules: () => dispatch(rulesEpics.actions.fetchRules()),
-  changeDeviceGroup: (id) => dispatch(appRedux.actions.updateActiveDeviceGroup(id))
+  fetchRules: () => dispatch(rulesEpics.actions.fetchRules())
 });
 
 export const RulesContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Rules));

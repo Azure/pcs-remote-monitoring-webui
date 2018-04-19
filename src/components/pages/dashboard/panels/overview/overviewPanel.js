@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 
-import { Indicator } from 'components/shared';
+import { AjaxError, Indicator } from 'components/shared';
 import { Svg } from 'components/shared/svg/svg';
 import { svgs, renderUndefined, isDef } from 'utilities';
 import {
@@ -81,7 +81,7 @@ export class OverviewPanel extends Component {
           </div>
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
-        { error && <PanelError>{ t('errorFormat', { message: t(error.message, { message: error.errorMessage }) }) }</PanelError> }
+        { error && <PanelError><AjaxError t={t} error={error} /></PanelError> }
       </Panel>
     );
   }

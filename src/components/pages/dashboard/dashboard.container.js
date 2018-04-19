@@ -5,7 +5,8 @@ import { translate } from 'react-i18next';
 import {
   getAzureMapsKey,
   getAzureMapsKeyError,
-  getAzureMapsKeyPendingStatus
+  getAzureMapsKeyPendingStatus,
+  getDeviceGroupError
 } from 'store/reducers/appReducer';
 import { epics as rulesEpics } from 'store/reducers/rulesReducer';
 import {
@@ -29,6 +30,7 @@ const mapStateToProps = state => ({
   devices: getDeviceEntities(state),
   devicesError: getDevicesError(state),
   devicesIsPending: getDevicesPendingStatus(state),
+  deviceGroupError: getDeviceGroupError(state),
   rules: getRuleEntities(state),
   rulesError: getRulesError(state),
   rulesIsPending: getRulesPendingStatus(state),

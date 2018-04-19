@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 
 import Config from 'app.config';
 import { RulesGrid } from 'components/pages/rules/rulesGrid';
-import { PageContent, ContextMenu, RefreshBar } from 'components/shared';
+import { AjaxError, PageContent, ContextMenu, RefreshBar } from 'components/shared';
 import { joinClasses, renderUndefined } from 'utilities';
 import { DevicesGrid } from 'components/pages/devices/devicesGrid';
 import { TelemetryChart, transformTelemetryResponse, chartColorObjects } from 'components/pages/dashboard/panels/telemetry';
@@ -128,6 +128,7 @@ export class RuleDetails extends Component {
 
   render () {
     const {
+      error,
       isPending,
       lastUpdated,
       match,
@@ -156,81 +157,87 @@ export class RuleDetails extends Component {
           t={t} />
       </ContextMenu>,
       <PageContent className="maintenance-container rule-details-container" key="page-content">
-        <div className="header-container">
-          <h1 className="maintenance-header">{alarmName}</h1>
-          <div className="rule-stat-container">
-            <div className="rule-stat-cell">
-              <div className="rule-stat-header">{t('maintenance.total')}</div>
-              <div className="rule-stat-value">{renderUndefined(counts.total)}</div>
-            </div>
-            <div className="rule-stat-cell">
-              <div className="rule-stat-header">{t('maintenance.open')}</div>
-              <div className="rule-stat-value">{renderUndefined(counts.open)}</div>
-            </div>
-            <div className="rule-stat-cell">
-              <div className="rule-stat-header">{t('maintenance.acknowledged')}</div>
-              <div className="rule-stat-value">{renderUndefined(counts.acknowledged)}</div>
-            </div>
-            <div className="rule-stat-cell">
-              <div className="rule-stat-header">{t('maintenance.closed')}</div>
-              <div className="rule-stat-value">{renderUndefined(counts.closed)}</div>
-            </div>
-            <div className="rule-stat-cell">
-              <div className="rule-stat-header">{t('maintenance.lastEvent')}</div>
-              <div className="rule-stat-value">
-                {
-                  selectedAlert.lastOccurrence
-                    ? <TimeRenderer value={selectedAlert.lastOccurrence} />
-                    : Config.emptyValue
-                }
+      {
+        !this.props.error
+          ? <div>
+              <div className="header-container">
+                <h1 className="maintenance-header">{alarmName}</h1>
+                <div className="rule-stat-container">
+                  <div className="rule-stat-cell">
+                    <div className="rule-stat-header">{t('maintenance.total')}</div>
+                    <div className="rule-stat-value">{renderUndefined(counts.total)}</div>
+                  </div>
+                  <div className="rule-stat-cell">
+                    <div className="rule-stat-header">{t('maintenance.open')}</div>
+                    <div className="rule-stat-value">{renderUndefined(counts.open)}</div>
+                  </div>
+                  <div className="rule-stat-cell">
+                    <div className="rule-stat-header">{t('maintenance.acknowledged')}</div>
+                    <div className="rule-stat-value">{renderUndefined(counts.acknowledged)}</div>
+                  </div>
+                  <div className="rule-stat-cell">
+                    <div className="rule-stat-header">{t('maintenance.closed')}</div>
+                    <div className="rule-stat-value">{renderUndefined(counts.closed)}</div>
+                  </div>
+                  <div className="rule-stat-cell">
+                    <div className="rule-stat-header">{t('maintenance.lastEvent')}</div>
+                    <div className="rule-stat-value">
+                      {
+                        selectedAlert.lastOccurrence
+                          ? <TimeRenderer value={selectedAlert.lastOccurrence} />
+                          : Config.emptyValue
+                      }
+                    </div>
+                  </div>
+                  <div className="rule-stat-cell">
+                    <div className="rule-stat-header">{t('maintenance.severity')}</div>
+                    <div className="rule-stat-value">
+                      {
+                        selectedAlert.severity
+                          ? <SeverityRenderer context={({ t: this.props.t })} value={selectedAlert.severity} />
+                          : Config.emptyValue
+                      }
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="rule-stat-cell">
-              <div className="rule-stat-header">{t('maintenance.severity')}</div>
-              <div className="rule-stat-value">
-                {
-                  selectedAlert.severity
-                    ? <SeverityRenderer context={({ t: this.props.t })} value={selectedAlert.severity} />
-                    : Config.emptyValue
-                }
+              <div className="details-description">
+                { t('maintenance.ruleDetailsDesc') }
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="details-description">
-          { t('maintenance.ruleDetailsDesc') }
-        </div>
-        <h4 className="sub-heading">{ t('maintenance.ruleDetail') }</h4>
-        <RulesGrid rowData={rule} t={t} pagination={false} />
+              <h4 className="sub-heading">{ t('maintenance.ruleDetail') }</h4>
+              <RulesGrid rowData={rule} t={t} pagination={false} />
 
-        <h4 className="sub-heading">{ t('maintenance.alarmOccurrences') }</h4>
-        <AlarmOccurrencesGrid {...alarmsGridProps} />
+              <h4 className="sub-heading">{ t('maintenance.alarmOccurrences') }</h4>
+              <AlarmOccurrencesGrid {...alarmsGridProps} />
 
-        <h4 className="sub-heading">{ t('maintenance.relatedInfo') }</h4>
-        <div className="tab-container">
-          <button className={joinClasses('tab', selectedTab === tabIds.all ? 'active' : '')}
-               onClick={this.setTab(tabIds.all)}>{t('maintenance.all')}</button>
-          <button className={joinClasses('tab', selectedTab === tabIds.devices ? 'active' : '')}
-              onClick={this.setTab(tabIds.devices)}>{t('maintenance.devices')}</button>
-          <button className={joinClasses('tab', selectedTab === tabIds.telemetry ? 'active' : '')}
-               onClick={this.setTab(tabIds.telemetry)}>{t('maintenance.telemetry')}</button>
-        </div>
-        {
-          (selectedTab === tabIds.all || selectedTab === tabIds.devices) &&
-          [
-            <h4 className="sub-heading" key="header">{t('maintenance.alarmedDevices')}</h4>,
-            <DevicesGrid rowData={isPending ? undefined : this.state.devices} t={t} key="chart" />
-          ]
-        }
-        {
-          !isPending && (selectedTab === tabIds.all || selectedTab === tabIds.telemetry) && Object.keys(this.state.telemetry).length > 0 &&
-          [
-            <h4 className="sub-heading" key="header">{t('maintenance.alarmedDeviceTelemetry')}</h4>,
-            <div className="details-chart-container" key="chart">
-              <TelemetryChart telemetry={this.state.telemetry} colors={chartColorObjects} />
+              <h4 className="sub-heading">{ t('maintenance.relatedInfo') }</h4>
+              <div className="tab-container">
+                <button className={joinClasses('tab', selectedTab === tabIds.all ? 'active' : '')}
+                    onClick={this.setTab(tabIds.all)}>{t('maintenance.all')}</button>
+                <button className={joinClasses('tab', selectedTab === tabIds.devices ? 'active' : '')}
+                    onClick={this.setTab(tabIds.devices)}>{t('maintenance.devices')}</button>
+                <button className={joinClasses('tab', selectedTab === tabIds.telemetry ? 'active' : '')}
+                    onClick={this.setTab(tabIds.telemetry)}>{t('maintenance.telemetry')}</button>
+              </div>
+              {
+                (selectedTab === tabIds.all || selectedTab === tabIds.devices) &&
+                [
+                  <h4 className="sub-heading" key="header">{t('maintenance.alarmedDevices')}</h4>,
+                  <DevicesGrid rowData={isPending ? undefined : this.state.devices} t={t} key="chart" />
+                ]
+              }
+              {
+                !isPending && (selectedTab === tabIds.all || selectedTab === tabIds.telemetry) && Object.keys(this.state.telemetry).length > 0 &&
+                [
+                  <h4 className="sub-heading" key="header">{t('maintenance.alarmedDeviceTelemetry')}</h4>,
+                  <div className="details-chart-container" key="chart">
+                    <TelemetryChart telemetry={this.state.telemetry} colors={chartColorObjects} />
+                  </div>
+                ]
+              }
             </div>
-          ]
-        }
+          : <AjaxError t={t} error={error} />
+      }
       </PageContent>
     ];
   }

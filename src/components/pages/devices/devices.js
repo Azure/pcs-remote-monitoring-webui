@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { DevicesGrid } from './devicesGrid';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
-import { Btn, RefreshBar, PageContent, ContextMenu } from 'components/shared';
+import { AjaxError, Btn, RefreshBar, PageContent, ContextMenu } from 'components/shared';
 import { DeviceDetailsContainer } from './flyouts/deviceDetails';
 import { DeviceNewContainer } from './flyouts/deviceNew';
 import { svgs } from 'utilities';
@@ -74,14 +74,8 @@ export class Devices extends Component {
       </ContextMenu>,
       <PageContent className="devices-container" key="page-content">
         <RefreshBar refresh={fetchDevices} time={lastUpdated} isPending={isPending} t={t} />
-        {
-          !!error &&
-          <span className="status">
-            { t('errorFormat', { message: t(error.message, { message: error.errorMessage }) }) }
-          </span>
-        }
+        { !!error && <AjaxError t={t} error={error} /> }
         { !error && <DevicesGrid {...gridProps} /> }
-        <Btn onClick={this.changeDeviceGroup}>Refresh Device Groups</Btn>
         { detailsFlyoutOpen && <DeviceDetailsContainer onClose={this.closeFlyout} device={entities[this.state.selectedDeviceId]} /> }
         { newDeviceFlyoutOpen && <DeviceNewContainer onClose={this.closeFlyout} /> }
       </PageContent>

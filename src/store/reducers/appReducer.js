@@ -206,6 +206,8 @@ export const setLogoPendingStatus = state =>
   getPending(getAppReducer(state), epics.actionTypes.updateLogo);
 export const getLogoError = state =>
   getError(getAppReducer(state), epics.actionTypes.fetchLogo);
+export const getDeviceGroupError = state =>
+  getError(getAppReducer(state), epics.actionTypes.fetchDeviceGroups);
 export const getLogoPendingStatus = state =>
   getPending(getAppReducer(state), epics.actionTypes.fetchLogo);
 // ========================= Selectors - END

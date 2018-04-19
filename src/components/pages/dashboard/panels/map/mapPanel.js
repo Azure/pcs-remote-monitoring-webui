@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
 
-import { Indicator } from 'components/shared';
+import { AjaxError, Indicator } from 'components/shared';
 import {
   Panel,
   PanelHeader,
@@ -173,7 +173,7 @@ export class MapPanel extends Component {
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
         { !mapKeyIsPending && !this.props.azureMapsKey && <PanelError>{t('dashboard.panels.map.notConfiguredError')}</PanelError> }
-        { error && <PanelError>{ t('errorFormat', { message: t(error.message, { message: error.errorMessage }) }) }</PanelError> }
+        { error && <PanelError><AjaxError t={t} error={error} /></PanelError> }
       </Panel>
     );
   }

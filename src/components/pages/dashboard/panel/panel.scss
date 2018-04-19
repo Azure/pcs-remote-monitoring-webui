@@ -56,6 +56,9 @@
     .panel-error-container {
       width: 90%;
       text-align: center;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: center;
     }
   }
 

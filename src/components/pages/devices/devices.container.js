@@ -11,7 +11,7 @@ import {
   getDevicesLastUpdated,
   getDevicesPendingStatus
 } from 'store/reducers/devicesReducer';
-import { redux as appRedux, getDeviceGroups } from 'store/reducers/appReducer';
+import { getDeviceGroups } from 'store/reducers/appReducer';
 
 // Pass the devices status
 const mapStateToProps = state => ({
@@ -25,8 +25,7 @@ const mapStateToProps = state => ({
 
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
-  fetchDevices: () => dispatch(devicesEpics.actions.fetchDevices()),
-  changeDeviceGroup: (id) => dispatch(appRedux.actions.updateActiveDeviceGroup(id))
+  fetchDevices: () => dispatch(devicesEpics.actions.fetchDevices())
 });
 
 export const DevicesContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Devices));

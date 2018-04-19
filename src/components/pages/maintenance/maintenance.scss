@@ -53,14 +53,16 @@
       margin: 10px 0px;
       padding: 10px;
     }
+
+    .padded-error { @include rem-fallback(padding-top, 20px); }
   }
 
   .details-chart-container {
     display: flex;
     flex-flow: column wrap;
     align-items: stretch;
-    height: 300px;
     flex-shrink: 0;
+    @include rem-fallback(height, 300px);
   }
 
   @include themify($themes) {

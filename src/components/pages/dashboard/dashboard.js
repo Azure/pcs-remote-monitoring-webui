@@ -67,7 +67,7 @@ export class Dashboard extends Component {
 
   componentDidMount() {
     // Load the rules
-    this.props.fetchRules();
+    if (!this.props.rulesError) this.props.fetchRules();
 
     // Telemetry stream - START
     const onPendingStart = () => this.setState({ telemetryIsPending: true });
@@ -273,6 +273,7 @@ export class Dashboard extends Component {
       devices,
       devicesError,
       devicesIsPending,
+      deviceGroupError,
 
       rules,
       rulesError,
@@ -381,7 +382,7 @@ export class Dashboard extends Component {
             <TelemetryPanel
               telemetry={telemetry}
               isPending={telemetryIsPending}
-              error={telemetryError}
+              error={deviceGroupError || telemetryError}
               colors={chartColorObjects}
               t={t} />
           </Cell>

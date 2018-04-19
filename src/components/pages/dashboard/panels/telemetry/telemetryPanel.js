@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import 'tsiclient';
 
-import { Indicator } from 'components/shared';
+import { AjaxError, Indicator } from 'components/shared';
 import {
   Panel,
   PanelHeader,
@@ -31,7 +31,7 @@ export class TelemetryPanel extends Component {
           <TelemetryChart telemetry={telemetry} colors={colors} />
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
-        { error && <PanelError>{ t('errorFormat', { message: t(error.message, { message: error.errorMessage }) }) }</PanelError> }
+        { error && <PanelError><AjaxError t={t} error={error} /></PanelError> }
       </Panel>
     );
   }
