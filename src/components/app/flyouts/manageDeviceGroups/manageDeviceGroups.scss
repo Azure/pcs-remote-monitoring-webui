@@ -7,9 +7,19 @@
   @include rem-font-size(14px);
   @include rem-fallback(padding-bottom, 16px);
 
+  .edit-device-group-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
   .device-grops-grid-container { @include rem-fallback(margin-top, 24px); }
 
-  .add-btn { @include rem-fallback(padding, 24px, 0px, 24px, 0px); }
+  .add-btn {
+    padding-left: 0;
+    padding-right: 0;
+    @include rem-fallback(margin, 24px, 0px, 24px, 0px);
+  }
 
   .actions-button { @include rem-fallback(min-width, 110px); }
 
@@ -20,5 +30,6 @@
 
   @include themify($themes) {
     .property-grid-container .grid-header .cell { color: themed('colorContentTextDim'); }
+    .edit-device-group-btn  { color: themed('colorContentText'); }
   }
 }

@@ -72,7 +72,8 @@
       "value": "Value",
       "valuePlaceholder": "Enter value",
       "type": "Type",
-      "typePlaceholder": "Select type"
+      "typePlaceholder": "Select type",
+      "remove": "Remove condition"
     },
     "options": {
       "EQ": "= Equals",

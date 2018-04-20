@@ -105,15 +105,15 @@ class DeviceGroupForm extends LinkedComponent {
 
     const editedConditions = conditionLinks.filter(({ edited }) => edited);
     const conditionHasErrors = editedConditions.some(({ error }) => !!error);
-    const conditionsHaveErrors = editedConditions.length === 0 || conditionHasErrors
+    const conditionsHaveErrors = conditionHasErrors
 
     const operatorOptions = operators.map(value => ({
-      value,
-      label: t(`deviceGroupsFlyout.options.${value}`)
+      label: t(`deviceGroupsFlyout.options.${value}`),
+      value
     }));
     const typeOptions = valueTypes.map(value => ({
-      value,
-      label: t(`deviceGroupsFlyout.options.${value}`)
+      label: t(`deviceGroupsFlyout.options.${value}`),
+      value
     }));
 
     return (
@@ -142,16 +142,9 @@ class DeviceGroupForm extends LinkedComponent {
             </Btn>
             {
               conditionLinks.map((condition, idx) => (
-                <Section.Container
-                  key={this.state.conditions[idx].key}
+                <Section.Container key={this.state.conditions[idx].key}>
                   <Section.Header>
                     {t('deviceGroupsFlyout.conditions.condition', { headerCount: idx + 1 })}
-                    {
-                      conditionLinks.length > 1 &&
-                      <Btn svg={svgs.trash} onClick={this.deleteCondition(idx)}>
-                        {t('deviceGroupsFlyout.conditions.delete')}
-                      </Btn>
-                    }
                   </Section.Header>
                   <Section.Content>
                     <FormGroup>
@@ -198,6 +191,9 @@ class DeviceGroupForm extends LinkedComponent {
                         placeholder={t('deviceGroupsFlyout.conditions.typePlaceholder')}
                         link={condition.type} />
                     </FormGroup>
+                    <BtnToolbar>
+                      <Btn onClick={this.deleteCondition(idx)}>{t('deviceGroupsFlyout.conditions.remove')}</Btn>
+                    </BtnToolbar>
                   </Section.Content>
                 </Section.Container>
               ))
@@ -210,6 +206,7 @@ class DeviceGroupForm extends LinkedComponent {
                 {t('deviceGroupsFlyout.save')}
               </Btn>
               <Btn svg={svgs.cancelX} onClick={this.props.cancel}>{t('deviceGroupsFlyout.cancel')}</Btn>
+              <Btn svg={svgs.trash}>{t('deviceGroupsFlyout.conditions.delete')}</Btn>
             </BtnToolbar>
           </Section.Content>
         </Section.Container>

@@ -9,8 +9,6 @@ import DeviceGroups from './views/deviceGroups';
 
 import './manageDeviceGroups.css';
 
-const Section = Flyout.Section;
-
 export class ManageDeviceGroups extends LinkedComponent {
 
   constructor(props) {
@@ -45,11 +43,11 @@ export class ManageDeviceGroups extends LinkedComponent {
         <Flyout.Content className="manage-filters-flyout-container">
           {
             this.state.addNewDeviceGroup || !!this.state.selectedDeviceGroup
-              ? <DeviceGroupForm {...this.props} cancel={this.closeForm} {...this.state} />
-              : <Section.Container>
+              ? <DeviceGroupForm {...this.props} {...this.state} cancel={this.closeForm} />
+              : <div>
                   <Btn className="add-btn" svg={svgs.plus} onClick={this.toggleNewFilter}>{t('deviceGroupsFlyout.create')}</Btn>
                   { deviceGroups.length > 0 && <DeviceGroups {...this.props} onEditDeviceGroup={this.onEditDeviceGroup}/> }
-                </Section.Container>
+                </div>
           }
         </Flyout.Content>
       </Flyout.Container>
