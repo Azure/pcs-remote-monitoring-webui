@@ -22,7 +22,7 @@ const criticalDevicesLayer = 'devices-critical-layer';
 
 const deviceToMapPin = ({ id, properties, type }) =>
   new AzureMaps.data.Feature(
-    new AzureMaps.data.Point([properties.longitude, properties.latitude]),
+    new AzureMaps.data.Point([properties.Longitude, properties.Latitude]),
     {
       name: id,
       address: properties.location || '',
@@ -106,7 +106,7 @@ export class MapPanel extends Component {
   extractGeoLocatedDevices(devices) {
     return Object.keys(devices)
       .map(key => devices[key])
-      .filter(({ properties }) => properties.latitude && properties.longitude);
+      .filter(({ properties }) => properties.Latitude && properties.Longitude);
   }
 
   devicesToPins(devices, devicesInAlarm) {
@@ -115,9 +115,12 @@ export class MapPanel extends Component {
         (acc, device) => {
           const devicePin = deviceToMapPin(device);
           const category = device.id in devicesInAlarm ? devicesInAlarm[device.id].severity : 'normal';
-          return update(acc, {
-            [category]: { $push: [devicePin] }
-          });
+          if (category === 'normal' || category === 'warning' || category === 'critical') {
+            return update(acc, {
+              [category]: { $push: [devicePin] }
+            });
+          }
+          return acc;
         },
         { normal: [], warning: [], critical: [] }
     );
