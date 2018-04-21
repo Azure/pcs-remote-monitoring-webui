@@ -17,7 +17,7 @@ import {
   setPending,
   getPending,
   getError
- } from 'store/utilities';
+} from 'store/utilities';
 
 // ========================= Epics - START
 const handleError = fromAction => error =>
@@ -59,9 +59,9 @@ export const epics = createEpicScenario({
         order: 'desc',
         limit: 1
       })
-      .map(([alarm]) => redux.actions.updateRuleLastTrigger({ id: fromAction.payload, lastTrigger: alarm.dateModified }))
-      .takeUntil(action$.ofType(epics.actionTypes.fetchRules))
-      .catch(handleError(fromAction)) // Needs to work with selector
+        .map(([alarm]) => redux.actions.updateRuleLastTrigger({ id: fromAction.payload, lastTrigger: alarm.dateModified }))
+        .takeUntil(action$.ofType(epics.actionTypes.fetchRules))
+        .catch(handleError(fromAction)) // Needs to work with selector
   }
 });
 // ========================= Epics - END
@@ -73,6 +73,21 @@ const ruleListSchema = new schema.Array(ruleSchema);
 
 // ========================= Reducers - START
 const initialState = { ...errorPendingInitialState, entities: {}, items: [] };
+
+const insertRuleReducer = (state, { payload }) => {
+  const { entities: { rules }, result } = normalize([payload], ruleListSchema);
+  return update(state, {
+    entities: { $merge: rules },
+    items: { $splice: [[state.items.length, 0, result]] }
+  });
+};
+
+const updateRuleReducer = (state, { payload }) => {
+  const { entities: { rules } } = normalize([payload], ruleListSchema);
+  return update(state, {
+    entities: { $merge: rules }
+  });
+};
 
 const updateRulesReducer = (state, { payload, fromAction }) => {
   const { entities: { rules }, result } = normalize(payload, ruleListSchema);
@@ -98,6 +113,8 @@ const fetchableTypes = [
 ];
 
 export const redux = createReducerScenario({
+  insertRule: { type: 'RULE_INSERT', reducer: insertRuleReducer },
+  updateRule: { type: 'RULE_UPDATE', reducer: updateRuleReducer },
   updateRules: { type: 'RULES_UPDATE', reducer: updateRulesReducer },
   updateRuleCount: { type: 'RULES_COUNT_UPDATE', reducer: updateCountReducer },
   updateRuleLastTrigger: { type: 'RULES_LAST_TRIGGER_UPDATE', reducer: updateLastTriggerReducer },
@@ -123,7 +140,7 @@ export const getRules = createSelector(
     items.reduce((acc, id) => {
       const rule = entities[id];
       return (rule.groupId === deviceGroupId || !deviceGroupId)
-        ? [ ...acc, rule ]
+        ? [...acc, rule]
         : acc
     }, [])
 );

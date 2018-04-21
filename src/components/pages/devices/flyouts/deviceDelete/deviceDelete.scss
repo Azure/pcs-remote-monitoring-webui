@@ -34,11 +34,6 @@
     @include rem-fallback(margin-left, 8px);
   }
 
-  .btn-toolbar {
-    justify-content: flex-end;
-    @include rem-fallback(padding-top, 32px);
-  }
-
   @include themify($themes) {
     color: themed('colorContentTextDim');
 

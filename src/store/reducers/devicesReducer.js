@@ -78,8 +78,7 @@ const insertDeviceReducer = (state, { payload }) => {
   const { entities: { devices }, result } = normalize([payload], deviceListSchema);
   return update(state, {
     entities: { $merge: devices },
-    items: { $splice: [[state.items.length, 0, result]] },
-    lastUpdated: { $set: moment() }
+    items: { $splice: [[state.items.length, 0, result]] }
   });
 };
 

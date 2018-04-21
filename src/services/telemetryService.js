@@ -8,6 +8,7 @@ import {
   toAlarmsForRuleModel,
   toAlarmsModel,
   toRulesModel,
+  toRuleModel,
   toMessagesModel
 } from './models';
 
@@ -25,13 +26,13 @@ export class TelemetryService {
   /** creates a new rule */
   static createRule(rule) {
     return HttpClient.post(`${ENDPOINT}rules`, rule)
-      .map(toRulesModel);
+      .map(toRuleModel);
   }
 
   /** updates an existing rule */
-  static updateRule(rule) {
-    return HttpClient.put(`${ENDPOINT}rules`, rule)
-      .map(toRulesModel);
+  static updateRule(id, rule) {
+    return HttpClient.put(`${ENDPOINT}rules/${id}`, rule)
+      .map(toRuleModel);
   }
 
   /** Returns a list of alarms (all statuses) */

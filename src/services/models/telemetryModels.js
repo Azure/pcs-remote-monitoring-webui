@@ -3,19 +3,23 @@
 import { camelCaseReshape, getItems } from 'utilities';
 
 export const toRulesModel = (response = {}) => getItems(response)
-  .map((device = {}) => camelCaseReshape(device, {
-    'id': 'id',
-    'conditions': 'conditions',
-    'dateCreated': 'dateCreated',
-    'dateModified': 'dateModified',
-    'description': 'description',
-    'eTag': 'eTag',
-    'enabled': 'enabled',
-    'groupId': 'groupId',
-    'name': 'name',
-    'severity': 'severity',
-    'action.type': 'type'
-  }));
+  .map(toRuleModel);
+
+export const toRuleModel = (response = {}) => camelCaseReshape(response, {
+  'id': 'id',
+  'conditions': 'conditions',
+  'dateCreated': 'dateCreated',
+  'dateModified': 'dateModified',
+  'description': 'description',
+  'eTag': 'eTag',
+  'enabled': 'enabled',
+  'groupId': 'groupId',
+  'name': 'name',
+  'severity': 'severity',
+  'calculation': 'calculation',
+  'duration': 'duration',
+  'action.type': 'type'
+});
 
 // TODO: Double check the response from alarmsByRule and alarms, might only need one model
 export const toAlarmsModel = (response = {}) => getItems(response)

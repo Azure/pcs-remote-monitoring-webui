@@ -330,8 +330,10 @@
       "explore": "Explore"
     },
     "flyouts": {
+      "edit": "Edit",
+      "newRule": "New rule",
+      "editRule": "Edit rule",
       "ruleEditor": {
-        "newRule": "New rule",
         "ruleName": "Rule name",
         "namePlaceholder": "Enter rule name",
         "description": "Description",

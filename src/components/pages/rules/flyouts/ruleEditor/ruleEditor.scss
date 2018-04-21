@@ -30,13 +30,6 @@
     @include rem-fallback(font-size, 16px);
   }
 
-  .apply-cancel {
-    position: relative;
-    @include rem-fallback(width, 288px);
-    @include rem-fallback(left, 180px);
-    @include rem-fallback(top, 24px);
-  }
-
   .padded-top {
     margin-left: 0px;
     padding-left: 0px;
