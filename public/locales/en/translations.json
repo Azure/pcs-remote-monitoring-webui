@@ -343,19 +343,19 @@
         "conditions": "Conditions",
         "addCondition": "Add condition",
         "delete": "Delete",
+        "calculation": "Calculation",
+        "calculationPlaceholder": "Select",
+        "timePeriod": "Time Period (in minutes)",
         "condition": {
           "condition": "Condition",
           "field": "Field",
           "fieldPlaceholder": "Select field",
-          "calculation": "Calculation",
-          "calculationPlaceholder": "Select",
-          "timePeriod": "Time Period",
           "operator": "Operator",
           "operatorPlaceholder": ">=",
           "value": "Value",
           "valuePlaceholder": "Enter value"
         },
-        "calculation": {
+        "calculationOptions": {
           "average": "Average",
           "instant": "Instant"
         },

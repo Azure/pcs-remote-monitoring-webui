@@ -30,6 +30,11 @@ import './ruleEditor.css';
 const Section = Flyout.Section;
 const severityLevels = ['critical', 'warning', 'info'];
 const calculations = ['average', 'instant'];
+const timePeriodOptions = [
+  { label: '1', value: '00:01:00' },
+  { label: '5', value: '00:05:00' },
+  { label: '10', value: '00:10:00' }
+];
 const operatorOptions = [
   { label: '>', value: 'GreaterThan' },
   { label: '>=', value: 'GreaterThanOrEqual' },
@@ -43,8 +48,6 @@ let conditionKey = 0;
 // Creates a state object for a condition
 const newCondition = () => ({
   field: '',
-  calculation: '',
-  duration: '00:00:00',
   operator: operatorOptions[0].value,
   value: '',
   key: conditionKey++ // Used by react to track the rendered elements
@@ -55,6 +58,8 @@ const newRule = {
   name: '',
   description: '',
   groupId: '',
+  calculation: '',
+  timePeriod: '',
   conditions: [newCondition()], // Start with one condition
   severity: severityLevels[0],
   enabled: true
@@ -67,7 +72,6 @@ export class RuleEditor extends LinkedComponent {
     const { rule } = props;
     const formData = rule ? rule : newRule;
     this.state = {
-      isPending: false,
       error: undefined,
       fieldOptions: [],
       devicesAffected: 0,
@@ -95,36 +99,35 @@ export class RuleEditor extends LinkedComponent {
       this.ruleNameLink,
       this.deviceGroupLink,
       this.conditionsLink,
+      this.timePeriodLink,
+      this.calculationLink
     ].every(link => !link.error);
   }
 
   apply = (event) => {
     event.preventDefault();
-    const { formData } = this.state;
     const { onClose, insertRule, updateRule } = this.props;
-    console.log('TODO: Handle the form submission');
+    const requestProps = { ...this.state.formData };
+    if (requestProps.calculation === calculations[1]) requestProps.timePeriod = '';
     if (this.formIsValid()) {
-      this.setState({ isPending: true });
       if (this.subscription) this.subscription.unsubscribe();
       if (this.props.rule) { // If rule object exist then update the existing rule
-        this.subscription = TelemetryService.updateRule(this.props.rule.id, toNewRuleRequestModel(formData))
+        this.subscription = TelemetryService.updateRule(this.props.rule.id, toNewRuleRequestModel(requestProps))
           .subscribe(
             (updatedRule) => {
               updateRule(updatedRule);
-              this.setState({ isPending: false });
               onClose();
             },
-            error => this.setState({ error, isPending: false })
+            error => this.setState({ error })
           );
       } else { // If rule object doesn't exist then create a new rule
-        this.subscription = TelemetryService.createRule(toNewRuleRequestModel(formData))
+        this.subscription = TelemetryService.createRule(toNewRuleRequestModel(requestProps))
           .subscribe(
             (createdRule) => {
               insertRule(createdRule);
-              this.setState({ isPending: false });
               onClose();
             },
-            error => this.setState({ error, isPending: false })
+            error => this.setState({ error })
           );
       }
     }
@@ -175,7 +178,7 @@ export class RuleEditor extends LinkedComponent {
     const { onClose, t, deviceGroups = [] } = this.props;
     const { error, formData, fieldOptions, devicesAffected } = this.state;
     const calculationOptions = calculations.map(value => ({
-      label: t(`rules.flyouts.ruleEditor.calculation.${value}`),
+      label: t(`rules.flyouts.ruleEditor.calculationOptions.${value}`),
       value
     }));
     const deviceGroupOptions = deviceGroups.map(this.toSelectOption);
@@ -188,6 +191,13 @@ export class RuleEditor extends LinkedComponent {
     this.deviceGroupLink = this.formDataLink.forkTo('groupId')
       .map(({ value }) => value)
       .withValidator(requiredValidator);
+    this.calculationLink = this.formDataLink.forkTo('calculation').map(({ value }) => value).withValidator(requiredValidator);
+    this.timePeriodLink = this.formDataLink.forkTo('timePeriod')
+      .map(({ value }) => value)
+      .check(
+        timePeriod => this.calculationLink.value === calculations[0] ? Validator.notEmpty(timePeriod) : true,
+        () => this.props.t('rules.flyouts.ruleEditor.validation.required')
+      );;
     this.conditionsLink = this.formDataLink.forkTo('conditions').withValidator(requiredValidator);
     this.severityLink = this.formDataLink.forkTo('severity');
     //todo toggle button didn't support link
@@ -195,12 +205,13 @@ export class RuleEditor extends LinkedComponent {
     // Create the state link for the dynamic form elements
     const conditionLinks = this.conditionsLink.getLinkedChildren(conditionLink => {
       const fieldLink = conditionLink.forkTo('field').map(({ value }) => value).withValidator(requiredValidator);
-      const calculationLink = conditionLink.forkTo('calculation').map(({ value }) => value).withValidator(requiredValidator);
-      const operatorLink = conditionLink.forkTo('operator').withValidator(requiredValidator);;
-      const valueLink = conditionLink.forkTo('value').withValidator(requiredValidator);;
-      const durationLink = conditionLink.forkTo('duration');
-      return { fieldLink, calculationLink, operatorLink, valueLink, durationLink };
+      const operatorLink = conditionLink.forkTo('operator').withValidator(requiredValidator);
+      const valueLink = conditionLink.forkTo('value').withValidator(requiredValidator);
+      const error = fieldLink.error || operatorLink.error || valueLink.error;
+      return { fieldLink, operatorLink, valueLink, error };
     });
+
+    const conditionsHaveErrors = conditionLinks.some(({ error }) => error);
 
     return (
       <form onSubmit={this.apply} className='new-rule-flyout-container'>
@@ -233,6 +244,31 @@ export class RuleEditor extends LinkedComponent {
                 placeholder={t('rules.flyouts.ruleEditor.deviceGroupPlaceholder')}
                 link={this.deviceGroupLink} />
             </FormGroup>
+            <FormGroup>
+              <FormLabel isRequired='true'>{t('rules.flyouts.ruleEditor.calculation')}</FormLabel>
+              <FormControl
+                type='select'
+                className='long'
+                placeholder={t('rules.flyouts.ruleEditor.calculationPlaceholder')}
+                link={this.calculationLink}
+                options={calculationOptions}
+                onChange={this.onCalculationChange}
+                clearable={false}
+                searchable={false} />
+            </FormGroup>
+            {
+              this.calculationLink.value === calculations[0] &&
+              <FormGroup>
+                <FormLabel isRequired='true'>{t('rules.flyouts.ruleEditor.timePeriod')}</FormLabel>
+                <FormControl
+                  type='select'
+                  className='short'
+                  link={this.timePeriodLink}
+                  options={timePeriodOptions}
+                  clearable={false}
+                  searchable={false} />
+              </FormGroup>
+            }
           </Section.Content>
         </Section.Container>
 
@@ -258,27 +294,6 @@ export class RuleEditor extends LinkedComponent {
                     clearable={false}
                     searchable={true} />
                 </FormGroup>
-                <FormGroup>
-                  <FormLabel isRequired='true'>{t('rules.flyouts.ruleEditor.condition.calculation')}</FormLabel>
-                  <FormControl
-                    type='select'
-                    className='long'
-                    placeholder={t('rules.flyouts.ruleEditor.condition.calculationPlaceholder')}
-                    link={condition.calculationLink}
-                    options={calculationOptions}
-                    onChange={this.onCalculationChange}
-                    clearable={false}
-                    searchable={false} />
-                </FormGroup>
-                {
-                  condition.calculationLink.value === calculations[0] &&
-                  <FormGroup>
-                    <FormLabel isRequired='true'>{t('rules.flyouts.ruleEditor.condition.timePeriod')}</FormLabel>
-                    <FormControl
-                      type='duration'
-                      link={condition.durationLink} />
-                  </FormGroup>
-                }
                 <FormGroup>
                   <FormLabel isRequired='true'>{t('rules.flyouts.ruleEditor.condition.operator')}</FormLabel>
                   <FormControl
@@ -345,7 +360,7 @@ export class RuleEditor extends LinkedComponent {
           error && <AjaxError t={t} error={error} />
         }
         <BtnToolbar>
-          <Btn primary={true} type="submit" disabled={this.isPending || !this.formIsValid()}>{t('rules.flyouts.ruleEditor.apply')}</Btn>
+          <Btn primary={true} type="submit" disabled={!this.formIsValid() || conditionsHaveErrors}>{t('rules.flyouts.ruleEditor.apply')}</Btn>
           <Btn svg={svgs.cancelX} onClick={onClose}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
         </BtnToolbar>
       </form>
