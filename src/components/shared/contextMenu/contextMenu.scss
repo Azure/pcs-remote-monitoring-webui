@@ -19,13 +19,13 @@ $headerHeight: 48px;
   }
 
   @include themify($themes) {
-    border-bottom: 1px solid themed('colorMidSecond');
+    border-bottom: 1px solid themed('colorContextMenuBorderColor');
 
     .btn:hover {
-      background-color: themed('colorLowestSecond');
-      color: #fff;
+      background-color: themed('colorContextMenuBtnBgHover');
+      color: themed('colorContextMenuBtnTextHover');
 
-      svg { fill: themed('colorHighest'); }
+      svg { fill: themed('colorContextMenuBtnTextHover'); }
     }
   }
 }

@@ -33,7 +33,7 @@
         // Apply special styles to the radio button svg
         svg {
           .outer-border {
-            stroke: themed('colorMidThird');
+            stroke: themed('colorInputBorderColor');
             fill: none;
           }
 
@@ -43,8 +43,8 @@
         &.disabled svg {
           .inner-circle,
           .outer-border {
-            stroke: themed('colorMidThird');
-            fill: themed('colorMidThird');
+            stroke: themed('colorInputBorderColor');
+            fill: themed('colorInputBorderColor');
           }
         }
       }
@@ -55,7 +55,7 @@
 
       // Highlight the radio circle border on hover when not checked
       > input[type=radio]:not(:checked) + .radio-icon:hover svg .outer-border
-      { stroke: themed('colorLightestFirst'); }
+      { stroke: themed('colorInputBorderHoverColor'); }
 
     }
   }

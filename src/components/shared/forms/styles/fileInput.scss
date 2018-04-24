@@ -15,10 +15,10 @@
 
     @include themify($themes) {
       .upload-btn {
-        background-color: themed('colorLightestFirst');
-        color: themed('colorLowestFirst');
+        background-color: themed('colorBtnPrimaryBackground');
+        color: themed('colorFileUploadText');
 
-        svg { fill: themed('colorLowestFirst'); }
+        svg { fill: themed('colorFileUploadText'); }
       }
     }
 

@@ -2,6 +2,8 @@
 
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
+// Import the tsiClient css from the node modules
+@import "node_modules/tsiclient/tsiclient";
 
 .telemetry-chart-container {
   display: flex;

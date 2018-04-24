@@ -31,9 +31,9 @@
   }
 
   @include themify($themes) {
-    .form-group .form-group-label { color: themed('colorLightestFirst'); }
+    .form-group .form-group-label { color: themed('colorDurationLabelText'); }
 
-    .duration-colon-icon svg { fill: themed('colorMidThird'); }
+    .duration-colon-icon svg { fill: themed('colorInputBorderColor'); }
 
     &.error .form-group input[type=text] { border-color: themed('colorAlarm'); }
   }

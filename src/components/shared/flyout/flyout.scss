@@ -17,7 +17,6 @@ $flyoutPadding: 20px;
   bottom: 0;
   right: 0;
   animation: 0.2s ease 0s 1 slideInFromRight;
-  box-shadow: -3px 3px 14px rgba(0, 0, 0, 0.6);
   @include rem-fallback(top, $navHeight);
 
   .flyout-header {
@@ -40,6 +39,7 @@ $flyoutPadding: 20px;
       @include rem-fallback(min-width, 0px);
 
       &:hover { background-color: transparent; }
+
       .btn-icon svg { @include square-px-rem($closeBtnSize);  }
     }
   }
@@ -55,9 +55,10 @@ $flyoutPadding: 20px;
   @include themify($themes) {
     color: themed('colorFlyoutText');
     background-color: themed('colorFlyoutBackground');
-    border-top: 1px solid $borderColor;
+    border-top: 1px solid themed('colorFlyoutSectionBorder');
+    box-shadow: -3px 3px 14px themed('colorFlyoutDropShadow');
 
-    .flyout-header { border-bottom: 1px solid $borderColor; }
+    .flyout-header { border-bottom: 1px solid themed('colorFlyoutSectionBorder'); }
 
     .flyout-close-btn .btn-icon svg { stroke: themed('colorFlyoutText'); }
   }

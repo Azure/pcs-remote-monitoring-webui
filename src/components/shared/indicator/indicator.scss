@@ -324,6 +324,6 @@
 
   // Apply theming
   @include themify($themes) {
-    .dot .inner { background-color: themed('colorHighest'); }
+    .dot .inner { background-color: themed('colorContentText'); }
   }
 }

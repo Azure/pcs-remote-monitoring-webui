@@ -94,36 +94,37 @@ $imgSize: 30px;
 
   // Apply theme properties
   @include themify($themes) {
-    border-bottom: 1px solid themed('colorMidSecond');
+    background-color: themed('colorHeaderBg');
+    border-bottom: 1px solid themed('colorHeaderBorderColor');
 
     .breadcrumbs {
-      .chevron-icon svg { fill: themed('colorContentTextDim'); }
-      .crumb { color: themed('colorContentTextDim'); }
+      .chevron-icon svg { fill: themed('colorHeaderText'); }
+      .crumb { color: themed('colorHeaderText'); }
     }
 
-    .label { color: themed('colorLightestFirst'); }
+    .label { color: themed('colorHeaderText'); }
 
     .items-container {
-      border-left: 1px solid themed('colorMidSecond');
+      border-left: 1px solid themed('colorHeaderBorderColor');
 
       .item-icon {
-        svg { fill: themed('colorLightestFirst'); }
+        svg { fill: themed('colorHeaderText'); }
 
         &:hover {
-          background-color: themed('colorLowestSecond');
+          background-color: themed('colorHeaderItemBgHover');
 
-          svg { fill: themed('colorHighest'); }
+          svg { fill: themed('colorHeaderIconHover'); }
         }
       }
 
       .profile-dropdown {
-        background-color: themed('colorLowestFirst');
-        border-color: themed('colorMidSecond');
+        background-color: themed('colorHeaderDropdown');
+        border-color: themed('colorHeaderBorderColor');
 
         > button {
-          color: themed('colorLightestFirst');
+          color: themed('colorHeaderText');
 
-          &:hover { background-color: themed('colorLowestSecond'); }
+          &:hover { background-color: themed('colorHeaderItemBgHover'); }
         }
       }
     }

@@ -76,27 +76,27 @@ $companySvgSize: 23px;
 
   // Apply theme properties
   @include themify($themes) {
-    background-color: themed('colorLowestThird');
-    color: themed('colorHighest');
+    background-color: themed('colorNavBg');
+    color: themed('colorNavText');
 
     .nav-item {
-      color: themed('colorHighest');
+      color: themed('colorNavText');
 
-      .nav-item-icon svg { fill: themed('colorLightestFirst'); }
+      .nav-item-icon svg { fill: themed('colorNavItemIcon'); }
 
-      &.company .nav-item-icon svg { fill: themed('colorHighest'); }
+      &.company .nav-item-icon svg { fill: themed('colorNavText'); }
     }
 
     a.nav-item,
     .nav-item.hamburger {
-      color: themed('colorLightestFirst');
+      color: themed('colorNavItemIcon');
 
       &.active,
       &:hover {
-        color: themed('colorHighest');
-        background-color: themed('colorLowestSecond');
+        color: themed('colorNavText');
+        background-color: themed('colorNavItemBgHover');
 
-        .nav-item-icon svg { fill: themed('colorHighest'); }
+        .nav-item-icon svg { fill: themed('colorNavText'); }
       }
     }
   }

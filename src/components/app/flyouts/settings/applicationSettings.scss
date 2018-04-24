@@ -108,21 +108,13 @@
 
   @include themify($themes) {
     .logo-svg,
-    .checkmark svg {
-      fill: themed('colorHighest');
-    }
+    .checkmark svg { fill: themed('colorHighest'); }
 
     .upload-logo-container .replace-logo,
-    .upload-error-message {
-      color: themed('colorContentText')
-    }
-
-    .edit-name-button .btn-icon svg { fill: themed('colorLightestFirst'); }
+    .upload-error-message { color: themed('colorContentText') }
 
     .file-name-valid,
-    .name-container {
-      color: themed('colorHighest');
-    }
+    .name-container { color: themed('colorHighest'); }
 
     .invalid-file-x {
       fill: themed('colorError');

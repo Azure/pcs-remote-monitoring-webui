@@ -25,8 +25,8 @@ $textareaHeight: 60px;
     &:disabled {
       -webkit-touch-callout: none;
         -webkit-user-select: none;
-        -khtml-user-select: none;
-          -moz-user-select: none;
+         -khtml-user-select: none;
+           -moz-user-select: none;
             -ms-user-select: none;
                 user-select: none;
     }
@@ -38,8 +38,8 @@ $textareaHeight: 60px;
     }
 
     @include themify($themes) {
-      color: themed('colorLightestFirst');
-      border: 1px solid themed('colorMidThird');
+      color: themed('colorInputText');
+      border: 1px solid themed('colorInputBorderColor');
 
       // Set RGBa opacity to .99 to get correct color in the selection styling
       &::selection {
@@ -52,25 +52,25 @@ $textareaHeight: 60px;
         background: rgba(themed('colorSystem'), .99);
       }
 
-      &::-webkit-input-placeholder { color: themed('colorLightestSecond'); }
-          &:-ms-input-placeholder { color: themed('colorLightestSecond'); }
-              &::-moz-placeholder { color: themed('colorLightestSecond'); }
-                &:-moz-placeholder { color: themed('colorLightestSecond'); }
+      &::-webkit-input-placeholder { color: themed('colorInputPlaceholderText'); }
+           &:-ms-input-placeholder { color: themed('colorInputPlaceholderText'); }
+               &::-moz-placeholder { color: themed('colorInputPlaceholderText'); }
+                &:-moz-placeholder { color: themed('colorInputPlaceholderText'); }
 
       &:hover,
-      &:focus { border-color: themed('colorLightestFirst'); }
+      &:focus { border-color: themed('colorInputBorderHoverColor'); }
 
       &.error { border-color: themed('colorAlarm'); }
 
       &:disabled {
-        background-color: themed('colorMidThird');
-        color: themed('colorMidThird');
-        border: 1px solid themed('colorMidThird');
+        background-color: themed('colorDisabledInputBg');
+        color: themed('colorDisabledInputBg');
+        border: 1px solid themed('colorDisabledInputBg');
 
-        &::-webkit-input-placeholder { color: themed('colorMidThird'); }
-            &:-ms-input-placeholder { color: themed('colorMidThird'); }
-                &::-moz-placeholder { color: themed('colorMidThird'); }
-                  &:-moz-placeholder { color: themed('colorMidThird'); }
+        &::-webkit-input-placeholder { color: themed('colorDisabledInputBg'); }
+             &:-ms-input-placeholder { color: themed('colorDisabledInputBg'); }
+                 &::-moz-placeholder { color: themed('colorDisabledInputBg'); }
+                  &:-moz-placeholder { color: themed('colorDisabledInputBg'); }
       }
     }
   }

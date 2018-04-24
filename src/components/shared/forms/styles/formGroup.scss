@@ -14,6 +14,6 @@
   + .form-group { @include rem-fallback(margin-top, 16px); }
 
   @include themify($themes) {
-    .form-group-label { color: themed('colorHighest'); }
+    .form-group-label { color: themed('colorContentText'); }
   }
 }

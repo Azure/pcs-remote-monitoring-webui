@@ -51,7 +51,7 @@
     .tsi-pieChart {
       background: transparent;
 
-      .tsi-pieChartSVG path { stroke: themed('colorLowestSecond'); }
+      .tsi-pieChartSVG path { stroke: themed('colorDashboardPanelContentBg'); }
     }
 
     .kpi-cell {

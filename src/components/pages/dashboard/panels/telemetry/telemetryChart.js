@@ -8,8 +8,6 @@ import 'tsiclient';
 import { joinClasses } from 'utilities';
 
 import './telemetryChart.css';
-// TODO: find a way to import without the relative path
-import '../../../../../../node_modules/tsiclient/tsiclient.css';
 
 const maxDatums = 100; // Max telemetry messages for the telemetry graph
 
