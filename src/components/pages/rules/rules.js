@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { RulesGrid } from './rulesGrid';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
 import { AjaxError, Btn, RefreshBar, PageContent, ContextMenu } from 'components/shared';
-import { RuleDetails, NewRuleFlyout } from './flyouts';
+import { NewRuleFlyout } from './flyouts';
 import { svgs } from 'utilities';
 
 import './rules.css';
@@ -42,19 +42,12 @@ export class Rules extends Component {
 
   closeFlyout = () => this.setState(closedFlyoutState);
 
-  onSoftSelectChange = ({ id }) => this.setState({
-    openFlyoutName: 'details',
-    selectedRuleId: id
-  });
-
   openNewRuleFlyout = () => this.setState({
     openFlyoutName: 'newRule',
     selectedRuleId: ''
   });
 
   onContextMenuChange = contextBtns => this.setState({ contextBtns });
-
-  getSoftSelectId = ({ id }) => id;
 
   render() {
     const {
@@ -63,15 +56,11 @@ export class Rules extends Component {
       error,
       isPending,
       lastUpdated,
-      entities,
       fetchRules
     } = this.props;
     const gridProps = {
       rowData: isPending ? undefined : rules || [],
-      onSoftSelectChange: this.onSoftSelectChange,
       onContextMenuChange: this.onContextMenuChange,
-      softSelectId: this.state.selectedRuleId,
-      getSoftSelectId: this.getSoftSelectId,
       t: this.props.t
     };
     return [
@@ -84,7 +73,6 @@ export class Rules extends Component {
         <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} t={t} />
         { !!error && <AjaxError t={t} error={error} /> }
         {!error && <RulesGrid {...gridProps} />}
-        {this.state.openFlyoutName === 'details' && <RuleDetails onClose={this.closeFlyout} rule={entities[this.state.selectedRuleId]} />}
         {this.state.openFlyoutName === 'newRule' && <NewRuleFlyout t={t} onClose={this.closeFlyout} />}
       </PageContent>
     ];

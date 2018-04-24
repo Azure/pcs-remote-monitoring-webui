@@ -62,28 +62,38 @@ export class RulesGrid extends Component {
   /**
    * Handles context filter changes and calls any hard select props method
    *
-   * @param {Array} selectedDevices A list of currently selected devices
+   * @param {Array} selectedRules A list of currently selected rules
    */
-  onHardSelectChange = (selectedDevices) => {
+  onHardSelectChange = (selectedRules) => {
     const { onContextMenuChange, onHardSelectChange } = this.props;
     if (isFunc(onContextMenuChange)) {
-      if (selectedDevices.length > 1) {
+      if (selectedRules.length > 1) {
         onContextMenuChange(this.contextBtns.disable);
-      } else if (selectedDevices.length === 1) {
+      } else if (selectedRules.length === 1) {
         onContextMenuChange([
           this.contextBtns.disable,
           this.contextBtns.edit
         ]);
         if (isFunc(this.setSelectedRule)) {
-          this.setSelectedRule(selectedDevices[0]);
+          this.setSelectedRule(selectedRules[0]);
         }
       } else {
         onContextMenuChange(null);
       }
     }
     if (isFunc(onHardSelectChange)) {
-      onHardSelectChange(selectedDevices);
+      onHardSelectChange(selectedRules);
     }
+  }
+
+  onSoftSelectChange = (rule, rowEvent) => {
+    const { onSoftSelectChange } = this.props;
+    this.setState(closedFlyoutState);
+    if (isFunc(onSoftSelectChange)) {
+      onSoftSelectChange(rule, rowEvent);
+    }
+    this.setSelectedRule(rule);
+    this.openEditRuleFlyout();
   }
 
   closeFlyout = () => this.setState(closedFlyoutState);
@@ -99,7 +109,8 @@ export class RulesGrid extends Component {
       },
       /* Grid Events */
       onHardSelectChange: this.onHardSelectChange,
-      onGridReady: this.onGridReady
+      onGridReady: this.onGridReady,
+      onSoftSelectChange: this.onSoftSelectChange
     };
 
     return ([
