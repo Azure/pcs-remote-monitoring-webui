@@ -13,7 +13,8 @@ import {
   SectionDesc,
   SummaryCount,
   SummarySection,
-  AjaxError
+  AjaxError,
+  Indicator
 } from 'components/shared';
 import { SeverityRenderer } from 'components/shared/cellRenderers';
 import {
@@ -28,8 +29,8 @@ import { toNewRuleRequestModel } from 'services/models';
 import './ruleEditor.css';
 
 const Section = Flyout.Section;
-const severityLevels = ['critical', 'warning', 'info'];
-const calculations = ['average', 'instant'];
+const severityLevels = ['Critical', 'Warning', 'Info'];
+const calculations = ['Average', 'Instant'];
 const timePeriodOptions = [
   { label: '1', value: '00:01:00' },
   { label: '5', value: '00:05:00' },
@@ -75,7 +76,8 @@ export class RuleEditor extends LinkedComponent {
       error: undefined,
       fieldOptions: [],
       devicesAffected: 0,
-      formData
+      formData,
+      isPending: false
     };
   }
 
@@ -110,24 +112,27 @@ export class RuleEditor extends LinkedComponent {
     const requestProps = { ...this.state.formData };
     if (requestProps.calculation === calculations[1]) requestProps.timePeriod = '';
     if (this.formIsValid()) {
+      this.setState({ isPending: true });
       if (this.subscription) this.subscription.unsubscribe();
       if (this.props.rule) { // If rule object exist then update the existing rule
         this.subscription = TelemetryService.updateRule(this.props.rule.id, toNewRuleRequestModel(requestProps))
           .subscribe(
             (updatedRule) => {
               updateRule(updatedRule);
+              this.setState({ isPending: false });
               onClose();
             },
-            error => this.setState({ error })
+            error => this.setState({ error, isPending: false })
           );
       } else { // If rule object doesn't exist then create a new rule
         this.subscription = TelemetryService.createRule(toNewRuleRequestModel(requestProps))
           .subscribe(
             (createdRule) => {
               insertRule(createdRule);
+              this.setState({ isPending: false });
               onClose();
             },
-            error => this.setState({ error })
+            error => this.setState({ error, isPending: false })
           );
       }
     }
@@ -176,9 +181,9 @@ export class RuleEditor extends LinkedComponent {
 
   render() {
     const { onClose, t, deviceGroups = [] } = this.props;
-    const { error, formData, fieldOptions, devicesAffected } = this.state;
+    const { error, formData, fieldOptions, devicesAffected, isPending } = this.state;
     const calculationOptions = calculations.map(value => ({
-      label: t(`rules.flyouts.ruleEditor.calculationOptions.${value}`),
+      label: t(`rules.flyouts.ruleEditor.calculationOptions.${value.toLowerCase()}`),
       value
     }));
     const deviceGroupOptions = deviceGroups.map(this.toSelectOption);
@@ -196,7 +201,7 @@ export class RuleEditor extends LinkedComponent {
       .map(({ value }) => value)
       .check(
         timePeriod => this.calculationLink.value === calculations[0] ? Validator.notEmpty(timePeriod) : true,
-        () => this.props.t('rules.flyouts.ruleEditor.validation.required')
+        this.props.t('rules.flyouts.ruleEditor.validation.required')
       );;
     this.conditionsLink = this.formDataLink.forkTo('conditions').withValidator(requiredValidator);
     this.severityLink = this.formDataLink.forkTo('severity');
@@ -214,29 +219,29 @@ export class RuleEditor extends LinkedComponent {
     const conditionsHaveErrors = conditionLinks.some(({ error }) => error);
 
     return (
-      <form onSubmit={this.apply} className='new-rule-flyout-container'>
-        <Section.Container className='rule-property-container'>
+      <form onSubmit={this.apply} className="new-rule-flyout-container">
+        <Section.Container className="rule-property-container">
           <Section.Content>
             <FormGroup>
-              <FormLabel isRequired='true'>{t('rules.flyouts.ruleEditor.ruleName')}</FormLabel>
+              <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.ruleName')}</FormLabel>
               <FormControl
-                type='text'
-                className='long'
+                type="text"
+                className="long"
                 placeholder={t('rules.flyouts.ruleEditor.namePlaceholder')}
                 link={this.ruleNameLink} />
             </FormGroup>
             <FormGroup>
               <FormLabel>{t('rules.flyouts.ruleEditor.description')}</FormLabel>
               <FormControl
-                type='textarea'
+                type="textarea"
                 placeholder={t('rules.flyouts.ruleEditor.descriptionPlaceholder')}
                 link={this.descriptionLink} />
             </FormGroup>
             <FormGroup>
-              <FormLabel isRequired='true'>{t('rules.flyouts.ruleEditor.deviceGroup')}</FormLabel>
+              <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.deviceGroup')}</FormLabel>
               <FormControl
-                type='select'
-                className='long'
+                type="select"
+                className="long"
                 options={deviceGroupOptions}
                 onChange={this.onGroupIdChange}
                 clearable={false}
@@ -245,10 +250,10 @@ export class RuleEditor extends LinkedComponent {
                 link={this.deviceGroupLink} />
             </FormGroup>
             <FormGroup>
-              <FormLabel isRequired='true'>{t('rules.flyouts.ruleEditor.calculation')}</FormLabel>
+              <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.calculation')}</FormLabel>
               <FormControl
-                type='select'
-                className='long'
+                type="select"
+                className="long"
                 placeholder={t('rules.flyouts.ruleEditor.calculationPlaceholder')}
                 link={this.calculationLink}
                 options={calculationOptions}
@@ -259,10 +264,10 @@ export class RuleEditor extends LinkedComponent {
             {
               this.calculationLink.value === calculations[0] &&
               <FormGroup>
-                <FormLabel isRequired='true'>{t('rules.flyouts.ruleEditor.timePeriod')}</FormLabel>
+                <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.timePeriod')}</FormLabel>
                 <FormControl
-                  type='select'
-                  className='short'
+                  type="select"
+                  className="short"
                   link={this.timePeriodLink}
                   options={timePeriodOptions}
                   clearable={false}
@@ -284,10 +289,10 @@ export class RuleEditor extends LinkedComponent {
               <Section.Header>{t('rules.flyouts.ruleEditor.condition.condition')} {idx + 1}</Section.Header>
               <Section.Content>
                 <FormGroup>
-                  <FormLabel isRequired='true'>{t('rules.flyouts.ruleEditor.condition.field')}</FormLabel>
+                  <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.field')}</FormLabel>
                   <FormControl
-                    type='select'
-                    className='long'
+                    type="select"
+                    className="long"
                     placeholder={t('rules.flyouts.ruleEditor.condition.fieldPlaceholder')}
                     link={condition.fieldLink}
                     options={fieldOptions}
@@ -295,10 +300,10 @@ export class RuleEditor extends LinkedComponent {
                     searchable={true} />
                 </FormGroup>
                 <FormGroup>
-                  <FormLabel isRequired='true'>{t('rules.flyouts.ruleEditor.condition.operator')}</FormLabel>
+                  <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.operator')}</FormLabel>
                   <FormControl
-                    type='select'
-                    className='short'
+                    type="select"
+                    className="short"
                     placeholder={t('rules.flyouts.ruleEditor.condition.operatorPlaceholder')}
                     link={condition.operatorLink}
                     options={operatorOptions}
@@ -306,15 +311,15 @@ export class RuleEditor extends LinkedComponent {
                     searchable={false} />
                 </FormGroup>
                 <FormGroup>
-                  <FormLabel isRequired='true'>{t('rules.flyouts.ruleEditor.condition.value')}</FormLabel>
+                  <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.value')}</FormLabel>
                   <FormControl
-                    type='text'
+                    type="text"
                     placeholder={t('rules.flyouts.ruleEditor.condition.valuePlaceholder')}
                     link={condition.valueLink} />
                 </FormGroup>
                 {
                   conditionLinks.length > 1 &&
-                  <Btn className='padded-top' svg={svgs.trash} onClick={this.deleteCondition(idx)}>{t('rules.flyouts.ruleEditor.delete')}</Btn>
+                  <Btn className="padded-top" svg={svgs.trash} onClick={this.deleteCondition(idx)}>{t('rules.flyouts.ruleEditor.delete')}</Btn>
                 }
               </Section.Content>
             </Section.Container>
@@ -322,7 +327,7 @@ export class RuleEditor extends LinkedComponent {
         }
         <Section.Container collapsable={false}>
           <Section.Content>
-            <FormGroup className='padded-top'>
+            <FormGroup className="padded-top">
               <FormLabel>{t('rules.flyouts.ruleEditor.severityLevel')}</FormLabel>
               <Radio
                 link={this.severityLink}
@@ -353,16 +358,21 @@ export class RuleEditor extends LinkedComponent {
           </Section.Content>
         </Section.Container>
         <SummarySection>
+          {
+            isPending && <Indicator size="large" pattern="bar" />
+          }
           <SummaryCount>{devicesAffected}</SummaryCount>
           <SectionDesc>{t('rules.flyouts.ruleEditor.devicesAffected')}</SectionDesc>
         </SummarySection>
         {
           error && <AjaxError t={t} error={error} />
         }
-        <BtnToolbar>
-          <Btn primary={true} type="submit" disabled={!this.formIsValid() || conditionsHaveErrors}>{t('rules.flyouts.ruleEditor.apply')}</Btn>
-          <Btn svg={svgs.cancelX} onClick={onClose}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
-        </BtnToolbar>
+        {
+          !isPending && <BtnToolbar>
+            <Btn primary={true} type="submit" disabled={!this.formIsValid() || conditionsHaveErrors}>{t('rules.flyouts.ruleEditor.apply')}</Btn>
+            <Btn svg={svgs.cancelX} onClick={onClose}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
+          </BtnToolbar>
+        }
       </form>
     );
   }
