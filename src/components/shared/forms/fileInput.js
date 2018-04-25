@@ -24,8 +24,8 @@ export class FileInput extends Component {
   render() {
     const { t, className, accept, onChange } = this.props;
     return (
-      <div className={joinClasses(className, "file-upload")}>
-        <Btn className="upload-btn" svg={svgs.upload} onClick={this.clickFileInput}>
+      <div className={joinClasses(className, 'file-upload')}>
+        <Btn primary={true} className="upload-btn" svg={svgs.upload} onClick={this.clickFileInput}>
           {t('fileInput.upload')}
         </Btn>
         <input className="input-file" ref={this.setFileInputRef} type="file" accept={accept} onChange={onChange} />

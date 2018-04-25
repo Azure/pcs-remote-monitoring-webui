@@ -25,7 +25,7 @@ $headerHeight: 48px;
       background-color: themed('colorContextMenuBtnBgHover');
       color: themed('colorContextMenuBtnTextHover');
 
-      svg { fill: themed('colorContextMenuBtnTextHover'); }
+      svg { fill: themed('colorContextMenuBtnSvgFill'); }
     }
   }
 }

@@ -108,13 +108,13 @@
 
   @include themify($themes) {
     .logo-svg,
-    .checkmark svg { fill: themed('colorHighest'); }
+    .checkmark svg { fill: themed('colorFlyoutText'); }
 
     .upload-logo-container .replace-logo,
-    .upload-error-message { color: themed('colorContentText') }
+    .upload-error-message { color: themed('colorFlyoutText') }
 
     .file-name-valid,
-    .name-container { color: themed('colorHighest'); }
+    .name-container { color: themed('colorFlyoutText'); }
 
     .invalid-file-x {
       fill: themed('colorError');

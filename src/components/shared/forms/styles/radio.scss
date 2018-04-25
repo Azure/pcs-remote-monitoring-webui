@@ -51,7 +51,7 @@
 
       // Show the center circle when checked
       > input[type=radio]:checked + .radio-icon svg .inner-circle
-      { fill: themed('colorHighest'); }
+      { fill: themed('colorInputBorderColor'); }
 
       // Highlight the radio circle border on hover when not checked
       > input[type=radio]:not(:checked) + .radio-icon:hover svg .outer-border

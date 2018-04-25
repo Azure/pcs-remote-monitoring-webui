@@ -18,7 +18,7 @@ $errorIconSize: 10px;
   }
 
   @include themify($themes) {
-    color: themed('colorNavText');
+    color: themed('colorContentText');
 
     .error-icon svg { fill: themed('colorAlarm'); }
   }

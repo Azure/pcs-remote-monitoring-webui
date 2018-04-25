@@ -388,7 +388,7 @@ export class DeviceNew extends LinkedComponent {
               }
             </div>
             <SummarySection title={t('devices.flyouts.new.summaryHeader')}>
-              <SummaryCount>{summaryCount}</SummaryCount>
+              <SummaryCount>{summaryCount || 0}</SummaryCount>
               <SectionDesc>{summaryMessage}</SectionDesc>
               {this.state.isPending && <Indicator />}
               {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}

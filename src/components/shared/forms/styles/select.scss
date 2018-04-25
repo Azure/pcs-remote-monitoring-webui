@@ -67,7 +67,7 @@ $select-padding-horizontal: 8px;
     @include themify($themes) {
       background-color: themed('colorSelectBackground');
       border: 1px solid themed('colorInputBorderColor');
-      color: themed('colorHighest');
+      color: themed('colorSelectText');
 
       &:hover,
       &:focus { border-color: themed('colorInputBorderHoverColor'); }
@@ -132,7 +132,9 @@ $select-padding-horizontal: 8px;
     @include rem-fallback(line-height, 24px);
     @include rem-fallback(padding-right, $select-padding-horizontal);
     @include rem-fallback(padding-left, $select-padding-horizontal);
-    @include themify($themes) { color: themed('colorSelectBorderColor'); }
+    @include themify($themes) {
+      color: themed('colorSelectPlaceholderText');
+    }
   }
 
   .has-value.is-clearable.Select--single > .Select-control .Select-value {
@@ -144,7 +146,7 @@ $select-padding-horizontal: 8px;
     .Select-value-label {
       @include rem-font-size($selectFontSize);
       @include themify($themes) {
-        color: themed('colorHighest');
+        color: themed('colorSelectText');
       }
     }
 
@@ -156,7 +158,9 @@ $select-padding-horizontal: 8px;
       &:focus {
         outline: none;
         text-decoration: underline;
-        @include themify($themes) { color: themed('colorSelectBorderColor'); }
+        @include themify($themes) {
+          color: themed('colorSelectBorderColor');
+        }
       }
     }
   }
@@ -188,7 +192,9 @@ $select-padding-horizontal: 8px;
       position: relative;
       @include rem-fallback(line-height, $selectFontSize);
       @include rem-fallback(padding-top, 3px);
-      @include themify($themes) { color: themed('colorHighest'); }
+      @include themify($themes) {
+        color: themed('colorSelectText');
+      }
 
       .is-focused & { cursor: text; }
     }
@@ -246,7 +252,7 @@ $select-padding-horizontal: 8px;
     display: inline-block;
     @include rem-fallback(height, 1px);
     @include rem-fallback(width, 1px);
-  	@include rem-fallback(margin, -1px);
+    @include rem-fallback(margin, -1px);
     clip: rect(0, 0, 0, 0);
     overflow: hidden;
     float: left;
@@ -339,24 +345,25 @@ $select-padding-horizontal: 8px;
     box-sizing: border-box;
     cursor: pointer;
     display: block;
-  	@include rem-fallback(padding-top, $select-padding-vertical);
-  	@include rem-fallback(padding-bottom, $select-padding-vertical);
-  	@include rem-fallback(padding-right, $select-padding-horizontal);
-  	@include rem-fallback(padding-left, $select-padding-horizontal);
+    @include rem-fallback(padding-top, $select-padding-vertical);
+    @include rem-fallback(padding-bottom, $select-padding-vertical);
+    @include rem-fallback(padding-right, $select-padding-horizontal);
+    @include rem-fallback(padding-left, $select-padding-horizontal);
+
+    &:last-child { @include border-bottom-radius( $select-input-border-radius ); }
+
     @include themify($themes) {
       background-color: themed('colorSelectBackground');
-      color: lighten(themed('colorHighest'), 20%);
-
-      &:last-child { @include border-bottom-radius( $select-input-border-radius ); }
+      color: lighten(themed('colorSelectText'), 20%);
 
       &.is-selected {
-        background-color: themed('colorInputBorderColor');
-        color: themed('colorHighest');
+        background-color: themed('colorSelectOptionFocusedBg');
+        color: themed('colorSelectText');
       }
 
       &.is-focused {
         background-color: themed('colorSelectOptionFocusedBg');
-        color: themed('colorHighest');
+        color: themed('colorSelectText');
       }
 
       &.is-disabled {
@@ -403,7 +410,7 @@ $select-padding-horizontal: 8px;
       @include themify($themes) {
         background-color: themed('colorSelectBackground');
         border: 1px solid themed('colorSelectBorderColor');
-        color: themed('colorHighest');
+        color: themed('colorSelectText');
       }
     }
 
@@ -422,7 +429,7 @@ $select-padding-horizontal: 8px;
     }
 
     a.Select-value-label {
-      @include themify($themes) { color: themed('colorHighest'); }
+      @include themify($themes) { color: themed('colorSelectText'); }
       cursor: pointer;
       text-decoration: none;
 
@@ -440,7 +447,7 @@ $select-padding-horizontal: 8px;
 
         &:hover, &:focus {
           background-color: themed('hoverIconDarkGray');
-          color: themed('colorHighest');
+          color: themed('colorSelectText');
         }
 
         &:active { background-color: themed('colorSelectBorderColor'); }
@@ -455,12 +462,14 @@ $select-padding-horizontal: 8px;
         border: 1px solid themed('colorSelectBorderColor');
         color: themed('colorSelectDisabledText');
       }
-      // icon
+
       .Select-value-icon {
         cursor: not-allowed;
         border-right-color: darken(themed('colorSelectBorderColor'), 10%);
 
-        &:hover, &:focus, &:active { background-color: themed('colorSelectBackground'); }
+        &:hover,
+        &:focus,
+        &:active { background-color: themed('colorSelectBackground'); }
       }
     }
   }

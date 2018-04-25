@@ -33,7 +33,7 @@
   .padded-top {
     margin-left: 0px;
     padding-left: 0px;
-    @include rem-fallback(padding-top, 24px);
+    @include rem-fallback(margin-top, 24px);
   }
 
   @include themify($themes) {

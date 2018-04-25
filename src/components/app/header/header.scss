@@ -105,7 +105,7 @@ $imgSize: 30px;
     .label { color: themed('colorHeaderText'); }
 
     .items-container {
-      border-left: 1px solid themed('colorHeaderBorderColor');
+      border-left: 1px solid themed('colorHeaderItemContainerBorderColor');
 
       .item-icon {
         svg { fill: themed('colorHeaderText'); }

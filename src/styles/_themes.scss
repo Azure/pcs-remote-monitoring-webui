@@ -94,6 +94,7 @@ $themes: (
     colorHeaderIconHover: $colorWhite,
     colorHeaderItemBgHover: $colorMidnight,
     colorHeaderBorderColor: $colorLead,
+    colorHeaderItemContainerBorderColor: $colorLead,
     // Header Colors - END
 
     // Nav Colors - START
@@ -126,15 +127,20 @@ $themes: (
 
     // Forms - START
     colorFileUploadText: $colorNoir,
+
     colorSelectBackground: $colorNoir,
     colorSelectOptionFocusedBg: $colorCharcoal,
     colorSelectDisabledText: $colorAsh,
     colorSelectBorderColor: $colorStone,
+    colorSelectText: $colorWhite,
+    colorSelectPlaceholderText: $colorStone,
+
     colorInputText: $colorSmoke,
     colorInputPlaceholderText: $colorStone,
     colorInputBorderColor: $colorGraphite,
     colorInputBorderHoverColor: $colorSmoke,
     colorDisabledInputBg: $colorGraphite,
+
     colorFormActionsBorderColor: $colorGraphite,
     colorDurationLabelText: $colorSmoke,
     // Forms - END
@@ -175,35 +181,35 @@ $themes: (
 
     colorBtnText: #212121,
     colorBtnBackground: transparent,
-    colorBtnSvgFill: $colorSmoke,
+    colorBtnSvgFill: #666,
 
-    colorBtnTextHover: $colorWhite,
-    colorBtnBackgroundHover: #dadada,
-    colorBtnSvgFillHover: $colorWhite,
+    colorBtnTextHover: #212121,
+    colorBtnBackgroundHover: transparent,
+    colorBtnSvgFillHover: #212121,
 
-    colorBtnTextActive: $colorWhite,
-    colorBtnBackgroundActive: #dadada,
-    colorBtnSvgFillActive: $colorSmoke,
+    colorBtnTextActive: #212121,
+    colorBtnBackgroundActive: transparent,
+    colorBtnSvgFillActive: #212121,
 
     colorBtnTextDisabled: $colorAsh,
     colorBtnBackgroundDisabled: transparent,
     colorBtnSvgFillDisabled: $colorAsh,
 
-    colorBtnPrimaryText: $colorNoir,
-    colorBtnPrimaryBackground: $colorSmoke,
-    colorBtnPrimarySvgFill: $colorNoir,
+    colorBtnPrimaryText: #212121,
+    colorBtnPrimaryBackground: #f4f4f4,
+    colorBtnPrimarySvgFill: #666,
 
-    colorBtnPrimaryTextHover: $colorWhite,
-    colorBtnPrimaryBackgroundHover: $colorGraphite,
-    colorBtnPrimarySvgFillHover: $colorWhite,
+    colorBtnPrimaryTextHover: #212121,
+    colorBtnPrimaryBackgroundHover: #eaeaea,
+    colorBtnPrimarySvgFillHover: #666,
 
-    colorBtnPrimaryTextActive: $colorSmoke,
-    colorBtnPrimaryBackgroundActive: $colorCharcoal,
-    colorBtnPrimarySvgFillActive: $colorSmoke,
+    colorBtnPrimaryTextActive: #212121,
+    colorBtnPrimaryBackgroundActive: #c8c8c8,
+    colorBtnPrimarySvgFillActive: #666,
 
-    colorBtnPrimaryTextDisabled: $colorSmoke,
-    colorBtnPrimaryBackgroundDisabled: transparent,
-    colorBtnPrimarySvgFillDisabled: $colorSmoke,
+    colorBtnPrimaryTextDisabled: #a6a6a6,
+    colorBtnPrimaryBackgroundDisabled: #f4f4f4,
+    colorBtnPrimarySvgFillDisabled: #a6a6a6,
     // Btn - END
 
     // Page Content Colors - START
@@ -228,6 +234,7 @@ $themes: (
     colorHeaderIconHover: $colorWhite,
     colorHeaderItemBgHover: $colorMidnight,
     colorHeaderBorderColor: #c8c8c8,
+    colorHeaderItemContainerBorderColor: $colorLead,
     // Header Colors - END
 
     // Nav Colors - START
@@ -238,8 +245,9 @@ $themes: (
     // Nav Colors - END
 
     // Context Menu Colors - START
-    colorContextMenuBtnBgHover: $colorMidnight,
-    colorContextMenuBtnTextHover: $colorWhite,
+    colorContextMenuBtnBgHover: #eaeaea,
+    colorContextMenuBtnTextHover: #212121,
+    colorContextMenuBtnSvgFill: #666,
     colorContextMenuBorderColor: #c8c8c8,
     // Context Menu Colors - END
 
@@ -262,11 +270,13 @@ $themes: (
     colorFileUploadText: $colorNoir,
 
     colorSelectBackground: #f2f2f2,
-    colorSelectOptionFocusedBg: $colorCharcoal,
+    colorSelectOptionFocusedBg: #fff,
     colorSelectDisabledText: $colorAsh,
     colorSelectBorderColor: #c8c8c8,
+    colorSelectText: #212121,
+    colorSelectPlaceholderText: #666,
 
-    colorInputText: $colorSmoke,
+    colorInputText: #212121,
     colorInputPlaceholderText: $colorStone,
     colorInputBorderColor: $colorGraphite,
     colorInputBorderHoverColor: $colorSmoke,
