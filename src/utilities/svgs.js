@@ -11,13 +11,13 @@ import ContosoIconPath from 'assets/icons/contoso.svg';
 import CopyIconPath from 'assets/icons/copy.svg';
 import CriticalIconPath from 'assets/icons/critical.svg';
 import DeviceChillerIconPath from 'assets/icons/deviceChiller.svg';
-import DeviceGenericIconPath from 'assets/icons/deviceIcon.svg';
 import DeviceElevatorIconPath from 'assets/icons/deviceElevator.svg';
 import DeviceEngineIconPath from 'assets/icons/deviceEngine.svg';
+import DeviceGenericIconPath from 'assets/icons/deviceIcon.svg';
 import DevicePrototypingIconPath from 'assets/icons/devicePrototyping.svg';
 import DeviceTruckIconPath from 'assets/icons/deviceTruck.svg';
-import DisabledIconPath from 'assets/icons/disabled.svg';
 import DisableToggleIconPath from 'assets/icons/disableToggle.svg';
+import DisabledIconPath from 'assets/icons/disabled.svg';
 import EditIconPath from 'assets/icons/edit.svg';
 import EllipsisIconPath from 'assets/icons/ellipsis.svg';
 import EnableToggleIconPath from 'assets/icons/enableToggle.svg';
@@ -27,6 +27,7 @@ import InfoBubbleIconPath from 'assets/icons/infoBubble.svg';
 import InfoIconPath from 'assets/icons/info.svg';
 import LinkToPath from 'assets/icons/linkTo.svg';
 import LoadingToggleIconPath from 'assets/icons/loadingToggle.svg';
+import ManageFiltersIconPath from 'assets/icons/manageFilters.svg';
 import PhysicalDeviceIconPath from 'assets/icons/physicalDevice.svg';
 import PlusIconPath from 'assets/icons/plus.svg';
 import RadioSelectedIconPath from 'assets/icons/radioSelected.svg';
@@ -72,8 +73,8 @@ export const svgs = {
   contoso: ContosoIconPath,
   copy: CopyIconPath,
   critical: CriticalIconPath,
-  disabled: DisabledIconPath,
   disableToggle: DisableToggleIconPath,
+  disabled: DisabledIconPath,
   edit: EditIconPath,
   ellipsis: EllipsisIconPath,
   enableToggle: EnableToggleIconPath,
@@ -83,6 +84,7 @@ export const svgs = {
   infoBubble: InfoBubbleIconPath,
   linkTo: LinkToPath,
   loadingToggle: LoadingToggleIconPath,
+  manageFilters: ManageFiltersIconPath,
   physicalDevice: PhysicalDeviceIconPath,
   plus: PlusIconPath,
   radioSelected: RadioSelectedIconPath,

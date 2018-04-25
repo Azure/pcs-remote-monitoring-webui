@@ -6,6 +6,7 @@ import { Route, Switch } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
+import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/app/manageDeviceGroupsBtn';
 import { TimeIntervalDropdown } from 'components/app/timeIntervalDropdown';
 import { Notifications } from './notifications';
 import { Jobs } from './jobs';
@@ -46,6 +47,7 @@ export const Summary = ({
       onChange={onTimeIntervalChange}
       value={timeInterval}
       t={props.t} />
+    <ManageDeviceGroupsBtn />
   </ContextMenu>,
   <PageContent className="maintenance-container summary-container" key="page-content">
     <h1 className="maintenance-header">{props.t('maintenance.title')}</h1>

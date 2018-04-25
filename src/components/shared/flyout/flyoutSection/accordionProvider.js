@@ -21,7 +21,11 @@ export class AccordionProvider extends Component {
     };
   }
 
-  toggle = () => this.setState({ accordionIsOpen: !this.state.accordionIsOpen });
+  toggle = (event) => {
+    // Prevent default submit, incase the event happens inside a form
+    event.preventDefault();
+    this.setState({ accordionIsOpen: !this.state.accordionIsOpen })
+  };
 
   getChildContext() {
     const { accordionIsOpen, accordionIsCollapsable } = this.state;

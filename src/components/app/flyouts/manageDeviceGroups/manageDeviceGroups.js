@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
+
+import { ConfigService } from 'services';
 import { Btn } from 'components/shared';
 import { svgs, LinkedComponent } from 'utilities';
 import Flyout from 'components/shared/flyout';
@@ -9,6 +11,13 @@ import DeviceGroups from './views/deviceGroups';
 
 import './manageDeviceGroups.css';
 
+const tagPrefix = 'tags.';
+const reportedPrefix = 'properties.reported.';
+const toOption = (value, label) => ({
+  label: label || value,
+  value
+});
+
 export class ManageDeviceGroups extends LinkedComponent {
 
   constructor(props) {
@@ -16,8 +25,28 @@ export class ManageDeviceGroups extends LinkedComponent {
 
     this.state = {
       addNewDeviceGroup: false,
-      selectedDeviceGroup: undefined
+      selectedDeviceGroup: undefined,
+      filterOptions: [],
+      filtersError: undefined
     };
+  }
+
+  componentDidMount() {
+    this.subscription = ConfigService.getDeviceGroupFilters()
+      .subscribe(
+        ({ tags, reported }) => {
+          const filterOptions = [
+            ...tags.map(tag => toOption(`${tagPrefix}${tag}`)),
+            ...reported.map(prop => toOption(`${reportedPrefix}${prop}`))
+          ];
+          this.setState({ filterOptions });
+        },
+        filtersError => this.setState({ filtersError })
+      );
+  }
+
+  componentWillUnmount() {
+    if (this.subscription) this.subscription.unsubscribe();
   }
 
   toggleNewFilter = () => this.setState({ addNewDeviceGroup: !this.state.addNewDeviceGroup });
@@ -32,13 +61,13 @@ export class ManageDeviceGroups extends LinkedComponent {
   });
 
   render() {
-    const { onClose, t, deviceGroups = [] } = this.props;
+    const { closeFlyout, t, deviceGroups = [] } = this.props;
 
     return (
       <Flyout.Container>
         <Flyout.Header>
           <Flyout.Title>{t('deviceGroupsFlyout.title')}</Flyout.Title>
-          <Flyout.CloseBtn onClick={onClose} />
+          <Flyout.CloseBtn onClick={closeFlyout} />
         </Flyout.Header>
         <Flyout.Content className="manage-filters-flyout-container">
           {

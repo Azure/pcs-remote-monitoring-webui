@@ -2,7 +2,13 @@
 
 import Config from 'app.config';
 import { HttpClient } from './httpClient';
-import { toDeviceGroupsModel, prepareLogoResponse, toSolutionSettingThemeModel } from './models';
+import {
+  prepareLogoResponse,
+  toDeviceGroupFiltersModel,
+  toDeviceGroupModel,
+  toDeviceGroupsModel,
+  toSolutionSettingThemeModel
+} from './models';
 
 const ENDPOINT = Config.serviceUrls.config;
 
@@ -13,6 +19,29 @@ export class ConfigService {
   static getDeviceGroups() {
     return HttpClient.get(`${ENDPOINT}devicegroups`)
       .map(toDeviceGroupsModel);
+  }
+
+  /** Creates a new device group */
+  static createDeviceGroup(payload) {
+    return HttpClient.post(`${ENDPOINT}devicegroups`, payload)
+      .map(toDeviceGroupModel);
+  }
+
+  static updateDeviceGroup(id, payload) {
+    return HttpClient.put(`${ENDPOINT}devicegroups/${id}`, payload)
+      .map(toDeviceGroupModel);
+  }
+
+  /** Delete a device group */
+  static deleteDeviceGroup(id) {
+    return HttpClient.delete(`${ENDPOINT}devicegroups/${id}`)
+      .map(_ => id);
+  }
+
+  /** Returns the account's device group filters */
+  static getDeviceGroupFilters() {
+    return HttpClient.get(`${ENDPOINT}devicegroupfilters`)
+      .map(toDeviceGroupFiltersModel);
   }
 
   /** Returns the azure map key for the account */

@@ -18,7 +18,7 @@ import {
   getPending,
   getError
 } from 'store/utilities';
-import { svgs } from 'utilities';
+import { svgs, compareByProperty } from 'utilities';
 
 // ========================= Epics - START
 const handleError = fromAction => error =>
@@ -32,17 +32,24 @@ export const epics = createEpicScenario({
       epics.actions.fetchAzureMapsKey(),
       epics.actions.fetchDeviceGroups(),
       epics.actions.fetchLogo(),
-      epics.actions.fetchReleaseInformation(),
-      redux.actions.updateActiveDeviceGroup()
+      epics.actions.fetchReleaseInformation()
     ]
   },
 
   /** Get the account's device groups */
   fetchDeviceGroups: {
     type: 'APP_DEVICE_GROUPS_FETCH',
-    epic: fromAction =>
+    epic: (fromAction, store) =>
       ConfigService.getDeviceGroups()
-        .map(toActionCreator(redux.actions.updateDeviceGroups, fromAction))
+        .flatMap(payload => {
+          const deviceGroups = payload.sort(compareByProperty('displayName', true));
+          const actions = [];
+          actions.push(toActionCreator(redux.actions.updateDeviceGroups, fromAction)(deviceGroups));
+          // If no active device group has been selected yet, select the first one
+          if (!getActiveDeviceGroupId(store.getState()))
+            actions.push(toActionCreator(redux.actions.updateActiveDeviceGroup, fromAction)(deviceGroups[0].id));
+          return actions;
+        })
         .catch(handleError(fromAction))
   },
 
@@ -104,6 +111,7 @@ const deviceGroupListSchema = new schema.Array(deviceGroupSchema);
 const initialState = {
   ...errorPendingInitialState,
   deviceGroups: {},
+  deviceGroupFilters: {},
   activeDeviceGroupId: undefined,
   theme: 'dark',
   version: undefined,
@@ -111,7 +119,8 @@ const initialState = {
   logo: svgs.contoso,
   name: 'companyName',
   isDefaultLogo: true,
-  azureMapsKey: ''
+  azureMapsKey: '',
+  deviceGroupFlyoutIsOpen: false
 };
 
 const updateDeviceGroupsReducer = (state, { payload, fromAction }) => {
@@ -119,6 +128,17 @@ const updateDeviceGroupsReducer = (state, { payload, fromAction }) => {
   return update(state, {
     deviceGroups: { $set: deviceGroups },
     ...setPending(fromAction.type, false)
+  });
+};
+
+const deleteDeviceGroupReducer = (state, { payload }) => update(state, {
+  deviceGroups: { $unset: [payload] }
+});
+
+const insertDeviceGroupReducer = (state, { payload }) => {
+  const { entities: { deviceGroups } } = normalize([payload], deviceGroupListSchema);
+  return update(state, {
+    deviceGroups: { $merge: deviceGroups }
   });
 };
 
@@ -147,9 +167,14 @@ const releaseReducer = (state, { payload }) => update(state, {
   releaseNotesUrl: { $set: payload.releaseNotesUrl }
 });
 
+const setDeviceGroupFlyoutReducer = (state, { payload }) => update(state, {
+  deviceGroupFlyoutIsOpen: { $set: !!payload }
+});
+
 /* Action types that cause a pending flag */
 const fetchableTypes = [
   epics.actionTypes.fetchDeviceGroups,
+  epics.actionTypes.fetchDeviceGroupFilters,
   epics.actionTypes.fetchAzureMapsKey,
   epics.actionTypes.updateLogo,
   epics.actionTypes.fetchLogo
@@ -157,13 +182,16 @@ const fetchableTypes = [
 
 export const redux = createReducerScenario({
   updateDeviceGroups: { type: 'APP_DEVICE_GROUP_UPDATE', reducer: updateDeviceGroupsReducer },
+  deleteDeviceGroup: { type: 'APP_DEVICE_GROUP_DELETE', reducer: deleteDeviceGroupReducer },
+  insertDeviceGroup: { type: 'APP_DEVICE_GROUP_INSERT', reducer: insertDeviceGroupReducer },
   updateAzureMapsKeyGroup: { type: 'APP_AZURE_MAPS_KEY_UPDATE', reducer: updateAzureMapsKeyReducer },
   updateActiveDeviceGroup: { type: 'APP_ACTIVE_DEVICE_GROUP_UPDATE', reducer: updateActiveDeviceGroupsReducer },
   changeTheme: { type: 'APP_CHANGE_THEME', reducer: updateThemeReducer },
   registerError: { type: 'APP_REDUCER_ERROR', reducer: errorReducer },
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer },
   updateLogo: { type: 'APP_UPDATE_LOGO', reducer: logoReducer },
-  getReleaseInformation: { type: 'APP_GET_VERSION', reducer: releaseReducer }
+  getReleaseInformation: { type: 'APP_GET_VERSION', reducer: releaseReducer },
+  setDeviceGroupFlyoutStatus: { type: 'APP_SET_DEVICE_GROUP_FLYOUT_STATUS', reducer: setDeviceGroupFlyoutReducer }
 });
 
 export const reducer = { app: redux.getReducer(initialState) };
@@ -176,6 +204,7 @@ export const getTheme = state => getAppReducer(state).theme;
 export const getDeviceGroupEntities = state => getAppReducer(state).deviceGroups;
 export const getActiveDeviceGroupId = state => getAppReducer(state).activeDeviceGroupId;
 export const getAzureMapsKey = state => getAppReducer(state).azureMapsKey;
+export const getDeviceGroupFlyoutStatus = state => getAppReducer(state).deviceGroupFlyoutIsOpen;
 export const getDeviceGroupsError = state =>
   getError(getAppReducer(state), epics.actionTypes.fetchDeviceGroups);
 export const getDeviceGroupsPendingStatus = state =>

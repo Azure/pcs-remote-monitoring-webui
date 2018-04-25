@@ -1,27 +1,53 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { camelCaseReshape, getItems, stringToBoolean } from 'utilities';
+import { camelCaseReshape, reshape, getItems, stringToBoolean } from 'utilities';
+
+export const toDeviceGroupModel = (deviceGroup = {}) => camelCaseReshape(deviceGroup, {
+  'id': 'id',
+  'displayName': 'displayName',
+  'conditions': 'conditions',
+  'eTag': 'eTag'
+});
 
 export const toDeviceGroupsModel = (response = {}) => getItems(response)
-  .map((device = {}) => camelCaseReshape(device, {
-    'id': 'id',
-    'displayName': 'displayName',
-    'conditions': 'conditions',
-    'eTag': 'eTag'
-  }));
+  .map(toDeviceGroupModel);
 
-export const prepareLogoResponse = (responseWrapper) => {
+export const toCreateDeviceGroupRequestModel = (params = {}) => ({
+  DisplayName: params.displayName,
+  Conditions: (params.conditions || []).map(condition => reshape(condition, {
+    'field': 'Key',
+    'operator': 'Operator',
+    'value': 'Value'
+  }))
+});
+
+export const toUpdateDeviceGroupRequestModel = (params = {}) => ({
+  Id: params.id,
+  ETag: params.eTag,
+  DisplayName: params.displayName,
+  Conditions: (params.conditions || []).map(condition => reshape(condition, {
+    'field': 'Key',
+    'operator': 'Operator',
+    'value': 'Value'
+  }))
+});
+
+export const toDeviceGroupFiltersModel = (response = {}) => reshape(response, {
+  'Reported': 'reported',
+  'Tags': 'tags'
+});
+
+
+export const prepareLogoResponse = ({  xhr, response }) => {
   const returnObj = {};
-  const xhr = responseWrapper.xhr;
-  const isDefault = xhr.getResponseHeader("IsDefault");
+  const isDefault = xhr.getResponseHeader('IsDefault');
   if (!stringToBoolean(isDefault)) {
-    const appName = xhr.getResponseHeader("Name");
+    const appName = xhr.getResponseHeader('Name');
     if (appName) {
       returnObj['name'] = appName;
     }
-    const blob = responseWrapper.response;
-    if (blob && blob.size > 0) {
-      returnObj['logo'] = URL.createObjectURL(blob);
+    if (response && response.size) {
+      returnObj['logo'] = URL.createObjectURL(response);
     }
   }
   return returnObj;

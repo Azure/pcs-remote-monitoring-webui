@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
-import { SettingsContainer } from './flyouts/settings';
+import { SettingsContainer, ManageDeviceGroupsContainer } from './flyouts';
 
 // App Components
 import Header from './header/header';
@@ -65,6 +65,7 @@ class App extends Component {
               <Route component={PageNotFound} />
             </Switch>
             { this.state.openFlyout === 'settings' && <SettingsContainer onClose={this.closeFlyout} /> }
+            { this.props.deviceGroupFlyoutIsOpen && <ManageDeviceGroupsContainer /> }
           </Main>
         </div>
       </div>

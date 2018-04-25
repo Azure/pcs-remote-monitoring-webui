@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { RulesGrid } from './rulesGrid';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
+import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/app/manageDeviceGroupsBtn';
 import { AjaxError, Btn, RefreshBar, PageContent, ContextMenu } from 'components/shared';
 import { NewRuleFlyout } from './flyouts';
 import { svgs } from 'utilities';
@@ -68,6 +69,7 @@ export class Rules extends Component {
         <DeviceGroupDropdown />
         {this.state.contextBtns}
         <Btn svg={svgs.plus} onClick={this.openNewRuleFlyout}>New rule</Btn>
+        <ManageDeviceGroupsBtn />
       </ContextMenu>,
       <PageContent className="rules-container" key="page-content">
         <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} t={t} />

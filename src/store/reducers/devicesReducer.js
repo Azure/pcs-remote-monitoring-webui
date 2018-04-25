@@ -100,8 +100,8 @@ export const reducer = { devices: redux.getReducer(initialState) };
 
 // ========================= Selectors - START
 export const getDevicesReducer = state => state.devices;
-export const getEntities = state => getDevicesReducer(state).entities;
-export const getItems = state => getDevicesReducer(state).items;
+export const getEntities = state => getDevicesReducer(state).entities || {};
+export const getItems = state => getDevicesReducer(state).items || [];
 export const getDevicesLastUpdated = state => getDevicesReducer(state).lastUpdated;
 export const getDevicesError = state =>
   getError(getDevicesReducer(state), epics.actionTypes.fetchDevices);

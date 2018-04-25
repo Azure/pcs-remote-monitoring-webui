@@ -7,7 +7,11 @@ import { schema, normalize } from 'normalizr';
 import update from 'immutability-helper';
 import { createSelector } from 'reselect';
 import { TelemetryService, IoTHubManagerService } from 'services';
-import { getActiveDeviceGroupId, getDeviceGroupEntities } from './appReducer';
+import {
+  getActiveDeviceGroupId,
+  getActiveDeviceGroupConditions,
+  getDeviceGroupEntities
+} from './appReducer';
 import {
   createReducerScenario,
   createEpicScenario,
@@ -127,19 +131,20 @@ export const reducer = { rules: redux.getReducer(initialState) };
 
 // ========================= Selectors - START
 export const getRulesReducer = state => state.rules;
-export const getEntities = state => getRulesReducer(state).entities;
-const getItems = state => getRulesReducer(state).items;
+export const getEntities = state => getRulesReducer(state).entities || {};
+const getItems = state => getRulesReducer(state).items || [];
 export const getRulesLastUpdated = state => getRulesReducer(state).lastUpdated;
 export const getRulesError = state =>
   getError(getRulesReducer(state), epics.actionTypes.fetchRules);
 export const getRulesPendingStatus = state =>
   getPending(getRulesReducer(state), epics.actionTypes.fetchRules);
 export const getRules = createSelector(
-  getEntities, getItems, getActiveDeviceGroupId,
-  (entities, items, deviceGroupId) =>
+  getEntities, getItems, getActiveDeviceGroupId, getActiveDeviceGroupConditions,
+  (entities, items, deviceGroupId, deviceGroupConditions = []) =>
     items.reduce((acc, id) => {
       const rule = entities[id];
-      return (rule.groupId === deviceGroupId || !deviceGroupId)
+      const activeDeviceGroup = deviceGroupConditions.length > 0 ? deviceGroupId : undefined;
+      return (rule.groupId === activeDeviceGroup || !activeDeviceGroup)
         ? [...acc, rule]
         : acc
     }, [])

@@ -10,6 +10,7 @@ import { compareByProperty, getIntervalParams } from 'utilities';
 import { Grid, Cell } from './grid';
 import { PanelErrorBoundary } from './panel';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
+import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/app/manageDeviceGroupsBtn';
 import { TimeIntervalDropdown } from 'components/app/timeIntervalDropdown';
 import {
   OverviewPanel,
@@ -346,6 +347,7 @@ export class Dashboard extends Component {
           onChange={this.onTimeIntervalChange}
           value={timeInterval}
           t={t} />
+        <ManageDeviceGroupsBtn />
       </ContextMenu>,
       <PageContent className="dashboard-container" key="page-content">
         <Grid>
