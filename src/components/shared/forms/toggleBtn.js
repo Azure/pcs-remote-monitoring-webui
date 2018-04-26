@@ -31,7 +31,7 @@ export class ToggleBtn extends Component {
     }
     const childrenWithProps = React.Children.map(contentChildren,
       (child) => {
-        if (child) {
+        if (child && typeof child !== 'string') {
           return React.cloneElement(child, {
             formGroupId: `${this.formGroupId}_child`,
             disabled: disabled || (value === undefined ? false : !value)

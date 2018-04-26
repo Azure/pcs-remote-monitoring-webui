@@ -7,11 +7,46 @@
   @include rem-font-size(14px);
   @include rem-fallback(padding, 12px, 0px);
 
+  .section-header { @include rem-font-size(16px); }
+
+  .form-group-label { @include rem-font-size(16px); }
+
+  .help-message { @include rem-fallback(margin-bottom, 4px); }
+
   .radio-container {
     margin-top: 0px;
 
-    .form-group-label { @include rem-fallback(font-size, 14px); }
+    .form-group-label { @include rem-font-size(14px); }
   }
+
+  .row {
+    .cell {
+      &.col-1 { @include rem-fallback(width, 16px); }
+      &.col-3 { @include rem-fallback(width, 100px); }
+    }
+
+    &.action-row {
+      border: 0;
+      @include rem-fallback(padding, 4px, 0px);
+
+      .btn {
+        justify-content: flex-start;
+        @include rem-fallback(padding, 0px);
+      }
+    }
+
+    &.error-data-row { border-bottom: 0 !important; }
+
+    &.error-msg-row { @include rem-fallback(padding-top, 0px); }
+  }
+
+  .icon-only-btn {
+    min-width: 0;
+    padding: 0;
+    @include rem-fallback(width, 20px);
+  }
+
+  .data-grid { @include rem-fallback(margin-top, 16px); }
 
   .device-jobs-error {
     border: 1px transparent solid;

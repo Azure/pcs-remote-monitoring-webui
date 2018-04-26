@@ -3,24 +3,17 @@
 import React from 'react';
 
 import { LinkedComponent } from 'utilities';
-import { svgs } from 'utilities';
+
 import {
-  Btn,
-  BtnToolbar,
-  ErrorMsg,
   Flyout,
   FlyoutHeader,
   FlyoutTitle,
   FlyoutCloseBtn,
   FlyoutContent,
+  ErrorMsg,
   FormGroup,
   FormLabel,
-  Indicator,
-  Radio,
-  SectionDesc,
-  SummaryCount,
-  SummarySection,
-  Svg
+  Radio
 } from 'components/shared';
 import {
   DeviceJobTags,
@@ -51,50 +44,17 @@ export class DeviceJobs extends LinkedComponent {
 
   formIsValid() {
     return [
-      this.jobTypeLink,
-      // TODO: Add links
+      this.jobTypeLink
     ].every(link => !link.error);
-  }
-
-  apply = () => {
-    if (this.formIsValid()) {
-      this.setState({ isPending: true });
-
-      // TODO: Implement server calls.
-
-      this.setState({ isPending: false });
-    }
-  }
-
-  getSummaryMessage() {
-    const { t } = this.props;
-    const { isPending, changesApplied } = this.state;
-
-    if (isPending) {
-      return t('devices.flyouts.jobs.pending');
-    } else if (changesApplied) {
-      return t('devices.flyouts.jobs.applySuccess');
-    } else {
-      return t('devices.flyouts.jobs.affected');
-    }
   }
 
   render() {
     const {
       t,
       onClose,
-      devices
+      devices,
+      updateTags
     } = this.props;
-    const {
-      isPending,
-      error,
-      successCount,
-      changesApplied
-    } = this.state;
-
-    const summaryCount = changesApplied ? successCount : devices.length;
-    const completedSuccessfully = changesApplied && successCount === devices.length;
-    const summaryMessage = this.getSummaryMessage();
 
     return (
       <Flyout>
@@ -103,60 +63,37 @@ export class DeviceJobs extends LinkedComponent {
           <FlyoutCloseBtn onClick={onClose} />
         </FlyoutHeader>
         <FlyoutContent>
-          <form className="device-jobs-container" onSubmit={this.apply}>
-            <FormGroup>
-              <FormLabel>{t('devices.flyouts.jobs.selectJob')}</FormLabel>
-              <Radio link={this.jobTypeLink} value="tags">
-                {t('devices.flyouts.jobs.tags.radioLabel')}
-              </Radio>
-              <Radio link={this.jobTypeLink} value="methods">
-                {t('devices.flyouts.jobs.methods.radioLabel')}
-              </Radio>
-              <Radio link={this.jobTypeLink} value="properties">
-                {t('devices.flyouts.jobs.properties.radioLabel')}
-              </Radio>
-            </FormGroup>
-
+          <div className="device-jobs-container">
             {
-              this.jobTypeLink.value === 'tags' &&
-              <DeviceJobTags t={t} devices={devices} />
+              devices.length === 0 &&
+              <ErrorMsg className="device-jobs-error">{t("devices.flyouts.jobs.noDevices")}</ErrorMsg>
             }
             {
-              this.jobTypeLink.value === 'methods' &&
-              <DeviceJobMethods t={t} devices={devices} />
+              devices.length > 0 && [
+                <FormGroup key="job-selection">
+                  <FormLabel>{t('devices.flyouts.jobs.selectJob')}</FormLabel>
+                  <Radio link={this.jobTypeLink} value="tags">
+                    {t('devices.flyouts.jobs.tags.radioLabel')}
+                  </Radio>
+                  <Radio link={this.jobTypeLink} value="methods">
+                    {t('devices.flyouts.jobs.methods.radioLabel')}
+                  </Radio>
+                  <Radio link={this.jobTypeLink} value="properties">
+                    {t('devices.flyouts.jobs.properties.radioLabel')}
+                  </Radio>
+                </FormGroup>,
+                this.jobTypeLink.value === 'tags'
+                  ? <DeviceJobTags key="job-details" t={t} onClose={onClose} devices={devices} updateTags={updateTags} />
+                  : null,
+                this.jobTypeLink.value === 'methods'
+                  ? <DeviceJobMethods key="job-details" t={t} onClose={onClose} devices={devices} />
+                  : null,
+                this.jobTypeLink.value === 'properties'
+                  ? <DeviceJobProperties key="job-details" t={t} onClose={onClose} devices={devices} />
+                  : null
+              ]
             }
-            {
-              this.jobTypeLink.value === 'properties' &&
-              <DeviceJobProperties t={t} devices={devices} />
-            }
-
-            <SummarySection title={t('devices.flyouts.jobs.summaryHeader')}>
-              <SummaryCount>{summaryCount}</SummaryCount>
-              <SectionDesc>{summaryMessage}</SectionDesc>
-              {this.state.isPending && <Indicator />}
-              {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
-            </SummarySection>
-
-            {
-              error &&
-              <div className="device-jobs-error">
-                <ErrorMsg>{error}</ErrorMsg>
-              </div>
-            }
-            {
-              !changesApplied &&
-              <BtnToolbar>
-                <Btn svg={svgs.reconfigure} primary={true} disabled={isPending} onClick={this.apply}>{t('devices.flyouts.jobs.apply')}</Btn>
-                <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.jobs.cancel')}</Btn>
-              </BtnToolbar>
-            }
-            {
-              !!changesApplied &&
-              <BtnToolbar>
-                <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.jobs.close')}</Btn>
-              </BtnToolbar>
-            }
-          </form>
+          </div>
         </FlyoutContent>
       </Flyout>
     );

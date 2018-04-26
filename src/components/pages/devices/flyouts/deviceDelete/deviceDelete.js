@@ -7,9 +7,9 @@ import update from 'immutability-helper';
 import { IoTHubManagerService } from 'services';
 import { svgs } from 'utilities';
 import {
+  AjaxError,
   Btn,
   BtnToolbar,
-  ErrorMsg,
   Flyout,
   FlyoutHeader,
   FlyoutTitle,
@@ -138,9 +138,7 @@ export class DeviceDelete extends Component {
 
             {
               error &&
-              <div className="device-delete-error">
-                <ErrorMsg>{error}</ErrorMsg>
-              </div>
+              <AjaxError className="device-delete-error" t={t} error={error} />
             }
             {
               !changesApplied &&

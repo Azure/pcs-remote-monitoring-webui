@@ -3,6 +3,11 @@
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { DeviceJobs } from './deviceJobs';
+import { redux as devicesRedux } from 'store/reducers/devicesReducer';
 
-// TODO: Map stuff in. Focusing on UI scaffolding for now. Will most likely need this when server calls are added.
-export const DeviceJobsContainer = translate()(connect(null, null)(DeviceJobs));
+// Wrap the dispatch method
+const mapDispatchToProps = dispatch => ({
+  updateTags: device => dispatch(devicesRedux.actions.updateTags(device))
+});
+
+export const DeviceJobsContainer = translate()(connect(null, mapDispatchToProps)(DeviceJobs));

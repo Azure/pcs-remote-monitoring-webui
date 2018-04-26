@@ -23,6 +23,12 @@ export class IoTHubManagerService {
       .map(toJobsModel);
   }
 
+  /** Submits a job */
+  static submitJob(body) {
+    return HttpClient.post(`${ENDPOINT}jobs`, body)
+      .map(toJobStatusModel);
+  }
+
   /** Get returns the status details for a particular job */
   static getJobStatus(jobId) {
     return HttpClient.get(`${ENDPOINT}jobs/${jobId}?includeDeviceDetails=true`)

@@ -227,6 +227,7 @@
       },
       "jobs": {
         "title": "Jobs",
+        "noDevices": "Oops, we were not able to find any selected devices.",
         "summaryHeader": "Summary",
         "affected": "Affected devices",
         "cancel": "Cancel",
@@ -235,15 +236,35 @@
         "applySuccess": "Job submitted successfully!",
         "close": "Close",
         "selectJob": "Select job",
+        "jobName": "Job Name",
+        "jobNameHint": "Enter job name",
+        "jobNameHelpMessage": "Only letters and numbers are allowed",
+        "viewStatus": "View job status",
+        "validation": {
+          "required": "Is required"
+        },
         "tags": {
           "radioLabel": "Tag",
           "title": "Tags on selected devices",
-          "description": "Tags in common on selected devices"
+          "description": "Tags in common on selected devices",
+          "keyHeader": "Key",
+          "valueHeader": "Value",
+          "typeHeader": "Type",
+          "typeNumber": "Number",
+          "typeString": "Text",
+          "noneExist": "No common tags found for the selected devices.",
+          "add": "Add tag"
         },
         "methods": {
           "radioLabel": "Run method",
           "title": "Run method",
-          "description": "All available methods for device or group of devices"
+          "description": "All available methods for device or group of devices",
+          "methodName": "Method name",
+          "methodNameHint": "Select method",
+          "firmwareVersion": "Firmware Version",
+          "firmwareVersionHint": "1.0.1",
+          "firmwareUri": "Firmware URI",
+          "firmwareUriHint": "Enter firmware URI value"
         },
         "properties": {
           "radioLabel": "Reconfigure",

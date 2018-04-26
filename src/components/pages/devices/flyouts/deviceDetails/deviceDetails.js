@@ -155,7 +155,6 @@ export class DeviceDetails extends Component {
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs)
     };
     const tags = Object.entries(device.tags || {});
-    const methods = device.methods ? device.methods.split(',') : [];
     const properties = Object.entries(device.properties || {});
 
     return (
@@ -232,12 +231,12 @@ export class DeviceDetails extends Component {
                 <Section.Content>
                   <SectionDesc>{t('devices.flyouts.details.methods.description')}</SectionDesc>
                   {
-                    (methods.length === 0)
+                    (device.methods.length === 0)
                       ? t('devices.flyouts.details.methods.noneExist')
-                      : 
+                      :
                       <Grid>
                         {
-                          methods.map((methodName, idx) =>
+                          device.methods.map((methodName, idx) =>
                             <Row key={idx}>
                               <Cell>{methodName}</Cell>
                             </Row>

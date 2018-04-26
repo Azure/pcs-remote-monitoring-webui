@@ -3,6 +3,7 @@
 import update from 'immutability-helper';
 import dot from 'dot-object';
 import { camelCaseReshape, getItems } from 'utilities';
+import uuid from 'uuid/v4';
 
 // Contains methods for converting service response
 // object to UI friendly objects
@@ -28,6 +29,7 @@ export const toDeviceModel = (device = {}) => {
     'authentication': 'authentication'
   });
   return update(modelData, {
+    methods: { $set: modelData.methods ? modelData.methods.split(',') : [] },
     tags: { $set: device.Tags || {} },
     properties: {
       $set: update(dot.pick('Properties.Reported', device), {
@@ -54,6 +56,48 @@ export const toJobsModel = (response = []) => response.map(job => camelCaseResha
   'type': 'type'
 }));
 
+export const toSubmitTagsJobRequestModel = (devices, { jobName, commonTags, deletedTags }) => {
+  const jobId = jobName ? jobName + '-' + uuid() : uuid();
+  const deviceIds = devices.map(({ id }) => `'${id}'`).join(',');
+  const Tags = {};
+  commonTags.forEach(({ name, value }) => (Tags[name] = value));
+  deletedTags.forEach((name) => (Tags[name] = null));
+  const request = {
+    JobId: jobId,
+    QueryCondition: `deviceId in [${deviceIds}]`,
+    MaxExecutionTimeInSeconds: 0,
+    UpdateTwin: {
+      Tags
+    }
+  };
+  return request;
+};
+
+export const methodJobConstants = {
+  firmwareUpdate: 'FirmwareUpdate'
+};
+
+export const toSubmitMethodJobRequestModel = (devices, { jobName, methodName, firmwareVersion, firmwareUri }) => {
+  const jobId = jobName ? jobName + '-' + uuid() : uuid();
+  const deviceIds = devices.map(({ id }) => `'${id}'`).join(',');
+  const JsonPayload = (methodName === methodJobConstants.firmwareUpdate)
+    ? JSON.stringify({
+      Firmware: firmwareVersion,
+      FirmwareUri: firmwareUri
+    })
+    : '{}';
+  const request = {
+    JobId: jobId,
+    QueryCondition: `deviceId in [${deviceIds}]`,
+    MaxExecutionTimeInSeconds: 0,
+    MethodParameter: {
+      Name: methodName,
+      JsonPayload
+    }
+  };
+  return request;
+};
+
 export const toJobStatusModel = (response = {}) => camelCaseReshape(response, {
   'createdTimeUtc': 'createdTimeUtc',
   'devices': 'devices',
@@ -67,7 +111,7 @@ export const toJobStatusModel = (response = {}) => camelCaseReshape(response, {
   'type': 'type'
 });
 
-export const AuthenticationTypeOptions = {
+export const authenticationTypeOptions = {
   symmetric: 0,
   x509: 1
 };
@@ -77,13 +121,12 @@ export const toNewDeviceRequestModel = ({
   deviceId,
   isGenerateId,
   isSimulated,
-  deviceModel,
   authenticationType,
   isGenerateKeys,
   primaryKey,
   secondaryKey
 }) => {
-  const isX509 = authenticationType === AuthenticationTypeOptions.x509;
+  const isX509 = authenticationType === authenticationTypeOptions.x509;
 
   return {
     Id: isGenerateId ? '' : deviceId,

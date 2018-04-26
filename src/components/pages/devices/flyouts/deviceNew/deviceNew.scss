@@ -69,6 +69,12 @@
     }
   }
 
+  .devices-new-error {
+    border: 1px transparent solid;
+    @include rem-fallback(margin, 12px 0px);
+    @include rem-fallback(padding, 16px);
+  }
+
   @include themify($themes) {
     color: themed('colorContentTextDim');
 

@@ -53,18 +53,6 @@ export class DevicesGrid extends Component {
 
   closeFlyout = () => this.setState(closedFlyoutState);
 
-  componentWillReceiveProps(nextProps) {
-    const { hardSelectedDevices } = nextProps;
-    if (!hardSelectedDevices || !this.deviceGridApi) return;
-    const deviceIdSet = new Set((hardSelectedDevices || []).map(({ Id }) => Id));
-
-    this.deviceGridApi.forEachNode(node => {
-      if (deviceIdSet.has(node.data.Id) && !node.selected) {
-        node.setSelected(true);
-      }
-    });
-  }
-
   /**
    * Get the grid api options
    *

@@ -6,6 +6,7 @@
 .summary-section {
   border-top-style: solid;
   border-top-width: 1px;
+  @include rem-fallback(margin-top, 16px);
   @include rem-fallback(padding-top, 28px);
 
   .section-header { @include rem-font-size(16px); }
