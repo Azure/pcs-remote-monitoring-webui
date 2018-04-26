@@ -2,7 +2,12 @@
 
 import React from "react";
 
+import { EMPTY_FIELD_VAL } from 'components/shared/pcsGrid/pcsGridConfig';
 import { TimeRenderer } from '../timeRenderer/timeRenderer';
 import { Indicator } from 'components/shared';
 
-export const LastTriggerRenderer = props => props.value ? <TimeRenderer {...props} /> : <Indicator pattern="bar" />;
+export const LastTriggerRenderer = ({ value }) => (
+  value
+    ? value.error ? EMPTY_FIELD_VAL : <TimeRenderer value={value.response} />
+    : <Indicator pattern="bar" />
+);

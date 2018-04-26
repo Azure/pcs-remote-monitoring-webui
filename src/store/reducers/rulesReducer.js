@@ -27,6 +27,8 @@ import {
 const handleError = fromAction => error =>
   Observable.of(redux.actions.registerError(fromAction.type, { error, fromAction }));
 
+const cellResponse = (response, error) => ({ response, error });
+
 export const epics = createEpicScenario({
   /** Loads the rules */
   fetchRules: {
@@ -51,9 +53,15 @@ export const epics = createEpicScenario({
         .map(entities => entities[fromAction.payload.groupId])
         .flatMap(({ conditions }) => IoTHubManagerService.getDevices(conditions))
         .map(devices => devices.length)
-        .map(count => redux.actions.updateRuleCount({ id: fromAction.payload.id, count }))
+        .map(count =>
+          redux.actions.updateRuleCount({ id: fromAction.payload.id, count: cellResponse(count) })
+        )
         .takeUntil(action$.ofType(epics.actionTypes.fetchRules))
-        .catch(handleError(fromAction)) // Needs to work with selector
+        .catch(error =>
+          Observable.of(
+            redux.actions.updateRuleCount({ id: fromAction.payload.id, count: cellResponse(undefined, error) })
+          )
+        )
   },
 
   fetchRuleLastTriggered: {
@@ -63,9 +71,15 @@ export const epics = createEpicScenario({
         order: 'desc',
         limit: 1
       })
-        .map(([alarm]) => redux.actions.updateRuleLastTrigger({ id: fromAction.payload, lastTrigger: alarm.dateModified }))
+        .map(([alarm]) =>
+          redux.actions.updateRuleLastTrigger({ id: fromAction.payload, lastTrigger: cellResponse(alarm.dateModified) })
+        )
         .takeUntil(action$.ofType(epics.actionTypes.fetchRules))
-        .catch(handleError(fromAction)) // Needs to work with selector
+        .catch(error =>
+          Observable.of(
+            redux.actions.updateRuleLastTrigger({ id: fromAction.payload.id, lastTrigger: cellResponse(undefined, error) })
+          )
+        )
   }
 });
 // ========================= Epics - END
