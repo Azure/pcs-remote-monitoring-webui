@@ -77,7 +77,7 @@ export const epics = createEpicScenario({
         .takeUntil(action$.ofType(epics.actionTypes.fetchRules))
         .catch(error =>
           Observable.of(
-            redux.actions.updateRuleLastTrigger({ id: fromAction.payload.id, lastTrigger: cellResponse(undefined, error) })
+            redux.actions.updateRuleLastTrigger({ id: fromAction.payload, lastTrigger: cellResponse(undefined, error) })
           )
         )
   }
