@@ -17,6 +17,7 @@ $flyoutPadding: 20px;
   bottom: 0;
   right: 0;
   animation: 0.2s ease 0s 1 slideInFromRight;
+  z-index: 1000;
   @include rem-fallback(top, $navHeight);
 
   .flyout-header {

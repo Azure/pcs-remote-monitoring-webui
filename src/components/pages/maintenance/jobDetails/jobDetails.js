@@ -19,7 +19,8 @@ export class JobDetails extends Component {
       selectedDevices: undefined,
       jobStatusIsPending: true,
       jobStatus: undefined,
-      jobStatusError: undefined
+      jobStatusError: undefined,
+      contextBtns: undefined
     };
   }
 
@@ -64,6 +65,8 @@ export class JobDetails extends Component {
     this.refreshJobStatus();
   }
 
+  onContextMenuChange = contextBtns => this.setState({ contextBtns });
+
   render() {
     const selectedJob = this.state.selectedJob;
     const jobGridProps = {
@@ -84,6 +87,7 @@ export class JobDetails extends Component {
 
     return [
       <ContextMenu key="context-menu">
+        { this.state.contextBtns }
         <RefreshBar
           refresh={this.refreshData}
           time={this.props.lastUpdated}
@@ -99,7 +103,10 @@ export class JobDetails extends Component {
                 <h4 className="sub-heading">{this.props.t('maintenance.devices')}</h4>
                 {
                   this.state.selectedDevices
-                    ? <DevicesGrid rowData={this.state.selectedDevices} t={this.props.t} />
+                    ? <DevicesGrid
+                        t={this.props.t}
+                        rowData={this.state.selectedDevices}
+                        onContextMenuChange={this.onContextMenuChange} />
                     : this.props.t('maintenance.noOccurrenceSelected')
                 }
               </div>

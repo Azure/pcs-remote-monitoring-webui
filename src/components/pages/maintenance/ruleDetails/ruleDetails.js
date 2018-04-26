@@ -39,7 +39,11 @@ export class RuleDetails extends Component {
       devices: [],
       deviceIds: '',
       occurrences: [],
-      selectedTab: tabIds.all
+      selectedTab: tabIds.all,
+
+      ruleContextBtns: undefined,
+      alarmContextBtns: undefined,
+      deviceContextBtns: undefined
     };
 
     this.restartTelemetry$ = new Subject();
@@ -126,6 +130,29 @@ export class RuleDetails extends Component {
 
   setTab = (selectedTab) => () => this.setState({ selectedTab })
 
+  onRuleGridReady = gridReadyEvent => this.ruleGridApi = gridReadyEvent.api;
+  onAlarmGridReady = gridReadyEvent => this.alarmGridApi = gridReadyEvent.api;
+  onDeviceGridReady = gridReadyEvent => this.deviceGridApi = gridReadyEvent.api;
+
+  onContextMenuChange = stateKey => contextBtns => this.setState({ [stateKey]: contextBtns });
+
+  onHardSelectChange = gridName =>
+    selectedRows => {
+      if (selectedRows.length > 0) this.deselectOtherGrids(gridName);
+    };
+
+  deselectOtherGrids = gridName => {
+    if (gridName !== 'rules' && this.ruleGridApi.getSelectedNodes().length > 0) {
+      this.ruleGridApi.deselectAll();
+    }
+    if (gridName !== 'alarms' && this.alarmGridApi.getSelectedNodes().length > 0) {
+      this.alarmGridApi.deselectAll();
+    }
+    if (gridName !== 'devices' && this.deviceGridApi.getSelectedNodes().length > 0) {
+      this.deviceGridApi.deselectAll();
+    }
+  }
+
   render () {
     const {
       error,
@@ -143,6 +170,9 @@ export class RuleDetails extends Component {
       rowData: isPending ? undefined : this.state.occurrences,
       pagination: true,
       paginationPageSize: Config.smallGridPageSize,
+      onContextMenuChange: this.onContextMenuChange('alarmContextBtns'),
+      onHardSelectChange: this.onHardSelectChange('alarms'),
+      onGridReady: this.onAlarmGridReady,
       t
     };
 
@@ -150,6 +180,11 @@ export class RuleDetails extends Component {
     const { counts = {} } = selectedAlert;
     return [
       <ContextMenu key="context-menu">
+        {
+          this.state.ruleContextBtns
+          || this.state.alarmContextBtns
+          || this.state.deviceContextBtns
+        }
         <RefreshBar
           refresh={refreshData}
           time={lastUpdated}
@@ -205,7 +240,13 @@ export class RuleDetails extends Component {
                 { t('maintenance.ruleDetailsDesc') }
               </div>
               <h4 className="sub-heading">{ t('maintenance.ruleDetail') }</h4>
-              <RulesGrid rowData={rule} t={t} pagination={false} />
+              <RulesGrid
+                t={t}
+                onGridReady={this.onRuleGridReady}
+                onContextMenuChange={this.onContextMenuChange('ruleContextBtns')}
+                onHardSelectChange={this.onHardSelectChange('rules')}
+                rowData={rule}
+                pagination={false} />
 
               <h4 className="sub-heading">{ t('maintenance.alarmOccurrences') }</h4>
               <AlarmOccurrencesGrid {...alarmsGridProps} />
@@ -223,7 +264,13 @@ export class RuleDetails extends Component {
                 (selectedTab === tabIds.all || selectedTab === tabIds.devices) &&
                 [
                   <h4 className="sub-heading" key="header">{t('maintenance.alarmedDevices')}</h4>,
-                  <DevicesGrid rowData={isPending ? undefined : this.state.devices} t={t} key="chart" />
+                  <DevicesGrid
+                    t={t}
+                    onGridReady={this.onDeviceGridReady}
+                    rowData={isPending ? undefined : this.state.devices}
+                    onContextMenuChange={this.onContextMenuChange('deviceContextBtns')}
+                    onHardSelectChange={this.onHardSelectChange('devices')}
+                    key="chart" />
                 ]
               }
               {
