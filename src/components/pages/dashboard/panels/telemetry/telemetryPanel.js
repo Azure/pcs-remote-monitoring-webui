@@ -19,7 +19,7 @@ import './telemetryPanel.css';
 
 export class TelemetryPanel extends Component {
   render() {
-    const { t, isPending, telemetry, colors, error } = this.props;
+    const { t, isPending, telemetry, theme, colors, error } = this.props;
     const showOverlay = isPending && !Object.keys(telemetry).length;
     return (
       <Panel>
@@ -28,7 +28,7 @@ export class TelemetryPanel extends Component {
           { !showOverlay && isPending && <Indicator size="small" /> }
         </PanelHeader>
         <PanelContent className="telemetry-panel-container">
-          <TelemetryChart telemetry={telemetry} colors={colors} />
+          <TelemetryChart telemetry={telemetry} theme={theme} colors={colors} />
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
         { error && <PanelError><AjaxError t={t} error={error} /></PanelError> }

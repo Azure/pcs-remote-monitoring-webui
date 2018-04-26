@@ -6,7 +6,8 @@ import {
   getAzureMapsKey,
   getAzureMapsKeyError,
   getAzureMapsKeyPendingStatus,
-  getDeviceGroupError
+  getDeviceGroupError,
+  getTheme
 } from 'store/reducers/appReducer';
 import { epics as rulesEpics } from 'store/reducers/rulesReducer';
 import {
@@ -27,14 +28,15 @@ const mapStateToProps = state => ({
   azureMapsKey: getAzureMapsKey(state),
   azureMapsKeyError: getAzureMapsKeyError(state),
   azureMapsKeyIsPending: getAzureMapsKeyPendingStatus(state),
+  deviceGroupError: getDeviceGroupError(state),
+  deviceLastUpdated: getDevicesLastUpdated(state),
   devices: getDeviceEntities(state),
   devicesError: getDevicesError(state),
   devicesIsPending: getDevicesPendingStatus(state),
-  deviceGroupError: getDeviceGroupError(state),
   rules: getRuleEntities(state),
   rulesError: getRulesError(state),
   rulesIsPending: getRulesPendingStatus(state),
-  deviceLastUpdated: getDevicesLastUpdated(state)
+  theme: getTheme(state)
 });
 
 // Wrap the dispatch method

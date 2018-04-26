@@ -267,6 +267,8 @@ export class Dashboard extends Component {
 
   render () {
     const {
+      theme,
+
       azureMapsKey,
       azureMapsKeyError,
       azureMapsKeyIsPending,
@@ -385,6 +387,7 @@ export class Dashboard extends Component {
               telemetry={telemetry}
               isPending={telemetryIsPending}
               error={deviceGroupError || telemetryError}
+              theme={theme}
               colors={chartColorObjects}
               t={t} />
           </Cell>
@@ -395,6 +398,7 @@ export class Dashboard extends Component {
               criticalAlarmsChange={criticalAlarmsChange}
               isPending={kpisIsPending || rulesIsPending || devicesIsPending}
               error={devicesError || rulesError || kpisError}
+              theme={theme}
               colors={chartColorObjects}
               t={t} />
           </Cell>

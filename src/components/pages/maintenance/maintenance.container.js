@@ -3,6 +3,7 @@
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { Maintenance } from './maintenance';
+import { getTheme } from 'store/reducers/appReducer';
 import {
   epics as rulesEpics,
   getEntities as getRuleEntities,
@@ -10,17 +11,17 @@ import {
   getRulesPendingStatus,
   getRulesLastUpdated
 } from 'store/reducers/rulesReducer';
-
 import { getEntities as getDeviceEntities, getDevicesLastUpdated } from 'store/reducers/devicesReducer';
 
 // Pass the devices status
 const mapStateToProps = state => ({
+  deviceEntities: getDeviceEntities(state),
+  deviceLastUpdated: getDevicesLastUpdated(state),
   rulesEntities: getRuleEntities(state),
   rulesError: getRulesError(state),
   rulesIsPending: getRulesPendingStatus(state),
   rulesLastUpdated: getRulesLastUpdated(state),
-  deviceEntities: getDeviceEntities(state),
-  deviceLastUpdated: getDevicesLastUpdated(state)
+  theme: getTheme(state)
 });
 
 // Wrap the dispatch method

@@ -160,6 +160,7 @@ export class RuleDetails extends Component {
       lastUpdated,
       match,
       refreshData,
+      theme,
       t
     } = this.props;
     const selectedId = match.params.id;
@@ -278,7 +279,7 @@ export class RuleDetails extends Component {
                 [
                   <h4 className="sub-heading" key="header">{t('maintenance.alarmedDeviceTelemetry')}</h4>,
                   <div className="details-chart-container" key="chart">
-                    <TelemetryChart telemetry={this.state.telemetry} colors={chartColorObjects} />
+                    <TelemetryChart telemetry={this.state.telemetry} theme={theme} colors={chartColorObjects} />
                   </div>
                 ]
               }

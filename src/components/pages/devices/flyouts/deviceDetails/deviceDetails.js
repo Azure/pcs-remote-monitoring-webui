@@ -146,7 +146,7 @@ export class DeviceDetails extends Component {
   }
 
   render() {
-    const { t, onClose, device } = this.props;
+    const { t, onClose, device, theme } = this.props;
     const { telemetry, lastMessage } = this.state;
     const isPending = this.state.isAlarmsPending && this.props.isRulesPending;
     const rulesGridProps = {
@@ -190,7 +190,7 @@ export class DeviceDetails extends Component {
               <Section.Container>
                 <Section.Header>{t('devices.flyouts.details.telemetry.title')}</Section.Header>
                 <Section.Content>
-                  <TelemetryChart telemetry={telemetry} colors={chartColorObjects} />
+                  <TelemetryChart telemetry={telemetry} theme={theme} colors={chartColorObjects} />
                 </Section.Content>
               </Section.Container>
 

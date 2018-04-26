@@ -115,7 +115,7 @@ export class TelemetryChart extends Component {
     });
   }
 
-  componentWillUpdate({ telemetry }, { telemetryKey }) {
+  componentWillUpdate({ telemetry, theme }, { telemetryKey }) {
     if (Object.keys(telemetry).length && telemetryKey && telemetry[telemetryKey]) {
       const chartData = Object.keys(telemetry[telemetryKey]).map(deviceId => ({
         [deviceId]: telemetry[telemetryKey][deviceId]
@@ -131,7 +131,8 @@ export class TelemetryChart extends Component {
               legend: 'compact',
               noAnimate, // If the telemetryKey changes, animate
               tooltip: true,
-              yAxisState: 'shared' // Default to all values being on the same axis
+              yAxisState: 'shared', // Default to all values being on the same axis
+              theme
             },
             this.props.colors
           );

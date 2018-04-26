@@ -150,7 +150,7 @@ export class Maintenance extends Component {
   onTimeIntervalChange = (timeInterval) => this.setState({ timeInterval }, () => this.getData());
 
   render() {
-    const { rulesEntities, deviceEntities, rulesIsPending, t, history } = this.props;
+    const { rulesEntities, deviceEntities, rulesIsPending, theme, t, history } = this.props;
     const {
       alerts,
       alertCount,
@@ -223,6 +223,7 @@ export class Maintenance extends Component {
               {...generalProps}
               {...alertProps}
               {...routeProps}
+              theme={theme}
               rulesEntities={rulesEntities}
               deviceEntities={deviceEntities} />
           } />
