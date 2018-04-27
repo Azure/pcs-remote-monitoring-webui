@@ -39,9 +39,9 @@ export class DeviceDetails extends Component {
     super(props);
 
     this.state = {
-      alarms: undefined,
-      isAlarmsPending: false,
-      alarmsError: undefined,
+      alerts: undefined,
+      isAlertsPending: false,
+      alertsError: undefined,
 
       telemetry: {},
       telemetryIsPending: true,
@@ -53,7 +53,7 @@ export class DeviceDetails extends Component {
     this.columnDefs = [
       rulesColumnDefs.ruleName,
       rulesColumnDefs.severity,
-      rulesColumnDefs.alarmStatus,
+      rulesColumnDefs.alertStatus,
       rulesColumnDefs.explore
     ];
 
@@ -74,7 +74,7 @@ export class DeviceDetails extends Component {
     } = this.props;
 
     const deviceId = device.id;
-    this.fetchAlarms(deviceId);
+    this.fetchAlerts(deviceId);
 
     const [hours = 0, minutes = 0, seconds = 0] = interval.split(':').map(int);
     const refreshInterval = ((((hours * 60) + minutes) * 60) + seconds) * 1000;
@@ -116,41 +116,41 @@ export class DeviceDetails extends Component {
     if ((this.props.device || {}).id !== nextProps.device.id) {
       const deviceId = (nextProps.device || {}).id;
       this.resetTelemetry$.next(deviceId);
-      this.fetchAlarms(deviceId);
+      this.fetchAlerts(deviceId);
     }
   }
 
   componentWillUnmount() {
-    this.alarmSubscription.unsubscribe();
+    this.alertSubscription.unsubscribe();
     this.telemetrySubscription.unsubscribe();
   }
 
-  applyRuleNames = (alarms, rules) =>
-    alarms.map(alarm => ({
-      ...alarm,
-      name: (rules[alarm.ruleId] || {}).name
+  applyRuleNames = (alerts, rules) =>
+    alerts.map(alert => ({
+      ...alert,
+      name: (rules[alert.ruleId] || {}).name
     }));
 
-  fetchAlarms = (deviceId) => {
-    this.setState({ isAlarmsPending: true });
+  fetchAlerts = (deviceId) => {
+    this.setState({ isAlertsPending: true });
 
-    this.alarmSubscription = TelemetryService.getAlarms({
+    this.alertSubscription = TelemetryService.getAlerts({
       limit: 5,
       order: "desc",
       devices: deviceId
     })
       .subscribe(
-        alarms => this.setState({ alarms, isAlarmsPending: false, alarmsError: undefined }),
-        alarmsError => this.setState({ alarmsError, isAlarmsPending: false })
+        alerts => this.setState({ alerts, isAlertsPending: false, alertsError: undefined }),
+        alertsError => this.setState({ alertsError, isAlertsPending: false })
       );
   }
 
   render() {
     const { t, onClose, device, theme } = this.props;
     const { telemetry, lastMessage } = this.state;
-    const isPending = this.state.isAlarmsPending && this.props.isRulesPending;
+    const isPending = this.state.isAlertsPending && this.props.isRulesPending;
     const rulesGridProps = {
-      rowData: isPending ? undefined : this.applyRuleNames(this.state.alarms || [], this.props.rules || []),
+      rowData: isPending ? undefined : this.applyRuleNames(this.state.alerts || [], this.props.rules || []),
       t: this.props.t,
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs)
     };
@@ -185,7 +185,7 @@ export class DeviceDetails extends Component {
                 </Row>
               </Grid>
 
-              {(!this.state.isAlarmsPending && this.state.alarms && (this.state.alarms.length > 0)) && <RulesGrid {...rulesGridProps} />}
+              {(!this.state.isAlertsPending && this.state.alerts && (this.state.alerts.length > 0)) && <RulesGrid {...rulesGridProps} />}
 
               <Section.Container>
                 <Section.Header>{t('devices.flyouts.details.telemetry.title')}</Section.Header>

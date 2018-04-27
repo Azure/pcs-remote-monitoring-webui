@@ -1,18 +1,18 @@
 {
   "companyName": "Contoso",
   "header": {
-    "appName": "Azure IoT Suite Remote Monitoring Preview",
+    "appName": "Azure IoT Remote Monitoring",
     "logout": "Logout"
   },
   "pageNotFound": {
     "title": "404 - Page not found",
-    "message": "Oops, we weren't able to find the page you requested"
+    "message": "Oops, we weren't able to find the page you requested."
   },
   "tabs": {
-    "dashboard": "dashboard",
-    "devices": "devices",
-    "rules": "rules",
-    "maintenance": "maintenance"
+    "dashboard": "Dashboard",
+    "devices": "Devices",
+    "rules": "Rules",
+    "maintenance": "Maintenance"
   },
   "errorFormat": "Error: {{message}}",
   "errorCode": {
@@ -38,9 +38,9 @@
     "start": "Start",
     "stop": "Stop",
     "stopped": "Stopped",
-    "simulationData": "Simulation Data",
+    "simulationData": "Simulation data",
     "loading": "Loading",
-    "simulationDescription": "Start or stop simulation of devices. Stopping device simulation will minimize the cost of the solution; no simulated telemetry will be sent to your IoT Hub and alarms will not be generated for simulated devices.",
+    "simulationDescription": "Start or stop simulation of devices. Stopping device simulation will minimize the cost of the solution; no simulated telemetry will be sent to your IoT Hub and alerts will not be generated for simulated devices.",
     "toggleError": "Error updating simulation status",
     "setLogoError": "Error updating logo",
     "simulationLoadError": "Error loading simulation status"
@@ -104,7 +104,7 @@
       "fieldPlaceholder": "Select field",
       "calculation": "Calculation",
       "calculationPlaceholder": "select",
-      "timePeriod": "Time Period",
+      "timePeriod": "Time period",
       "operator": "Operator",
       "operatorPlaceholder": ">=",
       "value": "Value",
@@ -112,20 +112,20 @@
     },
     "severityLevel": "Severity level",
     "ruleStatus": "Rule status",
-    "devicesAffected": "devices affected by this rule",
+    "devicesAffected": "Devices affected by this rule",
     "apply": "Apply",
     "cancel": "Cancel"
   },
   "dashboard": {
     "panels": {
-      "alarms": {
-        "header": "System alarms"
+      "alerts": {
+        "header": "Alerts"
       },
-      "kpis": {
-        "header": "System KPIs",
+      "analytics": {
+        "header": "Analytics",
         "topRule": "Top rules triggered",
-        "deviceTypeAlarms": "Alarm by device type",
-        "criticalAlarms": "Critical alarms",
+        "deviceTypeAlerts": "Alert by device type",
+        "criticalAlerts": "Critical alerts",
         "currentWindow": "Currently",
         "previousWindow": "Previously"
       },
@@ -156,17 +156,17 @@
     "noneFound": "No devices found.",
     "refresh": "Refresh",
     "grid": {
-      "connected": "connected",
-      "deviceName": "Device Name",
-      "deviceType": "Device Type",
+      "connected": "Connected",
+      "deviceName": "Device name",
+      "deviceType": "Device type",
       "firmware": "Firmware",
-      "lastConnection": "Last Connection",
-      "no": "no",
-      "offline": "offline",
+      "lastConnection": "Last connection",
+      "no": "No",
+      "offline": "Offline",
       "simulated": "Simulated",
       "status": "Status",
       "telemetry": "Telemetry",
-      "yes": "yes"
+      "yes": "Yes"
     },
     "flyouts": {
       "details": {
@@ -274,13 +274,13 @@
       },
       "new": {
         "contextMenuName": "New device",
-        "title": "New Device",
+        "title": "New device",
         "summaryHeader": "Provision summary",
-        "affected": "devices to provision",
+        "affected": "Devices to provision",
         "cancel": "Cancel",
         "apply": "Apply",
         "pending": "Provisioning devices... ",
-        "applySuccess": "devices provisioned successfully!",
+        "applySuccess": "Devices provisioned successfully",
         "close": "Close",
         "validation": {
           "required": "Is required",
@@ -290,7 +290,7 @@
           "label": "Number of devices"
         },
         "deviceType": {
-          "label": "Device Type",
+          "label": "Device type",
           "simulated": "Simulated",
           "physical": "Physical"
         },
@@ -300,9 +300,9 @@
           "sysGenerated": "System generated device IDs"
         },
         "deviceIdExample": {
-          "label": "Device ID Example",
-          "format": "Simulated-{{deviceName}}-{#####}",
-          "deviceName": "{Device Name}"
+          "label": "Device ID example",
+          "format": "{{deviceName}}-{#####}",
+          "deviceName": "{Device name}"
         },
         "deviceModel": {
           "label": "Device model",
@@ -310,7 +310,7 @@
         },
         "authenticationType": {
           "label": "Authentication type",
-          "symmetric": "Symmetric Key",
+          "symmetric": "Symmetric key",
           "x509": "X.509"
         },
         "authenticationKey": {
@@ -322,8 +322,8 @@
           "primaryKeyConnection": "Connection string primary Key",
           "secondaryKey": "Secondary Key",
           "secondaryKeyConnection": "Connection string secondary Key",
-          "primaryThumbprint": "Primary Thumbprint",
-          "secondaryThumbprint": "Secondary Thumbprint"
+          "primaryThumbprint": "Primary thumbprint",
+          "secondaryThumbprint": "Secondary thumbprint"
         }
       }
     }
@@ -335,17 +335,17 @@
       "critical": "Critical"
     },
     "grid": {
-      "enabled": "enabled",
-      "disabled": "disabled",
-      "ruleName": "Rule Name",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "ruleName": "Rule name",
       "description": "Description",
       "severity": "Severity",
-      "filter": "Filter",
+      "deviceGroup": "Device group",
       "trigger": "Trigger",
-      "notificationType": "Notification Type",
+      "notificationType": "Notification type",
       "status": "Status",
       "count": "Count",
-      "lastTrigger": "Last Trigger",
+      "lastTrigger": "Last trigger",
       "maintenanceLog": "Maintenance log",
       "unknown": "Unknown",
       "explore": "Explore"
@@ -366,7 +366,7 @@
         "delete": "Delete",
         "calculation": "Calculation",
         "calculationPlaceholder": "Select",
-        "timePeriod": "Time Period (in minutes)",
+        "timePeriod": "Time period (in minutes)",
         "condition": {
           "condition": "Condition",
           "field": "Field",
@@ -398,37 +398,37 @@
     "upload": "Upload"
   },
   "applicationSettings": {
-    "nameAndLogo": "Name and Logo",
+    "nameAndLogo": "Name and logo",
     "nameLogoDescription": "Edit logo and name in the site header.",
     "replaceLogo": "Replace logo image",
     "logoDescription": "Recommended logo size 24 x 24 px.\nSupported file formats:\n\t.SVG\n\t.PNG\n\t.JPEG",
-    "applicationName": "Application Name",
-    "currentLogo": "Current Logo",
+    "applicationName": "Application name",
+    "currentLogo": "Current logo",
     "edit": "Edit",
     "checkmark": "Checkmark",
     "uploadError": "Unable to upload file, please check the file type and try again",
     "error": "Error"
   },
   "maintenance": {
-    "acknowledged": "ack",
-    "alarmOccurrences": "Alarm Occurrences",
-    "alarmedDeviceTelemetry": "Alarmed device's telemetry",
-    "alarmedDevices": "Alarmed devices",
+    "acknowledged": "Acknowledge",
+    "alertOccurrences": "Alert Occurrences",
+    "alertedDeviceTelemetry": "Alerted device's telemetry",
+    "alertedDevices": "Alerted devices",
     "all": "All",
     "closed": "closed",
     "critical": "Critical",
     "devices": "Devices",
     "failedJobs": "Failed jobs",
     "jobs": "Jobs",
-    "lastEvent": "Last Event",
+    "lastEvent": "Last event",
     "noData": "No data",
-    "noOccurrenceSelected": "No occurences selected",
-    "notifications": "Notifications",
+    "noOccurrenceSelected": "No occurrences selected",
+    "notifications": "Alerts",
     "open": "open",
-    "openAlarms": "Open Alarms",
+    "openAlerts": "Open Alerts",
     "relatedInfo": "Related information",
-    "ruleDetail": "Rule Detail",
-    "ruleDetailsDesc": "Manage alarm occurences associated to this rule in the section below, and use the associated information to troubleshoot each occurence.",
+    "ruleDetail": "Rule detail",
+    "ruleDetailsDesc": "Manage alert occurrences associated to this rule in the section below, and use the associated information to troubleshoot each occurrence.",
     "severity": "Severity",
     "succeeded": "Succeeded",
     "telemetry": "Telemetry",
@@ -436,29 +436,29 @@
     "total": "Total",
     "warning": "Warning",
     "alertGrid": {
-      "totalCount": "Total Count",
+      "totalCount": "Total count",
       "open": "Open",
-      "acknowledged": "Ack",
+      "acknowledged": "Acknowledged",
       "closed": "Closed",
-      "lastOccurrence": "Last Occurrence"
+      "lastOccurrence": "Last occurrence"
     },
     "jobGrid": {
       "jobName": "Job Name",
       "status": "Status",
       "operation": "Operation",
-      "noDevices": "No. of Devices",
+      "noDevices": "No. of devices",
       "succeeded": "Succeeded",
       "failed": "Failed",
-      "startTime": "Start Time",
-      "endTime": "End Time"
+      "startTime": "Start time",
+      "endTime": "End time"
     },
     "jobStatusGrid": {
-      "deviceIdAffected": "Device ID Affected",
-      "lastReturnMsg": "Last Return Message"
+      "deviceIdAffected": "Device ID affected",
+      "lastReturnMsg": "Last return message"
     },
-    "alarmOccGrid": {
+    "alertOccGrid": {
       "occurrence": "Occurrence",
-      "triggerDevice": "Trigger Device",
+      "triggerDevice": "Trigger device",
       "time": "Time"
     },
     "jobStatus": {

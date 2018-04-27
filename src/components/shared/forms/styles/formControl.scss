@@ -60,7 +60,7 @@ $textareaHeight: 60px;
       &:hover,
       &:focus { border-color: themed('colorInputBorderHoverColor'); }
 
-      &.error { border-color: themed('colorAlarm'); }
+      &.error { border-color: themed('colorAlert'); }
 
       &:disabled {
         background-color: themed('colorDisabledInputBg');

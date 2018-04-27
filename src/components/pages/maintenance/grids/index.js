@@ -3,4 +3,4 @@
 export * from './alertGrid';
 export * from './jobGrid';
 export * from './jobStatusGrid';
-export * from './alarmOccurrencesGrid';
+export * from './alertOccurrencesGrid';

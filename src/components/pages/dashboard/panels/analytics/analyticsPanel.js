@@ -13,12 +13,12 @@ import {
   PanelError
 } from 'components/pages/dashboard/panel';
 
-import './kpisPanel.css';
+import './analyticsPanel.css';
 
-const barChartId = 'kpi-bar-chart-container';
-const pieChartId = 'kpi-pie-chart-container';
+const barChartId = 'analytics-bar-chart-container';
+const pieChartId = 'analytics-pie-chart-container';
 
-export class KpisPanel extends Component {
+export class AnalyticsPanel extends Component {
 
   constructor(props) {
     super(props);
@@ -48,11 +48,11 @@ export class KpisPanel extends Component {
     const staticTime = '';
 
     // ================== Bar chart - START
-    if (nextProps.topAlarms.length) {
+    if (nextProps.topAlerts.length) {
       // Convert the raw counts into a chart readable format
-      const currentWindow = nextProps.t('dashboard.panels.kpis.currentWindow');
-      const previousWindow = nextProps.t('dashboard.panels.kpis.previousWindow');
-      const barChartDatum = nextProps.topAlarms.map(({ name, count, previousCount }) => ({
+      const currentWindow = nextProps.t('dashboard.panels.analytics.currentWindow');
+      const previousWindow = nextProps.t('dashboard.panels.analytics.previousWindow');
+      const barChartDatum = nextProps.topAlerts.map(({ name, count, previousCount }) => ({
         [name]: {
           [currentWindow]: { [staticTime]: { val: count } }, // TODO: Translate legends
           [previousWindow]: { [staticTime]: { val: previousCount } },
@@ -70,13 +70,13 @@ export class KpisPanel extends Component {
     // ================== Bar chart - END
 
     // ================== Pie chart - START
-    const deviceTypes = Object.keys(nextProps.alarmsPerDeviceId);
+    const deviceTypes = Object.keys(nextProps.alertsPerDeviceId);
     if (deviceTypes.length) {
       // Convert the raw counts into a chart readable format
       // Sort the deviceTypes so the chart sections and color won't change on update
       const pieChartDatum = deviceTypes.sort().map(deviceType => ({
         [deviceType]: {
-          '': { [staticTime]: { val: nextProps.alarmsPerDeviceId[deviceType] } }
+          '': { [staticTime]: { val: nextProps.alertsPerDeviceId[deviceType] } }
         }
       }));
 
@@ -92,31 +92,31 @@ export class KpisPanel extends Component {
   }
 
   render() {
-    const { t, isPending, criticalAlarmsChange, error } = this.props;
-    const showOverlay = isPending && !criticalAlarmsChange;
+    const { t, isPending, criticalAlertsChange, error } = this.props;
+    const showOverlay = isPending && !criticalAlertsChange;
     return (
       <Panel>
         <PanelHeader>
-          <PanelHeaderLabel>{t('dashboard.panels.kpis.header')}</PanelHeaderLabel>
+          <PanelHeaderLabel>{t('dashboard.panels.analytics.header')}</PanelHeaderLabel>
           { !showOverlay && isPending && <Indicator size="small" /> }
         </PanelHeader>
-        <PanelContent className="kpis-panel-container">
-          <div className="kpi-cell full-width">
-            <div className="kpi-header">{t('dashboard.panels.kpis.topRule')}</div>
+        <PanelContent className="analytics-panel-container">
+          <div className="analytics-cell full-width">
+            <div className="analytics-header">{t('dashboard.panels.analytics.topRule')}</div>
             <div className="chart-container" id={barChartId} />
           </div>
-          <div className="kpi-cell">
-            <div className="kpi-header">{t('dashboard.panels.kpis.deviceTypeAlarms')}</div>
+          <div className="analytics-cell">
+            <div className="analytics-header">{t('dashboard.panels.analytics.deviceTypeAlerts')}</div>
             <div className="chart-container" id={pieChartId} />
           </div>
-          <div className="kpi-cell">
-            <div className="kpi-header">{t('dashboard.panels.kpis.criticalAlarms')}</div>
-            <div className="critical-alarms">
+          <div className="analytics-cell">
+            <div className="analytics-header">{t('dashboard.panels.analytics.criticalAlerts')}</div>
+            <div className="critical-alerts">
               {
-                criticalAlarmsChange !== 0 &&
-                  <div className="kpi-percentage-container">
-                    <div className="kpi-value">{ criticalAlarmsChange }</div>
-                    <div className="kpi-percentage-sign">%</div>
+                criticalAlertsChange !== 0 &&
+                  <div className="analytics-percentage-container">
+                    <div className="analytics-value">{ criticalAlertsChange }</div>
+                    <div className="analytics-percentage-sign">%</div>
                   </div>
               }
             </div>

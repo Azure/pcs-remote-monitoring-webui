@@ -11,7 +11,7 @@ import { DevicesGrid } from 'components/pages/devices/devicesGrid';
 import { TelemetryChart, transformTelemetryResponse, chartColorObjects } from 'components/pages/dashboard/panels/telemetry';
 import { TelemetryService } from 'services';
 import { TimeRenderer, SeverityRenderer } from 'components/shared/cellRenderers';
-import { AlarmOccurrencesGrid } from 'components/pages/maintenance/grids';
+import { AlertOccurrencesGrid } from 'components/pages/maintenance/grids';
 
 import './ruleDetails.css';
 
@@ -42,7 +42,7 @@ export class RuleDetails extends Component {
       selectedTab: tabIds.all,
 
       ruleContextBtns: undefined,
-      alarmContextBtns: undefined,
+      alertContextBtns: undefined,
       deviceContextBtns: undefined
     };
 
@@ -99,8 +99,8 @@ export class RuleDetails extends Component {
     const selectedId = match.params.id;
     const selectedRule = rulesEntities[selectedId];
     const selectedAlert = alerts.filter(({ ruleId }) => ruleId === selectedId)[0] || {};
-    const occurrences = (selectedAlert.alarms || [])
-      .map(alarm => ({ ...alarm, name: selectedRule.name, severity: selectedRule.severity }));
+    const occurrences = (selectedAlert.alerts || [])
+      .map(alert => ({ ...alert, name: selectedRule.name, severity: selectedRule.severity }));
 
     const deviceObjects = (occurrences || []).reduce(
       (acc, { deviceId }) => ({
@@ -131,7 +131,7 @@ export class RuleDetails extends Component {
   setTab = selectedTab => () => this.setState({ selectedTab })
 
   onRuleGridReady = gridReadyEvent => this.ruleGridApi = gridReadyEvent.api;
-  onAlarmGridReady = gridReadyEvent => this.alarmGridApi = gridReadyEvent.api;
+  onAlertGridReady = gridReadyEvent => this.alertGridApi = gridReadyEvent.api;
   onDeviceGridReady = gridReadyEvent => this.deviceGridApi = gridReadyEvent.api;
 
   onContextMenuChange = stateKey => contextBtns => this.setState({ [stateKey]: contextBtns });
@@ -145,8 +145,8 @@ export class RuleDetails extends Component {
     if (gridName !== 'rules' && this.ruleGridApi.getSelectedNodes().length > 0) {
       this.ruleGridApi.deselectAll();
     }
-    if (gridName !== 'alarms' && this.alarmGridApi.getSelectedNodes().length > 0) {
-      this.alarmGridApi.deselectAll();
+    if (gridName !== 'alerts' && this.alertGridApi.getSelectedNodes().length > 0) {
+      this.alertGridApi.deselectAll();
     }
     if (gridName !== 'devices' && this.deviceGridApi.getSelectedNodes().length > 0) {
       this.deviceGridApi.deselectAll();
@@ -165,15 +165,15 @@ export class RuleDetails extends Component {
     } = this.props;
     const selectedId = match.params.id;
     const rule = isPending ? undefined : [this.state.selectedRule];
-    const alarmName = (this.state.selectedRule || {}).name || selectedId;
+    const alertName = (this.state.selectedRule || {}).name || selectedId;
 
-    const alarmsGridProps = {
+    const alertsGridProps = {
       rowData: isPending ? undefined : this.state.occurrences,
       pagination: true,
       paginationPageSize: Config.smallGridPageSize,
-      onContextMenuChange: this.onContextMenuChange('alarmContextBtns'),
-      onHardSelectChange: this.onHardSelectChange('alarms'),
-      onGridReady: this.onAlarmGridReady,
+      onContextMenuChange: this.onContextMenuChange('alertContextBtns'),
+      onHardSelectChange: this.onHardSelectChange('alerts'),
+      onGridReady: this.onAlertGridReady,
       t
     };
 
@@ -183,7 +183,7 @@ export class RuleDetails extends Component {
       <ContextMenu key="context-menu">
         {
           this.state.ruleContextBtns
-          || this.state.alarmContextBtns
+          || this.state.alertContextBtns
           || this.state.deviceContextBtns
         }
         <RefreshBar
@@ -197,7 +197,7 @@ export class RuleDetails extends Component {
         !this.props.error
           ? <div>
               <div className="header-container">
-                <h1 className="maintenance-header">{alarmName}</h1>
+                <h1 className="maintenance-header">{alertName}</h1>
                 <div className="rule-stat-container">
                   <div className="rule-stat-cell">
                     <div className="rule-stat-header">{t('maintenance.total')}</div>
@@ -249,8 +249,8 @@ export class RuleDetails extends Component {
                 rowData={rule}
                 pagination={false} />
 
-              <h4 className="sub-heading">{ t('maintenance.alarmOccurrences') }</h4>
-              <AlarmOccurrencesGrid {...alarmsGridProps} />
+              <h4 className="sub-heading">{ t('maintenance.alertOccurrences') }</h4>
+              <AlertOccurrencesGrid {...alertsGridProps} />
 
               <h4 className="sub-heading">{ t('maintenance.relatedInfo') }</h4>
               <div className="tab-container">
@@ -264,7 +264,7 @@ export class RuleDetails extends Component {
               {
                 (selectedTab === tabIds.all || selectedTab === tabIds.devices) &&
                 [
-                  <h4 className="sub-heading" key="header">{t('maintenance.alarmedDevices')}</h4>,
+                  <h4 className="sub-heading" key="header">{t('maintenance.alertedDevices')}</h4>,
                   <DevicesGrid
                     t={t}
                     onGridReady={this.onDeviceGridReady}
@@ -277,7 +277,7 @@ export class RuleDetails extends Component {
               {
                 !isPending && (selectedTab === tabIds.all || selectedTab === tabIds.telemetry) && Object.keys(this.state.telemetry).length > 0 &&
                 [
-                  <h4 className="sub-heading" key="header">{t('maintenance.alarmedDeviceTelemetry')}</h4>,
+                  <h4 className="sub-heading" key="header">{t('maintenance.alertedDeviceTelemetry')}</h4>,
                   <div className="details-chart-container" key="chart">
                     <TelemetryChart telemetry={this.state.telemetry} theme={theme} colors={chartColorObjects} />
                   </div>

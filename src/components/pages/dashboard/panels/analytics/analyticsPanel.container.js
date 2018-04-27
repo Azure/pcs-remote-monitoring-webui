@@ -2,7 +2,7 @@
 
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { KpisPanel } from './kpisPanel';
+import { AnalyticsPanel } from './analyticsPanel';
 import { getEntities as getRuleEntities } from 'store/reducers/rulesReducer';
 import { getEntities as getDeviceEntities } from 'store/reducers/devicesReducer';
 
@@ -12,4 +12,4 @@ const mapStateToProps = state => ({
   devices: getDeviceEntities(state)
 });
 
-export const KpisPanelContainer = translate()(connect(mapStateToProps, null)(KpisPanel));
+export const AnalyticsPanelContainer = translate()(connect(mapStateToProps, null)(AnalyticsPanel));

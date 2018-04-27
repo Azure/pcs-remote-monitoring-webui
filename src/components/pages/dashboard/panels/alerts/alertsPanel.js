@@ -14,7 +14,7 @@ import {
 import { RulesGrid, rulesColumnDefs } from 'components/pages/rules/rulesGrid';
 import { translateColumnDefs } from 'utilities';
 
-export class AlarmsPanel extends Component {
+export class AlertsPanel extends Component {
 
   constructor(props) {
     super(props);
@@ -34,17 +34,17 @@ export class AlarmsPanel extends Component {
   }
 
   render() {
-    const { t, alarms, isPending, error } = this.props;
+    const { t, alerts, isPending, error } = this.props;
     const gridProps = {
       columnDefs: translateColumnDefs(t, this.columnDefs),
-      rowData: alarms,
+      rowData: alerts,
       t
     };
-    const showOverlay = isPending && !alarms.length;
+    const showOverlay = isPending && !alerts.length;
     return (
-      <Panel className="alarms-panel-container">
+      <Panel className="alerts-panel-container">
         <PanelHeader>
-          <PanelHeaderLabel>{t('dashboard.panels.alarms.header')}</PanelHeaderLabel>
+          <PanelHeaderLabel>{t('dashboard.panels.alerts.header')}</PanelHeaderLabel>
           { !showOverlay && isPending && <Indicator size="small" /> }
         </PanelHeader>
         <PanelContent>

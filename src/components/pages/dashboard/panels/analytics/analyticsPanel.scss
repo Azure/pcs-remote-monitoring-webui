@@ -3,12 +3,12 @@
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
-.kpis-panel-container {
+.analytics-panel-container {
   display: flex;
   flex-flow: row wrap;
   height: 100%;
 
-  .kpi-cell {
+  .analytics-cell {
     display: flex;
     flex-flow: column nowrap;
     width: 50%;
@@ -16,7 +16,7 @@
 
     &.full-width { width: 100%; }
 
-    .critical-alarms {
+    .critical-alerts {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -24,11 +24,11 @@
       font-family: $fontSelawikLight;
       @include rem-font-size(60px);
 
-      .kpi-percentage-container {
+      .analytics-percentage-container {
         display: flex;
         align-items: flex-end;
 
-        .kpi-percentage-sign { @include rem-font-size(40px); }
+        .analytics-percentage-sign { @include rem-font-size(40px); }
       }
     }
   }
@@ -54,11 +54,11 @@
       .tsi-pieChartSVG path { stroke: themed('colorDashboardPanelContentBg'); }
     }
 
-    .kpi-cell {
-      .kpi-header { color: themed('colorContentTextDim'); }
+    .analytics-cell {
+      .analytics-header { color: themed('colorContentTextDim'); }
 
-      .critical-alarms {
-        .kpi-header { color: themed('colorContentText'); }
+      .critical-alerts {
+        .analytics-header { color: themed('colorContentText'); }
       }
     }
   }

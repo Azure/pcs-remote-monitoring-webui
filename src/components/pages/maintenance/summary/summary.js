@@ -53,7 +53,7 @@ export const Summary = ({
     <h1 className="maintenance-header">{props.t('maintenance.title')}</h1>
     <div className="stat-container">
       <div className="stat-group">
-        <StatCell value={renderUndefined(alertCount)} label={props.t('maintenance.openAlarms')} />
+        <StatCell value={renderUndefined(alertCount)} label={props.t('maintenance.openAlerts')} />
         <div className="stat-column">
           <StatCell
             className="critical"

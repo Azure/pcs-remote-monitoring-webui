@@ -14,9 +14,9 @@ import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'compone
 import { TimeIntervalDropdown } from 'components/app/timeIntervalDropdown';
 import {
   OverviewPanel,
-  AlarmsPanel,
+  AlertsPanel,
   TelemetryPanel,
-  KpisPanel,
+  AnalyticsPanel,
   MapPanel,
   transformTelemetryResponse,
   chartColorObjects
@@ -33,20 +33,20 @@ const initialState = {
   telemetryIsPending: true,
   telemetryError: null,
 
-  // Kpis data
-  currentActiveAlarms: [],
-  topAlarms: [],
-  alarmsPerDeviceId: {},
-  criticalAlarmsChange: 0,
-  kpisIsPending: true,
-  kpisError: null,
+  // Analytics data
+  currentActiveAlerts: [],
+  topAlerts: [],
+  alertsPerDeviceId: {},
+  criticalAlertsChange: 0,
+  analyticsIsPending: true,
+  analyticsError: null,
 
   // Summary data
   openWarningCount: undefined,
   openCriticalCount: undefined,
 
   // Map data
-  devicesInAlarm: {},
+  devicesInAlerts: {},
 
   lastRefreshed: undefined
 };
@@ -84,13 +84,13 @@ export class Dashboard extends Component {
       .map(telemetry => ({ telemetry, telemetryIsPending: false })); // Stream emits new state
       // Telemetry stream - END
 
-      // KPI stream - START
+      // Analytics stream - START
 
       // TODO: Add device ids to params - START
-      const getKpiStream = ({ deviceIds = [], timeInterval }) => this.panelsRefresh$
+      const getAnalyticsStream = ({ deviceIds = [], timeInterval }) => this.panelsRefresh$
         .delay(Config.dashboardRefreshInterval)
         .startWith(0)
-        .do(_ => this.setState({ kpisIsPending: true }))
+        .do(_ => this.setState({ analyticsIsPending: true }))
         .flatMap(_ => {
           const devices = deviceIds.length ? deviceIds.join(',') : undefined;
           const [ currentIntervalParams, previousIntervalParams ] = getIntervalParams(timeInterval);
@@ -99,73 +99,73 @@ export class Dashboard extends Component {
           const previousParams = { ...previousIntervalParams, devices };
 
           return Observable.forkJoin(
-            TelemetryService.getActiveAlarms(currentParams),
-            TelemetryService.getActiveAlarms(previousParams),
+            TelemetryService.getActiveAlerts(currentParams),
+            TelemetryService.getActiveAlerts(previousParams),
 
-            TelemetryService.getAlarms(currentParams),
-            TelemetryService.getAlarms(previousParams)
+            TelemetryService.getAlerts(currentParams),
+            TelemetryService.getAlerts(previousParams)
           )
         }).map(([
-          currentActiveAlarms,
-          previousActiveAlarms,
+          currentActiveAlerts,
+          previousActiveAlerts,
 
-          currentAlarms,
-          previousAlarms
+          currentAlerts,
+          previousAlerts
         ]) => {
-          // Process all the data out of the currentAlarms list
-          const currentAlarmsStats = currentAlarms.reduce((acc, alarm) => {
-              const isOpen = alarm.status === 'open';
-              const isWarning = alarm.severity === 'warning';
-              const isCritical = alarm.severity === 'critical';
-              let updatedAlarmsPerDeviceId = acc.alarmsPerDeviceId;
-              if (alarm.deviceId) {
-                updatedAlarmsPerDeviceId = {
-                  ...updatedAlarmsPerDeviceId,
-                  [alarm.deviceId]: (updatedAlarmsPerDeviceId[alarm.deviceId] || 0) + 1
+          // Process all the data out of the currentAlerts list
+          const currentAlertsStats = currentAlerts.reduce((acc, alert) => {
+              const isOpen = alert.status === 'open';
+              const isWarning = alert.severity === 'warning';
+              const isCritical = alert.severity === 'critical';
+              let updatedAlertsPerDeviceId = acc.alertsPerDeviceId;
+              if (alert.deviceId) {
+                updatedAlertsPerDeviceId = {
+                  ...updatedAlertsPerDeviceId,
+                  [alert.deviceId]: (updatedAlertsPerDeviceId[alert.deviceId] || 0) + 1
                 };
               }
               return {
                 openWarningCount: (acc.openWarningCount || 0) + (isWarning && isOpen ? 1 : 0),
                 openCriticalCount: (acc.openCriticalCount || 0) + (isCritical && isOpen ? 1 : 0),
                 totalCriticalCount: (acc.totalCriticalCount || 0) + (isCritical ? 1 : 0),
-                alarmsPerDeviceId: updatedAlarmsPerDeviceId
+                alertsPerDeviceId: updatedAlertsPerDeviceId
               };
             },
-            { alarmsPerDeviceId: {} }
+            { alertsPerDeviceId: {} }
           );
 
-          // ================== Critical Alarms Count - START
-          const currentCriticalAlarms = currentAlarmsStats.totalCriticalCount;
-          const previousCriticalAlarms = previousAlarms.reduce(
+          // ================== Critical Alerts Count - START
+          const currentCriticalAlerts = currentAlertsStats.totalCriticalCount;
+          const previousCriticalAlerts = previousAlerts.reduce(
             (cnt, { severity }) => severity === 'critical' ? cnt + 1 : cnt,
             0
           );
-          const criticalAlarmsChange = ((currentCriticalAlarms - previousCriticalAlarms) / currentCriticalAlarms * 100).toFixed(2);
-          // ================== Critical Alarms Count - END
+          const criticalAlertsChange = ((currentCriticalAlerts - previousCriticalAlerts) / currentCriticalAlerts * 100).toFixed(2);
+          // ================== Critical Alerts Count - END
 
-          // ================== Top Alarms - START
-          const currentTopAlarms = currentActiveAlarms
+          // ================== Top Alerts - START
+          const currentTopAlerts = currentActiveAlerts
             .sort(compareByProperty('count'))
-            .slice(0, Config.maxTopAlarms);
+            .slice(0, Config.maxTopAlerts);
 
-          // Find the previous counts for the current top kpis
-          const previousTopAlarmsMap = previousActiveAlarms.reduce(
+          // Find the previous counts for the current top analytics
+          const previousTopAlertsMap = previousActiveAlerts.reduce(
             (acc, { ruleId, count }) =>
               (ruleId in acc)
                 ? { ...acc, [ruleId]: count }
                 : acc
             ,
-            currentTopAlarms.reduce((acc, { ruleId }) => ({ ...acc, [ruleId]: 0 }), {})
+            currentTopAlerts.reduce((acc, { ruleId }) => ({ ...acc, [ruleId]: 0 }), {})
           );
 
-          const topAlarms = currentTopAlarms.map(({ ruleId, count }) => ({
+          const topAlerts = currentTopAlerts.map(({ ruleId, count }) => ({
             ruleId,
             count,
-            previousCount: previousTopAlarmsMap[ruleId] || 0
+            previousCount: previousTopAlertsMap[ruleId] || 0
           }));
-          // ================== Top Alarms - END
+          // ================== Top Alerts - END
 
-          const devicesInAlarm = currentAlarms
+          const devicesInAlert = currentAlerts
             .filter(({ status }) => status === 'open')
             .reduce((acc, { deviceId, severity, ruleId}) => {
               return {
@@ -175,23 +175,23 @@ export class Dashboard extends Component {
             }, {});
 
           return ({
-            kpisIsPending: false,
+            analyticsIsPending: false,
 
-            // Kpis data
-            currentActiveAlarms,
-            topAlarms,
-            criticalAlarmsChange,
-            alarmsPerDeviceId: currentAlarmsStats.alarmsPerDeviceId,
+            // Analytics data
+            currentActiveAlerts,
+            topAlerts,
+            criticalAlertsChange,
+            alertsPerDeviceId: currentAlertsStats.alertsPerDeviceId,
 
             // Summary data
-            openWarningCount: currentAlarmsStats.openWarningCount,
-            openCriticalCount: currentAlarmsStats.openCriticalCount,
+            openWarningCount: currentAlertsStats.openWarningCount,
+            openCriticalCount: currentAlertsStats.openCriticalCount,
 
             // Map data
-            devicesInAlarm
+            devicesInAlert
           });
         });
-      // KPI stream - END
+      // Analytics stream - END
 
       this.subscriptions.push(
         this.dashboardRefresh$
@@ -215,13 +215,13 @@ export class Dashboard extends Component {
 
       this.subscriptions.push(
         this.dashboardRefresh$
-          .switchMap(getKpiStream)
+          .switchMap(getAnalyticsStream)
           .subscribe(
-            kpiState => this.setState(
-              { ...kpiState, lastRefreshed: moment() },
+            analyticsState => this.setState(
+              { ...analyticsState, lastRefreshed: moment() },
               () => this.panelsRefresh$.next('r')
             ),
-            kpisError => this.setState({ kpisError, kpisIsPending: false })
+            analyticsError => this.setState({ analyticsError, analyticsIsPending: false })
           )
       );
 
@@ -293,17 +293,17 @@ export class Dashboard extends Component {
       telemetryIsPending,
       telemetryError,
 
-      currentActiveAlarms,
-      topAlarms,
-      alarmsPerDeviceId,
-      criticalAlarmsChange,
-      kpisIsPending,
-      kpisError,
+      currentActiveAlerts,
+      topAlerts,
+      alertsPerDeviceId,
+      criticalAlertsChange,
+      analyticsIsPending,
+      analyticsError,
 
       openWarningCount,
       openCriticalCount,
 
-      devicesInAlarm,
+      devicesInAlert,
 
       lastRefreshed
     } = this.state;
@@ -319,24 +319,24 @@ export class Dashboard extends Component {
         ? deviceIds.length - onlineDeviceCount
         : undefined;
 
-    // Add the alarm rule name to the list of top alarms
-    const topAlarmsWithName = topAlarms.map(alarm => ({
-      ...alarm,
-      name: (rules[alarm.ruleId] || {}).name || alarm.ruleId,
+    // Add the alert rule name to the list of top alerts
+    const topAlertsWithName = topAlerts.map(alert => ({
+      ...alert,
+      name: (rules[alert.ruleId] || {}).name || alert.ruleId,
     }));
 
-    // Add the alarm rule name to the list of currently active alarms
-    const currentActiveAlarmsWithName = currentActiveAlarms.map(alarm => ({
-      ...alarm,
-      name: (rules[alarm.ruleId] || {}).name || alarm.ruleId
+    // Add the alert rule name to the list of currently active alerts
+    const currentActiveAlertsWithName = currentActiveAlerts.map(alert => ({
+      ...alert,
+      name: (rules[alert.ruleId] || {}).name || alert.ruleId
     }));
 
-    // Convert the list of alarms by device id to alarms by device type
-    const alarmsPerDeviceType = Object.keys(alarmsPerDeviceId).reduce((acc, deviceId) => {
+    // Convert the list of alerts by device id to alerts by device type
+    const alertsPerDeviceType = Object.keys(alertsPerDeviceId).reduce((acc, deviceId) => {
       const deviceType = (devices[deviceId] || {}).type || deviceId;
       return {
         ...acc,
-        [deviceType]: (acc[deviceType] || 0) + alarmsPerDeviceId[deviceId]
+        [deviceType]: (acc[deviceType] || 0) + alertsPerDeviceId[deviceId]
       };
     }, {});
 
@@ -346,7 +346,7 @@ export class Dashboard extends Component {
         <RefreshBar
           refresh={this.refreshDashboard}
           time={lastRefreshed}
-          isPending={kpisIsPending || devicesIsPending}
+          isPending={analyticsIsPending || devicesIsPending}
           t={t} />
         <TimeIntervalDropdown
           onChange={this.onTimeIntervalChange}
@@ -362,8 +362,8 @@ export class Dashboard extends Component {
               openCriticalCount={openCriticalCount}
               onlineDeviceCount={onlineDeviceCount}
               offlineDeviceCount={offlineDeviceCount}
-              isPending={kpisIsPending || devicesIsPending}
-              error={devicesError || kpisError}
+              isPending={analyticsIsPending || devicesIsPending}
+              error={devicesError || analyticsError}
               t={t} />
           </Cell>
           <Cell className="col-5">
@@ -371,18 +371,18 @@ export class Dashboard extends Component {
               <MapPanel
                 azureMapsKey={azureMapsKey}
                 devices={devices}
-                devicesInAlarm={devicesInAlarm}
+                devicesInAlert={devicesInAlert}
                 mapKeyIsPending={azureMapsKeyIsPending}
-                isPending={devicesIsPending || kpisIsPending}
-                error={azureMapsKeyError || devicesError || kpisError}
+                isPending={devicesIsPending || analyticsIsPending}
+                error={azureMapsKeyError || devicesError || analyticsError}
                 t={t} />
             </PanelErrorBoundary>
           </Cell>
           <Cell className="col-3">
-            <AlarmsPanel
-              alarms={currentActiveAlarmsWithName}
-              isPending={kpisIsPending || rulesIsPending}
-              error={rulesError || kpisError}
+            <AlertsPanel
+              alerts={currentActiveAlertsWithName}
+              isPending={analyticsIsPending || rulesIsPending}
+              error={rulesError || analyticsError}
               t={t} />
           </Cell>
           <Cell className="col-6">
@@ -395,12 +395,12 @@ export class Dashboard extends Component {
               t={t} />
           </Cell>
           <Cell className="col-4">
-            <KpisPanel
-              topAlarms={topAlarmsWithName}
-              alarmsPerDeviceId={alarmsPerDeviceType}
-              criticalAlarmsChange={criticalAlarmsChange}
-              isPending={kpisIsPending || rulesIsPending || devicesIsPending}
-              error={devicesError || rulesError || kpisError}
+            <AnalyticsPanel
+              topAlerts={topAlertsWithName}
+              alertsPerDeviceId={alertsPerDeviceType}
+              criticalAlertsChange={criticalAlertsChange}
+              isPending={analyticsIsPending || rulesIsPending || devicesIsPending}
+              error={devicesError || rulesError || analyticsError}
               theme={theme}
               colors={chartColorObjects}
               t={t} />

@@ -7,6 +7,6 @@
   @include themify($themes) {
     &.info .pcs-renderer-icon svg { fill: themed('colorSystem'); }
     &.warning .pcs-renderer-icon svg { fill: themed('colorWarning'); }
-    &.critical .pcs-renderer-icon svg { fill: themed('colorAlarm'); }
+    &.critical .pcs-renderer-icon svg { fill: themed('colorAlert'); }
   }
 }

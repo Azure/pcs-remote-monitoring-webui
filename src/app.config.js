@@ -25,7 +25,7 @@ const Config = {
   simulationId: '1',
   validExtensions: validExtensions.join(),
   emptyValue: '--',
-  maxTopAlarms: 5
+  maxTopAlerts: 5
 };
 
 export default Config;

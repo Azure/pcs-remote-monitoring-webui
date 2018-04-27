@@ -77,7 +77,7 @@ $select-padding-horizontal: 8px;
   }
 
   @include themify($themes) {
-    &.error .Select-control { border-color: themed('colorAlarm'); }
+    &.error .Select-control { border-color: themed('colorAlert'); }
   }
 
   .is-searchable {

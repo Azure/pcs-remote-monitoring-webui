@@ -43,7 +43,7 @@ export const rulesColumnDefs = {
     cellRendererFramework: props => <SeverityRenderer {...props} iconOnly={true} />
   },
   filter: {
-    headerName: 'rules.grid.filter',
+    headerName: 'rules.grid.deviceGroup',
     field: 'groupId',
     filter: 'text'
   },
@@ -70,7 +70,7 @@ export const rulesColumnDefs = {
     filter: 'text',
     cellRendererFramework: RuleStatusRenderer
   },
-  alarmStatus: {
+  alertStatus: {
     headerName: 'rules.grid.status',
     field: 'status',
     filter: 'text'

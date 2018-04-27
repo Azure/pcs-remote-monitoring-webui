@@ -69,28 +69,28 @@ export class Maintenance extends Component {
     });
     this.clearSubscriptions();
     this.subscriptions.push(
-      TelemetryService.getActiveAlarms(params)
-        .flatMap(alarms => alarms)
-        .flatMap(alarm =>
-          // Get the last occurrence of the alarm and the counts per alarm status
-          TelemetryService.getAlarmsForRule(alarm.ruleId, { ...params, order: 'desc' })
-            .flatMap(alarms =>
-              Observable.from(alarms)
+      TelemetryService.getActiveAlerts(params)
+        .flatMap(alerts => alerts)
+        .flatMap(alert =>
+          // Get the last occurrence of the alert and the counts per alert status
+          TelemetryService.getAlertsForRule(alert.ruleId, { ...params, order: 'desc' })
+            .flatMap(alerts =>
+              Observable.from(alerts)
                 .reduce(
                   (acc, { status }) => ({ ...acc, [status]: (acc[status] || 0) + 1 }),
                   {}
                 )
-                .map(countPerStatus => ({ alarms, lastOccurrence: (alarms[0] || {}).dateCreated, countPerStatus }))
+                .map(countPerStatus => ({ alerts, lastOccurrence: (alerts[0] || {}).dateCreated, countPerStatus }))
             )
-            .map(statsPerStatus => ({ ...alarm, ...statsPerStatus }))
+            .map(statsPerStatus => ({ ...alert, ...statsPerStatus }))
         )
         .toArray()
         .subscribe(
           alerts => {
             const { criticalAlertCount, warningAlertCount } = alerts.reduce(
-              (acc, { severity, alarms }) => ({
-                criticalAlertCount: acc.criticalAlertCount + (severity === 'critical' ? alarms.length : 0),
-                warningAlertCount: acc.warningAlertCount + (severity === 'warning' ? alarms.length : 0)
+              (acc, { severity, alerts }) => ({
+                criticalAlertCount: acc.criticalAlertCount + (severity === 'critical' ? alerts.length : 0),
+                warningAlertCount: acc.warningAlertCount + (severity === 'warning' ? alerts.length : 0)
               }),
               { criticalAlertCount: 0, warningAlertCount: 0 }
             );
@@ -175,7 +175,7 @@ export class Maintenance extends Component {
         open: alert.countPerStatus.open || 0,
         closed: alert.countPerStatus.closed || 0,
         acknowledged: alert.countPerStatus.acknowledged || 0,
-        total: alert.alarms.length
+        total: alert.alerts.length
       }
     }));
 

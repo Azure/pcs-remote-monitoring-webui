@@ -67,12 +67,12 @@ export const epics = createEpicScenario({
   fetchRuleLastTriggered: {
     type: 'RULES_LAST_TRIGGER_FETCH',
     epic: (fromAction, store, action$) =>
-      TelemetryService.getAlarmsForRule(fromAction.payload, {
+      TelemetryService.getAlertsForRule(fromAction.payload, {
         order: 'desc',
         limit: 1
       })
-        .map(([alarm]) =>
-          redux.actions.updateRuleLastTrigger({ id: fromAction.payload, lastTrigger: cellResponse(alarm.dateModified) })
+        .map(([alert]) =>
+          redux.actions.updateRuleLastTrigger({ id: fromAction.payload, lastTrigger: cellResponse(alert.dateModified) })
         )
         .takeUntil(action$.ofType(epics.actionTypes.fetchRules))
         .catch(error =>

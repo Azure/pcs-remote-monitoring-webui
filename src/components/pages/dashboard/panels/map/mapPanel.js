@@ -89,7 +89,7 @@ export class MapPanel extends Component {
 
     const geoLocatedDevices = this.extractGeoLocatedDevices(props.devices || []);
     if (this.map && Object.keys(geoLocatedDevices).length > 0) {
-      const { normal, warning, critical }  = this.devicesToPins(geoLocatedDevices, props.devicesInAlarm)
+      const { normal, warning, critical }  = this.devicesToPins(geoLocatedDevices, props.devicesInAlert)
 
       if (this.map) {
         this.map.addPins(normal, { name: nominalDeviceLayer, overwrite: true });
@@ -109,12 +109,12 @@ export class MapPanel extends Component {
       .filter(({ properties }) => properties.Latitude && properties.Longitude);
   }
 
-  devicesToPins(devices, devicesInAlarm) {
+  devicesToPins(devices, devicesInAlert) {
     return devices
       .reduce(
         (acc, device) => {
           const devicePin = deviceToMapPin(device);
-          const category = device.id in devicesInAlarm ? devicesInAlarm[device.id].severity : 'normal';
+          const category = device.id in devicesInAlert ? devicesInAlert[device.id].severity : 'normal';
           if (category === 'normal' || category === 'warning' || category === 'critical') {
             return update(acc, {
               [category]: { $push: [devicePin] }

@@ -9,17 +9,17 @@ import { TimeRenderer } from 'components/shared/cellRenderers';
 const columnDefs = [
   {
     ...checkboxParams,
-    headerName: 'maintenance.alarmOccGrid.occurrence',
+    headerName: 'maintenance.alertOccGrid.occurrence',
     field: 'name'
   },
   rulesColumnDefs.description,
   rulesColumnDefs.severity,
   {
-    headerName: 'maintenance.alarmOccGrid.triggerDevice',
+    headerName: 'maintenance.alertOccGrid.triggerDevice',
     field: 'deviceId'
   },
   {
-    headerName: 'maintenance.alarmOccGrid.time',
+    headerName: 'maintenance.alertOccGrid.time',
     field: 'dateCreated',
     cellRendererFramework: TimeRenderer
   },
@@ -29,7 +29,7 @@ const columnDefs = [
   }
 ];
 
-export const AlarmOccurrencesGrid = ({ t, ...props }) => {
+export const AlertOccurrencesGrid = ({ t, ...props }) => {
   const gridProps = {
     columnDefs: translateColumnDefs(t, columnDefs),
     context: { t },

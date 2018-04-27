@@ -64,7 +64,7 @@
   @include themify($themes) {
     .stat-container .stat-group .stat-cell {
       &.warning .stat-icon svg { fill: themed('colorWarning'); }
-      &.critical .stat-icon svg { fill: themed('colorAlarm'); }
+      &.critical .stat-icon svg { fill: themed('colorAlert'); }
       .stat-value { color: themed('colorContentText'); }
     }
   }

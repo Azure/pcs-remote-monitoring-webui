@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-export * from './alarms';
+export * from './alerts';
 export * from './overview';
 export * from './map';
-export * from './kpis';
+export * from './analytics';
 export * from './telemetry';

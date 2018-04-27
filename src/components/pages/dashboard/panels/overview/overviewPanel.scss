@@ -78,9 +78,9 @@
       color: themed('colorContentText');
 
       &.critical {
-        color: themed('colorAlarm');
+        color: themed('colorAlert');
 
-        .severity-icon svg { fill: themed('colorAlarm');  }
+        .severity-icon svg { fill: themed('colorAlert');  }
       }
 
       &.warning {

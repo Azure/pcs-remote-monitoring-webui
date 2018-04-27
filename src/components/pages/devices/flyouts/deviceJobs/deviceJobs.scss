@@ -64,7 +64,7 @@
   @include themify($themes) {
     color: themed('colorContentTextDim');
 
-    .device-jobs-error { border-color: themed('colorAlarm'); }
+    .device-jobs-error { border-color: themed('colorAlert'); }
 
     .summary-icon svg { fill: themed('colorContentText'); }
   }

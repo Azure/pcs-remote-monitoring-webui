@@ -35,6 +35,6 @@
 
     .duration-colon-icon svg { fill: themed('colorInputBorderColor'); }
 
-    &.error .form-group input[type=text] { border-color: themed('colorAlarm'); }
+    &.error .form-group input[type=text] { border-color: themed('colorAlert'); }
   }
 }
