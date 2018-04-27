@@ -72,7 +72,7 @@
       + div { @include rem-fallback(margin-top, 12px); }
 
       @include themify($themes) {
-        color: themed('colorHighest');
+        color: themed('colorContentText');
       }
     }
 

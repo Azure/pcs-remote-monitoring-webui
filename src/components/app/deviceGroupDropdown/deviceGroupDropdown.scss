@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import 'src/styles/themes';
 @import 'src/styles/mixins';
 
 .device-group-dropdown {
-  @include rem-fallback(width, 200px);
   margin-right: auto; /* Push to the right of the other context menu buttons*/
+  @include rem-fallback(width, 200px);
 
   .Select-menu-outer {
     margin-top: 1px !important;
@@ -26,6 +27,16 @@
       height: 100%;
 
       input { height: 100%; }
+    }
+  }
+
+  @include themify($themes) {
+    .Select-control,
+    .Select-menu-outer {
+      background-color: themed('colorContextMenuBg') !important;
+      border-color: themed('colorHeaderBorderColor') !important;
+
+      &:hover { border-color: themed('colorHeaderBorderColor') !important; }
     }
   }
 }

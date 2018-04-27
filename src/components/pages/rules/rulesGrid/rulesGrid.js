@@ -37,15 +37,6 @@ export class RulesGrid extends Component {
     };
   }
 
-  onGridReady = gridReadyEvent => {
-    this.deviceGridApi = gridReadyEvent.api;
-    gridReadyEvent.api.sizeColumnsToFit();
-    // Call the onReady props if it exists
-    if (isFunc(this.props.onGridReady)) {
-      this.props.onGridReady(gridReadyEvent);
-    }
-  };
-
   openEditRuleFlyout = () => this.setState({ openFlyoutName: 'edit' });
 
   setSelectedRule = selectedRule => this.setState({ selectedRule });
@@ -103,13 +94,13 @@ export class RulesGrid extends Component {
       /* Grid Properties */
       ...defaultRulesGridProps,
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
+      sizeColumnsToFit: true,
       ...this.props, // Allow default property overrides
       context: {
         t: this.props.t
       },
       /* Grid Events */
       onHardSelectChange: this.onHardSelectChange,
-      onGridReady: this.onGridReady,
       onSoftSelectChange: this.onSoftSelectChange
     };
 

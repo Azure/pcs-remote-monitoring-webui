@@ -62,7 +62,7 @@ export class KpisPanel extends Component {
       if (nextState.renderChart) {
         this.barChart.render(
           barChartDatum,
-          { grid: false, legend: 'hidden', yAxisState: 'shared', theme: nextProps.theme },
+          { grid: false, legend: 'hidden', yAxisState: 'shared', tooltip: true, theme: nextProps.theme },
           this.props.colors
         );
       }
@@ -83,7 +83,7 @@ export class KpisPanel extends Component {
       if (nextState.renderChart) {
         this.pieChart.render(
           pieChartDatum,
-          { grid: false, timestamp: staticTime, legend: 'hidden', arcWidthRatio: 1, theme: nextProps.theme },
+          { grid: false, timestamp: staticTime, legend: 'hidden', tooltip: true, arcWidthRatio: 1, theme: nextProps.theme },
           this.props.colors
         );
       }

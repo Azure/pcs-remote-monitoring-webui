@@ -17,7 +17,6 @@ const optionValues = [
 export class TimeIntervalDropdown extends Component {
 
   onChange = (propOnChange) => ({ target: { value: { value } = {} } = {} }) => {
-    this.setState({ selected: value });
     if (isFunc(propOnChange)) propOnChange(value);
   }
 
@@ -26,7 +25,6 @@ export class TimeIntervalDropdown extends Component {
       label: this.props.t(`timeInterval.${value}`),
       value
     }));
-
     return (
       <Select
         className="time-interval-dropdown"

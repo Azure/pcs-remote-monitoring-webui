@@ -119,6 +119,8 @@ $checkboxPadding: 8px;
     .ag-row-even,
     .ag-row-odd { background-color: transparent; }
 
+    .ag-body-viewport { overflow-y: hidden !important; }
+
     .ag-cell {
       background-color: themed('colorGridRowBackground');
       color: themed('colorGridCellText');

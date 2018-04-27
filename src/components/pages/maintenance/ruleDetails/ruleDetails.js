@@ -114,11 +114,11 @@ export class RuleDetails extends Component {
     const devices = deviceIds.map(deviceId => deviceObjects[deviceId]);
     const deviceIdString = deviceIds.sort().join(idDelimiter);
     this.setState({
-        selectedAlert,
-        selectedRule,
-        devices,
         deviceIds: deviceIdString,
-        occurrences
+        devices,
+        occurrences,
+        selectedAlert,
+        selectedRule
       },
       () => this.restartTelemetry$.next(deviceIdString)
     );
@@ -128,7 +128,7 @@ export class RuleDetails extends Component {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  setTab = (selectedTab) => () => this.setState({ selectedTab })
+  setTab = selectedTab => () => this.setState({ selectedTab })
 
   onRuleGridReady = gridReadyEvent => this.ruleGridApi = gridReadyEvent.api;
   onAlarmGridReady = gridReadyEvent => this.alarmGridApi = gridReadyEvent.api;

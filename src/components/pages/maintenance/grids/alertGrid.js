@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React, { Component } from 'react';
+import React from 'react';
 import { PcsGrid } from 'components/shared';
-import { isFunc, translateColumnDefs } from 'utilities';
+import { translateColumnDefs } from 'utilities';
 import { rulesColumnDefs } from 'components/pages/rules/rulesGrid/rulesGridConfig';
 import { TimeRenderer } from 'components/shared/cellRenderers';
 
@@ -33,27 +33,14 @@ const columnDefs = [
   }
 ];
 
-export class AlertGrid extends Component {
-
-  onGridReady = gridReadyEvent => {
-    this.gridApi = gridReadyEvent.api;
-    gridReadyEvent.api.sizeColumnsToFit();
-    // Call the onReady props if it exists
-    if (isFunc(this.props.onGridReady)) {
-      this.props.onGridReady(gridReadyEvent);
-    }
+export const AlertGrid = ({ t, ...props }) => {
+  const gridProps = {
+    columnDefs: translateColumnDefs(t, columnDefs),
+    context: { t },
+    sizeColumnsToFit: true,
+    ...props
   };
-
-  render () {
-    const { t, ...props } = this.props;
-    const gridProps = {
-      columnDefs: translateColumnDefs(t, columnDefs),
-      context: { t },
-      onGridReady: this.onGridReady,
-      ...props
-    };
-    return (
-      <PcsGrid {...gridProps} />
-    );
-  }
-}
+  return (
+    <PcsGrid {...gridProps} />
+  );
+};

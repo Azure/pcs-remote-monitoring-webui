@@ -19,7 +19,7 @@ $themes: (
 
     // App - START
     colorSelectionText: $colorWhite,
-    colorSelectionBg: $colorSystem,
+    colorSelectionBg: #60AAFF,
     // App - END
 
     // Grid - START
@@ -27,7 +27,7 @@ $themes: (
     colorGridRowBackground: $colorMidnight,
     colorGridCellText: $colorWhite,
     colorGridRowHoverBackground: $colorCharcoal,
-    colorGridSelectedRowBorder: $colorSystem,
+    colorGridSelectedRowBorder: #60aaff,
     colorGridHeaderText: $colorSmoke,
 
     colorCellRendererSvgFill: $colorSmoke,
@@ -153,13 +153,13 @@ $themes: (
 
     // Functional colors
     colorAlarm: $colorAlarm,
-    colorWarning: $colorWarning,
+    colorWarning: #f4ca2c,
     colorSystem: $colorSystem,
     colorError: $colorError,
 
     // App - START
-    colorSelectionText: $colorWhite,
-    colorSelectionBg: $colorSystem,
+    colorSelectionText: #212121,
+    colorSelectionBg: #136BFB,
     // App - END
 
     // Grid - START
@@ -167,7 +167,7 @@ $themes: (
     colorGridRowBackground: $colorWhite,
     colorGridCellText: #212121,
     colorGridRowHoverBackground: #dadada,
-    colorGridSelectedRowBorder: $colorSystem,
+    colorGridSelectedRowBorder: #136bfb,
     colorGridHeaderText: #767676,
 
     colorCellRendererSvgFill: #212121,
@@ -245,6 +245,7 @@ $themes: (
     // Nav Colors - END
 
     // Context Menu Colors - START
+    colorContextMenuBg: #f2f2f2,
     colorContextMenuBtnBgHover: #eaeaea,
     colorContextMenuBtnTextHover: #212121,
     colorContextMenuBtnSvgFill: #666,
@@ -269,7 +270,7 @@ $themes: (
     // Forms - START
     colorFileUploadText: $colorNoir,
 
-    colorSelectBackground: #f2f2f2,
+    colorSelectBackground: $colorWhite,
     colorSelectOptionFocusedBg: #fff,
     colorSelectDisabledText: $colorAsh,
     colorSelectBorderColor: #c8c8c8,

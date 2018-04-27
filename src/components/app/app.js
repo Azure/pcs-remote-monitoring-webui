@@ -64,8 +64,8 @@ class App extends Component {
               <Route path={maintenanceTab.to} component={MaintenancePage} />
               <Route component={PageNotFound} />
             </Switch>
-            { this.state.openFlyout === 'settings' && <SettingsContainer onClose={this.closeFlyout} /> }
             { this.props.deviceGroupFlyoutIsOpen && <ManageDeviceGroupsContainer /> }
+            { this.state.openFlyout === 'settings' && <SettingsContainer onClose={this.closeFlyout} /> }
           </Main>
         </div>
       </div>

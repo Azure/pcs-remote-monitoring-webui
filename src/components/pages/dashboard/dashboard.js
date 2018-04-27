@@ -195,7 +195,10 @@ export class Dashboard extends Component {
 
       this.subscriptions.push(
         this.dashboardRefresh$
-          .subscribe(() => this.setState(initialState))
+          .subscribe(({ timeInterval }) => this.setState({
+            ...initialState,
+            timeInterval
+          }))
       );
 
       this.subscriptions.push(
@@ -255,7 +258,7 @@ export class Dashboard extends Component {
     )
   );
 
-  onTimeIntervalChange = (timeInterval) => this.setState(
+  onTimeIntervalChange = timeInterval => this.setState(
     { timeInterval },
     () => this.dashboardRefresh$.next(
       refreshEvent(

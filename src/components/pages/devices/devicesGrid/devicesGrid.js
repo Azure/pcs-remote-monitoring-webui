@@ -38,6 +38,19 @@ export class DevicesGrid extends Component {
     ];
   }
 
+  /**
+   * Get the grid api options
+   *
+   * @param {Object} gridReadyEvent An object containing access to the grid APIs
+  */
+  onGridReady = gridReadyEvent => {
+    this.deviceGridApi = gridReadyEvent.api;
+    // Call the onReady props if it exists
+    if (isFunc(this.props.onGridReady)) {
+      this.props.onGridReady(gridReadyEvent);
+    }
+  };
+
   openFlyout = (flyoutName) => () => this.setState({ openFlyoutName: flyoutName });
 
   getOpenFlyout = () => {
@@ -52,20 +65,6 @@ export class DevicesGrid extends Component {
   }
 
   closeFlyout = () => this.setState(closedFlyoutState);
-
-  /**
-   * Get the grid api options
-   *
-   * @param {Object} gridReadyEvent An object containing access to the grid APIs
-   */
-  onGridReady = gridReadyEvent => {
-    this.deviceGridApi = gridReadyEvent.api;
-    gridReadyEvent.api.sizeColumnsToFit();
-    // Call the onReady props if it exists
-    if (isFunc(this.props.onGridReady)) {
-      this.props.onGridReady(gridReadyEvent);
-    }
-  };
 
   /**
    * Handles soft select props method
@@ -102,14 +101,15 @@ export class DevicesGrid extends Component {
       ...defaultDeviceGridProps,
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
       onRowDoubleClicked: ({ node }) => node.setSelected(!node.isSelected()),
+      sizeColumnsToFit: true,
       ...this.props, // Allow default property overrides
       context: {
         t: this.props.t
       },
       /* Grid Events */
+      onGridReady: this.onGridReady,
       onSoftSelectChange: this.onSoftSelectChange,
-      onHardSelectChange: this.onHardSelectChange,
-      onGridReady: this.onGridReady
+      onHardSelectChange: this.onHardSelectChange
     };
 
     return ([

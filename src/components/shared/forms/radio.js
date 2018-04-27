@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { Svg } from 'components/shared/svg/svg';
 import { FormLabel } from './formLabel';
-import { svgs, joinClasses } from 'utilities';
+import { isFunc, svgs, joinClasses } from 'utilities';
 
 import './styles/radio.css';
 
@@ -20,7 +20,7 @@ export class Radio extends Component {
 
   // Needs to be a stateful component in order to access refs
   render() {
-    const { className, children, id, disabled, link, ...rest } = this.props;
+    const { className, children, id, disabled, link, formGroupId = this.formGroupId, ...rest } = this.props;
     const valueOverrides = link ? {
       checked: link.value === rest.value,
       onChange: link.onChange
@@ -32,15 +32,16 @@ export class Radio extends Component {
     }
     const childrenWithProps = React.Children.map(contentChildren,
       (child) => {
-        if (child && typeof child !== 'string') {
+        if (React.isValidElement(child) && isFunc(child.type)) {
           return React.cloneElement(child, {
-            formGroupId: `${this.formGroupId}_child`,
+            formGroupId: `${formGroupId}_child`,
             disabled: disabled || (radioProps.checked === undefined ? false : !radioProps.checked)
           });
         }
         return child;
       }
     );
+
     return (
       <div className={joinClasses('radio-container', className)}>
         <div className="radio-input-container">
@@ -49,7 +50,7 @@ export class Radio extends Component {
             { ...valueOverrides }
             type="radio"
             disabled={disabled}
-            id={id || this.formGroupId}
+            id={id || formGroupId}
             ref="radioInputElement" />
           <Svg
             path={svgs.radioSelected}

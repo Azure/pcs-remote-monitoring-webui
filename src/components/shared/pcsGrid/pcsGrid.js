@@ -44,19 +44,30 @@ export class PcsGrid extends Component {
 
     this.subscriptions = [];
     this.clickStream = new Rx.Subject();
+    this.resizeEvents = new Rx.Subject();
   }
 
   componentDidMount() {
     this.subscriptions.push(
       this.clickStream
         .debounceTime(Config.clickDebounceTime)
-        .subscribe(clickAction => clickAction())
+        .subscribe(clickAction => clickAction()),
+      this.resizeEvents
+        .debounceTime(Config.gridResizeDebounceTime)
+        .filter(() => !!this.gridApi && !!this.props.sizeColumnsToFit)
+        .subscribe(() => {
+          if (window.outerWidth >= 1200) this.gridApi.sizeColumnsToFit();
+        })
     );
+    window.addEventListener('resize', this.registerResizeEvent);
   }
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.registerResizeEvent);
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
+
+  registerResizeEvent = () => this.resizeEvents.next('r');
 
   /** When new props are passed in, check if the soft select state needs to be updated */
   componentWillReceiveProps(nextProps) {
@@ -84,6 +95,9 @@ export class PcsGrid extends Component {
   /** Save the gridApi locally on load */
   onGridReady = gridReadyEvent => {
     this.gridApi = gridReadyEvent.api;
+    if (this.props.sizeColumnsToFit) {
+      this.gridApi.sizeColumnsToFit();
+    }
     if (isFunc(this.props.onGridReady)) {
       this.props.onGridReady(gridReadyEvent);
     }
