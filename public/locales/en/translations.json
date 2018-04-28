@@ -410,12 +410,14 @@
     "error": "Error"
   },
   "maintenance": {
-    "acknowledged": "Acknowledge",
+    "acknowledge": "Acknowledge",
+    "acknowledged": "Acknowledged",
     "alertOccurrences": "Alert Occurrences",
     "alertedDeviceTelemetry": "Alerted device's telemetry",
     "alertedDevices": "Alerted devices",
     "all": "All",
-    "closed": "closed",
+    "close": "Close",
+    "closed": "Closed",
     "critical": "Critical",
     "devices": "Devices",
     "failedJobs": "Failed jobs",

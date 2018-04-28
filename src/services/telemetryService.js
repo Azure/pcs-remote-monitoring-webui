@@ -5,11 +5,12 @@ import Config from 'app.config';
 import { HttpClient } from './httpClient';
 import {
   toActiveAlertsModel,
+  toAlertForRuleModel,
   toAlertsForRuleModel,
   toAlertsModel,
-  toRulesModel,
+  toMessagesModel,
   toRuleModel,
-  toMessagesModel
+  toRulesModel
 } from './models';
 
 const ENDPOINT = Config.serviceUrls.telemetry;
@@ -51,6 +52,12 @@ export class TelemetryService {
   static getAlertsForRule(id, params = {}) {
     return HttpClient.get(`${ENDPOINT}alarmsbyrule/${id}?${stringify(params)}`)
       .map(toAlertsForRuleModel);
+  }
+
+  /** Returns a list of alarms created from a given rule */
+  static updateAlertStatus(id, Status) {
+    return HttpClient.patch(`${ENDPOINT}alarms/${encodeURIComponent(id)}`, { Status })
+      .map(toAlertForRuleModel);
   }
 
   /** Returns a telemetry events */

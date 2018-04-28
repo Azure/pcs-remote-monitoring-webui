@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import AckAlertIconPath from 'assets/icons/ackAlert.svg';
 import ApplyIconPath from 'assets/icons/apply.svg';
 import CancelXIconPath from 'assets/icons/cancelX.svg';
 import CaratIconPath from 'assets/icons/carat.svg';
 import CheckmarkIconPath from 'assets/icons/checkmark.svg';
 import ChevronIconPath from 'assets/icons/chevron.svg';
 import ChevronRightIconPath from 'assets/icons/chevronRight.svg';
+import CloseAlertIconPath from 'assets/icons/closeAlert.svg';
 import ColonIconPath from 'assets/icons/colon.svg';
 import ContosoIconPath from 'assets/icons/contoso.svg';
 import CopyIconPath from 'assets/icons/copy.svg';
@@ -63,12 +65,14 @@ export const svgs = {
     prototyping: DevicePrototypingIconPath,
     truck: DeviceTruckIconPath
   },
+  ackAlert: AckAlertIconPath,
   apply: ApplyIconPath,
   cancelX: CancelXIconPath,
   carat: CaratIconPath,
   checkmark: CheckmarkIconPath,
   chevron: ChevronIconPath,
   chevronRight: ChevronRightIconPath,
+  closeAlert: CloseAlertIconPath,
   colon: ColonIconPath,
   contoso: ContosoIconPath,
   copy: CopyIconPath,

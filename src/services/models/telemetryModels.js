@@ -48,18 +48,20 @@ export const toActiveAlertsModel = (response = {}) => getItems(response)
   }));
 
 export const toAlertsForRuleModel = (response = {}) => getItems(response)
-  .map((alert = {}) => camelCaseReshape(alert, {
-    'id': 'id',
-    'dateCreated': 'dateCreated',
-    'dateModified': 'dateModified',
-    'description': 'description',
-    'deviceId': 'deviceId',
-    'eTag': 'eTag',
-    'enabled': 'enabled',
-    'groupId': 'groupId',
-    'status': 'status',
-    'rule.id': 'ruleId'
-  }));
+  .map(toAlertForRuleModel);
+
+export const toAlertForRuleModel = (alert = {}) => camelCaseReshape(alert, {
+  'id': 'id',
+  'dateCreated': 'dateCreated',
+  'dateModified': 'dateModified',
+  'description': 'description',
+  'deviceId': 'deviceId',
+  'eTag': 'eTag',
+  'enabled': 'enabled',
+  'groupId': 'groupId',
+  'status': 'status',
+  'rule.id': 'ruleId'
+});
 
 export const toMessagesModel = (response = {}) => getItems(response)
   .map((message = {}) => camelCaseReshape(message, {

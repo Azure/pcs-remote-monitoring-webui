@@ -56,6 +56,7 @@ export class PcsGrid extends Component {
         .debounceTime(Config.gridResizeDebounceTime)
         .filter(() => !!this.gridApi && !!this.props.sizeColumnsToFit)
         .subscribe(() => {
+          // TODO: Move constant values to central location
           if (window.outerWidth >= 1200) this.gridApi.sizeColumnsToFit();
         })
     );
