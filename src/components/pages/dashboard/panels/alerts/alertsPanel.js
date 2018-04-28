@@ -38,6 +38,7 @@ export class AlertsPanel extends Component {
     const gridProps = {
       columnDefs: translateColumnDefs(t, this.columnDefs),
       rowData: alerts,
+      suppressFlyouts: true,
       t
     };
     const showOverlay = isPending && !alerts.length;

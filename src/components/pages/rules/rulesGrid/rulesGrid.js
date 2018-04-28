@@ -106,7 +106,7 @@ export class RulesGrid extends Component {
 
     return ([
       <PcsGrid {...gridProps} key="rules-grid" />,
-      this.getOpenFlyout()
+      this.props.suppressFlyouts ? null : this.getOpenFlyout()
     ]);
   }
 }
