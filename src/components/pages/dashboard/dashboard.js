@@ -389,6 +389,7 @@ export class Dashboard extends Component {
             <TelemetryPanel
               telemetry={telemetry}
               isPending={telemetryIsPending}
+              lastRefreshed={lastRefreshed}
               error={deviceGroupError || telemetryError}
               theme={theme}
               colors={chartColorObjects}

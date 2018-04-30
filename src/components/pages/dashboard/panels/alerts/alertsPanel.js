@@ -5,11 +5,12 @@ import React, { Component } from 'react';
 import { AjaxError, Indicator } from 'components/shared';
 import {
   Panel,
+  PanelContent,
+  PanelError,
   PanelHeader,
   PanelHeaderLabel,
-  PanelContent,
-  PanelOverlay,
-  PanelError
+  PanelMsg,
+  PanelOverlay
 } from 'components/pages/dashboard/panel';
 import { RulesGrid, rulesColumnDefs } from 'components/pages/rules/rulesGrid';
 import { translateColumnDefs } from 'utilities';
@@ -50,6 +51,10 @@ export class AlertsPanel extends Component {
         </PanelHeader>
         <PanelContent>
           <RulesGrid {...gridProps} />
+          {
+            (!showOverlay && alerts.length === 0)
+              && <PanelMsg>{t('dashboard.noData')}</PanelMsg>
+          }
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
         { error && <PanelError><AjaxError t={t} error={error} /></PanelError> }

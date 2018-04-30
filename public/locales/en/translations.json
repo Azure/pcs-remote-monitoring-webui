@@ -117,6 +117,7 @@
     "cancel": "Cancel"
   },
   "dashboard": {
+    "noData": "No data available",
     "panels": {
       "alerts": {
         "header": "Alerts"

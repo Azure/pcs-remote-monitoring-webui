@@ -6,11 +6,12 @@ import 'tsiclient';
 import { AjaxError, Indicator } from 'components/shared';
 import {
   Panel,
+  PanelContent,
+  PanelError,
   PanelHeader,
   PanelHeaderLabel,
-  PanelContent,
-  PanelOverlay,
-  PanelError
+  PanelMsg,
+  PanelOverlay
 } from 'components/pages/dashboard/panel';
 
 import { TelemetryChart } from './telemetryChart';
@@ -19,8 +20,8 @@ import './telemetryPanel.css';
 
 export class TelemetryPanel extends Component {
   render() {
-    const { t, isPending, telemetry, theme, colors, error } = this.props;
-    const showOverlay = isPending && !Object.keys(telemetry).length;
+    const { t, isPending, telemetry, lastRefreshed, theme, colors, error } = this.props;
+    const showOverlay = isPending && !lastRefreshed;
     return (
       <Panel>
         <PanelHeader>
@@ -29,6 +30,10 @@ export class TelemetryPanel extends Component {
         </PanelHeader>
         <PanelContent className="telemetry-panel-container">
           <TelemetryChart telemetry={telemetry} theme={theme} colors={colors} />
+          {
+            !showOverlay && Object.keys(telemetry).length === 0
+              && <PanelMsg>{t('dashboard.noData')}</PanelMsg>
+          }
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
         { error && <PanelError><AjaxError t={t} error={error} /></PanelError> }
