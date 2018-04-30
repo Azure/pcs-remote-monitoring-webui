@@ -46,7 +46,7 @@ const initialState = {
   openCriticalCount: undefined,
 
   // Map data
-  devicesInAlerts: {},
+  devicesInAlert: {},
 
   lastRefreshed: undefined
 };
@@ -114,9 +114,9 @@ export class Dashboard extends Component {
         ]) => {
           // Process all the data out of the currentAlerts list
           const currentAlertsStats = currentAlerts.reduce((acc, alert) => {
-              const isOpen = alert.status === 'open';
-              const isWarning = alert.severity === 'warning';
-              const isCritical = alert.severity === 'critical';
+              const isOpen = alert.status === Config.alertStatus.open;
+              const isWarning = alert.severity === Config.ruleSeverity.warning;
+              const isCritical = alert.severity === Config.ruleSeverity.critical;
               let updatedAlertsPerDeviceId = acc.alertsPerDeviceId;
               if (alert.deviceId) {
                 updatedAlertsPerDeviceId = {
@@ -137,7 +137,7 @@ export class Dashboard extends Component {
           // ================== Critical Alerts Count - START
           const currentCriticalAlerts = currentAlertsStats.totalCriticalCount;
           const previousCriticalAlerts = previousAlerts.reduce(
-            (cnt, { severity }) => severity === 'critical' ? cnt + 1 : cnt,
+            (cnt, { severity }) => severity === Config.ruleSeverity.critical ? cnt + 1 : cnt,
             0
           );
           const criticalAlertsChange = ((currentCriticalAlerts - previousCriticalAlerts) / currentCriticalAlerts * 100).toFixed(2);
@@ -166,7 +166,7 @@ export class Dashboard extends Component {
           // ================== Top Alerts - END
 
           const devicesInAlert = currentAlerts
-            .filter(({ status }) => status === 'open')
+            .filter(({ status }) => status === Config.alertStatus.open)
             .reduce((acc, { deviceId, severity, ruleId}) => {
               return {
                 ...acc,
@@ -363,7 +363,7 @@ export class Dashboard extends Component {
               onlineDeviceCount={onlineDeviceCount}
               offlineDeviceCount={offlineDeviceCount}
               isPending={analyticsIsPending || devicesIsPending}
-              error={devicesError || analyticsError}
+              error={deviceGroupError || devicesError || analyticsError}
               t={t} />
           </Cell>
           <Cell className="col-5">

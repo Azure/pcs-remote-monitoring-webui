@@ -3,7 +3,6 @@ const baseUrl = process.env.REACT_APP_BASE_SERVICE_URL || '';
 const validExtensions = ['.png', '.jpeg', '.jpg', '.svg'];
 
 const Config = {
-  // TEMP: Base service urls
   serviceUrls: {
     config: `${baseUrl}/config/v1/`,
     iotHubManager: `${baseUrl}/iothubmanager/v1/`,
@@ -20,12 +19,24 @@ const Config = {
   paginationPageSize: 50,
   smallGridPageSize: 8,
   clickDebounceTime: 180, // ms
+  gridResizeDebounceTime: 200, // ms
   dashboardRefreshInterval: 15000, // 15 seconds
   telemetryRefreshInterval: 1000, // 1 seconds
   simulationId: '1',
   validExtensions: validExtensions.join(),
   emptyValue: '--',
-  maxTopAlerts: 5
+  maxTopAlerts: 5,
+  gridMinResize: 1200, // In px
+  ruleSeverity: {
+    info: 'info',
+    warning: 'warning',
+    critical: 'critical'
+  },
+  alertStatus: {
+    open: 'open',
+    closed: 'closed',
+    acknowledged: 'acknowledged'
+  }
 };
 
 export default Config;

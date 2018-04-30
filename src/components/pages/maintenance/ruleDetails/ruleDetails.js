@@ -142,9 +142,9 @@ export class RuleDetails extends Component {
     );
 
   // TODO: Move constant values to central location
-  closeAlerts = () => this.updateAlertStatus(this.state.selectedAlerts, 'closed');
+  closeAlerts = () => this.updateAlertStatus(this.state.selectedAlerts, Config.alertStatus.closed);
 
-  ackAlerts = () => this.updateAlertStatus(this.state.selectedAlerts, 'acknowledged');
+  ackAlerts = () => this.updateAlertStatus(this.state.selectedAlerts, Config.alertStatus.acknowledged);
 
   setTab = selectedTab => () => this.setState({ selectedTab })
 

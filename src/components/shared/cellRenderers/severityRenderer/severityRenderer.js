@@ -2,6 +2,7 @@
 
 import React from "react";
 
+import Config from 'app.config';
 import { Svg } from 'components/shared/svg/svg';
 import { svgs } from 'utilities';
 
@@ -9,8 +10,8 @@ import '../cellRenderer.css';
 import './severityRenderer.css';
 
 const getSvg = value => {
-  if (value === 'warning') return svgs.warning;
-  if (value === 'critical') return svgs.critical;
+  if (value === Config.ruleSeverity.warning) return svgs.warning;
+  if (value === Config.ruleSeverity.critical) return svgs.critical;
   return svgs.info;
 };
 

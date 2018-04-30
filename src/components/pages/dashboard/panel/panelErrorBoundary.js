@@ -13,6 +13,8 @@ export class PanelErrorBoundary extends Component {
 
   componentDidCatch(error, info) {
     this.setState({ hasError: true });
+    // Log the error in the console so it can be more easily debugged
+    console.error(error);
   }
 
   render() {

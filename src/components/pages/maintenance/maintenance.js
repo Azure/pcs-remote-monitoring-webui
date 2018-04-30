@@ -6,6 +6,7 @@ import { schema, normalize } from 'normalizr';
 import update from 'immutability-helper';
 import moment from 'moment';
 
+import Config from 'app.config';
 import { Summary } from './summary/summary';
 import { RuleDetails } from './ruleDetails/ruleDetails';
 import { JobDetails } from './jobDetails/jobDetails';
@@ -94,8 +95,12 @@ export class Maintenance extends Component {
                 const { entities: { alerts }, result } = normalize(alertedRule.alerts, alertListSchema);
                 alertedRule.alerts = result;
                 return update(acc, {
-                  criticalAlertCount: { $set: acc.criticalAlertCount + (alertedRule.severity === 'critical' ? alertedRule.alerts.length : 0) },
-                  warningAlertCount: { $set: acc.warningAlertCount + (alertedRule.severity === 'warning' ? alertedRule.alerts.length : 0) },
+                  criticalAlertCount: {
+                    $set: acc.criticalAlertCount + (alertedRule.severity === Config.ruleSeverity.critical ? alertedRule.alerts.length : 0)
+                  },
+                  warningAlertCount: {
+                    $set: acc.warningAlertCount + (alertedRule.severity === Config.ruleSeverity.warning ? alertedRule.alerts.length : 0)
+                  },
                   alertEntities: { $merge: alerts }
                 });
               },

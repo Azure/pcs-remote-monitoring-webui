@@ -88,7 +88,7 @@ export class MapPanel extends Component {
       || (mounting && props.azureMapsKey && deviceIds.length > 0);
 
     const geoLocatedDevices = this.extractGeoLocatedDevices(props.devices || []);
-    if (this.map && Object.keys(geoLocatedDevices).length > 0) {
+    if (this.map && Object.keys(geoLocatedDevices).length > 0 && props.devicesInAlert) {
       const { normal, warning, critical }  = this.devicesToPins(geoLocatedDevices, props.devicesInAlert)
 
       if (this.map) {
