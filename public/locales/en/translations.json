@@ -401,7 +401,7 @@
     "nameAndLogo": "Name and logo",
     "nameLogoDescription": "Edit logo and name in the site header.",
     "replaceLogo": "Replace logo image",
-    "logoDescription": "Recommended logo size 24 x 24 px.\nSupported file formats:\n\t.SVG\n\t.PNG\n\t.JPEG",
+    "logoDescription": "Recommended logo size 24 x 24 px.\nSupported file formats:\n\t.SVG\n\t.PNG\n\t.JPEG\n\t.JPG",
     "applicationName": "Application name",
     "currentLogo": "Current logo",
     "edit": "Edit",

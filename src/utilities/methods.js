@@ -93,7 +93,7 @@ export const copyToClipboard = (data) => {
 
 export const isValidExtension = (file) => {
   if (!file) return false;
-  const fileExt = file.name.split('.').pop();
+  const fileExt = file.name.split('.').pop().toLowerCase();
   return Config.validExtensions.indexOf('.' + fileExt) > -1;
 };
 
