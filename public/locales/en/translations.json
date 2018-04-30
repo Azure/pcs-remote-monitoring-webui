@@ -352,8 +352,12 @@
     },
     "flyouts": {
       "edit": "Edit",
+      "enable": "Enable",
+      "disable": "Disable",
+      "changeStatus": "Change status",
       "newRule": "New rule",
       "editRule": "Edit rule",
+      "statusTitle": "Change status",
       "ruleEditor": {
         "ruleName": "Rule name",
         "namePlaceholder": "Enter rule name",

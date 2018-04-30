@@ -369,7 +369,7 @@ export class RuleEditor extends LinkedComponent {
         }
         {
           !isPending && <BtnToolbar>
-            <Btn primary={true} type="submit" disabled={!this.formIsValid() || conditionsHaveErrors}>{t('rules.flyouts.ruleEditor.apply')}</Btn>
+            <Btn svg={svgs.apply} primary={true} type="submit" disabled={!this.formIsValid() || conditionsHaveErrors}>{t('rules.flyouts.ruleEditor.apply')}</Btn>
             <Btn svg={svgs.cancelX} onClick={onClose}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
           </BtnToolbar>
         }

@@ -1,14 +1,15 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { Trans } from 'react-i18next';
+
 import { Btn, PcsGrid } from 'components/shared';
 import { rulesColumnDefs, checkboxParams, defaultRulesGridProps } from './rulesGridConfig';
 import { isFunc, translateColumnDefs, svgs } from 'utilities';
-import { EditRuleFlyout } from '../flyouts'
+import { EditRuleFlyout, RuleStatusContainer } from '../flyouts'
 
 const closedFlyoutState = {
-  openFlyoutName: undefined,
-  selectedRule: undefined
+  openFlyoutName: undefined
 };
 
 export class RulesGrid extends Component {
@@ -16,7 +17,10 @@ export class RulesGrid extends Component {
     super(props);
 
     // Set the initial state
-    this.state = closedFlyoutState;
+    this.state = {
+      ...closedFlyoutState,
+      selectedRules: undefined
+    };
 
     this.columnDefs = [
       { ...rulesColumnDefs.ruleName, ...checkboxParams },
@@ -30,21 +34,32 @@ export class RulesGrid extends Component {
       rulesColumnDefs.lastTrigger
     ];
 
-    // TODO: This is a temporary example implementation. Remove with a better version
     this.contextBtns = {
-      disable: <Btn key="disable">Disable</Btn>,
+      disable: <Btn key="disable" svg={svgs.disableToggle} onClick={this.openStatusFlyout}>
+        <Trans i18nKey="rules.flyouts.disable">Disable</Trans>
+      </Btn>,
+      enable: <Btn key="enable" svg={svgs.enableToggle} onClick={this.openStatusFlyout}>
+        <Trans i18nKey="rules.flyouts.enable">Enable</Trans>
+      </Btn>,
+      changeStatus: <Btn key="changeStatus" svg={svgs.loadingToggle} onClick={this.openStatusFlyout}>
+        <Trans i18nKey="rules.flyouts.changeStatus">Change status</Trans>
+      </Btn>,
       edit: <Btn key="edit" svg={svgs.edit} onClick={this.openEditRuleFlyout}>{props.t('rules.flyouts.edit')}</Btn>
     };
   }
 
   openEditRuleFlyout = () => this.setState({ openFlyoutName: 'edit' });
 
-  setSelectedRule = selectedRule => this.setState({ selectedRule });
+  openStatusFlyout = () => this.setState({ openFlyoutName: 'status' });
+
+  setSelectedRules = selectedRules => this.setState({ selectedRules });
 
   getOpenFlyout = () => {
     switch (this.state.openFlyoutName) {
       case 'edit':
-        return <EditRuleFlyout onClose={this.closeFlyout} t={this.props.t} rule={this.state.selectedRule} key="edit-rule-flyout" />
+        return <EditRuleFlyout onClose={this.closeFlyout} t={this.props.t} rule={this.state.selectedRules[0]} key="edit-rule-flyout" />
+      case 'status':
+        return <RuleStatusContainer onClose={this.closeFlyout} t={this.props.t} rules={this.state.selectedRules} key="edit-rule-flyout" />
       default:
         return null;
     }
@@ -59,15 +74,14 @@ export class RulesGrid extends Component {
     const { onContextMenuChange, onHardSelectChange } = this.props;
     if (isFunc(onContextMenuChange)) {
       if (selectedRules.length > 1) {
-        onContextMenuChange(this.contextBtns.disable);
+        this.setSelectedRules(selectedRules);
+        onContextMenuChange(this.contextBtns.changeStatus);
       } else if (selectedRules.length === 1) {
+        this.setSelectedRules(selectedRules);
         onContextMenuChange([
-          this.contextBtns.disable,
+          selectedRules[0].enabled ? this.contextBtns.disable : this.contextBtns.enable,
           this.contextBtns.edit
         ]);
-        if (isFunc(this.setSelectedRule)) {
-          this.setSelectedRule(selectedRules[0]);
-        }
       } else {
         onContextMenuChange(null);
       }
@@ -83,8 +97,8 @@ export class RulesGrid extends Component {
     if (isFunc(onSoftSelectChange)) {
       onSoftSelectChange(rule, rowEvent);
     }
-    this.setSelectedRule(rule);
-    this.openEditRuleFlyout();
+    this.setSelectedRules([rule]);
+    this.openEditRuleFlyout('edit');
   }
 
   closeFlyout = () => this.setState(closedFlyoutState);

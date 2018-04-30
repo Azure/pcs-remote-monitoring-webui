@@ -1,0 +1,24 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.disable-rule-flyout-container {
+
+  .rule-property-container {
+    border: none;
+    @include rem-fallback(margin-top, 20px);
+  }
+
+  .rule-description {
+    width: 100%;
+    @include rem-fallback(padding, 16px 0px);
+  }
+
+  .padded-top-bottom {
+    margin-left: 0px;
+    @include rem-fallback(padding, 24px 0px);
+  }
+
+  .padded-bottom { @include rem-fallback(padding-bottom, 24px); }
+}

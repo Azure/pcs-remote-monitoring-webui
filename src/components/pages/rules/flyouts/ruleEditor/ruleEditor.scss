@@ -10,33 +10,9 @@
     @include rem-fallback(margin-top, 20px);
   }
 
-  .devices-affected {
-    display: flex;
-    flex-flow: row nowrap;
-    position: relative;
-    @include rem-fallback(top, 18px);
-    @include rem-fallback(height, 67px);
-  }
-
-  .devices-affected-dynamic {
-    font-weight: bold;
-    @include rem-fallback(font-size, 48px);
-  }
-
-  .devices-affected-static {
-    position: relative;
-    @include rem-fallback(top, 32px);
-    @include rem-fallback(left, 16px);
-    @include rem-fallback(font-size, 16px);
-  }
-
   .padded-top {
     margin-left: 0px;
     padding-left: 0px;
     @include rem-fallback(margin-top, 24px);
-  }
-
-  @include themify($themes) {
-    .devices-affected-dynamic { color: themed('colorHighest'); }
   }
 }
