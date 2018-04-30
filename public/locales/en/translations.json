@@ -25,7 +25,7 @@
     "unknown": "An unknown error occurred. {{message}}"
   },
   "settingsFlyout": {
-    "title": "Settings",
+    "title": "System settings",
     "version": "Version {{version}}",
     "viewRelNotes": "View release notes",
     "theme": "Theme",
