@@ -22,7 +22,13 @@
   .row {
     .cell {
       &.col-1 { @include rem-fallback(width, 16px); }
-      &.col-3 { @include rem-fallback(width, 100px); }
+      &.col-3 {
+        @include rem-fallback(width, 100px);
+
+        input { @include rem-fallback(width, 100px); }
+      }
+
+      &.text-only { @include rem-fallback(padding-top, 4px); }
     }
 
     &.action-row {

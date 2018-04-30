@@ -53,7 +53,8 @@ export class DeviceJobs extends LinkedComponent {
       t,
       onClose,
       devices,
-      updateTags
+      updateTags,
+      updateProperties
     } = this.props;
 
     return (
@@ -89,7 +90,7 @@ export class DeviceJobs extends LinkedComponent {
                   ? <DeviceJobMethods key="job-details" t={t} onClose={onClose} devices={devices} />
                   : null,
                 this.jobTypeLink.value === 'properties'
-                  ? <DeviceJobProperties key="job-details" t={t} onClose={onClose} devices={devices} />
+                  ? <DeviceJobProperties key="job-details" t={t} onClose={onClose} devices={devices} updateProperties={updateProperties} />
                   : null
               ]
             }

@@ -31,10 +31,14 @@ export const toDeviceModel = (device = {}) => {
   return update(modelData, {
     methods: { $set: modelData.methods ? modelData.methods.split(',') : [] },
     tags: { $set: device.Tags || {} },
+    // TODO: Rename properties to reportedProperties
     properties: {
       $set: update(dot.pick('Properties.Reported', device), {
         $unset: ['Telemetry', 'SupportedMethods']
       })
+    },
+    desiredProperties: {
+      $set: dot.pick('Properties.Desired', device)
     }
   });
 }
@@ -56,11 +60,11 @@ export const toJobsModel = (response = []) => response.map(job => camelCaseResha
   'type': 'type'
 }));
 
-export const toSubmitTagsJobRequestModel = (devices, { jobName, commonTags, deletedTags }) => {
+export const toSubmitTagsJobRequestModel = (devices, { jobName, updatedTags, deletedTags }) => {
   const jobId = jobName ? jobName + '-' + uuid() : uuid();
   const deviceIds = devices.map(({ id }) => `'${id}'`).join(',');
   const Tags = {};
-  commonTags.forEach(({ name, value }) => (Tags[name] = value));
+  updatedTags.forEach(({ name, value }) => (Tags[name] = value));
   deletedTags.forEach((name) => (Tags[name] = null));
   const request = {
     JobId: jobId,
@@ -68,6 +72,25 @@ export const toSubmitTagsJobRequestModel = (devices, { jobName, commonTags, dele
     MaxExecutionTimeInSeconds: 0,
     UpdateTwin: {
       Tags
+    }
+  };
+  return request;
+};
+
+export const toSubmitPropertiesJobRequestModel = (devices, { jobName, updatedProperties, deletedProperties }) => {
+  const jobId = jobName ? jobName + '-' + uuid() : uuid();
+  const deviceIds = devices.map(({ id }) => `'${id}'`).join(',');
+  const Desired = {};
+  updatedProperties.forEach(({ name, value }) => (Desired[name] = value));
+  deletedProperties.forEach((name) => (Desired[name] = null));
+  const request = {
+    JobId: jobId,
+    QueryCondition: `deviceId in [${deviceIds}]`,
+    MaxExecutionTimeInSeconds: 0,
+    UpdateTwin: {
+      Properties: {
+        Desired
+      }
     }
   };
   return request;

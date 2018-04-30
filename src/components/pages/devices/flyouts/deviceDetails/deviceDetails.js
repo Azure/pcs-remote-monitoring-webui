@@ -125,6 +125,16 @@ export class DeviceDetails extends Component {
     this.telemetrySubscription.unsubscribe();
   }
 
+  copyDevicePropertiesToClipboard = () => {
+    if (this.props.device) {
+      copyToClipboard(JSON.stringify(this.props.device.properties || {}));
+    }
+  }
+
+  toggleRawDiagnosticsMessage = () =>  {
+    this.setState({ showRawMessage: !this.state.showRawMessage });
+  }
+
   applyRuleNames = (alerts, rules) =>
     alerts.map(alert => ({
       ...alert,
@@ -266,19 +276,25 @@ export class DeviceDetails extends Component {
                         </GridHeader>
                         <GridBody>
                           {
-                            properties.map(([propertyName, propertyValue], idx) =>
-                              <Row key={idx}>
-                                <Cell className="col-3">{propertyName}</Cell>
-                                <Cell className="col-7">{propertyValue.toString().replace(/,/g, ", ")}</Cell>
-                              </Row>
-                            )
+                            properties.map(([propertyName, propertyValue], idx) => {
+                              const desiredPropertyValue = device.desiredProperties[propertyName];
+                              const displayValue = !desiredPropertyValue || propertyValue === desiredPropertyValue
+                                ? propertyValue
+                                : t('devices.flyouts.details.properties.syncing', { reportedPropertyValue: propertyValue, desiredPropertyValue });
+                              return (
+                                <Row key={idx}>
+                                  <Cell className="col-3">{propertyName}</Cell>
+                                  <Cell className="col-7">{displayValue}</Cell>
+                                </Row>
+                              );
+                            })
                           }
                         </GridBody>
                       </Grid>,
                       <Grid key="properties-actions" className="device-properties-actions">
                         <Row>
                           <Cell className="col-8">{t('devices.flyouts.details.properties.copyAllProperties')}</Cell>
-                          <Cell className="col-2"><Btn svg={svgs.copy} onClick={() => copyToClipboard(JSON.stringify(properties))} >{t('devices.flyouts.details.properties.copy')}</Btn></Cell>
+                          <Cell className="col-2"><Btn svg={svgs.copy} onClick={this.copyDevicePropertiesToClipboard} >{t('devices.flyouts.details.properties.copy')}</Btn></Cell>
                         </Row>
                       </Grid>
                     ]
@@ -305,16 +321,16 @@ export class DeviceDetails extends Component {
                       </Row>
                       {
                         device.connected && [
-                        <Row key="diag-row-time">
-                          <Cell className="col-3">{t('devices.flyouts.details.diagnostics.lastMessage')}</Cell>
-                          <Cell className="col-7">{(lastMessage || {}).time}</Cell>
-                        </Row>,
-                        <Row key="diag-row-msg">
-                          <Cell className="col-3">{t('devices.flyouts.details.diagnostics.message')}</Cell>
-                          <Cell className="col-7">
-                            <Btn className="raw-message-button" onClick={() => this.setState({ showRawMessage: !this.state.showRawMessage })}>{t('devices.flyouts.details.diagnostics.showMessage')}</Btn>
-                          </Cell>
-                        </Row>
+                          <Row key="diag-row-time">
+                            <Cell className="col-3">{t('devices.flyouts.details.diagnostics.lastMessage')}</Cell>
+                            <Cell className="col-7">{(lastMessage || {}).time}</Cell>
+                          </Row>,
+                          <Row key="diag-row-msg">
+                            <Cell className="col-3">{t('devices.flyouts.details.diagnostics.message')}</Cell>
+                            <Cell className="col-7">
+                              <Btn className="raw-message-button" onClick={this.toggleRawDiagnosticsMessage}>{t('devices.flyouts.details.diagnostics.showMessage')}</Btn>
+                            </Cell>
+                          </Row>
                         ]
                       }
                       {

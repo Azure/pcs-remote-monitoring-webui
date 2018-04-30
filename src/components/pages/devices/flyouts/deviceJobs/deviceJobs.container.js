@@ -7,7 +7,8 @@ import { redux as devicesRedux } from 'store/reducers/devicesReducer';
 
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
-  updateTags: device => dispatch(devicesRedux.actions.updateTags(device))
+  updateTags: device => dispatch(devicesRedux.actions.updateTags(device)),
+  updateProperties: device => dispatch(devicesRedux.actions.updateProperties(device))
 });
 
 export const DeviceJobsContainer = translate()(connect(null, mapDispatchToProps)(DeviceJobs));

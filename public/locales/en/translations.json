@@ -200,7 +200,8 @@
           "valueHeader": "Value",
           "noneExist": "No properties found for this device.",
           "copy": "Copy",
-          "copyAllProperties": "Copy a list of all properties for the device"
+          "copyAllProperties": "Copy a list of all properties for the device",
+          "syncing": "{{reportedPropertyValue}} (Syncing {{desiredPropertyValue}})"
         },
         "tags": {
           "title": "Tags",
@@ -270,7 +271,14 @@
         "properties": {
           "radioLabel": "Reconfigure",
           "title": "Reconfigure",
-          "description": "Available properties and values to change"
+          "description": "Available properties and values to change",
+          "keyHeader": "Property",
+          "valueHeader": "Value",
+          "typeHeader": "Type",
+          "typeNumber": "Number",
+          "typeString": "Text",
+          "noneExist": "No common properties found for the selected devices.",
+          "syncing": "{{reportedPropertyValue}} (Syncing {{desiredPropertyValue}})"
         }
       },
       "new": {

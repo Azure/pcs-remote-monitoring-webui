@@ -136,18 +136,22 @@ export class DeviceJobTags extends LinkedComponent {
   apply = (event) => {
     event.preventDefault();
     if (this.formIsValid()) {
-      this.setState({ isPending: true });
+      this.setState({
+        isPending: true,
+        updatedTags: this.state.commonTags.filter(({ value }) => value !== tagJobConstants.multipleValues)
+      });
 
       const { devices } = this.props;
       const { commonTags, deletedTags } = this.state;
-      const request = toSubmitTagsJobRequestModel(devices, this.state);
+      const updatedTags = commonTags.filter(({ value }) => value !== tagJobConstants.multipleValues);
+      const request = toSubmitTagsJobRequestModel(devices, update(this.state, { updatedTags: { $set: updatedTags } }));
 
       if (this.submitJobSubscription) this.submitJobSubscription.unsubscribe();
       this.submitJobSubscription = IoTHubManagerService.submitJob(request)
         .subscribe(
           ({ jobId }) => {
             this.setState({ jobId, successCount: devices.length, isPending: false, changesApplied: true });
-            this.props.updateTags({ deviceIds: devices.map(({ id }) => id), commonTags, deletedTags });
+            this.props.updateTags({ deviceIds: devices.map(({ id }) => id), updatedTags, deletedTags });
           },
           error => {
             this.setState({ error, isPending: false, changesApplied: true });
@@ -214,6 +218,7 @@ export class DeviceJobTags extends LinkedComponent {
       const value = tagLink.forkTo('value')
         .check(Validator.notEmpty, this.props.t('devices.flyouts.jobs.validation.required'));
       const type = tagLink.forkTo('type')
+        .map(({ value }) => value)
         .check(Validator.notEmpty, this.props.t('devices.flyouts.jobs.validation.required'));
       const edited = !(!name.value && !value.value && !type.value);
       const error = (edited && (name.error || value.error || type.error)) || '';
