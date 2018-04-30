@@ -113,9 +113,9 @@ export class AnalyticsPanel extends Component {
             <div className="analytics-header">{t('dashboard.panels.analytics.criticalAlerts')}</div>
             <div className="critical-alerts">
               {
-                criticalAlertsChange !== 0 &&
+                !showOverlay &&
                   <div className="analytics-percentage-container">
-                    <div className="analytics-value">{ criticalAlertsChange }</div>
+                    <div className="analytics-value">{ !isNaN(criticalAlertsChange) ? criticalAlertsChange : 0 }</div>
                     <div className="analytics-percentage-sign">%</div>
                   </div>
               }
