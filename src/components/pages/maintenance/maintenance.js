@@ -53,12 +53,8 @@ export class Maintenance extends Component {
     this.subscriptions = [];
   }
 
-  componentDidMount() {
-    this.getData();
-  }
-
-  getData = () => {
-    const deviceIds = Object.keys(this.props.deviceEntities);
+  getData = (deviceEntities) => {
+    const deviceIds = Object.keys(deviceEntities);
     const devices = deviceIds.length ? deviceIds.join(',') : undefined;
     const [ timeParams ] = getIntervalParams(this.state.timeInterval);
     const params = { ...timeParams, devices };
@@ -149,9 +145,17 @@ export class Maintenance extends Component {
     );
   }
 
+  componentDidMount() {
+    const { devicesIsPending, deviceLastUpdated, deviceEntities } = this.props;
+    if (!devicesIsPending && deviceLastUpdated) {
+      this.getData(deviceEntities);
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.deviceLastUpdated !== this.props.deviceLastUpdated) {
-      this.getData();
+    const { devicesIsPending, deviceLastUpdated, deviceEntities } = nextProps;
+    if (!devicesIsPending && deviceLastUpdated !== this.props.deviceLastUpdated) {
+      this.getData(deviceEntities);
     }
   }
 

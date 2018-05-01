@@ -20,7 +20,7 @@ export class Radio extends Component {
 
   // Needs to be a stateful component in order to access refs
   render() {
-    const { className, children, id, disabled, link, formGroupId = this.formGroupId, ...rest } = this.props;
+    const { className, children, id, disabled, link, ...rest } = this.props;
     const valueOverrides = link ? {
       checked: link.value === rest.value,
       onChange: link.onChange
@@ -34,7 +34,7 @@ export class Radio extends Component {
       (child) => {
         if (React.isValidElement(child) && isFunc(child.type)) {
           return React.cloneElement(child, {
-            formGroupId: `${formGroupId}_child`,
+            formGroupId: this.formGroupId,
             disabled: disabled || (radioProps.checked === undefined ? false : !radioProps.checked)
           });
         }
@@ -50,7 +50,7 @@ export class Radio extends Component {
             { ...valueOverrides }
             type="radio"
             disabled={disabled}
-            id={id || formGroupId}
+            id={id || this.formGroupId}
             ref="radioInputElement" />
           <Svg
             path={svgs.radioSelected}
