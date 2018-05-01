@@ -162,7 +162,8 @@ export class DeviceDetails extends Component {
     const rulesGridProps = {
       rowData: isPending ? undefined : this.applyRuleNames(this.state.alerts || [], this.props.rules || []),
       t: this.props.t,
-      columnDefs: translateColumnDefs(this.props.t, this.columnDefs)
+      columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
+      suppressFlyouts: true
     };
     const tags = Object.entries(device.tags || {});
     const properties = Object.entries(device.properties || {});

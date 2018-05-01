@@ -6,7 +6,6 @@ import { Devices } from './devices';
 import {
   epics as devicesEpics,
   getDevices,
-  getEntities,
   getDevicesError,
   getDevicesLastUpdated,
   getDevicesPendingStatus
@@ -16,7 +15,6 @@ import { getDeviceGroups, getDeviceGroupError } from 'store/reducers/appReducer'
 // Pass the devices status
 const mapStateToProps = state => ({
   devices: getDevices(state),
-  entities: getEntities(state),
   deviceError: getDevicesError(state),
   isPending: getDevicesPendingStatus(state),
   deviceGroups: getDeviceGroups(state),

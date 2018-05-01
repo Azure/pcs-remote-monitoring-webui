@@ -5,9 +5,13 @@ import { Btn, PcsGrid } from 'components/shared';
 import { checkboxParams, deviceColumnDefs, defaultDeviceGridProps } from './devicesGridConfig';
 import { DeviceDeleteContainer } from '../flyouts/deviceDelete';
 import { DeviceJobsContainer } from '../flyouts/deviceJobs';
+import { DeviceDetailsContainer } from '../flyouts/deviceDetails';
 import { isFunc, svgs, translateColumnDefs } from 'utilities';
 
-const closedFlyoutState = { openFlyoutName: undefined };
+const closedFlyoutState = {
+  openFlyoutName: undefined,
+  softSelectedDevice: undefined
+};
 
 /**
  * A grid for displaying devices
@@ -51,14 +55,19 @@ export class DevicesGrid extends Component {
     }
   };
 
-  openFlyout = (flyoutName) => () => this.setState({ openFlyoutName: flyoutName });
+  openFlyout = (flyoutName) => () => this.setState({
+    openFlyoutName: flyoutName,
+    softSelectedDevice: undefined
+  });
 
   getOpenFlyout = () => {
     switch (this.state.openFlyoutName) {
       case 'delete':
-        return <DeviceDeleteContainer key="device-flyout-key" onClose={this.closeFlyout} devices={this.deviceGridApi.getSelectedRows()} />
+        return <DeviceDeleteContainer key="delete-device-key" onClose={this.closeFlyout} devices={this.deviceGridApi.getSelectedRows()} />
       case 'jobs':
-        return <DeviceJobsContainer key="device-flyout-key" onClose={this.closeFlyout} devices={this.deviceGridApi.getSelectedRows()} />
+        return <DeviceJobsContainer key="jobs-device-key" onClose={this.closeFlyout} devices={this.deviceGridApi.getSelectedRows()} />
+      case 'details':
+        return <DeviceDetailsContainer key="details-device-key" onClose={this.closeFlyout} device={this.state.softSelectedDevice} />
       default:
         return null;
     }
@@ -74,7 +83,14 @@ export class DevicesGrid extends Component {
    */
   onSoftSelectChange = (device, rowEvent) => {
     const { onSoftSelectChange } = this.props;
-    this.setState(closedFlyoutState);
+    if (device) {
+      this.setState({
+        openFlyoutName: 'details',
+        softSelectedDevice: device
+      });
+    } else {
+      this.closeFlyout();
+    }
     if (isFunc(onSoftSelectChange)) {
       onSoftSelectChange(device, rowEvent);
     }
@@ -95,6 +111,8 @@ export class DevicesGrid extends Component {
     }
   }
 
+  getSoftSelectId = ({ id }) => id;
+
   render() {
     const gridProps = {
       /* Grid Properties */
@@ -106,6 +124,8 @@ export class DevicesGrid extends Component {
       context: {
         t: this.props.t
       },
+      getSoftSelectId: this.getSoftSelectId,
+      softSelectId: (this.state.softSelectedDevice || {}).id,
       /* Grid Events */
       onGridReady: this.onGridReady,
       onSoftSelectChange: this.onSoftSelectChange,
