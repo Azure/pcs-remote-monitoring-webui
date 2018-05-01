@@ -31,10 +31,11 @@ import './ruleEditor.css';
 const Section = Flyout.Section;
 const severityLevels = ['Critical', 'Warning', 'Info'];
 const calculations = ['Average', 'Instant'];
+// Represented in milliSeconds
 const timePeriodOptions = [
-  { label: '1', value: '00:01:00' },
-  { label: '5', value: '00:05:00' },
-  { label: '10', value: '00:10:00' }
+  { label: '1', value: '60000' },
+  { label: '5', value: '300000' },
+  { label: '10', value: '600000' }
 ];
 const operatorOptions = [
   { label: '>', value: 'GreaterThan' },
