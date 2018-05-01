@@ -5,7 +5,7 @@
 export const EMPTY_FIELD_VAL = '---';
 
 /** The default formatting for dates in the PcsGrid */
-export const DEFAULT_TIME_FORMAT = 'hh:mm:ss MM.DD.YYYY';
+export const DEFAULT_TIME_FORMAT = 'hh:mm:ss A MM.DD.YYYY';
 
 /** A collection of reusable value formatter methods */
 export const gridValueFormatters = {

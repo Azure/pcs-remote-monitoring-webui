@@ -7,7 +7,7 @@ const { checkForEmpty } = gridValueFormatters;
 
 const formatTime = (value) => {
   if (value) {
-    const time = moment(value);
+    const time = moment.utc(value).local();
     return checkForEmpty((time.unix() > 0) ? time.format(DEFAULT_TIME_FORMAT) : '');
   }
   return value;
