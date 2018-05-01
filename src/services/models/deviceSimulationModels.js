@@ -3,7 +3,7 @@
 import { camelCaseReshape, getItems, reshape } from 'utilities';
 
 export const toDeviceSimulationModel = (response = {}) => camelCaseReshape(response, {
-  'etag': 'etag',
+  'eTag': 'eTag',
   'id': 'id',
   'enabled': 'enabled',
   'deviceModels': 'deviceModels'
@@ -14,7 +14,7 @@ export const toDeviceSimulationRequestModel = (request = {}) => {
     .map(toDeviceModelsRequestModel);
 
   const topLevel = reshape(request, {
-    'etag': 'Etag',
+    'eTag': 'ETag',
     'id': 'Id',
     'enabled': 'Enabled'
   });
