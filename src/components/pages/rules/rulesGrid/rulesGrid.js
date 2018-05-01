@@ -8,6 +8,8 @@ import { rulesColumnDefs, checkboxParams, defaultRulesGridProps } from './rulesG
 import { isFunc, translateColumnDefs, svgs } from 'utilities';
 import { EditRuleFlyout, RuleStatusContainer } from '../flyouts'
 
+import './rulesGrid.css';
+
 const closedFlyoutState = {
   openFlyoutName: undefined
 };
@@ -35,13 +37,14 @@ export class RulesGrid extends Component {
     ];
 
     this.contextBtns = {
-      disable: <Btn key="disable" svg={svgs.disableToggle} onClick={this.openStatusFlyout}>
+      disable:
+      <Btn key="disable" className="rule-status-btn" svg={svgs.disableToggle} onClick={this.openStatusFlyout}>
         <Trans i18nKey="rules.flyouts.disable">Disable</Trans>
       </Btn>,
-      enable: <Btn key="enable" svg={svgs.enableToggle} onClick={this.openStatusFlyout}>
+      enable: <Btn key="enable" className="rule-status-btn enabled" svg={svgs.enableToggle} onClick={this.openStatusFlyout}>
         <Trans i18nKey="rules.flyouts.enable">Enable</Trans>
       </Btn>,
-      changeStatus: <Btn key="changeStatus" svg={svgs.loadingToggle} onClick={this.openStatusFlyout}>
+      changeStatus: <Btn key="changeStatus" className="rule-status-btn" svg={svgs.changeStatus} onClick={this.openStatusFlyout}>
         <Trans i18nKey="rules.flyouts.changeStatus">Change status</Trans>
       </Btn>,
       edit: <Btn key="edit" svg={svgs.edit} onClick={this.openEditRuleFlyout}>{props.t('rules.flyouts.edit')}</Btn>

@@ -88,7 +88,7 @@ export class RuleStatus extends Component {
               rules.map((rule) => (
                 <SummarySection key={rule.id} title={rule.name} className="padded-bottom">
                   <FormLabel className="rule-description">{rule.description}</FormLabel>
-                  <SummaryCount>{rule.count.response ? rule.count.response : '---'}</SummaryCount>
+                  <SummaryCount>{rule.count && rule.count.response ? rule.count.response : '---'}</SummaryCount>
                   <SectionDesc>{t('rules.flyouts.ruleEditor.devicesAffected')}</SectionDesc>
                 </SummarySection>
               ))

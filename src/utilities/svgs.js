@@ -4,6 +4,7 @@ import AckAlertIconPath from 'assets/icons/ackAlert.svg';
 import ApplyIconPath from 'assets/icons/apply.svg';
 import CancelXIconPath from 'assets/icons/cancelX.svg';
 import CaratIconPath from 'assets/icons/carat.svg';
+import ChangeStatusPath from 'assets/icons/changeStatus.svg';
 import CheckmarkIconPath from 'assets/icons/checkmark.svg';
 import ChevronIconPath from 'assets/icons/chevron.svg';
 import ChevronRightIconPath from 'assets/icons/chevronRight.svg';
@@ -69,6 +70,7 @@ export const svgs = {
   apply: ApplyIconPath,
   cancelX: CancelXIconPath,
   carat: CaratIconPath,
+  changeStatus: ChangeStatusPath,
   checkmark: CheckmarkIconPath,
   chevron: ChevronIconPath,
   chevronRight: ChevronRightIconPath,

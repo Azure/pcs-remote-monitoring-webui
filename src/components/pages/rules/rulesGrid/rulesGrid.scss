@@ -1,0 +1,31 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.btn.rule-status-btn {
+  .btn-icon svg {
+    fill: transparent;
+    @include square-px-rem(24px);
+    @include rem-fallback(padding-right, 10px);
+  }
+
+
+  @include themify($themes) {
+    .cls-1 { stroke: themed('colorBtnSvgFillActive'); }
+
+    .cls-2 {
+      fill: themed('colorContextMenuBtnSvgFill');
+      stroke: themed('colorContextMenuBtnSvgFill');
+    }
+
+    &:hover .btn-icon svg { fill: themed('colorContextMenuBg'); }
+    }
+}
+
+.btn.enabled {
+  @include themify($themes) {
+    .cls-1 { stroke: themed('colorEnableToggleBackground'); }
+    svg { fill: themed('colorEnableToggleBackground'); }
+  }
+}
