@@ -67,7 +67,7 @@ const initialState = {
 const simulationStatusReducer = (state, { payload, fromAction }) => {
   return update(state, {
     simulationEnabled: { $set: payload.enabled },
-    simulationEtag: { $set: payload.etag },
+    simulationEtag: { $set: payload.eTag },
     ...setPending(fromAction.type, false)
   })
 };
