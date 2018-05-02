@@ -231,7 +231,7 @@ export class RuleDetails extends Component {
         !this.props.error
           ? <div>
               <div className="header-container">
-                <h1 className="maintenance-header">{alertName}</h1>
+                <h1 className="rule-maintenance-header">{alertName}</h1>
                 <div className="rule-stat-container">
                   <div className="rule-stat-cell">
                     <div className="rule-stat-header">{t('maintenance.total')}</div>
