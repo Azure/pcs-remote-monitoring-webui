@@ -46,13 +46,18 @@ export const camelCaseReshape = (response, model) => {
   return reshape(camelCaseKeys(response), model);
 };
 
-/** A helper method for translating headerNames of columnDefs */
+/**
+ * A helper method for translating headerNames and headerTooltips of columnDefs.
+ * If headerTooltip is provided, it will be translated.
+ * If headerTooltip is not provided, the headerName will be used to ensure headers
+ * can be deciphered even when the column is too narrow to show the entire header.
+ */
 export const translateColumnDefs = (t, columnDefs) => {
-  return columnDefs.map(columnDef =>
-    columnDef.headerName
-      ? { ...columnDef, headerName: t(columnDef.headerName) }
-      : columnDef
-  );
+  return columnDefs.map(columnDef => {
+    const headerName = columnDef.headerName ? t(columnDef.headerName) : undefined;
+    const headerTooltip = columnDef.headerTooltip ? t(columnDef.headerTooltip) : headerName;
+    return { ...columnDef, headerName, headerTooltip };
+  });
 }
 
 /** A helper method for creating comparator methods for sorting arrays of objects */
