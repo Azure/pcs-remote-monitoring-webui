@@ -42,7 +42,11 @@ $iconSize: 14px;
       svg {
         fill: themed('colorCellRendererSvgFill');
 
-        .disabled-icon { stroke: themed('colorCellRendererSvgFill'); }
+        .disabled-icon {
+          stroke: themed('colorCellRendererSvgFill');
+
+          .cls-2 { stroke: themed('colorGridRowBackground'); }
+        }
       }
     }
 
@@ -61,6 +65,15 @@ $iconSize: 14px;
 
       .pcs-renderer-text { color: themed('colorCellRendererTextHighlight'); }
 
+    }
+  }
+}
+
+.ag-row {
+  @include themify($themes) {
+    &.ag-row-hover,
+    &.ag-row-focus {
+      .pcs-renderer-cell .pcs-renderer-icon svg .disabled-icon .cls-2 { stroke: themed('colorGridRowHoverBackground'); }
     }
   }
 }

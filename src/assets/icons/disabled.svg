@@ -19,7 +19,6 @@
       }
 
       .disabled-icon .cls-2 {
-        stroke: #1b1d1f;
         stroke-width: 5px;
       }
 
