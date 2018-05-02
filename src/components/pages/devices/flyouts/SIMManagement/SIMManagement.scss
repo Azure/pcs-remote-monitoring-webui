@@ -1,0 +1,45 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.sim-management-container {
+  @include rem-fallback(margin-top, 24px);
+  @include rem-font-size(14px);
+
+  .hide-border { border: none; }
+
+  .sim-management-label { @include rem-fallback(padding, 12px, 0px); }
+
+  .sim-management-label-title { @include rem-fallback(padding, 12px, 0px); }
+
+  .sim-management-label-desctiption {
+    white-space: pre-wrap;
+    @include rem-fallback(padding, 12px, 0px);
+  }
+
+  .sim-management-selector {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .sim-management-label-selector {
+    width: 50%;
+    @include rem-fallback(padding, 12px, 0px);
+  }
+
+  .sim-management-dropdown { width: 100%; }
+
+  @include themify($themes) {
+
+    a { color: themed('colorFlyoutText'); }
+
+    .sim-management-label-title {
+      color: themed('colorFlyoutText');
+      @include rem-fallback(font-size, 16px);
+    }
+
+  }
+}

@@ -6,6 +6,7 @@ import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/app/manageDeviceGroupsBtn';
 import { AjaxError, Btn, RefreshBar, PageContent, ContextMenu } from 'components/shared';
 import { DeviceNewContainer } from './flyouts/deviceNew';
+import { SIMManagementContainer } from './flyouts/SIMManagement';
 import { svgs } from 'utilities';
 
 import './devices.css';
@@ -31,6 +32,7 @@ export class Devices extends Component {
 
   closeFlyout = () => this.setState(closedFlyoutState);
 
+  openSIMManagement = () => this.setState({ openFlyoutName: 'sim-management' });
   openNewDeviceFlyout = () => this.setState({ openFlyoutName: 'new-device' });
 
   onContextMenuChange = contextBtns => this.setState({
@@ -46,6 +48,7 @@ export class Devices extends Component {
       t: this.props.t
     };
     const newDeviceFlyoutOpen = this.state.openFlyoutName === 'new-device';
+    const simManagementFlyoutOpen = this.state.openFlyoutName === 'sim-management';
 
     const error = deviceGroupError || deviceError;
 
@@ -53,6 +56,7 @@ export class Devices extends Component {
       <ContextMenu key="context-menu">
         <DeviceGroupDropdown />
         { this.state.contextBtns }
+        <Btn svg={svgs.simmanagement} onClick={this.openSIMManagement}>{t('devices.flyouts.SIMManagement.title')}</Btn>
         <Btn svg={svgs.plus} onClick={this.openNewDeviceFlyout}>{t('devices.flyouts.new.contextMenuName')}</Btn>
         <ManageDeviceGroupsBtn />
       </ContextMenu>,
@@ -61,6 +65,7 @@ export class Devices extends Component {
         { !!error && <AjaxError t={t} error={error} /> }
         { !error && <DevicesGrid {...gridProps} /> }
         { newDeviceFlyoutOpen && <DeviceNewContainer onClose={this.closeFlyout} /> }
+        { simManagementFlyoutOpen && <SIMManagementContainer onClose={this.closeFlyout} /> }
       </PageContent>
     ];
   }
