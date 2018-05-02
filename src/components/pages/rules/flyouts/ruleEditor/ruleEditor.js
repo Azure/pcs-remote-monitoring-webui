@@ -16,6 +16,7 @@ import {
   AjaxError,
   Indicator
 } from 'components/shared';
+import { EMPTY_FIELD_VAL } from 'components/shared/pcsGrid/pcsGridConfig';
 import { SeverityRenderer } from 'components/shared/cellRenderers';
 import {
   Validator,
@@ -71,8 +72,7 @@ export class RuleEditor extends LinkedComponent {
 
   constructor(props) {
     super(props);
-    const { rule } = props;
-    const formData = rule ? rule : newRule;
+    const formData = newRule;
     this.state = {
       error: undefined,
       fieldOptions: [],
@@ -83,7 +83,20 @@ export class RuleEditor extends LinkedComponent {
   }
 
   componentDidMount() {
-    if (this.props.rule) this.getDeviceCountAndFields(this.props.rule.groupId);
+    const { rule } = this.props;
+    if (rule) {
+      this.setState({
+        formData: rule,
+        devicesAffected: rule.count && rule.count.response ? rule.count.response : EMPTY_FIELD_VAL
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { rule } = nextProps;
+    if (rule) {
+      this.setState({ formData: rule });
+    }
   }
 
   componentWillUnmount() {
@@ -111,15 +124,26 @@ export class RuleEditor extends LinkedComponent {
     event.preventDefault();
     const { onClose, insertRule, updateRule } = this.props;
     const requestProps = { ...this.state.formData };
+    const { devicesAffected } = this.state;
     if (requestProps.calculation === calculations[1]) requestProps.timePeriod = '';
     if (this.formIsValid()) {
       this.setState({ isPending: true });
       if (this.subscription) this.subscription.unsubscribe();
+      const countProps = {
+        count: {
+          response: devicesAffected,
+          error: undefined
+        },
+        lastTrigger: {
+          response: undefined,
+          erroe: undefined
+        }
+      };
       if (this.props.rule) { // If rule object exist then update the existing rule
         this.subscription = TelemetryService.updateRule(this.props.rule.id, toNewRuleRequestModel(requestProps))
           .subscribe(
             (updatedRule) => {
-              updateRule(updatedRule);
+              updateRule({ ...updatedRule, ...countProps });
               this.setState({ isPending: false });
               onClose();
             },
@@ -129,7 +153,7 @@ export class RuleEditor extends LinkedComponent {
         this.subscription = TelemetryService.createRule(toNewRuleRequestModel(requestProps))
           .subscribe(
             (createdRule) => {
-              insertRule(createdRule);
+              insertRule({ ...createdRule, ...countProps });
               this.setState({ isPending: false });
               onClose();
             },
