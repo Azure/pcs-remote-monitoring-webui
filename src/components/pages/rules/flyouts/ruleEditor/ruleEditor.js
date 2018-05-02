@@ -25,11 +25,11 @@ import {
 import Flyout from 'components/shared/flyout';
 import { IoTHubManagerService, TelemetryService } from 'services';
 import { toNewRuleRequestModel } from 'services/models';
+import Config from 'app.config';
 
 import './ruleEditor.css';
 
 const Section = Flyout.Section;
-const severityLevels = ['Critical', 'Warning', 'Info'];
 const calculations = ['Average', 'Instant'];
 // Represented in milliSeconds
 const timePeriodOptions = [
@@ -63,7 +63,7 @@ const newRule = {
   calculation: '',
   timePeriod: '',
   conditions: [newCondition()], // Start with one condition
-  severity: severityLevels[0],
+  severity: Config.ruleSeverity.critical,
   enabled: true
 }
 
@@ -203,7 +203,7 @@ export class RuleEditor extends LinkedComponent {
       .check(
         timePeriod => this.calculationLink.value === calculations[0] ? Validator.notEmpty(timePeriod) : true,
         this.props.t('rules.flyouts.ruleEditor.validation.required')
-      );;
+      );
     this.conditionsLink = this.formDataLink.forkTo('conditions').withValidator(requiredValidator);
     this.severityLink = this.formDataLink.forkTo('severity');
     //todo toggle button didn't support link
@@ -332,18 +332,18 @@ export class RuleEditor extends LinkedComponent {
               <FormLabel>{t('rules.flyouts.ruleEditor.severityLevel')}</FormLabel>
               <Radio
                 link={this.severityLink}
-                value={severityLevels[0]}>
-                <SeverityRenderer value={severityLevels[0]} context={{ t }} />
+                value={Config.ruleSeverity.critical}>
+                <SeverityRenderer value={Config.ruleSeverity.critical} context={{ t }} />
               </Radio>
               <Radio
                 link={this.severityLink}
-                value={severityLevels[1]}>
-                <SeverityRenderer value={severityLevels[1]} context={{ t }} />
+                value={Config.ruleSeverity.warning}>
+                <SeverityRenderer value={Config.ruleSeverity.warning} context={{ t }} />
               </Radio>
               <Radio
                 link={this.severityLink}
-                value={severityLevels[2]}>
-                <SeverityRenderer value={severityLevels[2]} context={{ t }} />
+                value={Config.ruleSeverity.info}>
+                <SeverityRenderer value={Config.ruleSeverity.info} context={{ t }} />
               </Radio>
             </FormGroup>
           </Section.Content>
