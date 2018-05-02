@@ -335,7 +335,7 @@ export class DeviceNew extends LinkedComponent {
                 isSimulatedDevice && [
                   <FormGroup key="deviceCount">
                     <FormLabel>{t('devices.flyouts.new.count.label')}</FormLabel>
-                    <FormControl link={this.countLink} type="number" />
+                    <FormControl link={this.countLink} type="text" />
                   </FormGroup>,
                   <FormGroup key="deviceId">
                     <FormLabel>{t('devices.flyouts.new.deviceIdExample.label')}</FormLabel>
