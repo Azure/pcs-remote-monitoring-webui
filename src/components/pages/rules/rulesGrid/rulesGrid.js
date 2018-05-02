@@ -11,7 +11,8 @@ import { EditRuleFlyout, RuleStatusContainer } from '../flyouts'
 import './rulesGrid.css';
 
 const closedFlyoutState = {
-  openFlyoutName: undefined
+  openFlyoutName: undefined,
+  softSelectedRule: undefined
 };
 
 export class RulesGrid extends Component {
@@ -38,16 +39,21 @@ export class RulesGrid extends Component {
 
     this.contextBtns = {
       disable:
-      <Btn key="disable" className="rule-status-btn" svg={svgs.disableToggle} onClick={this.openStatusFlyout}>
-        <Trans i18nKey="rules.flyouts.disable">Disable</Trans>
-      </Btn>,
-      enable: <Btn key="enable" className="rule-status-btn enabled" svg={svgs.enableToggle} onClick={this.openStatusFlyout}>
-        <Trans i18nKey="rules.flyouts.enable">Enable</Trans>
-      </Btn>,
-      changeStatus: <Btn key="changeStatus" className="rule-status-btn" svg={svgs.changeStatus} onClick={this.openStatusFlyout}>
-        <Trans i18nKey="rules.flyouts.changeStatus">Change status</Trans>
-      </Btn>,
-      edit: <Btn key="edit" svg={svgs.edit} onClick={this.openEditRuleFlyout}>{props.t('rules.flyouts.edit')}</Btn>
+        <Btn key="disable" className="rule-status-btn" svg={svgs.disableToggle} onClick={this.openStatusFlyout}>
+          <Trans i18nKey="rules.flyouts.disable">Disable</Trans>
+        </Btn>,
+      enable:
+        <Btn key="enable" className="rule-status-btn enabled" svg={svgs.enableToggle} onClick={this.openStatusFlyout}>
+          <Trans i18nKey="rules.flyouts.enable">Enable</Trans>
+        </Btn>,
+      changeStatus:
+        <Btn key="changeStatus" className="rule-status-btn" svg={svgs.changeStatus} onClick={this.openStatusFlyout}>
+          <Trans i18nKey="rules.flyouts.changeStatus">Change status</Trans>
+        </Btn>,
+      edit:
+        <Btn key="edit" svg={svgs.edit} onClick={this.openEditRuleFlyout}>
+          {props.t('rules.flyouts.edit')}
+        </Btn>
     };
   }
 
@@ -60,7 +66,7 @@ export class RulesGrid extends Component {
   getOpenFlyout = () => {
     switch (this.state.openFlyoutName) {
       case 'edit':
-        return <EditRuleFlyout onClose={this.closeFlyout} t={this.props.t} rule={this.state.selectedRules[0]} key="edit-rule-flyout" />
+        return <EditRuleFlyout onClose={this.closeFlyout} t={this.props.t} rule={this.state.softSelectedRule || this.state.selectedRules[0]} key="edit-rule-flyout" />
       case 'status':
         return <RuleStatusContainer onClose={this.closeFlyout} t={this.props.t} rules={this.state.selectedRules} key="edit-rule-flyout" />
       default:
@@ -95,14 +101,23 @@ export class RulesGrid extends Component {
   }
 
   onSoftSelectChange = (rule, rowEvent) => {
-    const { onSoftSelectChange } = this.props;
-    this.setState(closedFlyoutState);
+    const { onSoftSelectChange, suppressFlyouts } = this.props;
+    if (!suppressFlyouts) {
+      if (rule) {
+        this.setState({
+          openFlyoutName: 'edit',
+          softSelectedRule: rule
+        });
+      } else {
+        this.closeFlyout();
+      }
+    }
     if (isFunc(onSoftSelectChange)) {
       onSoftSelectChange(rule, rowEvent);
     }
-    this.setSelectedRules([rule]);
-    this.openEditRuleFlyout('edit');
   }
+
+  getSoftSelectId = ({ id = {} } = {}) => id;
 
   closeFlyout = () => this.setState(closedFlyoutState);
 
@@ -112,6 +127,8 @@ export class RulesGrid extends Component {
       ...defaultRulesGridProps,
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
       sizeColumnsToFit: true,
+      getSoftSelectId: this.getSoftSelectId,
+      softSelectId: (this.state.softSelectedRule || {}).id,
       ...this.props, // Allow default property overrides
       context: {
         t: this.props.t

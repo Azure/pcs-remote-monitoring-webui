@@ -111,7 +111,7 @@ export class DevicesGrid extends Component {
     }
   }
 
-  getSoftSelectId = ({ id }) => id;
+  getSoftSelectId = ({ id } = {}) => id;
 
   render() {
     const gridProps = {
@@ -120,12 +120,12 @@ export class DevicesGrid extends Component {
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
       onRowDoubleClicked: ({ node }) => node.setSelected(!node.isSelected()),
       sizeColumnsToFit: true,
+      getSoftSelectId: this.getSoftSelectId,
+      softSelectId: (this.state.softSelectedDevice || {}).id,
       ...this.props, // Allow default property overrides
       context: {
         t: this.props.t
       },
-      getSoftSelectId: this.getSoftSelectId,
-      softSelectId: (this.state.softSelectedDevice || {}).id,
       /* Grid Events */
       onGridReady: this.onGridReady,
       onSoftSelectChange: this.onSoftSelectChange,
