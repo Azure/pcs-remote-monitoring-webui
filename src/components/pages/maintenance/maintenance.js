@@ -54,7 +54,7 @@ export class Maintenance extends Component {
   }
 
   getData = (deviceEntities) => {
-    const deviceIds = Object.keys(deviceEntities);
+    const deviceIds = Object.keys(deviceEntities || this.props.deviceEntities);
     const devices = deviceIds.length ? deviceIds.join(',') : undefined;
     const [ timeParams ] = getIntervalParams(this.state.timeInterval);
     const params = { ...timeParams, devices };
