@@ -125,7 +125,7 @@ $checkboxPadding: 8px;
       color: themed('colorGridCellText');
       outline: none;
 
-      &:first-child { border-left: 4px solid themed('colorGridRowBackground') !important; }
+      &.first-child-column { border-left: 4px solid themed('colorGridRowBackground') !important; }
     }
 
     .ag-row {

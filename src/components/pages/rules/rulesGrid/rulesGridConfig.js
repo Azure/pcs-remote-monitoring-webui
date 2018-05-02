@@ -11,12 +11,14 @@ import {
   LastTriggerRenderer,
   LinkRenderer
 } from 'components/shared/cellRenderers';
+import { FIRST_COLUMN_CLASS } from 'components/shared/pcsGrid/pcsGridConfig';
 export const LAST_TRIGGER_DEFAULT_WIDTH = 310;
 
 export const checkboxParams = {
   headerCheckboxSelection: true,
   headerCheckboxSelectionFilteredOnly: true,
-  checkboxSelection: true
+  checkboxSelection: true,
+  cellClass: [FIRST_COLUMN_CLASS]
 };
 
 export const rulesColumnDefs = {

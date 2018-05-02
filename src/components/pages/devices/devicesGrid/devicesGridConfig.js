@@ -2,14 +2,15 @@
 
 import Config from 'app.config';
 import { IsSimulatedRenderer, ConnectionStatusRenderer, TimeRenderer } from 'components/shared/cellRenderers';
-import { EMPTY_FIELD_VAL, gridValueFormatters } from 'components/shared/pcsGrid/pcsGridConfig';
+import { EMPTY_FIELD_VAL, FIRST_COLUMN_CLASS, gridValueFormatters } from 'components/shared/pcsGrid/pcsGridConfig';
 
 const { checkForEmpty } = gridValueFormatters;
 
 export const checkboxParams = {
   headerCheckboxSelection: true,
   headerCheckboxSelectionFilteredOnly: true,
-  checkboxSelection: true
+  checkboxSelection: true,
+  cellClass: [FIRST_COLUMN_CLASS]
 };
 
 /** A collection of column definitions for the devices grid */

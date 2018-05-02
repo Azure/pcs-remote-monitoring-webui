@@ -11,3 +11,6 @@ export const DEFAULT_TIME_FORMAT = 'hh:mm:ss A MM.DD.YYYY';
 export const gridValueFormatters = {
   checkForEmpty: (value, emptyValue = EMPTY_FIELD_VAL) => value || emptyValue
 };
+
+/** A the class name for the first row in a grid (used for soft and hard selection ) */
+export const FIRST_COLUMN_CLASS = 'first-child-column';
