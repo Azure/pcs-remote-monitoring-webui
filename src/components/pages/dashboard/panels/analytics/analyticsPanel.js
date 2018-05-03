@@ -10,7 +10,8 @@ import {
   PanelHeaderLabel,
   PanelContent,
   PanelOverlay,
-  PanelError
+  PanelError,
+  PanelMsg
 } from 'components/pages/dashboard/panel';
 
 import './analyticsPanel.css';
@@ -92,7 +93,7 @@ export class AnalyticsPanel extends Component {
   }
 
   render() {
-    const { t, isPending, criticalAlertsChange, error } = this.props;
+    const { t, isPending, criticalAlertsChange, alertsPerDeviceId, topAlerts, error } = this.props;
     const showOverlay = isPending && !criticalAlertsChange;
     return (
       <Panel>
@@ -121,6 +122,10 @@ export class AnalyticsPanel extends Component {
               }
             </div>
           </div>
+          {
+            (!showOverlay && !topAlerts.length && !Object.keys(alertsPerDeviceId).length)
+              && <PanelMsg>{t('dashboard.noData')}</PanelMsg>
+          }
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
         { error && <PanelError><AjaxError t={t} error={error} /></PanelError> }

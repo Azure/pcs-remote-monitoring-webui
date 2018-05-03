@@ -203,6 +203,7 @@ export class RuleDetails extends Component {
     const alertName = (this.state.selectedRule || {}).name || selectedId;
 
     const alertsGridProps = {
+      multiSelect: true,
       rowData: isPending ? undefined : this.state.occurrences,
       pagination: true,
       paginationPageSize: Config.smallGridPageSize,
