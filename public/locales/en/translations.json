@@ -61,7 +61,8 @@
       "fieldCantBeEmpty": "Field is required",
       "operatorCantBeEmpty": "Operator is required",
       "valueCantBeEmpty": "Value is required",
-      "typeCantBeEmpty": "Type is required"
+      "typeCantBeEmpty": "Type is required",
+      "selectedType": "Must be of the selected type"
     },
     "conditions": {
       "condition": "Condition {{headerCount}}",
@@ -410,7 +411,7 @@
         },
         "validation": {
           "required": "Is required",
-          "greaterThanZero": "Must be greater than zero"
+          "nan": "Must be a number"
         },
         "severityLevel": "Severity level",
         "ruleStatus": "Rule status",

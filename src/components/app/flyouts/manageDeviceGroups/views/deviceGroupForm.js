@@ -155,7 +155,7 @@ class DeviceGroupForm extends LinkedComponent {
         .check(Validator.notEmpty, t('deviceGroupsFlyout.errorMsg.typeCantBeEmpty'));
       const value = conditionLink.forkTo('value')
         .check(Validator.notEmpty, t('deviceGroupsFlyout.errorMsg.valueCantBeEmpty'))
-        .check(val => type.value === 'Number' ? !isNaN(val): true, 'Must be of the selected type');
+        .check(val => type.value === 'Number' ? !isNaN(val): true, t('deviceGroupsFlyout.errorMsg.selectedType'));
       const edited = !(!field.value && !operator.value && !value.value && !type.value);
       const error = (edited && (field.error || operator.error || value.error || type.error)) || '';
       return { field, operator, value, type, edited, error };

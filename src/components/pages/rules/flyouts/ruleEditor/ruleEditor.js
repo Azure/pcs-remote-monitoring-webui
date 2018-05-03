@@ -16,7 +16,6 @@ import {
   AjaxError,
   Indicator
 } from 'components/shared';
-import { EMPTY_FIELD_VAL } from 'components/shared/pcsGrid/pcsGridConfig';
 import { SeverityRenderer } from 'components/shared/cellRenderers';
 import {
   Validator,
@@ -76,6 +75,7 @@ export class RuleEditor extends LinkedComponent {
     this.state = {
       error: undefined,
       fieldOptions: [],
+      fieldQueryPending: true,
       devicesAffected: 0,
       formData,
       isPending: false
@@ -85,9 +85,9 @@ export class RuleEditor extends LinkedComponent {
   componentDidMount() {
     const { rule } = this.props;
     if (rule) {
+      this.getDeviceCountAndFields(rule.groupId);
       this.setState({
-        formData: rule,
-        devicesAffected: rule.count && rule.count.response ? rule.count.response : EMPTY_FIELD_VAL
+        formData: rule
       });
     }
   }
@@ -164,6 +164,10 @@ export class RuleEditor extends LinkedComponent {
   }
 
   onGroupIdChange = ({ target: { value: { value = {} } } }) => {
+    this.setState({
+      fieldQueryPending: true,
+      isPending: true
+    });
     this.getDeviceCountAndFields(value);
   }
 
@@ -175,8 +179,10 @@ export class RuleEditor extends LinkedComponent {
           .subscribe(
             groupDevices => {
               this.setState({
+                fieldQueryPending: false,
                 fieldOptions: this.getConditionFields(groupDevices),
-                devicesAffected: groupDevices.length
+                devicesAffected: groupDevices.length,
+                isPending: false
               });
             },
             error => this.setState({ error })
@@ -192,7 +198,7 @@ export class RuleEditor extends LinkedComponent {
     devices.forEach(({ telemetry = {} }) => {
       Object.values(telemetry).forEach(({ messageSchema: { fields } }) => {
         Object.keys(fields).forEach((field) => {
-          if (field.indexOf('_unit') === -1) conditions.add(field);
+          if (field.toLowerCase().indexOf('unit') === -1) conditions.add(field);
         })
       })
     })
@@ -206,7 +212,7 @@ export class RuleEditor extends LinkedComponent {
 
   render() {
     const { onClose, t, deviceGroups = [] } = this.props;
-    const { error, formData, fieldOptions, devicesAffected, isPending } = this.state;
+    const { error, formData, fieldOptions, devicesAffected, isPending, fieldQueryPending } = this.state;
     const calculationOptions = calculations.map(value => ({
       label: t(`rules.flyouts.ruleEditor.calculationOptions.${value.toLowerCase()}`),
       value
@@ -235,8 +241,10 @@ export class RuleEditor extends LinkedComponent {
     // Create the state link for the dynamic form elements
     const conditionLinks = this.conditionsLink.getLinkedChildren(conditionLink => {
       const fieldLink = conditionLink.forkTo('field').map(({ value }) => value).withValidator(requiredValidator);
-      const operatorLink = conditionLink.forkTo('operator').withValidator(requiredValidator);
-      const valueLink = conditionLink.forkTo('value').withValidator(requiredValidator);
+      const operatorLink = conditionLink.forkTo('operator').map(({ value }) => value).withValidator(requiredValidator);
+      const valueLink = conditionLink.forkTo('value')
+        .check(Validator.notEmpty, () => this.props.t('deviceGroupsFlyout.errorMsg.nameCantBeEmpty'))
+        .check(val => !isNaN(val), t('rules.flyouts.ruleEditor.validation.nan'));
       const error = fieldLink.error || operatorLink.error || valueLink.error;
       return { fieldLink, operatorLink, valueLink, error };
     });
@@ -301,87 +309,90 @@ export class RuleEditor extends LinkedComponent {
             }
           </Section.Content>
         </Section.Container>
-
-        <Section.Container collapsable={false}>
-          <Section.Header>{t('rules.flyouts.ruleEditor.conditions')}</Section.Header>
-          <Section.Content>
-            <Btn svg={svgs.plus} onClick={this.addCondition}>{t('rules.flyouts.ruleEditor.addCondition')}</Btn>
-          </Section.Content>
-        </Section.Container>
         {
-          conditionLinks.map((condition, idx) => (
-            <Section.Container key={formData.conditions[idx].key}>
-              <Section.Header>{t('rules.flyouts.ruleEditor.condition.condition')} {idx + 1}</Section.Header>
+          !fieldQueryPending && <div>
+            <Section.Container collapsable={false}>
+              <Section.Header>{t('rules.flyouts.ruleEditor.conditions')}</Section.Header>
               <Section.Content>
-                <FormGroup>
-                  <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.field')}</FormLabel>
-                  <FormControl
-                    type="select"
-                    className="long"
-                    placeholder={t('rules.flyouts.ruleEditor.condition.fieldPlaceholder')}
-                    link={condition.fieldLink}
-                    options={fieldOptions}
-                    clearable={false}
-                    searchable={true} />
-                </FormGroup>
-                <FormGroup>
-                  <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.operator')}</FormLabel>
-                  <FormControl
-                    type="select"
-                    className="short"
-                    placeholder={t('rules.flyouts.ruleEditor.condition.operatorPlaceholder')}
-                    link={condition.operatorLink}
-                    options={operatorOptions}
-                    clearable={false}
-                    searchable={false} />
-                </FormGroup>
-                <FormGroup>
-                  <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.value')}</FormLabel>
-                  <FormControl
-                    type="text"
-                    placeholder={t('rules.flyouts.ruleEditor.condition.valuePlaceholder')}
-                    link={condition.valueLink} />
-                </FormGroup>
-                {
-                  conditionLinks.length > 1 &&
-                  <Btn className="padded-top" svg={svgs.trash} onClick={this.deleteCondition(idx)}>{t('rules.flyouts.ruleEditor.delete')}</Btn>
-                }
+                <Btn svg={svgs.plus} onClick={this.addCondition}>{t('rules.flyouts.ruleEditor.addCondition')}</Btn>
               </Section.Content>
             </Section.Container>
-          ))
+            {
+              conditionLinks.map((condition, idx) => (
+                <Section.Container key={formData.conditions[idx].key}>
+                  <Section.Header>{t('rules.flyouts.ruleEditor.condition.condition')} {idx + 1}</Section.Header>
+                  <Section.Content>
+                    <FormGroup>
+                      <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.field')}</FormLabel>
+                      <FormControl
+                        type="select"
+                        className="long"
+                        placeholder={t('rules.flyouts.ruleEditor.condition.fieldPlaceholder')}
+                        link={condition.fieldLink}
+                        options={fieldOptions}
+                        clearable={false}
+                        searchable={true} />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.operator')}</FormLabel>
+                      <FormControl
+                        type="select"
+                        className="short"
+                        placeholder={t('rules.flyouts.ruleEditor.condition.operatorPlaceholder')}
+                        link={condition.operatorLink}
+                        options={operatorOptions}
+                        clearable={false}
+                        searchable={false} />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.value')}</FormLabel>
+                      <FormControl
+                        type="text"
+                        placeholder={t('rules.flyouts.ruleEditor.condition.valuePlaceholder')}
+                        link={condition.valueLink} />
+                    </FormGroup>
+                    {
+                      conditionLinks.length > 1 &&
+                      <Btn className="padded-top" svg={svgs.trash} onClick={this.deleteCondition(idx)}>{t('rules.flyouts.ruleEditor.delete')}</Btn>
+                    }
+                  </Section.Content>
+                </Section.Container>
+              ))
+            }
+            <Section.Container collapsable={false}>
+              <Section.Content>
+                <FormGroup className="padded-top">
+                  <FormLabel>{t('rules.flyouts.ruleEditor.severityLevel')}</FormLabel>
+                  <Radio
+                    link={this.severityLink}
+                    value={Config.ruleSeverity.critical}>
+                    <SeverityRenderer value={Config.ruleSeverity.critical} context={{ t }} />
+                  </Radio>
+                  <Radio
+                    link={this.severityLink}
+                    value={Config.ruleSeverity.warning}>
+                    <SeverityRenderer value={Config.ruleSeverity.warning} context={{ t }} />
+                  </Radio>
+                  <Radio
+                    link={this.severityLink}
+                    value={Config.ruleSeverity.info}>
+                    <SeverityRenderer value={Config.ruleSeverity.info} context={{ t }} />
+                  </Radio>
+                </FormGroup>
+              </Section.Content>
+              <Section.Content>
+                <FormGroup>
+                  <FormLabel>{t('rules.flyouts.ruleEditor.ruleStatus')}</FormLabel>
+                  <ToggleBtn
+                    value={formData.enabled}
+                    onChange={this.onToggle} >
+                    {formData.enabled ? t('rules.flyouts.ruleEditor.ruleEnabled') : t('rules.flyouts.ruleEditor.ruleDisabled')}
+                  </ToggleBtn>
+                </FormGroup>
+              </Section.Content>
+            </Section.Container>
+          </div>
         }
-        <Section.Container collapsable={false}>
-          <Section.Content>
-            <FormGroup className="padded-top">
-              <FormLabel>{t('rules.flyouts.ruleEditor.severityLevel')}</FormLabel>
-              <Radio
-                link={this.severityLink}
-                value={Config.ruleSeverity.critical}>
-                <SeverityRenderer value={Config.ruleSeverity.critical} context={{ t }} />
-              </Radio>
-              <Radio
-                link={this.severityLink}
-                value={Config.ruleSeverity.warning}>
-                <SeverityRenderer value={Config.ruleSeverity.warning} context={{ t }} />
-              </Radio>
-              <Radio
-                link={this.severityLink}
-                value={Config.ruleSeverity.info}>
-                <SeverityRenderer value={Config.ruleSeverity.info} context={{ t }} />
-              </Radio>
-            </FormGroup>
-          </Section.Content>
-          <Section.Content>
-            <FormGroup>
-              <FormLabel>{t('rules.flyouts.ruleEditor.ruleStatus')}</FormLabel>
-              <ToggleBtn
-                value={formData.enabled}
-                onChange={this.onToggle} >
-                {formData.enabled ? t('rules.flyouts.ruleEditor.ruleEnabled') : t('rules.flyouts.ruleEditor.ruleDisabled')}
-              </ToggleBtn>
-            </FormGroup>
-          </Section.Content>
-        </Section.Container>
         <SummarySection>
           {
             isPending && <Indicator size="large" pattern="bar" />
