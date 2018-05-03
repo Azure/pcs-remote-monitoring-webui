@@ -429,12 +429,12 @@
     "nameAndLogo": "Name and logo",
     "nameLogoDescription": "Edit logo and name in the site header.",
     "replaceLogo": "Replace logo image",
-    "logoDescription": "Recommended logo size 24 x 24 px.\nSupported file formats:\n\t.SVG\n\t.PNG\n\t.JPEG\n\t.JPG",
+    "logoDescription": "Recommended logo size: 24 x 24 px.\nMaximum logo size: 300 KB.\nSupported file formats:\n\t.SVG\n\t.PNG\n\t.JPEG\n\t.JPG",
     "applicationName": "Application name",
     "currentLogo": "Current logo",
     "edit": "Edit",
     "checkmark": "Checkmark",
-    "uploadError": "Unable to upload file, please check the file type and try again",
+    "uploadError": "Unable to upload file, please check the file type/size and try again.",
     "error": "Error"
   },
   "maintenance": {
