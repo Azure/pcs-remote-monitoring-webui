@@ -34,7 +34,7 @@ const newCondition = () => ({
   key: conditionKey++ // Used by react to track the rendered elements
 });
 
-const operators = ['EQ', 'GT', 'LT', 'GE', 'LE', '[]', '[', ']'];
+const operators = ['EQ', 'GT', 'LT', 'GE', 'LE'];
 const valueTypes = ['Number', 'Text'];
 
 class DeviceGroupForm extends LinkedComponent {

@@ -82,9 +82,6 @@
       "LT": "< Less than",
       "GE": ">= Greater than/equal",
       "LE": "<= Less than/equal",
-      "[]": "[] In",
-      "[": "[ Starts with",
-      "]": "] Ends with",
       "Number": "Number",
       "Text": "Text"
     }
