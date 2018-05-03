@@ -24,7 +24,7 @@ export const toDeviceModel = (device = {}) => {
     'c2DMessageCount': 'c2DMessageCount',
     'enabled': 'enabled',
     'lastStatusUpdated': 'lastStatusUpdated',
-    'iotHubHostName': 'iotHubHostName',
+    'ioTHubHostName': 'iotHubHostName',
     'eTag': 'eTag',
     'authentication': 'authentication'
   });

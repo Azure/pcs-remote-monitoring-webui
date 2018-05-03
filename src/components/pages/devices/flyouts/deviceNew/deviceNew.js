@@ -110,7 +110,7 @@ const ProvisionedDevice = ({ device, t }) => {
 
   const {
     id,
-    ioTHubHostName: hostName,
+    iotHubHostName: hostName,
     authentication: { primaryKey },
     authentication: { secondaryKey }
   } = device;
