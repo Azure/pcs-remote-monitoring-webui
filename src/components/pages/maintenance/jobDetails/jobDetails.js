@@ -20,7 +20,8 @@ export class JobDetails extends Component {
       jobStatusIsPending: true,
       jobStatus: undefined,
       jobStatusError: undefined,
-      contextBtns: undefined
+      contextBtns: undefined,
+      refreshPending: undefined
     };
   }
 
@@ -34,9 +35,12 @@ export class JobDetails extends Component {
   }
 
   handleNewProps(nextProps) {
-    if (nextProps.match.params.id !== (this.state.selectedJob || {}).jobId && nextProps.jobs.length) {
+    // TODO: Need to reset selectedJob when the job ID changes or when the user clicked refresh (i.e. refreshPending = true).
+    //       A long term fix would be to normalize the job data in maintenance.js (similar to how Telemetry is handled there).
+    //       When/if that happens, remove all use of refreshPending in the local state of this component.
+    if ((nextProps.match.params.id !== (this.state.selectedJob || {}).jobId || this.state.refreshPending) && nextProps.jobs.length) {
       const selectedJob = nextProps.jobs.filter(({ jobId }) => jobId === nextProps.match.params.id)[0];
-      this.setState({ selectedJob }, () => this.refreshJobStatus());
+      this.setState({ selectedJob, refreshPending: false }, () => this.refreshJobStatus());
     }
   }
 
@@ -61,8 +65,10 @@ export class JobDetails extends Component {
   }
 
   refreshData = () => {
+    this.setState({refreshPending: true});
     this.props.refreshData();
-    this.refreshJobStatus();
+    // TODO: When refreshPending is removed in favor of normalizing the job data, the next line may be needed.
+    // this.refreshJobStatus();
   }
 
   onContextMenuChange = contextBtns => this.setState({ contextBtns });
