@@ -133,7 +133,7 @@
       "map": {
         "header": "Device locations",
         "runtimeError": "An error occurred while rendering the map",
-        "notConfiguredError": "Azure maps is not correctly configured"
+        "notSupportedError": "Azure maps is not supported in your region"
       },
       "overview": {
         "header": "Device statistics",

@@ -175,7 +175,7 @@ export class MapPanel extends Component {
           <button className="zoom-btn zoom-out" onClick={this.zoomOut}>-</button>
         </PanelContent>
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
-        { !mapKeyIsPending && !this.props.azureMapsKey && <PanelError>{t('dashboard.panels.map.notConfiguredError')}</PanelError> }
+        { !mapKeyIsPending && !this.props.azureMapsKey && <PanelError>{t('dashboard.panels.map.notSupportedError')}</PanelError> }
         { error && <PanelError><AjaxError t={t} error={error} /></PanelError> }
       </Panel>
     );
