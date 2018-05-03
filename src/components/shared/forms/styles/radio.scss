@@ -43,15 +43,15 @@
         &.disabled svg {
           .inner-circle,
           .outer-border {
-            stroke: themed('colorInputBorderColor');
-            fill: themed('colorInputBorderColor');
+            stroke: themed('colorInputBorderColor') !important; /* Important to override hover */
+            fill: themed('colorInputBorderColor') !important;
           }
         }
       }
 
       // Show the center circle when checked
       > input[type=radio]:checked + .radio-icon svg .inner-circle
-      { fill: themed('colorInputBorderColor'); }
+      { fill: themed('colorSelectedRadioBtnCenter'); }
 
       // Highlight the radio circle border on hover when not checked
       > input[type=radio]:not(:checked) + .radio-icon:hover svg .outer-border
