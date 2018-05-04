@@ -44,6 +44,7 @@ export class AuthService {
       tenant: AuthService.tenantId,
       clientId: AuthService.clientId,
       redirectUri: window.location.origin,
+      expireOffsetSeconds: 300, // default is 120
       postLogoutRedirectUri: window.location.origin
     });
   }

@@ -15,7 +15,7 @@ const Config = {
   defaultAjaxTimeout: 20000, // 20s
   maxRetryAttempts: 2,
   retryWaitTime: 2000, // On retryable error, retry after 2s
-  retryableStatusCodes: new Set([ 0, 502, 503 ]),
+  retryableStatusCodes: new Set([ 0, 401, 502, 503 ]),
   paginationPageSize: 50,
   smallGridPageSize: 8,
   clickDebounceTime: 180, // ms

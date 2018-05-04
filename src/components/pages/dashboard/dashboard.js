@@ -5,7 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import moment from 'moment';
 
 import Config from 'app.config';
-import { TelemetryService } from 'services';
+import { TelemetryService, retryHandler } from 'services';
 import { compareByProperty, getIntervalParams } from 'utilities';
 import { Grid, Cell } from './grid';
 import { PanelErrorBoundary } from './panel';
@@ -53,6 +53,8 @@ const initialState = {
 
 const refreshEvent = (deviceIds = [], timeInterval) => ({ deviceIds, timeInterval });
 
+const { retryWaitTime, maxRetryAttempts } = Config;
+
 export class Dashboard extends Component {
 
   constructor(props) {
@@ -81,7 +83,9 @@ export class Dashboard extends Component {
           .flatMap(_ => TelemetryService.getTelemetryByDeviceIdP1M(deviceIds))
       )
       .flatMap(transformTelemetryResponse(() => this.state.telemetry))
-      .map(telemetry => ({ telemetry, telemetryIsPending: false })); // Stream emits new state
+      .map(telemetry => ({ telemetry, telemetryIsPending: false })) // Stream emits new state
+      // Retry any retryable errors
+      .retryWhen(retryHandler(maxRetryAttempts, retryWaitTime));
       // Telemetry stream - END
 
       // Analytics stream - START
@@ -190,7 +194,9 @@ export class Dashboard extends Component {
             // Map data
             devicesInAlert
           });
-        });
+        })
+        // Retry any retryable errors
+        .retryWhen(retryHandler(maxRetryAttempts, retryWaitTime));
       // Analytics stream - END
 
       this.subscriptions.push(
