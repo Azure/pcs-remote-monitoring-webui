@@ -36,12 +36,28 @@ $zoomBtnFont: 20px;
     }
   }
 
+  .popup-content-box {
+    border-left: 6px solid transparent;
+    @include rem-font-size(14px);
+    @include rem-fallback(padding, 8px, 12px);
+
+    .popup-type { font-weight: bold; }
+  }
+
   #map { flex-grow: 1 }
 
   @include themify($themes) {
     .zoom-btn {
       color: themed('colorContentText');
       background-color: themed('colorContentBackground');
+    }
+
+    .popup-content-box {
+      color: themed('colorDashboardMapPopupText');
+
+      &.nominal { border-color: themed('colorGridSelectedRowBorder'); }
+      &.warning { border-color: themed('colorWarning'); }
+      &.alert { border-color: themed('colorAlert'); }
     }
   }
 }

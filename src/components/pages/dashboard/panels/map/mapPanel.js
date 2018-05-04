@@ -54,6 +54,8 @@ export class MapPanel extends Component {
       zoom: 11
     });
 
+    this.popup = new AzureMaps.Popup();
+
     this.map.addPins([], {
       name: nominalDeviceLayer,
       cluster: true,
@@ -71,6 +73,40 @@ export class MapPanel extends Component {
       cluster: true,
       icon: 'pin-red'
     });
+
+    [
+      [ nominalDeviceLayer, 'nominal' ],
+      [ warningDevicesLayer, 'warning' ],
+      [ criticalDevicesLayer, 'alert' ]
+    ].forEach(([ deviceLayer, classname ]) =>
+      this.map.addEventListener('click', deviceLayer, event => {
+        const [ pin ] = event.features;
+        this.popup.setPopupOptions({
+          position: pin.geometry.coordinates,
+          content: this.buildDevicePopup(pin.properties, classname)
+        });
+        this.popup.open(this.map);
+      })
+    );
+  }
+
+  buildDevicePopup = (properties, classname) => {
+    const popupContentBox = document.createElement('div');
+    popupContentBox.classList.add('popup-content-box');
+    popupContentBox.classList.add(classname);
+
+    const type = document.createElement('div');
+    type.classList.add('popup-type');
+    type.innerText = properties.type;
+
+    const name = document.createElement('div');
+    name.classList.add('popup-device-name');
+    name.innerText = properties.name;
+
+    popupContentBox.appendChild(type);
+    popupContentBox.appendChild(name);
+
+    return popupContentBox;
   }
 
   calculatePins(props, mounting = false) {
