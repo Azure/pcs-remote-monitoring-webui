@@ -22,7 +22,7 @@ export class Settings extends LinkedComponent {
       applicationName: '',
       loading: false,
       toggledSimulation: false,
-      madeLogoUpdate: false,
+      madeLogoUpdate: false
     };
 
     const { t } = this.props;
@@ -45,28 +45,15 @@ export class Settings extends LinkedComponent {
 
   componentWillReceiveProps({ isSimulationEnabled, simulationTogglePending,
     simulationToggleError, setLogoPending, setLogoError, getSimulationPending, getSimulationError }) {
-    const { toggledSimulation, madeLogoUpdate, desiredSimulationState } = this.state;
+    const { madeLogoUpdate, desiredSimulationState } = this.state;
     if (desiredSimulationState === undefined && isSimulationEnabled !== undefined && !getSimulationPending && !getSimulationError) {
       this.setState({
         desiredSimulationState: isSimulationEnabled
       });
     }
 
-    if (toggledSimulation || madeLogoUpdate) {
-      let closeWindow = false;
-      const simulationUpdateSuccess = !simulationTogglePending && !simulationToggleError;
-      const logoUpdateSucces = !setLogoPending && !setLogoError;
-      if (toggledSimulation && madeLogoUpdate) {
-        closeWindow = simulationUpdateSuccess && logoUpdateSucces;
-      } else if (toggledSimulation) {
-        closeWindow = simulationUpdateSuccess;
-      } else { // made logo update
-        closeWindow = logoUpdateSucces;
-      }
-
-      if (closeWindow) {
-        this.props.onClose();
-      }
+    if (madeLogoUpdate && !setLogoPending && !setLogoError) {
+      this.props.onClose();
     }
   }
 
@@ -75,8 +62,18 @@ export class Settings extends LinkedComponent {
     this.setState({ [name]: value });
   };
 
+  onSimulationChange = ({ target }) => {
+    const { name, value } = target;
+    const etag = this.props.simulationEtag;
+    this.setState({
+      toggledSimulation: true,
+      [name]: value
+    });
+    this.props.toggleSimulationStatus(etag, value);
+  }
+
   apply = (event) => {
-    const { logoFile, applicationName, desiredSimulationState } = this.state;
+    const { logoFile, applicationName } = this.state;
     if (logoFile || applicationName) {
       var headers = {};
       if (applicationName) {
@@ -92,13 +89,6 @@ export class Settings extends LinkedComponent {
         madeLogoUpdate: true
       });
     }
-    if (desiredSimulationState !== this.props.isSimulationEnabled) {
-      const etag = this.props.simulationEtag;
-      this.props.toggleSimulationStatus(etag, desiredSimulationState);
-      this.setState({
-        toggledSimulation: true
-      });
-    }
     event.preventDefault();
   };
 
@@ -112,9 +102,8 @@ export class Settings extends LinkedComponent {
     const { t, onClose, theme, changeTheme, version, releaseNotesUrl, isSimulationEnabled,
       simulationToggleError, setLogoError, getSimulationPending, getSimulationError } = this.props;
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    const { desiredSimulationState, loading, logoFile, applicationName, madeSimulationUpdate, madeLogoUpdate } = this.state;
-    const hasChanged = (!getSimulationPending && !getSimulationError && isSimulationEnabled !== desiredSimulationState)
-      || logoFile !== undefined || applicationName !== '';
+    const { desiredSimulationState, loading, logoFile, applicationName, toggledSimulation, madeLogoUpdate } = this.state;
+    const hasChanged = logoFile !== undefined || applicationName !== '';
     const hasSimulationChanged = !getSimulationPending && !getSimulationError && (isSimulationEnabled !== desiredSimulationState)
     const simulationLabel = hasSimulationChanged ? this.desiredSimulationLabel[desiredSimulationState] : this.currSimulationLabel[isSimulationEnabled];
 
@@ -146,7 +135,7 @@ export class Settings extends LinkedComponent {
                         name="desiredSimulationState"
                         value={desiredSimulationState}
                         disabled={getSimulationPending}
-                        onChange={this.onChange} />
+                        onChange={this.onSimulationChange} />
                       <div className="simulation-toggle-label">
                         {getSimulationPending ? t('settingsFlyout.loading') : simulationLabel}
                       </div>
@@ -165,7 +154,7 @@ export class Settings extends LinkedComponent {
             </Section.Container>
             <ApplicationSettings onUpload={this.onUpload} applicationNameLink={this.applicationName} {...this.props} />
             {
-              (madeSimulationUpdate && simulationToggleError) &&
+              (toggledSimulation && simulationToggleError) &&
               <div className="toggle-error">
                 {t('settingsFlyout.toggleError')}
               </div>
