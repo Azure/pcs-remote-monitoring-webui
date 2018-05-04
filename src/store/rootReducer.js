@@ -13,7 +13,6 @@ const rootReducer = combineReducers({
   ...devicesReducer,
   ...rulesReducer,
   ...simulationReducer
-
 });
 
 export default rootReducer;

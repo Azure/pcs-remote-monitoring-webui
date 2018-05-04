@@ -138,7 +138,10 @@ export class RuleDetails extends Component {
       Observable.from(selectedAlerts)
         .flatMap(({ id }) => TelemetryService.updateAlertStatus(id, status))
         .toArray() // Use toArray to wait for all calls to succeed
-        .subscribe(() => this.props.setAlertStatus(selectedAlerts, status))
+        .subscribe(() => {
+          this.props.setAlertStatus(selectedAlerts, status);
+          this.onAlertGridHardSelectChange([]);
+        })
     );
 
   // TODO: Move constant values to central location
@@ -160,7 +163,7 @@ export class RuleDetails extends Component {
     };
 
   onAlertGridHardSelectChange = selectedRows => {
-    const contextBtns =
+    const alertContextBtns =
       selectedRows.length > 0
         ? [
             <Btn svg={svgs.closeAlert} onClick={this.closeAlerts} key="close">
@@ -171,9 +174,11 @@ export class RuleDetails extends Component {
             </Btn>
           ]
         : null;
-    this.setState({ selectedAlerts: selectedRows });
+    this.setState({
+      selectedAlerts: selectedRows,
+      alertContextBtns
+    });
     this.onHardSelectChange('alerts')(selectedRows);
-    this.onContextMenuChange('alertContextBtns')(contextBtns);
   }
 
   deselectOtherGrids = gridName => {
