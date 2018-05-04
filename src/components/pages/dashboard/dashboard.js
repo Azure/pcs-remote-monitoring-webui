@@ -328,7 +328,9 @@ export class Dashboard extends Component {
     // Add the alert rule name to the list of currently active alerts
     const currentActiveAlertsWithName = currentActiveAlerts.map(alert => ({
       ...alert,
-      name: (rules[alert.ruleId] || {}).name || alert.ruleId
+      name: (rules[alert.ruleId] || {}).name || alert.ruleId,
+      // limit the number shown in the UI to 1000 active
+      count: Math.min(alert.count, Config.maxAlertsCount)
     }));
 
     // Convert the list of alerts by device id to alerts by device type

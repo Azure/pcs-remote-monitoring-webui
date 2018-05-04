@@ -26,6 +26,7 @@ const Config = {
   validExtensions: validExtensions.join(),
   emptyValue: '--',
   maxTopAlerts: 5,
+  maxAlertsCount: 1000,
   gridMinResize: 1200, // In px
   ruleSeverity: {
     info: 'info',
