@@ -2,6 +2,8 @@
 
 import React, { Component } from 'react';
 import { Subject } from 'rxjs';
+import moment from 'moment';
+import { DEFAULT_TIME_FORMAT } from 'components/shared/pcsGrid/pcsGridConfig';
 
 import Config from 'app.config';
 import { TelemetryService } from 'services';
@@ -158,6 +160,7 @@ export class DeviceDetails extends Component {
   render() {
     const { t, onClose, device, theme } = this.props;
     const { telemetry, lastMessage } = this.state;
+    const lastMessageTime = (lastMessage || {}).time;
     const isPending = this.state.isAlertsPending && this.props.isRulesPending;
     const rulesGridProps = {
       rowData: isPending ? undefined : this.applyRuleNames(this.state.alerts || [], this.props.rules || []),
@@ -324,7 +327,7 @@ export class DeviceDetails extends Component {
                         device.connected && [
                           <Row key="diag-row-time">
                             <Cell className="col-3">{t('devices.flyouts.details.diagnostics.lastMessage')}</Cell>
-                            <Cell className="col-7">{(lastMessage || {}).time}</Cell>
+                            <Cell className="col-7">{ lastMessageTime ? moment(lastMessageTime).format(DEFAULT_TIME_FORMAT) : '---' }</Cell>
                           </Row>,
                           <Row key="diag-row-msg">
                             <Cell className="col-3">{t('devices.flyouts.details.diagnostics.message')}</Cell>
