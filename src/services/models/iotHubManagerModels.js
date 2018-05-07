@@ -154,6 +154,7 @@ export const toNewDeviceRequestModel = ({
   return {
     Id: isGenerateId ? '' : deviceId,
     IsSimulated: isSimulated,
+    Enabled: true,
     Authentication:
       isGenerateKeys
         ? {}
