@@ -163,7 +163,7 @@ export class DeviceJobProperties extends LinkedComponent {
             }
           });
         },
-        initialState
+        { ...initialState, jobName: this.state.jobName }
       ).subscribe(newState => this.setState(newState));
   }
 

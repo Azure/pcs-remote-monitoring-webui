@@ -123,7 +123,7 @@ export class DeviceJobTags extends LinkedComponent {
             commonTags: { $push: [{ name, value, type }] }
           });
         },
-        initialState
+        { ...initialState, jobName: this.state.jobName }
       ).subscribe(newState => this.setState(newState));
   }
 
