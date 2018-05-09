@@ -122,7 +122,7 @@
       },
       "analytics": {
         "header": "Analytics",
-        "topRule": "Top rules triggered",
+        "topRule": "Top rules with active alerts",
         "deviceTypeAlerts": "Alert by device type",
         "criticalAlerts": "Critical alerts",
         "currentWindow": "Currently",
