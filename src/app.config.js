@@ -28,6 +28,7 @@ const Config = {
   maxTopAlerts: 5,
   maxAlertsCount: 1000,
   gridMinResize: 1200, // In px
+  mapCenterPosition: [ -122.3320708, 47.606 ], // Default to Seattle
   ruleSeverity: {
     info: 'info',
     warning: 'warning',

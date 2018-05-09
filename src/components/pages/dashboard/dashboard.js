@@ -34,6 +34,7 @@ const initialState = {
   telemetryError: null,
 
   // Analytics data
+  analyticsVersion: 0,
   currentActiveAlerts: [],
   topAlerts: [],
   alertsPerDeviceId: {},
@@ -180,6 +181,7 @@ export class Dashboard extends Component {
 
           return ({
             analyticsIsPending: false,
+            analyticsVersion: this.state.analyticsVersion + 1,
 
             // Analytics data
             currentActiveAlerts,
@@ -299,6 +301,7 @@ export class Dashboard extends Component {
       telemetryIsPending,
       telemetryError,
 
+      analyticsVersion,
       currentActiveAlerts,
       topAlerts,
       alertsPerDeviceId,
@@ -377,6 +380,7 @@ export class Dashboard extends Component {
           <Cell className="col-5">
             <PanelErrorBoundary msg={t('dashboard.panels.map.runtimeError')}>
               <MapPanel
+                analyticsVersion={analyticsVersion}
                 azureMapsKey={azureMapsKey}
                 devices={devices}
                 devicesInAlert={devicesInAlert}

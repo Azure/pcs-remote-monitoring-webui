@@ -88,7 +88,7 @@ export class Maintenance extends Component {
           alertedRules => {
             const { criticalAlertCount, warningAlertCount, alertEntities } = alertedRules.reduce(
               (acc, alertedRule) => {
-                const { entities: { alerts }, result } = normalize(alertedRule.alerts, alertListSchema);
+                const { entities: { alerts = {} }, result = [] } = normalize(alertedRule.alerts, alertListSchema);
                 alertedRule.alerts = result;
                 return update(acc, {
                   criticalAlertCount: {

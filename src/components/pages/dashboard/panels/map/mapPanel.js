@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
 
+import Config from 'app.config';
 import { AjaxError, Indicator } from 'components/shared';
 import {
   Panel,
@@ -47,10 +48,10 @@ export class MapPanel extends Component {
   }
 
   initializeMap(azureMapsKey) {
-    const seattlePosition = new AzureMaps.data.Position(-122.3320708, 47.6062);
+    const center = new AzureMaps.data.Position(...Config.mapCenterPosition);
     this.map = new AzureMaps.Map('map', {
       'subscription-key': azureMapsKey,
-      center: seattlePosition,
+      center,
       zoom: 11
     });
 
@@ -123,17 +124,19 @@ export class MapPanel extends Component {
       || (props.azureMapsKey && !this.props.azureMapsKey)
       || (mounting && props.azureMapsKey && deviceIds.length > 0);
 
-    const geoLocatedDevices = this.extractGeoLocatedDevices(props.devices || []);
-    if (this.map && Object.keys(geoLocatedDevices).length > 0 && props.devicesInAlert) {
-      const { normal, warning, critical }  = this.devicesToPins(geoLocatedDevices, props.devicesInAlert)
+    if (props.analyticsVersion !== this.props.analyticsVersion || boundZoomToDevices) {
+      const geoLocatedDevices = this.extractGeoLocatedDevices(props.devices || []);
+      if (this.map && Object.keys(geoLocatedDevices).length > 0 && props.devicesInAlert) {
+        const { normal, warning, critical } = this.devicesToPins(geoLocatedDevices, props.devicesInAlert)
 
-      if (this.map) {
-        this.map.addPins(normal, { name: nominalDeviceLayer, overwrite: true });
-        this.map.addPins(warning, { name: warningDevicesLayer, overwrite: true });
-        this.map.addPins(critical, { name: criticalDevicesLayer, overwrite: true });
+        if (this.map) {
+          this.map.addPins(normal, { name: nominalDeviceLayer, overwrite: true });
+          this.map.addPins(warning, { name: warningDevicesLayer, overwrite: true });
+          this.map.addPins(critical, { name: criticalDevicesLayer, overwrite: true });
 
-        if (boundZoomToDevices) {
-          this.zoomToPins([].concat.apply([], [ normal, warning, critical ]));
+          if (boundZoomToDevices) {
+            this.zoomToPins([].concat.apply([], [ normal, warning, critical ]));
+          }
         }
       }
     }
@@ -194,6 +197,17 @@ export class MapPanel extends Component {
       const currZoom = this.map.getCamera().zoom;
       this.map.setCamera({ zoom: currZoom - 1 });
     }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const { t, isPending, mapKeyIsPending, error } = this.props;
+    if (
+      t !== nextProps.t
+      || isPending !== nextProps.isPending
+      || mapKeyIsPending !== nextProps.mapKeyIsPending
+      || error !== nextProps.error
+    ) return true;
+    return false;
   }
 
   render() {
