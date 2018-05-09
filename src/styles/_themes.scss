@@ -6,11 +6,6 @@
 
 $themes: (
   dark: (
-    // TODO - Remove START
-    // Highs
-    colorHighest: $colorWhite,
-    // TODO - Remove END
-
     // Functional colors
     colorAlert: $colorAlert,
     colorWarning: $colorWarning,
@@ -150,15 +145,9 @@ $themes: (
     // Forms - END
   ),
   light: (
-    // TODO - Remove START
-    // Highs
-    colorHighest: $colorWhite,
-    // TODO - Remove END
-
     // Functional colors
     colorAlert: $colorAlert,
     colorWarning: #f4ca2c,
-
     colorSystem: $colorSystem,
     colorError: $colorError,
 

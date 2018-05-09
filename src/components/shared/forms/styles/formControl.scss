@@ -43,12 +43,12 @@ $textareaHeight: 60px;
 
       // Set RGBa opacity to .99 to get correct color in the selection styling
       &::selection {
-        color: themed('colorHighest');
+        color: themed('colorContentText');
         background: rgba(themed('colorSystem'), .99);
       }
 
       &::-moz-selection {
-        color: themed('colorHighest');
+        color: themed('colorContentText');
         background: rgba(themed('colorSystem'), .99);
       }
 
