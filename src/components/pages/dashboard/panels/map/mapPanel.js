@@ -103,7 +103,6 @@ export class MapPanel extends Component {
           const { normal, warning, critical } = this.devicesToPins(geoLocatedDevices, props.devicesInAlert)
 
           this.map.addPins(normal, { name: nominalDeviceLayer, overwrite: true });
-          console.log(normal.map(({ geometry }) => geometry.coordinates));
           this.map.addPins(warning, { name: warningDevicesLayer, overwrite: true });
           this.map.addPins(critical, { name: criticalDevicesLayer, overwrite: true });
 
