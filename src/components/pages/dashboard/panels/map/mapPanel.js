@@ -13,6 +13,7 @@ import {
   PanelOverlay,
   PanelError
 } from 'components/pages/dashboard/panel';
+import { AzureMap } from './azureMap';
 
 import './mapPanel.css';
 
@@ -33,62 +34,35 @@ const deviceToMapPin = ({ id, properties, type }) =>
 
 export class MapPanel extends Component {
 
-  componentDidMount() {
-    if (!this.map && this.props.azureMapsKey) {
-      this.initializeMap(this.props.azureMapsKey);
-    }
-    this.calculatePins(this.props, true);
-  }
-
   componentWillReceiveProps(nextProps) {
-    if (!this.map && nextProps.azureMapsKey) {
-      this.initializeMap(nextProps.azureMapsKey);
-    }
     this.calculatePins(nextProps);
   }
 
-  initializeMap(azureMapsKey) {
-    const center = new AzureMaps.data.Position(...Config.mapCenterPosition);
-    this.map = new AzureMaps.Map('map', {
-      'subscription-key': azureMapsKey,
-      center,
-      zoom: 11
-    });
-
+  onMapReady = (map) => {
+    // Create the map popup
     this.popup = new AzureMaps.Popup();
 
-    this.map.addPins([], {
-      name: nominalDeviceLayer,
-      cluster: true,
-      icon: 'pin-blue'
-    });
-
-    this.map.addPins([], {
-      name: warningDevicesLayer,
-      cluster: true,
-      icon: 'pin-darkblue'
-    });
-
-    this.map.addPins([], {
-      name: criticalDevicesLayer,
-      cluster: true,
-      icon: 'pin-red'
-    });
-
+    // Create the device pin layers and bind click events
     [
-      [ nominalDeviceLayer, 'nominal' ],
-      [ warningDevicesLayer, 'warning' ],
-      [ criticalDevicesLayer, 'alert' ]
-    ].forEach(([ deviceLayer, classname ]) =>
-      this.map.addEventListener('click', deviceLayer, event => {
+      [ nominalDeviceLayer, 'nominal', 'pin-blue' ],
+      [ warningDevicesLayer, 'warning', 'pin-darkblue' ],
+      [ criticalDevicesLayer, 'alert', 'pin-red' ]
+    ].forEach(([ name, classname, icon ]) => {
+      map.addPins([], { name, icon, cluster: true });
+      map.addEventListener('click', name, (event) => {
         const [ pin ] = event.features;
         this.popup.setPopupOptions({
           position: pin.geometry.coordinates,
           content: this.buildDevicePopup(pin.properties, classname)
         });
-        this.popup.open(this.map);
-      })
-    );
+        this.popup.open(map);
+      });
+    });
+
+    // Save this.map here to prevent calculatePins
+    // from being called before the pins are added
+    this.map = map;
+    this.calculatePins(this.props, true);
   }
 
   buildDevicePopup = (properties, classname) => {
@@ -111,26 +85,25 @@ export class MapPanel extends Component {
   }
 
   calculatePins(props, mounting = false) {
-    const deviceIds = Object.keys(props.devices);
-    const prevDeviceIds = Object.keys(this.props.devices);
-    /*
-    Zoom to the bounding box of devices only, when
-      1) When devices become available for the first time
-      2) When the map key becomes available for the first time
-      3) When the component is mounting and the devices and map key are already loaded
-    */
-    const boundZoomToDevices =
-      (deviceIds.length > 0 && prevDeviceIds.length === 0)
-      || (props.azureMapsKey && !this.props.azureMapsKey)
-      || (mounting && props.azureMapsKey && deviceIds.length > 0);
+    if (this.map) {
+      const deviceIds = Object.keys(props.devices);
+      const prevDeviceIds = Object.keys(this.props.devices);
+      /*
+      Zoom to the bounding box of devices only, when
+        1) When devices become available for the first time
+        2) When the component is mounting and the devices
+      */
+      const boundZoomToDevices =
+        (deviceIds.length > 0 && prevDeviceIds.length === 0)
+        || (mounting && deviceIds.length > 0);
 
-    if (props.analyticsVersion !== this.props.analyticsVersion || boundZoomToDevices) {
-      const geoLocatedDevices = this.extractGeoLocatedDevices(props.devices || []);
-      if (this.map && Object.keys(geoLocatedDevices).length > 0 && props.devicesInAlert) {
-        const { normal, warning, critical } = this.devicesToPins(geoLocatedDevices, props.devicesInAlert)
+      if (props.analyticsVersion !== this.props.analyticsVersion || boundZoomToDevices) {
+        const geoLocatedDevices = this.extractGeoLocatedDevices(props.devices || []);
+        if (Object.keys(geoLocatedDevices).length > 0 && props.devicesInAlert) {
+          const { normal, warning, critical } = this.devicesToPins(geoLocatedDevices, props.devicesInAlert)
 
-        if (this.map) {
           this.map.addPins(normal, { name: nominalDeviceLayer, overwrite: true });
+          console.log(normal.map(({ geometry }) => geometry.coordinates));
           this.map.addPins(warning, { name: warningDevicesLayer, overwrite: true });
           this.map.addPins(critical, { name: criticalDevicesLayer, overwrite: true });
 
@@ -154,7 +127,7 @@ export class MapPanel extends Component {
         (acc, device) => {
           const devicePin = deviceToMapPin(device);
           const category = device.id in devicesInAlert ? devicesInAlert[device.id].severity : 'normal';
-          if (category === 'normal' || category === 'warning' || category === 'critical') {
+          if (category === 'normal' || category === Config.ruleSeverity.warning || category === Config.ruleSeverity.critical) {
             return update(acc, {
               [category]: { $push: [devicePin] }
             });
@@ -185,19 +158,16 @@ export class MapPanel extends Component {
     });
   }
 
-  zoomIn = () => {
+  zoom = (zoomFactor) => {
     if (this.map) {
       const currZoom = this.map.getCamera().zoom;
-      this.map.setCamera({ zoom: currZoom + 1 });
+      this.map.setCamera({ zoom: currZoom + zoomFactor });
     }
   }
 
-  zoomOut = () => {
-    if (this.map) {
-      const currZoom = this.map.getCamera().zoom;
-      this.map.setCamera({ zoom: currZoom - 1 });
-    }
-  }
+  zoomIn = () => this.zoom(1);
+
+  zoomOut = () => this.zoom(-1);
 
   shouldComponentUpdate(nextProps) {
     const { t, isPending, mapKeyIsPending, error } = this.props;
@@ -211,7 +181,7 @@ export class MapPanel extends Component {
   }
 
   render() {
-    const { t, isPending, mapKeyIsPending, error } = this.props;
+    const { t, isPending, mapKeyIsPending, azureMapsKey, error } = this.props;
     const showOverlay = !error && isPending && mapKeyIsPending;
     return (
       <Panel className="map-panel-container">
@@ -220,7 +190,7 @@ export class MapPanel extends Component {
           { !showOverlay && isPending && <Indicator size="small" /> }
         </PanelHeader>
         <PanelContent className="map-panel-container">
-          <div id="map"></div>
+          <AzureMap azureMapsKey={azureMapsKey} onMapReady={this.onMapReady} />
           <button className="zoom-btn zoom-in" onClick={this.zoomIn}>+</button>
           <button className="zoom-btn zoom-out" onClick={this.zoomOut}>-</button>
         </PanelContent>
