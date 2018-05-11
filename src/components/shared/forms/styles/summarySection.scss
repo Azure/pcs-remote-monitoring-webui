@@ -11,7 +11,7 @@
 
   .section-header { @include rem-font-size(16px); }
 
-  .summary-contents-container {
+  .summary-body {
     display: flex;
     align-items: baseline;
     flex-wrap: wrap;
@@ -27,7 +27,7 @@
 
     .section-header { color: themed('colorContentText'); }
 
-    .summary-contents-container {
+    .summary-body {
       .section-desc { color: themed('colorContentTextDim'); }
       .summary-count { color: themed('colorContentText'); }
     }

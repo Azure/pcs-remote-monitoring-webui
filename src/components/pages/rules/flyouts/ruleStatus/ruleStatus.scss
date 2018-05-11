@@ -10,11 +10,6 @@
     @include rem-fallback(margin-top, 20px);
   }
 
-  .rule-description {
-    width: 100%;
-    @include rem-fallback(padding, 16px 0px);
-  }
-
   .padded-top-bottom {
     margin-left: 0px;
     @include rem-fallback(padding, 24px 0px);

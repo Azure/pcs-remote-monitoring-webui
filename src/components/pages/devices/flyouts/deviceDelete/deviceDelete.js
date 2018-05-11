@@ -17,6 +17,8 @@ import {
   FlyoutContent,
   Indicator,
   SectionDesc,
+  SectionHeader,
+  SummaryBody,
   SummaryCount,
   SummarySection,
   Svg
@@ -129,17 +131,17 @@ export class DeviceDelete extends Component {
               </div>
             }
 
-            <SummarySection title={t('devices.flyouts.delete.summaryHeader')}>
-              <SummaryCount>{summaryCount}</SummaryCount>
-              <SectionDesc>{summaryMessage}</SectionDesc>
-              {this.state.isPending && <Indicator />}
-              {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
+            <SummarySection>
+              <SectionHeader>{t('devices.flyouts.delete.summaryHeader')}</SectionHeader>
+              <SummaryBody>
+                <SummaryCount>{summaryCount}</SummaryCount>
+                <SectionDesc>{summaryMessage}</SectionDesc>
+                {this.state.isPending && <Indicator />}
+                {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
+              </SummaryBody>
             </SummarySection>
 
-            {
-              error &&
-              <AjaxError className="device-delete-error" t={t} error={error} />
-            }
+            {error && <AjaxError className="device-delete-error" t={t} error={error} />}
             {
               !changesApplied &&
               <BtnToolbar>

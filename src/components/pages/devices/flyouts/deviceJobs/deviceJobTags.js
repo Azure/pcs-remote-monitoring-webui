@@ -21,6 +21,7 @@ import {
   Indicator,
   SectionDesc,
   SectionHeader,
+  SummaryBody,
   SummaryCount,
   SummarySection,
   Svg
@@ -280,17 +281,17 @@ export class DeviceJobTags extends LinkedComponent {
             </GridBody>
           </Grid>
 
-          <SummarySection title={t('devices.flyouts.jobs.summaryHeader')}>
-            <SummaryCount>{summaryCount}</SummaryCount>
-            <SectionDesc>{summaryMessage}</SectionDesc>
-            {this.state.isPending && <Indicator />}
-            {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
+          <SummarySection>
+            <SectionHeader>{t('devices.flyouts.jobs.summaryHeader')}</SectionHeader>
+            <SummaryBody>
+              <SummaryCount>{summaryCount}</SummaryCount>
+              <SectionDesc>{summaryMessage}</SectionDesc>
+              {this.state.isPending && <Indicator />}
+              {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
+            </SummaryBody>
           </SummarySection>
 
-          {
-            error &&
-            <AjaxError className="device-jobs-error" t={t} error={error} />
-          }
+          {error && <AjaxError className="device-jobs-error" t={t} error={error} />}
           {
             !changesApplied &&
             <BtnToolbar>

@@ -36,20 +36,14 @@ $select-padding-horizontal: 8px;
   &.short { @include rem-fallback(width, 124px); }
 
   // handle disabled state
-  &.is-disabled > .Select-control {
-    @include themify($themes) { background-color: themed('colorSelectDisabledText'); }
-
-    &:hover { box-shadow: none; }
-  }
+  &.is-disabled > .Select-control:hover { box-shadow: none; }
 
   &.is-disabled .Select-arrow-zone {
     cursor: default;
     pointer-events: none;
   }
 
-
   // base
-
   .Select-control {
     border-style: solid;
     cursor: default;
@@ -64,32 +58,14 @@ $select-padding-horizontal: 8px;
     position: relative;
     width: 100%;
     @include rem-fallback(height, $select-input-height);
-    @include themify($themes) {
-      background-color: themed('colorSelectBackground');
-      border: 1px solid themed('colorInputBorderColor');
-      color: themed('colorSelectText');
-
-      &:hover,
-      &:focus { border-color: themed('colorInputBorderHoverColor'); }
-    }
 
     .Select-input:focus { outline: none; }
   }
 
-  @include themify($themes) {
-    &.error .Select-control { border-color: themed('colorAlert'); }
-  }
-
-  .is-searchable {
-    .is-open > .Select-control { cursor: text; }
-  }
+  .is-searchable .is-open > .Select-control { cursor: text; }
 
   .is-open > .Select-control {
     @include border-bottom-radius( 0 );
-    @include themify($themes) {
-      background: themed('colorSelectBackground');
-      border-color: themed('colorSelectBorderColor');
-    }
 
     // flip the arrow so its pointing up when the menu is open
     .Select-arrow {
@@ -102,18 +78,9 @@ $select-padding-horizontal: 8px;
     }
   }
 
-  .is-searchable {
-    .is-focused:not(.is-open) > .Select-control { cursor: text; }
-  }
+  .is-searchable .is-focused:not(.is-open) > .Select-control { cursor: text; }
 
-  .is-focused:not(.is-open) > .Select-control {
-    @include themify($themes) {
-      border-color: themed('colorSelectBorderColor')
-        lighten(themed('colorSelectBorderColor'), 5%)
-        lighten(themed('colorSelectBorderColor'), 5%);
-    }
-    box-shadow: $select-input-box-shadow-focus;
-  }
+  .is-focused:not(.is-open) > .Select-control { box-shadow: $select-input-box-shadow-focus; }
 
   // placeholder
   .Select-placeholder,
@@ -132,22 +99,14 @@ $select-padding-horizontal: 8px;
     @include rem-fallback(line-height, 24px);
     @include rem-fallback(padding-right, $select-padding-horizontal);
     @include rem-fallback(padding-left, $select-padding-horizontal);
-    @include themify($themes) {
-      color: themed('colorSelectPlaceholderText');
-    }
   }
 
-  .has-value.is-clearable.Select--single > .Select-control .Select-value {
-    @include rem-fallback(padding-right, ($select-clear-width + $select-arrow-width * 5));
-  }
+  .has-value.is-clearable.Select--single > .Select-control .Select-value { @include rem-fallback(padding-right, ($select-clear-width + $select-arrow-width * 5)); }
 
   .has-value.Select--single > .Select-control .Select-value,
   .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value {
     .Select-value-label {
       @include rem-font-size($selectFontSize);
-      @include themify($themes) {
-        color: themed('colorSelectText');
-      }
     }
 
     a.Select-value-label {
@@ -158,9 +117,6 @@ $select-padding-horizontal: 8px;
       &:focus {
         outline: none;
         text-decoration: underline;
-        @include themify($themes) {
-          color: themed('colorSelectBorderColor');
-        }
       }
     }
   }
@@ -168,7 +124,6 @@ $select-padding-horizontal: 8px;
   .Select-multi-value-wrapper { width: 100%; }
 
   // the <input> element users type in
-
   .Select-input {
     // inherits `display: inline-block` from "react-input-autosize"
     vertical-align: middle;
@@ -192,9 +147,6 @@ $select-padding-horizontal: 8px;
       position: relative;
       @include rem-fallback(line-height, $selectFontSize);
       @include rem-fallback(padding-top, 3px);
-      @include themify($themes) {
-        color: themed('colorSelectText');
-      }
 
       .is-focused & { cursor: text; }
     }
@@ -224,7 +176,6 @@ $select-padding-horizontal: 8px;
   }
 
   // the little cross that clears the field
-
   .Select-clear-zone {
     @include animation( Select-animation-fadeIn 200ms );
     color: $select-clear-color;
@@ -259,7 +210,6 @@ $select-padding-horizontal: 8px;
   }
 
   // arrow indicator
-
   .Select-arrow-zone {
     cursor: pointer;
     display: table-cell;
@@ -289,7 +239,6 @@ $select-padding-horizontal: 8px;
   // ------------------------------
 
   // fade in
-
   @-webkit-keyframes Select-animation-fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -305,7 +254,6 @@ $select-padding-horizontal: 8px;
   // ------------------------------
 
   // wrapper around the menu
-
   .Select-menu-outer {
     // Unfortunately, having both border-radius and allows scrolling using overflow defined on the same
     // element forces the browser to repaint on scroll.  However, if these definitions are split into an
@@ -321,26 +269,15 @@ $select-padding-horizontal: 8px;
     @include rem-fallback(margin-top, -1px);
     @include rem-fallback(max-height, $select-menu-max-height);
     @include rem-font-size($selectFontSize);
-    @include themify($themes) {
-      background-color: themed('colorSelectBackground');
-      border: 1px solid themed('colorInputBorderColor');
-      border-top-color: mix(
-        themed('colorSelectBackground'),
-        themed('colorSelectBorderColor'),
-        50%
-      );
-    }
   }
 
   // wrapper
-
   .Select-menu {
     overflow-y: auto;
     @include rem-fallback(max-height, 224px);
   }
 
   // options
-
   .Select-option {
     box-sizing: border-box;
     cursor: pointer;
@@ -351,30 +288,9 @@ $select-padding-horizontal: 8px;
     @include rem-fallback(padding-left, $select-padding-horizontal);
 
     &:last-child { @include border-bottom-radius( $select-input-border-radius ); }
-
-    @include themify($themes) {
-      background-color: themed('colorSelectBackground');
-      color: lighten(themed('colorSelectText'), 20%);
-
-      &.is-selected {
-        background-color: themed('colorSelectOptionFocusedBg');
-        color: themed('colorSelectText');
-      }
-
-      &.is-focused {
-        background-color: themed('colorSelectOptionFocusedBg');
-        color: themed('colorSelectText');
-      }
-
-      &.is-disabled {
-        color: themed('colorSelectDisabledText');
-        cursor: default;
-      }
-    }
   }
 
   // no results
-
   .Select-noresults {
     box-sizing: border-box;
     color: $select-noresults-color;
@@ -388,7 +304,6 @@ $select-padding-horizontal: 8px;
   // ------------------------------
 
   // Base
-
   .Select--multi {
     // add margin to the input element
     .Select-input {
@@ -407,11 +322,6 @@ $select-padding-horizontal: 8px;
       @include rem-fallback(margin-left, $select-item-gutter);
       @include rem-fallback(margin-top, $select-item-gutter);
       @include rem-font-size($selectFontSize);
-      @include themify($themes) {
-        background-color: themed('colorSelectBackground');
-        border: 1px solid themed('colorSelectBorderColor');
-        color: themed('colorSelectText');
-      }
     }
 
     // common
@@ -429,7 +339,6 @@ $select-padding-horizontal: 8px;
     }
 
     a.Select-value-label {
-      @include themify($themes) { color: themed('colorSelectText'); }
       cursor: pointer;
       text-decoration: none;
 
@@ -442,21 +351,106 @@ $select-padding-horizontal: 8px;
       // move the baseline up by 1px
       padding: ($select-item-padding-vertical - 1) $select-item-padding-horizontal ($select-item-padding-vertical + 1);
       @include border-left-radius( $select-item-border-radius );
-      @include themify($themes) {
+    }
+  }
+
+  .Select--multi.is-disabled .Select-value-icon {
+    cursor: not-allowed;
+  }
+
+  @include themify($themes) {
+    &.is-disabled > .Select-control { background-color: themed('colorSelectDisabledText'); }
+
+    .Select-control {
+      background-color: themed('colorSelectBackground');
+      border: 1px solid themed('colorInputBorderColor');
+      color: themed('colorSelectText');
+
+      &:hover,
+      &:focus { border-color: themed('colorInputBorderHoverColor'); }
+    }
+
+    &.error .Select-control { border-color: themed('colorAlert'); }
+
+    .is-open > .Select-control {
+      background: themed('colorSelectBackground');
+      border-color: themed('colorSelectBorderColor');
+    }
+
+    .is-focused:not(.is-open) > .Select-control { border-color: themed('colorSelectBorderColor'); }
+
+    .Select-placeholder,
+    .Select--single > .Select-control .Select-value {
+        color: themed('colorSelectPlaceholderText');
+    }
+
+    .has-value.Select--single > .Select-control .Select-value,
+    .has-value.is-pseudo-focused.Select--single > .Select-control .Select-value {
+      .Select-value-label { color: themed('colorSelectText'); }
+
+      a.Select-value-label {
+        &:hover,
+        &:focus { color: themed('colorSelectBorderColor');
+        }
+      }
+    }
+
+    .Select-input > input { color: themed('colorSelectText'); }
+
+    .Select-menu-outer {
+        background-color: themed('colorSelectBackground');
+        border: 1px solid themed('colorInputBorderColor');
+        border-top-color: mix(
+          themed('colorSelectBackground'),
+          themed('colorSelectBorderColor'),
+          50%
+        );
+    }
+
+    .Select-option {
+      background-color: themed('colorSelectBackground');
+      color: themed('colorSelectText');
+
+      &.is-selected {
+        background-color: themed('colorSelectOptionFocusedBg');
+        color: themed('colorSelectText');
+      }
+
+      &.is-focused {
+        background-color: themed('colorSelectOptionFocusedBg');
+        color: themed('colorSelectText');
+      }
+
+      &.is-disabled {
+        color: themed('colorSelectDisabledText');
+        cursor: default;
+      }
+    }
+
+    .Select--multi {
+      .Select-value {
+        background-color: themed('colorSelectBackground');
+        border: 1px solid themed('colorSelectBorderColor');
+        color: themed('colorSelectText');
+      }
+
+      a.Select-value-label { color: themed('colorSelectText'); }
+
+      // icon
+      .Select-value-icon {
         border-right: 1px solid themed('colorSelectBorderColor');
 
-        &:hover, &:focus {
-          background-color: themed('hoverIconDarkGray');
+        &:hover,
+        &:focus {
+          background-color: themed('colorSelectOptionFocusedBg');
           color: themed('colorSelectText');
         }
 
         &:active { background-color: themed('colorSelectBorderColor'); }
       }
     }
-  }
 
-  .Select--multi.is-disabled {
-    @include themify($themes) {
+    .Select--multi.is-disabled {
       .Select-value {
         background-color: themed('colorSelectBackground');
         border: 1px solid themed('colorSelectBorderColor');
@@ -464,8 +458,7 @@ $select-padding-horizontal: 8px;
       }
 
       .Select-value-icon {
-        cursor: not-allowed;
-        border-right-color: darken(themed('colorSelectBorderColor'), 10%);
+        border-right-color: themed('colorSelectBorderColor');
 
         &:hover,
         &:focus,

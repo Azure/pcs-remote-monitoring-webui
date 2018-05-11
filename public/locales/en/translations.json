@@ -415,6 +415,7 @@
         "ruleEnabled": "Enabled",
         "ruleDisabled": "Disabled",
         "devicesAffected": "devices affected by this rule",
+        "summaryHeader": "Summary",
         "apply": "Apply",
         "cancel": "Cancel"
       }

@@ -32,6 +32,7 @@ import {
   Radio,
   SectionDesc,
   SectionHeader,
+  SummaryBody,
   SummaryCount,
   SummarySection
 } from 'components/shared';
@@ -391,17 +392,25 @@ export class DeviceNew extends LinkedComponent {
                 ]
               }
             </div>
-            <SummarySection title={t('devices.flyouts.new.summaryHeader')}>
-              <SummaryCount>{summaryCount || 0}</SummaryCount>
-              <SectionDesc>{summaryMessage}</SectionDesc>
-              {this.state.isPending && <Indicator />}
-              {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
+            <SummarySection>
+              <SectionHeader>{t('devices.flyouts.new.summaryHeader')}</SectionHeader>
+              <SummaryBody>
+                <SummaryCount>{summaryCount || 0}</SummaryCount>
+                <SectionDesc>{summaryMessage}</SectionDesc>
+                {this.state.isPending && <Indicator />}
+                {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
+                {
+                  /*
+                  TODO: Change interaction pattern.
+                  - Make the flyout stay open to give the user visual confirmation of success.
+                  - For simulated devices, provide a message telling that the new devices may take a while to show up.
+                  - Also, allow for additional devices to be created while the flyout is open.
+                  */
+                }
+              </SummaryBody>
             </SummarySection>
 
-            {
-              error &&
-              <AjaxError className="devices-new-error" t={t} error={error} />
-            }
+            {error && <AjaxError className="devices-new-error" t={t} error={error} />}
             {
               !changesApplied &&
               <BtnToolbar>

@@ -9,6 +9,8 @@ import {
   ToggleBtn,
   BtnToolbar,
   SectionDesc,
+  SectionHeader,
+  SummaryBody,
   SummaryCount,
   SummarySection,
   AjaxError,
@@ -86,27 +88,36 @@ export class RuleStatus extends Component {
             </div>
             {
               rules.map((rule) => (
-                <SummarySection key={rule.id} title={rule.name} className="padded-bottom">
-                  <FormLabel className="rule-description">{rule.description}</FormLabel>
-                  <SummaryCount>{rule.count && rule.count.response ? rule.count.response : '---'}</SummaryCount>
-                  <SectionDesc>{t('rules.flyouts.ruleEditor.devicesAffected')}</SectionDesc>
+                <SummarySection key={rule.id} className="padded-bottom">
+                  <SectionHeader>{rule.name}</SectionHeader>
+                  <FormLabel>{rule.description}</FormLabel>
+                  <SummaryBody>
+                    <SummaryCount>{rule.count && rule.count.response ? rule.count.response : '---'}</SummaryCount>
+                    <SectionDesc>{t('rules.flyouts.ruleEditor.devicesAffected')}</SectionDesc>
+                    {isPending && <Indicator />}
+                    {
+                      /*
+                      TODO: Change interaction pattern.
+                      - Make the flyout stay open to give the user visual confirmation of success.
+                            completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />
+                      - Update the redux store in the background.
+                      - Also, allow for additional changes to be made while the flyout is open.
+                      */
+                    }
+                  </SummaryBody>
                 </SummarySection>
               ))
             }
-            <SummarySection>
-              {
-                error && <AjaxError t={t} error={error} />
-              }
-              {
-                isPending && <Indicator size="large" pattern="bar" />
-              }
-              {
-                !isPending && <BtnToolbar>
-                  <Btn svg={svgs.apply} primary={true} type="submit">{t('rules.flyouts.ruleEditor.apply')}</Btn>
-                  <Btn svg={svgs.cancelX} onClick={onClose}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
-                </BtnToolbar>
-              }
-            </SummarySection>
+
+            {error && <AjaxError t={t} error={error} />}
+            {
+              !isPending &&
+              <BtnToolbar>
+                <Btn svg={svgs.apply} primary={true} type="submit">{t('rules.flyouts.ruleEditor.apply')}</Btn>
+                <Btn svg={svgs.cancelX} onClick={onClose}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
+              </BtnToolbar>
+            }
+
           </form>
         </Flyout.Content>
       </Flyout.Container>

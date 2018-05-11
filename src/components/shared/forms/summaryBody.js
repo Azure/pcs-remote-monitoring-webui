@@ -5,13 +5,11 @@ import PropTypes from 'prop-types';
 
 import { joinClasses } from 'utilities';
 
-import './styles/summarySection.css';
-
-export const SummarySection = (props) => (
-  <div className={joinClasses('summary-section', props.className)}>{props.children}</div>
+export const SummaryBody = (props) => (
+  <div className={joinClasses('summary-body', props.className)}>{props.children}</div>
 );
 
-SummarySection.propTypes = {
+SummaryBody.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string
 };

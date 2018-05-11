@@ -11,6 +11,8 @@ import {
   Radio,
   ToggleBtn,
   SectionDesc,
+  SectionHeader,
+  SummaryBody,
   SummaryCount,
   SummarySection,
   AjaxError,
@@ -394,17 +396,27 @@ export class RuleEditor extends LinkedComponent {
           </div>
         }
         <SummarySection>
-          {
-            isPending && <Indicator size="large" pattern="bar" />
-          }
-          <SummaryCount>{devicesAffected}</SummaryCount>
-          <SectionDesc>{t('rules.flyouts.ruleEditor.devicesAffected')}</SectionDesc>
+          <SectionHeader>{t('rules.flyouts.ruleEditor.summaryHeader')}</SectionHeader>
+          <SummaryBody>
+            <SummaryCount>{devicesAffected}</SummaryCount>
+            <SectionDesc>{t('rules.flyouts.ruleEditor.devicesAffected')}</SectionDesc>
+            {isPending && <Indicator />}
+            {
+              /*
+              TODO: Change interaction pattern.
+              - Make the flyout stay open to give the user visual confirmation of success.
+                    completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />
+              - Update the redux store in the background.
+              - Also, allow for additional changes to be made while the flyout is open.
+              */
+            }
+          </SummaryBody>
         </SummarySection>
+
+        {error && <AjaxError t={t} error={error} />}
         {
-          error && <AjaxError t={t} error={error} />
-        }
-        {
-          !isPending && <BtnToolbar>
+          !isPending &&
+          <BtnToolbar>
             <Btn svg={svgs.apply} primary={true} type="submit" disabled={!this.formIsValid() || conditionsHaveErrors}>{t('rules.flyouts.ruleEditor.apply')}</Btn>
             <Btn svg={svgs.cancelX} onClick={onClose}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
           </BtnToolbar>
