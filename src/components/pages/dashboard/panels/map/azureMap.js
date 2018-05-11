@@ -26,6 +26,11 @@ export class AzureMap extends Component {
     if (this.map) this.map.remove();
   }
 
+  shouldComponentUpdate(nextProps) {
+    // Component props never result in a dom updates from React
+    return false;
+  }
+
   initializeMap(azureMapsKey) {
     this.map = new AzureMaps.Map('map', {
       'subscription-key': azureMapsKey,

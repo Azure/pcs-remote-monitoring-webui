@@ -169,11 +169,12 @@ export class MapPanel extends Component {
   zoomOut = () => this.zoom(-1);
 
   shouldComponentUpdate(nextProps) {
-    const { t, isPending, mapKeyIsPending, error } = this.props;
+    const { t, isPending, mapKeyIsPending, azureMapsKey, error } = this.props;
     if (
       t !== nextProps.t
       || isPending !== nextProps.isPending
       || mapKeyIsPending !== nextProps.mapKeyIsPending
+      || azureMapsKey !== nextProps.azureMapsKey
       || error !== nextProps.error
     ) return true;
     return false;
