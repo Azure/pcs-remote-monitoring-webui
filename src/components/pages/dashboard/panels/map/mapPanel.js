@@ -13,6 +13,7 @@ import {
   PanelOverlay,
   PanelError
 } from 'components/pages/dashboard/panel';
+import { DeviceDetailsContainer } from 'components/pages/devices/flyouts/deviceDetails';
 import { AzureMap } from './azureMap';
 
 import './mapPanel.css';
@@ -26,13 +27,19 @@ const deviceToMapPin = ({ id, properties, type }) =>
   new AzureMaps.data.Feature(
     new AzureMaps.data.Point([properties.Longitude, properties.Latitude]),
     {
-      name: id,
+      id,
       address: properties.location || '',
       type
     }
   );
 
 export class MapPanel extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = { selectedDeviceId: undefined };
+  }
 
   componentWillReceiveProps(nextProps) {
     this.calculatePins(nextProps);
@@ -76,10 +83,15 @@ export class MapPanel extends Component {
 
     const name = document.createElement('div');
     name.classList.add('popup-device-name');
-    name.innerText = properties.name;
+    name.innerText = properties.id;
 
     popupContentBox.appendChild(type);
     popupContentBox.appendChild(name);
+
+    popupContentBox.onclick = () => {
+      // Check this to void any potential attempts to refernce the component after unmount
+      if (this) this.openDeviceDetails(properties.id);
+    };
 
     return popupContentBox;
   }
@@ -168,20 +180,12 @@ export class MapPanel extends Component {
 
   zoomOut = () => this.zoom(-1);
 
-  shouldComponentUpdate(nextProps) {
-    const { t, isPending, mapKeyIsPending, azureMapsKey, error } = this.props;
-    if (
-      t !== nextProps.t
-      || isPending !== nextProps.isPending
-      || mapKeyIsPending !== nextProps.mapKeyIsPending
-      || azureMapsKey !== nextProps.azureMapsKey
-      || error !== nextProps.error
-    ) return true;
-    return false;
-  }
+  openDeviceDetails = (selectedDeviceId) => this.setState({ selectedDeviceId });
+
+  closeDeviceDetails = () => this.setState({ selectedDeviceId: undefined });
 
   render() {
-    const { t, isPending, mapKeyIsPending, azureMapsKey, error } = this.props;
+    const { t, isPending, devices, mapKeyIsPending, azureMapsKey, error } = this.props;
     const showOverlay = !error && isPending && mapKeyIsPending;
     return (
       <Panel className="map-panel-container">
@@ -197,6 +201,10 @@ export class MapPanel extends Component {
         { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
         { !mapKeyIsPending && !this.props.azureMapsKey && <PanelError>{t('dashboard.panels.map.notSupportedError')}</PanelError> }
         { error && <PanelError><AjaxError t={t} error={error} /></PanelError> }
+        {
+          this.state.selectedDeviceId
+          && <DeviceDetailsContainer onClose={this.closeDeviceDetails} device={devices[this.state.selectedDeviceId]} />
+        }
       </Panel>
     );
   }

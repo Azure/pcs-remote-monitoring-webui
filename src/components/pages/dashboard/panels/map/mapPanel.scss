@@ -38,6 +38,7 @@ $zoomBtnFont: 20px;
 
   .popup-content-box {
     border-left: 6px solid transparent;
+    cursor: pointer;
     @include rem-font-size(14px);
     @include rem-fallback(padding, 8px, 12px);
 
