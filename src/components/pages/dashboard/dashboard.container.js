@@ -3,14 +3,16 @@
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import {
+  redux as appRedux,
   getAzureMapsKey,
   getAzureMapsKeyError,
   getAzureMapsKeyPendingStatus,
   getDeviceGroupError,
-  getTheme
+  getTheme,
+  getTimeInterval
 } from 'store/reducers/appReducer';
-import { epics as rulesEpics } from 'store/reducers/rulesReducer';
 import {
+  epics as rulesEpics,
   getEntities as getRuleEntities,
   getRulesPendingStatus,
   getRulesError
@@ -36,12 +38,14 @@ const mapStateToProps = state => ({
   rules: getRuleEntities(state),
   rulesError: getRulesError(state),
   rulesIsPending: getRulesPendingStatus(state),
-  theme: getTheme(state)
+  theme: getTheme(state),
+  timeInterval: getTimeInterval(state)
 });
 
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
-  fetchRules: () => dispatch(rulesEpics.actions.fetchRules())
+  fetchRules: () => dispatch(rulesEpics.actions.fetchRules()),
+  updateTimeInterval: timeInterval => dispatch(appRedux.actions.updateTimeInterval(timeInterval))
 });
 
 export const DashboardContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Dashboard));

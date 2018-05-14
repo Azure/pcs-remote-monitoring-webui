@@ -26,8 +26,6 @@ import { ContextMenu, PageContent, RefreshBar } from 'components/shared';
 import './dashboard.css';
 
 const initialState = {
-  timeInterval: 'PT1H',
-
   // Telemetry data
   telemetry: {},
   telemetryIsPending: true,
@@ -203,10 +201,7 @@ export class Dashboard extends Component {
 
       this.subscriptions.push(
         this.dashboardRefresh$
-          .subscribe(({ timeInterval }) => this.setState({
-            ...initialState,
-            timeInterval
-          }))
+          .subscribe(() => this.setState(initialState))
       );
 
       this.subscriptions.push(
@@ -238,7 +233,7 @@ export class Dashboard extends Component {
         this.dashboardRefresh$.next(
           refreshEvent(
             Object.keys(this.props.devices || {}),
-            this.state.timeInterval
+            this.props.timeInterval
           )
         );
       }
@@ -249,11 +244,11 @@ export class Dashboard extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.deviceLastUpdated !== this.props.deviceLastUpdated) {
+    if (nextProps.deviceLastUpdated !== this.props.deviceLastUpdated || nextProps.timeInterval !== this.props.timeInterval) {
       this.dashboardRefresh$.next(
         refreshEvent(
           Object.keys(nextProps.devices),
-          this.state.timeInterval
+          nextProps.timeInterval
         ),
       );
     }
@@ -262,23 +257,14 @@ export class Dashboard extends Component {
   refreshDashboard = () => this.dashboardRefresh$.next(
     refreshEvent(
       Object.keys(this.props.devices),
-      this.state.timeInterval
-    )
-  );
-
-  onTimeIntervalChange = timeInterval => this.setState(
-    { timeInterval },
-    () => this.dashboardRefresh$.next(
-      refreshEvent(
-        Object.keys(this.props.devices),
-        timeInterval
-      )
+      this.props.timeInterval
     )
   );
 
   render () {
     const {
       theme,
+      timeInterval,
 
       azureMapsKey,
       azureMapsKeyError,
@@ -295,8 +281,6 @@ export class Dashboard extends Component {
       t
     } = this.props;
     const {
-      timeInterval,
-
       telemetry,
       telemetryIsPending,
       telemetryError,
@@ -360,7 +344,7 @@ export class Dashboard extends Component {
           isPending={analyticsIsPending || devicesIsPending}
           t={t} />
         <TimeIntervalDropdown
-          onChange={this.onTimeIntervalChange}
+          onChange={this.props.updateTimeInterval}
           value={timeInterval}
           t={t} />
         <ManageDeviceGroupsBtn />

@@ -120,7 +120,8 @@ const initialState = {
   name: 'companyName',
   isDefaultLogo: true,
   azureMapsKey: '',
-  deviceGroupFlyoutIsOpen: false
+  deviceGroupFlyoutIsOpen: false,
+  timeInterval: 'PT1H'
 };
 
 const updateDeviceGroupsReducer = (state, { payload, fromAction }) => {
@@ -153,6 +154,10 @@ const updateActiveDeviceGroupsReducer = (state, { payload }) => update(state,
 
 const updateThemeReducer = (state, { payload }) => update(state,
   { theme: { $set: payload } }
+);
+
+const updateTimeInterval = (state, { payload }) => update(state,
+  { timeInterval: { $set: payload } }
 );
 
 const logoReducer = (state, { payload, fromAction }) => update(state, {
@@ -191,7 +196,8 @@ export const redux = createReducerScenario({
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer },
   updateLogo: { type: 'APP_UPDATE_LOGO', reducer: logoReducer },
   getReleaseInformation: { type: 'APP_GET_VERSION', reducer: releaseReducer },
-  setDeviceGroupFlyoutStatus: { type: 'APP_SET_DEVICE_GROUP_FLYOUT_STATUS', reducer: setDeviceGroupFlyoutReducer }
+  setDeviceGroupFlyoutStatus: { type: 'APP_SET_DEVICE_GROUP_FLYOUT_STATUS', reducer: setDeviceGroupFlyoutReducer },
+  updateTimeInterval: { type: 'APP_UPDATE_TIME_INTERVAL', reducer: updateTimeInterval }
 });
 
 export const reducer = { app: redux.getReducer(initialState) };
@@ -239,4 +245,6 @@ export const getDeviceGroupError = state =>
   getError(getAppReducer(state), epics.actionTypes.fetchDeviceGroups);
 export const getLogoPendingStatus = state =>
   getPending(getAppReducer(state), epics.actionTypes.fetchLogo);
+
+export const getTimeInterval = state => getAppReducer(state).timeInterval;
 // ========================= Selectors - END

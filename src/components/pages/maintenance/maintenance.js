@@ -26,8 +26,6 @@ export class Maintenance extends Component {
     super(props);
 
     this.state = {
-      timeInterval: 'PT1H',
-
       alertsIsPending: true,
       alertEntities: {},
       alerts: [],
@@ -53,10 +51,10 @@ export class Maintenance extends Component {
     this.subscriptions = [];
   }
 
-  getData = (deviceEntities) => {
+  getData = (deviceEntities, timeInterval) => {
     const deviceIds = Object.keys(deviceEntities || this.props.deviceEntities);
     const devices = deviceIds.length ? deviceIds.join(',') : undefined;
-    const [ timeParams ] = getIntervalParams(this.state.timeInterval);
+    const [timeParams] = getIntervalParams(timeInterval || this.props.timeInterval);
     const params = { ...timeParams, devices };
     this.setState({
       alertsIsPending: true,
@@ -153,9 +151,10 @@ export class Maintenance extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { devicesIsPending, deviceLastUpdated, deviceEntities } = nextProps;
-    if (!devicesIsPending && deviceLastUpdated !== this.props.deviceLastUpdated) {
-      this.getData(deviceEntities);
+    const { devicesIsPending, deviceLastUpdated, deviceEntities, timeInterval } = nextProps;
+    if ((!devicesIsPending && deviceLastUpdated !== this.props.deviceLastUpdated)
+      || timeInterval !== this.props.timeInterval) {
+      this.getData(deviceEntities, timeInterval);
     }
   }
 
@@ -180,7 +179,7 @@ export class Maintenance extends Component {
     }));
   };
 
-  onTimeIntervalChange = (timeInterval) => this.setState({ timeInterval }, () => this.getData());
+  onTimeIntervalChange = (timeInterval) => this.props.updateTimeInterval(timeInterval);
 
   render() {
     const { rulesEntities, deviceEntities, rulesIsPending, theme, t, history } = this.props;
@@ -244,21 +243,21 @@ export class Maintenance extends Component {
         <Route exact path={'/maintenance/:path(notifications|jobs)'}
           render={() =>
             <Summary
-            {...generalProps}
+              {...generalProps}
 
-            onTimeIntervalChange={this.onTimeIntervalChange}
-            timeInterval={this.state.timeInterval}
+              onTimeIntervalChange={this.onTimeIntervalChange}
+              timeInterval={this.props.timeInterval}
 
-            criticalAlertCount={criticalAlertCount}
-            warningAlertCount={warningAlertCount}
-            alertCount={alertCount}
+              criticalAlertCount={criticalAlertCount}
+              warningAlertCount={warningAlertCount}
+              alertCount={alertCount}
 
-            failedJobsCount={failedJobsCount}
-            succeededJobsCount={succeededJobsCount}
-            jobsCount={jobsCount}
+              failedJobsCount={failedJobsCount}
+              succeededJobsCount={succeededJobsCount}
+              jobsCount={jobsCount}
 
-            alertProps={alertProps}
-            jobProps={jobProps} />
+              alertProps={alertProps}
+              jobProps={jobProps} />
           } />
         <Route exact path={'/maintenance/rule/:id'}
           render={(routeProps) =>
@@ -279,7 +278,7 @@ export class Maintenance extends Component {
               {...jobProps}
               {...routeProps}
               deviceEntities={deviceEntities} />
-          }  />
+          } />
         <Redirect to="/maintenance/notifications" />
       </Switch>
     );

@@ -3,7 +3,11 @@
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { Maintenance } from './maintenance';
-import { getTheme } from 'store/reducers/appReducer';
+import {
+  redux as appRedux,
+  getTheme,
+  getTimeInterval
+} from 'store/reducers/appReducer';
 import {
   epics as rulesEpics,
   getEntities as getRuleEntities,
@@ -26,12 +30,14 @@ const mapStateToProps = state => ({
   rulesError: getRulesError(state),
   rulesIsPending: getRulesPendingStatus(state),
   rulesLastUpdated: getRulesLastUpdated(state),
-  theme: getTheme(state)
+  theme: getTheme(state),
+  timeInterval: getTimeInterval(state)
 });
 
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
-  fetchRules: () => dispatch(rulesEpics.actions.fetchRules())
+  fetchRules: () => dispatch(rulesEpics.actions.fetchRules()),
+  updateTimeInterval: timeInterval => dispatch(appRedux.actions.updateTimeInterval(timeInterval))
 });
 
 export const MaintenanceContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Maintenance));
