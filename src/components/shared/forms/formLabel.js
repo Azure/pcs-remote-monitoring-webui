@@ -12,7 +12,7 @@ export const FormLabel = (props) => {
     className: joinClasses('form-group-label', className),
     htmlFor: htmlFor || formGroupId
   };
-  return <label {...labelProps}>{children}{isRequired ? " *" : ""}</label>;
+  return <label {...labelProps}>{children}{isRequired ? ' *' : ''}</label>;
 };
 
 FormLabel.propTypes = {

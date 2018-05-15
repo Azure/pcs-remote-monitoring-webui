@@ -193,13 +193,18 @@ export class RuleDetails extends Component {
     }
   }
 
+  refreshData = () => this.setState({
+    ruleContextBtns: undefined,
+    alertContextBtns: undefined,
+    deviceContextBtns: undefined
+  }, this.props.refreshData);
+
   render () {
     const {
       error,
       isPending,
       lastUpdated,
       match,
-      refreshData,
       theme,
       t
     } = this.props;
@@ -227,7 +232,7 @@ export class RuleDetails extends Component {
           || this.state.deviceContextBtns
         }
         <RefreshBar
-          refresh={refreshData}
+          refresh={this.refreshData}
           time={lastUpdated}
           isPending={isPending}
           t={t} />

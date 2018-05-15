@@ -73,13 +73,13 @@ export class RuleEditor extends LinkedComponent {
 
   constructor(props) {
     super(props);
-    const formData = newRule;
+
     this.state = {
       error: undefined,
       fieldOptions: [],
       fieldQueryPending: true,
       devicesAffected: 0,
-      formData,
+      formData: newRule,
       isPending: false
     };
   }
@@ -88,18 +88,24 @@ export class RuleEditor extends LinkedComponent {
     const { rule } = this.props;
     if (rule) {
       this.getDeviceCountAndFields(rule.groupId);
-      this.setState({
-        formData: rule
-      });
+      this.setFormState(rule);
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const { rule } = nextProps;
-    if (rule) {
-      this.setState({ formData: rule });
-    }
+    if (rule) this.setFormState(rule);
   }
+
+  setFormState = (rule) => this.setState({
+    formData: {
+      ...rule,
+      conditions: (rule.conditions || []).map(condition => ({
+        ...condition,
+        key: conditionKey++
+      }))
+    }
+  });
 
   componentWillUnmount() {
     if (this.subscription) this.subscription.unsubscribe();
@@ -368,17 +374,23 @@ export class RuleEditor extends LinkedComponent {
                   <Radio
                     link={this.severityLink}
                     value={Config.ruleSeverity.critical}>
-                    <SeverityRenderer value={Config.ruleSeverity.critical} context={{ t }} />
+                    <FormLabel>
+                      <SeverityRenderer value={Config.ruleSeverity.critical} context={{ t }} />
+                    </FormLabel>
                   </Radio>
                   <Radio
                     link={this.severityLink}
                     value={Config.ruleSeverity.warning}>
-                    <SeverityRenderer value={Config.ruleSeverity.warning} context={{ t }} />
+                    <FormLabel>
+                      <SeverityRenderer value={Config.ruleSeverity.warning} context={{ t }} />
+                    </FormLabel>
                   </Radio>
                   <Radio
                     link={this.severityLink}
                     value={Config.ruleSeverity.info}>
-                    <SeverityRenderer value={Config.ruleSeverity.info} context={{ t }} />
+                    <FormLabel>
+                      <SeverityRenderer value={Config.ruleSeverity.info} context={{ t }} />
+                    </FormLabel>
                   </Radio>
                 </FormGroup>
               </Section.Content>
