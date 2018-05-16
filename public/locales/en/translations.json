@@ -2,7 +2,11 @@
   "companyName": "Contoso",
   "header": {
     "appName": "Azure IoT Remote Monitoring",
-    "logout": "Logout"
+    "logout": "Logout",
+    "profile": "Profile",
+    "getStarted": "Get started",
+    "documentation": "Documentation",
+    "sendSuggestion": "Send a suggestion"
   },
   "pageNotFound": {
     "title": "404 - Page not found",

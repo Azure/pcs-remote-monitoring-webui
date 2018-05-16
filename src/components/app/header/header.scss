@@ -74,20 +74,27 @@ $imgSize: 30px;
       }
     }
 
-    .profile-dropdown {
-      position: absolute;
-      z-index: 10; // Push above the main content container TODO: Remove with better dropdown
-      right: 0;
-      top: 100%;
-      border: 1px solid;
-      @include rem-fallback(width, 150px);
+    .menu-container {
+      position: relative;
 
-      > button {
-        width: 100%;
-        text-align: left;
-        cursor: pointer;
-        @include rem-font-size(14px);
-        @include rem-fallback(padding, 5px, 8px);
+      .menu {
+        display: flex;
+        flex-flow: column wrap;
+        position: absolute;
+        z-index: 2000; // Push above the main content container TODO: Remove with better dropdown
+        right: 0;
+        top: 100%;
+        border: 1px solid;
+        @include rem-fallback(width, 180px);
+
+        > .menu-item {
+          display: block;
+          text-align: left;
+          cursor: pointer;
+          text-decoration: none;
+          @include rem-font-size(14px);
+          @include rem-fallback(padding, 10px);
+        }
       }
     }
   }
@@ -117,11 +124,11 @@ $imgSize: 30px;
         }
       }
 
-      .profile-dropdown {
+      .menu {
         background-color: themed('colorHeaderDropdown');
-        border-color: themed('colorHeaderBorderColor');
+        border-color: themed('colorSystem');
 
-        > button {
+        > .menu-item {
           color: themed('colorHeaderText');
 
           &:hover { background-color: themed('colorHeaderItemBgHover'); }

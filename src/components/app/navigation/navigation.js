@@ -38,9 +38,15 @@ class Navigation extends Component {
       collapsed: false,
       lastWidth: window.innerWidth
     };
+  }
 
+  componentDidMount() {
     // Collapse the nav if the window width is too small
     window.addEventListener('resize', this.collapseNav);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.collapseNav);
   }
 
   collapseNav = () => {
