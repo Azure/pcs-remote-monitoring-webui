@@ -10,6 +10,7 @@ $rotateTime: 2s;
   justify-content: flex-end;
   text-transform: uppercase;
   font-size: 0.9em;
+  flex-shrink: 0;
   @include rem-fallback(margin-top, 13px);
 
   .btn.refresh-btn {

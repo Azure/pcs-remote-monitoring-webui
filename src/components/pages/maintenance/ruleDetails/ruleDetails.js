@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs';
 
 import Config from 'app.config';
 import { RulesGrid } from 'components/pages/rules/rulesGrid';
-import { AjaxError, Btn, PageContent, ContextMenu, RefreshBar } from 'components/shared';
+import { AjaxError, Btn, PageContent, ContextMenu, RefreshBar, Indicator } from 'components/shared';
 import { svgs, joinClasses, renderUndefined } from 'utilities';
 import { DevicesGrid } from 'components/pages/devices/devicesGrid';
 import { TelemetryChart, transformTelemetryResponse, chartColorObjects } from 'components/pages/dashboard/panels/telemetry';
@@ -32,6 +32,8 @@ export class RuleDetails extends Component {
     super(props);
 
     this.state = {
+      updatingAlertStatus: false,
+
       selectedAlerts: [],
       selectedRule: undefined,
 
@@ -132,16 +134,21 @@ export class RuleDetails extends Component {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  // TODO: Handle error and isPending states
   updateAlertStatus = (selectedAlerts, status) =>
     this.subscriptions.push(
-      Observable.from(selectedAlerts)
+      Observable.of(selectedAlerts)
+        .do(() => this.setState({ updatingAlertStatus: true }))
+        .flatMap(alerts => alerts)
         .flatMap(({ id }) => TelemetryService.updateAlertStatus(id, status))
         .toArray() // Use toArray to wait for all calls to succeed
-        .subscribe(() => {
-          this.props.setAlertStatus(selectedAlerts, status);
-          this.onAlertGridHardSelectChange([]);
-        })
+        .subscribe(
+          () => {
+            this.props.setAlertStatus(selectedAlerts, status);
+            this.onAlertGridHardSelectChange([]);
+          },
+          undefined, // TODO: Handle error
+          () => this.setState({ updatingAlertStatus: false })
+        )
     );
 
   // TODO: Move constant values to central location
@@ -225,7 +232,13 @@ export class RuleDetails extends Component {
     const { selectedTab, selectedAlert = {} } = this.state;
     const { counts = {} } = selectedAlert;
     return [
-      <ContextMenu key="context-menu">
+      <ContextMenu className="rule-details-container" key="context-menu">
+        {
+          this.state.updatingAlertStatus &&
+          <div className="alert-indicator-container">
+            <Indicator pattern="bar" />
+          </div>
+        }
         {
           this.state.ruleContextBtns
           || this.state.alertContextBtns

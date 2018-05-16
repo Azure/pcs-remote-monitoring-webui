@@ -5,6 +5,12 @@
 
 .rule-details-container {
 
+  .alert-indicator-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
   .rule-maintenance-header {
     font-weight: 700;
     @include rem-fallback(margin, 0px 10px 10px 0px);
