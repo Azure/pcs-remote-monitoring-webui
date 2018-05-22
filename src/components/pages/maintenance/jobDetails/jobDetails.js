@@ -93,7 +93,7 @@ export class JobDetails extends Component {
 
     return [
       <ContextMenu key="context-menu">
-        { this.state.contextBtns }
+        {this.state.contextBtns}
         <RefreshBar
           refresh={this.refreshData}
           time={this.props.lastUpdated}
@@ -101,25 +101,25 @@ export class JobDetails extends Component {
           t={this.props.t} />
       </ContextMenu>,
       <PageContent className="maintenance-container" key="page-content">
+        <h1 className="maintenance-header">{selectedJob ? selectedJob.jobId : ""}</h1>
         {
           !this.props.error
             ? <div>
                 <JobGrid {...jobGridProps} />
                 <JobStatusGrid {...jobStatusGridProps} />
-                <h4 className="sub-heading">{this.props.t('maintenance.devices')}</h4>
+                <h4 className="maintenance-sub-header">{this.props.t('maintenance.devices')}</h4>
                 {
                   this.state.selectedDevices
                     ? <DevicesGrid
-                        t={this.props.t}
-                        rowData={this.state.selectedDevices}
-                        onContextMenuChange={this.onContextMenuChange} />
+                      t={this.props.t}
+                      rowData={this.state.selectedDevices}
+                      onContextMenuChange={this.onContextMenuChange} />
                     : this.props.t('maintenance.noOccurrenceSelected')
                 }
-              </div>
+            </div>
             : <AjaxError t={this.props.t} error={this.props.error} />
         }
       </PageContent>
     ];
   }
-
 }
