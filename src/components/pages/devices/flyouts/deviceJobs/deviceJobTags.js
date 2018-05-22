@@ -252,11 +252,15 @@ export class DeviceJobTags extends LinkedComponent {
                 <Btn svg={svgs.plus} onClick={this.addTag}>{t('devices.flyouts.jobs.tags.add')}</Btn>
               </Row>
             </GridHeader>
+            {
+              Object.keys(commonTags).length === 0 && summaryCount === 1 &&
+              <div className="device-jobs-info">{t('devices.flyouts.details.tags.noneExist')}</div>
+            }
+            {
+              Object.keys(commonTags).length === 0 && summaryCount > 1 &&
+              <ErrorMsg className="device-jobs-error">{t('devices.flyouts.jobs.tags.noneExist')}</ErrorMsg>
+            }
             <GridBody>
-              {
-                Object.keys(commonTags).length === 0 &&
-                <ErrorMsg className="device-jobs-error">{t('devices.flyouts.jobs.tags.noneExist')}</ErrorMsg>
-              }
               {
                 Object.keys(commonTags).length > 0 &&
                 tagLinks.map(({ name, value, type, edited, error }, idx) => [

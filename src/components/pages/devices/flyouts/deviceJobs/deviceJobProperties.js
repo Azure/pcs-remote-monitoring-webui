@@ -267,11 +267,15 @@ export class DeviceJobProperties extends LinkedComponent {
                 <Cell className="col-1"></Cell>
               </Row>
             </GridHeader>
+            {
+              Object.keys(commonProperties).length === 0 && summaryCount === 1 &&
+              <div className="device-jobs-info">{t('devices.flyouts.details.properties.noneExist')}</div>
+            }
+            {
+              Object.keys(commonProperties).length === 0 && summaryCount > 1 &&
+              <ErrorMsg className="device-jobs-error">{t('devices.flyouts.jobs.properties.noneExist')}</ErrorMsg>
+            }
             <GridBody>
-              {
-                Object.keys(commonProperties).length === 0 &&
-                <ErrorMsg className="device-jobs-error">{t('devices.flyouts.jobs.properties.noneExist')}</ErrorMsg>
-              }
               {
                 Object.keys(commonProperties).length > 0 &&
                 propertyLinks.map(({ name, value, type, readOnly, edited, error }, idx) => [
