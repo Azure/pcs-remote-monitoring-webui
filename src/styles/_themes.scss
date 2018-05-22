@@ -152,52 +152,52 @@ $themes: (
     colorError: $colorError,
 
     // App - START
-    colorSelectionText: #212121,
+    colorSelectionText: #333,
     colorSelectionBg: #136BFB,
     // App - END
 
     // Grid - START
     colorGridScrollBar: $colorCharcoal,
     colorGridRowBackground: $colorWhite,
-    colorGridCellText: #212121,
+    colorGridCellText: #333,
     colorGridRowHoverBackground: #dadada,
     colorGridSelectedRowBorder: #136bfb,
-    colorGridHeaderText: #767676,
+    colorGridHeaderText: #666,
 
-    colorCellRendererSvgFill: #212121,
-    colorCellRendererSvgFillHighlight: #212121,
-    colorCellRendererText: #212121,
-    colorCellRendererTextHighlight: #212121,
+    colorCellRendererSvgFill: #333,
+    colorCellRendererSvgFillHighlight: #333,
+    colorCellRendererText: #333,
+    colorCellRendererTextHighlight: #333,
     // Grid - END
 
     // Btn - START
     colorBtnOutlineFocus: $colorSmoke,
 
-    colorBtnText: #212121,
+    colorBtnText: #333,
     colorBtnBackground: transparent,
     colorBtnSvgFill: #666,
 
-    colorBtnTextHover: #212121,
+    colorBtnTextHover: #333,
     colorBtnBackgroundHover: transparent,
-    colorBtnSvgFillHover: #212121,
+    colorBtnSvgFillHover: #333,
 
-    colorBtnTextActive: #212121,
+    colorBtnTextActive: #333,
     colorBtnBackgroundActive: transparent,
-    colorBtnSvgFillActive: #212121,
+    colorBtnSvgFillActive: #333,
 
     colorBtnTextDisabled: $colorAsh,
     colorBtnBackgroundDisabled: transparent,
     colorBtnSvgFillDisabled: $colorAsh,
 
-    colorBtnPrimaryText: #212121,
+    colorBtnPrimaryText: #333,
     colorBtnPrimaryBackground: #f4f4f4,
     colorBtnPrimarySvgFill: #666,
 
-    colorBtnPrimaryTextHover: #212121,
+    colorBtnPrimaryTextHover: #333,
     colorBtnPrimaryBackgroundHover: #eaeaea,
     colorBtnPrimarySvgFillHover: #666,
 
-    colorBtnPrimaryTextActive: #212121,
+    colorBtnPrimaryTextActive: #333,
     colorBtnPrimaryBackgroundActive: #c8c8c8,
     colorBtnPrimarySvgFillActive: #666,
 
@@ -208,11 +208,11 @@ $themes: (
 
     // Page Content Colors - START
     colorContentBackground: #f2f2f2, // Grey100
-    colorContentText: #212121,
-    colorContentTextDim: #767676,
+    colorContentText: #333,
+    colorContentTextDim: #666,
 
     colorFlyoutBackground: #fff,
-    colorFlyoutText: #212121,
+    colorFlyoutText: #333,
     colorFlyoutSectionBorder: #c8c8c8,
     colorFlyoutDropShadow: rgba(0, 0, 0, 0.1),
 
@@ -241,14 +241,14 @@ $themes: (
     // Context Menu Colors - START
     colorContextMenuBg: #f2f2f2,
     colorContextMenuBtnBgHover: #eaeaea,
-    colorContextMenuBtnTextHover: #212121,
+    colorContextMenuBtnTextHover: #333,
     colorContextMenuBtnSvgFill: #666,
     colorContextMenuBorderColor: #c8c8c8,
     // Context Menu Colors - END
 
     // Dashboard Panel Colors - START
     colorDashboardMapPopupText: $colorNoir,
-    colorDashboardPanelText: #212121,
+    colorDashboardPanelText: #333,
     colorDashboardPanelHeaderBg: $colorWhite,
     colorDashboardPanelContentBg: $colorWhite,
     colorDashboardPanelOverlayBg: rgba(255, 255, 255, .5),
@@ -269,10 +269,10 @@ $themes: (
     colorSelectOptionFocusedBg: #dadada,
     colorSelectDisabledText: $colorAsh,
     colorSelectBorderColor: #c8c8c8,
-    colorSelectText: #212121,
+    colorSelectText: #333,
     colorSelectPlaceholderText: #666,
 
-    colorInputText: #212121,
+    colorInputText: #333,
     colorInputPlaceholderText: $colorStone,
     colorInputBorderColor: $colorGraphite,
     colorInputBorderHoverColor: $colorSmoke,
