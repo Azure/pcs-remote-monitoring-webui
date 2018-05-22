@@ -132,12 +132,12 @@ const updateDeviceGroupsReducer = (state, { payload, fromAction }) => {
   });
 };
 
-const deleteDeviceGroupReducer = (state, { payload }) => update(state, {
-  deviceGroups: { $unset: [payload] }
+const deleteDeviceGroupsReducer = (state, { payload }) => update(state, {
+  deviceGroups: { $unset: [...payload] }
 });
 
-const insertDeviceGroupReducer = (state, { payload }) => {
-  const { entities: { deviceGroups } } = normalize([payload], deviceGroupListSchema);
+const insertDeviceGroupsReducer = (state, { payload }) => {
+  const { entities: { deviceGroups } } = normalize(payload, deviceGroupListSchema);
   return update(state, {
     deviceGroups: { $merge: deviceGroups }
   });
@@ -187,8 +187,8 @@ const fetchableTypes = [
 
 export const redux = createReducerScenario({
   updateDeviceGroups: { type: 'APP_DEVICE_GROUP_UPDATE', reducer: updateDeviceGroupsReducer },
-  deleteDeviceGroup: { type: 'APP_DEVICE_GROUP_DELETE', reducer: deleteDeviceGroupReducer },
-  insertDeviceGroup: { type: 'APP_DEVICE_GROUP_INSERT', reducer: insertDeviceGroupReducer },
+  deleteDeviceGroups: { type: 'APP_DEVICE_GROUP_DELETE', reducer: deleteDeviceGroupsReducer },
+  insertDeviceGroups: { type: 'APP_DEVICE_GROUP_INSERT', reducer: insertDeviceGroupsReducer },
   updateAzureMapsKeyGroup: { type: 'APP_AZURE_MAPS_KEY_UPDATE', reducer: updateAzureMapsKeyReducer },
   updateActiveDeviceGroup: { type: 'APP_ACTIVE_DEVICE_GROUP_UPDATE', reducer: updateActiveDeviceGroupsReducer },
   changeTheme: { type: 'APP_CHANGE_THEME', reducer: updateThemeReducer },

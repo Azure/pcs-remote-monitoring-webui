@@ -77,7 +77,7 @@ export class DeviceDelete extends Component {
       .subscribe(
         deletedDeviceId => {
           this.setState({ successCount: this.state.successCount + 1 });
-          this.props.deleteDevice(deletedDeviceId);
+          this.props.deleteDevices([deletedDeviceId]);
         },
         error => this.setState({ error, isPending: false, changesApplied: true }),
         () => this.setState({ isPending: false, changesApplied: true })

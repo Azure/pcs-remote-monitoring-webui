@@ -62,7 +62,7 @@ export class RuleStatus extends Component {
           .map(() => rule)
       )
       .subscribe(
-        updatedRule => { this.props.updateRule(updatedRule); },
+        updatedRule => { this.props.modifyRules([updatedRule]); },
         error => this.setState({ error, isPending: false }),
         () => this.props.onClose()
       );

@@ -20,7 +20,7 @@ const mapStateToProps = state => ({
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
   fetchDeviceModelOptions: () => dispatch(simulationEpics.actions.fetchSimulationDeviceModelOptions()),
-  insertDevice: device => dispatch(devicesRedux.actions.insertDevice(device)),
+  insertDevices: devices => dispatch(devicesRedux.actions.insertDevices(devices)),
   fetchDevices: () => dispatch(devicesEpics.actions.fetchDevices())
 });
 

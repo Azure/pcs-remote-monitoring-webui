@@ -13,8 +13,8 @@ const mapStateToProps = state => ({
 
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
-  insertRule: rule => dispatch(rulesRedux.actions.insertRule(rule)),
-  updateRule: rule => dispatch(rulesRedux.actions.updateRule(rule))
+  insertRules: rules => dispatch(rulesRedux.actions.insertRules(rules)),
+  modifyRules: rules => dispatch(rulesRedux.actions.modifyRules(rules))
 });
 
 export const RuleEditorContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(RuleEditor));

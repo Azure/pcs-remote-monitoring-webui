@@ -112,7 +112,7 @@ class DeviceGroupForm extends LinkedComponent {
       this.selectServiceCall()
         .subscribe(
           deviceGroup => {
-            this.props.insertDeviceGroup(deviceGroup);
+            this.props.insertDeviceGroups([deviceGroup]);
             this.props.cancel();
           },
           error => this.setState({ error, isPending: false }),
@@ -133,7 +133,7 @@ class DeviceGroupForm extends LinkedComponent {
     ConfigService.deleteDeviceGroup(this.state.id)
       .subscribe(
         deletedGroupId => {
-          this.props.deleteDeviceGroup(deletedGroupId);
+          this.props.deleteDeviceGroups([deletedGroupId]);
           this.props.cancel();
         },
         error => this.setState({ error, isPending: false }),

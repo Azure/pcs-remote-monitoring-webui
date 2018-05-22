@@ -92,16 +92,16 @@ const ruleListSchema = new schema.Array(ruleSchema);
 // ========================= Reducers - START
 const initialState = { ...errorPendingInitialState, entities: {}, items: [] };
 
-const insertRuleReducer = (state, { payload }) => {
-  const { entities: { rules }, result } = normalize([payload], ruleListSchema);
+const insertRulesReducer = (state, { payload }) => {
+  const { entities: { rules }, result } = normalize(payload, ruleListSchema);
   return update(state, {
     entities: { $merge: rules },
     items: { $splice: [[state.items.length, 0, result]] }
   });
 };
 
-const updateRuleReducer = (state, { payload }) => {
-  const { entities: { rules } } = normalize([payload], ruleListSchema);
+const modifyRulesReducer = (state, { payload }) => {
+  const { entities: { rules } } = normalize(payload, ruleListSchema);
   return update(state, {
     entities: { $merge: rules }
   });
@@ -131,8 +131,8 @@ const fetchableTypes = [
 ];
 
 export const redux = createReducerScenario({
-  insertRule: { type: 'RULE_INSERT', reducer: insertRuleReducer },
-  updateRule: { type: 'RULE_UPDATE', reducer: updateRuleReducer },
+  insertRules: { type: 'RULE_INSERT', reducer: insertRulesReducer },
+  modifyRules: { type: 'RULES_MODIFY', reducer: modifyRulesReducer },
   updateRules: { type: 'RULES_UPDATE', reducer: updateRulesReducer },
   updateRuleCount: { type: 'RULES_COUNT_UPDATE', reducer: updateCountReducer },
   updateRuleLastTrigger: { type: 'RULES_LAST_TRIGGER_UPDATE', reducer: updateLastTriggerReducer },

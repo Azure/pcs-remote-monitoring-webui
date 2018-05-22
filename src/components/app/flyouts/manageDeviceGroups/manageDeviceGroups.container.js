@@ -16,8 +16,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   closeFlyout: () => dispatch(appRedux.actions.setDeviceGroupFlyoutStatus(false)),
-  deleteDeviceGroup: (id) => dispatch(appRedux.actions.deleteDeviceGroup(id)),
-  insertDeviceGroup: (deviceGroup) => dispatch(appRedux.actions.insertDeviceGroup(deviceGroup))
+  deleteDeviceGroups: (ids) => dispatch(appRedux.actions.deleteDeviceGroups(ids)),
+  insertDeviceGroups: (deviceGroups) => dispatch(appRedux.actions.insertDeviceGroups(deviceGroups))
 });
 
 export const ManageDeviceGroupsContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(ManageDeviceGroups));

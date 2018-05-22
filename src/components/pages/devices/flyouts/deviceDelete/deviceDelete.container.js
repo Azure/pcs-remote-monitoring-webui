@@ -7,7 +7,7 @@ import { redux as deviceRedux } from 'store/reducers/devicesReducer';
 
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
-  deleteDevice: deviceId => dispatch(deviceRedux.actions.deleteDevice(deviceId))
+  deleteDevices: deviceIds => dispatch(deviceRedux.actions.deleteDevices(deviceIds))
 });
 
 export const DeviceDeleteContainer = translate()(connect(null, mapDispatchToProps)(DeviceDelete));

@@ -267,7 +267,7 @@ export class DeviceNew extends LinkedComponent {
           .subscribe(
             provisionedDevice => {
               this.setState({ provisionedDevice, successCount: formData.count, isPending: false, changesApplied: true });
-              this.props.insertDevice(provisionedDevice);
+              this.props.insertDevices([provisionedDevice]);
             },
             error => {
               this.setState({ error, isPending: false, changesApplied: true });

@@ -66,19 +66,25 @@ const updateDevicesReducer = (state, { payload, fromAction }) => {
   });
 };
 
-const deleteDeviceReducer = (state, { payload }) => {
-  const itemIdx = state.items.indexOf(payload);
+const deleteDevicesReducer = (state, { payload }) => {
+  const spliceArr = payload.reduce((idxAcc, payloadItem) => {
+    const idx = state.items.indexOf(payloadItem);
+    if (idx !== -1) {
+      idxAcc.push([idx, 1]);
+    }
+    return idxAcc;
+  }, []);
   return update(state, {
-    entities: { $unset: [payload] },
-    items: { $splice: [[itemIdx, 1]] }
+    entities: { $unset: payload },
+    items: { $splice: spliceArr }
   });
 };
 
-const insertDeviceReducer = (state, { payload }) => {
-  const { entities: { devices }, result } = normalize([payload], deviceListSchema);
+const insertDevicesReducer = (state, { payload }) => {
+  const { entities: { devices }, result } = normalize(payload, deviceListSchema);
   return update(state, {
     entities: { $merge: devices },
-    items: { $splice: [[state.items.length, 0, result]] }
+    items: { $push: result }
   });
 };
 
@@ -127,8 +133,8 @@ export const redux = createReducerScenario({
   updateDevices: { type: 'DEVICES_UPDATE', reducer: updateDevicesReducer },
   registerError: { type: 'DEVICES_REDUCER_ERROR', reducer: errorReducer },
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer },
-  deleteDevice: { type: 'DEVICE_DELETE', reducer: deleteDeviceReducer },
-  insertDevice: { type: 'DEVICE_INSERT', reducer: insertDeviceReducer },
+  deleteDevices: { type: 'DEVICE_DELETE', reducer: deleteDevicesReducer },
+  insertDevices: { type: 'DEVICE_INSERT', reducer: insertDevicesReducer },
   updateTags: { type: 'DEVICE_UPDATE_TAGS', reducer: updateTagsReducer },
   updateProperties: { type: 'DEVICE_UPDATE_PROPERTIES', reducer: updatePropertiesReducer },
 });

@@ -7,7 +7,7 @@ import { redux as rulesRedux } from 'store/reducers/rulesReducer';
 
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
-  updateRule: rule => dispatch(rulesRedux.actions.updateRule(rule))
+  modifyRules: rules => dispatch(rulesRedux.actions.modifyRules(rules))
 });
 
 export const RuleStatusContainer = translate()(connect(null, mapDispatchToProps)(RuleStatus));

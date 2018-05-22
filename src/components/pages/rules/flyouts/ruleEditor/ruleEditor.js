@@ -130,7 +130,7 @@ export class RuleEditor extends LinkedComponent {
 
   apply = (event) => {
     event.preventDefault();
-    const { onClose, insertRule, updateRule } = this.props;
+    const { onClose, insertRules, modifyRules } = this.props;
     const requestProps = { ...this.state.formData };
     const { devicesAffected } = this.state;
     if (requestProps.calculation === calculations[1]) requestProps.timePeriod = '';
@@ -151,7 +151,7 @@ export class RuleEditor extends LinkedComponent {
         this.subscription = TelemetryService.updateRule(this.props.rule.id, toNewRuleRequestModel(requestProps))
           .subscribe(
             (updatedRule) => {
-              updateRule({ ...updatedRule, ...countProps });
+              modifyRules([{ ...updatedRule, ...countProps }]);
               this.setState({ isPending: false });
               onClose();
             },
@@ -161,7 +161,7 @@ export class RuleEditor extends LinkedComponent {
         this.subscription = TelemetryService.createRule(toNewRuleRequestModel(requestProps))
           .subscribe(
             (createdRule) => {
-              insertRule({ ...createdRule, ...countProps });
+              insertRules([{ ...createdRule, ...countProps }]);
               this.setState({ isPending: false });
               onClose();
             },
