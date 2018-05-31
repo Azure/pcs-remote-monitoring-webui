@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "C:\\Users\\t-aagupt\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.3.5\\cores\\arduino"
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": false,
+                "path": [
+                    "C:\\Users\\t-aagupt\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.3.5\\cores\\arduino"
+                ]
+            },
+            "intelliSenseMode": "msvc-x64"
+        }
+    ],
+    "version": 4
+}
