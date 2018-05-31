@@ -3,20 +3,21 @@
 import React from 'react';
 
 import {
+  AjaxError,
   Btn,
   BtnToolbar,
   FormControl,
   FormGroup,
   FormLabel,
+  Indicator,
   Radio,
-  ToggleBtn,
   SectionDesc,
   SectionHeader,
   SummaryBody,
   SummaryCount,
   SummarySection,
-  AjaxError,
-  Indicator
+  Svg,
+  ToggleBtn
 } from 'components/shared';
 import { SeverityRenderer } from 'components/shared/cellRenderers';
 import {
@@ -80,7 +81,8 @@ export class RuleEditor extends LinkedComponent {
       fieldQueryPending: true,
       devicesAffected: 0,
       formData: newRule,
-      isPending: false
+      isPending: false,
+      changesApplied: undefined
     };
   }
 
@@ -130,12 +132,12 @@ export class RuleEditor extends LinkedComponent {
 
   apply = (event) => {
     event.preventDefault();
-    const { onClose, insertRules, modifyRules } = this.props;
+    const { insertRules, modifyRules } = this.props;
     const requestProps = { ...this.state.formData };
     const { devicesAffected } = this.state;
     if (requestProps.calculation === calculations[1]) requestProps.timePeriod = '';
     if (this.formIsValid()) {
-      this.setState({ isPending: true });
+      this.setState({ isPending: true, error: null });
       if (this.subscription) this.subscription.unsubscribe();
       const countProps = {
         count: {
@@ -152,20 +154,18 @@ export class RuleEditor extends LinkedComponent {
           .subscribe(
             (updatedRule) => {
               modifyRules([{ ...updatedRule, ...countProps }]);
-              this.setState({ isPending: false });
-              onClose();
+              this.setState({ isPending: false, changesApplied: true });
             },
-            error => this.setState({ error, isPending: false })
+            error => this.setState({ error, isPending: false, changesApplied: true })
           );
       } else { // If rule object doesn't exist then create a new rule
         this.subscription = TelemetryService.createRule(toNewRuleRequestModel(requestProps))
           .subscribe(
             (createdRule) => {
               insertRules([{ ...createdRule, ...countProps }]);
-              this.setState({ isPending: false });
-              onClose();
+              this.setState({ isPending: false, changesApplied: true });
             },
-            error => this.setState({ error, isPending: false })
+            error => this.setState({ error, isPending: false, changesApplied: true })
           );
       }
     }
@@ -177,6 +177,7 @@ export class RuleEditor extends LinkedComponent {
       isPending: true
     });
     this.getDeviceCountAndFields(value);
+    this.formControlChange();
   }
 
   getDeviceCountAndFields(groupId) {
@@ -216,11 +217,26 @@ export class RuleEditor extends LinkedComponent {
   //todo toggle button didn't support link
   onToggle = ({ target: { value } }) => {
     this.setState({ formData: { ...this.state.formData, enabled: value } })
+    this.formControlChange();
+  }
+
+  formControlChange = () => {
+    if (this.state.changesApplied) {
+      this.setState({ changesApplied: false });
+    }
   }
 
   render() {
     const { onClose, t, deviceGroups = [] } = this.props;
-    const { error, formData, fieldOptions, devicesAffected, isPending, fieldQueryPending } = this.state;
+    const {
+      changesApplied,
+      devicesAffected,
+      error,
+      fieldOptions,
+      fieldQueryPending,
+      formData,
+      isPending
+    } = this.state;
     const calculationOptions = calculations.map(value => ({
       label: t(`rules.flyouts.ruleEditor.calculationOptions.${value.toLowerCase()}`),
       value
@@ -258,6 +274,7 @@ export class RuleEditor extends LinkedComponent {
     });
 
     const conditionsHaveErrors = conditionLinks.some(({ error }) => error);
+    const completedSuccessfully = changesApplied && !error;
 
     return (
       <form onSubmit={this.apply} className="new-rule-flyout-container">
@@ -269,6 +286,7 @@ export class RuleEditor extends LinkedComponent {
                 type="text"
                 className="long"
                 placeholder={t('rules.flyouts.ruleEditor.namePlaceholder')}
+                onChange={this.formControlChange}
                 link={this.ruleNameLink} />
             </FormGroup>
             <FormGroup>
@@ -276,6 +294,7 @@ export class RuleEditor extends LinkedComponent {
               <FormControl
                 type="textarea"
                 placeholder={t('rules.flyouts.ruleEditor.descriptionPlaceholder')}
+                onChange={this.formControlChange}
                 link={this.descriptionLink} />
             </FormGroup>
             <FormGroup>
@@ -298,7 +317,7 @@ export class RuleEditor extends LinkedComponent {
                 placeholder={t('rules.flyouts.ruleEditor.calculationPlaceholder')}
                 link={this.calculationLink}
                 options={calculationOptions}
-                onChange={this.onCalculationChange}
+                onChange={this.formControlChange}
                 clearable={false}
                 searchable={false} />
             </FormGroup>
@@ -309,6 +328,7 @@ export class RuleEditor extends LinkedComponent {
                 <FormControl
                   type="select"
                   className="short"
+                  onChange={this.formControlChange}
                   link={this.timePeriodLink}
                   options={timePeriodOptions}
                   clearable={false}
@@ -336,6 +356,7 @@ export class RuleEditor extends LinkedComponent {
                         type="select"
                         className="long"
                         placeholder={t('rules.flyouts.ruleEditor.condition.fieldPlaceholder')}
+                        onChange={this.formControlChange}
                         link={condition.fieldLink}
                         options={fieldOptions}
                         clearable={false}
@@ -347,6 +368,7 @@ export class RuleEditor extends LinkedComponent {
                         type="select"
                         className="short"
                         placeholder={t('rules.flyouts.ruleEditor.condition.operatorPlaceholder')}
+                        onChange={this.formControlChange}
                         link={condition.operatorLink}
                         options={operatorOptions}
                         clearable={false}
@@ -357,6 +379,7 @@ export class RuleEditor extends LinkedComponent {
                       <FormControl
                         type="text"
                         placeholder={t('rules.flyouts.ruleEditor.condition.valuePlaceholder')}
+                        onChange={this.formControlChange}
                         link={condition.valueLink} />
                     </FormGroup>
                     {
@@ -372,6 +395,7 @@ export class RuleEditor extends LinkedComponent {
                 <FormGroup className="padded-top">
                   <FormLabel>{t('rules.flyouts.ruleEditor.severityLevel')}</FormLabel>
                   <Radio
+                    onChange={this.formControlChange}
                     link={this.severityLink}
                     value={Config.ruleSeverity.critical}>
                     <FormLabel>
@@ -379,6 +403,7 @@ export class RuleEditor extends LinkedComponent {
                     </FormLabel>
                   </Radio>
                   <Radio
+                    onChange={this.formControlChange}
                     link={this.severityLink}
                     value={Config.ruleSeverity.warning}>
                     <FormLabel>
@@ -386,6 +411,7 @@ export class RuleEditor extends LinkedComponent {
                     </FormLabel>
                   </Radio>
                   <Radio
+                    onChange={this.formControlChange}
                     link={this.severityLink}
                     value={Config.ruleSeverity.info}>
                     <FormLabel>
@@ -407,29 +433,21 @@ export class RuleEditor extends LinkedComponent {
             </Section.Container>
           </div>
         }
+
         <SummarySection>
           <SectionHeader>{t('rules.flyouts.ruleEditor.summaryHeader')}</SectionHeader>
           <SummaryBody>
             <SummaryCount>{devicesAffected}</SummaryCount>
             <SectionDesc>{t('rules.flyouts.ruleEditor.devicesAffected')}</SectionDesc>
             {isPending && <Indicator />}
-            {
-              /*
-              TODO: Change interaction pattern.
-              - Make the flyout stay open to give the user visual confirmation of success.
-                    completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />
-              - Update the redux store in the background.
-              - Also, allow for additional changes to be made while the flyout is open.
-              */
-            }
+            {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
           </SummaryBody>
         </SummarySection>
 
-        {error && <AjaxError t={t} error={error} />}
+        {error && <AjaxError className="rule-editor-error" t={t} error={error} />}
         {
-          !isPending &&
           <BtnToolbar>
-            <Btn svg={svgs.apply} primary={true} type="submit" disabled={!this.formIsValid() || conditionsHaveErrors}>{t('rules.flyouts.ruleEditor.apply')}</Btn>
+            <Btn primary={true} disabled={!!changesApplied || isPending || !this.formIsValid() || conditionsHaveErrors} type="submit">{t('rules.flyouts.ruleEditor.apply')}</Btn>
             <Btn svg={svgs.cancelX} onClick={onClose}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
           </BtnToolbar>
         }

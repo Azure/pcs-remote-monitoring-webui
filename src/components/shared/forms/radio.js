@@ -18,12 +18,18 @@ export class Radio extends Component {
     this.formGroupId = `radioInputId${radioInputCnt++}`;
   }
 
+  onChange = (evt) => {
+    const { onChange, link } = this.props;
+    if (link && isFunc(link.onChange)) link.onChange(evt);
+    if (isFunc(onChange)) onChange(evt);
+  }
+
   // Needs to be a stateful component in order to access refs
   render() {
     const { className, children, id, disabled, link, formGroupId, ...rest } = this.props;
     const valueOverrides = link ? {
       checked: link.value === rest.value,
-      onChange: link.onChange
+      onChange: this.onChange
     }: {};
     const radioProps = { ...rest, ...valueOverrides };
     let contentChildren = children;

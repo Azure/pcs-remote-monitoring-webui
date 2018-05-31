@@ -220,6 +220,8 @@
         "title": "Delete",
         "header": "Delete device",
         "description": "This action will delete the devices permanently from the platform.",
+        "confirmNo": "No, do not delete the selected physical devices.",
+        "confirmYes": "Yes, please delete the selected physical devices.",
         "simulatedNotSupported": "Deleting simulated devices is not currently supported, this action will only be taken on the physical devices.",
         "summaryHeader": "Summary",
         "affected": "Affected devices",
@@ -292,6 +294,7 @@
         "apply": "Apply",
         "pending": "Provisioning devices... ",
         "applySuccess": "Devices provisioned successfully",
+        "simulatedRefreshMessage": "Simulated devices are created in the background on the server. Therefore, they may take a while to show up when the device list is refreshed.",
         "close": "Close",
         "validation": {
           "required": "Is required",

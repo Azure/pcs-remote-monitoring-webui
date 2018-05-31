@@ -15,4 +15,21 @@
     padding-left: 0px;
     @include rem-fallback(margin-top, 24px);
   }
+
+  .rule-editor-error {
+    border: 1px transparent solid;
+    @include rem-fallback(margin, 12px, 0px);
+    @include rem-fallback(padding, 16px);
+  }
+
+  .summary-icon svg {
+    @include square-px-rem(16px);
+    @include rem-fallback(margin-left, 8px);
+  }
+
+  @include themify($themes) {
+    .rule-editor-error { border-color: themed('colorAlert'); }
+
+    .summary-icon svg { fill: themed('colorContentText'); }
+  }
 }

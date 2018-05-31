@@ -21,7 +21,8 @@ import {
   SummaryBody,
   SummaryCount,
   SummarySection,
-  Svg
+  Svg,
+  ToggleBtn
 } from 'components/shared';
 
 import './deviceDelete.css';
@@ -32,6 +33,7 @@ export class DeviceDelete extends Component {
     this.state = {
       physicalDevices: [],
       containsSimulatedDevices: false,
+      confirmStatus: false,
       isPending: false,
       error: undefined,
       successCount: 0,
@@ -66,8 +68,17 @@ export class DeviceDelete extends Component {
     this.setState({ physicalDevices, containsSimulatedDevices: (physicalDevices.length !== devices.length) });
   }
 
-  deleteDevices = () => {
-    this.setState({ isPending: true });
+  toggleConfirm = ({ target: { value } }) => {
+    if (this.state.changesApplied) {
+      this.setState({ confirmStatus: value, changesApplied: false, successCount: 0 });
+    } else {
+      this.setState({ confirmStatus: value });
+    }
+  }
+
+  deleteDevices = (event) => {
+    event.preventDefault();
+    this.setState({ isPending: true, error: null });
 
     this.subscription = Observable.from(this.state.physicalDevices)
       .flatMap(({ id }) =>
@@ -80,9 +91,8 @@ export class DeviceDelete extends Component {
           this.props.deleteDevices([deletedDeviceId]);
         },
         error => this.setState({ error, isPending: false, changesApplied: true }),
-        () => this.setState({ isPending: false, changesApplied: true })
+        () => this.setState({ isPending: false, changesApplied: true, confirmStatus: false })
       );
-
   }
 
   getSummaryMessage() {
@@ -103,6 +113,7 @@ export class DeviceDelete extends Component {
     const {
       physicalDevices,
       containsSimulatedDevices,
+      confirmStatus,
       isPending,
       error,
       successCount,
@@ -110,7 +121,7 @@ export class DeviceDelete extends Component {
     } = this.state;
 
     const summaryCount = changesApplied ? successCount : physicalDevices.length;
-    const completedSuccessfully = changesApplied && successCount === physicalDevices.length;
+    const completedSuccessfully = changesApplied && !error;
     const summaryMessage = this.getSummaryMessage();
 
     return (
@@ -120,9 +131,14 @@ export class DeviceDelete extends Component {
           <FlyoutCloseBtn onClick={onClose} />
         </FlyoutHeader>
         <FlyoutContent>
-          <div className="device-delete-container">
+          <form className="device-delete-container" onSubmit={this.deleteDevices}>
             <div className="device-delete-header">{t('devices.flyouts.delete.header')}</div>
             <div className="device-delete-descr">{t('devices.flyouts.delete.description')}</div>
+            <ToggleBtn
+              value={confirmStatus}
+              onChange={this.toggleConfirm}>
+              {confirmStatus ? t('devices.flyouts.delete.confirmYes') : t('devices.flyouts.delete.confirmNo')}
+            </ToggleBtn>
             {
               containsSimulatedDevices &&
               <div className="simulated-device-selected">
@@ -145,7 +161,7 @@ export class DeviceDelete extends Component {
             {
               !changesApplied &&
               <BtnToolbar>
-                <Btn svg={svgs.trash} primary={true} disabled={isPending || physicalDevices.length === 0} onClick={this.deleteDevices}>{t('devices.flyouts.delete.apply')}</Btn>
+                <Btn svg={svgs.trash} primary={true} disabled={isPending || physicalDevices.length === 0 || !confirmStatus} type="submit">{t('devices.flyouts.delete.apply')}</Btn>
                 <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.delete.cancel')}</Btn>
               </BtnToolbar>
             }
@@ -155,7 +171,7 @@ export class DeviceDelete extends Component {
                 <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.delete.close')}</Btn>
               </BtnToolbar>
             }
-          </div>
+          </form>
         </FlyoutContent>
       </Flyout>
     );

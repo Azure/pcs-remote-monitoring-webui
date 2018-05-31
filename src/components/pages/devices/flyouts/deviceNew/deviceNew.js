@@ -14,7 +14,6 @@ import {
   svgs,
   Validator
 } from 'utilities';
-import { Svg } from 'components/shared/svg/svg';
 import {
   AjaxError,
   Btn,
@@ -34,7 +33,8 @@ import {
   SectionHeader,
   SummaryBody,
   SummaryCount,
-  SummarySection
+  SummarySection,
+  Svg
 } from 'components/shared';
 
 import './deviceNew.css';
@@ -241,12 +241,22 @@ export class DeviceNew extends LinkedComponent {
     ].every(link => !link.error);
   }
 
+  formControlChange = () => {
+    if (this.state.changesApplied) {
+      this.setState({
+        successCount: 0,
+        changesApplied: false,
+        provisionedDevice: {}
+      });
+    }
+  }
+
   apply = (event) => {
     event.preventDefault();
     const { formData } = this.state;
 
     if (this.formIsValid()) {
-      this.setState({ isPending: true });
+      this.setState({ isPending: true, error: null });
 
       if (this.provisionSubscription) this.provisionSubscription.unsubscribe();
 
@@ -255,7 +265,6 @@ export class DeviceNew extends LinkedComponent {
           .subscribe(
             () => {
               this.setState({ successCount: formData.count, isPending: false, changesApplied: true });
-              this.props.fetchDevices();
             },
             error => {
               this.setState({ error, isPending: false, changesApplied: true });
@@ -311,7 +320,7 @@ export class DeviceNew extends LinkedComponent {
     const isX509 = this.authenticationTypeLink.value === authTypeOptions.x509.value;
     const isGenerateKeys = this.isGenerateKeysLink.value === authKeyTypeOptions.generate.value;
     const summaryCount = changesApplied ? successCount : formData.count;
-    const completedSuccessfully = changesApplied && successCount === formData.count;
+    const completedSuccessfully = changesApplied && !error;
     const summaryMessage = this.getSummaryMessage();
 
     return (
@@ -325,10 +334,10 @@ export class DeviceNew extends LinkedComponent {
             <div className="devices-new-content">
               <FormGroup>
                 <FormLabel>{t(deviceTypeOptions.labelName)}</FormLabel>
-                <Radio link={this.deviceTypeLink} value={deviceTypeOptions.simulated.value}>
+                <Radio link={this.deviceTypeLink} value={deviceTypeOptions.simulated.value} onChange={this.formControlChange}>
                   {t(deviceTypeOptions.simulated.labelName)}
                 </Radio>
-                <Radio link={this.deviceTypeLink} value={deviceTypeOptions.physical.value}>
+                <Radio link={this.deviceTypeLink} value={deviceTypeOptions.physical.value} onChange={this.formControlChange}>
                   {t(deviceTypeOptions.physical.labelName)}
                 </Radio>
               </FormGroup>
@@ -336,7 +345,7 @@ export class DeviceNew extends LinkedComponent {
                 isSimulatedDevice && [
                   <FormGroup key="deviceCount">
                     <FormLabel>{t('devices.flyouts.new.count.label')}</FormLabel>
-                    <FormControl link={this.countLink} type="text" />
+                    <FormControl link={this.countLink} type="text" onChange={this.formControlChange} />
                   </FormGroup>,
                   <FormGroup key="deviceId">
                     <FormLabel>{t('devices.flyouts.new.deviceIdExample.label')}</FormLabel>
@@ -344,7 +353,7 @@ export class DeviceNew extends LinkedComponent {
                   </FormGroup>,
                   <FormGroup key="deviceModel">
                     <FormLabel>{t('devices.flyouts.new.deviceModel.label')}</FormLabel>
-                    <FormControl link={this.deviceModelLink} type="select" options={deviceModelOptions} placeholder={t('devices.flyouts.new.deviceModel.hint')} />
+                    <FormControl link={this.deviceModelLink} type="select" options={deviceModelOptions} placeholder={t('devices.flyouts.new.deviceModel.hint')} onChange={this.formControlChange} />
                   </FormGroup>
                 ]
               }
@@ -356,37 +365,37 @@ export class DeviceNew extends LinkedComponent {
                   </FormGroup>,
                   <FormGroup key="deviceId">
                     <FormLabel>{t('devices.flyouts.new.deviceId.label')}</FormLabel>
-                    <Radio link={this.isGenerateIdLink} value={deviceIdTypeOptions.manual.value}>
-                      <FormControl className="device-id" link={this.deviceIdLink} disabled={isGenerateId} type="text" placeholder={t(deviceIdTypeOptions.manual.hintName)} />
+                    <Radio link={this.isGenerateIdLink} value={deviceIdTypeOptions.manual.value} onChange={this.formControlChange}>
+                      <FormControl className="device-id" link={this.deviceIdLink} disabled={isGenerateId} type="text" placeholder={t(deviceIdTypeOptions.manual.hintName)} onChange={this.formControlChange} />
                     </Radio>
-                    <Radio link={this.isGenerateIdLink} value={deviceIdTypeOptions.generate.value}>
+                    <Radio link={this.isGenerateIdLink} value={deviceIdTypeOptions.generate.value} onChange={this.formControlChange}>
                       {t(deviceIdTypeOptions.generate.labelName)}
                     </Radio>
                   </FormGroup>,
                   <FormGroup key="authType">
                     <FormLabel>{t(authTypeOptions.labelName)}</FormLabel>
-                    <Radio link={this.authenticationTypeLink} value={authTypeOptions.symmetric.value}>
+                    <Radio link={this.authenticationTypeLink} value={authTypeOptions.symmetric.value} onChange={this.formControlChange}>
                       {t(authTypeOptions.symmetric.labelName)}
                     </Radio>
-                    <Radio link={this.authenticationTypeLink} value={authTypeOptions.x509.value}>
+                    <Radio link={this.authenticationTypeLink} value={authTypeOptions.x509.value} onChange={this.formControlChange}>
                       {t(authTypeOptions.x509.labelName)}
                     </Radio>
                   </FormGroup>,
                   <FormGroup key="authKeyType">
                     <FormLabel>{t(authKeyTypeOptions.labelName)}</FormLabel>
-                    <Radio link={this.isGenerateKeysLink} value={authKeyTypeOptions.generate.value} disabled={isX509}>
+                    <Radio link={this.isGenerateKeysLink} value={authKeyTypeOptions.generate.value} disabled={isX509} onChange={this.formControlChange}>
                       {t(authKeyTypeOptions.generate.labelName)}
                     </Radio>
-                    <Radio link={this.isGenerateKeysLink} value={authKeyTypeOptions.manual.value}>
+                    <Radio link={this.isGenerateKeysLink} value={authKeyTypeOptions.manual.value} onChange={this.formControlChange}>
                       {t(authKeyTypeOptions.manual.labelName)}
                     </Radio>
                     <FormGroup className="sub-settings">
                       <FormLabel>{isX509 ? t('devices.flyouts.new.authenticationKey.primaryThumbprint') : t('devices.flyouts.new.authenticationKey.primaryKey')}</FormLabel>
-                      <FormControl link={this.primaryKeyLink} disabled={isGenerateKeys} type="text" placeholder={t('devices.flyouts.new.authenticationKey.hint')} />
+                      <FormControl link={this.primaryKeyLink} disabled={isGenerateKeys} type="text" placeholder={t('devices.flyouts.new.authenticationKey.hint')} onChange={this.formControlChange} />
                     </FormGroup>
                     <FormGroup className="sub-settings">
                       <FormLabel>{isX509 ? t('devices.flyouts.new.authenticationKey.secondaryThumbprint') : t('devices.flyouts.new.authenticationKey.secondaryKey')}</FormLabel>
-                      <FormControl link={this.secondaryKeyLink} disabled={isGenerateKeys} type="text" placeholder={t('devices.flyouts.new.authenticationKey.hint')} />
+                      <FormControl link={this.secondaryKeyLink} disabled={isGenerateKeys} type="text" placeholder={t('devices.flyouts.new.authenticationKey.hint')} onChange={this.formControlChange} />
                     </FormGroup>
                   </FormGroup>
                 ]
@@ -399,13 +408,8 @@ export class DeviceNew extends LinkedComponent {
                 <SectionDesc>{summaryMessage}</SectionDesc>
                 {this.state.isPending && <Indicator />}
                 {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
-                {
-                  /*
-                  TODO: Change interaction pattern.
-                  - Make the flyout stay open to give the user visual confirmation of success.
-                  - For simulated devices, provide a message telling that the new devices may take a while to show up.
-                  - Also, allow for additional devices to be created while the flyout is open.
-                  */
+                {completedSuccessfully && isSimulatedDevice &&
+                  t('devices.flyouts.new.simulatedRefreshMessage')
                 }
               </SummaryBody>
             </SummarySection>

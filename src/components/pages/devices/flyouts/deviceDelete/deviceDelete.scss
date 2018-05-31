@@ -8,6 +8,8 @@
 
   .device-delete-header { @include rem-fallback(padding, 12px, 0px); }
 
+  .toggle-btn-div { @include rem-fallback(margin, 12px, 0px); }
+
   .simulated-device-selected {
     display: flex;
     align-items: flex-start;

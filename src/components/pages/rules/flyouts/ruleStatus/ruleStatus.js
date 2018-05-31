@@ -4,17 +4,18 @@ import React, { Component } from 'react';
 import { Observable } from 'rxjs';
 
 import {
+  AjaxError,
   Btn,
-  FormLabel,
-  ToggleBtn,
   BtnToolbar,
+  FormLabel,
+  Indicator,
   SectionDesc,
   SectionHeader,
   SummaryBody,
   SummaryCount,
   SummarySection,
-  AjaxError,
-  Indicator
+  Svg,
+  ToggleBtn
 } from 'components/shared';
 import { svgs } from 'utilities';
 import { TelemetryService } from 'services';
@@ -29,6 +30,7 @@ export class RuleStatus extends Component {
     this.state = {
       isPending: false,
       error: undefined,
+      changesApplied: undefined
     };
   }
 
@@ -46,12 +48,18 @@ export class RuleStatus extends Component {
     if (this.subscription) this.subscription.unsubscribe();
   }
 
-  onToggle = ({ target: { value } }) => this.setState({ status: value })
+  onToggle = ({ target: { value } }) => {
+    if (this.state.changesApplied) {
+      this.setState({ status: value, changesApplied: false });
+    } else {
+      this.setState({ status: value });
+    }
+  }
 
   changeRuleStatus = (event) => {
     event.preventDefault();
     const { rules, status } = this.state;
-    this.setState({ isPending: true });
+    this.setState({ isPending: true, error: null });
     const requestPropList = rules.map((rule) => ({
       ...rule,
       enabled: status
@@ -62,15 +70,20 @@ export class RuleStatus extends Component {
           .map(() => rule)
       )
       .subscribe(
-        updatedRule => { this.props.modifyRules([updatedRule]); },
-        error => this.setState({ error, isPending: false }),
-        () => this.props.onClose()
+        updatedRule => {
+          this.props.modifyRules([updatedRule]);
+          this.setState({ isPending: false, changesApplied: true });
+        },
+        error => this.setState({ error, isPending: false, changesApplied: true })
       );
   }
 
   render() {
     const { onClose, t, rules } = this.props;
-    const { isPending, status, error } = this.state;
+    const { isPending, status, error, changesApplied } = this.state;
+
+    const completedSuccessfully = changesApplied && !error;
+
     return (
       <Flyout.Container>
         <Flyout.Header>
@@ -95,29 +108,19 @@ export class RuleStatus extends Component {
                     <SummaryCount>{rule.count && rule.count.response ? rule.count.response : '---'}</SummaryCount>
                     <SectionDesc>{t('rules.flyouts.ruleEditor.devicesAffected')}</SectionDesc>
                     {isPending && <Indicator />}
-                    {
-                      /*
-                      TODO: Change interaction pattern.
-                      - Make the flyout stay open to give the user visual confirmation of success.
-                            completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />
-                      - Update the redux store in the background.
-                      - Also, allow for additional changes to be made while the flyout is open.
-                      */
-                    }
+                    {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
                   </SummaryBody>
                 </SummarySection>
               ))
             }
 
-            {error && <AjaxError t={t} error={error} />}
+            {error && <AjaxError className="rule-status-error" t={t} error={error} />}
             {
-              !isPending &&
               <BtnToolbar>
-                <Btn svg={svgs.apply} primary={true} type="submit">{t('rules.flyouts.ruleEditor.apply')}</Btn>
+                <Btn primary={true} disabled={!!changesApplied || isPending} type="submit">{t('rules.flyouts.ruleEditor.apply')}</Btn>
                 <Btn svg={svgs.cancelX} onClick={onClose}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
               </BtnToolbar>
             }
-
           </form>
         </Flyout.Content>
       </Flyout.Container>
