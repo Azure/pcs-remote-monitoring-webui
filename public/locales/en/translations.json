@@ -156,6 +156,7 @@
     "lastRefreshed": "Last refreshed"
   },
   "devices": {
+    "searchPlaceholder": "Search devices...",
     "noneFound": "No devices found.",
     "refresh": "Refresh",
     "grid": {
@@ -358,6 +359,7 @@
     }
   },
   "rules": {
+    "searchPlaceholder": "Search rules...",
     "severity": {
       "info": "Info",
       "warning": "Warning",

@@ -91,7 +91,7 @@ $themes: (
     colorHeaderText: $colorSmoke,
     colorHeaderIconHover: $colorWhite,
     colorHeaderItemBgHover: $colorMidnight,
-    colorHeaderBorderColor: #fff,
+    colorHeaderBorderColor: $colorLead,
     colorHeaderItemContainerBorderColor: $colorLead,
     // Header Colors - END
 
@@ -100,6 +100,7 @@ $themes: (
     colorNavText: $colorWhite,
     colorNavItemBgHover: $colorMidnight,
     colorNavItemIcon: $colorSmoke,
+    colorTabBorder: $colorWhite,
     // Nav Colors - END
 
     // Context Menu Colors - START
@@ -108,6 +109,10 @@ $themes: (
     colorContextMenuBtnTextHover: $colorWhite,
     colorContextMenuBorderColor: $colorLead,
     colorContextMenuBtnSvgFill: $colorWhite,
+
+    colorContextSearchBg: $colorWhite,
+    colorContextSearchBorderColor: $colorWhite,
+    colorContextSearchTextColor: $colorNoir,
     // Context Menu Colors - END
 
     // Dashboard Panel Colors - START
@@ -233,7 +238,7 @@ $themes: (
     colorHeaderText: $colorSmoke,
     colorHeaderIconHover: $colorWhite,
     colorHeaderItemBgHover: $colorMidnight,
-    colorHeaderBorderColor: #333,
+    colorHeaderBorderColor: #c8c8c8,
     colorHeaderItemContainerBorderColor: $colorLead,
     // Header Colors - END
 
@@ -242,6 +247,7 @@ $themes: (
     colorNavText: $colorWhite,
     colorNavItemBgHover: $colorMidnight,
     colorNavItemIcon: $colorSmoke,
+    colorTabBorder: #333,
     // Nav Colors - END
 
     // Context Menu Colors - START
@@ -250,6 +256,10 @@ $themes: (
     colorContextMenuBtnTextHover: #333,
     colorContextMenuBtnSvgFill: #666,
     colorContextMenuBorderColor: #c8c8c8,
+
+    colorContextSearchBg: $colorWhite,
+    colorContextSearchBorderColor: #c8c8c8,
+    colorContextSearchTextColor: $colorNoir,
     // Context Menu Colors - END
 
     // Dashboard Panel Colors - START

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { RulesGrid } from './rulesGrid';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/app/manageDeviceGroupsBtn';
-import { AjaxError, Btn, RefreshBar, PageContent, ContextMenu } from 'components/shared';
+import { AjaxError, Btn, RefreshBar, PageContent, ContextMenu, SearchInput } from 'components/shared';
 import { NewRuleFlyout } from './flyouts';
 import { svgs } from 'utilities';
 
@@ -48,6 +48,12 @@ export class Rules extends Component {
     selectedRuleId: ''
   });
 
+  onGridReady = gridReadyEvent => this.rulesGridApi = gridReadyEvent.api;
+
+  searchOnChange = ({ target: { value } }) => {
+    if (this.rulesGridApi) this.rulesGridApi.setQuickFilter(value);
+  };
+
   onContextMenuChange = contextBtns => this.setState({ contextBtns });
 
   render() {
@@ -60,6 +66,7 @@ export class Rules extends Component {
       fetchRules
     } = this.props;
     const gridProps = {
+      onGridReady: this.onGridReady,
       rowData: isPending ? undefined : rules || [],
       onContextMenuChange: this.onContextMenuChange,
       t: this.props.t
@@ -67,6 +74,7 @@ export class Rules extends Component {
     return [
       <ContextMenu key="context-menu">
         <DeviceGroupDropdown />
+        <SearchInput onChange={this.searchOnChange} placeholder={t('rules.searchPlaceholder')} />
         {this.state.contextBtns}
         <Btn svg={svgs.plus} onClick={this.openNewRuleFlyout}>New rule</Btn>
         <ManageDeviceGroupsBtn />

@@ -42,7 +42,7 @@ $scrollbarWidth: 4px;
   .row {
     display: flex;
     flex-direction: row;
-    @include rem-fallback(padding, 16px 0px 16px 8px);
+    @include rem-fallback(padding, 16px, 0px, 16px, 8px);
 
     .cell {
       display: flex;

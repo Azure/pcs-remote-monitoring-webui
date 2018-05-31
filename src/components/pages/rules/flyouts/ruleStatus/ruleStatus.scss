@@ -12,7 +12,7 @@
 
   .padded-top-bottom {
     margin-left: 0px;
-    @include rem-fallback(padding, 24px 0px);
+    @include rem-fallback(padding, 24px, 0px);
   }
 
   .padded-bottom { @include rem-fallback(padding-bottom, 24px); }

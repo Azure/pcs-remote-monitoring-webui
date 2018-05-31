@@ -42,6 +42,7 @@ export class AlertsPanel extends Component {
       rowData: alerts,
       suppressFlyouts: true,
       domLayout: 'autoHeight',
+      deltaRowDataMode: false,
       t
     };
     const showOverlay = isPending && !alerts.length;

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { DevicesGrid } from './devicesGrid';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/app/manageDeviceGroupsBtn';
-import { AjaxError, Btn, RefreshBar, PageContent, ContextMenu } from 'components/shared';
+import { AjaxError, Btn, RefreshBar, PageContent, ContextMenu, SearchInput } from 'components/shared';
 import { DeviceNewContainer } from './flyouts/deviceNew';
 import { SIMManagementContainer } from './flyouts/SIMManagement';
 import { svgs } from 'utilities';
@@ -40,9 +40,16 @@ export class Devices extends Component {
     openFlyoutName: undefined
   });
 
+  onGridReady = gridReadyEvent => this.deviceGridApi = gridReadyEvent.api;
+
+  searchOnChange = ({ target: { value } }) => {
+    if (this.deviceGridApi) this.deviceGridApi.setQuickFilter(value);
+  };
+
   render() {
     const { t, devices, deviceGroupError, deviceError, isPending, lastUpdated, fetchDevices } = this.props;
     const gridProps = {
+      onGridReady: this.onGridReady,
       rowData: isPending ? undefined : devices || [],
       onContextMenuChange: this.onContextMenuChange,
       t: this.props.t
@@ -55,6 +62,7 @@ export class Devices extends Component {
     return [
       <ContextMenu key="context-menu">
         <DeviceGroupDropdown />
+        <SearchInput onChange={this.searchOnChange} placeholder={t('devices.searchPlaceholder')} />
         { this.state.contextBtns }
         <Btn svg={svgs.simmanagement} onClick={this.openSIMManagement}>{t('devices.flyouts.SIMManagement.title')}</Btn>
         <Btn svg={svgs.plus} onClick={this.openNewDeviceFlyout}>{t('devices.flyouts.new.contextMenuName')}</Btn>

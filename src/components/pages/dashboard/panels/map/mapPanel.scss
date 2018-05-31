@@ -50,7 +50,7 @@ $zoomBtnFont: 20px;
   @include themify($themes) {
     .zoom-btn {
       color: themed('colorContentText');
-      background-color: themed('colorContentBackground');
+      background-color: themed('colorDashboardPanelHeaderBg');
     }
 
     .popup-content-box {

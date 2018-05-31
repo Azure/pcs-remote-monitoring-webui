@@ -131,8 +131,8 @@ export class RulesGrid extends Component {
       sizeColumnsToFit: true,
       getSoftSelectId: this.getSoftSelectId,
       softSelectId: (this.state.softSelectedRule || {}).id,
-      ...this.props, // Allow default property overrides
       deltaRowDataMode: true,
+      ...this.props, // Allow default property overrides
       getRowNodeId: ({ id }) => id,
       context: {
         t: this.props.t

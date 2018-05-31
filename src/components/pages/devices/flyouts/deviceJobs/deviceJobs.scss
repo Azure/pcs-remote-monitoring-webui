@@ -55,13 +55,13 @@
   .data-grid { @include rem-fallback(margin-top, 16px); }
 
   .device-jobs-info {
-    @include rem-fallback(margin, 12px 0px);
+    @include rem-fallback(margin, 12px, 0px);
     @include rem-fallback(padding, 16px);
   }
 
   .device-jobs-error {
     border: 1px transparent solid;
-    @include rem-fallback(margin, 12px 0px);
+    @include rem-fallback(margin, 12px, 0px);
     @include rem-fallback(padding, 16px);
   }
 

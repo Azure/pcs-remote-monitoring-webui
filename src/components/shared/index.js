@@ -3,7 +3,7 @@
 // Exports the shared react components into as a library
 
 export * from './ajaxError/ajaxError';
-export * from './contextMenu/contextMenu';
+export * from './contextMenu';
 export * from './flyout';
 export * from './forms';
 export * from './indicator/indicator';

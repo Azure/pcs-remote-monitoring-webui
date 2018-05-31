@@ -13,7 +13,7 @@
 
   .device-count { @include rem-fallback(margin-left, 20px); }
 
-  .device-id.form-control { @include rem-fallback(margin, -4px 0px 8px 0px); }
+  .device-id.form-control { @include rem-fallback(margin, -4px, 0px, 8px, 0px); }
 
   .radio-container {
     margin-top: 0px;
@@ -26,7 +26,7 @@
 
     .form-group-label {
       @include rem-fallback(font-size, 14px);
-      @include rem-fallback(margin, 4px 0px);
+      @include rem-fallback(margin, 4px, 0px);
     }
 
     input { width: 100%; }
@@ -34,7 +34,7 @@
 
   .devices-new-error {
     border: 1px transparent solid;
-    @include rem-fallback(margin, 12px 0px);
+    @include rem-fallback(margin, 12px, 0px);
     @include rem-fallback(padding, 16px);
   }
 
@@ -71,7 +71,7 @@
 
   .devices-new-error {
     border: 1px transparent solid;
-    @include rem-fallback(margin, 12px 0px);
+    @include rem-fallback(margin, 12px, 0px);
     @include rem-fallback(padding, 16px);
   }
 

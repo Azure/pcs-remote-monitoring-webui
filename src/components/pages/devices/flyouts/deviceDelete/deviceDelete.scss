@@ -14,18 +14,18 @@
     display: flex;
     align-items: flex-start;
     border: 1px transparent solid;
-    @include rem-fallback(margin, 12px 0px);
+    @include rem-fallback(margin, 12px, 0px);
     @include rem-fallback(padding, 16px);
 
     .info-icon svg {
       @include square-px-rem(16px);
-      @include rem-fallback(padding, 0px 8px);
+      @include rem-fallback(padding, 0px, 8px);
     }
   }
 
   .device-delete-error {
     border: 1px transparent solid;
-    @include rem-fallback(margin, 12px 0px);
+    @include rem-fallback(margin, 12px, 0px);
     @include rem-fallback(padding, 16px);
   }
 
