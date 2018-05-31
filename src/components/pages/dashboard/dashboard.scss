@@ -21,6 +21,7 @@
   }
 
   @include themify($themes) {
+    background-color: themed('colorContentBackground');
     color: themed('colorContentText');
   }
 }

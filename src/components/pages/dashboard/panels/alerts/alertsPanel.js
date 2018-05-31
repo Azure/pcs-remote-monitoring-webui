@@ -23,6 +23,7 @@ export class AlertsPanel extends Component {
     this.columnDefs = [
       {
         ...rulesColumnDefs.ruleName,
+        cellRendererFramework: undefined, // Hide soft select link
         minWidth: 200
       },
       rulesColumnDefs.severity,
@@ -40,6 +41,7 @@ export class AlertsPanel extends Component {
       columnDefs: translateColumnDefs(t, this.columnDefs),
       rowData: alerts,
       suppressFlyouts: true,
+      domLayout: 'autoHeight',
       t
     };
     const showOverlay = isPending && !alerts.length;

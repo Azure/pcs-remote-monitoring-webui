@@ -1,8 +1,15 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
 .page-content-container {
   overflow: auto;
   flex-grow: 1;
   height: 100%;
   position: relative;
+
+  @include themify($themes) {
+    background: themed('colorPageContentBackground');
+  }
 }

@@ -1,27 +1,35 @@
-/*
-This file contains a class pcs-ag-dark that when combined with the ag-dark
-theme from AgGrid updates the ag-dark theme to match the PCS grid theme
-*/
-
 @import 'src/styles/variables';
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
-$rowHeight: 40px;
-$rowHeightWithPadding: ($rowHeight + 8px);
-$checkboxPadding: 8px;
+// Variable overrides
+$selectedRowBorderWidth: 4px;
+$rowHeight: 48px;
 
-.pcs-grid-container.ag-dark.pcs-ag-dark {
+$icons-path: "~ag-grid/src/styles/icons/";
+$row-height: $rowHeight;
+$header-height: $rowHeight;
+$background-color: transparent;
+$tab-background-color: transparent;
+$odd-row-background-color: transparent;
+$border-color: transparent;
+$panel-background-color: transparent;
+$tool-panel-background-color: transparent;
+$card-background-color: transparent;
+$cell-highlight-border: transparent;
+$cell-horizontal-border: transparent;
+$header-background-color: transparent;
+
+@import 'node_modules/ag-grid/src/styles/ag-grid.scss';
+@import 'node_modules/ag-grid/src/styles/ag-theme-dark.scss';
+
+$doublePadding: $baseContentPadding * 2;
+.pcs-grid-container.ag-theme-dark {
+  @include ag-theme-classic($params);
+  height: calc(100% - #{$doublePadding});
   position: relative;
   font-family: $fontSelawik;
   flex-shrink: 0;
-
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 4px;
-
-    &-thumb { padding-top: 16px; }
-  }
 
   > .pcs-grid-loading-container {
     display: flex;
@@ -39,126 +47,61 @@ $checkboxPadding: 8px;
     }
   }
 
-  .ag-root { border: none; }
-
-  .ag-cell-focus {
-    border: none;
-    outline: none;
-    text-transform: capitalize;
-  }
-
-  .ag-cell {
-    border: none !important;
-    height: $rowHeight;
-    line-height: $rowHeight;
-    padding: 0 2px;
-  }
+  .ag-header-cell { text-transform: uppercase; }
 
   .ag-row {
-    height: 48px;
-    cursor: pointer;
-  }
-
-  .ag-header {
-    border: none;
-    height: $rowHeight;
-
-    &:first-child { border-left: 4px solid transparent !important; }
-  }
-
-  .ag-header-cell {
-    text-align: left;
-    text-transform: uppercase;
-    border: none;
-    line-height: $rowHeightWithPadding;
-  }
-
-  .ag-selection-checkbox {
-    padding-right: $checkboxPadding;
-    padding-left: $checkboxPadding;
-  }
-
-  .ag-header-cell-label { padding: 0 4px; }
-
-  .ag-cell-no-focus.ag-cell.ag-cell-not-inline-editing.ag-cell-value {
-    text-transform: capitalize;
-    border-bottom: none;
-  }
-
-  .ag-cell-last-left-pinned.ag-cell-no-focus,
-  .ag-ltr .ag-cell-no-focus { border-right: none; }
-
-  /* Remove three pixels to offset the parent padding for font alignment */
-  .ag-header-select-all {
-    line-height: inherit;
-    padding-left: ($checkboxPadding + 2px);
-  }
-
-  .ag-paging-panel {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-end;
-    padding: 0;
-
-    .ag-paging-row-summary-panel { display: none }
-
-    .ag-paging-button {
-      border: none;
-      padding: 6px 8px;
-      cursor: pointer;
-    }
-  }
-
-  @include themify($themes) {
-    background-color: transparent;
-
-    .ag-row,
-    .ag-body,
-    .ag-body-viewport,
-    .ag-row-even,
-    .ag-row-odd { background-color: transparent; }
-
-    .ag-body-viewport { overflow-y: hidden !important; }
+    margin-bottom: 0;
 
     .ag-cell {
-      background-color: themed('colorGridRowBackground');
-      color: themed('colorGridCellText');
       outline: none;
+      border: none;
 
-      &.first-child-column { border-left: 4px solid themed('colorGridRowBackground') !important; }
+      &.capitalize-cell { text-transform: capitalize; }
+
+      &.first-child-column {
+        // Correct alignment of the padding since the border will add width
+        padding-left: $cell-horizontal-padding - 1px - $selectedRowBorderWidth;
+        border-left: $selectedRowBorderWidth solid transparent;
+      }
     }
+
+  }
+
+  .ag-paging-button { cursor: pointer; }
+
+  @include themify($themes) {
+    .ag-header-cell-moving {
+      background-color: themed('colorGridRowSelectedBackground');
+      color: themed('colorGridCellText');
+    }
+
+    .ag-header { border-bottom: 1px solid themed('colorGridRowBorder'); }
+
+    .ag-header-cell { color: themed('colorGridCellText'); }
 
     .ag-row {
+      border-bottom: 1px solid themed('colorGridRowBorder');
 
-      &.ag-row-hover .ag-cell,
-      &.ag-row-focus .ag-cell {
-        border-color: themed('colorGridRowHoverBackground') !important;
+      .ag-cell { color: themed('colorGridCellText'); }
+
+      &.ag-row-hover:not(.ag-row-selected) {
         background-color: themed('colorGridRowHoverBackground');
+
+        .first-child-column { border-color: themed('colorGridSelectedRowBorder'); }
       }
 
-      &.pcs-row-soft-selected .ag-cell {
-        background-color: themed('colorGridRowHoverBackground') !important;
-        border-color: themed('colorGridSelectedRowBorder') !important;
-      }
-    }
+      &.ag-row-selected {
+        background-color: themed('colorGridRowSelectedBackground');
 
-    .ag-body-container,
-    .ag-pinned-left-cols-container {
-      .ag-row-selected .ag-cell {
-        background-color: themed('colorGridRowHoverBackground') !important;
-        border-color: themed('colorGridSelectedRowBorder') !important;
+        .first-child-column { border-color: themed('colorGridSelectedRowBorder'); }
       }
-    }
-
-    .ag-header {
-      background-color: transparent;
-      color: themed('colorGridHeaderText');
     }
 
     .ag-paging-panel {
       color: themed('colorGridHeaderText');
 
       .ag-paging-button {
+        border: none;
         background-color: transparent;
         color: themed('colorGridHeaderText');
 
@@ -168,7 +111,5 @@ $checkboxPadding: 8px;
         }
       }
     }
-
-    .ag-header-cell-moving { background-color: transparent; }
   }
 }

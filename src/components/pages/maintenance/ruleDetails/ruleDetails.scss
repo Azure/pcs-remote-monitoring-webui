@@ -4,6 +4,7 @@
 @import 'src/styles/themes';
 
 .rule-details-container {
+  overflow-y: scroll; // Scroll y-axis to avoid x-axis scroll on grids
 
   .alert-indicator-container {
     display: flex;

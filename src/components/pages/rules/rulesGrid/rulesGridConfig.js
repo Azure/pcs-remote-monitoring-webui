@@ -9,23 +9,17 @@ import {
   RuleStatusRenderer,
   CountRenderer,
   LastTriggerRenderer,
-  LinkRenderer
+  LinkRenderer,
+  SoftSelectLinkRenderer
 } from 'components/shared/cellRenderers';
-import { FIRST_COLUMN_CLASS } from 'components/shared/pcsGrid/pcsGridConfig';
 export const LAST_TRIGGER_DEFAULT_WIDTH = 310;
-
-export const checkboxParams = {
-  headerCheckboxSelection: true,
-  headerCheckboxSelectionFilteredOnly: true,
-  checkboxSelection: true,
-  cellClass: [FIRST_COLUMN_CLASS]
-};
 
 export const rulesColumnDefs = {
   ruleName: {
     headerName: 'rules.grid.ruleName',
     field: 'name',
-    filter: 'text'
+    filter: 'text',
+    cellRendererFramework: SoftSelectLinkRenderer
   },
   description: {
     headerName: 'rules.grid.description',
@@ -53,6 +47,7 @@ export const rulesColumnDefs = {
     headerName: 'rules.grid.trigger',
     field: 'conditions',
     filter: 'text',
+    cellClass: 'capitalize-cell',
     valueFormatter: ({ value, context: { t } }) => {
       if (Array.isArray(value) && value.length) {
         return value.map(trigger => trigger['field'] || t('rules.grid.unknown')).join(' & ');
@@ -75,7 +70,8 @@ export const rulesColumnDefs = {
   alertStatus: {
     headerName: 'rules.grid.status',
     field: 'status',
-    filter: 'text'
+    filter: 'text',
+    cellClass: 'capitalize-cell'
   },
   count: {
     headerName: 'rules.grid.count',

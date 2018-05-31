@@ -165,6 +165,7 @@ export class DeviceDetails extends Component {
     const rulesGridProps = {
       rowData: isPending ? undefined : this.applyRuleNames(this.state.alerts || [], this.props.rules || []),
       t: this.props.t,
+      domLayout: 'autoHeight',
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
       suppressFlyouts: true
     };
@@ -199,7 +200,10 @@ export class DeviceDetails extends Component {
                 </Row>
               </Grid>
 
-              {(!this.state.isAlertsPending && this.state.alerts && (this.state.alerts.length > 0)) && <RulesGrid {...rulesGridProps} />}
+              {
+                (!this.state.isAlertsPending && this.state.alerts && (this.state.alerts.length > 0))
+                && <RulesGrid {...rulesGridProps} />
+              }
 
               <Section.Container>
                 <Section.Header>{t('devices.flyouts.details.telemetry.title')}</Section.Header>

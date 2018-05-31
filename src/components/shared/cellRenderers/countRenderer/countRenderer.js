@@ -1,11 +1,16 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React from "react";
+import React, { Component } from "react";
 import { EMPTY_FIELD_VAL } from 'components/shared/pcsGrid/pcsGridConfig';
 import { Indicator } from 'components/shared';
 
-export const CountRenderer = ({ value }) => (
-  value
-    ? value.error ? EMPTY_FIELD_VAL : value.response
-    : <Indicator pattern="bar" />
-);
+export class CountRenderer extends Component {
+  render() {
+    const { value } = this.props;
+    return (
+      value
+        ? value.error ? EMPTY_FIELD_VAL : value.response
+        : <Indicator pattern="bar" />
+    );
+  }
+}

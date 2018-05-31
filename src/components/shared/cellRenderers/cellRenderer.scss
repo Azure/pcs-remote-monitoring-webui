@@ -69,8 +69,17 @@ $iconSize: 14px;
   }
 }
 
+.soft-select-link-cell {
+  display: inline;
+  color: inherit;
+  text-decoration: underline;
+
+  &:hover { text-decoration: none; }
+}
+
 .ag-row {
   @include themify($themes) {
+
     &.ag-row-hover,
     &.ag-row-focus {
       .pcs-renderer-cell .pcs-renderer-icon svg .disabled-icon .cls-2 { stroke: themed('colorGridRowHoverBackground'); }

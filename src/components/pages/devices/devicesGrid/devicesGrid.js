@@ -2,11 +2,12 @@
 
 import React, { Component } from 'react';
 import { Btn, PcsGrid } from 'components/shared';
-import { checkboxParams, deviceColumnDefs, defaultDeviceGridProps } from './devicesGridConfig';
+import { deviceColumnDefs, defaultDeviceGridProps } from './devicesGridConfig';
 import { DeviceDeleteContainer } from '../flyouts/deviceDelete';
 import { DeviceJobsContainer } from '../flyouts/deviceJobs';
 import { DeviceDetailsContainer } from '../flyouts/deviceDetails';
 import { isFunc, svgs, translateColumnDefs } from 'utilities';
+import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
 
 const closedFlyoutState = {
   openFlyoutName: undefined,
@@ -27,7 +28,8 @@ export class DevicesGrid extends Component {
 
     // Default device grid columns
     this.columnDefs = [
-      { ...deviceColumnDefs.id, ...checkboxParams },
+      checkboxColumn,
+      deviceColumnDefs.id,
       deviceColumnDefs.isSimulated,
       deviceColumnDefs.deviceType,
       deviceColumnDefs.firmware,
@@ -118,15 +120,17 @@ export class DevicesGrid extends Component {
       /* Grid Properties */
       ...defaultDeviceGridProps,
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
-      onRowDoubleClicked: ({ node }) => node.setSelected(!node.isSelected()),
       sizeColumnsToFit: true,
       getSoftSelectId: this.getSoftSelectId,
       softSelectId: (this.state.softSelectedDevice || {}).id,
       ...this.props, // Allow default property overrides
+      deltaRowDataMode: true,
+      getRowNodeId: ({ id }) => id,
       context: {
         t: this.props.t
       },
       /* Grid Events */
+      onRowClicked: ({ node }) => node.setSelected(!node.isSelected()),
       onGridReady: this.onGridReady,
       onSoftSelectChange: this.onSoftSelectChange,
       onHardSelectChange: this.onHardSelectChange

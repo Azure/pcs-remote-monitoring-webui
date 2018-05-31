@@ -69,7 +69,6 @@
 
 // ========================== Theming mixins - END
 
-
 @mixin linear-gradient($top-color, $top-opacity, $bottom-color, $bottom-opacity) {
   background: -moz-linear-gradient(top, rgba($top-color, $top-opacity) 0%, rgba($bottom-color, $bottom-opacity) 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(top, rgba($top-color, $top-opacity) 0%, rgba($bottom-color, $bottom-opacity) 100%); /* Chrome10-25,Safari5.1-6 */

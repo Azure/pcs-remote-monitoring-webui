@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "adal-angular": "1.0.15",
-    "ag-grid": "16.0.1",
-    "ag-grid-react": "16.0.0",
+    "ag-grid": "17.1.1",
+    "ag-grid-react": "17.1.0",
     "camelcase-object": "1.0.0",
     "dot-object": "1.7.0",
     "i18next": "10.3.0",

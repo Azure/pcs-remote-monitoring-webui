@@ -1,24 +1,18 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import Config from 'app.config';
-import { IsSimulatedRenderer, ConnectionStatusRenderer, TimeRenderer } from 'components/shared/cellRenderers';
-import { EMPTY_FIELD_VAL, FIRST_COLUMN_CLASS, gridValueFormatters } from 'components/shared/pcsGrid/pcsGridConfig';
+import { IsSimulatedRenderer, ConnectionStatusRenderer, TimeRenderer, SoftSelectLinkRenderer } from 'components/shared/cellRenderers';
+import { EMPTY_FIELD_VAL, gridValueFormatters } from 'components/shared/pcsGrid/pcsGridConfig';
 
 const { checkForEmpty } = gridValueFormatters;
-
-export const checkboxParams = {
-  headerCheckboxSelection: true,
-  headerCheckboxSelectionFilteredOnly: true,
-  checkboxSelection: true,
-  cellClass: [FIRST_COLUMN_CLASS]
-};
 
 /** A collection of column definitions for the devices grid */
 export const deviceColumnDefs = {
   id: {
     headerName: 'devices.grid.deviceName',
     field: 'id',
-    sort: 'asc'
+    sort: 'asc',
+    cellRendererFramework: SoftSelectLinkRenderer
   },
   isSimulated: {
     headerName: 'devices.grid.simulated',

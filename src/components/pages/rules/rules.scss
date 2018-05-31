@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import 'src/styles/variables';
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
 .rules-container {
-  padding: 20px;
+  padding: $baseContentPadding;
 
   @include themify($themes) {
     .status { color: themed('colorContentText'); }

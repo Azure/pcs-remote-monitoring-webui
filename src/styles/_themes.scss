@@ -21,7 +21,9 @@ $themes: (
     colorGridScrollBar: $colorCharcoal,
     colorGridRowBackground: $colorMidnight,
     colorGridCellText: $colorWhite,
-    colorGridRowHoverBackground: $colorCharcoal,
+    colorGridRowBorder: #565454,
+    colorGridRowHoverBackground: #1a1c1f,
+    colorGridRowSelectedBackground: #232629,
     colorGridSelectedRowBorder: #60aaff,
     colorGridHeaderText: $colorSmoke,
 
@@ -69,6 +71,7 @@ $themes: (
 
     // Page Content Colors - START
     colorContentBackground: $colorNoir,
+    colorPageContentBackground: $colorNoir,
     colorContentText: $colorWhite,
     colorContentTextDim: $colorSmoke,
 
@@ -160,7 +163,9 @@ $themes: (
     colorGridScrollBar: $colorCharcoal,
     colorGridRowBackground: $colorWhite,
     colorGridCellText: #333,
-    colorGridRowHoverBackground: #dadada,
+    colorGridRowBorder: #cacaca,
+    colorGridRowHoverBackground: #f2f2f2,
+    colorGridRowSelectedBackground: #dadada,
     colorGridSelectedRowBorder: #136bfb,
     colorGridHeaderText: #666,
 
@@ -208,6 +213,7 @@ $themes: (
 
     // Page Content Colors - START
     colorContentBackground: #f2f2f2, // Grey100
+    colorPageContentBackground: $colorWhite,
     colorContentText: #333,
     colorContentTextDim: #666,
 

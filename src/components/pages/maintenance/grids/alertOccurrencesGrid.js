@@ -3,12 +3,14 @@
 import React from 'react';
 import { PcsGrid } from 'components/shared';
 import { translateColumnDefs } from 'utilities';
-import { rulesColumnDefs, checkboxParams } from 'components/pages/rules/rulesGrid/rulesGridConfig';
+import { rulesColumnDefs } from 'components/pages/rules/rulesGrid/rulesGridConfig';
+import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
+
 import { TimeRenderer } from 'components/shared/cellRenderers';
 
 const columnDefs = [
+  checkboxColumn,
   {
-    ...checkboxParams,
     headerName: 'maintenance.alertOccGrid.occurrence',
     field: 'name'
   },
@@ -25,7 +27,8 @@ const columnDefs = [
   },
   {
     headerName: 'maintenance.jobGrid.status',
-    field: 'status'
+    field: 'status',
+    cellClass: 'capitalize-cell'
   }
 ];
 

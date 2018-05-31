@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
 
 import { Btn, PcsGrid } from 'components/shared';
-import { rulesColumnDefs, checkboxParams, defaultRulesGridProps } from './rulesGridConfig';
+import { rulesColumnDefs, defaultRulesGridProps } from './rulesGridConfig';
+import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
 import { isFunc, translateColumnDefs, svgs } from 'utilities';
 import { EditRuleFlyout, RuleStatusContainer } from '../flyouts'
 
@@ -26,7 +27,8 @@ export class RulesGrid extends Component {
     };
 
     this.columnDefs = [
-      { ...rulesColumnDefs.ruleName, ...checkboxParams },
+      checkboxColumn,
+      rulesColumnDefs.ruleName,
       rulesColumnDefs.description,
       rulesColumnDefs.severity,
       rulesColumnDefs.filter,
@@ -117,7 +119,7 @@ export class RulesGrid extends Component {
     }
   }
 
-  getSoftSelectId = ({ id = {} } = {}) => id;
+  getSoftSelectId = ({ id } = {}) => id;
 
   closeFlyout = () => this.setState(closedFlyoutState);
 
@@ -130,10 +132,13 @@ export class RulesGrid extends Component {
       getSoftSelectId: this.getSoftSelectId,
       softSelectId: (this.state.softSelectedRule || {}).id,
       ...this.props, // Allow default property overrides
+      deltaRowDataMode: true,
+      getRowNodeId: ({ id }) => id,
       context: {
         t: this.props.t
       },
       /* Grid Events */
+      onRowClicked: ({ node }) => node.setSelected(!node.isSelected()),
       onHardSelectChange: this.onHardSelectChange,
       onSoftSelectChange: this.onSoftSelectChange
     };

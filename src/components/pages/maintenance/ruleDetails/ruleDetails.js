@@ -13,6 +13,7 @@ import { TelemetryChart, transformTelemetryResponse, chartColorObjects } from 'c
 import { TelemetryService } from 'services';
 import { TimeRenderer, SeverityRenderer } from 'components/shared/cellRenderers';
 import { AlertOccurrencesGrid } from 'components/pages/maintenance/grids';
+import { ROW_HEIGHT } from 'components/shared/pcsGrid/pcsGridConfig';
 
 import './ruleDetails.css';
 
@@ -216,16 +217,21 @@ export class RuleDetails extends Component {
       t
     } = this.props;
     const selectedId = match.params.id;
-    const rule = isPending ? undefined : [this.state.selectedRule];
+    const rule = isPending || !this.state.selectedRule ? undefined : [this.state.selectedRule];
     const alertName = (this.state.selectedRule || {}).name || selectedId;
 
     const alertsGridProps = {
+      domLayout: 'autoHeight',
       rowSelection: 'multiple',
+      deltaRowDataMode: true,
+      getRowNodeId: ({ id }) => id,
       rowData: isPending ? undefined : this.state.occurrences,
+      sizeColumnsToFit: true,
       pagination: true,
       paginationPageSize: Config.smallGridPageSize,
       onHardSelectChange: this.onAlertGridHardSelectChange,
       onGridReady: this.onAlertGridReady,
+      onRowClicked: ({ node }) => node.setSelected(!node.isSelected()),
       t
     };
 
@@ -301,6 +307,7 @@ export class RuleDetails extends Component {
               <h4 className="sub-heading">{ t('maintenance.ruleDetail') }</h4>
               <RulesGrid
                 t={t}
+                style={{ height: 2 * ROW_HEIGHT + 2 }}
                 onGridReady={this.onRuleGridReady}
                 onContextMenuChange={this.onContextMenuChange('ruleContextBtns')}
                 onHardSelectChange={this.onHardSelectChange('rules')}
@@ -325,6 +332,7 @@ export class RuleDetails extends Component {
                   <h4 className="sub-heading" key="header">{t('maintenance.alertedDevices')}</h4>,
                   <DevicesGrid
                     t={t}
+                    domLayout={'autoHeight'}
                     onGridReady={this.onDeviceGridReady}
                     rowData={isPending ? undefined : this.state.devices}
                     onContextMenuChange={this.onContextMenuChange('deviceContextBtns')}
