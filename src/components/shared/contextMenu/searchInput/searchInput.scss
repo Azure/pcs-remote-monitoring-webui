@@ -3,15 +3,33 @@
 @import 'src/styles/themes';
 @import 'src/styles/mixins';
 
+$inputPadding: 5px;
+$containerMargin: 10px;
 .context-menu-search-input {
-  font-family: inherit;
-  border: none;
-  @include rem-fallback(margin, 10px, 0px);
-  @include rem-fallback(padding, 5px);
+  display: flex;
+  flex-basis: 20%;
+  @include rem-fallback(margin, $containerMargin, 0px, $containerMargin, $containerMargin);
+
+  .search-icon {
+    @include rem-fallback(padding-left, $inputPadding);
+
+    svg { @include square-px-rem(12px); }
+  }
+
+  input {
+    background-color: inherit;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    width: 100%;
+    @include rem-fallback(padding, $inputPadding);
+  }
 
   @include themify($themes) {
     color: themed('colorContextSearchTextColor');
     background-color: themed('colorContextSearchBg');
     border: 1px solid themed('colorContextSearchBorderColor');
+
+    .search-icon svg { fill: themed('colorContextSearchTextColor'); }
   }
 }

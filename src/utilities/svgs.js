@@ -41,6 +41,7 @@ import RefreshIconPath from 'assets/icons/refresh.svg';
 import RuleDisabledIconPath from 'assets/icons/ruleDisabled.svg';
 import RuleEnabledIconPath from 'assets/icons/ruleEnabled.svg';
 import SIMManagementIconPath from 'assets/icons/SIMManagement.svg';
+import SearchIconPath from 'assets/icons/searchIcon.svg';
 import SettingsIconPath from 'assets/icons/settings.svg';
 import SimulatedDeviceIconPath from 'assets/icons/simulatedDevice.svg';
 import TabDashboardIconPath from 'assets/icons/tabDashboard.svg';
@@ -102,6 +103,7 @@ export const svgs = {
   refresh: RefreshIconPath,
   ruleDisabled: RuleDisabledIconPath,
   ruleEnabled: RuleEnabledIconPath,
+  search: SearchIconPath,
   settings: SettingsIconPath,
   simmanagement: SIMManagementIconPath,
   simulatedDevice: SimulatedDeviceIconPath,
