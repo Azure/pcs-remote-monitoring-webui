@@ -48,7 +48,11 @@ $doublePadding: $baseContentPadding * 2;
     }
   }
 
-  .ag-header-cell { text-transform: uppercase; }
+  .ag-header-cell {
+    text-transform: uppercase;
+
+    .ag-icon { cursor: auto; }
+  }
 
   &.movable-columns .ag-header-cell:not(.checkbox-column) { cursor: move; }
 
