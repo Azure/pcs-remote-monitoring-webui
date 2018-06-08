@@ -150,7 +150,7 @@ export class PcsGrid extends Component {
       </div>;
 
     return (
-      <div className="pcs-grid-container ag-theme-dark" style={style}>
+      <div className={`pcs-grid-container ag-theme-dark ${gridParams.suppressMovableColumns ? '' : 'movable-columns'}`} style={style}>
         { !rowData ? loadingContainer : '' }
         <AgGridReact {...gridParams} />
       </div>

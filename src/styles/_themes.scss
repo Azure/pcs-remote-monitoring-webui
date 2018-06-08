@@ -31,6 +31,10 @@ $themes: (
     colorCellRendererSvgFillHighlight: $colorWhite,
     colorCellRendererText: $colorSmoke,
     colorCellRendererTextHighlight: $colorWhite,
+
+    gridSortIcon: '~assets/icons/sort_dark.svg',
+    gridAscIcon: '~assets/icons/sort_a2z_dark.svg',
+    gridDescIcon: '~assets/icons/sort_z2a_dark.svg',
     // Grid - END
 
     // Btn - START
@@ -178,6 +182,10 @@ $themes: (
     colorCellRendererSvgFillHighlight: #333,
     colorCellRendererText: #333,
     colorCellRendererTextHighlight: #333,
+
+    gridSortIcon: '~assets/icons/sort_light.svg',
+    gridAscIcon: '~assets/icons/sort_a2z_light.svg',
+    gridDescIcon: '~assets/icons/sort_z2a_light.svg',
     // Grid - END
 
     // Btn - START

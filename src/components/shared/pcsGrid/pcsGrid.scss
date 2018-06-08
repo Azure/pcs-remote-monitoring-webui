@@ -5,6 +5,7 @@
 // Variable overrides
 $selectedRowBorderWidth: 4px;
 $rowHeight: 48px;
+$headerResizeHeight: 18px;
 
 $icons-path: "~ag-grid/src/styles/icons/";
 $row-height: $rowHeight;
@@ -49,6 +50,8 @@ $doublePadding: $baseContentPadding * 2;
 
   .ag-header-cell { text-transform: uppercase; }
 
+  &.movable-columns .ag-header-cell:not(.checkbox-column) { cursor: move; }
+
   .ag-row {
     margin-bottom: 0;
 
@@ -77,7 +80,38 @@ $doublePadding: $baseContentPadding * 2;
 
     .ag-header { border-bottom: 1px solid themed('colorGridRowBorder'); }
 
-    .ag-header-cell { color: themed('colorGridCellText'); }
+    .ag-header-cell {
+      color: themed('colorGridCellText');
+
+      .ag-icon-none {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity 0.5s linear;
+        background-image: url(themed('gridSortIcon'));
+      }
+
+      .ag-icon-asc { background-image: url(themed('gridAscIcon')); }
+      .ag-icon-desc { background-image: url(themed('gridDescIcon')); }
+
+      .ag-header-cell-resize::after {
+        height: $headerResizeHeight;
+        margin-top: ($header-height - $headerResizeHeight)/2;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity 0.1s linear;
+        width: 3px;
+        border-left: 1px solid transparent;
+        border-color: themed('colorGridRowBorder');
+      }
+
+      &:hover {
+        .ag-icon-none:not(.ag-hidden),
+        .ag-header-cell-resize::after {
+          visibility: visible;
+          opacity: 1;
+         }
+      }
+    }
 
     .ag-row {
       border-bottom: 1px solid themed('colorGridRowBorder');

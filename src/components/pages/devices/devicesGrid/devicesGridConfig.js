@@ -51,7 +51,7 @@ export const getSoftSelectId = ({ Id }) => Id;
 
 /** Shared device grid AgGrid properties */
 export const defaultDeviceGridProps = {
-  enableColResize: false,
+  enableColResize: true,
   multiSelect: true,
   pagination: true,
   paginationPageSize: Config.paginationPageSize,
