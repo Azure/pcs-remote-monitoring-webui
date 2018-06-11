@@ -53,7 +53,10 @@ export class DeviceDetails extends Component {
     };
 
     this.columnDefs = [
-      rulesColumnDefs.ruleName,
+      {
+        ...rulesColumnDefs.ruleName,
+        cellRendererFramework: undefined // Don't allow soft select from an open flyout
+      },
       rulesColumnDefs.severity,
       rulesColumnDefs.alertStatus,
       rulesColumnDefs.explore
