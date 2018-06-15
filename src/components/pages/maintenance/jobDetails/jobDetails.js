@@ -6,6 +6,7 @@ import Config from 'app.config';
 import { AjaxError, PageContent, ContextMenu, RefreshBar } from 'components/shared';
 import { DevicesGrid } from 'components/pages/devices/devicesGrid';
 import { JobGrid, JobStatusGrid } from 'components/pages/maintenance/grids';
+import { TimeIntervalDropdown } from 'components/app/timeIntervalDropdown';
 
 import { IoTHubManagerService } from 'services';
 
@@ -21,7 +22,7 @@ export class JobDetails extends Component {
       jobStatus: undefined,
       jobStatusError: undefined,
       contextBtns: undefined,
-      refreshPending: undefined
+      refreshPending: true
     };
   }
 
@@ -38,9 +39,13 @@ export class JobDetails extends Component {
     // TODO: Need to reset selectedJob when the job ID changes or when the user clicked refresh (i.e. refreshPending = true).
     //       A long term fix would be to normalize the job data in maintenance.js (similar to how Telemetry is handled there).
     //       When/if that happens, remove all use of refreshPending in the local state of this component.
-    if ((nextProps.match.params.id !== (this.state.selectedJob || {}).jobId || this.state.refreshPending) && nextProps.jobs.length) {
+    if ((
+        nextProps.match.params.id !== (this.state.selectedJob || {}).jobId
+        || this.state.timeIntervalChangePending
+        || this.state.refreshPending
+      ) && nextProps.jobs.length) {
       const selectedJob = nextProps.jobs.filter(({ jobId }) => jobId === nextProps.match.params.id)[0];
-      this.setState({ selectedJob, refreshPending: false }, () => this.refreshJobStatus());
+      this.setState({ selectedJob, refreshPending: false, timeIntervalChangePending: false }, () => this.refreshJobStatus());
     }
   }
 
@@ -50,7 +55,7 @@ export class JobDetails extends Component {
     this.subscription = IoTHubManagerService.getJobStatus(jobId)
       .subscribe(
         jobStatus => this.setState({ jobStatus, jobStatusIsPending: false }),
-        jobStatusError => this.setState({ jobStatusError, jobStatusIsPending: false }),
+        jobStatusError => this.setState({ jobStatusError, jobStatusIsPending: false })
       );
   }
 
@@ -65,7 +70,7 @@ export class JobDetails extends Component {
   }
 
   refreshData = () => {
-    this.setState({refreshPending: true});
+    this.setState({ selectedJob: undefined, refreshPending: true });
     this.props.refreshData();
     // TODO: When refreshPending is removed in favor of normalizing the job data, the next line may be needed.
     // this.refreshJobStatus();
@@ -73,13 +78,27 @@ export class JobDetails extends Component {
 
   onContextMenuChange = contextBtns => this.setState({ contextBtns });
 
+  onTimeIntervalChange = (timeInterval) => {
+    this.setState({ selectedJob: undefined, timeIntervalChangePending: true });
+    this.props.onTimeIntervalChange(timeInterval);
+  }
+
   render() {
+    const {
+      deviceEntities,
+      error,
+      isPending,
+      lastUpdated,
+      t,
+      timeInterval
+    } = this.props;
+
     const selectedJob = this.state.selectedJob;
     const jobGridProps = {
       domLayout: 'autoHeight',
-      rowData: this.props.isPending ? undefined : selectedJob ? [selectedJob] : [],
+      rowData: isPending ? undefined : selectedJob ? [selectedJob] : [],
       pagination: false,
-      t: this.props.t
+      t
     };
 
     const jobStatusGridProps = {
@@ -88,9 +107,9 @@ export class JobDetails extends Component {
       pagination: true,
       paginationPageSize: Config.smallGridPageSize,
       onRowClicked: ({ data: { devices } }) => this.setState({
-        selectedDevices: devices.map(({ deviceId }) => this.props.deviceEntities[deviceId])
+        selectedDevices: devices.map(({ deviceId }) => deviceEntities[deviceId])
       }),
-      t: this.props.t
+      t
     };
 
     return [
@@ -98,29 +117,34 @@ export class JobDetails extends Component {
         {this.state.contextBtns}
         <RefreshBar
           refresh={this.refreshData}
-          time={this.props.lastUpdated}
-          isPending={this.props.isPending}
-          t={this.props.t} />
+          time={lastUpdated}
+          isPending={isPending}
+          t={t} />
+        <TimeIntervalDropdown
+          onChange={this.onTimeIntervalChange}
+          value={timeInterval}
+          t={t} />
       </ContextMenu>,
       <PageContent className="maintenance-container" key="page-content">
         <h1 className="maintenance-header">{selectedJob ? selectedJob.jobId : ""}</h1>
         {
-          !this.props.error
+          !error
             ? <div>
                 <JobGrid {...jobGridProps} />
-                <JobStatusGrid {...jobStatusGridProps} />
-                <h4 className="maintenance-sub-header">{this.props.t('maintenance.devices')}</h4>
+                {!isPending && !selectedJob && t('maintenance.noData')}
+                {selectedJob && <JobStatusGrid {...jobStatusGridProps} />}
+                {<h4 className="maintenance-sub-header">{t('maintenance.devices')}</h4>}
                 {
                   this.state.selectedDevices
                     ? <DevicesGrid
-                        t={this.props.t}
+                        t={t}
                         domLayout={'autoHeight'}
                         rowData={this.state.selectedDevices}
                         onContextMenuChange={this.onContextMenuChange} />
-                    : this.props.t('maintenance.noOccurrenceSelected')
+                    : t('maintenance.noOccurrenceSelected')
                 }
             </div>
-            : <AjaxError t={this.props.t} error={this.props.error} />
+            : <AjaxError t={t} error={error} />
         }
       </PageContent>
     ];

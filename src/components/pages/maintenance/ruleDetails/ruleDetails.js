@@ -9,6 +9,9 @@ import { RulesGrid } from 'components/pages/rules/rulesGrid';
 import { AjaxError, Btn, PageContent, ContextMenu, RefreshBar, Indicator } from 'components/shared';
 import { svgs, joinClasses, renderUndefined } from 'utilities';
 import { DevicesGrid } from 'components/pages/devices/devicesGrid';
+import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
+import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/app/manageDeviceGroupsBtn';
+import { TimeIntervalDropdown } from 'components/app/timeIntervalDropdown';
 import { TelemetryChart, transformTelemetryResponse, chartColorObjects } from 'components/pages/dashboard/panels/telemetry';
 import { TelemetryService } from 'services';
 import { TimeRenderer, SeverityRenderer } from 'components/shared/cellRenderers';
@@ -65,19 +68,23 @@ export class RuleDetails extends Component {
     this.subscriptions.push(
       this.restartTelemetry$
         .distinctUntilChanged()
-        .filter(deviceIds => deviceIds)
-        .map(deviceIds => deviceIds.split(idDelimiter))
+        .map(deviceIds => deviceIds.split(idDelimiter).filter(id => id))
         .do(() => this.setState({ telemetry: {}, telemetryIsPending: false }))
-        .switchMap(deviceIds =>
-          TelemetryService.getTelemetryByDeviceIdP15M(deviceIds)
-            .merge(
-              this.telemetryRefresh$ // Previous request complete
-                .delay(Config.telemetryRefreshInterval) // Wait to refresh
-                .do(onPendingStart)
-                .flatMap(_ => TelemetryService.getTelemetryByDeviceIdP1M(deviceIds))
-            )
-            .flatMap(transformTelemetryResponse(() => this.state.telemetry))
-            .map(telemetry => ({ telemetry, telemetryIsPending: false }))
+        .switchMap(deviceIds => {
+          if (deviceIds.length > 0) {
+            return TelemetryService.getTelemetryByDeviceIdP15M(deviceIds)
+              .merge(
+                this.telemetryRefresh$ // Previous request complete
+                  .delay(Config.telemetryRefreshInterval) // Wait to refresh
+                  .do(onPendingStart)
+                  .flatMap(_ => TelemetryService.getTelemetryByDeviceIdP1M(deviceIds))
+              )
+              .flatMap(transformTelemetryResponse(() => this.state.telemetry))
+              .map(telemetry => ({ telemetry, telemetryIsPending: false }))
+            } else {
+              return Observable.empty();
+            }
+          }
         )
         .subscribe(
           telemetryState => this.setState(
@@ -214,7 +221,9 @@ export class RuleDetails extends Component {
       lastUpdated,
       match,
       theme,
-      t
+      t,
+      onTimeIntervalChange,
+      timeInterval
     } = this.props;
     const selectedId = match.params.id;
     const rule = isPending || !this.state.selectedRule ? undefined : [this.state.selectedRule];
@@ -238,11 +247,12 @@ export class RuleDetails extends Component {
     const { selectedTab, selectedAlert = {} } = this.state;
     const { counts = {} } = selectedAlert;
     return [
-      <ContextMenu className="rule-details-container" key="context-menu">
+      <ContextMenu className="rule-details-context-menu-container" key="context-menu">
+        <DeviceGroupDropdown />
         {
           this.state.updatingAlertStatus &&
           <div className="alert-indicator-container">
-            <Indicator pattern="bar" />
+            <Indicator />
           </div>
         }
         {
@@ -255,6 +265,11 @@ export class RuleDetails extends Component {
           time={lastUpdated}
           isPending={isPending}
           t={t} />
+        <TimeIntervalDropdown
+          onChange={onTimeIntervalChange}
+          value={timeInterval}
+          t={t} />
+        <ManageDeviceGroupsBtn />
       </ContextMenu>,
       <PageContent className="maintenance-container rule-details-container" key="page-content">
       {

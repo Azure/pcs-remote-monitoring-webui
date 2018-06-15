@@ -3,14 +3,16 @@
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
-.rule-details-container {
-  overflow-y: scroll; // Scroll y-axis to avoid x-axis scroll on grids
 
+.rule-details-context-menu-container {
   .alert-indicator-container {
     display: flex;
     align-items: center;
-    width: 100%;
   }
+}
+
+.rule-details-container {
+  overflow-y: scroll; // Scroll y-axis to avoid x-axis scroll on grids
 
   .rule-maintenance-header {
     font-weight: 700;

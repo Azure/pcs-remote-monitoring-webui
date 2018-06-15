@@ -225,6 +225,8 @@ export class Maintenance extends Component {
       t,
       history,
       refreshData: this.getData,
+      onTimeIntervalChange: this.onTimeIntervalChange,
+      timeInterval: this.props.timeInterval,
       lastUpdated: this.state.lastUpdated
     };
     const alertProps = {
@@ -244,9 +246,6 @@ export class Maintenance extends Component {
           render={() =>
             <Summary
               {...generalProps}
-
-              onTimeIntervalChange={this.onTimeIntervalChange}
-              timeInterval={this.props.timeInterval}
 
               criticalAlertCount={criticalAlertCount}
               warningAlertCount={warningAlertCount}
