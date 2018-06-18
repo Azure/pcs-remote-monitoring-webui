@@ -13,6 +13,9 @@ cd $APP_HOME
 
 export PCS_AUTH_REQUIRED=false
 export PCS_CORS_WHITELIST="{ 'origins': ['*'], 'methods': ['*'], 'headers': ['*'] }"
+export PCS_APPLICATION_SECRET=$(cat /dev/urandom | LC_CTYPE=C tr -dc 'a-zA-Z0-9-,./;:[]\(\)_=^!~' | fold -w 64 | head -n 1)
+export PCS_AUTH_AUDIENCE=https://sts.windows.net/00000000-0000-0000-0000-000000000000/
+export PCS_AUTH_ISSUER=00000000-0000-0000-0000-000000000000
 
 # Store your development secrets in mysecrets_.sh and make sure you
 # don't check it into git history. ".gitignore" should protect from that.
