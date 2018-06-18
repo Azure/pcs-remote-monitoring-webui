@@ -11,7 +11,10 @@
   flex-grow: 1;
   overflow: hidden;
 
-  .chart-container { flex-grow: 1; }
+  .chart-container {
+    @include rem-fallback(min-height, 150px);
+    flex-grow: 1;
+  }
 
   .options-container {
     display: flex;
