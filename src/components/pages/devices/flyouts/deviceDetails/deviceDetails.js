@@ -290,8 +290,8 @@ export class DeviceDetails extends Component {
                             properties.map(([propertyName, propertyValue], idx) => {
                               const desiredPropertyValue = device.desiredProperties[propertyName];
                               const displayValue = !desiredPropertyValue || propertyValue === desiredPropertyValue
-                                ? propertyValue
-                                : t('devices.flyouts.details.properties.syncing', { reportedPropertyValue: propertyValue, desiredPropertyValue });
+                                ? propertyValue.toString()
+                                : t('devices.flyouts.details.properties.syncing', { reportedPropertyValue: propertyValue.toString(), desiredPropertyValue: desiredPropertyValue.toString() });
                               return (
                                 <Row key={idx}>
                                   <Cell className="col-3">{propertyName}</Cell>
