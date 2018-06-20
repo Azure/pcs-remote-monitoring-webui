@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import { Observable } from 'rxjs';
+
 import Config from 'app.config';
 import { stringify } from 'query-string';
 import { HttpClient } from './httpClient';
-import { toDevicesModel, toDeviceModel, toJobsModel, toJobStatusModel } from './models';
+import { toDevicesModel, toDeviceModel, toJobsModel, toJobStatusModel, toDevicePropertiesModel } from './models';
 
 const ENDPOINT = Config.serviceUrls.iotHubManager;
 
@@ -45,5 +47,15 @@ export class IoTHubManagerService {
   static deleteDevice(id) {
     return HttpClient.delete(`${ENDPOINT}devices/${id}`)
       .map(() => ({ deletedDeviceId: id }));
+  }
+
+  /** Returns the account's device group filters */
+  static getDeviceProperties() {
+    return Observable
+      .forkJoin(
+        HttpClient.get(`${ENDPOINT}deviceproperties`),
+        HttpClient.get(`${Config.serviceUrls.deviceSimulation}devicemodelproperties`)
+      )
+      .map(([iotResponse, dsResponse]) => toDevicePropertiesModel(iotResponse, dsResponse));
   }
 }

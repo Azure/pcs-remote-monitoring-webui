@@ -32,12 +32,6 @@ export const toUpdateDeviceGroupRequestModel = (params = {}) => ({
   }))
 });
 
-export const toDeviceGroupFiltersModel = (response = {}) => reshape(response, {
-  'Reported': 'reported',
-  'Tags': 'tags'
-});
-
-
 export const prepareLogoResponse = ({  xhr, response }) => {
   const returnObj = {};
   const isDefault = xhr.getResponseHeader('IsDefault');

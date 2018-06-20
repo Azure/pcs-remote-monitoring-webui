@@ -4,7 +4,6 @@ import Config from 'app.config';
 import { HttpClient } from './httpClient';
 import {
   prepareLogoResponse,
-  toDeviceGroupFiltersModel,
   toDeviceGroupModel,
   toDeviceGroupsModel,
   toSolutionSettingThemeModel
@@ -36,12 +35,6 @@ export class ConfigService {
   static deleteDeviceGroup(id) {
     return HttpClient.delete(`${ENDPOINT}devicegroups/${id}`)
       .map(_ => id);
-  }
-
-  /** Returns the account's device group filters */
-  static getDeviceGroupFilters() {
-    return HttpClient.get(`${ENDPOINT}devicegroupfilters`)
-      .map(toDeviceGroupFiltersModel);
   }
 
   /** Returns the azure map key for the account */

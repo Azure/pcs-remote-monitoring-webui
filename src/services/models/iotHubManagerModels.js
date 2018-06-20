@@ -167,3 +167,8 @@ export const toNewDeviceRequestModel = ({
         }
   };
 }
+
+export const toDevicePropertiesModel = (iotResponse, dsResponse) => {
+  const propertySet = new Set([...getItems(iotResponse), ...getItems(dsResponse)]);
+  return [...propertySet];
+};

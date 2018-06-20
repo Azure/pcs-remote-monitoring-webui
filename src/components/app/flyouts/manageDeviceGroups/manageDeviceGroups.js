@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { ConfigService } from 'services';
+import { IoTHubManagerService } from 'services';
 import { Btn } from 'components/shared';
 import { svgs, LinkedComponent } from 'utilities';
 import Flyout from 'components/shared/flyout';
@@ -11,8 +11,6 @@ import DeviceGroups from './views/deviceGroups';
 
 import './manageDeviceGroups.css';
 
-const tagPrefix = 'tags.';
-const reportedPrefix = 'properties.reported.';
 const toOption = (value, label) => ({
   label: label || value,
   value
@@ -32,13 +30,10 @@ export class ManageDeviceGroups extends LinkedComponent {
   }
 
   componentDidMount() {
-    this.subscription = ConfigService.getDeviceGroupFilters()
+    this.subscription = IoTHubManagerService.getDeviceProperties()
       .subscribe(
-        ({ tags, reported }) => {
-          const filterOptions = [
-            ...tags.map(tag => toOption(`${tagPrefix}${tag}`)),
-            ...reported.map(prop => toOption(`${reportedPrefix}${prop}`))
-          ];
+        (items) => {
+          const filterOptions = items.map(item => toOption(item));
           this.setState({ filterOptions });
         },
         filtersError => this.setState({ filtersError })
@@ -74,9 +69,9 @@ export class ManageDeviceGroups extends LinkedComponent {
             this.state.addNewDeviceGroup || !!this.state.selectedDeviceGroup
               ? <DeviceGroupForm {...this.props} {...this.state} cancel={this.closeForm} />
               : <div>
-                  <Btn className="add-btn" svg={svgs.plus} onClick={this.toggleNewFilter}>{t('deviceGroupsFlyout.create')}</Btn>
-                  { deviceGroups.length > 0 && <DeviceGroups {...this.props} onEditDeviceGroup={this.onEditDeviceGroup}/> }
-                </div>
+                <Btn className="add-btn" svg={svgs.plus} onClick={this.toggleNewFilter}>{t('deviceGroupsFlyout.create')}</Btn>
+                {deviceGroups.length > 0 && <DeviceGroups {...this.props} onEditDeviceGroup={this.onEditDeviceGroup} />}
+              </div>
           }
         </Flyout.Content>
       </Flyout.Container>
