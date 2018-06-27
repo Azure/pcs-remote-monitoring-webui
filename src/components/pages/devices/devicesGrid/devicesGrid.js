@@ -83,8 +83,9 @@ export class DevicesGrid extends Component {
    * @param device The currently soft selected device
    * @param rowEvent The rowEvent to pass on to the underlying grid
    */
-  onSoftSelectChange = (device, rowEvent) => {
+  onSoftSelectChange = (deviceRowId, rowEvent) => {
     const { onSoftSelectChange } = this.props;
+    const device = (this.deviceGridApi.getDisplayedRowAtIndex(deviceRowId) || {}).data;
     if (device) {
       this.setState({
         openFlyoutName: 'details',

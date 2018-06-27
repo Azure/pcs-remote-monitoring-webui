@@ -11,8 +11,8 @@ export class SoftSelectLinkRenderer extends Component {
   onClick = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    const { context, data } = this.props;
-    context.onSoftSelectChange(data);
+    const { context, rowIndex } = this.props;
+    context.onSoftSelectChange(rowIndex);
   };
 
   render() {
