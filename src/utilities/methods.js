@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import Config from 'app.config';
-import camelcase from 'camelcase-object';
 import dot from 'dot-object';
+import toCamelcase from './camelcase';
 
 /** Tests if a value is a function */
 export const isFunc = value => typeof value === 'function';
@@ -31,10 +31,20 @@ export const stringToBoolean = value => {
 export const getItems = (response) => response.Items || response.items || [];
 
 /**
- * The camelcase objects package will convert a base level array into an object.
- * This method prevents that from happening
+ * Convert object keys to be camelCased
  */
-export const camelCaseKeys = (response = {}) => camelcase({ response }, { deep: true }).response;
+export const camelCaseKeys = (data) => {
+  if (Array.isArray(data)) {
+    return data.map(camelCaseKeys);
+  } else if (data !== null && isObject(data)) {
+    return Object.entries(data)
+      .reduce((acc, [key, value]) => {
+        acc[toCamelcase(key)] = camelCaseKeys(value);
+        return acc;
+      }, {});
+  }
+  return data;
+};
 
 /** Takes an object and converts it to another structure using dot-notation */
 export const reshape = (response, model) => {
