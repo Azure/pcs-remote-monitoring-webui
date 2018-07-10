@@ -15,8 +15,6 @@
     @include rem-fallback(padding, 24px, 0px);
   }
 
-  .padded-bottom { @include rem-fallback(padding-bottom, 24px); }
-
   .rule-status-error {
     border: 1px transparent solid;
     @include rem-fallback(margin, 12px, 0px);

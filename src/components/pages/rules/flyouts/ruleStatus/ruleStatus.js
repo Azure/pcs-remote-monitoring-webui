@@ -7,14 +7,6 @@ import {
   AjaxError,
   Btn,
   BtnToolbar,
-  FormLabel,
-  Indicator,
-  SectionDesc,
-  SectionHeader,
-  SummaryBody,
-  SummaryCount,
-  SummarySection,
-  Svg,
   ToggleBtn
 } from 'components/shared';
 import { svgs } from 'utilities';
@@ -23,6 +15,7 @@ import { toNewRuleRequestModel } from 'services/models';
 import Flyout from 'components/shared/flyout';
 
 import './ruleStatus.css';
+import { RuleSummary } from './ruleSummary';
 
 export class RuleStatus extends Component {
   constructor(props) {
@@ -101,16 +94,7 @@ export class RuleStatus extends Component {
             </div>
             {
               rules.map((rule) => (
-                <SummarySection key={rule.id} className="padded-bottom">
-                  <SectionHeader>{rule.name}</SectionHeader>
-                  <FormLabel>{rule.description}</FormLabel>
-                  <SummaryBody>
-                    <SummaryCount>{rule.count && rule.count.response ? rule.count.response : '---'}</SummaryCount>
-                    <SectionDesc>{t('rules.flyouts.ruleEditor.devicesAffected')}</SectionDesc>
-                    {isPending && <Indicator />}
-                    {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
-                  </SummaryBody>
-                </SummarySection>
+                <RuleSummary rule={rule} isPending={isPending} completedSuccessfully={completedSuccessfully} t={t} />
               ))
             }
 

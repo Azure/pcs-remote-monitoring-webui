@@ -60,6 +60,11 @@ export class TelemetryService {
       .map(toAlertForRuleModel);
   }
 
+  static deleteAlerts(ids) {
+    const request = { Items: ids };
+    return HttpClient.post(`${ENDPOINT}alarms!delete`, request);
+  }
+
   /** Returns a telemetry events */
   static getTelemetryByMessages(params = {}) {
     const _params = {
@@ -86,6 +91,11 @@ export class TelemetryService {
       order: 'desc',
       devices
     });
+  }
+
+  static deleteRule(id) {
+    return HttpClient.delete(`${ENDPOINT}rules/${id}`)
+      .map(() => ({ deletedRuleId: id }));
   }
 
 }

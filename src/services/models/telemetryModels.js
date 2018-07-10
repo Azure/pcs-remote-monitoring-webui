@@ -20,10 +20,12 @@ export const toRuleModel = (response = {}) => {
     'severity': 'severity',
     'calculation': 'calculation',
     'timePeriod': 'timePeriod',
-    'action.type': 'type'
+    'action.type': 'type',
+    'deleted': 'deleted'
   });
   return update(model, {
-    severity: { $set: (model.severity || '').toLowerCase() }
+    severity: { $set: (model.severity || '').toLowerCase() },
+    status: { $set: (model.deleted ? 'Deleted' : model.enabled ? 'Enabled' : 'Disabled')}
   });
 };
 

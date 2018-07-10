@@ -1,0 +1,74 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.delete-rule-flyout-container {
+
+  .padded-top-bottom {
+    margin-left: 0px;
+    @include rem-fallback(padding, 24px, 0px);
+  }
+
+  .delete-info {
+    display: flex;
+
+    .asterisk-svg {
+      align-self: flex-start;
+
+      svg {
+        @include square-px-rem(12px);
+        @include rem-fallback(margin-right, 6px);
+        @include rem-fallback(margin-top, 2px);
+      }
+    }
+  }
+
+  .delete-confirmation-text {
+    display: flex;
+
+    .check-svg {
+      align-self: flex-start;
+
+      svg {
+        @include square-px-rem(14px);
+        @include rem-fallback(margin-left, 14px);
+      }
+    }
+  }
+
+  .rule-details {
+    border-top-style: none;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    @include rem-fallback(padding-top, 10px);
+    @include rem-fallback(padding-bottom, 24px);
+  }
+
+  .rule-delete-error {
+    border: 1px transparent solid;
+    @include rem-fallback(margin, 12px, 0px);
+    @include rem-fallback(padding, 16px);
+  }
+
+  .delete-info,
+  .delete-confirmation {
+    @include rem-fallback(font-size, 14px);
+    @include rem-fallback(padding-top, 24px);
+  }
+
+  @include themify($themes) {
+
+    .delete-info a,
+    .delete-confirmation a { color: themed('colorFlyoutConfirmationText'); }
+
+    .delete-info,
+    .delete-confirmation { color: themed('colorFlyoutConfirmationText'); }
+
+    .asterisk-svg svg { fill: themed('colorAlert'); }
+
+    .check-svg svg { fill: themed('colorFlyoutConfirmationText'); }
+
+    .post-delete-info-text { @include rem-fallback(margin-top, 16px); }
+  }
+}

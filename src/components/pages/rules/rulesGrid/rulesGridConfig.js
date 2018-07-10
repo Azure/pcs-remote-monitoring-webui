@@ -63,7 +63,7 @@ export const rulesColumnDefs = {
   },
   status: {
     headerName: 'rules.grid.status',
-    field: 'enabled',
+    field: 'status',
     filter: 'text',
     cellRendererFramework: RuleStatusRenderer
   },

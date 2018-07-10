@@ -1,0 +1,6 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.padded-bottom { @include rem-fallback(padding-bottom, 24px); }

@@ -69,7 +69,8 @@ export class Rules extends Component {
       onGridReady: this.onGridReady,
       rowData: isPending ? undefined : rules || [],
       onContextMenuChange: this.onContextMenuChange,
-      t: this.props.t
+      t: this.props.t,
+      refresh: fetchRules
     };
     return [
       <ContextMenu key="context-menu">

@@ -3,3 +3,4 @@
 export * from './editRuleFlyout';
 export * from './newRuleFlyout';
 export * from './ruleStatus';
+export * from './ruleDelete';

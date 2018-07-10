@@ -389,6 +389,7 @@
       "newRule": "New rule",
       "editRule": "Edit rule",
       "statusTitle": "Change status",
+      "delete": "Delete",
       "ruleEditor": {
         "ruleName": "Rule name",
         "namePlaceholder": "Enter rule name",
@@ -427,6 +428,17 @@
         "summaryHeader": "Summary",
         "apply": "Apply",
         "cancel": "Cancel"
+      },
+      "deleteRule": {
+        "preDeleteText": "We'll keep any alerts associated with this rule, even after it's deleted. If you want to delete the associated alerts, go to the <1><0>url</0></1> and choose the alerts you want to remove.",
+        "deleteConfirmation": "Rule has been deleted.",
+        "postDeleteText": "If you want to delete the alerts associated with this rule, go to the <1><0>url</0></1> and choose the alerts you want to remove.",
+        "disableConfirmation": "Rule has been disabled.",
+        "maintenancePage": "Maintenance Page",
+        "title": "Delete Rule",
+        "close": "Close",
+        "delete": "Delete",
+        "cancel": "Cancel"
       }
     }
   },
@@ -455,6 +467,7 @@
     "close": "Close",
     "closed": "Closed",
     "critical": "Critical",
+    "delete": "Delete",
     "devices": "Devices",
     "failedJobs": "Failed jobs",
     "jobs": "Jobs",

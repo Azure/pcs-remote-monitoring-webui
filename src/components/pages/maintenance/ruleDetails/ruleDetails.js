@@ -159,6 +159,19 @@ export class RuleDetails extends Component {
         )
     );
 
+  deleteAlerts = () => {
+    this.setState({ updatingAlertStatus: true });
+    const ids = this.state.selectedAlerts.map(x => x.id);
+    this.subscriptions.push(
+      TelemetryService.deleteAlerts(ids)
+        .subscribe(
+          () => { this.refreshData(); },
+          undefined, // TODO: Handle error
+          () => this.setState({ updatingAlertStatus: false })
+        )
+    )
+  }
+
   // TODO: Move constant values to central location
   closeAlerts = () => this.updateAlertStatus(this.state.selectedAlerts, Config.alertStatus.closed);
 
@@ -186,6 +199,9 @@ export class RuleDetails extends Component {
             </Btn>,
             <Btn svg={svgs.ackAlert} onClick={this.ackAlerts} key="ack">
               <Trans i18nKey="maintenance.acknowledge">Acknowledge</Trans>
+            </Btn>,
+            <Btn svg={svgs.trash} onClick={this.deleteAlerts} key="delete">
+              <Trans i18nKey="maintenance.delete">Delete</Trans>
             </Btn>
           ]
         : null;
@@ -327,7 +343,8 @@ export class RuleDetails extends Component {
                 onContextMenuChange={this.onContextMenuChange('ruleContextBtns')}
                 onHardSelectChange={this.onHardSelectChange('rules')}
                 rowData={rule}
-                pagination={false} />
+                pagination={false}
+                refresh={this.props.fetchRules} />
 
               <h4 className="sub-heading">{ t('maintenance.alertOccurrences') }</h4>
               <AlertOccurrencesGrid {...alertsGridProps} />

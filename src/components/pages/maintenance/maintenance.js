@@ -268,7 +268,8 @@ export class Maintenance extends Component {
               alertEntities={alertEntities}
               theme={theme}
               rulesEntities={rulesEntities}
-              deviceEntities={deviceEntities} />
+              deviceEntities={deviceEntities}
+              fetchRules={this.props.fetchRules} />
           } />
         <Route exact path={'/maintenance/job/:id'}
           render={(routeProps) =>
