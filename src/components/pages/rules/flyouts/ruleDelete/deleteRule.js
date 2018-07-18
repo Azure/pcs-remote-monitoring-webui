@@ -4,10 +4,12 @@ import React, { Component } from 'react';
 
 import { Link } from 'react-router-dom';
 import { Trans } from 'react-i18next';
+import { permissions } from 'services/models';
 import {
   AjaxError,
   Btn,
   BtnToolbar,
+  Protected,
   Svg
 } from 'components/shared';
 import { svgs } from 'utilities';
@@ -112,15 +114,17 @@ export class DeleteRule extends Component {
           <Flyout.CloseBtn onClick={onClose} />
         </Flyout.Header>
         <Flyout.Content>
-          <form onSubmit={this.deleteRule} className="delete-rule-flyout-container">
-            {rule && <RuleSummary rule={rule} isPending={isPending} completedSuccessfully={completedSuccessfully} t={t} className="rule-details"/>}
-            {error && <AjaxError className="rule-delete-error" t={t} error={error} />}
-            {!error &&
-              (changesApplied
-              ? this.renderConfirmation()
-              : this.renderButtons())
-            }
-          </form>
+          <Protected permission={permissions.deleteRules}>
+            <form onSubmit={this.deleteRule} className="delete-rule-flyout-container">
+              {rule && <RuleSummary rule={rule} isPending={isPending} completedSuccessfully={completedSuccessfully} t={t} className="rule-details"/>}
+              {error && <AjaxError className="rule-delete-error" t={t} error={error} />}
+              {!error &&
+                (changesApplied
+                ? this.renderConfirmation()
+                : this.renderButtons())
+              }
+            </form>
+          </Protected>
         </Flyout.Content>
       </Flyout.Container>
     );

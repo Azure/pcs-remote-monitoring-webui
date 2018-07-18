@@ -28,6 +28,9 @@
     "retryFailure": "Oops, we got a temporary error from the service but were unable to recover. Try again later.",
     "unknown": "An unknown error occurred. {{message}}"
   },
+  "protected": {
+    "permissionDenied": "Permission {{permission}} is denied."
+  },
   "settingsFlyout": {
     "title": "System settings",
     "version": "Version {{version}}",

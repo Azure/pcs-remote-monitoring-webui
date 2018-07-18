@@ -4,7 +4,7 @@ import React from 'react';
 import update from 'immutability-helper';
 
 import { DeviceSimulationService, IoTHubManagerService } from 'services';
-import { authenticationTypeOptions, toNewDeviceRequestModel } from 'services/models';
+import { authenticationTypeOptions, permissions, toNewDeviceRequestModel } from 'services/models';
 import {
   copyToClipboard,
   int,
@@ -28,6 +28,7 @@ import {
   FormLabel,
   FormSection,
   Indicator,
+  Protected,
   Radio,
   SectionDesc,
   SectionHeader,
@@ -330,107 +331,109 @@ export class DeviceNew extends LinkedComponent {
           <FlyoutCloseBtn onClick={onClose} />
         </FlyoutHeader>
         <FlyoutContent>
-          <form className="devices-new-container" onSubmit={this.apply}>
-            <div className="devices-new-content">
-              <FormGroup>
-                <FormLabel>{t(deviceTypeOptions.labelName)}</FormLabel>
-                <Radio link={this.deviceTypeLink} value={deviceTypeOptions.simulated.value} onChange={this.formControlChange}>
-                  {t(deviceTypeOptions.simulated.labelName)}
-                </Radio>
-                <Radio link={this.deviceTypeLink} value={deviceTypeOptions.physical.value} onChange={this.formControlChange}>
-                  {t(deviceTypeOptions.physical.labelName)}
-                </Radio>
-              </FormGroup>
-              {
-                isSimulatedDevice && [
-                  <FormGroup key="deviceCount">
-                    <FormLabel>{t('devices.flyouts.new.count.label')}</FormLabel>
-                    <FormControl link={this.countLink} type="text" onChange={this.formControlChange} />
-                  </FormGroup>,
-                  <FormGroup key="deviceId">
-                    <FormLabel>{t('devices.flyouts.new.deviceIdExample.label')}</FormLabel>
-                    <div className="device-id-example">{t('devices.flyouts.new.deviceIdExample.format', { deviceName })}</div>
-                  </FormGroup>,
-                  <FormGroup key="deviceModel">
-                    <FormLabel>{t('devices.flyouts.new.deviceModel.label')}</FormLabel>
-                    <FormControl link={this.deviceModelLink} type="select" options={deviceModelOptions} placeholder={t('devices.flyouts.new.deviceModel.hint')} onChange={this.formControlChange} />
-                  </FormGroup>
-                ]
-              }
-              {
-                !isSimulatedDevice && [
-                  <FormGroup key="deviceCount">
-                    <FormLabel>{t('devices.flyouts.new.count.label')}</FormLabel>
-                    <div className="device-count">{this.countLink.value}</div>
-                  </FormGroup>,
-                  <FormGroup key="deviceId">
-                    <FormLabel>{t('devices.flyouts.new.deviceId.label')}</FormLabel>
-                    <Radio link={this.isGenerateIdLink} value={deviceIdTypeOptions.manual.value} onChange={this.formControlChange}>
-                      <FormControl className="device-id" link={this.deviceIdLink} disabled={isGenerateId} type="text" placeholder={t(deviceIdTypeOptions.manual.hintName)} onChange={this.formControlChange} />
-                    </Radio>
-                    <Radio link={this.isGenerateIdLink} value={deviceIdTypeOptions.generate.value} onChange={this.formControlChange}>
-                      {t(deviceIdTypeOptions.generate.labelName)}
-                    </Radio>
-                  </FormGroup>,
-                  <FormGroup key="authType">
-                    <FormLabel>{t(authTypeOptions.labelName)}</FormLabel>
-                    <Radio link={this.authenticationTypeLink} value={authTypeOptions.symmetric.value} onChange={this.formControlChange}>
-                      {t(authTypeOptions.symmetric.labelName)}
-                    </Radio>
-                    <Radio link={this.authenticationTypeLink} value={authTypeOptions.x509.value} onChange={this.formControlChange}>
-                      {t(authTypeOptions.x509.labelName)}
-                    </Radio>
-                  </FormGroup>,
-                  <FormGroup key="authKeyType">
-                    <FormLabel>{t(authKeyTypeOptions.labelName)}</FormLabel>
-                    <Radio link={this.isGenerateKeysLink} value={authKeyTypeOptions.generate.value} disabled={isX509} onChange={this.formControlChange}>
-                      {t(authKeyTypeOptions.generate.labelName)}
-                    </Radio>
-                    <Radio link={this.isGenerateKeysLink} value={authKeyTypeOptions.manual.value} onChange={this.formControlChange}>
-                      {t(authKeyTypeOptions.manual.labelName)}
-                    </Radio>
-                    <FormGroup className="sub-settings">
-                      <FormLabel>{isX509 ? t('devices.flyouts.new.authenticationKey.primaryThumbprint') : t('devices.flyouts.new.authenticationKey.primaryKey')}</FormLabel>
-                      <FormControl link={this.primaryKeyLink} disabled={isGenerateKeys} type="text" placeholder={t('devices.flyouts.new.authenticationKey.hint')} onChange={this.formControlChange} />
+          <Protected permission={permissions.createDevices}>
+            <form className="devices-new-container" onSubmit={this.apply}>
+              <div className="devices-new-content">
+                <FormGroup>
+                  <FormLabel>{t(deviceTypeOptions.labelName)}</FormLabel>
+                  <Radio link={this.deviceTypeLink} value={deviceTypeOptions.simulated.value} onChange={this.formControlChange}>
+                    {t(deviceTypeOptions.simulated.labelName)}
+                  </Radio>
+                  <Radio link={this.deviceTypeLink} value={deviceTypeOptions.physical.value} onChange={this.formControlChange}>
+                    {t(deviceTypeOptions.physical.labelName)}
+                  </Radio>
+                </FormGroup>
+                {
+                  isSimulatedDevice && [
+                    <FormGroup key="deviceCount">
+                      <FormLabel>{t('devices.flyouts.new.count.label')}</FormLabel>
+                      <FormControl link={this.countLink} type="text" onChange={this.formControlChange} />
+                    </FormGroup>,
+                    <FormGroup key="deviceId">
+                      <FormLabel>{t('devices.flyouts.new.deviceIdExample.label')}</FormLabel>
+                      <div className="device-id-example">{t('devices.flyouts.new.deviceIdExample.format', { deviceName })}</div>
+                    </FormGroup>,
+                    <FormGroup key="deviceModel">
+                      <FormLabel>{t('devices.flyouts.new.deviceModel.label')}</FormLabel>
+                      <FormControl link={this.deviceModelLink} type="select" options={deviceModelOptions} placeholder={t('devices.flyouts.new.deviceModel.hint')} onChange={this.formControlChange} />
                     </FormGroup>
-                    <FormGroup className="sub-settings">
-                      <FormLabel>{isX509 ? t('devices.flyouts.new.authenticationKey.secondaryThumbprint') : t('devices.flyouts.new.authenticationKey.secondaryKey')}</FormLabel>
-                      <FormControl link={this.secondaryKeyLink} disabled={isGenerateKeys} type="text" placeholder={t('devices.flyouts.new.authenticationKey.hint')} onChange={this.formControlChange} />
-                    </FormGroup>
-                  </FormGroup>
-                ]
-              }
-            </div>
-            <SummarySection>
-              <SectionHeader>{t('devices.flyouts.new.summaryHeader')}</SectionHeader>
-              <SummaryBody>
-                <SummaryCount>{summaryCount || 0}</SummaryCount>
-                <SectionDesc>{summaryMessage}</SectionDesc>
-                {this.state.isPending && <Indicator />}
-                {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
-                {completedSuccessfully && isSimulatedDevice &&
-                  t('devices.flyouts.new.simulatedRefreshMessage')
+                  ]
                 }
-              </SummaryBody>
-            </SummarySection>
+                {
+                  !isSimulatedDevice && [
+                    <FormGroup key="deviceCount">
+                      <FormLabel>{t('devices.flyouts.new.count.label')}</FormLabel>
+                      <div className="device-count">{this.countLink.value}</div>
+                    </FormGroup>,
+                    <FormGroup key="deviceId">
+                      <FormLabel>{t('devices.flyouts.new.deviceId.label')}</FormLabel>
+                      <Radio link={this.isGenerateIdLink} value={deviceIdTypeOptions.manual.value} onChange={this.formControlChange}>
+                        <FormControl className="device-id" link={this.deviceIdLink} disabled={isGenerateId} type="text" placeholder={t(deviceIdTypeOptions.manual.hintName)} onChange={this.formControlChange} />
+                      </Radio>
+                      <Radio link={this.isGenerateIdLink} value={deviceIdTypeOptions.generate.value} onChange={this.formControlChange}>
+                        {t(deviceIdTypeOptions.generate.labelName)}
+                      </Radio>
+                    </FormGroup>,
+                    <FormGroup key="authType">
+                      <FormLabel>{t(authTypeOptions.labelName)}</FormLabel>
+                      <Radio link={this.authenticationTypeLink} value={authTypeOptions.symmetric.value} onChange={this.formControlChange}>
+                        {t(authTypeOptions.symmetric.labelName)}
+                      </Radio>
+                      <Radio link={this.authenticationTypeLink} value={authTypeOptions.x509.value} onChange={this.formControlChange}>
+                        {t(authTypeOptions.x509.labelName)}
+                      </Radio>
+                    </FormGroup>,
+                    <FormGroup key="authKeyType">
+                      <FormLabel>{t(authKeyTypeOptions.labelName)}</FormLabel>
+                      <Radio link={this.isGenerateKeysLink} value={authKeyTypeOptions.generate.value} disabled={isX509} onChange={this.formControlChange}>
+                        {t(authKeyTypeOptions.generate.labelName)}
+                      </Radio>
+                      <Radio link={this.isGenerateKeysLink} value={authKeyTypeOptions.manual.value} onChange={this.formControlChange}>
+                        {t(authKeyTypeOptions.manual.labelName)}
+                      </Radio>
+                      <FormGroup className="sub-settings">
+                        <FormLabel>{isX509 ? t('devices.flyouts.new.authenticationKey.primaryThumbprint') : t('devices.flyouts.new.authenticationKey.primaryKey')}</FormLabel>
+                        <FormControl link={this.primaryKeyLink} disabled={isGenerateKeys} type="text" placeholder={t('devices.flyouts.new.authenticationKey.hint')} onChange={this.formControlChange} />
+                      </FormGroup>
+                      <FormGroup className="sub-settings">
+                        <FormLabel>{isX509 ? t('devices.flyouts.new.authenticationKey.secondaryThumbprint') : t('devices.flyouts.new.authenticationKey.secondaryKey')}</FormLabel>
+                        <FormControl link={this.secondaryKeyLink} disabled={isGenerateKeys} type="text" placeholder={t('devices.flyouts.new.authenticationKey.hint')} onChange={this.formControlChange} />
+                      </FormGroup>
+                    </FormGroup>
+                  ]
+                }
+              </div>
+              <SummarySection>
+                <SectionHeader>{t('devices.flyouts.new.summaryHeader')}</SectionHeader>
+                <SummaryBody>
+                  <SummaryCount>{summaryCount || 0}</SummaryCount>
+                  <SectionDesc>{summaryMessage}</SectionDesc>
+                  {this.state.isPending && <Indicator />}
+                  {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
+                  {completedSuccessfully && isSimulatedDevice &&
+                    t('devices.flyouts.new.simulatedRefreshMessage')
+                  }
+                </SummaryBody>
+              </SummarySection>
 
-            {error && <AjaxError className="devices-new-error" t={t} error={error} />}
-            {
-              !changesApplied &&
-              <BtnToolbar>
-                <Btn primary={true} disabled={isPending || !this.formIsValid()} type="submit">{t('devices.flyouts.new.apply')}</Btn>
-                <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.new.cancel')}</Btn>
-              </BtnToolbar>
-            }
-            {
-              !!changesApplied && [
-                <ProvisionedDevice key="provDevice" device={provisionedDevice} t={t} />,
-                <BtnToolbar key="buttons">
-                  <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.new.close')}</Btn>
+              {error && <AjaxError className="devices-new-error" t={t} error={error} />}
+              {
+                !changesApplied &&
+                <BtnToolbar>
+                  <Btn primary={true} disabled={isPending || !this.formIsValid()} type="submit">{t('devices.flyouts.new.apply')}</Btn>
+                  <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.new.cancel')}</Btn>
                 </BtnToolbar>
-              ]
-            }
-          </form>
+              }
+              {
+                !!changesApplied && [
+                  <ProvisionedDevice key="provDevice" device={provisionedDevice} t={t} />,
+                  <BtnToolbar key="buttons">
+                    <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.new.close')}</Btn>
+                  </BtnToolbar>
+                ]
+              }
+            </form>
+          </Protected>
         </FlyoutContent>
       </Flyout>
     );

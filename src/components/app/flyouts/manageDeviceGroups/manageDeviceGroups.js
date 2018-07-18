@@ -3,7 +3,8 @@
 import React from 'react';
 
 import { IoTHubManagerService } from 'services';
-import { Btn } from 'components/shared';
+import { permissions } from 'services/models';
+import { Btn, Protected } from 'components/shared';
 import { svgs, LinkedComponent } from 'utilities';
 import Flyout from 'components/shared/flyout';
 import DeviceGroupForm from './views/deviceGroupForm';
@@ -69,7 +70,9 @@ export class ManageDeviceGroups extends LinkedComponent {
             this.state.addNewDeviceGroup || !!this.state.selectedDeviceGroup
               ? <DeviceGroupForm {...this.props} {...this.state} cancel={this.closeForm} />
               : <div>
-                <Btn className="add-btn" svg={svgs.plus} onClick={this.toggleNewFilter}>{t('deviceGroupsFlyout.create')}</Btn>
+                <Protected permission={permissions.createDeviceGroups}>
+                  <Btn className="add-btn" svg={svgs.plus} onClick={this.toggleNewFilter}>{t('deviceGroupsFlyout.create')}</Btn>
+                </Protected>
                 {deviceGroups.length > 0 && <DeviceGroups {...this.props} onEditDeviceGroup={this.onEditDeviceGroup} />}
               </div>
           }

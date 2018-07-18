@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { Btn, PcsGrid } from 'components/shared';
+import { permissions } from 'services/models';
+import { Btn, PcsGrid, Protected } from 'components/shared';
 import { deviceColumnDefs, defaultDeviceGridProps } from './devicesGridConfig';
 import { DeviceDeleteContainer } from '../flyouts/deviceDelete';
 import { DeviceJobsContainer } from '../flyouts/deviceJobs';
@@ -39,8 +40,12 @@ export class DevicesGrid extends Component {
     ];
 
     this.contextBtns = [
-      <Btn key="jobs" svg={svgs.reconfigure} onClick={this.openFlyout('jobs')}>{props.t('devices.flyouts.jobs.title')}</Btn>,
-      <Btn key="delete" svg={svgs.trash} onClick={this.openFlyout('delete')}>{props.t('devices.flyouts.delete.title')}</Btn>
+      <Protected permission={permissions.createJobs}>
+        <Btn key="jobs" svg={svgs.reconfigure} onClick={this.openFlyout('jobs')}>{props.t('devices.flyouts.jobs.title')}</Btn>
+      </Protected>,
+      <Protected permission={permissions.deleteDevices}>
+        <Btn key="delete" svg={svgs.trash} onClick={this.openFlyout('delete')}>{props.t('devices.flyouts.delete.title')}</Btn>
+      </Protected>
     ];
   }
 

@@ -3,6 +3,7 @@
 // Exports models
 
 export * from './ajaxModels';
+export * from './authModels';
 export * from './deviceSimulationModels';
 export * from './iotHubManagerModels';
 export * from './telemetryModels';

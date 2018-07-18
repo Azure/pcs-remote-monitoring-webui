@@ -7,11 +7,12 @@ import {
   AjaxError,
   Btn,
   BtnToolbar,
+  Protected,
   ToggleBtn
 } from 'components/shared';
 import { svgs } from 'utilities';
 import { TelemetryService } from 'services';
-import { toNewRuleRequestModel } from 'services/models';
+import { permissions, toNewRuleRequestModel } from 'services/models';
 import Flyout from 'components/shared/flyout';
 
 import './ruleStatus.css';
@@ -84,28 +85,30 @@ export class RuleStatus extends Component {
           <Flyout.CloseBtn onClick={onClose} />
         </Flyout.Header>
         <Flyout.Content>
-          <form onSubmit={this.changeRuleStatus} className="disable-rule-flyout-container">
-            <div className="padded-top-bottom">
-              <ToggleBtn
-                value={status}
-                onChange={this.onToggle} >
-                {status ? t('rules.flyouts.enable') : t('rules.flyouts.disable')}
-              </ToggleBtn>
-            </div>
-            {
-              rules.map((rule) => (
-                <RuleSummary rule={rule} isPending={isPending} completedSuccessfully={completedSuccessfully} t={t} />
-              ))
-            }
+          <Protected permission={permissions.updateRules}>
+            <form onSubmit={this.changeRuleStatus} className="disable-rule-flyout-container">
+              <div className="padded-top-bottom">
+                <ToggleBtn
+                  value={status}
+                  onChange={this.onToggle} >
+                  {status ? t('rules.flyouts.enable') : t('rules.flyouts.disable')}
+                </ToggleBtn>
+              </div>
+              {
+                rules.map((rule) => (
+                  <RuleSummary rule={rule} isPending={isPending} completedSuccessfully={completedSuccessfully} t={t} />
+                ))
+              }
 
-            {error && <AjaxError className="rule-status-error" t={t} error={error} />}
-            {
-              <BtnToolbar>
-                <Btn primary={true} disabled={!!changesApplied || isPending} type="submit">{t('rules.flyouts.ruleEditor.apply')}</Btn>
-                <Btn svg={svgs.cancelX} onClick={onClose}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
-              </BtnToolbar>
-            }
-          </form>
+              {error && <AjaxError className="rule-status-error" t={t} error={error} />}
+              {
+                <BtnToolbar>
+                  <Btn primary={true} disabled={!!changesApplied || isPending} type="submit">{t('rules.flyouts.ruleEditor.apply')}</Btn>
+                  <Btn svg={svgs.cancelX} onClick={onClose}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
+                </BtnToolbar>
+              }
+            </form>
+          </Protected>
         </Flyout.Content>
       </Flyout.Container>
     );

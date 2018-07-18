@@ -1,10 +1,20 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+
+import { permissions } from 'services/models';
 import { DevicesGrid } from './devicesGrid';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/app/manageDeviceGroupsBtn';
-import { AjaxError, Btn, RefreshBar, PageContent, ContextMenu, SearchInput } from 'components/shared';
+import {
+  AjaxError,
+  Btn,
+  ContextMenu,
+  PageContent,
+  Protected,
+  RefreshBar,
+  SearchInput
+} from 'components/shared';
 import { DeviceNewContainer } from './flyouts/deviceNew';
 import { SIMManagementContainer } from './flyouts/SIMManagement';
 import { svgs } from 'utilities';
@@ -64,9 +74,15 @@ export class Devices extends Component {
         <DeviceGroupDropdown />
         <SearchInput onChange={this.searchOnChange} placeholder={t('devices.searchPlaceholder')} />
         { this.state.contextBtns }
-        <Btn svg={svgs.simmanagement} onClick={this.openSIMManagement}>{t('devices.flyouts.SIMManagement.title')}</Btn>
-        <Btn svg={svgs.plus} onClick={this.openNewDeviceFlyout}>{t('devices.flyouts.new.contextMenuName')}</Btn>
-        <ManageDeviceGroupsBtn />
+        <Protected permission={permissions.updateSIMManagement}>
+          <Btn svg={svgs.simmanagement} onClick={this.openSIMManagement}>{t('devices.flyouts.SIMManagement.title')}</Btn>
+        </Protected>
+        <Protected permission={permissions.createDevices}>
+          <Btn svg={svgs.plus} onClick={this.openNewDeviceFlyout}>{t('devices.flyouts.new.contextMenuName')}</Btn>
+        </Protected>
+        <Protected permission={permissions.updateDeviceGroups}>
+          <ManageDeviceGroupsBtn />
+        </Protected>
       </ContextMenu>,
       <PageContent className="devices-container" key="page-content">
         <RefreshBar refresh={fetchDevices} time={lastUpdated} isPending={isPending} t={t} />

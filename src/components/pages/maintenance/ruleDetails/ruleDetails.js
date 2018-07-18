@@ -5,8 +5,17 @@ import { Trans } from 'react-i18next';
 import { Observable, Subject } from 'rxjs';
 
 import Config from 'app.config';
+import { permissions } from 'services/models';
 import { RulesGrid } from 'components/pages/rules/rulesGrid';
-import { AjaxError, Btn, PageContent, ContextMenu, RefreshBar, Indicator } from 'components/shared';
+import {
+  AjaxError,
+  Btn,
+  ContextMenu,
+  Indicator,
+  PageContent,
+  Protected,
+  RefreshBar
+} from 'components/shared';
 import { svgs, joinClasses, renderUndefined } from 'utilities';
 import { DevicesGrid } from 'components/pages/devices/devicesGrid';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
@@ -194,15 +203,21 @@ export class RuleDetails extends Component {
     const alertContextBtns =
       selectedRows.length > 0
         ? [
-            <Btn svg={svgs.closeAlert} onClick={this.closeAlerts} key="close">
-              <Trans i18nKey="maintenance.close">Close</Trans>
-            </Btn>,
-            <Btn svg={svgs.ackAlert} onClick={this.ackAlerts} key="ack">
-              <Trans i18nKey="maintenance.acknowledge">Acknowledge</Trans>
-            </Btn>,
-            <Btn svg={svgs.trash} onClick={this.deleteAlerts} key="delete">
-              <Trans i18nKey="maintenance.delete">Delete</Trans>
-            </Btn>
+            <Protected permission={permissions.updateAlarms}>
+              <Btn svg={svgs.closeAlert} onClick={this.closeAlerts} key="close">
+                <Trans i18nKey="maintenance.close">Close</Trans>
+              </Btn>
+            </Protected>,
+            <Protected permission={permissions.updateAlarms}>
+              <Btn svg={svgs.ackAlert} onClick={this.ackAlerts} key="ack">
+                <Trans i18nKey="maintenance.acknowledge">Acknowledge</Trans>
+              </Btn>
+            </Protected>,
+            <Protected permission={permissions.deleteAlarms}>
+              <Btn svg={svgs.trash} onClick={this.deleteAlerts} key="delete">
+                <Trans i18nKey="maintenance.delete">Delete</Trans>
+              </Btn>
+            </Protected>
           ]
         : null;
     this.setState({

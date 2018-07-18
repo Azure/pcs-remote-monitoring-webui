@@ -1,10 +1,19 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { permissions } from 'services/models';
 import { RulesGrid } from './rulesGrid';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/app/manageDeviceGroupsBtn';
-import { AjaxError, Btn, RefreshBar, PageContent, ContextMenu, SearchInput } from 'components/shared';
+import {
+  AjaxError,
+  Btn,
+  ContextMenu,
+  PageContent,
+  Protected,
+  RefreshBar,
+  SearchInput
+ } from 'components/shared';
 import { NewRuleFlyout } from './flyouts';
 import { svgs } from 'utilities';
 
@@ -77,7 +86,9 @@ export class Rules extends Component {
         <DeviceGroupDropdown />
         <SearchInput onChange={this.searchOnChange} placeholder={t('rules.searchPlaceholder')} />
         {this.state.contextBtns}
-        <Btn svg={svgs.plus} onClick={this.openNewRuleFlyout}>New rule</Btn>
+        <Protected permission={permissions.createRules}>
+          <Btn svg={svgs.plus} onClick={this.openNewRuleFlyout}>{t('rules.flyouts.newRule')}</Btn>
+        </Protected>
         <ManageDeviceGroupsBtn />
       </ContextMenu>,
       <PageContent className="rules-container" key="page-content">

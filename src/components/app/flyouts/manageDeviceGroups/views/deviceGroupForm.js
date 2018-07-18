@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import { permissions } from 'services/models';
 import { svgs, LinkedComponent, Validator } from 'utilities';
 import {
   AjaxError,
@@ -10,7 +11,8 @@ import {
   FormControl,
   FormGroup,
   FormLabel,
-  Indicator
+  Indicator,
+  Protected
 } from 'components/shared';
 import { ConfigService } from 'services';
 import {
@@ -266,21 +268,25 @@ class DeviceGroupForm extends LinkedComponent {
             }
             { this.state.isPending && <Indicator pattern="bar" size="medium" />}
             <BtnToolbar>
-              <Btn
-                primary
-                disabled={!this.formIsValid() || conditionsHaveErrors || this.state.isPending}
-                type="submit">
-                {t('deviceGroupsFlyout.save')}
-              </Btn>
+              <Protected permission={permissions.updateDeviceGroups}>
+                <Btn
+                  primary
+                  disabled={!this.formIsValid() || conditionsHaveErrors || this.state.isPending}
+                  type="submit">
+                  {t('deviceGroupsFlyout.save')}
+                </Btn>
+              </Protected>
               <Btn svg={svgs.cancelX} onClick={this.props.cancel}>{t('deviceGroupsFlyout.cancel')}</Btn>
               {
                 // Don't show delete btn if it is a new group or the group is currently active
                 this.state.isEdit &&
-                <Btn svg={svgs.trash}
-                  onClick={this.deleteDeviceGroup}
-                  disabled={this.props.activeDeviceGroupId === this.state.id || this.state.isPending}>
-                  {t('deviceGroupsFlyout.conditions.delete')}
-                </Btn>
+                <Protected permission={permissions.deleteDeviceGroups}>
+                  <Btn svg={svgs.trash}
+                    onClick={this.deleteDeviceGroup}
+                    disabled={this.props.activeDeviceGroupId === this.state.id || this.state.isPending}>
+                    {t('deviceGroupsFlyout.conditions.delete')}
+                  </Btn>
+                </Protected>
               }
             </BtnToolbar>
             { this.state.error && <AjaxError t={t} error={this.state.error} /> }

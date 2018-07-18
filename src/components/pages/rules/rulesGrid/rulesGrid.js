@@ -3,7 +3,8 @@
 import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
 
-import { Btn, PcsGrid } from 'components/shared';
+import { permissions } from 'services/models';
+import { Btn, PcsGrid, Protected } from 'components/shared';
 import { rulesColumnDefs, defaultRulesGridProps } from './rulesGridConfig';
 import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
 import { isFunc, translateColumnDefs, svgs } from 'utilities';
@@ -41,25 +42,35 @@ export class RulesGrid extends Component {
 
     this.contextBtns = {
       disable:
-        <Btn key="disable" className="rule-status-btn" svg={svgs.disableToggle} onClick={this.openStatusFlyout}>
-          <Trans i18nKey="rules.flyouts.disable">Disable</Trans>
-        </Btn>,
+        <Protected permission={permissions.updateRules}>
+          <Btn key="disable" className="rule-status-btn" svg={svgs.disableToggle} onClick={this.openStatusFlyout}>
+            <Trans i18nKey="rules.flyouts.disable">Disable</Trans>
+          </Btn>
+        </Protected>,
       enable:
-        <Btn key="enable" className="rule-status-btn enabled" svg={svgs.enableToggle} onClick={this.openStatusFlyout}>
-          <Trans i18nKey="rules.flyouts.enable">Enable</Trans>
-        </Btn>,
+        <Protected permission={permissions.updateRules}>
+          <Btn key="enable" className="rule-status-btn enabled" svg={svgs.enableToggle} onClick={this.openStatusFlyout}>
+            <Trans i18nKey="rules.flyouts.enable">Enable</Trans>
+          </Btn>
+        </Protected>,
       changeStatus:
-        <Btn key="changeStatus" className="rule-status-btn" svg={svgs.changeStatus} onClick={this.openStatusFlyout}>
-          <Trans i18nKey="rules.flyouts.changeStatus">Change status</Trans>
-        </Btn>,
+        <Protected permission={permissions.updateRules}>
+          <Btn key="changeStatus" className="rule-status-btn" svg={svgs.changeStatus} onClick={this.openStatusFlyout}>
+            <Trans i18nKey="rules.flyouts.changeStatus">Change status</Trans>
+          </Btn>
+        </Protected>,
       edit:
-        <Btn key="edit" svg={svgs.edit} onClick={this.openEditRuleFlyout}>
-          {props.t('rules.flyouts.edit')}
-        </Btn>,
+        <Protected permission={permissions.updateRules}>
+          <Btn key="edit" svg={svgs.edit} onClick={this.openEditRuleFlyout}>
+            {props.t('rules.flyouts.edit')}
+          </Btn>
+        </Protected>,
       delete:
-        <Btn key="delete" svg={svgs.trash} onClick={this.openDeleteFlyout}>
-          <Trans i18nKey="rules.flyouts.delete">Delete</Trans>
-        </Btn>
+        <Protected permission={permissions.deleteRules}>
+          <Btn key="delete" svg={svgs.trash} onClick={this.openDeleteFlyout}>
+            <Trans i18nKey="rules.flyouts.delete">Delete</Trans>
+          </Btn>
+        </Protected>
     };
   }
 
