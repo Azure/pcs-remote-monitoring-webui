@@ -5,8 +5,16 @@ import { Trans } from 'react-i18next';
 import { Link } from 'react-router-dom'
 
 import { permissions } from 'services/models';
-import { LinkedComponent } from 'utilities';
-import { FormControl, Protected } from 'components/shared';
+
+import { LinkedComponent, svgs } from 'utilities';
+
+import {
+  FormControl,
+  Btn,
+  BtnToolbar,
+  Protected
+} from 'components/shared';
+
 import Flyout from 'components/shared/flyout';
 
 import './SIMManagement.css';
@@ -25,16 +33,18 @@ export class SIMManagement extends LinkedComponent {
     super(props);
 
     this.state = {
-      provider: ''
+      provider: '',
+      isPending: false
     };
 
-    this.providerLink = this.linkTo('provider')
-      .map(({ value }) => value);
+    this.providerLink = this.linkTo('provider').map(({ value }) => value);
   }
+
+  showProvider = () => this.setState({ isPending: true });
 
   render() {
     const { t, onClose } = this.props;
-    const { provider } = this.state;
+    const { provider, isPending } = this.state;
 
     const options = optionValues.map(({ value }) => ({
       label: t(`devices.flyouts.SIMManagement.operator.${value}`),
@@ -76,6 +86,10 @@ export class SIMManagement extends LinkedComponent {
                 </Section.Content>
               </Section.Container>
             }
+            <BtnToolbar>
+              {!isPending && <Btn primary={true} disabled={!provider} onClick={this.showProvider} type="submit">{t('devices.flyouts.new.apply')}</Btn>}
+              <Btn svg={svgs.cancelX} onClick={onClose}>{isPending ? t('devices.flyouts.new.close') : t('devices.flyouts.new.cancel')}</Btn>
+            </BtnToolbar>
           </Protected>
         </Flyout.Content>
       </Flyout.Container>
