@@ -7,6 +7,7 @@ import {
   getAzureMapsKey,
   getAzureMapsKeyError,
   getAzureMapsKeyPendingStatus,
+  getDeviceGroups,
   getDeviceGroupError,
   getTheme,
   getTimeInterval
@@ -30,6 +31,7 @@ const mapStateToProps = state => ({
   azureMapsKey: getAzureMapsKey(state),
   azureMapsKeyError: getAzureMapsKeyError(state),
   azureMapsKeyIsPending: getAzureMapsKeyPendingStatus(state),
+  deviceGroups: getDeviceGroups(state),
   deviceGroupError: getDeviceGroupError(state),
   deviceLastUpdated: getDevicesLastUpdated(state),
   devices: getDeviceEntities(state),

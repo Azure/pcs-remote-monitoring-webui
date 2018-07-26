@@ -1,0 +1,12 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.rule-details {
+  .edit-mode-btn {
+    position: absolute;
+    @include rem-fallback(top, 80px);
+    @include rem-fallback(left, 367px);
+  }
+}

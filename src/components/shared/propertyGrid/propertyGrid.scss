@@ -11,11 +11,13 @@ $scrollbarWidth: 4px;
   display: flex;
   flex-flow: column wrap;
   position: relative;
+  @include rem-fallback(padding-left, 8px);
 
   .grid-header .cell {
     font-family: $fontSelawikBold;
     text-transform: uppercase;
     @include rem-fallback(font-size, 10px);
+    @include rem-fallback(padding-top, 4px);
   }
 
   .grid-scrollable {
@@ -66,13 +68,15 @@ $scrollbarWidth: 4px;
     .grid-header {
       border-bottom: 1px solid themed('colorPropertyGridBorder');
 
-      .cell { color: themed('colorContentTextDim'); }
+      .row .cell { color: themed('colorContentTextDim'); }
     }
 
     .row {
       border-bottom: 1px solid themed('colorPropertyGridBorder');
 
       &:last-child { border-bottom: none; }
+
+      .cell { color: themed('colorContentText'); }
     }
 
     .grid-scrollable:after {

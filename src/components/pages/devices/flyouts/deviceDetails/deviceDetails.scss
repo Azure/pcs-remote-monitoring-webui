@@ -27,17 +27,6 @@
     }
   }
 
-  .property-grid-container {
-    @include rem-fallback(padding-left, 8px);
-
-    .grid-header .cell {
-      font-family: $fontSelawikBold;
-      text-transform: uppercase;
-      @include rem-fallback(font-size, 10px);
-      @include rem-fallback(padding-top, 4px);
-    }
-  }
-
   .device-properties-actions .row {
     border: 0;
     @include rem-fallback(font-size, 12px);
@@ -53,10 +42,6 @@
   @include themify($themes) {
     .device-details-header {
       .device-icon svg { fill: themed('colorContentTextDim'); }
-    }
-
-    .property-grid-container {
-      .grid-header .cell { color: themed('colorContentTextDim'); }
     }
 
     .flyout-section-content {

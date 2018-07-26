@@ -9,6 +9,7 @@ export * from './forms';
 export * from './indicator/indicator';
 export * from './pageContent/pageContent';
 export * from './pcsGrid/pcsGrid';
+export * from './propertyGrid'
 export * from './protected'
 export * from './refreshBar/refreshBar';
 export * from './svg/svg';

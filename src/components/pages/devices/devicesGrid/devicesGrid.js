@@ -40,11 +40,11 @@ export class DevicesGrid extends Component {
     ];
 
     this.contextBtns = [
-      <Protected permission={permissions.createJobs}>
-        <Btn key="jobs" svg={svgs.reconfigure} onClick={this.openFlyout('jobs')}>{props.t('devices.flyouts.jobs.title')}</Btn>
+      <Protected key="jobs" permission={permissions.createJobs}>
+        <Btn svg={svgs.reconfigure} onClick={this.openFlyout('jobs')}>{props.t('devices.flyouts.jobs.title')}</Btn>
       </Protected>,
-      <Protected permission={permissions.deleteDevices}>
-        <Btn key="delete" svg={svgs.trash} onClick={this.openFlyout('delete')}>{props.t('devices.flyouts.delete.title')}</Btn>
+      <Protected key="delete" permission={permissions.deleteDevices}>
+        <Btn svg={svgs.trash} onClick={this.openFlyout('delete')}>{props.t('devices.flyouts.delete.title')}</Btn>
       </Protected>
     ];
   }

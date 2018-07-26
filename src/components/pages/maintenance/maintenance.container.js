@@ -6,7 +6,8 @@ import { Maintenance } from './maintenance';
 import {
   redux as appRedux,
   getTheme,
-  getTimeInterval
+  getTimeInterval,
+  getDeviceGroups,
 } from 'store/reducers/appReducer';
 import {
   epics as rulesEpics,
@@ -30,6 +31,7 @@ const mapStateToProps = state => ({
   rulesError: getRulesError(state),
   rulesIsPending: getRulesPendingStatus(state),
   rulesLastUpdated: getRulesLastUpdated(state),
+  deviceGroups: getDeviceGroups(state),
   theme: getTheme(state),
   timeInterval: getTimeInterval(state)
 });

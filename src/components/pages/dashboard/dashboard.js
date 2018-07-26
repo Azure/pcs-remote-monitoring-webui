@@ -273,6 +273,8 @@ export class Dashboard extends Component {
       devices,
       devicesError,
       devicesIsPending,
+
+      deviceGroups,
       deviceGroupError,
 
       rules,
@@ -379,7 +381,8 @@ export class Dashboard extends Component {
               alerts={currentActiveAlertsWithName}
               isPending={analyticsIsPending || rulesIsPending}
               error={rulesError || analyticsError}
-              t={t} />
+              t={t}
+              deviceGroups={deviceGroups} />
           </Cell>
           <Cell className="col-6">
             <TelemetryPanel

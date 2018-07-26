@@ -27,33 +27,25 @@ import {
 } from 'utilities';
 import Flyout from 'components/shared/flyout';
 import { IoTHubManagerService, TelemetryService } from 'services';
-import { toNewRuleRequestModel } from 'services/models';
+import {
+  toNewRuleRequestModel,
+  ruleCalculations,
+  ruleTimePeriods,
+  ruleOperators
+} from 'services/models';
 import Config from 'app.config';
 
 import './ruleEditor.css';
 
 const Section = Flyout.Section;
-const calculations = ['Average', 'Instant'];
-// Represented in milliSeconds
-const timePeriodOptions = [
-  { label: '1', value: '60000' },
-  { label: '5', value: '300000' },
-  { label: '10', value: '600000' }
-];
-const operatorOptions = [
-  { label: '>', value: 'GreaterThan' },
-  { label: '>=', value: 'GreaterThanOrEqual' },
-  { label: '<', value: 'LessThan' },
-  { label: '<=', value: 'LessThanOrEqual' },
-  { label: '=', value: 'Equals' }
-];
+
 // A counter for creating unique keys per new condition
 let conditionKey = 0;
 
 // Creates a state object for a condition
 const newCondition = () => ({
   field: '',
-  operator: operatorOptions[0].value,
+  operator: ruleOperators[0].value,
   value: '',
   key: conditionKey++ // Used by react to track the rendered elements
 });
@@ -135,7 +127,7 @@ export class RuleEditor extends LinkedComponent {
     const { insertRules, modifyRules } = this.props;
     const requestProps = { ...this.state.formData };
     const { devicesAffected } = this.state;
-    if (requestProps.calculation === calculations[1]) requestProps.timePeriod = '';
+    if (requestProps.calculation === ruleCalculations[1]) requestProps.timePeriod = '';
     if (this.formIsValid()) {
       this.setState({ isPending: true, error: null });
       if (this.subscription) this.subscription.unsubscribe();
@@ -237,7 +229,7 @@ export class RuleEditor extends LinkedComponent {
       formData,
       isPending
     } = this.state;
-    const calculationOptions = calculations.map(value => ({
+    const calculationOptions = ruleCalculations.map(value => ({
       label: t(`rules.flyouts.ruleEditor.calculationOptions.${value.toLowerCase()}`),
       value
     }));
@@ -255,7 +247,7 @@ export class RuleEditor extends LinkedComponent {
     this.timePeriodLink = this.formDataLink.forkTo('timePeriod')
       .map(({ value }) => value)
       .check(
-        timePeriod => this.calculationLink.value === calculations[0] ? Validator.notEmpty(timePeriod) : true,
+        timePeriod => this.calculationLink.value === ruleCalculations[0] ? Validator.notEmpty(timePeriod) : true,
         this.props.t('rules.flyouts.ruleEditor.validation.required')
       );
     this.conditionsLink = this.formDataLink.forkTo('conditions').withValidator(requiredValidator);
@@ -322,7 +314,7 @@ export class RuleEditor extends LinkedComponent {
                 searchable={false} />
             </FormGroup>
             {
-              this.calculationLink.value === calculations[0] &&
+              this.calculationLink.value === ruleCalculations[0] &&
               <FormGroup>
                 <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.timePeriod')}</FormLabel>
                 <FormControl
@@ -330,7 +322,7 @@ export class RuleEditor extends LinkedComponent {
                   className="short"
                   onChange={this.formControlChange}
                   link={this.timePeriodLink}
-                  options={timePeriodOptions}
+                  options={ruleTimePeriods}
                   clearable={false}
                   searchable={false} />
               </FormGroup>
@@ -370,7 +362,7 @@ export class RuleEditor extends LinkedComponent {
                         placeholder={t('rules.flyouts.ruleEditor.condition.operatorPlaceholder')}
                         onChange={this.formControlChange}
                         link={condition.operatorLink}
-                        options={operatorOptions}
+                        options={ruleOperators}
                         clearable={false}
                         searchable={false} />
                     </FormGroup>

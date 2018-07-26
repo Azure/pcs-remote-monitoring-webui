@@ -79,6 +79,7 @@ export class Rules extends Component {
       rowData: isPending ? undefined : rules || [],
       onContextMenuChange: this.onContextMenuChange,
       t: this.props.t,
+      deviceGroups: this.props.deviceGroups,
       refresh: fetchRules
     };
     return [

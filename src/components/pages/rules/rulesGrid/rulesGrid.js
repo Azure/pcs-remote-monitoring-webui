@@ -8,7 +8,7 @@ import { Btn, PcsGrid, Protected } from 'components/shared';
 import { rulesColumnDefs, defaultRulesGridProps } from './rulesGridConfig';
 import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
 import { isFunc, translateColumnDefs, svgs } from 'utilities';
-import { EditRuleFlyout, RuleStatusContainer, DeleteRuleContainer } from '../flyouts'
+import { EditRuleFlyout, RuleDetailsFlyout, RuleStatusContainer, DeleteRuleContainer } from '../flyouts'
 
 import './rulesGrid.css';
 
@@ -42,32 +42,32 @@ export class RulesGrid extends Component {
 
     this.contextBtns = {
       disable:
-        <Protected permission={permissions.updateRules}>
-          <Btn key="disable" className="rule-status-btn" svg={svgs.disableToggle} onClick={this.openStatusFlyout}>
+        <Protected key="disable" permission={permissions.updateRules}>
+          <Btn className="rule-status-btn" svg={svgs.disableToggle} onClick={this.openStatusFlyout}>
             <Trans i18nKey="rules.flyouts.disable">Disable</Trans>
           </Btn>
         </Protected>,
       enable:
-        <Protected permission={permissions.updateRules}>
-          <Btn key="enable" className="rule-status-btn enabled" svg={svgs.enableToggle} onClick={this.openStatusFlyout}>
+        <Protected key="enable" permission={permissions.updateRules}>
+          <Btn className="rule-status-btn enabled" svg={svgs.enableToggle} onClick={this.openStatusFlyout}>
             <Trans i18nKey="rules.flyouts.enable">Enable</Trans>
           </Btn>
         </Protected>,
       changeStatus:
-        <Protected permission={permissions.updateRules}>
-          <Btn key="changeStatus" className="rule-status-btn" svg={svgs.changeStatus} onClick={this.openStatusFlyout}>
+        <Protected key="changeStatus" permission={permissions.updateRules}>
+          <Btn className="rule-status-btn" svg={svgs.changeStatus} onClick={this.openStatusFlyout}>
             <Trans i18nKey="rules.flyouts.changeStatus">Change status</Trans>
           </Btn>
         </Protected>,
       edit:
-        <Protected permission={permissions.updateRules}>
-          <Btn key="edit" svg={svgs.edit} onClick={this.openEditRuleFlyout}>
+        <Protected key="edit"permission={permissions.updateRules}>
+          <Btn svg={svgs.edit} onClick={this.openEditRuleFlyout}>
             {props.t('rules.flyouts.edit')}
           </Btn>
         </Protected>,
       delete:
-        <Protected permission={permissions.deleteRules}>
-          <Btn key="delete" svg={svgs.trash} onClick={this.openDeleteFlyout}>
+        <Protected key="delete"permission={permissions.deleteRules}>
+          <Btn svg={svgs.trash} onClick={this.openDeleteFlyout}>
             <Trans i18nKey="rules.flyouts.delete">Delete</Trans>
           </Btn>
         </Protected>
@@ -103,6 +103,8 @@ export class RulesGrid extends Component {
 
   getOpenFlyout = () => {
     switch (this.state.openFlyoutName) {
+      case 'view':
+        return <RuleDetailsFlyout onClose={this.closeFlyout} t={this.props.t} rule={this.state.softSelectedRule || this.state.selectedRules[0]} key="view-rule-flyout" />
       case 'edit':
         return <EditRuleFlyout onClose={this.closeFlyout} t={this.props.t} rule={this.state.softSelectedRule || this.state.selectedRules[0]} key="edit-rule-flyout" />
       case 'status':
@@ -158,7 +160,7 @@ export class RulesGrid extends Component {
     if (!suppressFlyouts) {
       if (rule) {
         this.setState({
-          openFlyoutName: 'edit',
+          openFlyoutName: 'view',
           softSelectedRule: rule
         });
       } else {
@@ -189,7 +191,8 @@ export class RulesGrid extends Component {
       enableSorting: true,
       unSortIcon: true,
       context: {
-        t: this.props.t
+        t: this.props.t,
+        deviceGroups: this.props.deviceGroups
       },
       /* Grid Events */
       onRowClicked: ({ node }) => node.setSelected(!node.isSelected()),

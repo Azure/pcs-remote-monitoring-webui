@@ -6,7 +6,7 @@ import {
   PropertyGrid as Grid,
   PropertyGridHeader as GridHeader,
   PropertyRow as Row
-} from 'components/pages/devices/flyouts/deviceDetails/propertyGrid';
+} from 'components/shared';
 import { compareByProperty } from 'utilities';
 
 const DeviceGroups = ({ t, deviceGroups, onEditDeviceGroup }) => (

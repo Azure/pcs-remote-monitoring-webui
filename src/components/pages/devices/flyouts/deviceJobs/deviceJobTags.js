@@ -19,6 +19,11 @@ import {
   FormLabel,
   FormSection,
   Indicator,
+  PropertyGrid as Grid,
+  PropertyGridBody as GridBody,
+  PropertyGridHeader as GridHeader,
+  PropertyRow as Row,
+  PropertyCell as Cell,
   SectionDesc,
   SectionHeader,
   SummaryBody,
@@ -26,13 +31,6 @@ import {
   SummarySection,
   Svg
 } from 'components/shared';
-import {
-  PropertyGrid as Grid,
-  PropertyGridBody as GridBody,
-  PropertyGridHeader as GridHeader,
-  PropertyRow as Row,
-  PropertyCell as Cell
-} from 'components/pages/devices/flyouts/deviceDetails/propertyGrid';
 
 update.extend('$autoArray', (val, obj) => update(obj || [], val));
 

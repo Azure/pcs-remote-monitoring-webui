@@ -182,7 +182,15 @@ export class Maintenance extends Component {
   onTimeIntervalChange = (timeInterval) => this.props.updateTimeInterval(timeInterval);
 
   render() {
-    const { rulesEntities, deviceEntities, rulesIsPending, theme, t, history } = this.props;
+    const {
+      rulesEntities,
+      deviceEntities,
+      deviceGroups,
+      rulesIsPending,
+      theme,
+      t,
+      history
+    } = this.props;
     const {
       alerts,
       alertEntities,
@@ -232,7 +240,8 @@ export class Maintenance extends Component {
     const alertProps = {
       isPending: rulesIsPending || alertsIsPending,
       error: alertsError,
-      alerts: alertsWithRulename
+      alerts: alertsWithRulename,
+      deviceGroups
     };
     const jobProps = {
       isPending: jobsIsPending,

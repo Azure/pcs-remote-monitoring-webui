@@ -41,7 +41,13 @@ export const rulesColumnDefs = {
   filter: {
     headerName: 'rules.grid.deviceGroup',
     field: 'groupId',
-    filter: 'text'
+    filter: 'text',
+    valueFormatter: ({ value, context: { deviceGroups } }) => {
+      if (!deviceGroups) return value;
+
+      const deviceGroup = deviceGroups.find(group => group.id === value);
+      return (deviceGroup || {}).displayName || value;
+    }
   },
   trigger: {
     headerName: 'rules.grid.trigger',

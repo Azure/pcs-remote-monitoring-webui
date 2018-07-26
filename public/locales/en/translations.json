@@ -391,6 +391,7 @@
       "changeStatus": "Change status",
       "newRule": "New rule",
       "editRule": "Edit rule",
+      "viewRule": "Rule Details",
       "statusTitle": "Change status",
       "delete": "Delete",
       "ruleEditor": {

@@ -19,18 +19,16 @@ import {
   Btn,
   BtnToolbar,
   ErrorMsg,
+  PropertyGrid as Grid,
+  PropertyGridBody as GridBody,
+  PropertyGridHeader as GridHeader,
+  PropertyRow as Row,
+  PropertyCell as Cell,
   SectionDesc
 } from 'components/shared';
 import Flyout from 'components/shared/flyout';
 import { TelemetryChart, chartColorObjects } from 'components/pages/dashboard/panels/telemetry';
 import { transformTelemetryResponse } from 'components/pages/dashboard/panels';
-import {
-  PropertyGrid as Grid,
-  PropertyGridBody as GridBody,
-  PropertyGridHeader as GridHeader,
-  PropertyRow as Row,
-  PropertyCell as Cell
-} from './propertyGrid';
 
 import './deviceDetails.css';
 
@@ -168,6 +166,7 @@ export class DeviceDetails extends Component {
     const rulesGridProps = {
       rowData: isPending ? undefined : this.applyRuleNames(this.state.alerts || [], this.props.rules || []),
       t: this.props.t,
+      deviceGroups: this.props.deviceGroups,
       domLayout: 'autoHeight',
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
       suppressFlyouts: true
