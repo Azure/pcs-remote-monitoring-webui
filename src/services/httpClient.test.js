@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { Observable, TestScheduler } from 'rxjs';
-import { HttpClient, retryHandler, classifyError } from './httpClient';
+import 'polyfills';
 import Config from 'app.config';
+import { HttpClient } from './httpClient';
 
 const url = 'http://www.fakeurl.com';
 

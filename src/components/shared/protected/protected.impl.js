@@ -6,7 +6,7 @@ import { isFunc } from 'utilities';
 export class ProtectedImpl extends Component {
   userHasPermission() {
     const { permission, userPermissions } = this.props;
-    return userPermissions.has(permission);
+    return (userPermissions || new Set()).has(permission);
   }
 
   render() {
