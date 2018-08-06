@@ -48,7 +48,8 @@ export const prepareLogoResponse = ({  xhr, response }) => {
 }
 
 export const toSolutionSettingThemeModel = (response = {}) => camelCaseReshape(response, {
-  'azureMapsKey': 'azureMapsKey',
   'description': 'description',
-  'name': 'name'
+  'name': 'name',
+  'diagnosticsOptIn': 'diagnosticsOptIn',
+  'azureMapsKey': 'azureMapsKey'
 });

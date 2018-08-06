@@ -9,6 +9,8 @@ const Config = {
     iotHubManager: `${baseUrl}/iothubmanager/v1/`,
     telemetry: `${baseUrl}/telemetry/v1/`,
     deviceSimulation: `${baseUrl}/devicesimulation/v1/`,
+    diagnostics: `${baseUrl}/diagnostics/v1/`,
+    privacy: 'https://privacy.microsoft.com/privacystatement',
     //TODO: Determine if should query java or dotnet
     gitHubReleases: 'https://api.github.com/repos/Azure/azure-iot-pcs-remote-monitoring-dotnet/releases'
   },
@@ -16,7 +18,7 @@ const Config = {
   defaultAjaxTimeout: 20000, // 20s
   maxRetryAttempts: 2,
   retryWaitTime: 2000, // On retryable error, retry after 2s
-  retryableStatusCodes: new Set([ 0, 401, 502, 503 ]),
+  retryableStatusCodes: new Set([0, 401, 502, 503]),
   paginationPageSize: 50,
   smallGridPageSize: 8,
   clickDebounceTime: 180, // ms
@@ -29,7 +31,7 @@ const Config = {
   maxTopAlerts: 5,
   maxAlertsCount: 1000,
   gridMinResize: 1200, // In px
-  mapCenterPosition: [ -122.3320708, 47.606 ], // Default to Seattle
+  mapCenterPosition: [-122.3320708, 47.606], // Default to Seattle
   ruleSeverity: {
     info: 'info',
     warning: 'warning',

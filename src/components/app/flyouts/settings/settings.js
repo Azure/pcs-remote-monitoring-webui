@@ -2,9 +2,10 @@
 
 import React from 'react';
 
+import Config from 'app.config';
 import Flyout from 'components/shared/flyout';
 import { Btn, Indicator, ToggleBtn } from 'components/shared';
-import { svgs, LinkedComponent } from 'utilities';
+import { svgs, LinkedComponent, isDef } from 'utilities';
 import ApplicationSettings from 'components/app/flyouts/settings/applicationSettings';
 
 import './settings.css';
@@ -18,6 +19,7 @@ export class Settings extends LinkedComponent {
 
     this.state = {
       desiredSimulationState: this.props.isSimulationEnabled,
+      diagnosticsOptIn: this.props.diagnosticsOptIn,
       logoFile: undefined,
       applicationName: '',
       loading: false,
@@ -43,10 +45,20 @@ export class Settings extends LinkedComponent {
     this.props.getSimulationStatus();
   }
 
-  componentWillReceiveProps({ isSimulationEnabled, simulationTogglePending,
-    simulationToggleError, setLogoPending, setLogoError, getSimulationPending, getSimulationError }) {
+  componentWillReceiveProps({
+    isSimulationEnabled,
+    setLogoPending,
+    setLogoError,
+    getSimulationPending,
+    getSimulationError,
+    diagnosticsOptIn
+  }) {
     const { madeLogoUpdate, desiredSimulationState } = this.state;
-    if (desiredSimulationState === undefined && isSimulationEnabled !== undefined && !getSimulationPending && !getSimulationError) {
+    this.setState({ diagnosticsOptIn: diagnosticsOptIn });
+    if (!isDef(desiredSimulationState)
+      && isDef(isSimulationEnabled)
+      && !getSimulationPending
+      && !getSimulationError) {
       this.setState({
         desiredSimulationState: isSimulationEnabled
       });
@@ -70,6 +82,14 @@ export class Settings extends LinkedComponent {
       [name]: value
     });
     this.props.toggleSimulationStatus(etag, value);
+  }
+
+  toggleDiagnostics = () => {
+    const { diagnosticsOptIn } = this.state;
+    this.setState(
+      { diagnosticsOptIn: !diagnosticsOptIn },
+      () => this.props.updateDiagnosticsOptIn(!diagnosticsOptIn)
+    );
   }
 
   apply = (event) => {
@@ -99,13 +119,37 @@ export class Settings extends LinkedComponent {
   };
 
   render() {
-    const { t, onClose, theme, changeTheme, version, releaseNotesUrl, isSimulationEnabled,
-      simulationToggleError, setLogoError, getSimulationPending, getSimulationError } = this.props;
+    const {
+      t,
+      onClose,
+      theme,
+      changeTheme,
+      version,
+      releaseNotesUrl,
+      isSimulationEnabled,
+      simulationToggleError,
+      setLogoError,
+      getSimulationPending,
+      getSimulationError,
+      getDiagnosticsPending,
+      getDiagnosticsError
+    } = this.props;
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    const { desiredSimulationState, loading, logoFile, applicationName, toggledSimulation, madeLogoUpdate } = this.state;
+    const {
+      desiredSimulationState,
+      loading,
+      logoFile,
+      applicationName,
+      toggledSimulation,
+      madeLogoUpdate
+    } = this.state;
     const hasChanged = logoFile !== undefined || applicationName !== '';
-    const hasSimulationChanged = !getSimulationPending && !getSimulationError && (isSimulationEnabled !== desiredSimulationState)
-    const simulationLabel = hasSimulationChanged ? this.desiredSimulationLabel[desiredSimulationState] : this.currSimulationLabel[isSimulationEnabled];
+    const hasSimulationChanged = !getSimulationPending
+      && !getSimulationError
+      && (isSimulationEnabled !== desiredSimulationState)
+    const simulationLabel = hasSimulationChanged
+      ? this.desiredSimulationLabel[desiredSimulationState]
+      : this.currSimulationLabel[isSimulationEnabled];
 
     return (
 
@@ -116,6 +160,31 @@ export class Settings extends LinkedComponent {
             <Flyout.CloseBtn onClick={onClose} />
           </Flyout.Header>
           <Flyout.Content className="settings-workflow-container">
+            <Section.Container collapsable={false}>
+              <Section.Header>{t('settingsFlyout.sendDiagnosticsHeader')}</Section.Header>
+              <Section.Content className="diagnostics-content">
+                {this.props.t('settingsFlyout.sendDiagnosticsText')}
+                <a href={Config.serviceUrls.privacy}
+                  className="privacy-link"
+                  target="_blank" rel="noopener noreferrer">
+                  {this.props.t('settingsFlyout.sendDiagnosticsMicrosoftPrivacyUrl')}
+                </a>
+                {
+                  getDiagnosticsError
+                    ? <div className="toggle">
+                      {t('settingsFlyout.diagnosticsLoadError')}
+                    </div>
+                    : <div className="toggle">
+                      <ToggleBtn
+                        value={this.state.diagnosticsOptIn}
+                        onChange={this.toggleDiagnostics} />
+                      <div className="label">
+                        {getDiagnosticsPending ? t('settingsFlyout.loading') : t('settingsFlyout.sendDiagnosticsCheckbox')}
+                      </div>
+                    </div>
+                }
+              </Section.Content>
+            </Section.Container>
             <Section.Container collapsable={false} className="app-version">
               <Section.Header>{t('settingsFlyout.version', { version })}</Section.Header>
               <Section.Content className="release-notes">
@@ -128,7 +197,9 @@ export class Settings extends LinkedComponent {
                 {t('settingsFlyout.simulationDescription')}
                 {
                   getSimulationError
-                    ? <div className="simulation-toggle"> {t('settingsFlyout.simulationLoadError')} </div>
+                    ? <div className="simulation-toggle">
+                      {t('settingsFlyout.simulationLoadError')}
+                    </div>
                     : <div className="simulation-toggle">
                       <ToggleBtn
                         className="simulation-toggle-button"
@@ -152,7 +223,10 @@ export class Settings extends LinkedComponent {
                 </button>
               </Section.Content>
             </Section.Container>
-            <ApplicationSettings onUpload={this.onUpload} applicationNameLink={this.applicationName} {...this.props} />
+            <ApplicationSettings
+              onUpload={this.onUpload}
+              applicationNameLink={this.applicationName}
+              {...this.props} />
             {
               (toggledSimulation && simulationToggleError) &&
               <div className="toggle-error">
@@ -170,7 +244,8 @@ export class Settings extends LinkedComponent {
                 !loading && hasChanged &&
                 <Btn type="submit" className="apply-button">{t('settingsFlyout.apply')}</Btn>
               }
-              <Btn svg={svgs.x} onClick={onClose} className="close-button">{hasChanged ? t('settingsFlyout.cancel') : t('settingsFlyout.close')}</Btn>
+              <Btn svg={svgs.x} onClick={onClose} className="close-button">
+                {hasChanged ? t('settingsFlyout.cancel') : t('settingsFlyout.close')}</Btn>
               {loading && <Indicator size='small' />}
             </div>
           </Flyout.Content>

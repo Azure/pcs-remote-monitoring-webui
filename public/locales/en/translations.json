@@ -50,7 +50,12 @@
     "simulationDescription": "Start or stop simulation of devices. Stopping device simulation will minimize the cost of the solution; no simulated telemetry will be sent to your IoT Hub and alerts will not be generated for simulated devices.",
     "toggleError": "Error updating simulation status",
     "setLogoError": "Error updating logo",
-    "simulationLoadError": "Error loading simulation status"
+    "simulationLoadError": "Error loading simulation status",
+    "sendDiagnosticsHeader": "Help us improve",
+    "sendDiagnosticsText": "Remote Monitoring can send anonymous information to Microsoft, such as error logs, configuration, and information about how you use the application. No personal information is collected.",
+    "sendDiagnosticsCheckbox": "Yes, share information with Microsoft",
+    "sendDiagnosticsMicrosoftPrivacyUrl": "Privacy Statement",
+    "diagnosticsLoadError": "Error updating diagnostics preference"
   },
   "deviceGroupsFlyout": {
     "actions": "Actions",

@@ -31,7 +31,8 @@ import {
   toNewRuleRequestModel,
   ruleCalculations,
   ruleTimePeriods,
-  ruleOperators
+  ruleOperators,
+  toRuleDiagnosticsModel
 } from 'services/models';
 import Config from 'app.config';
 
@@ -124,7 +125,7 @@ export class RuleEditor extends LinkedComponent {
 
   apply = (event) => {
     event.preventDefault();
-    const { insertRules, modifyRules } = this.props;
+    const { insertRules, modifyRules, logEvent } = this.props;
     const requestProps = { ...this.state.formData };
     const { devicesAffected } = this.state;
     if (requestProps.calculation === ruleCalculations[1]) requestProps.timePeriod = '';
@@ -159,6 +160,7 @@ export class RuleEditor extends LinkedComponent {
             },
             error => this.setState({ error, isPending: false, changesApplied: true })
           );
+        logEvent(toRuleDiagnosticsModel('RuleApplyClick', requestProps));
       }
     }
   }

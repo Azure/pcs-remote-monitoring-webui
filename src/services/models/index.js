@@ -9,3 +9,5 @@ export * from './iotHubManagerModels';
 export * from './telemetryModels';
 export * from './configModels';
 export * from './gitHubModels';
+export * from './diagnosticsModels';
+export * from './logEventModels';

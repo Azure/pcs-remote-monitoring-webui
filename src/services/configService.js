@@ -8,6 +8,7 @@ import {
   toDeviceGroupsModel,
   toSolutionSettingThemeModel
 } from './models';
+import { Observable } from '../../node_modules/rxjs';
 
 const ENDPOINT = Config.serviceUrls.config;
 
@@ -37,13 +38,6 @@ export class ConfigService {
       .map(_ => id);
   }
 
-  /** Returns the azure map key for the account */
-  static getAzureMapKey() {
-    return HttpClient.get(`${ENDPOINT}solution-settings/theme`)
-      .map(toSolutionSettingThemeModel)
-      .map(response => response.azureMapsKey);
-  }
-
   static getLogo() {
     var options = {};
     options.responseType = 'blob';
@@ -68,5 +62,27 @@ export class ConfigService {
     options.headers['Accept'] = undefined;
     return HttpClient.put(`${ENDPOINT}solution-settings/logo`, logo, options)
       .map(prepareLogoResponse);
+  }
+
+  /* Get solution settings.
+      The API name is "solution-settings/theme" even though it deals with diagnosticsOptIn,
+      AzureMapsKeys, name, description and UI theme. */
+  static getSolutionSettings() {
+    return HttpClient.get(`${ENDPOINT}solution-settings/theme`)
+      .map(toSolutionSettingThemeModel)
+      /* When the application loads for the first time, there won't be "solution-settings"
+       in the storage. In that case, service will throw a 404 not found error.
+       But we need to ignore that and stick with the static values defined in UI state */
+      .catch(error =>
+        error.status === 404 ? Observable.empty() : Observable.throw(error)
+      );
+  }
+
+  /* Update solution settings.
+     The API name is "solution-settings/theme" even though it deals with diagnosticsOptIn,
+      AzureMapsKeys, name, description and UI theme.*/
+  static updateSolutionSettings(model) {
+    return HttpClient.put(`${ENDPOINT}solution-settings/theme`, model)
+      .map(toSolutionSettingThemeModel);
   }
 }

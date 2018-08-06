@@ -5,7 +5,6 @@
 
 .settings-workflow-container {
   .app-version {
-    border: none;
     @include rem-fallback(margin-top, 20px);
   }
 
@@ -34,6 +33,26 @@
     .simulation-toggle-button { @include rem-fallback(margin-right, 10px); }
 
     .simulation-toggle-label { display: inline-block; }
+  }
+
+  .diagnostics-content {
+    padding-bottom: 0px;
+
+    .privacy-link{
+      display: block;
+      @include rem-fallback(margin, 20px, 0px);
+    }
+
+    .toggle {
+      display: flex;
+      justify-content: flex-start;
+      @include rem-fallback(margin-top, 18px);
+      @include rem-font-size(14px);
+
+      .button { @include rem-fallback(margin-right, 10px); }
+
+      .label { display: inline-block; }
+    }
   }
 
   .btn-container {

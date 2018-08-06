@@ -2,7 +2,7 @@
 
 import 'rxjs';
 import { Observable } from 'rxjs';
-import { AuthService, ConfigService, GitHubService } from 'services';
+import { AuthService, ConfigService, GitHubService, DiagnosticsService } from 'services';
 import { schema, normalize } from 'normalizr';
 import { createSelector } from 'reselect';
 import update from 'immutability-helper';
@@ -30,11 +30,28 @@ export const epics = createEpicScenario({
     type: 'APP_INITIALIZE',
     epic: () => [
       epics.actions.fetchUser(),
-      epics.actions.fetchAzureMapsKey(),
       epics.actions.fetchDeviceGroups(),
       epics.actions.fetchLogo(),
-      epics.actions.fetchReleaseInformation()
+      epics.actions.fetchReleaseInformation(),
+      epics.actions.fetchSolutionSettings()
     ]
+  },
+
+  /** Log diagnostics data */
+  logEvent: {
+    type: 'APP_LOG_EVENT',
+    epic: ({ payload }, store) => {
+      const diagnosticsOptIn = getDiagnosticsOptIn(store.getState());
+      if (diagnosticsOptIn) {
+        return DiagnosticsService.logEvent(payload)
+        /* We don't want anymore action to be executed after this call
+            and hence return empty observable */
+          .map(_ => Observable.empty())
+          .catch(_ => Observable.empty())
+      } else {
+        return Observable.empty()
+      }
+    }
   },
 
   /** Get the user */
@@ -44,6 +61,31 @@ export const epics = createEpicScenario({
       AuthService.getCurrentUser()
         .map(toActionCreator(redux.actions.updateUser, fromAction))
         .catch(handleError(fromAction))
+  },
+
+  /** Get solution settings */
+  fetchSolutionSettings: {
+    type: 'APP_FETCH_SOLUTION_SETTINGS',
+    epic: (fromAction) =>
+      ConfigService.getSolutionSettings()
+        .map(toActionCreator(redux.actions.updateSolutionSettings, fromAction))
+        .catch(handleError(fromAction))
+  },
+
+  /** Update solution settings */
+  updateDiagnosticsOptIn: {
+    type: 'APP_UPDATE_DIAGNOSTICS_OPTOUT',
+    epic: (fromAction, store) => {
+      const currSettings = getSettings(store.getState());
+      const settings = {
+        name: currSettings.name,
+        description: currSettings.description,
+        diagnosticsOptIn: fromAction.payload
+      };
+      return ConfigService.updateSolutionSettings(settings)
+        .map(toActionCreator(redux.actions.updateSolutionSettings, fromAction))
+        .catch(handleError(fromAction));
+    }
   },
 
   /** Get the account's device groups */
@@ -60,15 +102,6 @@ export const epics = createEpicScenario({
             actions.push(toActionCreator(redux.actions.updateActiveDeviceGroup, fromAction)(deviceGroups[0].id));
           return actions;
         })
-        .catch(handleError(fromAction))
-  },
-
-  /** Get the account's device groups */
-  fetchAzureMapsKey: {
-    type: 'APP_AZURE_MAPS_KEY_FETCH',
-    epic: fromAction =>
-      ConfigService.getAzureMapKey()
-        .map(toActionCreator(redux.actions.updateAzureMapsKeyGroup, fromAction))
         .catch(handleError(fromAction))
   },
 
@@ -129,9 +162,14 @@ const initialState = {
   logo: svgs.contoso,
   name: 'companyName',
   isDefaultLogo: true,
-  azureMapsKey: '',
   deviceGroupFlyoutIsOpen: false,
   timeInterval: 'PT1H',
+  settings: {
+    azureMapsKey: '',
+    description: '',
+    name: '',
+    diagnosticsOptIn: true
+  },
   userPermissions: new Set()
 };
 
@@ -161,8 +199,8 @@ const insertDeviceGroupsReducer = (state, { payload }) => {
   });
 };
 
-const updateAzureMapsKeyReducer = (state, { payload, fromAction }) => update(state, {
-  azureMapsKey: { $set: payload },
+const updateSolutionSettingsReducer = (state, { payload, fromAction }) => update(state, {
+  settings: { $merge: payload },
   ...setPending(fromAction.type, false)
 });
 
@@ -198,9 +236,9 @@ const setDeviceGroupFlyoutReducer = (state, { payload }) => update(state, {
 const fetchableTypes = [
   epics.actionTypes.fetchDeviceGroups,
   epics.actionTypes.fetchDeviceGroupFilters,
-  epics.actionTypes.fetchAzureMapsKey,
   epics.actionTypes.updateLogo,
-  epics.actionTypes.fetchLogo
+  epics.actionTypes.fetchLogo,
+  epics.actions.fetchSolutionSettings
 ];
 
 export const redux = createReducerScenario({
@@ -208,12 +246,12 @@ export const redux = createReducerScenario({
   updateDeviceGroups: { type: 'APP_DEVICE_GROUP_UPDATE', reducer: updateDeviceGroupsReducer },
   deleteDeviceGroups: { type: 'APP_DEVICE_GROUP_DELETE', reducer: deleteDeviceGroupsReducer },
   insertDeviceGroups: { type: 'APP_DEVICE_GROUP_INSERT', reducer: insertDeviceGroupsReducer },
-  updateAzureMapsKeyGroup: { type: 'APP_AZURE_MAPS_KEY_UPDATE', reducer: updateAzureMapsKeyReducer },
   updateActiveDeviceGroup: { type: 'APP_ACTIVE_DEVICE_GROUP_UPDATE', reducer: updateActiveDeviceGroupsReducer },
   changeTheme: { type: 'APP_CHANGE_THEME', reducer: updateThemeReducer },
   registerError: { type: 'APP_REDUCER_ERROR', reducer: errorReducer },
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer },
   updateLogo: { type: 'APP_UPDATE_LOGO', reducer: logoReducer },
+  updateSolutionSettings: { type: 'APP_UPDATE_SOLUTION_SETTINGS', reducer: updateSolutionSettingsReducer },
   getReleaseInformation: { type: 'APP_GET_VERSION', reducer: releaseReducer },
   setDeviceGroupFlyoutStatus: { type: 'APP_SET_DEVICE_GROUP_FLYOUT_STATUS', reducer: setDeviceGroupFlyoutReducer },
   updateTimeInterval: { type: 'APP_UPDATE_TIME_INTERVAL', reducer: updateTimeInterval }
@@ -228,16 +266,18 @@ export const getVersion = state => getAppReducer(state).version;
 export const getTheme = state => getAppReducer(state).theme;
 export const getDeviceGroupEntities = state => getAppReducer(state).deviceGroups;
 export const getActiveDeviceGroupId = state => getAppReducer(state).activeDeviceGroupId;
-export const getAzureMapsKey = state => getAppReducer(state).azureMapsKey;
+export const getSettings = state => getAppReducer(state).settings;
+export const getAzureMapsKey = state => getSettings(state).azureMapsKey;
+export const getDiagnosticsOptIn = state => getSettings(state).diagnosticsOptIn;
 export const getDeviceGroupFlyoutStatus = state => getAppReducer(state).deviceGroupFlyoutIsOpen;
 export const getDeviceGroupsError = state =>
   getError(getAppReducer(state), epics.actionTypes.fetchDeviceGroups);
 export const getDeviceGroupsPendingStatus = state =>
   getPending(getAppReducer(state), epics.actionTypes.fetchDeviceGroups);
-export const getAzureMapsKeyError = state =>
-  getError(getAppReducer(state), epics.actionTypes.fetchAzureMapsKey);
-export const getAzureMapsKeyPendingStatus = state =>
-  getPending(getAppReducer(state), epics.actionTypes.fetchAzureMapsKey);
+export const getSolutionSettingsError = state =>
+  getError(getAppReducer(state), epics.actionTypes.fetchSolutionSettings);
+export const getSolutionSettingsPendingStatus = state =>
+  getPending(getAppReducer(state), epics.actionTypes.fetchSolutionSettings);
 export const getDeviceGroups = createSelector(
   getDeviceGroupEntities,
   deviceGroups => Object.keys(deviceGroups).map(id => deviceGroups[id])

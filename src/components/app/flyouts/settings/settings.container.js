@@ -11,7 +11,10 @@ import {
   getName,
   getReleaseNotes,
   setLogoError,
-  setLogoPendingStatus
+  setLogoPendingStatus,
+  getDiagnosticsOptIn,
+  getSolutionSettingsError,
+  getSolutionSettingsPendingStatus
 } from 'store/reducers/appReducer';
 import {
   isSimulationEnabled,
@@ -19,7 +22,7 @@ import {
   getSimulationPendingStatus,
   getToggleSimulationError,
   getToggleSimulationPendingStatus,
-  getSimulationError,
+  getSimulationError
 } from 'store/reducers/deviceSimulationReducer';
 import { Settings } from './settings';
 import { epics as appEpics } from 'store/reducers/appReducer';
@@ -39,11 +42,15 @@ const mapStateToProps = state => ({
   setLogoPending: setLogoPendingStatus(state),
   setLogoError: setLogoError(state),
   getSimulationPending: getSimulationPendingStatus(state),
-  getSimulationError: getSimulationError(state)
+  getSimulationError: getSimulationError(state),
+  diagnosticsOptIn: getDiagnosticsOptIn(state),
+  getDiagnosticsError: getSolutionSettingsError(state),
+  getDiagnosticsPending: getSolutionSettingsPendingStatus(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   changeTheme: theme => dispatch(appRedux.actions.changeTheme(theme)),
+  updateDiagnosticsOptIn: diagnosticsOptIn => dispatch(appEpics.actions.updateDiagnosticsOptIn(diagnosticsOptIn)),
   updateLogo: (logo, headers) => dispatch(appEpics.actions.updateLogo({logo, headers})),
   getSimulationStatus: () => dispatch(simulationEpics.actions.fetchSimulationStatus()),
   toggleSimulationStatus: (etag, enabled) => dispatch(simulationEpics.actions.toggleSimulationStatus({etag, enabled}))

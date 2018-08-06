@@ -5,8 +5,8 @@ import { translate } from 'react-i18next';
 import {
   redux as appRedux,
   getAzureMapsKey,
-  getAzureMapsKeyError,
-  getAzureMapsKeyPendingStatus,
+  getSolutionSettingsError,
+  getSolutionSettingsPendingStatus,
   getDeviceGroups,
   getDeviceGroupError,
   getTheme,
@@ -29,8 +29,8 @@ import { Dashboard } from './dashboard';
 
 const mapStateToProps = state => ({
   azureMapsKey: getAzureMapsKey(state),
-  azureMapsKeyError: getAzureMapsKeyError(state),
-  azureMapsKeyIsPending: getAzureMapsKeyPendingStatus(state),
+  azureMapsKeyError: getSolutionSettingsError(state),
+  azureMapsKeyIsPending: getSolutionSettingsPendingStatus(state),
   deviceGroups: getDeviceGroups(state),
   deviceGroupError: getDeviceGroupError(state),
   deviceLastUpdated: getDevicesLastUpdated(state),
