@@ -24,6 +24,7 @@
     "react-select": "1.0.0-rc.10",
     "react-svg": "2.1.22",
     "redux": "3.7.2",
+    "redux-devtools-extension": "2.13.5",
     "redux-observable": "0.17.0",
     "reselect": "3.0.1",
     "rxjs": "5.5.2",
