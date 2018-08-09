@@ -9,13 +9,6 @@
   flex-flow: column nowrap;
   padding: $baseContentPadding;
 
-  .maintenance-header {
-    font-weight: 700;
-    margin: 0;
-    margin-right: 10px;
-    @include rem-font-size(48px);
-  }
-
   .maintenance-sub-header {
     font-weight: 700;
     margin: 0;

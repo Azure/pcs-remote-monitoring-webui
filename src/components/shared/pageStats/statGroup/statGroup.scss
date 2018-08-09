@@ -1,0 +1,11 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+
+.stat-cell {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  @include rem-fallback(margin-right, 40px);
+}

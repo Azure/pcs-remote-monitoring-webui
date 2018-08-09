@@ -10,18 +10,18 @@ import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'compone
 import { TimeIntervalDropdown } from 'components/app/timeIntervalDropdown';
 import { Notifications } from './notifications';
 import { Jobs } from './jobs';
-import { PageContent, ContextMenu, RefreshBar, Svg } from 'components/shared';
+import {
+  PageContent,
+  ContextMenu,
+  RefreshBar,
+  PageTitle,
+  StatSection,
+  StatGroup,
+  StatProperty
+} from 'components/shared';
 import { svgs, renderUndefined } from 'utilities';
 
 import './summary.css';
-
-const StatCell = ({ value, label, svg, className = '' }) => (
-  <div className={`stat-cell ${className}`}>
-    { svg && <Svg path={svg} className="stat-icon" />}
-    <div className="stat-value">{value}</div>
-    <div className="stat-label">{label}</div>
-  </div>
-);
 
 export const Summary = ({
   alertProps,
@@ -36,54 +36,64 @@ export const Summary = ({
   timeInterval,
   ...props
 }) => [
-  <ContextMenu key="context-menu">
-    <DeviceGroupDropdown />
-    <RefreshBar
-      refresh={props.refreshData}
-      time={props.lastUpdated}
-      isPending={alertProps.isPending || jobProps.isPending}
-      t={props.t} />
-    <TimeIntervalDropdown
-      onChange={onTimeIntervalChange}
-      value={timeInterval}
-      t={props.t} />
-    <ManageDeviceGroupsBtn />
-  </ContextMenu>,
-  <PageContent className="maintenance-container summary-container" key="page-content">
-    <h1 className="maintenance-header">{props.t('maintenance.title')}</h1>
-    <div className="stat-container">
-      <div className="stat-group">
-        <StatCell value={renderUndefined(alertCount)} label={props.t('maintenance.openAlerts')} />
-        <div className="stat-column">
-          <StatCell
-            className="critical"
+    <ContextMenu key="context-menu">
+      <DeviceGroupDropdown />
+      <RefreshBar
+        refresh={props.refreshData}
+        time={props.lastUpdated}
+        isPending={alertProps.isPending || jobProps.isPending}
+        t={props.t} />
+      <TimeIntervalDropdown
+        onChange={onTimeIntervalChange}
+        value={timeInterval}
+        t={props.t} />
+      <ManageDeviceGroupsBtn />
+    </ContextMenu>,
+    <PageContent className="maintenance-container summary-container" key="page-content">
+      <PageTitle titleValue={props.t('maintenance.title')} />
+      <StatSection>
+        <StatGroup>
+          <StatProperty
+            value={renderUndefined(alertCount)}
+            label={props.t('maintenance.openAlerts')}
+            size="large" />
+        </StatGroup>
+        <StatGroup>
+          <StatProperty
             value={renderUndefined(criticalAlertCount)}
             label={props.t('maintenance.critical')}
-            svg={svgs.critical} />
-          <StatCell
-            className="warning"
+            svg={svgs.critical}
+            svgClassName="stat-critical" />
+          <StatProperty
             value={renderUndefined(warningAlertCount)}
             label={props.t('maintenance.warning')}
-            svg={svgs.warning} />
-        </div>
+            svg={svgs.warning}
+            svgClassName="stat-warning" />
+        </StatGroup>
+        <StatGroup>
+          <StatProperty
+            value={renderUndefined(failedJobsCount)}
+            label={props.t('maintenance.failedJobs')}
+            size="large" />
+        </StatGroup>
+        <StatGroup>
+          <StatProperty
+            value={renderUndefined(jobsCount)}
+            label={props.t('maintenance.total')} />
+          <StatProperty
+            value={renderUndefined(succeededJobsCount)}
+            label={props.t('maintenance.succeeded')} />
+        </StatGroup>
+      </StatSection>
+      <div className="tab-container">
+        <NavLink to={'/maintenance/notifications'} className="tab" activeClassName="active">{props.t('maintenance.notifications')}</NavLink>
+        <NavLink to={'/maintenance/jobs'} className="tab" activeClassName="active">{props.t('maintenance.jobs')}</NavLink>
       </div>
-      <div className="stat-group">
-        <StatCell value={renderUndefined(failedJobsCount)} label={props.t('maintenance.failedJobs')} />
-        <div className="stat-column">
-          <StatCell value={renderUndefined(jobsCount)} label={props.t('maintenance.total')} />
-          <StatCell value={renderUndefined(succeededJobsCount)} label={props.t('maintenance.succeeded')} />
-        </div>
+      <div className="grid-container">
+        <Switch>
+          <Route exact path={'/maintenance/notifications'} render={() => <Notifications {...props} {...alertProps} />} />
+          <Route exact path={'/maintenance/jobs'} render={() => <Jobs {...props} {...jobProps} />} />
+        </Switch>
       </div>
-    </div>
-    <div className="tab-container">
-      <NavLink to={'/maintenance/notifications'} className="tab" activeClassName="active">{props.t('maintenance.notifications')}</NavLink>
-      <NavLink to={'/maintenance/jobs'} className="tab" activeClassName="active">{props.t('maintenance.jobs')}</NavLink>
-    </div>
-    <div className="grid-container">
-      <Switch>
-        <Route exact path={'/maintenance/notifications'} render={() => <Notifications {...props} {...alertProps} />} />
-        <Route exact path={'/maintenance/jobs'} render={() => <Jobs {...props} {...jobProps} />} />
-      </Switch>
-    </div>
-  </PageContent>
-];
+    </PageContent>
+  ];
