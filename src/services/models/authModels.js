@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import 'polyfills';
 import { camelCaseReshape } from 'utilities';
 
 export const permissions = {
