@@ -83,6 +83,9 @@ Contributing to the solution
 ==============================
 Please follow our [contribution guildelines](CONTRIBUTING.md) and the code style conventions.
 
+### Customizing the solution
+Please see our [developer walkthroughs](src/walkthrough/README.md) for more information on customizing and adding to the application.
+
 References
 ==========
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).

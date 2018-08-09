@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
+import Config from 'app.config';
 import { SettingsContainer, ManageDeviceGroupsContainer } from './flyouts';
 
 // App Components
@@ -16,6 +17,7 @@ import  {
   DevicesContainer as DevicesPage,
   RulesContainer as RulesPage,
   MaintenanceContainer as MaintenancePage,
+  ExampleContainer as ExamplePage,
   PageNotFoundContainer as PageNotFound
 } from 'components/pages';
 
@@ -28,7 +30,13 @@ const dashboardTab   = { to: '/dashboard',   svg: svgs.tabs.dashboard,   labelId
 const devicesTab     = { to: '/devices',     svg: svgs.tabs.devices,     labelId: 'tabs.devices' };
 const rulesTab       = { to: '/rules',       svg: svgs.tabs.rules,       labelId: 'tabs.rules' };
 const maintenanceTab = { to: '/maintenance', svg: svgs.tabs.maintenance, labelId: 'tabs.maintenance' };
+const exampleTab     = { to: '/example',     svg: svgs.tabs.example,     labelId: 'tabs.example' };
 const tabConfigs = [ dashboardTab, devicesTab, rulesTab, maintenanceTab ];
+
+/** Only show example pages and components when configured to do so */
+if (Config.showWalkthroughExamples) {
+  tabConfigs.push(exampleTab);
+}
 
 /** The base component for the app */
 class App extends Component {
@@ -62,6 +70,7 @@ class App extends Component {
               <Route exact path={devicesTab.to} component={DevicesPage} />
               <Route exact path={rulesTab.to} component={RulesPage} />
               <Route path={maintenanceTab.to} component={MaintenancePage} />
+              <Route path={exampleTab.to} component={ExamplePage} />
               <Route component={PageNotFound} />
             </Switch>
             { this.props.deviceGroupFlyoutIsOpen && <ManageDeviceGroupsContainer /> }
@@ -71,7 +80,6 @@ class App extends Component {
       </div>
     );
   }
-
 }
 
 export default App;

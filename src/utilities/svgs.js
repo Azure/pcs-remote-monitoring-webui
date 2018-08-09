@@ -59,7 +59,8 @@ export const svgs = {
     dashboard: TabDashboardIconPath,
     devices: TabDevicesIconPath,
     maintenance: TabMaintenanceIconPath,
-    rules: TabRulesIconPath
+    rules: TabRulesIconPath,
+    example: InfoBubbleIconPath
   },
   devices: {
     generic: DeviceGenericIconPath,

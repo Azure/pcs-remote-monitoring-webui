@@ -16,7 +16,8 @@
     "dashboard": "Dashboard",
     "devices": "Devices",
     "rules": "Rules",
-    "maintenance": "Maintenance"
+    "maintenance": "Maintenance",
+    "example": "Example"
   },
   "errorFormat": "Error: {{message}}",
   "errorCode": {
@@ -536,5 +537,8 @@
     "P1D": "Last day",
     "P7D": "Last week",
     "P1M": "Last month"
+  },
+  "examples": {
+    "pagePlaceholder": "This is a new page."
   }
 }

@@ -2,6 +2,7 @@
 
 // Exports the app page components
 
+export * from './_example/example.container';
 export * from './dashboard/dashboard.container';
 export * from './devices/devices.container';
 export * from './rules/rules.container';
