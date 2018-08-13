@@ -28,6 +28,7 @@ export class OverviewPanel extends Component {
       t,
       error,
       isPending,
+      activeDeviceGroup,
       openCriticalCount,
       openWarningCount,
       onlineDeviceCount,
@@ -39,6 +40,11 @@ export class OverviewPanel extends Component {
       deviceDataloaded
         ? onlineDeviceCount + offlineDeviceCount
         : undefined;
+    const deviceGroupName =
+      activeDeviceGroup
+        ? activeDeviceGroup.displayName
+        : t('dashboard.panels.overview.allDevices');
+
     return (
       <Panel>
         <PanelHeader>
@@ -46,7 +52,7 @@ export class OverviewPanel extends Component {
           { !showOverlay && isPending && <Indicator size="small" /> }
         </PanelHeader>
         <PanelContent className="device-stats-container">
-          <div className="stat-header">{t('dashboard.panels.overview.allDevices')}</div>
+          <div className="stat-header">{deviceGroupName}</div>
           <div className="stat-container">
             <div className="stat-cell col-third">
               <div className="stat-value critical">

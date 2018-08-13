@@ -274,6 +274,7 @@ export class Dashboard extends Component {
       devicesError,
       devicesIsPending,
 
+      activeDeviceGroup,
       deviceGroups,
       deviceGroupError,
 
@@ -355,6 +356,7 @@ export class Dashboard extends Component {
         <Grid>
           <Cell className="col-1 devices-overview-cell">
             <OverviewPanel
+              activeDeviceGroup={activeDeviceGroup}
               openWarningCount={openWarningCount}
               openCriticalCount={openCriticalCount}
               onlineDeviceCount={onlineDeviceCount}
