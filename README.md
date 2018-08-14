@@ -15,6 +15,9 @@ Web app for Azure IoT Remote Monitoring Solution [dotnet](https://github.com/Azu
 Prerequisites
 =============
 ### 1. Deploy a Remote Monitoring Solution
+
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://www.azureiotsolutions.com/Accelerators#solutions/types/RM2)
+
 The easiest way to test the Web UI is against a deployed remote monitoring solution. The solution can be deployed via the [web interface](https://docs.microsoft.com/azure/iot-suite/iot-suite-remote-monitoring-deploy) or via the [command line](https://docs.microsoft.com/azure/iot-suite/iot-suite-remote-monitoring-deploy-cli).
 
 It is also possible to [deploy the solution locally](https://docs.microsoft.com/azure/iot-suite/iot-suite-remote-monitoring-deploy-local#deploy-the-azure-services).
