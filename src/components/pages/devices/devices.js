@@ -88,7 +88,7 @@ export class Devices extends Component {
         <RefreshBar refresh={fetchDevices} time={lastUpdated} isPending={isPending} t={t} />
         { !!error && <AjaxError t={t} error={error} /> }
         { !error && <DevicesGrid {...gridProps} /> }
-        { newDeviceFlyoutOpen && <DeviceNewContainer onClose={this.closeFlyout} /> }
+{ newDeviceFlyoutOpen && <DeviceNewContainer onClose={this.closeFlyout} /> }
         { simManagementFlyoutOpen && <SIMManagementContainer onClose={this.closeFlyout} /> }
       </PageContent>
     ];

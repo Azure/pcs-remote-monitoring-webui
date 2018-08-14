@@ -84,7 +84,7 @@ Contributing to the solution
 Please follow our [contribution guildelines](CONTRIBUTING.md) and the code style conventions.
 
 ### Customizing the solution
-Please see our [developer walkthroughs](src/walkthrough/README.md) for more information on customizing and adding to the application.
+Please see our [developer walkthroughs](/docs/walkthrough/README.md) for more information on customizing and adding to the application.
 
 References
 ==========

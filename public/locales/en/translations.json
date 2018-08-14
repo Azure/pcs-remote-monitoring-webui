@@ -17,7 +17,9 @@
     "devices": "Devices",
     "rules": "Rules",
     "maintenance": "Maintenance",
-    "example": "Example"
+    "example": "Page Example",
+    "gridExample": "Grid Example",
+    "flyoutExample": "Flyout Example"
   },
   "errorFormat": "Error: {{message}}",
   "errorCode": {
@@ -539,6 +541,31 @@
     "P1M": "Last month"
   },
   "examples": {
-    "pagePlaceholder": "This is a new page."
+    "pagePlaceholder": "This is a new page.",
+    "grid": {
+      "name": "Name",
+      "description": "Description",
+      "btn1": "Button 1",
+      "btn2": "Button 2"
+    },
+    "flyout": {
+      "title": "Flyout Example",
+      "pageBody": "Click the context button above to open a flyout.",
+      "open": "Open Flyout",
+      "flyouts": {
+        "example" : {
+          "header": "Example Flyout",
+          "description": "This example flyout contains a simple form with action buttons.",
+          "insertFormHere": "Insert form controls here. See 'src/components/shared/forms' for form specific shared controls you might leverage.",
+          "summaryHeader": "Summary",
+          "affected": "affected items",
+          "cancel": "Cancel",
+          "apply": "Apply",
+          "pending": "applying changes... ",
+          "applySuccess": "items updated successfully!",
+          "close": "Close"
+        }
+      }
+    }
   }
 }

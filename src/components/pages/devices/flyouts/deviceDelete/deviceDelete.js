@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import { Observable } from 'rxjs';
-import update from 'immutability-helper';
 
 import { IoTHubManagerService } from 'services';
 import { svgs } from 'utilities';
@@ -52,12 +51,6 @@ export class DeviceDelete extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.devices && (this.props.devices || []).length !== nextProps.devices.length) {
       this.populateDevicesState(nextProps.devices);
-    }
-  }
-
-  updateSummaryMessage(nextState, message) {
-    if (nextState.summaryMessage !== message) {
-      this.setState(update(nextState, { summaryMessage: { $set: message } }));
     }
   }
 

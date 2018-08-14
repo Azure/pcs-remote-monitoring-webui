@@ -2,6 +2,7 @@
 
 // Exports models
 
+export * from './_exampleModels';
 export * from './ajaxModels';
 export * from './authModels';
 export * from './deviceSimulationModels';
