@@ -69,7 +69,7 @@ Grids in remote monitoring are based on [ag-grid][ag-grid], with our own customi
       t: this.props.t
     };
     ```
-1. Add the your grid and `RefreshBar to the `PageContent` (or in another component such as a flyout).
+1. Add your grid and `RefreshBar` to the `PageContent` (or in another component such as a flyout).
     ```jsx
       <PageContent className="grid-example-container" key="page-content">
         <RefreshBar refresh={fetchData} time={lastUpdated} isPending={isPending} t={t} />

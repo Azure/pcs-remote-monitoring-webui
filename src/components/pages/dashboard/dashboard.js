@@ -18,6 +18,7 @@ import {
   TelemetryPanel,
   AnalyticsPanel,
   MapPanel,
+  ExamplePanel,
   transformTelemetryResponse,
   chartColorObjects
 } from './panels';
@@ -407,6 +408,11 @@ export class Dashboard extends Component {
               colors={chartColorObjects}
               t={t} />
           </Cell>
+          { Config.showWalkthroughExamples &&
+            <Cell className="col-4">
+              <ExamplePanel t={t} />
+            </Cell>
+          }
         </Grid>
       </PageContent>
     ];
