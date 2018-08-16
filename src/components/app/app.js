@@ -12,11 +12,12 @@ import NavigationContainer from './navigation/navigationContainer';
 import Main from './main/main';
 
 // Page Components
-import  {
+import {
   DashboardContainer as DashboardPage,
   DevicesContainer as DevicesPage,
   RulesContainer as RulesPage,
   MaintenanceContainer as MaintenancePage,
+  PackagesContainer as PackagesPage,
   ExampleContainer as ExamplePage,
   FlyoutExampleContainer as FlyoutExamplePage,
   GridExampleContainer as GridExamplePage,
@@ -28,14 +29,15 @@ import { svgs } from 'utilities';
 import './app.css';
 
 /** The navigation tab configurations */
-const dashboardTab     = { to: '/dashboard',     svg: svgs.tabs.dashboard,   labelId: 'tabs.dashboard' };
-const devicesTab       = { to: '/devices',       svg: svgs.tabs.devices,     labelId: 'tabs.devices' };
-const rulesTab         = { to: '/rules',         svg: svgs.tabs.rules,       labelId: 'tabs.rules' };
-const maintenanceTab   = { to: '/maintenance',   svg: svgs.tabs.maintenance, labelId: 'tabs.maintenance' };
-const exampleTab       = { to: '/example',       svg: svgs.tabs.example,     labelId: 'tabs.example' };
-const flyoutExampleTab = { to: '/flyoutexample', svg: svgs.tabs.example,     labelId: 'tabs.flyoutExample' };
-const gridExampleTab   = { to: '/gridexample',   svg: svgs.tabs.example,     labelId: 'tabs.gridExample' };
-const tabConfigs = [ dashboardTab, devicesTab, rulesTab, maintenanceTab ];
+const dashboardTab = { to: '/dashboard', svg: svgs.tabs.dashboard, labelId: 'tabs.dashboard' };
+const devicesTab = { to: '/devices', svg: svgs.tabs.devices, labelId: 'tabs.devices' };
+const rulesTab = { to: '/rules', svg: svgs.tabs.rules, labelId: 'tabs.rules' };
+const maintenanceTab = { to: '/maintenance', svg: svgs.tabs.maintenance, labelId: 'tabs.maintenance' };
+const packagesTab = { to: '/packages', svg: svgs.tabs.packages, labelId: 'tabs.packages' };
+const exampleTab = { to: '/example', svg: svgs.tabs.example, labelId: 'tabs.example' };
+const flyoutExampleTab = { to: '/flyoutexample', svg: svgs.tabs.example, labelId: 'tabs.flyoutExample' };
+const gridExampleTab = { to: '/gridexample', svg: svgs.tabs.example, labelId: 'tabs.gridExample' };
+const tabConfigs = [dashboardTab, devicesTab, rulesTab, maintenanceTab, packagesTab];
 
 /** Only show example pages and components when configured to do so */
 if (Config.showWalkthroughExamples) {
@@ -76,13 +78,14 @@ class App extends Component {
               <Route exact path={devicesTab.to} component={DevicesPage} />
               <Route exact path={rulesTab.to} component={RulesPage} />
               <Route path={maintenanceTab.to} component={MaintenancePage} />
+              <Route path={packagesTab.to} component={PackagesPage} />
               <Route path={exampleTab.to} component={ExamplePage} />
               <Route path={flyoutExampleTab.to} component={FlyoutExamplePage} />
               <Route path={gridExampleTab.to} component={GridExamplePage} />
               <Route component={PageNotFound} />
             </Switch>
-            { this.props.deviceGroupFlyoutIsOpen && <ManageDeviceGroupsContainer /> }
-            { this.state.openFlyout === 'settings' && <SettingsContainer onClose={this.closeFlyout} /> }
+            {this.props.deviceGroupFlyoutIsOpen && <ManageDeviceGroupsContainer />}
+            {this.state.openFlyout === 'settings' && <SettingsContainer onClose={this.closeFlyout} />}
           </Main>
         </div>
       </div>

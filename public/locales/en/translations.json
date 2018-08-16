@@ -17,6 +17,7 @@
     "devices": "Devices",
     "rules": "Rules",
     "maintenance": "Maintenance",
+    "packages": "Packages",
     "example": "Page Example",
     "gridExample": "Grid Example",
     "flyoutExample": "Flyout Example"
@@ -354,16 +355,17 @@
       },
       "SIMManagement": {
         "title": "SIM Management",
-        "provider" : "Provider",
+        "provider": "Provider",
         "summaryHeader": "Summary and instructions",
         "here": "here",
         "select": "Select...",
-        "header":{
-          "telefonica": "As a Telefónica IoT customer you have the advantage of adding this feature to enrich automatically your Azure Remote Monitoring Solution with the connectivity data available in Telefónica IoT Connectivity Platform (Network Information, Data Consumption & Network Based Location)."        },
+        "header": {
+          "telefonica": "As a Telefónica IoT customer you have the advantage of adding this feature to enrich automatically your Azure Remote Monitoring Solution with the connectivity data available in Telefónica IoT Connectivity Platform (Network Information, Data Consumption & Network Based Location)."
+        },
         "description": {
           "telefonica": "This feature is in Preview. In order to sync your connectivity data into Azure Remote Monitoring Solution, please fill a request <1><0>url</0></1>, select the option “Azure Remote Monitoring” and include your contact data and we will automatically activate your account. \n\nIf you are not a Telefónica client yet and you want to enjoy this or other IoT Connectivity Cloud Ready services, you can contact us <1><0>url</0></1> and select the option “Connectivity”; we will be glad to help you."
         },
-        "operator":{
+        "operator": {
           "telefonica": "Telefónica"
         }
       }
@@ -540,6 +542,18 @@
     "P7D": "Last week",
     "P1M": "Last month"
   },
+  "packages": {
+    "searchPlaceholder": "Search packages...",
+    "noneFound": "No packages found.",
+    "title": "Packages",
+    "total": "total packages",
+    "grid": {},
+    "flyouts": {
+      "new": {
+        "contextMenuName": "New Package"
+      }
+    }
+  },
   "examples": {
     "pagePlaceholder": "This is a new page.",
     "grid": {
@@ -553,7 +567,7 @@
       "pageBody": "Click the context button above to open a flyout.",
       "open": "Open Flyout",
       "flyouts": {
-        "example" : {
+        "example": {
           "header": "Example Flyout",
           "description": "This example flyout contains a simple form with action buttons.",
           "insertFormHere": "Insert form controls here. See 'src/components/shared/forms' for form specific shared controls you might leverage.",

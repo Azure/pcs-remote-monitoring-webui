@@ -13,7 +13,7 @@ A presentational component containing one or many StatPropertys. By default the 
 
 ### StatProperty: 
 
-A presentational component containing number value, label, and an optional svg and svgClassname. The number value can be of three different sizes- large, medium or small, based on `size` parameter. By default the 'size' will be assigned 'normal', which will inherit it's font size from parent css class.
+A presentational component containing number value, label, and an optional svg and svgClassname. The number value can be of three different sizes- large, medium or small, based on `size` parameter. By default the 'size' will be assigned 'small'.
 
 ## Examples: 
 

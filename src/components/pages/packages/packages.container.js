@@ -1,0 +1,30 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
+import { Packages } from './packages';
+import {
+  epics as packagesEpics,
+  getPackages,
+  getEntities,
+  getPackagesError,
+  getPackagesLastUpdated,
+  getPackagesPendingStatus
+} from 'store/reducers/packagesReducer';
+
+// Pass the packages status
+const mapStateToProps = state => ({
+  entities: getEntities(state),
+  packages: getPackages(state),
+  error: getPackagesError(state),
+  isPending: getPackagesPendingStatus(state),
+  lastUpdated: getPackagesLastUpdated(state)
+});
+
+// Wrap the dispatch method
+const mapDispatchToProps = dispatch => ({
+  fetchPackages: () => dispatch(packagesEpics.actions.fetchPackages()),
+  deletePackages: (packageIdArr) => dispatch(packagesEpics.actions.deletePackages(packageIdArr))
+});
+
+export const PackagesContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Packages));

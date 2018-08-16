@@ -53,3 +53,25 @@ export const toSolutionSettingThemeModel = (response = {}) => camelCaseReshape(r
   'diagnosticsOptIn': 'diagnosticsOptIn',
   'azureMapsKey': 'azureMapsKey'
 });
+
+export const toNewPackageRequestModel = ({
+  type,
+  packageObj
+}) => {
+  return {
+    Type: type,
+    Package: packageObj
+  };
+}
+
+export const toPackagesModel = (response = {}) => getItems(response)
+  .map(toPackageModel);
+
+export const toPackageModel = (response = {}) => {
+  return camelCaseReshape(response, {
+    'id': 'Id',
+    'type': 'Type',
+    'name': 'Name',
+    'dateCreated': 'DateCreated'
+  });
+};

@@ -11,3 +11,4 @@ export * from './rules/rules.container';
 export * from './maintenance/maintenance.container';
 export * from './pageNotFound/pageNotFound';
 export * from './pageNotFound/pageNotFound.container';
+export * from './packages/packages.container';
