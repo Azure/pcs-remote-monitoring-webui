@@ -45,8 +45,8 @@ export const epics = createEpicScenario({
       if (diagnosticsOptIn) {
         return DiagnosticsService.logEvent(payload)
         /* We don't want anymore action to be executed after this call
-            and hence return empty observable */
-          .map(_ => Observable.empty())
+            and hence return empty observable in flatMap */
+          .flatMap(_ => Observable.empty())
           .catch(_ => Observable.empty())
       } else {
         return Observable.empty()
