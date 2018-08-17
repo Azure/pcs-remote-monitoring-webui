@@ -547,10 +547,16 @@
     "noneFound": "No packages found.",
     "title": "Packages",
     "total": "total packages",
-    "grid": {},
+    "new": "New Package",
+    "delete": "Delete",
+    "grid": {
+      "name": "Name",
+      "type": "Type",
+      "dateCreated": "Date Created"
+    },
     "flyouts": {
       "new": {
-        "contextMenuName": "New Package"
+        "title": "New Package"
       }
     }
   },

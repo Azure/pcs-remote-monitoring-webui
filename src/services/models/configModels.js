@@ -69,9 +69,9 @@ export const toPackagesModel = (response = {}) => getItems(response)
 
 export const toPackageModel = (response = {}) => {
   return camelCaseReshape(response, {
-    'id': 'Id',
-    'type': 'Type',
-    'name': 'Name',
-    'dateCreated': 'DateCreated'
+    'id': 'id',
+    'type': 'type',
+    'name': 'name',
+    'dateCreated': 'dateCreated'
   });
 };

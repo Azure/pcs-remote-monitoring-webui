@@ -6,7 +6,6 @@ import { Packages } from './packages';
 import {
   epics as packagesEpics,
   getPackages,
-  getEntities,
   getPackagesError,
   getPackagesLastUpdated,
   getPackagesPendingStatus
@@ -14,7 +13,6 @@ import {
 
 // Pass the packages status
 const mapStateToProps = state => ({
-  entities: getEntities(state),
   packages: getPackages(state),
   error: getPackagesError(state),
   isPending: getPackagesPendingStatus(state),

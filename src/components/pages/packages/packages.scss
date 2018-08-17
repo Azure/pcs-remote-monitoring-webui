@@ -1,3 +1,15 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-// TODO
+@import 'src/styles/variables';
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.package-container {
+  display: flex;
+  flex-flow: column nowrap;
+  padding: $baseContentPadding;
+
+  .package-title {
+    @include rem-fallback(padding-bottom, 30px);
+  }
+}

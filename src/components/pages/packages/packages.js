@@ -3,17 +3,17 @@
 import React, { Component } from 'react';
 import { permissions } from 'services/models';
 import { PackagesGrid } from './packagesGrid';
-import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/app/manageDeviceGroupsBtn';
 import {
   AjaxError,
   Btn,
   ContextMenu,
   PageContent,
   Protected,
-  RefreshBar
- } from 'components/shared';
- import { NewPackage } from './flyouts';
- import { svgs } from 'utilities';
+  RefreshBar,
+  PageTitle
+} from 'components/shared';
+import { NewPackage } from './flyouts';
+import { svgs } from 'utilities';
 
 import './packages.css';
 
@@ -34,25 +34,23 @@ export class Packages extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.isPending && nextProps.isPending !== this.props.isPending) {
-      // If the grid data refreshes, hide the flyout and deselect soft selections
+      // If the grid data refreshes, hide the flyout
       this.setState(closedFlyoutState);
     }
   }
 
   closeFlyout = () => this.setState(closedFlyoutState);
 
+  onContextMenuChange = contextBtns => this.setState({
+    contextBtns,
+    openFlyoutName: undefined
+  });
+
   openNewPackageFlyout = () => this.setState({
-    openFlyoutName: 'newPackage',
-    selectedPackageId: ''
+    openFlyoutName: 'new-Package'
   });
 
   onGridReady = gridReadyEvent => this.packageGridApi = gridReadyEvent.api;
-
-  searchOnChange = ({ target: { value } }) => {
-    if (this.packageGridApi) this.packageGridApi.setQuickFilter(value);
-  };
-
-  onContextMenuChange = contextBtns => this.setState({ contextBtns });
 
   render() {
     const { t, packages, error, isPending, fetchPackages, lastUpdated } = this.props;
@@ -65,14 +63,14 @@ export class Packages extends Component {
 
     return [
       <ContextMenu key="context-menu">
+        <RefreshBar refresh={fetchPackages} time={lastUpdated} isPending={isPending} t={t} />
         {this.state.contextBtns}
-        <Protected permission={permissions.addPackage}>
-          <Btn svg={svgs.plus} onClick={this.appPackageFlyout}>{t('packages.flyouts.new.contextMenuName')}</Btn>
+        <Protected permission={permissions.addPackages}>
+          <Btn svg={svgs.plus} onClick={this.openNewPackageFlyout}>{t('packages.new')}</Btn>
         </Protected>
-        <ManageDeviceGroupsBtn />
       </ContextMenu>,
       <PageContent className="package-container" key="page-content">
-        <RefreshBar refresh={fetchPackages} time={lastUpdated} isPending={isPending} t={t} />
+        <PageTitle className="package-title" titleValue={t('packages.title')} />
         {!!error && <AjaxError t={t} error={error} />}
         {!error && <PackagesGrid {...gridProps} />}
         {this.state.openFlyoutName === 'newPackage' && <NewPackage t={t} onClose={this.closeFlyout} />}
