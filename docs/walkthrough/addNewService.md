@@ -100,7 +100,7 @@ Services in remote monitoring are called using [rxjs][rxjs] Observables.
     ];
 
     const rootEpic = combineEpics(...epics);
-```
+    ```
 
 
 #### Congratulations! Your service is ready to be hooked up to user interface components.

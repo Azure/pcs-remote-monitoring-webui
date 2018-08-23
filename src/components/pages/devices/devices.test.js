@@ -19,6 +19,7 @@ describe('Devices Component', () => {
       fetchDevices: () => {},
       changeDeviceGroup: (id) => {},
       t: () => {},
+      updateCurrentWindow: () => {}
     };
 
     const wrapper = shallow(

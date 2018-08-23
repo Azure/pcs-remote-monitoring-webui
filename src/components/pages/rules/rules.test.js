@@ -19,7 +19,8 @@ describe('Rules Component', () => {
       lastUpdated: undefined,
       fetchRules: () => {},
       changeDeviceGroup: (id) => {},
-      t: () => {}
+      t: () => {},
+      updateCurrentWindow: () => {}
     };
 
     const wrapper = shallow(

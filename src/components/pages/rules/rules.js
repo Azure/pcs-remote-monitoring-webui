@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { permissions } from 'services/models';
+import { permissions, toDiagnosticsModel } from 'services/models';
 import { RulesGrid } from './rulesGrid';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/app/manageDeviceGroupsBtn';
@@ -36,6 +36,8 @@ export class Rules extends Component {
     if (!this.props.lastUpdated && !this.props.error) {
       this.props.fetchRules();
     }
+
+    this.props.updateCurrentWindow('Rules');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -52,10 +54,14 @@ export class Rules extends Component {
 
   closeFlyout = () => this.setState(closedFlyoutState);
 
-  openNewRuleFlyout = () => this.setState({
-    openFlyoutName: 'newRule',
-    selectedRuleId: ''
-  });
+  openNewRuleFlyout = () => {
+    const { logEvent } = this.props;
+    this.setState({
+      openFlyoutName: 'newRule',
+      selectedRuleId: ''
+    });
+    logEvent(toDiagnosticsModel('Rule_NewClick', {}));
+  }
 
   onGridReady = gridReadyEvent => this.rulesGridApi = gridReadyEvent.api;
 
@@ -72,7 +78,8 @@ export class Rules extends Component {
       error,
       isPending,
       lastUpdated,
-      fetchRules
+      fetchRules,
+      logEvent
     } = this.props;
     const gridProps = {
       onGridReady: this.onGridReady,
@@ -80,7 +87,8 @@ export class Rules extends Component {
       onContextMenuChange: this.onContextMenuChange,
       t: this.props.t,
       deviceGroups: this.props.deviceGroups,
-      refresh: fetchRules
+      refresh: fetchRules,
+      logEvent: this.props.logEvent
     };
     return [
       <ContextMenu key="context-menu">
@@ -96,7 +104,7 @@ export class Rules extends Component {
         <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} t={t} />
         { !!error && <AjaxError t={t} error={error} /> }
         {!error && <RulesGrid {...gridProps} />}
-        {this.state.openFlyoutName === 'newRule' && <NewRuleFlyout t={t} onClose={this.closeFlyout} />}
+        {this.state.openFlyoutName === 'newRule' && <NewRuleFlyout t={t} onClose={this.closeFlyout} logEvent={logEvent} />}
       </PageContent>
     ];
   }

@@ -18,6 +18,7 @@ import {
   TelemetryPanel,
   AnalyticsPanel,
   MapPanel,
+  ExamplePanel,
   transformTelemetryResponse,
   chartColorObjects
 } from './panels';
@@ -65,6 +66,8 @@ export class Dashboard extends Component {
     this.dashboardRefresh$ = new Subject(); // Restarts all streams
     this.telemetryRefresh$ = new Subject();
     this.panelsRefresh$ = new Subject();
+
+    this.props.updateCurrentWindow('Dashboard');
   }
 
   componentDidMount() {
@@ -407,6 +410,11 @@ export class Dashboard extends Component {
               colors={chartColorObjects}
               t={t} />
           </Cell>
+          { Config.showWalkthroughExamples &&
+            <Cell className="col-4">
+              <ExamplePanel t={t} />
+            </Cell>
+          }
         </Grid>
       </PageContent>
     ];

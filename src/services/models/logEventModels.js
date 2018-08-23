@@ -2,11 +2,22 @@
 
 import { toDiagnosticsModel } from 'services/models';
 
-export const toLogRuleModel = (rule = {}) => ({
-  'DeviceGroup': rule.groupId,
-  'Calculation': rule.calculation,
-  'TimePeriod': rule.timePeriod,
-  'Severity': rule.severity
-});
+export const toRuleDiagnosticsModel = (eventName, rule) =>
+{
+  const metadata = {
+    DeviceGroup: rule.groupId,
+    Calculation : rule.calculation,
+    TimePeriod: rule.timePeriod,
+    SeverityLevel: rule.severity,
+    ConditionCount: rule.conditions.length,
+    FirstFieldChosen: rule.conditions[0].field,
+    FirstOperatorChosen: rule.conditions[0].operator
+  };
 
-export const toRuleDiagnosticsModel = (eventName, rule) => toDiagnosticsModel(eventName, toLogRuleModel(rule));
+  return toDiagnosticsModel(eventName, metadata);
+}
+
+export const toSinglePropertyDiagnosticsModel = (eventName, propertyTitle, property) => {
+  const metadata = { [propertyTitle]: property };
+  return toDiagnosticsModel(eventName, metadata);
+}

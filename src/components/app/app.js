@@ -46,6 +46,23 @@ if (Config.showWalkthroughExamples) {
   tabConfigs.push(gridExampleTab);
 }
 
+class WalkthroughExampleRoute extends Component {
+  render() {
+    const { component: Component, ...props } = this.props
+
+    return (
+      <Route
+        {...props}
+        render={props => (
+          Config.showWalkthroughExamples ?
+            <Component {...props} /> :
+            <Redirect to='/' />
+        )}
+      />
+    )
+  }
+}
+
 /** The base component for the app */
 class App extends Component {
 
@@ -79,10 +96,10 @@ class App extends Component {
               <Route exact path={rulesTab.to} component={RulesPage} />
               <Route path={maintenanceTab.to} component={MaintenancePage} />
               <Route path={packagesTab.to} component={PackagesPage} />
-              <Route path={exampleTab.to} component={ExamplePage} />
-              <Route path={flyoutExampleTab.to} component={FlyoutExamplePage} />
-              <Route path={gridExampleTab.to} component={GridExamplePage} />
               <Route component={PageNotFound} />
+              <WalkthroughExampleRoute path={exampleTab.to} component={ExamplePage} />
+              <WalkthroughExampleRoute path={flyoutExampleTab.to} component={FlyoutExamplePage} />
+              <WalkthroughExampleRoute path={gridExampleTab.to} component={GridExamplePage} />
             </Switch>
             {this.props.deviceGroupFlyoutIsOpen && <ManageDeviceGroupsContainer />}
             {this.state.openFlyout === 'settings' && <SettingsContainer onClose={this.closeFlyout} />}

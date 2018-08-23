@@ -586,6 +586,10 @@
           "close": "Close"
         }
       }
+    },
+    "panel": {
+      "header": "Example Panel",
+      "panelBody": "This is a new panel."
     }
   }
 }

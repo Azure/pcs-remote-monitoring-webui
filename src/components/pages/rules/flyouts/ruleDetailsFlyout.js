@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { svgs } from 'utilities';
-import { permissions } from 'services/models';
+import { permissions, toDiagnosticsModel } from 'services/models';
 import { Btn, Protected, ProtectedError } from 'components/shared';
 import { RuleEditorContainer } from './ruleEditor';
 import { RuleViewerContainer } from './ruleViewer';
@@ -26,7 +26,18 @@ export class RuleDetailsFlyout extends Component {
     }
   }
 
-  goToEditMode = () => { this.setState({ isEditable: true }); }
+  onTopXClose = () => {
+    const { logEvent, onClose } = this.props;
+    if(this.state.isEditable) {
+      logEvent(toDiagnosticsModel('Rule_TopXCloseClick', {}));
+    }
+    onClose();
+  }
+
+  goToEditMode = () => {
+    this.props.logEvent(toDiagnosticsModel('Rule_EditClick', {}));
+     this.setState({ isEditable: true });
+  }
 
   render() {
     const { t, onClose, rule } = this.props;
@@ -36,7 +47,7 @@ export class RuleDetailsFlyout extends Component {
       <Flyout.Container>
         <Flyout.Header>
           <Flyout.Title>{isEditable ? t('rules.flyouts.editRule') : t('rules.flyouts.viewRule')}</Flyout.Title>
-          <Flyout.CloseBtn onClick={onClose} />
+          <Flyout.CloseBtn onClick={this.onTopXClose} />
         </Flyout.Header>
         <Flyout.Content className="rule-details">
           {!isEditable
