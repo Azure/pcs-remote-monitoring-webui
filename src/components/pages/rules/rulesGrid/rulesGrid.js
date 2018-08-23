@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
 
-import { permissions } from 'services/models';
+import { permissions, toDiagnosticsModel } from 'services/models';
 import { Btn, PcsGrid, Protected } from 'components/shared';
 import { rulesColumnDefs, defaultRulesGridProps } from './rulesGridConfig';
 import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
@@ -93,7 +93,10 @@ export class RulesGrid extends Component {
     }
   }
 
-  openEditRuleFlyout = () => this.setState({ openFlyoutName: 'edit' });
+  openEditRuleFlyout = () => {
+    this.props.logEvent(toDiagnosticsModel('Rule_EditClick', {}));
+    this.setState({ openFlyoutName: 'edit' });
+  }
 
   openStatusFlyout = () => this.setState({ openFlyoutName: 'status' });
 
@@ -104,9 +107,9 @@ export class RulesGrid extends Component {
   getOpenFlyout = () => {
     switch (this.state.openFlyoutName) {
       case 'view':
-        return <RuleDetailsFlyout onClose={this.closeFlyout} t={this.props.t} rule={this.state.softSelectedRule || this.state.selectedRules[0]} key="view-rule-flyout" />
+        return <RuleDetailsFlyout onClose={this.closeFlyout} t={this.props.t} rule={this.state.softSelectedRule || this.state.selectedRules[0]} key="view-rule-flyout" logEvent={this.props.logEvent} />
       case 'edit':
-        return <EditRuleFlyout onClose={this.closeFlyout} t={this.props.t} rule={this.state.softSelectedRule || this.state.selectedRules[0]} key="edit-rule-flyout" />
+        return <EditRuleFlyout onClose={this.closeFlyout} t={this.props.t} rule={this.state.softSelectedRule || this.state.selectedRules[0]} key="edit-rule-flyout" logEvent={this.props.logEvent} />
       case 'status':
         return <RuleStatusContainer onClose={this.closeFlyout} t={this.props.t} rules={this.state.selectedRules} key="edit-rule-flyout" />
       case 'delete':

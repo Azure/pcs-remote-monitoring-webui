@@ -20,7 +20,8 @@ describe('Dashboard Component', () => {
       rulesError: undefined,
       rulesIsPending: false,
       fetchRules: () => {},
-      t: () => {}
+      t: () => {},
+      updateCurrentWindow: () => {}
     };
 
     const wrapper = shallow(

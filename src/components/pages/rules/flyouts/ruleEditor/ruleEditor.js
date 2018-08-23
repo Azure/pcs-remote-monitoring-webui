@@ -32,7 +32,9 @@ import {
   ruleCalculations,
   ruleTimePeriods,
   ruleOperators,
-  toRuleDiagnosticsModel
+  toRuleDiagnosticsModel,
+  toDiagnosticsModel,
+  toSinglePropertyDiagnosticsModel
 } from 'services/models';
 import Config from 'app.config';
 
@@ -108,7 +110,10 @@ export class RuleEditor extends LinkedComponent {
 
   toSelectOption = ({ id, displayName }) => ({ label: displayName, value: id });
 
-  addCondition = () => this.conditionsLink.set([...this.conditionsLink.value, newCondition()]);
+  addCondition = () => {
+    this.conditionsLink.set([...this.conditionsLink.value, newCondition()]);
+    this.props.logEvent(toDiagnosticsModel('Rule_AddConditionClick', {}));
+  }
 
   deleteCondition = (index) =>
     (evt) => this.conditionsLink.set(this.conditionsLink.value.filter((_, idx) => index !== idx));
@@ -160,16 +165,18 @@ export class RuleEditor extends LinkedComponent {
             },
             error => this.setState({ error, isPending: false, changesApplied: true })
           );
-        logEvent(toRuleDiagnosticsModel('RuleApplyClick', requestProps));
+        logEvent(toRuleDiagnosticsModel('Rule_ApplyClick', requestProps));
       }
     }
   }
 
   onGroupIdChange = ({ target: { value: { value = {} } } }) => {
+    const { logEvent } = this.props;
     this.setState({
       fieldQueryPending: true,
       isPending: true
     });
+    logEvent(toSinglePropertyDiagnosticsModel('Rule_DeviceGroupClick', 'DeviceGroup', value));
     this.getDeviceCountAndFields(value);
     this.formControlChange();
   }
@@ -209,9 +216,39 @@ export class RuleEditor extends LinkedComponent {
   }
 
   //todo toggle button didn't support link
-  onToggle = ({ target: { value } }) => {
-    this.setState({ formData: { ...this.state.formData, enabled: value } })
+  onStatusToggle = ({ target: { value } }) => {
+    this.setState({ formData: { ...this.state.formData, enabled: value } });
+    this.props.logEvent(toSinglePropertyDiagnosticsModel('Rule_StatusToggle', 'RuleStatus', value ? 'Enabled' : 'Disabled'));
     this.formControlChange();
+  }
+
+  onCalculationChange = ({ target: { value: { value = {} } } }) => {
+    this.props.logEvent(toSinglePropertyDiagnosticsModel('Rule_CalculationClick', 'Calculation', value));
+    this.formControlChange();
+  }
+
+  onFieldChange = (index, { target: { value: { value = {} } } }) => {
+    var eventProperties = { 'FieldChosen': value, 'ConditionNumber': index };
+    this.props.logEvent(toDiagnosticsModel('Rule_FieldClick', eventProperties));
+    this.formControlChange();
+  }
+
+  onOperatorChange = (index, { target: { value: { value = {} } } }) => {
+    var eventProperties = { 'OperatorChosen': value, 'ConditionNumber': index };
+    this.props.logEvent(toDiagnosticsModel('Rule_OperatorClick', eventProperties));
+    this.formControlChange();
+  }
+
+  onSeverityChange = ({ target: { value } }) => {
+    this.props.logEvent(toSinglePropertyDiagnosticsModel('Rule_SeverityLevelClick', 'SeverityLevel', value))
+    this.formControlChange();
+  }
+
+  onCloseClick = () => {
+    const { onClose, logEvent } = this.props;
+    const rule = { ...this.state.formData };
+    logEvent(toRuleDiagnosticsModel('Rule_CancelClick', rule));
+    onClose();
   }
 
   formControlChange = () => {
@@ -221,7 +258,7 @@ export class RuleEditor extends LinkedComponent {
   }
 
   render() {
-    const { onClose, t, deviceGroups = [] } = this.props;
+    const { t, deviceGroups = [] } = this.props;
     const {
       changesApplied,
       devicesAffected,
@@ -311,7 +348,7 @@ export class RuleEditor extends LinkedComponent {
                 placeholder={t('rules.flyouts.ruleEditor.calculationPlaceholder')}
                 link={this.calculationLink}
                 options={calculationOptions}
-                onChange={this.formControlChange}
+                onChange={this.onCalculationChange}
                 clearable={false}
                 searchable={false} />
             </FormGroup>
@@ -350,7 +387,7 @@ export class RuleEditor extends LinkedComponent {
                         type="select"
                         className="long"
                         placeholder={t('rules.flyouts.ruleEditor.condition.fieldPlaceholder')}
-                        onChange={this.formControlChange}
+                        onChange={(target) => this.onFieldChange(idx + 1, target)}
                         link={condition.fieldLink}
                         options={fieldOptions}
                         clearable={false}
@@ -362,7 +399,7 @@ export class RuleEditor extends LinkedComponent {
                         type="select"
                         className="short"
                         placeholder={t('rules.flyouts.ruleEditor.condition.operatorPlaceholder')}
-                        onChange={this.formControlChange}
+                        onChange={(target) => this.onOperatorChange(idx + 1, target)}
                         link={condition.operatorLink}
                         options={ruleOperators}
                         clearable={false}
@@ -389,7 +426,7 @@ export class RuleEditor extends LinkedComponent {
                 <FormGroup className="padded-top">
                   <FormLabel>{t('rules.flyouts.ruleEditor.severityLevel')}</FormLabel>
                   <Radio
-                    onChange={this.formControlChange}
+                    onChange={this.onSeverityChange}
                     link={this.severityLink}
                     value={Config.ruleSeverity.critical}>
                     <FormLabel>
@@ -397,7 +434,7 @@ export class RuleEditor extends LinkedComponent {
                     </FormLabel>
                   </Radio>
                   <Radio
-                    onChange={this.formControlChange}
+                    onChange={this.onSeverityChange}
                     link={this.severityLink}
                     value={Config.ruleSeverity.warning}>
                     <FormLabel>
@@ -405,7 +442,7 @@ export class RuleEditor extends LinkedComponent {
                     </FormLabel>
                   </Radio>
                   <Radio
-                    onChange={this.formControlChange}
+                    onChange={this.onSeverityChange}
                     link={this.severityLink}
                     value={Config.ruleSeverity.info}>
                     <FormLabel>
@@ -419,7 +456,7 @@ export class RuleEditor extends LinkedComponent {
                   <FormLabel>{t('rules.flyouts.ruleEditor.ruleStatus')}</FormLabel>
                   <ToggleBtn
                     value={formData.enabled}
-                    onChange={this.onToggle} >
+                    onChange={this.onStatusToggle} >
                     {formData.enabled ? t('rules.flyouts.ruleEditor.ruleEnabled') : t('rules.flyouts.ruleEditor.ruleDisabled')}
                   </ToggleBtn>
                 </FormGroup>
@@ -442,7 +479,7 @@ export class RuleEditor extends LinkedComponent {
         {
           <BtnToolbar>
             <Btn primary={true} disabled={!!changesApplied || isPending || !this.formIsValid() || conditionsHaveErrors} type="submit">{t('rules.flyouts.ruleEditor.apply')}</Btn>
-            <Btn svg={svgs.cancelX} onClick={onClose}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
+            <Btn svg={svgs.cancelX} onClick={this.onCloseClick}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
           </BtnToolbar>
         }
       </form>

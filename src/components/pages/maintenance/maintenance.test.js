@@ -16,7 +16,8 @@ describe('Dashboard Component', () => {
       rulesLastUpdated: undefined,
       deviceEntities: {},
       fetchRules: () => {},
-      t: () => {}
+      t: () => {},
+      updateCurrentWindow: () => {}
     };
 
     const wrapper = shallow(

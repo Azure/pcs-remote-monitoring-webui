@@ -66,6 +66,8 @@ export class Dashboard extends Component {
     this.dashboardRefresh$ = new Subject(); // Restarts all streams
     this.telemetryRefresh$ = new Subject();
     this.panelsRefresh$ = new Subject();
+
+    this.props.updateCurrentWindow('Dashboard');
   }
 
   componentDidMount() {

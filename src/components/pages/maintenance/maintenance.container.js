@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { Maintenance } from './maintenance';
 import {
+  epics as appEpics,
   redux as appRedux,
   getTheme,
   getTimeInterval,
@@ -39,7 +40,9 @@ const mapStateToProps = state => ({
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
   fetchRules: () => dispatch(rulesEpics.actions.fetchRules()),
-  updateTimeInterval: timeInterval => dispatch(appRedux.actions.updateTimeInterval(timeInterval))
+  updateTimeInterval: timeInterval => dispatch(appRedux.actions.updateTimeInterval(timeInterval)),
+  updateCurrentWindow: (currentWindow) => dispatch(appRedux.actions.updateCurrentWindow(currentWindow)),
+  logEvent: diagnosticsModel => dispatch(appEpics.actions.logEvent(diagnosticsModel))
 });
 
 export const MaintenanceContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Maintenance));

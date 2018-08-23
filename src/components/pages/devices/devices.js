@@ -31,6 +31,8 @@ export class Devices extends Component {
       ...closedFlyoutState,
       contextBtns: null
     };
+
+    this.props.updateCurrentWindow('Devices');
   }
 
   componentWillReceiveProps(nextProps) {

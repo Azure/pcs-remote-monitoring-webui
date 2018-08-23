@@ -362,7 +362,8 @@ export class RuleDetails extends Component {
                 onHardSelectChange={this.onHardSelectChange('rules')}
                 rowData={rule}
                 pagination={false}
-                refresh={this.props.fetchRules} />
+                refresh={this.props.fetchRules}
+                logEvent={this.props.logEvent} />
 
               <h4 className="sub-heading">{ t('maintenance.alertOccurrences') }</h4>
               <AlertOccurrencesGrid {...alertsGridProps} />
