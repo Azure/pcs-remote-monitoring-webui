@@ -32,7 +32,7 @@ export const toUpdateDeviceGroupRequestModel = (params = {}) => ({
   }))
 });
 
-export const prepareLogoResponse = ({  xhr, response }) => {
+export const prepareLogoResponse = ({ xhr, response }) => {
   const returnObj = {};
   const isDefault = xhr.getResponseHeader('IsDefault');
   if (!stringToBoolean(isDefault)) {
@@ -54,14 +54,16 @@ export const toSolutionSettingThemeModel = (response = {}) => camelCaseReshape(r
   'azureMapsKey': 'azureMapsKey'
 });
 
+export const packageTypeOptions = ['EDGE_MANIFEST'];
+
 export const toNewPackageRequestModel = ({
   type,
-  packageObj
+  packageFile
 }) => {
-  return {
-    Type: type,
-    Package: packageObj
-  };
+  const data = new FormData();
+  data.append('Type', type);
+  data.append('Package', packageFile);
+  return data;
 }
 
 export const toPackagesModel = (response = {}) => getItems(response)

@@ -556,8 +556,25 @@
     },
     "flyouts": {
       "new": {
-        "title": "New Package"
+        "title": "New Package",
+        "header": "Upload a package",
+        "description": "Add a package to your solution",
+        "upload": "Upload",
+        "cancel": "Cancel",
+        "close": "Close",
+        "type": "Package type",
+        "browse": "Browse",
+        "browseText": "for a package file",
+        "placeHolder": "Select package type",
+        "package": "Package",
+        "deploymentText":"To deploy packages, go to the 'Deployments' page and click '+ New Deployment' button.",
+        "validation": {
+          "required": "Is required"
+        }
       }
+    },
+    "typeOptions": {
+      "edge_manifest": "Edge Manifest"
     }
   },
   "examples": {

@@ -37,7 +37,7 @@ const packagesTab = { to: '/packages', svg: svgs.tabs.packages, labelId: 'tabs.p
 const exampleTab = { to: '/example', svg: svgs.tabs.example, labelId: 'tabs.example' };
 const flyoutExampleTab = { to: '/flyoutexample', svg: svgs.tabs.example, labelId: 'tabs.flyoutExample' };
 const gridExampleTab = { to: '/gridexample', svg: svgs.tabs.example, labelId: 'tabs.gridExample' };
-const tabConfigs = [dashboardTab, devicesTab, rulesTab, maintenanceTab, packagesTab];
+const tabConfigs = [dashboardTab, devicesTab, rulesTab, packagesTab, maintenanceTab];
 
 /** Only show example pages and components when configured to do so */
 if (Config.showWalkthroughExamples) {

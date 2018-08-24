@@ -89,14 +89,18 @@ export class HttpClient {
         if (accessToken) authHeaders['Authorization'] = `Bearer ${accessToken}`;
       });
     }
-    return {
+    const options = {
       ...request,
       headers: {
         ...jsonHeaders,
         ...request.headers,
         ...authHeaders
       }
-    };
+    }
+    if (options.headers && options.headers.hasOwnProperty('Content-Type') && options.headers['Content-Type'] === undefined) {
+      delete options.headers['Content-Type'];
+    }
+    return options;
   }
 
   /**

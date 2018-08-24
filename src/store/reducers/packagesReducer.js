@@ -40,8 +40,8 @@ export const epics = createEpicScenario({
         .map(toActionCreator(redux.actions.insertPackage, fromAction))
         .catch(handleError(fromAction))
   },
-  /** Delete packages */
-  deletePackages: {
+  /** Delete package */
+  deletePackage: {
     type: 'PACKAGES_DELETE',
     epic: fromAction =>
       ConfigService.deletePackage(fromAction.payload)
@@ -59,15 +59,23 @@ const packageListSchema = new schema.Array(packageSchema);
 // ========================= Reducers - START
 const initialState = { ...errorPendingInitialState, entities: {} };
 
-const insertPackageReducer = (state, { payload }) => {
-  const { entities: { packages }, result } = normalize(payload, packageListSchema);
+const insertPackageReducer = (state, { payload, fromAction }) => {
+  const { entities: { packages }, result } = normalize(payload, packageSchema);
+  if (state.entities) {
+    return update(state, {
+      entities: { $merge: packages },
+      items: { $splice: [[state.items.length, 0, result]] },
+      ...setPending(fromAction.type, false)
+    });
+  }
   return update(state, {
-    entities: { $merge: packages },
-    items: { $splice: [[state.items.length, 0, result]] }
+    entities: { $set: packages },
+    items: { $set: [result] },
+    ...setPending(fromAction.type, false)
   });
 };
 
-const deletePackagesReducer = (state, { payload }) => {
+const deletePackagesReducer = (state, { payload, fromAction }) => {
   const spliceArr = payload.reduce((idxAcc, payloadItem) => {
     const idx = state.items.indexOf(payloadItem);
     if (idx !== -1) {
@@ -77,7 +85,8 @@ const deletePackagesReducer = (state, { payload }) => {
   }, []);
   return update(state, {
     entities: { $unset: payload },
-    items: { $splice: spliceArr }
+    items: { $splice: spliceArr },
+    ...setPending(fromAction.type, false)
   });
 };
 
@@ -93,7 +102,9 @@ const updatePackagesReducer = (state, { payload, fromAction }) => {
 
 /* Action types that cause a pending flag */
 const fetchableTypes = [
-  epics.actionTypes.fetchPackages
+  epics.actionTypes.fetchPackages,
+  epics.actionTypes.createPackage,
+  epics.actionTypes.deletePackage
 ];
 
 export const redux = createReducerScenario({
@@ -116,6 +127,14 @@ export const getPackagesError = state =>
   getError(getPackagesReducer(state), epics.actionTypes.fetchPackages);
 export const getPackagesPendingStatus = state =>
   getPending(getPackagesReducer(state), epics.actionTypes.fetchPackages);
+export const getCreatePackageError = state =>
+  getError(getPackagesReducer(state), epics.actionTypes.createPackage);
+export const getCreatePackagePendingStatus = state =>
+  getPending(getPackagesReducer(state), epics.actionTypes.createPackage);
+export const getDeletePackageError = state =>
+  getError(getPackagesReducer(state), epics.actionTypes.deletePackage);
+export const getDeletePackagePendingStatus = state =>
+  getPending(getPackagesReducer(state), epics.actionTypes.deletePackage);
 export const getPackages = createSelector(
   getEntities, getItems,
   (entities, items) => items.map(id => entities[id])

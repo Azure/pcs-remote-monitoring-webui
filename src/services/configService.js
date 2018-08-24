@@ -8,7 +8,8 @@ import {
   toDeviceGroupsModel,
   toSolutionSettingThemeModel,
   toNewPackageRequestModel,
-  toPackagesModel
+  toPackagesModel,
+  toPackageModel
 } from './models';
 import { Observable } from '../../node_modules/rxjs';
 
@@ -89,9 +90,15 @@ export class ConfigService {
   }
 
   /** Creates a new package */
-  static createPackage(payload) {
-    return HttpClient.post(`${ENDPOINT}packages`, payload)
-      .map(toNewPackageRequestModel);
+  static createPackage(packageModel) {
+    var options = {
+      headers: {
+        'Accept': undefined,
+        'Content-Type': undefined
+      }
+    }
+    return HttpClient.post(`${ENDPOINT}packages`, toNewPackageRequestModel(packageModel), options)
+      .map(toPackageModel);
   }
 
   /** Returns all the account's packages */
