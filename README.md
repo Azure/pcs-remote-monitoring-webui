@@ -105,8 +105,8 @@ You can find a guide to using it [here](https://github.com/facebookincubator/cre
 - [SASS](http://sass-lang.com/)
 - [React-i18nnext](https://github.com/i18next/react-i18next)
 
-[build-badge]: https://img.shields.io/travis/Azure/pcs-remote-monitoring-webui.svg
-[build-url]: https://travis-ci.org/Azure/pcs-remote-monitoring-webui
+[build-badge]: https://solutionaccelerators.visualstudio.com/RemoteMonitoring/_apis/build/status/pcs-remote-monitoring-webui
+[build-url]: https://solutionaccelerators.visualstudio.com/RemoteMonitoring/_build/latest?definitionId=32
 [issues-badge]: https://img.shields.io/github/issues/azure/pcs-remote-monitoring-webui.svg
 [issues-url]: https://github.com/Azure/pcs-remote-monitoring-webui/issues/new
 [gitter-badge]: https://img.shields.io/gitter/room/azure/iot-solutions.js.svg
