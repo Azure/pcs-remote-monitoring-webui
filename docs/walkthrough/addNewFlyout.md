@@ -11,16 +11,16 @@ The following is for creating a new flyout called "**exampleFlyout**."
 ### Create the new flyout
 1. Create a folder named `exampleFlyout` inside your page's `flyouts` folder.
 1. Create 4 files in the new folder. See the individual example files for more details and comments inline.
-    - [exampleFlyout.container.js](/src/components/pages/_flyoutExample/flyouts/exampleFlyout/exampleFlyout.container.js) - maps redux and epic actions and selectors to the props for the flyout
-    - [exampleFlyout.js](/src/components/pages/_flyoutExample/flyouts/exampleFlyout/exampleFlyout.js) - main component for the flyout
-    - [exampleFlyout.scss](/src/components/pages/_flyoutExample/flyouts/exampleFlyout/exampleFlyout.scss) - styles for the flyout
-    - [index.js](/src/components/pages/_flyoutExample/flyouts/exampleFlyout/index.js) - exports for the new flyout
+    - [exampleFlyout.container.js](/src/walkthrough/components/pages/pageWithFlyout/flyouts/exampleFlyout/exampleFlyout.container.js) - maps redux and epic actions and selectors to the props for the flyout
+    - [exampleFlyout.js](/src/walkthrough/components/pages/pageWithFlyout/flyouts/exampleFlyout/exampleFlyout.js) - main component for the flyout
+    - [exampleFlyout.scss](/src/walkthrough/components/pages/pageWithFlyout/flyouts/exampleFlyout/exampleFlyout.scss) - styles for the flyout
+    - [index.js](/src/walkthrough/components/pages/pageWithFlyout/flyouts/exampleFlyout/index.js) - exports for the new flyout
 
 ### Setup the flyout
-1. Open your flyout's container file [exampleFlyout.container.js](/src/components/pages/_flyoutExample/flyouts/exampleFlyout/exampleFlyout.container.js) so the data and actions can be connected to the page props.
+1. Open your flyout's container file [exampleFlyout.container.js](/src/walkthrough/components/pages/pageWithFlyout/flyouts/exampleFlyout/exampleFlyout.container.js) so the data and actions can be connected to the page props.
     - To keep our example simple, no actions are mapped. But in a real world scenario, you would very likely need this. See the [Add a New Grid walkthrough](addNewGrid.md) for more information on mapping data and actions via a `container.js.`
 
-1. Open your flyout's file [exampleFlyout.js](/src/components/pages/_flyoutExample/flyouts/exampleFlyout/exampleFlyout.js). Use the various Flyout components to ensure consistency with others. Then, add whatever components are needed inside `FlyoutContent`. Notice that the FlyoutCloseBtn provides a way to close the flyout.
+1. Open your flyout's file [exampleFlyout.js](/src/walkthrough/components/pages/pageWithFlyout/flyouts/exampleFlyout/exampleFlyout.js). Use the various Flyout components to ensure consistency with others. Then, add whatever components are needed inside `FlyoutContent`. Notice that the FlyoutCloseBtn provides a way to close the flyout.
     ```jsx
     <Flyout>
       <FlyoutHeader>
@@ -38,7 +38,7 @@ The following is for creating a new flyout called "**exampleFlyout**."
     ```
 
 ### Open the flyout from a page
-1. Open your page's file [flyoutExample.js](/src/components/pages/_flyoutExample/flyoutExample.js).
+1. Open your page's file [pageWithFlyout.js](/src/walkthrough/components/pages/pageWithFlyout/pageWithFlyout.js).
 1. In the render method, add a context button to open the flyout.
     ```jsx
     <ContextMenu key="context-menu">
@@ -66,7 +66,7 @@ The following is for creating a new flyout called "**exampleFlyout**."
 ## More Advanced Topics
 
 ### Do some action and show progress
-Often, a flyout will be used to call a service to create/update/delete something. See the [exampleFlyout.js](/src/components/pages/_flyoutExample/flyouts/exampleFlyout/exampleFlyout.js) file for an example of
+Often, a flyout will be used to call a service to create/update/delete something. See the [exampleFlyout.js](/src/walkthrough/components/pages/pageWithFlyout/flyouts/exampleFlyout/exampleFlyout.js) file for an example of
 - using `SummarySection` to indicate how many items will be affected
 - showing an `Indicator` (progress spinner) while an action is in progress
 - showing an `Svg` checkmark when the action is complete

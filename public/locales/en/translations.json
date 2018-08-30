@@ -16,10 +16,7 @@
     "dashboard": "Dashboard",
     "devices": "Devices",
     "rules": "Rules",
-    "maintenance": "Maintenance",
-    "example": "Page Example",
-    "gridExample": "Grid Example",
-    "flyoutExample": "Flyout Example"
+    "maintenance": "Maintenance"
   },
   "errorFormat": "Error: {{message}}",
   "errorCode": {
@@ -540,15 +537,17 @@
     "P7D": "Last week",
     "P1M": "Last month"
   },
-  "examples": {
-    "pagePlaceholder": "This is a new page.",
-    "grid": {
-      "name": "Name",
-      "description": "Description",
-      "btn1": "Button 1",
-      "btn2": "Button 2"
+  "walkthrough": {
+    "tabs": {
+      "dashboard": "Dashboard",
+      "basicPage": "Basic Page",
+      "pageWithFlyout": "Page With Flyout",
+      "pageWithGrid": "Page With Grid"
     },
-    "flyout": {
+    "basicPage": {
+      "pagePlaceholder": "This is a new page."
+    },
+    "pageWithFlyout": {
       "title": "Flyout Example",
       "pageBody": "Click the context button above to open a flyout.",
       "open": "Open Flyout",
@@ -567,9 +566,21 @@
         }
       }
     },
-    "panel": {
-      "header": "Example Panel",
-      "panelBody": "This is a new panel."
+    "pageWithGrid": {
+      "grid": {
+        "name": "Name",
+        "description": "Description",
+        "btn1": "Button 1",
+        "btn2": "Button 2"
+      }
+    },
+    "dashboard": {
+      "panels": {
+        "example": {
+          "header": "Example Panel",
+          "panelBody": "This is a new panel."
+        }
+      }
     }
   }
 }

@@ -1,0 +1,40 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.shell-container { height: 100%; }
+
+.shell {
+  height: 100%;
+  display: flex;
+
+  ::-webkit-scrollbar { width: 12px; }
+
+  // Apply theme properties
+  @include themify($themes) {
+    color: themed('colorContentText');
+    background-color: themed('colorContentBackground');
+
+    // Style text highlights
+    // Set RGBa opacity to .99 to get correct color in the selection styling
+    ::selection {
+      color: themed('colorSelectionText');
+      background: rgba(themed('colorSelectionBg'), .99);
+    }
+
+    ::-moz-selection {
+      color: themed('colorSelectionText');
+      background: rgba(themed('colorSelectionBg'), .99);
+    }
+
+    // Style all scroll bars in the app
+    ::-webkit-scrollbar-track { background-color: themed('colorScrollBarBackground'); }
+
+    ::-webkit-scrollbar-corner { background-color: themed('colorScrollBarBackground'); }
+
+    ::-webkit-scrollbar { background-color: themed('colorScrollBarBackground'); }
+
+    ::-webkit-scrollbar-thumb { background-color: themed('colorScrollBarButton'); }
+  }
+}

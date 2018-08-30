@@ -6,7 +6,7 @@ import Config from 'app.config';
 import { AjaxError, PageContent, ContextMenu, RefreshBar } from 'components/shared';
 import { DevicesGrid } from 'components/pages/devices/devicesGrid';
 import { JobGrid, JobStatusGrid } from 'components/pages/maintenance/grids';
-import { TimeIntervalDropdown } from 'components/app/timeIntervalDropdown';
+import { TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
 
 import { IoTHubManagerService } from 'services';
 

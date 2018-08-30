@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import Config from 'app.config';
-import { HttpClient } from './httpClient';
+import { HttpClient } from 'utilities/httpClient';
 
 import { toGitHubModel } from './models';
 

@@ -7,16 +7,16 @@ Services in remote monitoring are called using [rxjs][rxjs] Observables.
 
 ### Create the Service
 
-1. Create [exampleModels.js](/src/services/models/_exampleModels.js) for the service under the `services/models` folder.
+1. Create [exampleModels.js](/src/walkthrough/services/models/exampleModels.js) for the service under the `services/models` folder.
     - See the models [README](/src/services/models/README.md) for more information on the purpose of these models and general naming conventions.
-    - Don't forget to add your new file to the exports in [index.js](/src/services/models/index.js)
-1. Create [exampleService.js](/src/services/_exampleService.js) in the `services` folder.
-    - Use [services/httpClient.js](/src/services/httpClient.js) to make calls to the services. Then, transform the response using the models.
+    - Don't forget to add your new file to the exports in [index.js](/src/walkthrough/services/models/index.js)
+1. Create [exampleService.js](/src/walkthrough/services/exampleService.js) in the `services` folder.
+    - Use [utilities/httpClient.js](/src/utilities/httpClient.js) to make calls to the services. Then, transform the response using the models.
     - Note that the example service does not call actual services. Instead, it returns hardcoded data as an observable to mimick service calls.
-    - Don't forget to add your new file to the exports in [index.js](/src/services/index.js)
+    - Don't forget to add your new file to the exports in [index.js](/src/walkthrough/services/index.js)
 
 ### Set up the Service in the store
-1. Create [exampleReducer.js](/src/store/reducers/_exampleReducer.js) in the `store/reducers/` folder.
+1. Create [exampleReducer.js](/src/walkthrough/store/reducers/exampleReducer.js) in the `store/reducers/` folder.
 1. Add [redux-observable][redux-obs] epics to make service calls.
     ```js
     export const epics = createEpicScenario({
@@ -80,9 +80,9 @@ Services in remote monitoring are called using [rxjs][rxjs] Observables.
 
 ## Configure the Middleware
 
-1. Add the reducer to the [rootReducer.js](/src/store/rootReducer.js) in the `store` folder.
+1. Add the reducer to the [rootReducer.js](/src/walkthrough/store/rootReducer.js) in the `store` folder.
     ```js
-    import { reducer as exampleReducer } from './reducers/_exampleReducer';
+    import { reducer as exampleReducer } from './reducers/exampleReducer';
 
     const rootReducer = combineReducers({
       ...exampleReducer,
@@ -90,9 +90,9 @@ Services in remote monitoring are called using [rxjs][rxjs] Observables.
     });
     ```
 
-1. Add the epics to [rootEpic.js](/src/store/rootEpic.js) in the `store` folder.
+1. Add the epics to [rootEpic.js](/src/walkthrough/store/rootEpic.js) in the `store` folder.
     ```js
-    import { epics as exampleEpics } from './reducers/_exampleReducer';
+    import { epics as exampleEpics } from './reducers/exampleReducer';
 
     const epics = [
       ...exampleEpics.getEpics(),

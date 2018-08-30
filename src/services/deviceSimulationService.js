@@ -3,7 +3,7 @@
 import { Observable } from 'rxjs';
 
 import Config from 'app.config';
-import { HttpClient } from './httpClient';
+import { HttpClient } from 'utilities/httpClient';
 import { toDeviceModelSelectOptions, toDeviceSimulationModel, toDeviceSimulationRequestModel } from './models';
 
 const ENDPOINT = Config.serviceUrls.deviceSimulation;

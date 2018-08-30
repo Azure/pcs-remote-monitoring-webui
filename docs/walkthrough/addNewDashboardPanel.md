@@ -5,10 +5,10 @@ The following is for creating a new panel called "**examplePanel**."
 
 1. Create a folder named `examplePanel` inside the `components/pages/dashboard/panels` folder.
 1. Create 3 files in the new folder. See the individual example files for more details and comments inline.
-    - [examplePanel.js](/src/components/pages/dashboard/panels/_examplePanel/examplePanel.js) - main component for the panel
-    - [examplePanel.scss](/src/components/pages/dashboard/panels/_examplePanel/examplePanel.scss) - styles for the new panel
-    - [index.js](/src/components/pages/dashboard/panels/_examplePanel/index.js) - exports for the new panel
-1. Add the new panel to the main panel export file: [dashboard/panels/index.js](/src/components/pages/dashboard/panels/index.js).
+    - [examplePanel.js](/src/walkthrough/components/pages/dashboard/panels/examplePanel/examplePanel.js) - main component for the panel
+    - [examplePanel.scss](/src/walkthrough/components/pages/dashboard/panels/examplePanel/examplePanel.scss) - styles for the new panel
+    - [index.js](/src/walkthrough/components/pages/dashboard/panels/examplePanel/index.js) - exports for the new panel
+1. Add the new panel to the main panel export file: [dashboard/panels/index.js](/src/walkthrough/components/pages/dashboard/panels/index.js).
     ```js
     export * from './examplePanel';
     ```
@@ -18,7 +18,7 @@ The following is for creating a new panel called "**examplePanel**."
       "header": "Example Panel",
     },
     ```
-1. In the [examplePanel.js](/src/components/pages/dashboard/panels/_examplePanel/examplePanel.js), import the `Panel` components.
+1. In the [examplePanel.js](/src/walkthrough/components/pages/dashboard/panels/examplePanel/examplePanel.js), import the `Panel` components.
     ```js
     import {
       Panel,
@@ -38,7 +38,7 @@ The following is for creating a new panel called "**examplePanel**."
       </PanelContent>
     </Panel>
     ```
-1. Add your panel to the [dashboard.js](/src/components/pages/dashboard/dashboard.js) page. Size the `Cell` for the panel according to how much space it will need. See [grid.scss](/src/components/pages/dashboard/grid/grid.scss) for the available grid-cell styles.
+1. Add your panel to the [dashboard.js](/src/walkthrough/components/pages/dashboard/dashboard.js) page. Size the `Cell` for the panel according to how much space it will need. See [grid.scss](/src/components/pages/dashboard/grid/grid.scss) for the available grid-cell styles.
     ```jsx
     <Cell className="col-4">
       <ExamplePanel t={t} />
