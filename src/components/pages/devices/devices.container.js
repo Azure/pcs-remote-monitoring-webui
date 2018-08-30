@@ -12,6 +12,7 @@ import {
 } from 'store/reducers/devicesReducer';
 import {
   redux as appRedux,
+  epics as appEpics,
   getDeviceGroups,
   getDeviceGroupError
 } from 'store/reducers/appReducer';
@@ -29,7 +30,8 @@ const mapStateToProps = state => ({
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
   fetchDevices: () => dispatch(devicesEpics.actions.fetchDevices()),
-  updateCurrentWindow: (currentWindow) => dispatch(appRedux.actions.updateCurrentWindow(currentWindow))
+  updateCurrentWindow: (currentWindow) => dispatch(appRedux.actions.updateCurrentWindow(currentWindow)),
+  logEvent: diagnosticsModel => dispatch(appEpics.actions.logEvent(diagnosticsModel))
 });
 
 export const DevicesContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Devices));
