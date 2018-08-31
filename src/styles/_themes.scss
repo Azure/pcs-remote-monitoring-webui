@@ -156,6 +156,13 @@ $themes: (
     colorFormActionsBorderColor: $colorGraphite,
     colorDurationLabelText: $colorSmoke,
     // Forms - END
+
+    // Modal - START
+    colorModalText: $colorWhite,
+    colorModalBackground: $colorNoir,
+    colorModalBorder: #60AAFF,
+    colorModalDropShadow: rgba(0, 0, 0, 0.6),
+    // Modal -  END
   ),
   light: (
     // Functional colors
@@ -308,5 +315,12 @@ $themes: (
     colorFormActionsBorderColor: $colorGraphite,
     colorDurationLabelText: $colorSmoke,
     // Forms - END
+
+    // Modal - START
+    colorModalText: #333,
+    colorModalBackground: $colorWhite,
+    colorModalBorder: #136BFB,
+    colorModalDropShadow: rgba(0, 0, 0, 0.1),
+    // Modal -  END
   )
 );

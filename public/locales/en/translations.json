@@ -567,14 +567,20 @@
         "browseText": "for a package file",
         "placeHolder": "Select package type",
         "package": "Package",
-        "deploymentText":"To deploy packages, go to the 'Deployments' page and click '+ New Deployment' button.",
+        "deploymentText": "To deploy packages, go to the 'Deployments' page and click '+ New Deployment' button.",
         "validation": {
           "required": "Is required"
         }
+      },
+      "delete": {
+        "title": "Delete Package?",
+        "delete": "Delete",
+        "cancel": "cancel",
+        "info": "Deleting selected package will remove it. It will not impact any of the deployments of this package."
       }
     },
     "typeOptions": {
-      "edge_manifest": "Edge Manifest"
+      "edgemanifest": "Edge Manifest"
     }
   },
   "examples": {

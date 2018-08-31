@@ -75,17 +75,11 @@ const insertPackageReducer = (state, { payload, fromAction }) => {
   });
 };
 
-const deletePackagesReducer = (state, { payload, fromAction }) => {
-  const spliceArr = payload.reduce((idxAcc, payloadItem) => {
-    const idx = state.items.indexOf(payloadItem);
-    if (idx !== -1) {
-      idxAcc.push([idx, 1]);
-    }
-    return idxAcc;
-  }, []);
+const deletePackageReducer = (state, { payload, fromAction }) => {
+  const idx = state.items.indexOf(payload);
   return update(state, {
-    entities: { $unset: payload },
-    items: { $splice: spliceArr },
+    entities: { $unset: [payload] },
+    items: { $splice: [[idx, 1]] },
     ...setPending(fromAction.type, false)
   });
 };
@@ -109,7 +103,7 @@ const fetchableTypes = [
 
 export const redux = createReducerScenario({
   insertPackage: { type: 'PACKAGE_INSERT', reducer: insertPackageReducer },
-  deletePackages: { type: 'PACKAGES_DELETE', reducer: deletePackagesReducer },
+  deletePackage: { type: 'PACKAGES_DELETE', reducer: deletePackageReducer },
   updatePackages: { type: 'PACKAGES_UPDATE', reducer: updatePackagesReducer },
   registerError: { type: 'PACKAGES_REDUCER_ERROR', reducer: errorReducer },
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer }

@@ -123,7 +123,7 @@ export class NewPackage extends LinkedComponent {
               {packageFile && <div className="new-package-file-name">{packageFile.name}</div>}
               {
                 completedSuccessfully &&
-                <div className="new-package-deployment-text" >
+                <div className="new-package-deployment-text">
                   {t('packages.flyouts.new.deploymentText')}
                 </div>
               }

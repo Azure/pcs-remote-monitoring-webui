@@ -5,6 +5,7 @@ import { packagesColumnDefs, defaultPackagesGridProps } from './packagesGridConf
 import { Btn, PcsGrid, Protected } from 'components/shared';
 import { isFunc, translateColumnDefs, svgs } from 'utilities';
 import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
+import { DeletePackageContainer } from '../flyouts';
 
 import './packagesGrid.css';
 
@@ -18,7 +19,8 @@ export class PackagesGrid extends Component {
 
     // Set the initial state
     this.state = {
-      ...closedFlyoutState
+      ...closedFlyoutState,
+      hardSelectedPackages: []
     };
 
     this.columnDefs = [
@@ -30,9 +32,16 @@ export class PackagesGrid extends Component {
 
     this.contextBtns = [
       <Protected key="delete" permission={permissions.deletePackages}>
-        <Btn svg={svgs.trash} onClick={this.openFlyout('delete')}>{props.t('packages.delete')}</Btn>
+        <Btn svg={svgs.trash} onClick={this.openFlyout('delete-package')}>{props.t('packages.delete')}</Btn>
       </Protected>
     ];
+  }
+
+  getOpenFlyout = () => {
+    if (this.state.openFlyoutName === 'delete-package') {
+      return <DeletePackageContainer key="delete-modal" package={this.state.hardSelectedPackages[0]} onClose={this.closeFlyout} />
+    }
+    return null;
   }
 
   /**
@@ -56,7 +65,10 @@ export class PackagesGrid extends Component {
   onHardSelectChange = (selectedPackages) => {
     const { onContextMenuChange, onHardSelectChange } = this.props;
     if (isFunc(onContextMenuChange)) {
-      onContextMenuChange(selectedPackages.length > 0 ? this.contextBtns : null);
+      onContextMenuChange(selectedPackages.length === 1 ? this.contextBtns : null);
+      this.setState({
+        hardSelectedPackages: selectedPackages
+      });
     }
     if (isFunc(onHardSelectChange)) {
       onHardSelectChange(selectedPackages);
@@ -87,6 +99,9 @@ export class PackagesGrid extends Component {
       }
     };
 
-    return (<PcsGrid {...gridProps} key="rules-grid" />);
+    return ([
+      <PcsGrid {...gridProps} key="packages-grid" />,
+      this.getOpenFlyout()
+    ]);
   }
 }

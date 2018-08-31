@@ -15,3 +15,4 @@ export * from './propertyGrid'
 export * from './protected'
 export * from './refreshBar/refreshBar';
 export * from './svg/svg';
+export * from './modal';

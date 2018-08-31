@@ -54,7 +54,7 @@ export const toSolutionSettingThemeModel = (response = {}) => camelCaseReshape(r
   'azureMapsKey': 'azureMapsKey'
 });
 
-export const packageTypeOptions = ['EDGE_MANIFEST'];
+export const packageTypeOptions = ['EdgeManifest'];
 
 export const toNewPackageRequestModel = ({
   type,
