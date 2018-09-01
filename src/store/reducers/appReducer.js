@@ -20,6 +20,7 @@ import {
   getError
 } from 'store/utilities';
 import { svgs, compareByProperty } from 'utilities';
+import { toDiagnosticsModel } from 'services/models';
 
 // ========================= Epics - START
 const handleError = fromAction => error =>
@@ -85,6 +86,16 @@ export const epics = createEpicScenario({
         description: currSettings.description,
         diagnosticsOptIn: fromAction.payload
       };
+
+      var logEventName = 'Diagnostics_OptIn';
+      if (!fromAction.payload) {
+        logEventName = 'Diagnostics_OptOut';
+      }
+      var logPayload = toDiagnosticsModel(logEventName, {});
+      logPayload.sessionId = getSessionId(store.getState());
+      logPayload.eventProperties.CurrentWindow = getCurrentWindow(store.getState());
+      DiagnosticsService.logEvent(logPayload).subscribe();
+
       return ConfigService.updateSolutionSettings(settings)
         .map(toActionCreator(redux.actions.updateSolutionSettings, fromAction))
         .catch(handleError(fromAction));

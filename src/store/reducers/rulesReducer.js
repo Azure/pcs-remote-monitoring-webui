@@ -94,9 +94,15 @@ const initialState = { ...errorPendingInitialState, entities: {}, items: [] };
 
 const insertRulesReducer = (state, { payload }) => {
   const { entities: { rules }, result } = normalize(payload, ruleListSchema);
+  if (state.entities) {
+    return update(state, {
+      entities: { $merge: rules },
+      items: { $splice: [[0, 0, result]] }
+    });
+  }
   return update(state, {
-    entities: { $merge: rules },
-    items: { $splice: [[state.items.length, 0, result]] }
+    entities: { $set: rules },
+    items: { $set: [result] }
   });
 };
 

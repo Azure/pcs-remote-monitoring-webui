@@ -147,6 +147,7 @@ export class RuleEditor extends LinkedComponent {
           erroe: undefined
         }
       };
+      logEvent(toRuleDiagnosticsModel('Rule_ApplyClick', requestProps));
       if (this.props.rule) { // If rule object exist then update the existing rule
         this.subscription = TelemetryService.updateRule(this.props.rule.id, toNewRuleRequestModel(requestProps))
           .subscribe(
@@ -165,7 +166,6 @@ export class RuleEditor extends LinkedComponent {
             },
             error => this.setState({ error, isPending: false, changesApplied: true })
           );
-        logEvent(toRuleDiagnosticsModel('Rule_ApplyClick', requestProps));
       }
     }
   }

@@ -11,6 +11,9 @@ import {
   epics as devicesEpics,
   redux as devicesRedux
 } from 'store/reducers/devicesReducer';
+import {
+  epics as appEpics,
+} from 'store/reducers/appReducer';
 
 // Pass the global info needed
 const mapStateToProps = state => ({
@@ -21,7 +24,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchDeviceModelOptions: () => dispatch(simulationEpics.actions.fetchSimulationDeviceModelOptions()),
   insertDevices: devices => dispatch(devicesRedux.actions.insertDevices(devices)),
-  fetchDevices: () => dispatch(devicesEpics.actions.fetchDevices())
+  fetchDevices: () => dispatch(devicesEpics.actions.fetchDevices()),
+  logEvent: diagnosticsModel => dispatch(appEpics.actions.logEvent(diagnosticsModel))
 });
 
 export const DeviceNewContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(DeviceNew));

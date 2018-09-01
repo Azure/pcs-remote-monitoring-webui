@@ -43,7 +43,11 @@ const Config = {
     closed: 'closed',
     acknowledged: 'acknowledged'
   },
-  maxLogoFileSizeInBytes: 307200
+  maxLogoFileSizeInBytes: 307200,
+  deviceType: {
+    simulated: 'Simulated',
+    physical: 'Physical'
+  }
 };
 
 export default Config;

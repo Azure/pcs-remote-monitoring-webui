@@ -2,10 +2,10 @@
 
 import React, { Component } from 'react';
 
-import { permissions } from 'services/models';
+import { permissions, toDiagnosticsModel } from 'services/models';
 import { DevicesGrid } from './devicesGrid';
-import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
-import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/app/manageDeviceGroupsBtn';
+import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/shell/deviceGroupDropdown';
+import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/shell/manageDeviceGroupsBtn';
 import {
   AjaxError,
   Btn,
@@ -45,7 +45,10 @@ export class Devices extends Component {
   closeFlyout = () => this.setState(closedFlyoutState);
 
   openSIMManagement = () => this.setState({ openFlyoutName: 'sim-management' });
-  openNewDeviceFlyout = () => this.setState({ openFlyoutName: 'new-device' });
+  openNewDeviceFlyout = () => {
+    this.setState({ openFlyoutName: 'new-device' });
+    this.props.logEvent(toDiagnosticsModel('Devices_NewClick', {}));
+  }
 
   onContextMenuChange = contextBtns => this.setState({
     contextBtns,

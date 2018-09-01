@@ -3,7 +3,7 @@
 import Config from 'app.config';
 import AuthenticationContext from 'adal-angular/dist/adal.min.js'
 import { Observable } from 'rxjs';
-import { HttpClient } from './httpClient';
+import { HttpClient } from 'utilities/httpClient';
 import { toUserModel, authDisabledUser } from './models';
 
 const ENDPOINT = Config.serviceUrls.auth;

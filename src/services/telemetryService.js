@@ -2,7 +2,7 @@
 
 import { stringify } from 'query-string';
 import Config from 'app.config';
-import { HttpClient } from './httpClient';
+import { HttpClient } from 'utilities/httpClient';
 import {
   toActiveAlertsModel,
   toAlertForRuleModel,

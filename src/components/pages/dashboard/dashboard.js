@@ -5,13 +5,13 @@ import { Observable, Subject } from 'rxjs';
 import moment from 'moment';
 
 import Config from 'app.config';
-import { TelemetryService, retryHandler } from 'services';
-import { compareByProperty, getIntervalParams } from 'utilities';
+import { TelemetryService } from 'services';
+import { compareByProperty, getIntervalParams, retryHandler } from 'utilities';
 import { Grid, Cell } from './grid';
 import { PanelErrorBoundary } from './panel';
-import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/app/deviceGroupDropdown';
-import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/app/manageDeviceGroupsBtn';
-import { TimeIntervalDropdown } from 'components/app/timeIntervalDropdown';
+import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/shell/deviceGroupDropdown';
+import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/shell/manageDeviceGroupsBtn';
+import { TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
 import {
   OverviewPanel,
   AlertsPanel,

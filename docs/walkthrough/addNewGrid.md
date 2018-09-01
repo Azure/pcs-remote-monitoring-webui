@@ -15,12 +15,12 @@ Grids in remote monitoring are based on [ag-grid][ag-grid], with our own customi
 ### Create the new grid
 1. Create a folder named `exampleGrid` inside your page's folder.
 1. Create 3 files in the new folder. See the individual example files for more details and comments inline.
-    - [exampleGrid.js](/src/components/pages/_gridExample/exampleGrid/exampleGrid.js) - main component for the grid, sets up context buttons and soft/hard selection event handlers, wraps [pcsGrid][pcsGrid]
-    - [exampleGridConfig.js](/src/components/pages/_gridExample/exampleGrid/exampleGridConfig.js) - configuration such as column definitions for the grid
-    - [index.js](/src/components/pages/_gridExample/exampleGrid/index.js) - exports for the new grid
+    - [exampleGrid.js](/src/walkthrough/components/pages/pageWithGrid/exampleGrid/exampleGrid.js) - main component for the grid, sets up context buttons and soft/hard selection event handlers, wraps [pcsGrid][pcsGrid]
+    - [exampleGridConfig.js](/src/walkthrough/components/pages/pageWithGrid/exampleGrid/exampleGridConfig.js) - configuration such as column definitions for the grid
+    - [index.js](/src/walkthrough/components/pages/pageWithGrid/exampleGrid/index.js) - exports for the new grid
 
 ### Setup the page
-1. Open your page's container file [gridExample.container.js](/src/components/pages/_gridExample/gridExample.container.js) so the data and actions can be connected to the page props.
+1. Open your page's container file [pageWithGrid.container.js](/src/walkthrough/components/pages/pageWithGrid/pageWithGrid.container.js) so the data and actions can be connected to the page props.
 1. Map the data from the redux store to props.
     ```js
     const mapStateToProps = state => ({
@@ -38,11 +38,11 @@ Grids in remote monitoring are based on [ag-grid][ag-grid], with our own customi
     ```
 1. Connect the data and actions to the page component.
     ```js
-    export const GridExampleContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(GridExample));
+    export const PageWithGridContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(PageWithGrid));
     ```
     - Notice the use of [i18next][i18next]'s translate method. This will pass an additional prop called `t` containing the translated strings for use in the page.
 
-1. Open your page's file [gridExample.js](/src/components/pages/_gridExample/gridExample.js) so the grid and refresh bar can be added.
+1. Open your page's file [pageWithGrid.js](/src/walkthrough/components/pages/pageWithGrid/pageWithGrid.js) so the grid and refresh bar can be added.
 1. Import your grid as well as other components like `AjaxError` and `RefreshBar`.
     ```js
     import { AjaxError, RefreshBar } from 'components/shared';
@@ -57,8 +57,8 @@ Grids in remote monitoring are based on [ag-grid][ag-grid], with our own customi
       if (!lastUpdated && !isPending) fetchData();
     }
     ```
-    - Alternatively, if the the data is useful on other pages as well, then it can be loaded in the "APP_INITIALIZE" epic in [appReducer.js](../store/reducers/appReducer.js)
-1. In render, set up the props for the grid. Choose the columnDefs to show from those configured in [exampleGridConfig.js](/src/components/pages/_gridExample/exampleGrid/exampleGridConfig.js).
+    - Alternatively, if the the data is useful on other pages as well, then it can be loaded in the "APP_INITIALIZE" epic in [appReducer.js](/src/store/reducers/appReducer.js)
+1. In render, set up the props for the grid. Choose the columnDefs to show from those configured in [exampleGridConfig.js](/src/walkthrough/components/pages/pageWithGrid/exampleGrid/exampleGridConfig.js).
     ```js
     const { t, data, error, isPending, lastUpdated, fetchData } = this.props;
     const gridProps = {
@@ -135,7 +135,7 @@ The user may need to act on mulitple rows at the same time. Checking a row's che
 ### Soft Select Rows
 The user may need to act on a single row. A soft select link can be configured for one or more columns in the columnDefs.
 
-1. In [exampleGridConfig.js](/src/components/pages/_gridExample/exampleGrid/exampleGridConfig.js), add `SoftSelectLinkRenderer` as the cellRendererFramework for a columnDef.
+1. In [exampleGridConfig.js](/src/walkthrough/components/pages/pageWithGrid/exampleGrid/exampleGridConfig.js), add `SoftSelectLinkRenderer` as the cellRendererFramework for a columnDef.
     ```js
     export const exampleColumnDefs = {
       id: {

@@ -4,7 +4,14 @@ import React from 'react';
 import update from 'immutability-helper';
 
 import { DeviceSimulationService, IoTHubManagerService } from 'services';
-import { authenticationTypeOptions, permissions, toNewDeviceRequestModel } from 'services/models';
+import {
+  authenticationTypeOptions,
+  permissions,
+  toNewDeviceRequestModel,
+  toSinglePropertyDiagnosticsModel,
+  toDeviceDiagnosticsModel,
+  toDiagnosticsModel
+} from 'services/models';
 import {
   copyToClipboard,
   int,
@@ -39,6 +46,7 @@ import {
 } from 'components/shared';
 
 import './deviceNew.css';
+import Config from 'app.config';
 
 const isIntRegex = /^-?\d*$/;
 const nonInteger = x => !x.match(isIntRegex);
@@ -242,6 +250,12 @@ export class DeviceNew extends LinkedComponent {
     ].every(link => !link.error);
   }
 
+  deviceTypeChange = ({ target: { value }}) => {
+    this.props.logEvent(toSinglePropertyDiagnosticsModel('Devices_DeviceTypeSelect', 'DeviceType',
+       (value === 'true') ? Config.deviceType.simulated: Config.deviceType.physical));
+    this.formControlChange();
+  }
+
   formControlChange = () => {
     if (this.state.changesApplied) {
       this.setState({
@@ -250,6 +264,11 @@ export class DeviceNew extends LinkedComponent {
         provisionedDevice: {}
       });
     }
+  }
+
+  onFlyoutClose = (eventName) => {
+    this.props.logEvent(toDeviceDiagnosticsModel(eventName, this.state.formData));
+    this.props.onClose();
   }
 
   apply = (event) => {
@@ -261,11 +280,14 @@ export class DeviceNew extends LinkedComponent {
 
       if (this.provisionSubscription) this.provisionSubscription.unsubscribe();
 
+      this.props.logEvent(toDeviceDiagnosticsModel('Devices_ApplyClick', formData));
+
       if (this.state.formData.isSimulated) {
         this.provisionSubscription = DeviceSimulationService.incrementSimulatedDeviceModel(formData.deviceModel, formData.count)
           .subscribe(
             () => {
               this.setState({ successCount: formData.count, isPending: false, changesApplied: true });
+              this.props.logEvent(toSinglePropertyDiagnosticsModel('Devices_Created', 'DeviceType', Config.deviceType.simulated));
             },
             error => {
               this.setState({ error, isPending: false, changesApplied: true });
@@ -278,6 +300,11 @@ export class DeviceNew extends LinkedComponent {
             provisionedDevice => {
               this.setState({ provisionedDevice, successCount: formData.count, isPending: false, changesApplied: true });
               this.props.insertDevices([provisionedDevice]);
+              const metadata = {
+                DeviceType: Config.deviceType.physical,
+                DeviceID: provisionedDevice.id
+              };
+              this.props.logEvent(toDiagnosticsModel('Devices_Created', metadata));
             },
             error => {
               this.setState({ error, isPending: false, changesApplied: true });
@@ -303,7 +330,6 @@ export class DeviceNew extends LinkedComponent {
   render() {
     const {
       t,
-      onClose,
       deviceModelOptions
     } = this.props;
     const {
@@ -328,7 +354,7 @@ export class DeviceNew extends LinkedComponent {
       <Flyout>
         <FlyoutHeader>
           <FlyoutTitle>{t('devices.flyouts.new.title')}</FlyoutTitle>
-          <FlyoutCloseBtn onClick={onClose} />
+          <FlyoutCloseBtn onClick={() => this.onFlyoutClose('Devices_TopXCloseClick')} />
         </FlyoutHeader>
         <FlyoutContent>
           <Protected permission={permissions.createDevices}>
@@ -336,10 +362,10 @@ export class DeviceNew extends LinkedComponent {
               <div className="devices-new-content">
                 <FormGroup>
                   <FormLabel>{t(deviceTypeOptions.labelName)}</FormLabel>
-                  <Radio link={this.deviceTypeLink} value={deviceTypeOptions.simulated.value} onChange={this.formControlChange}>
+                  <Radio link={this.deviceTypeLink} value={deviceTypeOptions.simulated.value} onChange={this.deviceTypeChange}>
                     {t(deviceTypeOptions.simulated.labelName)}
                   </Radio>
-                  <Radio link={this.deviceTypeLink} value={deviceTypeOptions.physical.value} onChange={this.formControlChange}>
+                  <Radio link={this.deviceTypeLink} value={deviceTypeOptions.physical.value} onChange={this.deviceTypeChange}>
                     {t(deviceTypeOptions.physical.labelName)}
                   </Radio>
                 </FormGroup>
@@ -421,14 +447,14 @@ export class DeviceNew extends LinkedComponent {
                 !changesApplied &&
                 <BtnToolbar>
                   <Btn primary={true} disabled={isPending || !this.formIsValid()} type="submit">{t('devices.flyouts.new.apply')}</Btn>
-                  <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.new.cancel')}</Btn>
+                  <Btn svg={svgs.cancelX} onClick={() => this.onFlyoutClose('Devices_CancelClick')}>{t('devices.flyouts.new.cancel')}</Btn>
                 </BtnToolbar>
               }
               {
                 !!changesApplied && [
                   <ProvisionedDevice key="provDevice" device={provisionedDevice} t={t} />,
                   <BtnToolbar key="buttons">
-                    <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.new.close')}</Btn>
+                    <Btn svg={svgs.cancelX} onClick={() => this.onFlyoutClose('Devices_CloseClick')}>{t('devices.flyouts.new.close')}</Btn>
                   </BtnToolbar>
                 ]
               }

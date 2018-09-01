@@ -1,5 +1,5 @@
 import Config from 'app.config';
-import { HttpClient } from './httpClient';
+import { HttpClient } from 'utilities/httpClient';
 import { toDiagnosticsRequestModel } from './models';
 
 const ENDPOINT = Config.serviceUrls.diagnostics;
