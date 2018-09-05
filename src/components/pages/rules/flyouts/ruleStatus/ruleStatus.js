@@ -12,7 +12,7 @@ import {
 } from 'components/shared';
 import { svgs } from 'utilities';
 import { TelemetryService } from 'services';
-import { permissions, toNewRuleRequestModel } from 'services/models';
+import { permissions, toEditRuleRequestModel } from 'services/models';
 import Flyout from 'components/shared/flyout';
 
 import './ruleStatus.css';
@@ -60,7 +60,7 @@ export class RuleStatus extends Component {
     }));
     this.subscription = Observable.from(requestPropList)
       .flatMap((rule) =>
-        TelemetryService.updateRule(rule.id, toNewRuleRequestModel(rule))
+        TelemetryService.updateRule(rule.id, toEditRuleRequestModel(rule))
           .map(() => rule)
       )
       .subscribe(

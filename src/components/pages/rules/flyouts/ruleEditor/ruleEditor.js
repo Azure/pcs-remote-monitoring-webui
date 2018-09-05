@@ -28,7 +28,7 @@ import {
 import Flyout from 'components/shared/flyout';
 import { IoTHubManagerService, TelemetryService } from 'services';
 import {
-  toNewRuleRequestModel,
+  toEditRuleRequestModel,
   ruleCalculations,
   ruleTimePeriods,
   ruleOperators,
@@ -149,7 +149,7 @@ export class RuleEditor extends LinkedComponent {
       };
       logEvent(toRuleDiagnosticsModel('Rule_ApplyClick', requestProps));
       if (this.props.rule) { // If rule object exist then update the existing rule
-        this.subscription = TelemetryService.updateRule(this.props.rule.id, toNewRuleRequestModel(requestProps))
+        this.subscription = TelemetryService.updateRule(this.props.rule.id, toEditRuleRequestModel(requestProps))
           .subscribe(
             (updatedRule) => {
               modifyRules([{ ...updatedRule, ...countProps }]);
@@ -158,7 +158,7 @@ export class RuleEditor extends LinkedComponent {
             error => this.setState({ error, isPending: false, changesApplied: true })
           );
       } else { // If rule object doesn't exist then create a new rule
-        this.subscription = TelemetryService.createRule(toNewRuleRequestModel(requestProps))
+        this.subscription = TelemetryService.createRule(toEditRuleRequestModel(requestProps))
           .subscribe(
             (createdRule) => {
               insertRules([{ ...createdRule, ...countProps }]);

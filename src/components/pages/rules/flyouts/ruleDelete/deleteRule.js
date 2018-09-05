@@ -14,7 +14,7 @@ import {
 } from 'components/shared';
 import { svgs } from 'utilities';
 import { TelemetryService } from 'services';
-import { toNewRuleRequestModel } from 'services/models';
+import { toEditRuleRequestModel } from 'services/models';
 import Flyout from 'components/shared/flyout';
 import { RuleSummary } from '..';
 
@@ -85,7 +85,7 @@ export class DeleteRule extends Component {
     this.setState({ isPending: true, error: null });
     rule.enabled = status;
     this.subscription =
-      TelemetryService.updateRule(rule.id, toNewRuleRequestModel(rule))
+      TelemetryService.updateRule(rule.id, toEditRuleRequestModel(rule))
         .subscribe(
           (updatedRule) => {
             this.props.refresh();
