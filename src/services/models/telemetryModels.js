@@ -124,6 +124,7 @@ export const toMessagesModel = (response = {}) => getItems(response)
   }));
 
 export const toEditRuleRequestModel = ({
+  id,
   name,
   description,
   groupId,
@@ -140,6 +141,7 @@ export const toEditRuleRequestModel = ({
     Value: condition.value
   }));
   return {
+    Id: id,
     Name: name,
     Description: description,
     GroupId: groupId,

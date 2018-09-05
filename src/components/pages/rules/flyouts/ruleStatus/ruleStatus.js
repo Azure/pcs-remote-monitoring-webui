@@ -61,7 +61,7 @@ export class RuleStatus extends Component {
     this.subscription = Observable.from(requestPropList)
       .flatMap((rule) =>
         TelemetryService.updateRule(rule.id, toEditRuleRequestModel(rule))
-          .map(() => rule)
+          .map(updatedRule => ({...rule, eTag: updatedRule.eTag}))
       )
       .subscribe(
         updatedRule => {
@@ -95,8 +95,8 @@ export class RuleStatus extends Component {
                 </ToggleBtn>
               </div>
               {
-                rules.map((rule) => (
-                  <RuleSummary rule={rule} isPending={isPending} completedSuccessfully={completedSuccessfully} t={t} />
+                rules.map((rule, idx) => (
+                  <RuleSummary key={idx} rule={rule} isPending={isPending} completedSuccessfully={completedSuccessfully} t={t} />
                 ))
               }
 
