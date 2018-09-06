@@ -17,7 +17,8 @@
     "devices": "Devices",
     "rules": "Rules",
     "maintenance": "Maintenance",
-    "packages": "Packages"
+    "packages": "Packages",
+    "deployments": "Deployments"
   },
   "errorFormat": "Error: {{message}}",
   "errorCode": {
@@ -579,6 +580,9 @@
     "typeOptions": {
       "edgemanifest": "Edge Manifest"
     }
+  },
+  "deployments": {
+    "header": "Deployments"
   },
   "walkthrough": {
     "tabs": {

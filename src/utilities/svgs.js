@@ -47,6 +47,7 @@ import SettingsIconPath from 'assets/icons/settings.svg';
 import SimulatedDeviceIconPath from 'assets/icons/simulatedDevice.svg';
 import TabDashboardIconPath from 'assets/icons/tabDashboard.svg';
 import TabDevicesIconPath from 'assets/icons/tabDevices.svg';
+import TabDeploymentsIconPath from 'assets/icons/tabDeployments.svg';
 import TabMaintenanceIconPath from 'assets/icons/tabMaintenance.svg';
 import TabRulesIconPath from 'assets/icons/tabRules.svg';
 import TrashIconPath from 'assets/icons/trash.svg';
@@ -59,6 +60,7 @@ export const svgs = {
   tabs: {
     dashboard: TabDashboardIconPath,
     devices: TabDevicesIconPath,
+    deployments: TabDeploymentsIconPath,
     maintenance: TabMaintenanceIconPath,
     packages: TabPackagesIconPath,
     rules: TabRulesIconPath,

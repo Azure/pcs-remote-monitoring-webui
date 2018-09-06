@@ -5,7 +5,14 @@ import React, { Component } from 'react';
 import { svgs } from 'utilities';
 import Shell from "components/shell/shell";
 import { ManageDeviceGroupsContainer, SettingsContainer } from 'components/shell/flyouts';
-import { DashboardContainer, DevicesContainer, RulesContainer, MaintenanceContainer, PackagesContainer } from './pages';
+import {
+  DashboardContainer,
+  DevicesContainer,
+  RulesContainer,
+  MaintenanceContainer,
+  PackagesContainer,
+  DeploymentsContainer
+} from './pages';
 
 class App extends Component {
 
@@ -53,6 +60,13 @@ class App extends Component {
         component: PackagesContainer
       },
       {
+        to: '/deployments',
+        exact: true,
+        svg: svgs.tabs.deployments,
+        labelId: 'tabs.deployments',
+        component: DeploymentsContainer
+      },
+      {
         to: '/maintenance',
         exact: false,
         svg: svgs.tabs.maintenance,
@@ -80,6 +94,11 @@ class App extends Component {
       {
         path: '/packages', crumbs: [
           { to: '/packages', labelId: 'tabs.packages' }
+        ]
+      },
+      {
+        path: '/deployments', crumbs: [
+          { to: '/deployments', labelId: 'tabs.deployments' }
         ]
       },
       {
