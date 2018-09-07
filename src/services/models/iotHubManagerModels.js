@@ -2,7 +2,7 @@
 
 import update from 'immutability-helper';
 import dot from 'dot-object';
-import { camelCaseReshape, getItems } from 'utilities';
+import { camelCaseReshape, getItems, float } from 'utilities';
 import uuid from 'uuid/v4';
 
 // Contains methods for converting service response
@@ -64,7 +64,10 @@ export const toSubmitTagsJobRequestModel = (devices, { jobName, updatedTags, del
   const jobId = jobName ? jobName + '-' + uuid() : uuid();
   const deviceIds = devices.map(({ id }) => `'${id}'`).join(',');
   const Tags = {};
-  updatedTags.forEach(({ name, value }) => (Tags[name] = value));
+  // Ensure type passed to server is correct as specified: number or text.
+  // The toString call is necessary when a number should be saved as text.
+  updatedTags.forEach(({ name, value, type }) =>
+    (Tags[name] = type === 'Number' ? float(value) : value.toString()));
   deletedTags.forEach((name) => (Tags[name] = null));
   const request = {
     JobId: jobId,
@@ -81,7 +84,10 @@ export const toSubmitPropertiesJobRequestModel = (devices, { jobName, updatedPro
   const jobId = jobName ? jobName + '-' + uuid() : uuid();
   const deviceIds = devices.map(({ id }) => `'${id}'`).join(',');
   const Desired = {};
-  updatedProperties.forEach(({ name, value }) => (Desired[name] = value));
+  // Ensure type passed to server is correct as specified: number or text.
+  // The toString call is necessary when a number should be saved as text.
+  updatedProperties.forEach(({ name, value, type }) =>
+    (Desired[name] = type === 'Number' ? float(value) : value.toString()));
   deletedProperties.forEach((name) => (Desired[name] = null));
   const request = {
     JobId: jobId,
@@ -108,7 +114,7 @@ export const toSubmitMethodJobRequestModel = (devices, { jobName, methodName, fi
       Firmware: firmwareVersion,
       FirmwareUri: firmwareUri
     })
-    : '{}';
+    : '';
   const request = {
     JobId: jobId,
     QueryCondition: `deviceId in [${deviceIds}]`,
@@ -140,7 +146,6 @@ export const authenticationTypeOptions = {
 };
 
 export const toNewDeviceRequestModel = ({
-  count,
   deviceId,
   isGenerateId,
   isSimulated,

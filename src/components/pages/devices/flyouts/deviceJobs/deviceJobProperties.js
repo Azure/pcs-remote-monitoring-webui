@@ -33,7 +33,7 @@ import {
 
 update.extend('$autoArray', (val, obj) => update(obj || [], val));
 
-const isNumeric = value => typeof value === 'number' || !isNaN(parseInt(value, 10));
+const isNumeric = value => typeof value === 'number';
 const isAlphaNumericRegex = /^[a-zA-Z0-9]*$/;
 const nonAlphaNumeric = x => !x.match(isAlphaNumericRegex);
 

@@ -13,15 +13,15 @@ The following is for creating a new page called "**basicPage**."
     ```js
     export * from './basicPage/basicPage.container';
     ```
-1. (Optional)  Add an SVG icon for the new page. See [utilities/README.md](../utilities/README.md) for more information.
+1. (Optional)  Add an SVG icon for the new page. See [utilities/README.md](/src/utilities/README.md) for more information.
     - Note that existing SVGs can be used as well.
 1. Add the page name to the translations file, [translations.json](../../public/locales/en/translations.json). [i18next][i18next] is used for internationalization.
     ```json
     "tabs": {
-      "example": "Example",
+      "template": "Example",
     },
     ```
-1. Open the top level application page, [walkthrough/components/app.js](/src/components/app.js).
+1. Open the top level application page. For the walkthrough sample code:  [walkthrough/components/app.js](/src/walkthrough/components/app.js). For the normal applicaiton: [components/app.js](/src/components/app.js)
 1. Add the new page to the imports.
     ```javascript
     // Page Components

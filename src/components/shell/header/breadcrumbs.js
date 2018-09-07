@@ -28,8 +28,8 @@ export const Breadcrumbs = ({ t, crumbsConfig }) => (
   <Switch>
     {
       crumbsConfig.map(({ path, crumbs }) =>
-        <Route exact path={path} render={props => {
-          return crumbs.map((crumb, idx) => <CrumbFromConfig {...props} t={t} crumb={crumb} isLast={idx === crumbs.length - 1} />);
+        <Route key={path} exact path={path} render={props => {
+          return crumbs.map((crumb, idx) => <CrumbFromConfig {...props} key={crumb.to} t={t} crumb={crumb} isLast={idx === crumbs.length - 1} />);
         }} />
       )
     }

@@ -123,7 +123,8 @@ export const toMessagesModel = (response = {}) => getItems(response)
     'time': 'time'
   }));
 
-export const toNewRuleRequestModel = ({
+export const toEditRuleRequestModel = ({
+  id,
   name,
   description,
   groupId,
@@ -131,7 +132,8 @@ export const toNewRuleRequestModel = ({
   severity,
   enabled,
   calculation,
-  timePeriod
+  timePeriod,
+  eTag
 }) => {
   const Conditions = conditions.map(condition => ({
     Field: condition.field,
@@ -139,6 +141,7 @@ export const toNewRuleRequestModel = ({
     Value: condition.value
   }));
   return {
+    Id: id,
     Name: name,
     Description: description,
     GroupId: groupId,
@@ -146,6 +149,7 @@ export const toNewRuleRequestModel = ({
     Enabled: enabled,
     Calculation: calculation,
     TimePeriod: timePeriod,
+    ETag: eTag,
     Conditions
   };
 }
