@@ -12,7 +12,7 @@ import {
   RefreshBar,
   PageTitle
 } from 'components/shared';
-import { NewPackageContainer } from './flyouts';
+import { PackageNewContainer } from './flyouts';
 import { svgs } from 'utilities';
 
 import './packages.css';
@@ -73,7 +73,7 @@ export class Packages extends Component {
         <PageTitle className="package-title" titleValue={t('packages.title')} />
         {!!error && <AjaxError t={t} error={error} />}
         {!error && <PackagesGrid {...gridProps} />}
-        {this.state.openFlyoutName === 'new-Package' && <NewPackageContainer t={t} onClose={this.closeFlyout} />}
+        {this.state.openFlyoutName === 'new-Package' && <PackageNewContainer t={t} onClose={this.closeFlyout} />}
       </PageContent>
     ];
   }

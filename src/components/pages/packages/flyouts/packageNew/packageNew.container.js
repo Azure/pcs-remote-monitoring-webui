@@ -2,7 +2,7 @@
 
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { NewPackage } from './newPackage';
+import { PackageNew } from './packageNew';
 import {
   getCreatePackageError,
   getCreatePackagePendingStatus,
@@ -20,4 +20,4 @@ const mapDispatchToProps = dispatch => ({
   createPackage: packageModel => dispatch(packagesEpics.actions.createPackage(packageModel))
 });
 
-export const NewPackageContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(NewPackage));
+export const PackageNewContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(PackageNew));

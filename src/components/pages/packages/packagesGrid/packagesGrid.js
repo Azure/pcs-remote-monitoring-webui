@@ -5,7 +5,7 @@ import { packagesColumnDefs, defaultPackagesGridProps } from './packagesGridConf
 import { Btn, PcsGrid, Protected } from 'components/shared';
 import { isFunc, translateColumnDefs, svgs } from 'utilities';
 import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
-import { DeletePackageContainer } from '../flyouts';
+import { PackageDeleteContainer } from '../flyouts';
 
 import './packagesGrid.css';
 
@@ -39,7 +39,7 @@ export class PackagesGrid extends Component {
 
   getOpenFlyout = () => {
     if (this.state.openFlyoutName === 'delete-package') {
-      return <DeletePackageContainer key="delete-modal" package={this.state.hardSelectedPackages[0]} onClose={this.closeFlyout} />
+      return <PackageDeleteContainer key="delete-modal" package={this.state.hardSelectedPackages[0]} onClose={this.closeFlyout} />
     }
     return null;
   }

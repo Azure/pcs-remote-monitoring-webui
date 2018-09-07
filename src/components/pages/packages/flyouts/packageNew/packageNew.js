@@ -24,11 +24,11 @@ import {
   Svg
 } from 'components/shared';
 
-import './newPackage.css';
+import './packageNew.css';
 
 const fileInputAccept = ".json,application/json";
 
-export class NewPackage extends LinkedComponent {
+export class PackageNew extends LinkedComponent {
   constructor(props) {
     super(props);
 

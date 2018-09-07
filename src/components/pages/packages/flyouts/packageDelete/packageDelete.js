@@ -12,9 +12,9 @@ import {
 } from 'components/shared';
 import { svgs } from 'utilities';
 
-import './deletePackage.css';
+import './packageDelete.css';
 
-export class DeletePackage extends LinkedComponent {
+export class PackageDelete extends LinkedComponent {
 
   constructor(props) {
     super(props);
