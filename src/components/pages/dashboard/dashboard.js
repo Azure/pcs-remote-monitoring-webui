@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import Config from 'app.config';
 import { TelemetryService } from 'services';
+import { permissions } from 'services/models';
 import { compareByProperty, getIntervalParams, retryHandler } from 'utilities';
 import { Grid, Cell } from './grid';
 import { PanelErrorBoundary } from './panel';
@@ -21,7 +22,13 @@ import {
   transformTelemetryResponse,
   chartColorObjects
 } from './panels';
-import { ContextMenu, PageContent, RefreshBar } from 'components/shared';
+import {
+  ContextMenu,
+  ContextMenuAlign,
+  PageContent,
+  Protected,
+  RefreshBar
+} from 'components/shared';
 
 import './dashboard.css';
 
@@ -342,17 +349,23 @@ export class Dashboard extends Component {
 
     return [
       <ContextMenu key="context-menu">
-        <DeviceGroupDropdown />
-        <RefreshBar
-          refresh={this.refreshDashboard}
-          time={lastRefreshed}
-          isPending={analyticsIsPending || devicesIsPending}
-          t={t} />
-        <TimeIntervalDropdown
-          onChange={this.props.updateTimeInterval}
-          value={timeInterval}
-          t={t} />
-        <ManageDeviceGroupsBtn />
+        <ContextMenuAlign key="left" left={true}>
+          <DeviceGroupDropdown />
+          <Protected permission={permissions.updateDeviceGroups}>
+            <ManageDeviceGroupsBtn />
+          </Protected>
+        </ContextMenuAlign>
+        <ContextMenuAlign key="right">
+          <TimeIntervalDropdown
+            onChange={this.props.updateTimeInterval}
+            value={timeInterval}
+            t={t} />
+          <RefreshBar
+            refresh={this.refreshDashboard}
+            time={lastRefreshed}
+            isPending={analyticsIsPending || devicesIsPending}
+            t={t} />
+        </ContextMenuAlign>
       </ContextMenu>,
       <PageContent className="dashboard-container" key="page-content">
         <Grid>

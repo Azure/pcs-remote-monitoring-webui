@@ -4,7 +4,6 @@
 @import 'src/styles/mixins';
 
 .device-group-dropdown {
-  margin-right: auto; /* Push to the right of the other context menu buttons*/
   @include rem-fallback(width, 200px);
 
   .Select-menu-outer {

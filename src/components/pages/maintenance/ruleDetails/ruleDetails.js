@@ -11,6 +11,7 @@ import {
   AjaxError,
   Btn,
   ContextMenu,
+  ContextMenuAlign,
   Indicator,
   PageContent,
   Protected,
@@ -281,28 +282,34 @@ export class RuleDetails extends Component {
     const { counts = {} } = selectedAlert;
     return [
       <ContextMenu className="rule-details-context-menu-container" key="context-menu">
-        <DeviceGroupDropdown />
-        {
-          this.state.updatingAlertStatus &&
-          <div className="alert-indicator-container">
-            <Indicator />
-          </div>
-        }
-        {
-          this.state.ruleContextBtns
-          || this.state.alertContextBtns
-          || this.state.deviceContextBtns
-        }
-        <RefreshBar
-          refresh={this.refreshData}
-          time={lastUpdated}
-          isPending={isPending}
-          t={t} />
-        <TimeIntervalDropdown
-          onChange={onTimeIntervalChange}
-          value={timeInterval}
-          t={t} />
-        <ManageDeviceGroupsBtn />
+        <ContextMenuAlign key="left" left={true}>
+          <DeviceGroupDropdown />
+          <Protected permission={permissions.updateDeviceGroups}>
+            <ManageDeviceGroupsBtn />
+          </Protected>
+        </ContextMenuAlign>
+        <ContextMenuAlign key="right">
+          {
+            this.state.updatingAlertStatus &&
+            <div className="alert-indicator-container">
+              <Indicator />
+            </div>
+          }
+          {
+            this.state.ruleContextBtns
+            || this.state.alertContextBtns
+            || this.state.deviceContextBtns
+          }
+          <TimeIntervalDropdown
+            onChange={onTimeIntervalChange}
+            value={timeInterval}
+            t={t} />
+          <RefreshBar
+            refresh={this.refreshData}
+            time={lastUpdated}
+            isPending={isPending}
+            t={t} />
+        </ContextMenuAlign>
       </ContextMenu>,
       <PageContent className="maintenance-container rule-details-container" key="page-content">
       {

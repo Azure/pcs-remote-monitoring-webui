@@ -12,6 +12,15 @@ $headerHeight: 48px;
   justify-content: flex-end; // Move buttons to the right of the context menu
   @include rem-fallback(height, $headerHeight);
 
+  .context-menu-align-container {
+    display: flex;
+    flex-grow: 1;
+
+    &.left { justify-content: flex-start; }
+
+    &.right { justify-content: flex-end; }
+  }
+
   .last-updated-container {
     margin: 0;
     align-items: center;
