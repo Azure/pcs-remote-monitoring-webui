@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import 'tsiclient';
 
-import { AjaxError, Indicator } from 'components/shared';
+import { AjaxError, Indicator, Hyperlink } from 'components/shared';
 import {
   Panel,
   PanelHeader,
@@ -93,7 +93,7 @@ export class AnalyticsPanel extends Component {
   }
 
   render() {
-    const { t, isPending, criticalAlertsChange, alertsPerDeviceId, topAlerts, error } = this.props;
+    const { t, isPending, criticalAlertsChange, alertsPerDeviceId, topAlerts, timeSeriesExplorerUrl, error } = this.props;
     const showOverlay = isPending && !criticalAlertsChange;
     return (
       <Panel>
@@ -102,6 +102,10 @@ export class AnalyticsPanel extends Component {
           { !showOverlay && isPending && <Indicator size="small" /> }
         </PanelHeader>
         <PanelContent className="analytics-panel-container">
+          {
+            timeSeriesExplorerUrl &&
+            <Hyperlink className="time-series-explorer" href={timeSeriesExplorerUrl} target="_blank">{t('dashboard.panels.analytics.exploreTimeSeries')}</Hyperlink>
+          }
           <div className="analytics-cell full-width">
             <div className="analytics-header">{t('dashboard.panels.analytics.topRule')}</div>
             <div className="chart-container" id={barChartId} />

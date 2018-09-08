@@ -39,6 +39,11 @@
     justify-content: center;
   }
 
+  .time-series-explorer {
+    display: block;
+    @include rem-fallback(padding, 0px, 0px, 10px, 0px);
+  }
+
   @include themify($themes) {
     // Overrides of the TSIChart Lib
     text { fill: themed('colorContentText'); }

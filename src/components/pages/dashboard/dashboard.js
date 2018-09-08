@@ -274,6 +274,7 @@ export class Dashboard extends Component {
     const {
       theme,
       timeInterval,
+      timeSeriesExplorerUrl,
 
       azureMapsKey,
       azureMapsKeyError,
@@ -322,6 +323,12 @@ export class Dashboard extends Component {
     const offlineDeviceCount =
       deviceIds.length
         ? deviceIds.length - onlineDeviceCount
+        : undefined;
+
+    // Add parameters to Time Series Insights Url
+    const timeSeriesParamUrl =
+      timeSeriesExplorerUrl
+        ? timeSeriesExplorerUrl + '&relativeMillis=1800000&timeSeriesDefinitions=[{"name":"Devices","splitBy":"iothub-connection-device-id"}]'
         : undefined;
 
     // Add the alert rule name to the list of top alerts
@@ -403,6 +410,7 @@ export class Dashboard extends Component {
           </Cell>
           <Cell className="col-6">
             <TelemetryPanel
+              timeSeriesExplorerUrl={timeSeriesParamUrl}
               telemetry={telemetry}
               isPending={telemetryIsPending}
               lastRefreshed={lastRefreshed}
@@ -413,6 +421,7 @@ export class Dashboard extends Component {
           </Cell>
           <Cell className="col-4">
             <AnalyticsPanel
+              timeSeriesExplorerUrl={timeSeriesParamUrl}
               topAlerts={topAlertsWithName}
               alertsPerDeviceId={alertsPerDeviceType}
               criticalAlertsChange={criticalAlertsChange}

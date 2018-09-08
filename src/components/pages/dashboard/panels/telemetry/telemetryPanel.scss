@@ -7,3 +7,8 @@
   display: flex;
   flex-flow: column nowrap;
 }
+
+.time-series-explorer {
+  display: block;
+  @include rem-fallback(padding, 0px, 0px, 10px, 0px);
+}

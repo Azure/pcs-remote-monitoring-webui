@@ -1,0 +1,33 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.hyperlink {
+  cursor: pointer;
+  text-decoration: none;
+  @include rem-font-size(14px);
+
+  &:disabled { cursor: auto; }
+
+  @include themify($themes) {
+    color: themed('colorHyperlinkText');
+
+    &:focus {
+      color: themed('colorHyperlinkTextFocus');
+      outline: 1px solid themed('colorHyperlinkOutlineFocus');
+      outline-offset: 6px;
+    }
+
+    &:hover {
+      color: themed('colorHyperlinkTextHover');
+      text-decoration: underline;
+    }
+
+    &:disabled { color: themed('colorHyperlinkTextDisabled'); }
+
+    &:visited { color: themed('colorHyperlinkText'); }
+
+    &:visited:hover { color: themed('colorHyperlinkTextHover'); }
+  }
+}
