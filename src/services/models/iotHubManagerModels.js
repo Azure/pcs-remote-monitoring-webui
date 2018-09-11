@@ -114,7 +114,7 @@ export const toSubmitMethodJobRequestModel = (devices, { jobName, methodName, fi
       Firmware: firmwareVersion,
       FirmwareUri: firmwareUri
     })
-    : '';
+    : '{}';
   const request = {
     JobId: jobId,
     QueryCondition: `deviceId in [${deviceIds}]`,
