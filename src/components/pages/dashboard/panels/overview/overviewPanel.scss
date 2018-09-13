@@ -10,7 +10,7 @@
   padding: 0 !important;
 
   .stat-header {
-    padding: 10px;
+    @include rem-fallback(padding, 10px);
     font-family: $fontSelawikSemibold;
     @include rem-font-size(40px);
   }
@@ -19,7 +19,9 @@
     display: flex;
     flex-flow: column nowrap;
     flex-shrink: 0;
-    padding: 0px 10px 20px 10px;
+    @include rem-fallback(margin, 0px, 0px, 0px, 0px);
+    @include rem-fallback(padding, 0px, 10px, 20px, 10px);
+    align-items: flex-start;
 
     .stat-cell {
       display: flex;
@@ -27,7 +29,7 @@
       flex-shrink: 0;
       flex-grow: 1;
       align-items: flex-end;
-      padding: 10px 10px 10px 0px;
+      @include rem-fallback(padding, 6px, 6px, 6px, 0px);
 
       .stat-value {
         display: flex;
@@ -48,8 +50,8 @@
 
         .severity-icon {
           flex-shrink: 0;
-          margin-left: 8px;
-          margin-bottom: 3px;
+          @include rem-fallback(margin-left, 8px);
+          @include rem-fallback(margin-bottom, 3px);
           @include square-px-rem(10px);
 
           svg { @include square-px-rem(10px); }
@@ -57,7 +59,7 @@
       }
 
       .stat-label {
-        padding-left: 8px;
+        @include rem-fallback(padding-left, 8px);
         @include rem-font-size(14px);
       }
     }

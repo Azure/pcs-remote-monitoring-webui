@@ -20,7 +20,7 @@ A presentational component containing number value, label, and an optional svg a
 ```html
 <StatSection>
   <StatGroup>
-    <StatProperty value="12" label="chillers" svg="./svgPath" svgClassName="exmpleCssClass" size="large"}/>
+    <StatProperty value="12" label="chillers" svg="./svgPath" svgClassName="exmpleCssClass" size="large"/>
   </StatGroup>
 </StatSection>
 ```
