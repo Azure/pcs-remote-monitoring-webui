@@ -177,3 +177,28 @@ export const toDevicePropertiesModel = (iotResponse, dsResponse) => {
   const propertySet = new Set([...getItems(iotResponse), ...getItems(dsResponse)]);
   return [...propertySet];
 };
+
+export const toDeploymentModel = (deployment = {}) => camelCaseReshape(deployment, {
+  'id': 'id',
+  'name': 'name',
+  'deviceGroupId': 'deviceGroupId',
+  'packageId': 'packageId',
+  'priority': 'priority',
+  'type': 'type',
+  'createdDateTimeUtc': 'createdDateTimeUtc',
+  'metrics.appliedCount': 'appliedCount',
+  'metrics.failedCount': 'failedCount',
+  'metrics.succeededCount': 'succeededCount',
+  'metrics.targetedCount': 'targetedCount'
+});
+
+export const toDeploymentsModel = (response = {}) => getItems(response)
+  .map(toDeploymentModel);
+
+export const toDeploymentRequestModel = (deploymentModel = {}) => ({
+  DeviceGroupId: deploymentModel.deviceGroupId,
+  Name: deploymentModel.name,
+  PackageId: deploymentModel.packageId,
+  Priority: deploymentModel.priority,
+  Type: deploymentModel.type
+});

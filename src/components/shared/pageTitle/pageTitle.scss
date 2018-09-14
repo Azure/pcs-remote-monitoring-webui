@@ -9,6 +9,7 @@
   margin: 0;
   @include rem-fallback(margin-right, 10px);
   @include rem-font-size(48px);
+  @include rem-fallback(padding-bottom, 30px);
 
   @include themify($themes) {
      color: themed('colorHeaderText');

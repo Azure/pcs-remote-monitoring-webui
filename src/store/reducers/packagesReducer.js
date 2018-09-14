@@ -11,6 +11,7 @@ import {
   createReducerScenario,
   createEpicScenario,
   errorPendingInitialState,
+  resetPendingAndErrorReducer,
   pendingReducer,
   errorReducer,
   setPending,
@@ -107,6 +108,7 @@ export const redux = createReducerScenario({
   deletePackage: { type: 'PACKAGES_DELETE', reducer: deletePackageReducer },
   updatePackages: { type: 'PACKAGES_UPDATE', reducer: updatePackagesReducer },
   registerError: { type: 'PACKAGES_REDUCER_ERROR', reducer: errorReducer },
+  resetPendingAndError: { type: 'PACKAGES_REDUCER_RESET_ERROR_PENDING', reducer: resetPendingAndErrorReducer },
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer }
 });
 

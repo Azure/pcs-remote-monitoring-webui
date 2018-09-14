@@ -540,6 +540,50 @@
     "P7D": "Last week",
     "P1M": "Last month"
   },
+  "deployments": {
+    "title": "Deployments",
+    "flyouts": {
+      "new": {
+        "contextMenuName": "New deployment",
+        "title": "New deployment",
+        "apply": "Apply",
+        "cancel": "Cancel",
+        "close": "Close",
+        "type": "Package type",
+        "deviceGroup": "Device Group",
+        "name": "Name",
+        "priority": "Priority",
+        "package": "Package",
+        "typePlaceHolder": "Select package type",
+        "packagePlaceHolder": "Select package",
+        "deviceGroupPlaceHolder": "Select device group",
+        "priorityPlaceHolder": "Enter priority",
+        "namePlaceHolder": "Enter name",
+        "targetText": "targeted devices",
+        "infoText": "* Edge Manifest packages that you deploy will be applied to every edge device group in the device group and to any edge group that you add to the device group in the future. The deployment will run continously, verifying that current and future devices are configured correctly (and automatically updating that aren't). Package wont be applied to non-edge devices.",
+        "successText": "View your deployment status detail for {{deplymentName}}",
+        "creating": "Creating deployment",
+        "validation": {
+          "required": "Is required",
+          "nan": "Must be a number"
+        }
+      }
+    },
+    "typeOptions": {
+      "edgemanifest": "Edge Manifest"
+    },
+    "grid": {
+      "name": "Name",
+      "package": "Package",
+      "deviceGroup": "Device group",
+      "priority": "Priority",
+      "type": "Package Type",
+      "applied": "Applied",
+      "failed": "Failed",
+      "succeeded": "Succeeded",
+      "dateCreated": "Created On"
+    }
+  },
   "packages": {
     "searchPlaceholder": "Search packages...",
     "noneFound": "No packages found.",
@@ -580,9 +624,6 @@
     "typeOptions": {
       "edgemanifest": "Edge Manifest"
     }
-  },
-  "deployments": {
-    "header": "Deployments"
   },
   "walkthrough": {
     "tabs": {

@@ -47,11 +47,6 @@ export class Rules extends Component {
     }
   }
 
-  changeDeviceGroup = () => {
-    const { changeDeviceGroup, deviceGroups } = this.props;
-    changeDeviceGroup(deviceGroups[1].id);
-  }
-
   closeFlyout = () => this.setState(closedFlyoutState);
 
   openNewRuleFlyout = () => {

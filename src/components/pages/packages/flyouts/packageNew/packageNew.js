@@ -39,6 +39,10 @@ export class PackageNew extends LinkedComponent {
     };
   }
 
+  componentWillUnmount() {
+    this.props.resetPackagesPendingError();
+  }
+
   apply = (event) => {
     event.preventDefault();
     const { createPackage } = this.props;

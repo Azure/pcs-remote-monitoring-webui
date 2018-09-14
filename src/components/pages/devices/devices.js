@@ -78,7 +78,7 @@ export class Devices extends Component {
       <ContextMenu key="context-menu">
         <DeviceGroupDropdown />
         <SearchInput onChange={this.searchOnChange} placeholder={t('devices.searchPlaceholder')} />
-        { this.state.contextBtns }
+        {this.state.contextBtns}
         <Protected permission={permissions.updateSIMManagement}>
           <Btn svg={svgs.simmanagement} onClick={this.openSIMManagement}>{t('devices.flyouts.SIMManagement.title')}</Btn>
         </Protected>
@@ -91,10 +91,10 @@ export class Devices extends Component {
       </ContextMenu>,
       <PageContent className="devices-container" key="page-content">
         <RefreshBar refresh={fetchDevices} time={lastUpdated} isPending={isPending} t={t} />
-        { !!error && <AjaxError t={t} error={error} /> }
-        { !error && <DevicesGrid {...gridProps} /> }
-{ newDeviceFlyoutOpen && <DeviceNewContainer onClose={this.closeFlyout} /> }
-        { simManagementFlyoutOpen && <SIMManagementContainer onClose={this.closeFlyout} /> }
+        {!!error && <AjaxError t={t} error={error} />}
+        {!error && <DevicesGrid {...gridProps} />}
+        {newDeviceFlyoutOpen && <DeviceNewContainer onClose={this.closeFlyout} />}
+        {simManagementFlyoutOpen && <SIMManagementContainer onClose={this.closeFlyout} />}
       </PageContent>
     ];
   }

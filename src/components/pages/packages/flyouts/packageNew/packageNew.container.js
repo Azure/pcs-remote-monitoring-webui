@@ -6,7 +6,8 @@ import { PackageNew } from './packageNew';
 import {
   getCreatePackageError,
   getCreatePackagePendingStatus,
-  epics as packagesEpics
+  epics as packagesEpics,
+  redux as packagesRedux
 } from 'store/reducers/packagesReducer';
 
 // Pass the global info needed
@@ -17,7 +18,8 @@ const mapStateToProps = state => ({
 
 // Wrap the dispatch methods
 const mapDispatchToProps = dispatch => ({
-  createPackage: packageModel => dispatch(packagesEpics.actions.createPackage(packageModel))
+  createPackage: packageModel => dispatch(packagesEpics.actions.createPackage(packageModel)),
+  resetPackagesPendingError: () => dispatch(packagesRedux.actions.resetPendingAndError(packagesEpics.actions.createPackage)),
 });
 
 export const PackageNewContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(PackageNew));

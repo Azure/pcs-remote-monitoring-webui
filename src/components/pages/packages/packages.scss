@@ -8,8 +8,4 @@
   display: flex;
   flex-flow: column nowrap;
   padding: $baseContentPadding;
-
-  .package-title {
-    @include rem-fallback(padding-bottom, 30px);
-  }
 }

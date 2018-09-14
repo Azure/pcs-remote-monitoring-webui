@@ -11,6 +11,7 @@ import { IoTHubManagerService } from 'services';
 import {
   createReducerScenario,
   createEpicScenario,
+  resetPendingAndErrorReducer,
   errorPendingInitialState,
   pendingReducer,
   errorReducer,
@@ -31,6 +32,16 @@ export const epics = createEpicScenario({
     epic: (fromAction, store) => {
       const conditions = getActiveDeviceGroupConditions(store.getState());
       return IoTHubManagerService.getDevices(conditions)
+        .map(toActionCreator(redux.actions.updateDevices, fromAction))
+        .catch(handleError(fromAction))
+    }
+  },
+
+  /** Loads the devices by condition provided in payload*/
+  fetchDevicesByCondition: {
+    type: 'DEVICES_FETCH_BY_CONDITION',
+    epic: fromAction => {
+      return IoTHubManagerService.getDevices(fromAction.payload)
         .map(toActionCreator(redux.actions.updateDevices, fromAction))
         .catch(handleError(fromAction))
     }
@@ -133,7 +144,8 @@ const updatePropertiesReducer = (state, { payload }) => {
 
 /* Action types that cause a pending flag */
 const fetchableTypes = [
-  epics.actionTypes.fetchDevices
+  epics.actionTypes.fetchDevices,
+  epics.actionTypes.fetchDevicesByCondition
 ];
 
 export const redux = createReducerScenario({
@@ -144,6 +156,7 @@ export const redux = createReducerScenario({
   insertDevices: { type: 'DEVICE_INSERT', reducer: insertDevicesReducer },
   updateTags: { type: 'DEVICE_UPDATE_TAGS', reducer: updateTagsReducer },
   updateProperties: { type: 'DEVICE_UPDATE_PROPERTIES', reducer: updatePropertiesReducer },
+  resetPendingAndError: { type: 'DEVICE_REDUCER_RESET_ERROR_PENDING', reducer: resetPendingAndErrorReducer }
 });
 
 export const reducer = { devices: redux.getReducer(initialState) };
@@ -158,6 +171,10 @@ export const getDevicesError = state =>
   getError(getDevicesReducer(state), epics.actionTypes.fetchDevices);
 export const getDevicesPendingStatus = state =>
   getPending(getDevicesReducer(state), epics.actionTypes.fetchDevices);
+export const getDevicesByConditionError = state =>
+  getError(getDevicesReducer(state), epics.actionTypes.fetchDevicesByCondition);
+export const getDevicesByConditionPendingStatus = state =>
+  getPending(getDevicesReducer(state), epics.actionTypes.fetchDevicesByCondition);
 export const getDevices = createSelector(
   getEntities, getItems,
   (entities, items) => items.map(id => entities[id])
