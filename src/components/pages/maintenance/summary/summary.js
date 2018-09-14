@@ -5,6 +5,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
+import { permissions } from 'services/models';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/shell/deviceGroupDropdown';
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/shell/manageDeviceGroupsBtn';
 import { TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
@@ -13,8 +14,10 @@ import { Jobs } from './jobs';
 import {
   PageContent,
   ContextMenu,
+  ContextMenuAlign,
   RefreshBar,
   PageTitle,
+  Protected,
   StatSection,
   StatGroup,
   StatProperty
@@ -37,17 +40,23 @@ export const Summary = ({
   ...props
 }) => [
     <ContextMenu key="context-menu">
-      <DeviceGroupDropdown />
-      <RefreshBar
-        refresh={props.refreshData}
-        time={props.lastUpdated}
-        isPending={alertProps.isPending || jobProps.isPending}
-        t={props.t} />
-      <TimeIntervalDropdown
-        onChange={onTimeIntervalChange}
-        value={timeInterval}
-        t={props.t} />
-      <ManageDeviceGroupsBtn />
+      <ContextMenuAlign key="left" left={true}>
+        <DeviceGroupDropdown />
+        <Protected permission={permissions.updateDeviceGroups}>
+          <ManageDeviceGroupsBtn />
+        </Protected>
+      </ContextMenuAlign>
+      <ContextMenuAlign key="right">
+        <TimeIntervalDropdown
+          onChange={onTimeIntervalChange}
+          value={timeInterval}
+          t={props.t} />
+        <RefreshBar
+          refresh={props.refreshData}
+          time={props.lastUpdated}
+          isPending={alertProps.isPending || jobProps.isPending}
+          t={props.t} />
+      </ContextMenuAlign>
     </ContextMenu>,
     <PageContent className="maintenance-container summary-container" key="page-content">
       <PageTitle titleValue={props.t('maintenance.title')} />

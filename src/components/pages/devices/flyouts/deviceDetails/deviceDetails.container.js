@@ -3,7 +3,7 @@
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { DeviceDetails } from './deviceDetails';
-import { getTheme, getDeviceGroups } from 'store/reducers/appReducer';
+import { getTheme, getDeviceGroups, getTimeSeriesExplorerUrl } from 'store/reducers/appReducer';
 import {
   epics as ruleEpics,
   getEntities as getRulesEntities,
@@ -17,7 +17,8 @@ const mapStateToProps = state => ({
   rules: getRulesEntities(state),
   rulesLastUpdated: getRulesLastUpdated(state),
   deviceGroups: getDeviceGroups(state),
-  theme: getTheme(state)
+  theme: getTheme(state),
+  timeSeriesExplorerUrl: getTimeSeriesExplorerUrl(state)
 });
 
 // Wrap the dispatch method

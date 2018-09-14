@@ -123,6 +123,10 @@ export const toMessagesModel = (response = {}) => getItems(response)
     'time': 'time'
   }));
 
+export const toStatusModel = (response = {}) => camelCaseReshape(response, {
+  'properties': 'properties'
+});
+
 export const toEditRuleRequestModel = ({
   id,
   name,

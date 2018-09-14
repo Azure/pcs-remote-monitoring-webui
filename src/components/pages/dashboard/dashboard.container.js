@@ -11,7 +11,8 @@ import {
   getDeviceGroups,
   getDeviceGroupError,
   getTheme,
-  getTimeInterval
+  getTimeInterval,
+  getTimeSeriesExplorerUrl
 } from 'store/reducers/appReducer';
 import {
   epics as rulesEpics,
@@ -43,7 +44,8 @@ const mapStateToProps = state => ({
   rulesError: getRulesError(state),
   rulesIsPending: getRulesPendingStatus(state),
   theme: getTheme(state),
-  timeInterval: getTimeInterval(state)
+  timeInterval: getTimeInterval(state),
+  timeSeriesExplorerUrl: getTimeSeriesExplorerUrl(state)
 });
 
 // Wrap the dispatch method

@@ -9,6 +9,7 @@ import {
   AjaxError,
   Btn,
   ContextMenu,
+  ContextMenuAlign,
   PageContent,
   Protected,
   RefreshBar,
@@ -87,13 +88,19 @@ export class Rules extends Component {
     };
     return [
       <ContextMenu key="context-menu">
-        <DeviceGroupDropdown />
-        <SearchInput onChange={this.searchOnChange} placeholder={t('rules.searchPlaceholder')} />
-        {this.state.contextBtns}
-        <Protected permission={permissions.createRules}>
-          <Btn svg={svgs.plus} onClick={this.openNewRuleFlyout}>{t('rules.flyouts.newRule')}</Btn>
-        </Protected>
-        <ManageDeviceGroupsBtn />
+        <ContextMenuAlign key="left" left={true}>
+          <DeviceGroupDropdown />
+          <Protected permission={permissions.updateDeviceGroups}>
+            <ManageDeviceGroupsBtn />
+          </Protected>
+        </ContextMenuAlign>
+        <ContextMenuAlign key="right">
+          <SearchInput onChange={this.searchOnChange} placeholder={t('rules.searchPlaceholder')} />
+          {this.state.contextBtns}
+          <Protected permission={permissions.createRules}>
+            <Btn svg={svgs.plus} onClick={this.openNewRuleFlyout}>{t('rules.flyouts.newRule')}</Btn>
+          </Protected>
+        </ContextMenuAlign>
       </ContextMenu>,
       <PageContent className="rules-container" key="page-content">
         <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} t={t} />

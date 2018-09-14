@@ -75,6 +75,14 @@ $themes: (
     colorBtnPrimarySvgFillDisabled: $colorSmoke,
     // Btn - END
 
+    // Hyperlink - START
+    colorHyperlinkText: $colorDarkLinkRest,
+    colorHyperlinkTextHover: $colorDarkLinkHover,
+    colorHyperlinkTextFocus: $colorDarkLinkFocus,
+    colorHyperlinkOutlineFocus: $colorDarkLinkBorder,
+    colorHyperlinkTextDisabled: $colorDarkLinkDisabled,
+    // Hyperlink - END
+
     // Page Content Colors - START
     colorContentBackground: $colorNoir,
     colorPageContentBackground: $colorNoir,
@@ -235,6 +243,14 @@ $themes: (
     colorBtnPrimaryBackgroundDisabled: #f4f4f4,
     colorBtnPrimarySvgFillDisabled: #a6a6a6,
     // Btn - END
+
+    // Hyperlink - START
+    colorHyperlinkText: $colorLightLinkRest,
+    colorHyperlinkTextHover: $colorLightLinkHover,
+    colorHyperlinkTextFocus: $colorLightLinkFocus,
+    colorHyperlinkOutlineFocus: $colorLightLinkBorder,
+    colorHyperlinkTextDisabled: $colorLightLinkDisabled,
+    // Hyperlink - END
 
     // Page Content Colors - START
     colorContentBackground: #f2f2f2, // Grey100

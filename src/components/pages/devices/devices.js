@@ -10,6 +10,7 @@ import {
   AjaxError,
   Btn,
   ContextMenu,
+  ContextMenuAlign,
   PageContent,
   Protected,
   RefreshBar,
@@ -76,18 +77,22 @@ export class Devices extends Component {
 
     return [
       <ContextMenu key="context-menu">
-        <DeviceGroupDropdown />
-        <SearchInput onChange={this.searchOnChange} placeholder={t('devices.searchPlaceholder')} />
-        {this.state.contextBtns}
-        <Protected permission={permissions.updateSIMManagement}>
-          <Btn svg={svgs.simmanagement} onClick={this.openSIMManagement}>{t('devices.flyouts.SIMManagement.title')}</Btn>
-        </Protected>
-        <Protected permission={permissions.createDevices}>
-          <Btn svg={svgs.plus} onClick={this.openNewDeviceFlyout}>{t('devices.flyouts.new.contextMenuName')}</Btn>
-        </Protected>
-        <Protected permission={permissions.updateDeviceGroups}>
-          <ManageDeviceGroupsBtn />
-        </Protected>
+        <ContextMenuAlign key="left" left={true}>
+          <DeviceGroupDropdown />
+          <Protected permission={permissions.updateDeviceGroups}>
+            <ManageDeviceGroupsBtn />
+          </Protected>
+        </ContextMenuAlign>
+        <ContextMenuAlign key="right">
+          <SearchInput onChange={this.searchOnChange} placeholder={t('devices.searchPlaceholder')} />
+          { this.state.contextBtns }
+          <Protected permission={permissions.updateSIMManagement}>
+            <Btn svg={svgs.simmanagement} onClick={this.openSIMManagement}>{t('devices.flyouts.SIMManagement.title')}</Btn>
+          </Protected>
+          <Protected permission={permissions.createDevices}>
+            <Btn svg={svgs.plus} onClick={this.openNewDeviceFlyout}>{t('devices.flyouts.new.contextMenuName')}</Btn>
+          </Protected>
+        </ContextMenuAlign>
       </ContextMenu>,
       <PageContent className="devices-container" key="page-content">
         <RefreshBar refresh={fetchDevices} time={lastUpdated} isPending={isPending} t={t} />

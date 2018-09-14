@@ -2,7 +2,7 @@
 
 import 'rxjs';
 import { Observable } from 'rxjs';
-import { AuthService, ConfigService, GitHubService, DiagnosticsService } from 'services';
+import { AuthService, ConfigService, GitHubService, DiagnosticsService, TelemetryService } from 'services';
 import moment from 'moment';
 import { schema, normalize } from 'normalizr';
 import { createSelector } from 'reselect';
@@ -35,7 +35,8 @@ export const epics = createEpicScenario({
       epics.actions.fetchDeviceGroups(),
       epics.actions.fetchLogo(),
       epics.actions.fetchReleaseInformation(),
-      epics.actions.fetchSolutionSettings()
+      epics.actions.fetchSolutionSettings(),
+      epics.actions.fetchTelemetryStatus()
     ]
   },
 
@@ -73,6 +74,15 @@ export const epics = createEpicScenario({
     epic: (fromAction) =>
       ConfigService.getSolutionSettings()
         .map(toActionCreator(redux.actions.updateSolutionSettings, fromAction))
+        .catch(handleError(fromAction))
+  },
+
+  /** Get Telemetry Status */
+  fetchTelemetryStatus: {
+    type: 'APP_FETCH_TELEMETRY_STATUS',
+    epic: (fromAction) =>
+      TelemetryService.getStatus()
+        .map(toActionCreator(redux.actions.updateTelemetryProperties, fromAction))
         .catch(handleError(fromAction))
   },
 
@@ -174,6 +184,7 @@ const initialState = {
   theme: 'dark',
   version: undefined,
   releaseNotesUrl: undefined,
+  timeSeriesExplorerUrl: undefined,
   logo: svgs.contoso,
   name: 'companyName',
   isDefaultLogo: true,
@@ -193,6 +204,13 @@ const initialState = {
 const updateUserReducer = (state, { payload, fromAction }) => {
   return update(state, {
     userPermissions: { $set: new Set(payload.permissions) },
+    ...setPending(fromAction.type, false)
+  });
+};
+
+const updateTelemetryPropertiesReducer = (state, { payload, fromAction }) => {
+  return update(state, {
+    timeSeriesExplorerUrl: { $set: payload.properties.tsiExplorerUrl },
     ...setPending(fromAction.type, false)
   });
 };
@@ -259,11 +277,13 @@ const fetchableTypes = [
   epics.actionTypes.fetchDeviceGroupFilters,
   epics.actionTypes.updateLogo,
   epics.actionTypes.fetchLogo,
-  epics.actions.fetchSolutionSettings
+  epics.actions.fetchSolutionSettings,
+  epics.actions.fetchTelemetryStatus
 ];
 
 export const redux = createReducerScenario({
   updateUser: { type: 'APP_USER_UPDATE', reducer: updateUserReducer },
+  updateTelemetryProperties: { type: 'APP_UPDATE_TELEMETRY_STATUS', reducer: updateTelemetryPropertiesReducer },
   updateDeviceGroups: { type: 'APP_DEVICE_GROUP_UPDATE', reducer: updateDeviceGroupsReducer },
   deleteDeviceGroups: { type: 'APP_DEVICE_GROUP_DELETE', reducer: deleteDeviceGroupsReducer },
   insertDeviceGroups: { type: 'APP_DEVICE_GROUP_INSERT', reducer: insertDeviceGroupsReducer },
@@ -286,6 +306,7 @@ export const reducer = { app: redux.getReducer(initialState) };
 export const getAppReducer = state => state.app;
 export const getVersion = state => getAppReducer(state).version;
 export const getTheme = state => getAppReducer(state).theme;
+export const getTimeSeriesExplorerUrl = state => getAppReducer(state).timeSeriesExplorerUrl;
 export const getDeviceGroupEntities = state => getAppReducer(state).deviceGroups;
 export const getActiveDeviceGroupId = state => getAppReducer(state).activeDeviceGroupId;
 export const getSettings = state => getAppReducer(state).settings;

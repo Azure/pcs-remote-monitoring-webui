@@ -19,6 +19,7 @@ import {
   Btn,
   BtnToolbar,
   ErrorMsg,
+  Hyperlink,
   PropertyGrid as Grid,
   PropertyGridBody as GridBody,
   PropertyGridHeader as GridHeader,
@@ -159,7 +160,7 @@ export class DeviceDetails extends Component {
   }
 
   render() {
-    const { t, onClose, device, theme } = this.props;
+    const { t, onClose, device, theme, timeSeriesExplorerUrl } = this.props;
     const { telemetry, lastMessage } = this.state;
     const lastMessageTime = (lastMessage || {}).time;
     const isPending = this.state.isAlertsPending && this.props.isRulesPending;
@@ -173,6 +174,13 @@ export class DeviceDetails extends Component {
     };
     const tags = Object.entries(device.tags || {});
     const properties = Object.entries(device.properties || {});
+
+    // Add parameters to Time Series Insights Url
+    const timeSeriesParamUrl =
+    timeSeriesExplorerUrl
+      ? timeSeriesExplorerUrl +
+        `&relativeMillis=1800000&timeSeriesDefinitions=[{"name":"${device.id}","measureName":"${Object.keys(telemetry).sort()[0]}","predicate":"'${device.id}'"}]`
+      : undefined;
 
     return (
       <Flyout.Container>
@@ -210,7 +218,11 @@ export class DeviceDetails extends Component {
               <Section.Container>
                 <Section.Header>{t('devices.flyouts.details.telemetry.title')}</Section.Header>
                 <Section.Content>
-                  <TelemetryChart telemetry={telemetry} theme={theme} colors={chartColorObjects} />
+                  {
+                    timeSeriesExplorerUrl &&
+                    <Hyperlink className="time-series-explorer" href={timeSeriesParamUrl} target="_blank">{t('devices.flyouts.details.telemetry.exploreTimeSeries')}</Hyperlink>
+                  }
+                  <TelemetryChart className="telemetry-chart" telemetry={telemetry} theme={theme} colors={chartColorObjects} />
                 </Section.Content>
               </Section.Container>
 

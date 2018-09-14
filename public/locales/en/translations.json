@@ -140,7 +140,8 @@
         "deviceTypeAlerts": "Alert by device type",
         "criticalAlerts": "Critical alerts",
         "currentWindow": "Currently",
-        "previousWindow": "Previously"
+        "previousWindow": "Previously",
+        "exploreTimeSeries": "Explore in Time Series Insights"
       },
       "map": {
         "header": "Device locations",
@@ -157,7 +158,8 @@
         "notConnected": "Offline"
       },
       "telemetry": {
-        "header": "Telemetry"
+        "header": "Telemetry",
+        "exploreTimeSeries": "Explore in Time Series Insights"
       }
     }
   },
@@ -224,7 +226,8 @@
           "noneExist": "No tags found for this device."
         },
         "telemetry": {
-          "title": "Telemetry"
+          "title": "Telemetry",
+          "exploreTimeSeries": "Explore in Time Series Insights"
         }
       },
       "delete": {

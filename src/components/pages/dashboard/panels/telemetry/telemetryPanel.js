@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import 'tsiclient';
 
-import { AjaxError, Indicator } from 'components/shared';
+import { AjaxError, Hyperlink, Indicator } from 'components/shared';
 import {
   Panel,
   PanelContent,
@@ -20,7 +20,7 @@ import './telemetryPanel.css';
 
 export class TelemetryPanel extends Component {
   render() {
-    const { t, isPending, telemetry, lastRefreshed, theme, colors, error } = this.props;
+    const { t, isPending, telemetry, lastRefreshed, theme, colors, error, timeSeriesExplorerUrl } = this.props;
     const showOverlay = isPending && !lastRefreshed;
     return (
       <Panel>
@@ -29,6 +29,10 @@ export class TelemetryPanel extends Component {
           { !showOverlay && isPending && <Indicator size="small" /> }
         </PanelHeader>
         <PanelContent className="telemetry-panel-container">
+          {
+            timeSeriesExplorerUrl &&
+              <Hyperlink className="time-series-explorer" href={timeSeriesExplorerUrl} target="_blank">{t('dashboard.panels.telemetry.exploreTimeSeries')}</Hyperlink>
+          }
           <TelemetryChart telemetry={telemetry} theme={theme} colors={colors} />
           {
             !showOverlay && Object.keys(telemetry).length === 0

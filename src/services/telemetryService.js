@@ -10,13 +10,20 @@ import {
   toAlertsModel,
   toMessagesModel,
   toRuleModel,
-  toRulesModel
+  toRulesModel,
+  toStatusModel
 } from './models';
 
 const ENDPOINT = Config.serviceUrls.telemetry;
 
 /** Contains methods for calling the telemetry service */
 export class TelemetryService {
+
+  /** Returns the status properties for the telemetry service */
+  static getStatus() {
+    return HttpClient.get(`${ENDPOINT}status`)
+      .map(toStatusModel);
+  }
 
   /** Returns a list of rules */
   static getRules(params = {}) {
