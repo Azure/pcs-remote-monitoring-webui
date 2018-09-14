@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import Config from 'app.config';
-import { TimeRenderer } from 'components/shared/cellRenderers';
+import { TimeRenderer, SoftSelectLinkRenderer } from 'components/shared/cellRenderers';
 import { gridValueFormatters } from 'components/shared/pcsGrid/pcsGridConfig';
 
 const { checkForEmpty } = gridValueFormatters;
@@ -10,7 +10,9 @@ export const packagesColumnDefs = {
   name: {
     headerName: 'packages.grid.name',
     field: 'name',
-    valueFormatter: ({ value }) => checkForEmpty(value)
+    sort: 'asc',
+    valueFormatter: ({ value }) => checkForEmpty(value),
+    cellRendererFramework: SoftSelectLinkRenderer
   },
   type: {
     headerName: 'packages.grid.type',

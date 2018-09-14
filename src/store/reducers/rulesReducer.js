@@ -34,7 +34,7 @@ export const epics = createEpicScenario({
   fetchRules: {
     type: 'RULES_FETCH',
     epic: fromAction =>
-      TelemetryService.getRules({includeDeleted: true})
+      TelemetryService.getRules({ includeDeleted: true })
         .flatMap(rules =>
           Observable.from(rules)
             .flatMap(({ id, groupId }) => [
@@ -93,7 +93,8 @@ const ruleListSchema = new schema.Array(ruleSchema);
 const initialState = { ...errorPendingInitialState, entities: {}, items: [] };
 
 const insertRulesReducer = (state, { payload }) => {
-  const { entities: { rules }, result } = normalize(payload, ruleListSchema);
+  const inserted = payload.map(rule => ({ ...rule, isNew: true }));
+  const { entities: { rules }, result } = normalize(inserted, ruleListSchema);
   if (state.entities) {
     return update(state, {
       entities: { $merge: rules },

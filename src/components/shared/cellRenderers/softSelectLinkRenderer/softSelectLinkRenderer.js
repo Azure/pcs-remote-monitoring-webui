@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 
 import { isFunc } from 'utilities';
+import { GlimmerRenderer } from 'components/shared/cellRenderers';
 
 import '../cellRenderer.css';
 
@@ -16,11 +17,16 @@ export class SoftSelectLinkRenderer extends Component {
   };
 
   render() {
-    const { value, context } = this.props;
+    const { value, context, data } = this.props;
     return (
-      isFunc(context.onSoftSelectChange)
-        ? <a href="" className="soft-select-link-cell" onClick={this.onClick}>{ value }</a>
-        : value
+      <div className="pcs-renderer-cell">
+        <GlimmerRenderer value={data.isNew} />
+        {
+          isFunc(context.onSoftSelectChange)
+            ? <a href="" className="soft-select-link-cell" onClick={this.onClick}>{value}</a>
+            : value
+        }
+      </div>
     );
   }
 }

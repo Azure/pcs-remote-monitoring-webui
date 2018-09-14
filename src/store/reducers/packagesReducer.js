@@ -60,7 +60,8 @@ const packageListSchema = new schema.Array(packageSchema);
 const initialState = { ...errorPendingInitialState, entities: {} };
 
 const insertPackageReducer = (state, { payload, fromAction }) => {
-  const { entities: { packages }, result } = normalize(payload, packageSchema);
+  const { entities: { packages }, result } = normalize({...payload, isNew: true}, packageSchema);
+
   if (state.entities) {
     return update(state, {
       entities: { $merge: packages },

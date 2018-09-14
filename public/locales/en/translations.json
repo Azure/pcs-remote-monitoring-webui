@@ -573,7 +573,7 @@
       "delete": {
         "title": "Delete Package?",
         "delete": "Delete",
-        "cancel": "cancel",
+        "cancel": "Cancel",
         "info": "Deleting selected package will remove it. It will not impact any of the deployments of this package."
       }
     },

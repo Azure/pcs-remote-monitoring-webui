@@ -32,6 +32,8 @@ $themes: (
     colorCellRendererText: $colorSmoke,
     colorCellRendererTextHighlight: $colorWhite,
 
+    colorGlimmerSvgFill: #f4f4f4,
+
     gridSortIcon: '~assets/icons/sort_dark.svg',
     gridAscIcon: '~assets/icons/sort_a2z_dark.svg',
     gridDescIcon: '~assets/icons/sort_z2a_dark.svg',
@@ -190,6 +192,8 @@ $themes: (
     colorCellRendererSvgFillHighlight: #333,
     colorCellRendererText: #333,
     colorCellRendererTextHighlight: #333,
+
+    colorGlimmerSvgFill: #212121,
 
     gridSortIcon: '~assets/icons/sort_light.svg',
     gridAscIcon: '~assets/icons/sort_a2z_light.svg',

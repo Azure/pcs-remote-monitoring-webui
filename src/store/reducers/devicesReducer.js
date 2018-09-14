@@ -81,7 +81,8 @@ const deleteDevicesReducer = (state, { payload }) => {
 };
 
 const insertDevicesReducer = (state, { payload }) => {
-  const { entities: { devices }, result } = normalize(payload, deviceListSchema);
+  const inserted = payload.map(device => ({ ...device, isNew: true }));
+  const { entities: { devices }, result } = normalize(inserted, deviceListSchema);
   if (state.entities) {
     return update(state, {
       entities: { $merge: devices },
