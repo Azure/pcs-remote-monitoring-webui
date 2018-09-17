@@ -62,7 +62,7 @@ const deploymentListSchema = new schema.Array(deploymentSchema);
 const initialState = { ...errorPendingInitialState, entities: {} };
 
 const insertDeploymentReducer = (state, { payload, fromAction }) => {
-  const { entities: { deployments }, result } = normalize(payload, deploymentSchema);
+  const { entities: { deployments }, result } = normalize({...payload, isNew: true}, deploymentSchema);
   if (state.entities) {
     return update(state, {
       entities: { $merge: deployments },
