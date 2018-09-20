@@ -7,6 +7,9 @@ $selectedRowBorderWidth: 4px;
 $rowHeight: 48px;
 $headerResizeHeight: 18px;
 
+$pageTitleHeight: 85px;
+$refreshBarHeight: 16px;
+
 $icons-path: "~ag-grid/src/styles/icons/";
 $row-height: $rowHeight;
 $header-height: $rowHeight;
@@ -27,7 +30,7 @@ $header-background-color: transparent;
 $doublePadding: $baseContentPadding * 2;
 .pcs-grid-container.ag-theme-dark {
   @include ag-theme-classic($params);
-  height: calc(100% - #{$doublePadding});
+  height: calc(100% - #{$pageTitleHeight} - #{$refreshBarHeight});
   position: relative;
   font-family: $fontSelawik;
   flex-shrink: 0;

@@ -7,6 +7,7 @@ import {
   AjaxError,
   Btn,
   ContextMenu,
+  ContextMenuAlign,
   PageContent,
   Protected,
   RefreshBar,
@@ -67,17 +68,21 @@ export class Deployments extends Component {
 
     return [
       <ContextMenu key="deployments-context-menu">
-        <DeviceGroupDropdown />
-        <RefreshBar refresh={fetchDeployments} time={lastUpdated} isPending={isPending} t={t} />
-        {this.state.contextBtns}
-        <Protected permission={permissions.createDevices}>
-          <Btn svg={svgs.plus} onClick={this.openNewDeploymentFlyout}>{t('deployments.flyouts.new.contextMenuName')}</Btn>
-        </Protected>
-        <Protected permission={permissions.updateDeviceGroups}>
-          <ManageDeviceGroupsBtn />
-        </Protected>
+        <ContextMenuAlign key="left" left={true}>
+          <DeviceGroupDropdown />
+          <Protected permission={permissions.updateDeviceGroups}>
+            <ManageDeviceGroupsBtn />
+          </Protected>
+        </ContextMenuAlign>
+        <ContextMenuAlign key="right">
+          {this.state.contextBtns}
+          <Protected permission={permissions.createDevices}>
+            <Btn svg={svgs.plus} onClick={this.openNewDeploymentFlyout}>{t('deployments.flyouts.new.contextMenuName')}</Btn>
+          </Protected>
+        </ContextMenuAlign>
       </ContextMenu>,
       <PageContent className="deployments-page-container" key="deployments-page-content">
+        <RefreshBar refresh={fetchDeployments} time={lastUpdated} isPending={isPending} t={t} />
         <PageTitle className="deployments-title" titleValue={t('deployments.title')} />
         {!!error && <AjaxError t={t} error={error} />}
         {!error && <DeploymentsGrid {...gridProps} />}

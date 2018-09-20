@@ -168,6 +168,7 @@
     "lastRefreshed": "Last refreshed"
   },
   "devices": {
+    "title": "Devices",
     "searchPlaceholder": "Search devices...",
     "noneFound": "No devices found.",
     "refresh": "Refresh",
@@ -373,6 +374,7 @@
     }
   },
   "rules": {
+    "title": "Rules",
     "searchPlaceholder": "Search rules...",
     "severity": {
       "info": "Info",

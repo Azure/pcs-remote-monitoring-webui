@@ -12,6 +12,7 @@ import {
   ContextMenu,
   ContextMenuAlign,
   PageContent,
+  PageTitle,
   Protected,
   RefreshBar,
   SearchInput
@@ -96,6 +97,7 @@ export class Devices extends Component {
       </ContextMenu>,
       <PageContent className="devices-container" key="page-content">
         <RefreshBar refresh={fetchDevices} time={lastUpdated} isPending={isPending} t={t} />
+        <PageTitle titleValue={t('devices.title')} />
         {!!error && <AjaxError t={t} error={error} />}
         {!error && <DevicesGrid {...gridProps} />}
         {newDeviceFlyoutOpen && <DeviceNewContainer onClose={this.closeFlyout} />}

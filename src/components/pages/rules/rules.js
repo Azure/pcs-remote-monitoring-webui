@@ -11,6 +11,7 @@ import {
   ContextMenu,
   ContextMenuAlign,
   PageContent,
+  PageTitle,
   Protected,
   RefreshBar,
   SearchInput
@@ -104,6 +105,7 @@ export class Rules extends Component {
       </ContextMenu>,
       <PageContent className="rules-container" key="page-content">
         <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} t={t} />
+        <PageTitle titleValue={t('rules.title')} />
         { !!error && <AjaxError t={t} error={error} /> }
         {!error && <RulesGrid {...gridProps} />}
         {this.state.openFlyoutName === 'newRule' && <NewRuleFlyout t={t} onClose={this.closeFlyout} logEvent={logEvent} />}

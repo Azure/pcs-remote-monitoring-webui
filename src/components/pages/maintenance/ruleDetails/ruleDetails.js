@@ -14,6 +14,7 @@ import {
   ContextMenuAlign,
   Indicator,
   PageContent,
+  PageTitle,
   Protected,
   RefreshBar
 } from 'components/shared';
@@ -91,10 +92,10 @@ export class RuleDetails extends Component {
               )
               .flatMap(transformTelemetryResponse(() => this.state.telemetry))
               .map(telemetry => ({ telemetry, telemetryIsPending: false }))
-            } else {
-              return Observable.empty();
-            }
+          } else {
+            return Observable.empty();
           }
+        }
         )
         .subscribe(
           telemetryState => this.setState(
@@ -138,12 +139,12 @@ export class RuleDetails extends Component {
     const devices = deviceIds.map(deviceId => deviceObjects[deviceId]);
     const deviceIdString = deviceIds.sort().join(idDelimiter);
     this.setState({
-        deviceIds: deviceIdString,
-        devices,
-        occurrences,
-        selectedAlert,
-        selectedRule
-      },
+      deviceIds: deviceIdString,
+      devices,
+      occurrences,
+      selectedAlert,
+      selectedRule
+    },
       () => this.restartTelemetry$.next(deviceIdString)
     );
   }
@@ -204,22 +205,22 @@ export class RuleDetails extends Component {
     const alertContextBtns =
       selectedRows.length > 0
         ? [
-            <Protected key="close" permission={permissions.updateAlarms}>
-              <Btn svg={svgs.closeAlert} onClick={this.closeAlerts}>
-                <Trans i18nKey="maintenance.close">Close</Trans>
-              </Btn>
-            </Protected>,
-            <Protected key="ack" permission={permissions.updateAlarms}>
-              <Btn svg={svgs.ackAlert} onClick={this.ackAlerts}>
-                <Trans i18nKey="maintenance.acknowledge">Acknowledge</Trans>
-              </Btn>
-            </Protected>,
-            <Protected key="delete" permission={permissions.deleteAlarms}>
-              <Btn svg={svgs.trash} onClick={this.deleteAlerts}>
-                <Trans i18nKey="maintenance.delete">Delete</Trans>
-              </Btn>
-            </Protected>
-          ]
+          <Protected key="close" permission={permissions.updateAlarms}>
+            <Btn svg={svgs.closeAlert} onClick={this.closeAlerts}>
+              <Trans i18nKey="maintenance.close">Close</Trans>
+            </Btn>
+          </Protected>,
+          <Protected key="ack" permission={permissions.updateAlarms}>
+            <Btn svg={svgs.ackAlert} onClick={this.ackAlerts}>
+              <Trans i18nKey="maintenance.acknowledge">Acknowledge</Trans>
+            </Btn>
+          </Protected>,
+          <Protected key="delete" permission={permissions.deleteAlarms}>
+            <Btn svg={svgs.trash} onClick={this.deleteAlerts}>
+              <Trans i18nKey="maintenance.delete">Delete</Trans>
+            </Btn>
+          </Protected>
+        ]
         : null;
     this.setState({
       selectedAlerts: selectedRows,
@@ -246,7 +247,7 @@ export class RuleDetails extends Component {
     deviceContextBtns: undefined
   }, this.props.refreshData);
 
-  render () {
+  render() {
     const {
       error,
       isPending,
@@ -304,19 +305,20 @@ export class RuleDetails extends Component {
             onChange={onTimeIntervalChange}
             value={timeInterval}
             t={t} />
-          <RefreshBar
-            refresh={this.refreshData}
-            time={lastUpdated}
-            isPending={isPending}
-            t={t} />
         </ContextMenuAlign>
       </ContextMenu>,
       <PageContent className="maintenance-container rule-details-container" key="page-content">
-      {
-        !this.props.error
-          ? <div>
+        <RefreshBar
+          refresh={this.refreshData}
+          time={lastUpdated}
+          isPending={isPending}
+          t={t} />
+        <PageTitle titleValue={alertName} />
+        {
+          !this.props.error
+            ?
+            <div>
               <div className="header-container">
-                <h1 className="rule-maintenance-header">{alertName}</h1>
                 <div className="rule-stat-container">
                   <div className="rule-stat-cell">
                     <div className="rule-stat-header">{t('maintenance.total')}</div>
@@ -357,9 +359,9 @@ export class RuleDetails extends Component {
                 </div>
               </div>
               <div className="details-description">
-                { t('maintenance.ruleDetailsDesc') }
+                {t('maintenance.ruleDetailsDesc')}
               </div>
-              <h4 className="sub-heading">{ t('maintenance.ruleDetail') }</h4>
+              <h4 className="sub-heading">{t('maintenance.ruleDetail')}</h4>
               <RulesGrid
                 t={t}
                 deviceGroups={deviceGroups}
@@ -372,17 +374,17 @@ export class RuleDetails extends Component {
                 refresh={this.props.fetchRules}
                 logEvent={this.props.logEvent} />
 
-              <h4 className="sub-heading">{ t('maintenance.alertOccurrences') }</h4>
+              <h4 className="sub-heading">{t('maintenance.alertOccurrences')}</h4>
               <AlertOccurrencesGrid {...alertsGridProps} />
 
-              <h4 className="sub-heading">{ t('maintenance.relatedInfo') }</h4>
+              <h4 className="sub-heading">{t('maintenance.relatedInfo')}</h4>
               <div className="tab-container">
                 <button className={joinClasses('tab', selectedTab === tabIds.all ? 'active' : '')}
-                    onClick={this.setTab(tabIds.all)}>{t('maintenance.all')}</button>
+                  onClick={this.setTab(tabIds.all)}>{t('maintenance.all')}</button>
                 <button className={joinClasses('tab', selectedTab === tabIds.devices ? 'active' : '')}
-                    onClick={this.setTab(tabIds.devices)}>{t('maintenance.devices')}</button>
+                  onClick={this.setTab(tabIds.devices)}>{t('maintenance.devices')}</button>
                 <button className={joinClasses('tab', selectedTab === tabIds.telemetry ? 'active' : '')}
-                    onClick={this.setTab(tabIds.telemetry)}>{t('maintenance.telemetry')}</button>
+                  onClick={this.setTab(tabIds.telemetry)}>{t('maintenance.telemetry')}</button>
               </div>
               {
                 (selectedTab === tabIds.all || selectedTab === tabIds.devices) &&
@@ -408,8 +410,8 @@ export class RuleDetails extends Component {
                 ]
               }
             </div>
-          : <AjaxError t={t} error={error} />
-      }
+            : <AjaxError t={t} error={error} />
+        }
       </PageContent>
     ];
   }

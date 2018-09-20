@@ -7,6 +7,7 @@ import {
   AjaxError,
   Btn,
   ContextMenu,
+  ContextMenuAlign,
   PageContent,
   Protected,
   RefreshBar,
@@ -63,13 +64,18 @@ export class Packages extends Component {
 
     return [
       <ContextMenu key="context-menu">
-        <RefreshBar refresh={fetchPackages} time={lastUpdated} isPending={isPending} t={t} />
-        {this.state.contextBtns}
-        <Protected permission={permissions.addPackages}>
-          <Btn svg={svgs.plus} onClick={this.openNewPackageFlyout}>{t('packages.new')}</Btn>
-        </Protected>
+        <ContextMenuAlign key="left" left={true}>
+          { /* Add left aligned items as needed */ }
+        </ContextMenuAlign>
+        <ContextMenuAlign key="right">
+          {this.state.contextBtns}
+          <Protected permission={permissions.addPackages}>
+            <Btn svg={svgs.plus} onClick={this.openNewPackageFlyout}>{t('packages.new')}</Btn>
+          </Protected>
+        </ContextMenuAlign>
       </ContextMenu>,
       <PageContent className="package-container" key="page-content">
+        <RefreshBar refresh={fetchPackages} time={lastUpdated} isPending={isPending} t={t} />
         <PageTitle className="package-title" titleValue={t('packages.title')} />
         {!!error && <AjaxError t={t} error={error} />}
         {!error && <PackagesGrid {...gridProps} />}

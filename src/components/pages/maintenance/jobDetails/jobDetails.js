@@ -8,6 +8,7 @@ import {
   ContextMenu,
   ContextMenuAlign,
   PageContent,
+  PageTitle,
   RefreshBar
 } from 'components/shared';
 import { DevicesGrid } from 'components/pages/devices/devicesGrid';
@@ -46,10 +47,10 @@ export class JobDetails extends Component {
     //       A long term fix would be to normalize the job data in maintenance.js (similar to how Telemetry is handled there).
     //       When/if that happens, remove all use of refreshPending in the local state of this component.
     if ((
-        nextProps.match.params.id !== (this.state.selectedJob || {}).jobId
-        || this.state.timeIntervalChangePending
-        || this.state.refreshPending
-      ) && nextProps.jobs.length) {
+      nextProps.match.params.id !== (this.state.selectedJob || {}).jobId
+      || this.state.timeIntervalChangePending
+      || this.state.refreshPending
+    ) && nextProps.jobs.length) {
       const selectedJob = nextProps.jobs.filter(({ jobId }) => jobId === nextProps.match.params.id)[0];
       this.setState({ selectedJob, refreshPending: false, timeIntervalChangePending: false }, () => this.refreshJobStatus());
     }
@@ -126,31 +127,33 @@ export class JobDetails extends Component {
             onChange={this.onTimeIntervalChange}
             value={timeInterval}
             t={t} />
-          <RefreshBar
-            refresh={this.refreshData}
-            time={lastUpdated}
-            isPending={isPending}
-            t={t} />
         </ContextMenuAlign>
       </ContextMenu>,
       <PageContent className="maintenance-container" key="page-content">
-        <h1 className="maintenance-header">{selectedJob ? selectedJob.jobId : ""}</h1>
+        <RefreshBar
+          refresh={this.refreshData}
+          time={lastUpdated}
+          isPending={isPending}
+          t={t} />
+        <PageTitle titleValue={selectedJob ? selectedJob.jobId : ''} />
         {
           !error
-            ? <div>
-                <JobGrid {...jobGridProps} />
-                {!isPending && !selectedJob && t('maintenance.noData')}
-                {selectedJob && <JobStatusGrid {...jobStatusGridProps} />}
-                {<h4 className="maintenance-sub-header">{t('maintenance.devices')}</h4>}
-                {
-                  this.state.selectedDevices
-                    ? <DevicesGrid
-                        t={t}
-                        domLayout={'autoHeight'}
-                        rowData={this.state.selectedDevices}
-                        onContextMenuChange={this.onContextMenuChange} />
-                    : t('maintenance.noOccurrenceSelected')
-                }
+            ?
+            <div>
+              <JobGrid {...jobGridProps} />
+              {!isPending && !selectedJob && t('maintenance.noData')}
+              {selectedJob && <JobStatusGrid {...jobStatusGridProps} />}
+              {<h4 className="maintenance-sub-header">{t('maintenance.devices')}</h4>}
+              {
+                this.state.selectedDevices
+                  ?
+                  <DevicesGrid
+                    t={t}
+                    domLayout={'autoHeight'}
+                    rowData={this.state.selectedDevices}
+                    onContextMenuChange={this.onContextMenuChange} />
+                  : t('maintenance.noOccurrenceSelected')
+              }
             </div>
             : <AjaxError t={t} error={error} />
         }
