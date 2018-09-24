@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
 
 import { permissions, toDiagnosticsModel } from 'services/models';
-import { Btn, PcsGrid, Protected } from 'components/shared';
+import { Btn, ComponentArray, PcsGrid, Protected } from 'components/shared';
 import { rulesColumnDefs, defaultRulesGridProps } from './rulesGridConfig';
 import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
 import { isFunc, translateColumnDefs, svgs } from 'utilities';
@@ -60,13 +60,13 @@ export class RulesGrid extends Component {
           </Btn>
         </Protected>,
       edit:
-        <Protected key="edit"permission={permissions.updateRules}>
+        <Protected key="edit" permission={permissions.updateRules}>
           <Btn svg={svgs.edit} onClick={this.openEditRuleFlyout}>
             {props.t('rules.flyouts.edit')}
           </Btn>
         </Protected>,
       delete:
-        <Protected key="delete"permission={permissions.deleteRules}>
+        <Protected key="delete" permission={permissions.deleteRules}>
           <Btn svg={svgs.trash} onClick={this.openDeleteFlyout}>
             <Trans i18nKey="rules.flyouts.delete">Delete</Trans>
           </Btn>
@@ -74,7 +74,7 @@ export class RulesGrid extends Component {
     };
   }
 
-  componentWillReceiveProps({rowData}) {
+  componentWillReceiveProps({ rowData }) {
     const { selectedRules = [], softSelectedRule } = this.state;
     if (rowData && (selectedRules.length || softSelectedRule)) {
       let updatedSoftSelectedRule = undefined;
@@ -113,7 +113,7 @@ export class RulesGrid extends Component {
       case 'status':
         return <RuleStatusContainer onClose={this.closeFlyout} t={this.props.t} rules={this.state.selectedRules} key="edit-rule-flyout" />
       case 'delete':
-        return <DeleteRuleContainer onClose={this.closeFlyout} t={this.props.t} rule={this.state.selectedRules[0]} key="delete-rule-flyout" refresh={this.props.refresh}/>
+        return <DeleteRuleContainer onClose={this.closeFlyout} t={this.props.t} rule={this.state.selectedRules[0]} key="delete-rule-flyout" refresh={this.props.refresh} />
       default:
         return null;
     }
@@ -203,9 +203,11 @@ export class RulesGrid extends Component {
       onSoftSelectChange: rule => this.onSoftSelectChange(rule) // See above comment about closures
     };
 
-    return ([
-      <PcsGrid {...gridProps} key="rules-grid" />,
-      this.props.suppressFlyouts ? null : this.getOpenFlyout()
-    ]);
+    return (
+      <ComponentArray>
+        <PcsGrid {...gridProps} />
+        {this.props.suppressFlyouts ? null : this.getOpenFlyout()}
+      </ComponentArray>
+    );
   }
 }

@@ -12,6 +12,7 @@ import {
   AjaxError,
   Btn,
   BtnToolbar,
+  ComponentArray,
   ErrorMsg,
   FormControl,
   FormGroup,
@@ -276,21 +277,25 @@ export class DeviceJobProperties extends LinkedComponent {
             <GridBody>
               {
                 Object.keys(commonProperties).length > 0 &&
-                propertyLinks.map(({ name, value, type, readOnly, edited, error }, idx) => [
-                  <Row key={idx} className={error ? 'error-data-row' : ''}>
-                    <Cell className="col-3 text-only">
-                      {name.value}
-                    </Cell>
-                    <Cell className="col-3">
-                      <FormControl className="small" type="text" link={value} errorState={!!error} readOnly={readOnly.value} /></Cell>
-                    <Cell className="col-3 text-only">
-                      {type.value}
-                    </Cell>
-                  </Row>,
-                  error
-                    ? <Row key={`${idx}-error`} className="error-msg-row"><ErrorMsg>{error}</ErrorMsg></Row>
-                    : null
-                ])
+                propertyLinks.map(({ name, value, type, readOnly, edited, error }, idx) =>
+                  <ComponentArray>
+                    <Row className={error ? 'error-data-row' : ''}>
+                      <Cell className="col-3 text-only">
+                        {name.value}
+                      </Cell>
+                      <Cell className="col-3">
+                        <FormControl className="small" type="text" link={value} errorState={!!error} readOnly={readOnly.value} /></Cell>
+                      <Cell className="col-3 text-only">
+                        {type.value}
+                      </Cell>
+                    </Row>
+                    {
+                      error
+                        ? <Row className="error-msg-row"><ErrorMsg>{error}</ErrorMsg></Row>
+                        : null
+                    }
+                  </ComponentArray>
+                )
               }
             </GridBody>
           </Grid>

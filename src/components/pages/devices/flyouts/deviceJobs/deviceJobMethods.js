@@ -12,6 +12,7 @@ import {
   AjaxError,
   Btn,
   BtnToolbar,
+  ComponentArray,
   FormControl,
   FormGroup,
   FormLabel,
@@ -187,16 +188,16 @@ export class DeviceJobMethods extends LinkedComponent {
 
           {
             this.isFirmwareUpdate() &&
-            [
-              <FormGroup key="firmware-version">
+            <ComponentArray>
+              <FormGroup>
                 <FormLabel>{t('devices.flyouts.jobs.methods.firmwareVersion')}</FormLabel>
                 <FormControl className="long" link={this.firmwareVersionLink} type="text" placeholder={t('devices.flyouts.jobs.methods.firmwareVersionHint')} />
-              </FormGroup>,
-              <FormGroup key="firmware-uri">
+              </FormGroup>
+              <FormGroup>
                 <FormLabel>{t('devices.flyouts.jobs.methods.firmwareUri')}</FormLabel>
                 <FormControl className="long" link={this.firmwareUriLink} type="text" placeholder={t('devices.flyouts.jobs.methods.firmwareUriHint')} />
               </FormGroup>
-            ]
+            </ComponentArray>
           }
 
           <SummarySection>

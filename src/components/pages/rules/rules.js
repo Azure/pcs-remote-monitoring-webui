@@ -8,6 +8,7 @@ import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'compone
 import {
   AjaxError,
   Btn,
+  ComponentArray,
   ContextMenu,
   ContextMenuAlign,
   PageContent,
@@ -15,7 +16,7 @@ import {
   Protected,
   RefreshBar,
   SearchInput
- } from 'components/shared';
+} from 'components/shared';
 import { NewRuleFlyout } from './flyouts';
 import { svgs } from 'utilities';
 
@@ -87,29 +88,31 @@ export class Rules extends Component {
       refresh: fetchRules,
       logEvent: this.props.logEvent
     };
-    return [
-      <ContextMenu key="context-menu">
-        <ContextMenuAlign key="left" left={true}>
-          <DeviceGroupDropdown />
-          <Protected permission={permissions.updateDeviceGroups}>
-            <ManageDeviceGroupsBtn />
-          </Protected>
-        </ContextMenuAlign>
-        <ContextMenuAlign key="right">
-          <SearchInput onChange={this.searchOnChange} placeholder={t('rules.searchPlaceholder')} />
-          {this.state.contextBtns}
-          <Protected permission={permissions.createRules}>
-            <Btn svg={svgs.plus} onClick={this.openNewRuleFlyout}>{t('rules.flyouts.newRule')}</Btn>
-          </Protected>
-        </ContextMenuAlign>
-      </ContextMenu>,
-      <PageContent className="rules-container" key="page-content">
-        <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} t={t} />
-        <PageTitle titleValue={t('rules.title')} />
-        { !!error && <AjaxError t={t} error={error} /> }
-        {!error && <RulesGrid {...gridProps} />}
-        {this.state.openFlyoutName === 'newRule' && <NewRuleFlyout t={t} onClose={this.closeFlyout} logEvent={logEvent} />}
-      </PageContent>
-    ];
+    return (
+      <ComponentArray>
+        <ContextMenu>
+          <ContextMenuAlign key="left" left={true}>
+            <DeviceGroupDropdown />
+            <Protected permission={permissions.updateDeviceGroups}>
+              <ManageDeviceGroupsBtn />
+            </Protected>
+          </ContextMenuAlign>
+          <ContextMenuAlign key="right">
+            <SearchInput onChange={this.searchOnChange} placeholder={t('rules.searchPlaceholder')} />
+            {this.state.contextBtns}
+            <Protected permission={permissions.createRules}>
+              <Btn svg={svgs.plus} onClick={this.openNewRuleFlyout}>{t('rules.flyouts.newRule')}</Btn>
+            </Protected>
+          </ContextMenuAlign>
+        </ContextMenu>
+        <PageContent className="rules-container">
+          <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} t={t} />
+          <PageTitle titleValue={t('rules.title')} />
+          {!!error && <AjaxError t={t} error={error} />}
+          {!error && <RulesGrid {...gridProps} />}
+          {this.state.openFlyoutName === 'newRule' && <NewRuleFlyout t={t} onClose={this.closeFlyout} logEvent={logEvent} />}
+        </PageContent>
+      </ComponentArray>
+    );
   }
 }

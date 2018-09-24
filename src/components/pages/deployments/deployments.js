@@ -6,6 +6,7 @@ import { permissions } from 'services/models';
 import {
   AjaxError,
   Btn,
+  ComponentArray,
   ContextMenu,
   ContextMenuAlign,
   PageContent,
@@ -66,28 +67,30 @@ export class Deployments extends Component {
       t: t
     };
 
-    return [
-      <ContextMenu key="deployments-context-menu">
-        <ContextMenuAlign key="left" left={true}>
-          <DeviceGroupDropdown />
-          <Protected permission={permissions.updateDeviceGroups}>
-            <ManageDeviceGroupsBtn />
-          </Protected>
-        </ContextMenuAlign>
-        <ContextMenuAlign key="right">
-          {this.state.contextBtns}
-          <Protected permission={permissions.createDevices}>
-            <Btn svg={svgs.plus} onClick={this.openNewDeploymentFlyout}>{t('deployments.flyouts.new.contextMenuName')}</Btn>
-          </Protected>
-        </ContextMenuAlign>
-      </ContextMenu>,
-      <PageContent className="deployments-page-container" key="deployments-page-content">
-        <RefreshBar refresh={fetchDeployments} time={lastUpdated} isPending={isPending} t={t} />
-        <PageTitle className="deployments-title" titleValue={t('deployments.title')} />
-        {!!error && <AjaxError t={t} error={error} />}
-        {!error && <DeploymentsGrid {...gridProps} />}
-        {this.state.openFlyoutName === 'newDeployment' && <DeploymentNewContainer t={t} onClose={this.closeFlyout} />}
-      </PageContent>
-    ];
+    return (
+      <ComponentArray>
+        <ContextMenu>
+          <ContextMenuAlign key="left" left={true}>
+            <DeviceGroupDropdown />
+            <Protected permission={permissions.updateDeviceGroups}>
+              <ManageDeviceGroupsBtn />
+            </Protected>
+          </ContextMenuAlign>
+          <ContextMenuAlign key="right">
+            {this.state.contextBtns}
+            <Protected permission={permissions.createDevices}>
+              <Btn svg={svgs.plus} onClick={this.openNewDeploymentFlyout}>{t('deployments.flyouts.new.contextMenuName')}</Btn>
+            </Protected>
+          </ContextMenuAlign>
+        </ContextMenu>
+        <PageContent className="deployments-page-container">
+          <RefreshBar refresh={fetchDeployments} time={lastUpdated} isPending={isPending} t={t} />
+          <PageTitle className="deployments-title" titleValue={t('deployments.title')} />
+          {!!error && <AjaxError t={t} error={error} />}
+          {!error && <DeploymentsGrid {...gridProps} />}
+          {this.state.openFlyoutName === 'newDeployment' && <DeploymentNewContainer t={t} onClose={this.closeFlyout} />}
+        </PageContent>
+      </ComponentArray>
+    );
   }
 }

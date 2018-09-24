@@ -18,6 +18,7 @@ import {
 import {
   Btn,
   BtnToolbar,
+  ComponentArray,
   ErrorMsg,
   Hyperlink,
   PropertyGrid as Grid,
@@ -135,7 +136,7 @@ export class DeviceDetails extends Component {
     }
   }
 
-  toggleRawDiagnosticsMessage = () =>  {
+  toggleRawDiagnosticsMessage = () => {
     this.setState({ showRawMessage: !this.state.showRawMessage });
   }
 
@@ -177,10 +178,10 @@ export class DeviceDetails extends Component {
 
     // Add parameters to Time Series Insights Url
     const timeSeriesParamUrl =
-    timeSeriesExplorerUrl
-      ? timeSeriesExplorerUrl +
+      timeSeriesExplorerUrl
+        ? timeSeriesExplorerUrl +
         `&relativeMillis=1800000&timeSeriesDefinitions=[{"name":"${device.id}","measureName":"${Object.keys(telemetry).sort()[0]}","predicate":"'${device.id}'"}]`
-      : undefined;
+        : undefined;
 
     return (
       <Flyout.Container>
@@ -288,8 +289,9 @@ export class DeviceDetails extends Component {
                     t('devices.flyouts.details.properties.noneExist')
                   }
                   {
-                    (properties.length > 0) && [
-                      <Grid key="properties">
+                    (properties.length > 0) &&
+                    <ComponentArray>
+                      <Grid>
                         <GridHeader>
                           <Row>
                             <Cell className="col-3">{t('devices.flyouts.details.properties.keyHeader')}</Cell>
@@ -312,14 +314,14 @@ export class DeviceDetails extends Component {
                             })
                           }
                         </GridBody>
-                      </Grid>,
-                      <Grid key="properties-actions" className="device-properties-actions">
+                      </Grid>
+                      <Grid className="device-properties-actions">
                         <Row>
                           <Cell className="col-8">{t('devices.flyouts.details.properties.copyAllProperties')}</Cell>
                           <Cell className="col-2"><Btn svg={svgs.copy} onClick={this.copyDevicePropertiesToClipboard} >{t('devices.flyouts.details.properties.copy')}</Btn></Cell>
                         </Row>
                       </Grid>
-                    ]
+                    </ComponentArray>
                   }
                 </Section.Content>
               </Section.Container>
@@ -342,10 +344,11 @@ export class DeviceDetails extends Component {
                         <Cell className="col-7">{device.connected ? t('devices.flyouts.details.connected') : t('devices.flyouts.details.notConnected')}</Cell>
                       </Row>
                       {
-                        device.connected && [
+                        device.connected &&
+                        <ComponentArray>
                           <Row key="diag-row-time">
                             <Cell className="col-3">{t('devices.flyouts.details.diagnostics.lastMessage')}</Cell>
-                            <Cell className="col-7">{ lastMessageTime ? moment(lastMessageTime).format(DEFAULT_TIME_FORMAT) : '---' }</Cell>
+                            <Cell className="col-7">{lastMessageTime ? moment(lastMessageTime).format(DEFAULT_TIME_FORMAT) : '---'}</Cell>
                           </Row>,
                           <Row key="diag-row-msg">
                             <Cell className="col-3">{t('devices.flyouts.details.diagnostics.message')}</Cell>
@@ -353,7 +356,7 @@ export class DeviceDetails extends Component {
                               <Btn className="raw-message-button" onClick={this.toggleRawDiagnosticsMessage}>{t('devices.flyouts.details.diagnostics.showMessage')}</Btn>
                             </Cell>
                           </Row>
-                        ]
+                        </ComponentArray>
                       }
                       {
                         this.state.showRawMessage &&

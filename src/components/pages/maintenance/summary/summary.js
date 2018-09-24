@@ -12,10 +12,11 @@ import { TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
 import { Notifications } from './notifications';
 import { Jobs } from './jobs';
 import {
-  PageContent,
+  ComponentArray,
   ContextMenu,
   ContextMenuAlign,
   RefreshBar,
+  PageContent,
   PageTitle,
   Protected,
   StatSection,
@@ -38,8 +39,9 @@ export const Summary = ({
   onTimeIntervalChange,
   timeInterval,
   ...props
-}) => [
-    <ContextMenu key="context-menu">
+}) =>
+  <ComponentArray>
+    <ContextMenu>
       <ContextMenuAlign key="left" left={true}>
         <DeviceGroupDropdown />
         <Protected permission={permissions.updateDeviceGroups}>
@@ -52,8 +54,8 @@ export const Summary = ({
           value={timeInterval}
           t={props.t} />
       </ContextMenuAlign>
-    </ContextMenu>,
-    <PageContent className="maintenance-container summary-container" key="page-content">
+    </ContextMenu>
+    <PageContent className="maintenance-container summary-container">
       <RefreshBar
         refresh={props.refreshData}
         time={props.lastUpdated}
@@ -105,4 +107,4 @@ export const Summary = ({
         </Switch>
       </div>
     </PageContent>
-  ];
+  </ComponentArray>;

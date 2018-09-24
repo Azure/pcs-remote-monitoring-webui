@@ -6,6 +6,7 @@ import { PackagesGrid } from './packagesGrid';
 import {
   AjaxError,
   Btn,
+  ComponentArray,
   ContextMenu,
   ContextMenuAlign,
   PageContent,
@@ -62,25 +63,27 @@ export class Packages extends Component {
       t: this.props.t
     };
 
-    return [
-      <ContextMenu key="context-menu">
-        <ContextMenuAlign key="left" left={true}>
-          { /* Add left aligned items as needed */ }
-        </ContextMenuAlign>
-        <ContextMenuAlign key="right">
-          {this.state.contextBtns}
-          <Protected permission={permissions.addPackages}>
-            <Btn svg={svgs.plus} onClick={this.openNewPackageFlyout}>{t('packages.new')}</Btn>
-          </Protected>
-        </ContextMenuAlign>
-      </ContextMenu>,
-      <PageContent className="package-container" key="page-content">
-        <RefreshBar refresh={fetchPackages} time={lastUpdated} isPending={isPending} t={t} />
-        <PageTitle className="package-title" titleValue={t('packages.title')} />
-        {!!error && <AjaxError t={t} error={error} />}
-        {!error && <PackagesGrid {...gridProps} />}
-        {this.state.openFlyoutName === 'new-Package' && <PackageNewContainer t={t} onClose={this.closeFlyout} />}
-      </PageContent>
-    ];
+    return (
+      <ComponentArray>
+        <ContextMenu>
+          <ContextMenuAlign key="left" left={true}>
+            { /* Add left aligned items as needed */}
+          </ContextMenuAlign>
+          <ContextMenuAlign key="right">
+            {this.state.contextBtns}
+            <Protected permission={permissions.addPackages}>
+              <Btn svg={svgs.plus} onClick={this.openNewPackageFlyout}>{t('packages.new')}</Btn>
+            </Protected>
+          </ContextMenuAlign>
+        </ContextMenu>
+        <PageContent className="package-container">
+          <RefreshBar refresh={fetchPackages} time={lastUpdated} isPending={isPending} t={t} />
+          <PageTitle className="package-title" titleValue={t('packages.title')} />
+          {!!error && <AjaxError t={t} error={error} />}
+          {!error && <PackagesGrid {...gridProps} />}
+          {this.state.openFlyoutName === 'new-Package' && <PackageNewContainer t={t} onClose={this.closeFlyout} />}
+        </PageContent>
+      </ComponentArray>
+    );
   }
 }

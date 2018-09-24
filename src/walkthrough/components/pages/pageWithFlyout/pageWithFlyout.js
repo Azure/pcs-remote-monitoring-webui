@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 
-import { Btn, ContextMenu, PageContent } from 'components/shared';
+import { Btn, ComponentArray, ContextMenu, PageContent } from 'components/shared';
 import { svgs } from 'utilities';
 import { ExampleFlyoutContainer } from './flyouts/exampleFlyout';
 
@@ -26,14 +26,16 @@ export class PageWithFlyout extends Component {
 
     const isExampleFlyoutOpen = openFlyoutName === 'example';
 
-    return [
-      <ContextMenu key="context-menu">
-        <Btn svg={svgs.reconfigure} onClick={this.openFlyout('example')}>{t('walkthrough.pageWithFlyout.open')}</Btn>
-      </ContextMenu>,
-      <PageContent className="page-with-flyout-container" key="page-content">
-        {t('walkthrough.pageWithFlyout.pageBody')}
-        { isExampleFlyoutOpen && <ExampleFlyoutContainer onClose={this.closeFlyout} /> }
-      </PageContent>
-    ];
+    return (
+      <ComponentArray>
+        <ContextMenu>
+          <Btn svg={svgs.reconfigure} onClick={this.openFlyout('example')}>{t('walkthrough.pageWithFlyout.open')}</Btn>
+        </ContextMenu>
+        <PageContent className="page-with-flyout-container">
+          {t('walkthrough.pageWithFlyout.pageBody')}
+          {isExampleFlyoutOpen && <ExampleFlyoutContainer onClose={this.closeFlyout} />}
+        </PageContent>
+      </ComponentArray>
+    );
   }
 }

@@ -8,6 +8,7 @@ import {
   AjaxError,
   Btn,
   BtnToolbar,
+  ComponentArray,
   Flyout,
   FlyoutHeader,
   FlyoutTitle,
@@ -226,15 +227,15 @@ export class DeploymentNew extends LinkedComponent {
             <FormGroup className="new-deployment-formGroup">
               <FormLabel isRequired="true">{t('deployments.flyouts.new.package')}</FormLabel>
               {!packagesPending && !completedSuccessfully &&
-              <FormControl
-                type="select"
-                className="long"
-                disabled={!isPackageTypeSelected}
-                link={this.packageIdLink}
-                options={packageOptions}
-                placeholder={isPackageTypeSelected ? t('deployments.flyouts.new.packagePlaceHolder') : ""}
-                clearable={false}
-                searchable={false} />
+                <FormControl
+                  type="select"
+                  className="long"
+                  disabled={!isPackageTypeSelected}
+                  link={this.packageIdLink}
+                  options={packageOptions}
+                  placeholder={isPackageTypeSelected ? t('deployments.flyouts.new.packagePlaceHolder') : ""}
+                  clearable={false}
+                  searchable={false} />
               }
               {
                 packagesPending && <Indicator />
@@ -269,13 +270,19 @@ export class DeploymentNew extends LinkedComponent {
               <SummaryBody>
                 {/** Displays targeted devices count once device goup is selected. */
                   deviceFetchSuccessful &&
-                  [
-                    <SummaryCount key="deviceSummaryCount"> {targetedDeviceCount}</SummaryCount>,
-                    <SectionDesc key="deviceSectionDesc">{t('deployments.flyouts.new.targetText')}</SectionDesc>,
-                    completedSuccessfully && <Svg key="deviceSvg" className="summary-icon" path={svgs.apply} />,
-                  ]
+                  <ComponentArray>
+                    <SummaryCount> {targetedDeviceCount}</SummaryCount>
+                    <SectionDesc>{t('deployments.flyouts.new.targetText')}</SectionDesc>
+                    {completedSuccessfully && <Svg key="deviceSvg" className="summary-icon" path={svgs.apply} />}
+                  </ComponentArray>
                 }
-                {createIsPending && [<Indicator />, t('deployments.flyouts.new.creating')]}
+                {
+                  createIsPending &&
+                  <ComponentArray>
+                    <Indicator />
+                    {t('deployments.flyouts.new.creating')}
+                  </ComponentArray>
+                }
 
               </SummaryBody>
               {/** Displays a info message if package type selected is edge Manifest */

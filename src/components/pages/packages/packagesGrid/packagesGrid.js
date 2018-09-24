@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { permissions } from 'services/models';
 import { packagesColumnDefs, defaultPackagesGridProps } from './packagesGridConfig';
-import { Btn, PcsGrid, Protected } from 'components/shared';
+import { Btn, ComponentArray, PcsGrid, Protected } from 'components/shared';
 import { isFunc, translateColumnDefs, svgs } from 'utilities';
 import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
 import { PackageDeleteContainer } from '../flyouts';
@@ -30,11 +30,12 @@ export class PackagesGrid extends Component {
       packagesColumnDefs.dateCreated
     ];
 
-    this.contextBtns = [
-      <Protected key="delete" permission={permissions.deletePackages}>
-        <Btn svg={svgs.trash} onClick={this.openFlyout('delete-package')}>{props.t('packages.delete')}</Btn>
-      </Protected>
-    ];
+    this.contextBtns =
+      <ComponentArray>
+        <Protected key="delete" permission={permissions.deletePackages}>
+          <Btn svg={svgs.trash} onClick={this.openFlyout('delete-package')}>{props.t('packages.delete')}</Btn>
+        </Protected>
+      </ComponentArray>;
   }
 
   getOpenFlyout = () => {
@@ -99,9 +100,11 @@ export class PackagesGrid extends Component {
       }
     };
 
-    return ([
-      <PcsGrid {...gridProps} key="packages-grid" />,
-      this.getOpenFlyout()
-    ]);
+    return (
+      <ComponentArray>
+        <PcsGrid {...gridProps} />
+        {this.getOpenFlyout()}
+      </ComponentArray>
+    );
   }
 }

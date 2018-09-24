@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import Config from 'app.config';
 import {
   AjaxError,
+  ComponentArray,
   ContextMenu,
   ContextMenuAlign,
   PageContent,
@@ -119,45 +120,47 @@ export class JobDetails extends Component {
       t
     };
 
-    return [
-      <ContextMenu key="context-menu">
-        <ContextMenuAlign left={false}>
-          {this.state.contextBtns}
-          <TimeIntervalDropdown
-            onChange={this.onTimeIntervalChange}
-            value={timeInterval}
+    return (
+      <ComponentArray>
+        <ContextMenu>
+          <ContextMenuAlign left={false}>
+            {this.state.contextBtns}
+            <TimeIntervalDropdown
+              onChange={this.onTimeIntervalChange}
+              value={timeInterval}
+              t={t} />
+          </ContextMenuAlign>
+        </ContextMenu>
+        <PageContent className="maintenance-container">
+          <RefreshBar
+            refresh={this.refreshData}
+            time={lastUpdated}
+            isPending={isPending}
             t={t} />
-        </ContextMenuAlign>
-      </ContextMenu>,
-      <PageContent className="maintenance-container" key="page-content">
-        <RefreshBar
-          refresh={this.refreshData}
-          time={lastUpdated}
-          isPending={isPending}
-          t={t} />
-        <PageTitle titleValue={selectedJob ? selectedJob.jobId : ''} />
-        {
-          !error
-            ?
-            <div>
-              <JobGrid {...jobGridProps} />
-              {!isPending && !selectedJob && t('maintenance.noData')}
-              {selectedJob && <JobStatusGrid {...jobStatusGridProps} />}
-              {<h4 className="maintenance-sub-header">{t('maintenance.devices')}</h4>}
-              {
-                this.state.selectedDevices
-                  ?
-                  <DevicesGrid
-                    t={t}
-                    domLayout={'autoHeight'}
-                    rowData={this.state.selectedDevices}
-                    onContextMenuChange={this.onContextMenuChange} />
-                  : t('maintenance.noOccurrenceSelected')
-              }
-            </div>
-            : <AjaxError t={t} error={error} />
-        }
-      </PageContent>
-    ];
+          <PageTitle titleValue={selectedJob ? selectedJob.jobId : ''} />
+          {
+            !error
+              ?
+              <div>
+                <JobGrid {...jobGridProps} />
+                {!isPending && !selectedJob && t('maintenance.noData')}
+                {selectedJob && <JobStatusGrid {...jobStatusGridProps} />}
+                {<h4 className="maintenance-sub-header">{t('maintenance.devices')}</h4>}
+                {
+                  this.state.selectedDevices
+                    ?
+                    <DevicesGrid
+                      t={t}
+                      domLayout={'autoHeight'}
+                      rowData={this.state.selectedDevices}
+                      onContextMenuChange={this.onContextMenuChange} />
+                    : t('maintenance.noOccurrenceSelected')
+                }
+              </div>
+              : <AjaxError t={t} error={error} />
+          }
+        </PageContent>
+      </ComponentArray>
+    );
   }
 }

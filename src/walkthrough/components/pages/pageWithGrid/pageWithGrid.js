@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 
 import {
   AjaxError,
+  ComponentArray,
   ContextMenu,
   PageContent,
   RefreshBar
@@ -36,15 +37,17 @@ export class PageWithGrid extends Component {
       t: this.props.t
     };
 
-    return [
-      <ContextMenu key="context-menu">
-        {this.state.contextBtns}
-      </ContextMenu>,
-      <PageContent className="page-with-grid-container" key="page-content">
-        <RefreshBar refresh={fetchData} time={lastUpdated} isPending={isPending} t={t} />
-        {!!error && <AjaxError t={t} error={error} />}
-        {!error && <ExampleGrid {...gridProps} />}
-      </PageContent>
-    ];
+    return (
+      <ComponentArray>
+        <ContextMenu>
+          {this.state.contextBtns}
+        </ContextMenu>
+        <PageContent className="page-with-grid-container">
+          <RefreshBar refresh={fetchData} time={lastUpdated} isPending={isPending} t={t} />
+          {!!error && <AjaxError t={t} error={error} />}
+          {!error && <ExampleGrid {...gridProps} />}
+        </PageContent>
+      </ComponentArray>
+    );
   }
 }
