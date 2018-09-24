@@ -66,10 +66,10 @@ export class Packages extends Component {
     return (
       <ComponentArray>
         <ContextMenu>
-          <ContextMenuAlign key="left" left={true}>
+          <ContextMenuAlign left={true}>
             { /* Add left aligned items as needed */}
           </ContextMenuAlign>
-          <ContextMenuAlign key="right">
+          <ContextMenuAlign>
             {this.state.contextBtns}
             <Protected permission={permissions.addPackages}>
               <Btn svg={svgs.plus} onClick={this.openNewPackageFlyout}>{t('packages.new')}</Btn>

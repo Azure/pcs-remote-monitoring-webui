@@ -80,13 +80,13 @@ export class Devices extends Component {
     return (
       <ComponentArray>
         <ContextMenu>
-          <ContextMenuAlign key="left" left={true}>
+          <ContextMenuAlign left={true}>
             <DeviceGroupDropdown />
             <Protected permission={permissions.updateDeviceGroups}>
               <ManageDeviceGroupsBtn />
             </Protected>
           </ContextMenuAlign>
-          <ContextMenuAlign key="right">
+          <ContextMenuAlign>
             <SearchInput onChange={this.searchOnChange} placeholder={t('devices.searchPlaceholder')} />
             {this.state.contextBtns}
             <Protected permission={permissions.updateSIMManagement}>

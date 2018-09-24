@@ -286,13 +286,13 @@ export class RuleDetails extends Component {
     return (
       <ComponentArray>
         <ContextMenu className="rule-details-context-menu-container">
-          <ContextMenuAlign key="left" left={true}>
+          <ContextMenuAlign left={true}>
             <DeviceGroupDropdown />
             <Protected permission={permissions.updateDeviceGroups}>
               <ManageDeviceGroupsBtn />
             </Protected>
           </ContextMenuAlign>
-          <ContextMenuAlign key="right">
+          <ContextMenuAlign>
             {
               this.state.updatingAlertStatus &&
               <div className="alert-indicator-container">
@@ -405,8 +405,8 @@ export class RuleDetails extends Component {
                 {
                   !isPending && (selectedTab === tabIds.all || selectedTab === tabIds.telemetry) && Object.keys(this.state.telemetry).length > 0 &&
                   <ComponentArray>
-                    <h4 className="sub-heading" key="header">{t('maintenance.alertedDeviceTelemetry')}</h4>
-                    <div className="details-chart-container" key="chart">
+                    <h4 className="sub-heading">{t('maintenance.alertedDeviceTelemetry')}</h4>
+                    <div className="details-chart-container">
                       <TelemetryChart telemetry={this.state.telemetry} theme={theme} colors={chartColorObjects} />
                     </div>
                   </ComponentArray>

@@ -273,7 +273,7 @@ export class DeploymentNew extends LinkedComponent {
                   <ComponentArray>
                     <SummaryCount> {targetedDeviceCount}</SummaryCount>
                     <SectionDesc>{t('deployments.flyouts.new.targetText')}</SectionDesc>
-                    {completedSuccessfully && <Svg key="deviceSvg" className="summary-icon" path={svgs.apply} />}
+                    {completedSuccessfully && <Svg className="summary-icon" path={svgs.apply} />}
                   </ComponentArray>
                 }
                 {

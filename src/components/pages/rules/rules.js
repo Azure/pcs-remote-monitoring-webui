@@ -91,13 +91,13 @@ export class Rules extends Component {
     return (
       <ComponentArray>
         <ContextMenu>
-          <ContextMenuAlign key="left" left={true}>
+          <ContextMenuAlign left={true}>
             <DeviceGroupDropdown />
             <Protected permission={permissions.updateDeviceGroups}>
               <ManageDeviceGroupsBtn />
             </Protected>
           </ContextMenuAlign>
-          <ContextMenuAlign key="right">
+          <ContextMenuAlign>
             <SearchInput onChange={this.searchOnChange} placeholder={t('rules.searchPlaceholder')} />
             {this.state.contextBtns}
             <Protected permission={permissions.createRules}>

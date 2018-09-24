@@ -51,7 +51,7 @@ export class DeploymentsGrid extends Component {
     };
 
     return (
-      <PcsGrid {...gridProps} key="deployments-grid" />
+      <PcsGrid {...gridProps} />
     );
   }
 }

@@ -32,7 +32,7 @@ export class PackagesGrid extends Component {
 
     this.contextBtns =
       <ComponentArray>
-        <Protected key="delete" permission={permissions.deletePackages}>
+        <Protected permission={permissions.deletePackages}>
           <Btn svg={svgs.trash} onClick={this.openFlyout('delete-package')}>{props.t('packages.delete')}</Btn>
         </Protected>
       </ComponentArray>;

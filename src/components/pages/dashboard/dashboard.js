@@ -359,13 +359,13 @@ export class Dashboard extends Component {
     return (
       <ComponentArray>
         <ContextMenu>
-          <ContextMenuAlign key="left" left={true}>
+          <ContextMenuAlign left={true}>
             <DeviceGroupDropdown />
             <Protected permission={permissions.updateDeviceGroups}>
               <ManageDeviceGroupsBtn />
             </Protected>
           </ContextMenuAlign>
-          <ContextMenuAlign key="right">
+          <ContextMenuAlign>
             <TimeIntervalDropdown
               onChange={this.props.updateTimeInterval}
               value={timeInterval}

@@ -346,11 +346,11 @@ export class DeviceDetails extends Component {
                       {
                         device.connected &&
                         <ComponentArray>
-                          <Row key="diag-row-time">
+                          <Row>
                             <Cell className="col-3">{t('devices.flyouts.details.diagnostics.lastMessage')}</Cell>
                             <Cell className="col-7">{lastMessageTime ? moment(lastMessageTime).format(DEFAULT_TIME_FORMAT) : '---'}</Cell>
-                          </Row>,
-                          <Row key="diag-row-msg">
+                          </Row>
+                          <Row>
                             <Cell className="col-3">{t('devices.flyouts.details.diagnostics.message')}</Cell>
                             <Cell className="col-7">
                               <Btn className="raw-message-button" onClick={this.toggleRawDiagnosticsMessage}>{t('devices.flyouts.details.diagnostics.showMessage')}</Btn>

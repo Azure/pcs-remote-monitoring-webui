@@ -42,13 +42,13 @@ export const Summary = ({
 }) =>
   <ComponentArray>
     <ContextMenu>
-      <ContextMenuAlign key="left" left={true}>
+      <ContextMenuAlign left={true}>
         <DeviceGroupDropdown />
         <Protected permission={permissions.updateDeviceGroups}>
           <ManageDeviceGroupsBtn />
         </Protected>
       </ContextMenuAlign>
-      <ContextMenuAlign key="right">
+      <ContextMenuAlign>
         <TimeIntervalDropdown
           onChange={onTimeIntervalChange}
           value={timeInterval}
