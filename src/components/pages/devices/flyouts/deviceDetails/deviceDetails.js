@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { Trans } from 'react-i18next';
 import { Subject } from 'rxjs';
 import moment from 'moment';
 import { DEFAULT_TIME_FORMAT } from 'components/shared/pcsGrid/pcsGridConfig';
@@ -135,7 +136,7 @@ export class DeviceDetails extends Component {
     }
   }
 
-  toggleRawDiagnosticsMessage = () =>  {
+  toggleRawDiagnosticsMessage = () => {
     this.setState({ showRawMessage: !this.state.showRawMessage });
   }
 
@@ -177,10 +178,10 @@ export class DeviceDetails extends Component {
 
     // Add parameters to Time Series Insights Url
     const timeSeriesParamUrl =
-    timeSeriesExplorerUrl
-      ? timeSeriesExplorerUrl +
-        `&relativeMillis=1800000&timeSeriesDefinitions=[{"name":"${device.id}","measureName":"${Object.keys(telemetry).sort()[0]}","predicate":"'${device.id}'"}]`
-      : undefined;
+      timeSeriesExplorerUrl
+        ? timeSeriesExplorerUrl +
+          `&relativeMillis=1800000&timeSeriesDefinitions=[{"name":"${device.id}","measureName":"${Object.keys(telemetry).sort()[0]}","predicate":"'${device.id}'"}]`
+        : undefined;
 
     return (
       <Flyout.Container>
@@ -229,7 +230,14 @@ export class DeviceDetails extends Component {
               <Section.Container>
                 <Section.Header>{t('devices.flyouts.details.tags.title')}</Section.Header>
                 <Section.Content>
-                  <SectionDesc>{t('devices.flyouts.details.tags.description')}</SectionDesc>
+                  <SectionDesc>
+                    <Trans i18nKey={"devices.flyouts.details.tags.description"}>
+                      To edit, close this panel, click on
+                      <strong>{{ jobs: t('devices.flyouts.jobs.title') }}</strong>
+                      then select
+                      <strong>{{ tags: t('devices.flyouts.jobs.tags.radioLabel') }}</strong>.
+                    </Trans>
+                  </SectionDesc>
                   {
                     (tags.length === 0) &&
                     t('devices.flyouts.details.tags.noneExist')
@@ -261,7 +269,14 @@ export class DeviceDetails extends Component {
               <Section.Container>
                 <Section.Header>{t('devices.flyouts.details.methods.title')}</Section.Header>
                 <Section.Content>
-                  <SectionDesc>{t('devices.flyouts.details.methods.description')}</SectionDesc>
+                  <SectionDesc>
+                    <Trans i18nKey={"devices.flyouts.details.methods.description"}>
+                      To edit, close this panel, click on
+                      <strong>{{ jobs: t('devices.flyouts.jobs.title') }}</strong>
+                      then select
+                      <strong>{{ methods: t('devices.flyouts.jobs.methods.radioLabel') }}</strong>.
+                    </Trans>
+                  </SectionDesc>
                   {
                     (device.methods.length === 0)
                       ? t('devices.flyouts.details.methods.noneExist')
@@ -282,7 +297,14 @@ export class DeviceDetails extends Component {
               <Section.Container>
                 <Section.Header>{t('devices.flyouts.details.properties.title')}</Section.Header>
                 <Section.Content>
-                  <SectionDesc>{t('devices.flyouts.details.properties.description')}</SectionDesc>
+                  <SectionDesc>
+                    <Trans i18nKey={"devices.flyouts.details.properties.description"}>
+                      To edit, close this panel, click on
+                      <strong>{{ jobs: t('devices.flyouts.jobs.title') }}</strong>
+                      then select
+                      <strong>{{ properties: t('devices.flyouts.jobs.properties.radioLabel') }}</strong>.
+                    </Trans>
+                  </SectionDesc>
                   {
                     (properties.length === 0) &&
                     t('devices.flyouts.details.properties.noneExist')
@@ -345,7 +367,7 @@ export class DeviceDetails extends Component {
                         device.connected && [
                           <Row key="diag-row-time">
                             <Cell className="col-3">{t('devices.flyouts.details.diagnostics.lastMessage')}</Cell>
-                            <Cell className="col-7">{ lastMessageTime ? moment(lastMessageTime).format(DEFAULT_TIME_FORMAT) : '---' }</Cell>
+                            <Cell className="col-7">{lastMessageTime ? moment(lastMessageTime).format(DEFAULT_TIME_FORMAT) : '---'}</Cell>
                           </Row>,
                           <Row key="diag-row-msg">
                             <Cell className="col-3">{t('devices.flyouts.details.diagnostics.message')}</Cell>
