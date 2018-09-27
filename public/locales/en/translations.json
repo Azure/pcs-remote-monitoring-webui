@@ -206,12 +206,12 @@
         },
         "methods": {
           "title": "Methods",
-          "description": "All methods available for device",
+          "description": "To run a method on one or more devices, close this pane, select the checkbox for the device(s), click <1><0>{{jobs}}</0></1>, and then select <3><0>{{methods}}</0></3>.",
           "noneExist": "No methods found for this device."
         },
         "properties": {
           "title": "Properties",
-          "description": "Selected properties on device",
+          "description": "To change a property on one or more devices, close this pane, select the checkbox for the device(s), click <1><0>{{jobs}}</0></1>, and then select <3><0>{{properties}}</0></3>.",
           "keyHeader": "Property",
           "valueHeader": "Value",
           "noneExist": "No properties found for this device.",
@@ -221,7 +221,7 @@
         },
         "tags": {
           "title": "Tags",
-          "description": "Tags applied to device",
+          "description": "To add, delete, or change a tag on one or more devices, close this pane, select the checkbox for the device(s), click <1><0>{{jobs}}</0></1>, and then select <3><0>{{tags}}</0></3>.",
           "keyHeader": "Key",
           "valueHeader": "Value",
           "noneExist": "No tags found for this device."
@@ -265,7 +265,7 @@
           "required": "Is required"
         },
         "tags": {
-          "radioLabel": "Tag",
+          "radioLabel": "Tags",
           "title": "Tags on selected devices",
           "description": "Tags in common on selected devices",
           "keyHeader": "Key",
@@ -277,8 +277,8 @@
           "add": "Add tag"
         },
         "methods": {
-          "radioLabel": "Run method",
-          "title": "Run method",
+          "radioLabel": "Methods",
+          "title": "Run method on selected devices",
           "description": "All available methods for device or group of devices",
           "methodName": "Method name",
           "methodNameHint": "Select method",
@@ -288,8 +288,8 @@
           "firmwareUriHint": "Enter firmware URI value"
         },
         "properties": {
-          "radioLabel": "Reconfigure",
-          "title": "Reconfigure",
+          "radioLabel": "Properties",
+          "title": "Properties on selected devices",
           "description": "Available properties and values to change",
           "keyHeader": "Property",
           "valueHeader": "Value",

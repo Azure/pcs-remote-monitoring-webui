@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { Trans } from 'react-i18next';
 import { Subject } from 'rxjs';
 import moment from 'moment';
 import { DEFAULT_TIME_FORMAT } from 'components/shared/pcsGrid/pcsGridConfig';
@@ -230,7 +231,14 @@ export class DeviceDetails extends Component {
               <Section.Container>
                 <Section.Header>{t('devices.flyouts.details.tags.title')}</Section.Header>
                 <Section.Content>
-                  <SectionDesc>{t('devices.flyouts.details.tags.description')}</SectionDesc>
+                  <SectionDesc>
+                    <Trans i18nKey={"devices.flyouts.details.tags.description"}>
+                      To edit, close this panel, click on
+                      <strong>{{ jobs: t('devices.flyouts.jobs.title') }}</strong>
+                      then select
+                      <strong>{{ tags: t('devices.flyouts.jobs.tags.radioLabel') }}</strong>.
+                    </Trans>
+                  </SectionDesc>
                   {
                     (tags.length === 0) &&
                     t('devices.flyouts.details.tags.noneExist')
@@ -262,7 +270,14 @@ export class DeviceDetails extends Component {
               <Section.Container>
                 <Section.Header>{t('devices.flyouts.details.methods.title')}</Section.Header>
                 <Section.Content>
-                  <SectionDesc>{t('devices.flyouts.details.methods.description')}</SectionDesc>
+                  <SectionDesc>
+                    <Trans i18nKey={"devices.flyouts.details.methods.description"}>
+                      To edit, close this panel, click on
+                      <strong>{{ jobs: t('devices.flyouts.jobs.title') }}</strong>
+                      then select
+                      <strong>{{ methods: t('devices.flyouts.jobs.methods.radioLabel') }}</strong>.
+                    </Trans>
+                  </SectionDesc>
                   {
                     (device.methods.length === 0)
                       ? t('devices.flyouts.details.methods.noneExist')
@@ -283,7 +298,14 @@ export class DeviceDetails extends Component {
               <Section.Container>
                 <Section.Header>{t('devices.flyouts.details.properties.title')}</Section.Header>
                 <Section.Content>
-                  <SectionDesc>{t('devices.flyouts.details.properties.description')}</SectionDesc>
+                  <SectionDesc>
+                    <Trans i18nKey={"devices.flyouts.details.properties.description"}>
+                      To edit, close this panel, click on
+                      <strong>{{ jobs: t('devices.flyouts.jobs.title') }}</strong>
+                      then select
+                      <strong>{{ properties: t('devices.flyouts.jobs.properties.radioLabel') }}</strong>.
+                    </Trans>
+                  </SectionDesc>
                   {
                     (properties.length === 0) &&
                     t('devices.flyouts.details.properties.noneExist')

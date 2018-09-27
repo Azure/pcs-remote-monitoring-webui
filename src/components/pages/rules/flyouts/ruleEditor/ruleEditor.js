@@ -370,12 +370,6 @@ export class RuleEditor extends LinkedComponent {
         </Section.Container>
         {
           !fieldQueryPending && <div>
-            <Section.Container collapsable={false}>
-              <Section.Header>{t('rules.flyouts.ruleEditor.conditions')}</Section.Header>
-              <Section.Content>
-                <Btn svg={svgs.plus} onClick={this.addCondition}>{t('rules.flyouts.ruleEditor.addCondition')}</Btn>
-              </Section.Content>
-            </Section.Container>
             {
               conditionLinks.map((condition, idx) => (
                 <Section.Container key={formData.conditions[idx].key}>
@@ -421,6 +415,12 @@ export class RuleEditor extends LinkedComponent {
                 </Section.Container>
               ))
             }
+            <Section.Container collapsable={false}>
+              <Section.Header>{t('rules.flyouts.ruleEditor.conditions')}</Section.Header>
+              <Section.Content>
+                <Btn svg={svgs.plus} onClick={this.addCondition}>{t('rules.flyouts.ruleEditor.addCondition')}</Btn>
+              </Section.Content>
+            </Section.Container>
             <Section.Container collapsable={false}>
               <Section.Content>
                 <FormGroup className="padded-top">
