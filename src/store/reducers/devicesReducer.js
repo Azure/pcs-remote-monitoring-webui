@@ -97,12 +97,12 @@ const insertDevicesReducer = (state, { payload }) => {
   if (state.entities) {
     return update(state, {
       entities: { $merge: devices },
-      items: { $splice: [[0, 0, result]] }
+      items: { $splice: [[0, 0, ...result]] }
     });
   }
   return update(state, {
     entities: { $set: devices },
-    items: { $set: [result] }
+    items: { $set: result }
   });
 };
 
