@@ -62,7 +62,7 @@ export const Summary = ({
           isPending={alertProps.isPending || jobProps.isPending}
           t={props.t} />
       <PageTitle titleValue={props.t('maintenance.title')} />
-      <StatSection>
+      <StatSection className="summary-stat-container">
         <StatGroup>
           <StatProperty
             value={renderUndefined(alertCount)}

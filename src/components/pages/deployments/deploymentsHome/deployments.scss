@@ -4,7 +4,8 @@
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
-.deployments-page-container {
+.deployments-page-container,
+.deployments-details-container {
   display: flex;
   flex-flow: column nowrap;
   padding: $baseContentPadding;

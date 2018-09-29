@@ -565,13 +565,41 @@
         "priorityPlaceHolder": "Enter priority",
         "namePlaceHolder": "Enter name",
         "targetText": "targeted devices",
-        "infoText": "* Edge Manifest packages that you deploy will be applied to every edge device group in the device group and to any edge group that you add to the device group in the future. The deployment will run continously, verifying that current and future devices are configured correctly (and automatically updating that aren't). Package wont be applied to non-edge devices.",
+        "infoText": "* This deployment runs continuously. Every edge device (and any you add in the future) in the selected device group will receive this package.",
         "successText": "View your deployment status detail for {{deplymentName}}",
         "creating": "Creating deployment",
         "validation": {
           "required": "Is required",
           "nan": "Must be a number"
         }
+      },
+      "delete": {
+        "contextMenuName": "Delete",
+        "title": "Delete Deployment?",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "info": "Deleting {deploymentName} will stop this deployment from being applied to these devices. It may result in a lower priority deployment being applied"
+      }
+    },
+    "details": {
+      "deploymentName": "Deployment name",
+      "deviceGroup": "Device group",
+      "start": "Start",
+      "packageType": "Package type",
+      "package": "Package",
+      "priority": "Priority",
+      "devices": "Devices",
+      "failed": "Failed",
+      "succeeded": "Succeeded",
+      "pending": "Pending",
+      "devicesAffected": "Devices Affected",
+      "grid": {
+        "name": "Name",
+        "deploymentStatus": "Deployment Status",
+        "firmware": "Firmware",
+        "lastMessage": "Last Message",
+        "start": "Start",
+        "end": "End"
       }
     },
     "typeOptions": {

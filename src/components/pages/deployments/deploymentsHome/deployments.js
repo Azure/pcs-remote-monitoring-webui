@@ -58,13 +58,14 @@ export class Deployments extends Component {
   onGridReady = gridReadyEvent => this.deploymentGridApi = gridReadyEvent.api;
 
   render() {
-    const { t, deployments, error, isPending, fetchDeployments, lastUpdated } = this.props;
+    const { t, deployments, error, isPending, fetchDeployments, lastUpdated, history } = this.props;
     const gridProps = {
       onGridReady: this.onGridReady,
       rowData: isPending ? undefined : deployments || [],
       refresh: fetchDeployments,
       onContextMenuChange: this.onContextMenuChange,
-      t: t
+      t: t,
+      onRowClicked: ({ data: { id } }) => history.push(`/deployments/${id}`)
     };
 
     return (

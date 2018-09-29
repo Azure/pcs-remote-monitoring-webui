@@ -192,21 +192,6 @@ export class DeploymentNew extends LinkedComponent {
               }
             </FormGroup>
             <FormGroup className="new-deployment-formGroup">
-              <FormLabel isRequired="true">{t('deployments.flyouts.new.priority')}</FormLabel>
-              {
-                !completedSuccessfully &&
-                <FormControl
-                  type="text"
-                  className="long"
-                  link={this.priorityLink}
-                  onChange={this.formControlChange}
-                  placeholder={t('deployments.flyouts.new.priorityPlaceHolder')} />
-              }
-              {
-                completedSuccessfully && <FormLabel className="new-deployment-success-labels">{priority}</FormLabel>
-              }
-            </FormGroup>
-            <FormGroup className="new-deployment-formGroup">
               <FormLabel isRequired="true">{t('deployments.flyouts.new.type')}</FormLabel>
               {
                 !completedSuccessfully &&
@@ -264,6 +249,21 @@ export class DeploymentNew extends LinkedComponent {
               }
               {
                 completedSuccessfully && <FormLabel className="new-deployment-success-labels">{deviceGroupName}</FormLabel>
+              }
+            </FormGroup>
+            <FormGroup className="new-deployment-formGroup">
+              <FormLabel isRequired="true">{t('deployments.flyouts.new.priority')}</FormLabel>
+              {
+                !completedSuccessfully &&
+                <FormControl
+                  type="text"
+                  className="long"
+                  link={this.priorityLink}
+                  onChange={this.formControlChange}
+                  placeholder={t('deployments.flyouts.new.priorityPlaceHolder')} />
+              }
+              {
+                completedSuccessfully && <FormLabel className="new-deployment-success-labels">{priority}</FormLabel>
               }
             </FormGroup>
             <SummarySection className="new-deployment-summary">

@@ -7,7 +7,10 @@
   display: flex;
   flex-flow: row wrap;
   flex-shrink: 0;
+  line-height: .85em;
+  align-items: baseline;
 
+  @include rem-fallback(padding-top, 10px);
   .stat-icon {
     margin-right: 0.2em;
     svg { @include square-px-rem(14px); }

@@ -11,7 +11,7 @@ import {
   RulesContainer,
   MaintenanceContainer,
   PackagesContainer,
-  DeploymentsContainer
+  DeploymentsRouter
 } from './pages';
 
 class App extends Component {
@@ -61,10 +61,10 @@ class App extends Component {
       },
       {
         to: '/deployments',
-        exact: true,
+        exact: false,
         svg: svgs.tabs.deployments,
         labelId: 'tabs.deployments',
-        component: DeploymentsContainer
+        component: DeploymentsRouter
       },
       {
         to: '/maintenance',
@@ -99,6 +99,12 @@ class App extends Component {
       {
         path: '/deployments', crumbs: [
           { to: '/deployments', labelId: 'tabs.deployments' }
+        ]
+      },
+      {
+        path: '/deployments/:id', crumbs: [
+          { to: '/deployments', labelId: 'tabs.deployments' },
+          { to: '/deployments/:id', matchParam: 'id' },
         ]
       },
       {
