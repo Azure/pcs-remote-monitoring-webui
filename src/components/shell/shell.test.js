@@ -4,17 +4,24 @@ import React from 'react';
 import { mount } from 'enzyme';
 import 'polyfills';
 
-import ShellContainer from 'components/shell/shell.container';
-import MockApp from 'components/mocks/mockApp';
+import Shell from 'components/shell/shell';
 
 describe('Shell integration test', () => {
-  let wrapper;
   it('Render Shell component', () => {
-    wrapper = mount(
-      <MockApp>
-        <ShellContainer />
-      </MockApp>
+
+    const fakeProps = {
+      theme: 'dark',
+      deviceGroupFlyoutIsOpen: () => { },
+      registerRouteEvent: () => { },
+      logout: () => { },
+      t: () => { },
+      history : {
+        listen : () => {}
+      }
+    };
+
+    const wrapper = mount(
+      <Shell {...fakeProps} />
     );
   });
-
 });
