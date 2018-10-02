@@ -8,6 +8,7 @@ import {
   ComponentArray,
   ContextMenu,
   ContextMenuAlign,
+  DeleteModal,
   Indicator,
   PageContent,
   Protected,
@@ -22,10 +23,49 @@ import { DeploymentDetailsGrid } from './deploymentDetailsGrid/deploymentDetails
 
 import "./deploymentDetails.css";
 
+const closedModalState = {
+  openModalName: undefined
+};
+
 export class DeploymentDetails extends Component {
   constructor(props) {
     super(props);
+    // Set the initial state
+    this.state = {
+      ...closedModalState,
+      deploymentDeleted: false
+    };
     props.fetchDeployment(props.match.params.id);
+  }
+
+  getOpenModal = () => {
+    const { t, deleteIsPending, deleteError, deleteItem } = this.props;
+    if (this.state.openModalName === 'delete-deployment' && this.props.currentDeployment) {
+      return <DeleteModal
+        t={t}
+        deleteItem={deleteItem}
+        error={deleteError}
+        isPending={deleteIsPending}
+        itemId={this.props.currentDeployment.id}
+        onClose={this.closeModal}
+        onDelete={this.onDelete}
+        title={this.props.t('deployments.modals.delete.title')}
+        deleteInfo={this.props.t(
+          'deployments.modals.delete.info',
+          { deploymentName: this.props.currentDeployment.name })} />
+    }
+    return null;
+  }
+
+  openModal = (modalName) => () => this.setState({
+    openModalName: modalName
+  });
+
+  closeModal = () => this.setState(closedModalState);
+
+  onDelete = () => {
+    this.closeModal();
+    this.props.history.push(`/deployments`)
   }
 
   render() {
@@ -56,16 +96,20 @@ export class DeploymentDetails extends Component {
 
     return (
       <ComponentArray>
+        {this.getOpenModal()}
         <ContextMenu>
           <ContextMenuAlign>
             <Protected permission={permissions.createDevices}>
-              <Btn svg={svgs.trash} onClick={this.openDeleteDeploymentFlyout}>{t('deployments.flyouts.delete.contextMenuName')}</Btn>
+              <Btn svg={svgs.trash} onClick={this.openModal('delete-deployment')}>{t('deployments.modals.delete.contextMenuName')}</Btn>
             </Protected>
           </ContextMenuAlign>
         </ContextMenu>
         <PageContent className="deployments-details-container">
+
           <RefreshBar refresh={fetchDeployment} time={lastUpdated} isPending={isPending} t={t} />
+
           {!!error && <AjaxError t={t} error={error} />}
+
           {isPending && <Indicator />}
 
           {

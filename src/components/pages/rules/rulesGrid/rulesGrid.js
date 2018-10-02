@@ -175,7 +175,7 @@ export class RulesGrid extends Component {
     }
   }
 
-  getSoftSelectId = ({ id } = {}) => id;
+  getSoftSelectId = ({ id } = '') => id;
 
   closeFlyout = () => this.setState(closedFlyoutState);
 

@@ -5,12 +5,12 @@ import { packagesColumnDefs, defaultPackagesGridProps } from './packagesGridConf
 import { Btn, ComponentArray, PcsGrid, Protected } from 'components/shared';
 import { isFunc, translateColumnDefs, svgs } from 'utilities';
 import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
-import { PackageDeleteContainer } from '../flyouts';
+import { PackageDeleteContainer } from '../modals';
 
 import './packagesGrid.css';
 
-const closedFlyoutState = {
-  openFlyoutName: undefined
+const closedModalState = {
+  openModalName: undefined
 };
 
 export class PackagesGrid extends Component {
@@ -19,7 +19,7 @@ export class PackagesGrid extends Component {
 
     // Set the initial state
     this.state = {
-      ...closedFlyoutState,
+      ...closedModalState,
       hardSelectedPackages: []
     };
 
@@ -33,14 +33,19 @@ export class PackagesGrid extends Component {
     this.contextBtns =
       <ComponentArray>
         <Protected permission={permissions.deletePackages}>
-          <Btn svg={svgs.trash} onClick={this.openFlyout('delete-package')}>{props.t('packages.delete')}</Btn>
+          <Btn svg={svgs.trash} onClick={this.openModal('delete-package')}>{props.t('packages.delete')}</Btn>
         </Protected>
       </ComponentArray>;
   }
 
-  getOpenFlyout = () => {
-    if (this.state.openFlyoutName === 'delete-package') {
-      return <PackageDeleteContainer key="delete-modal" package={this.state.hardSelectedPackages[0]} onClose={this.closeFlyout} />
+  getOpenModal = () => {
+    if (this.state.openModalName === 'delete-package' && this.state.hardSelectedPackages[0]) {
+      return <PackageDeleteContainer
+        itemId={this.state.hardSelectedPackages[0].id}
+        onClose={this.closeModal}
+        onDelete={this.closeModal}
+        title={this.props.t('packages.modals.delete.title')}
+        deleteInfo={this.props.t('packages.modals.delete.info')} />
     }
     return null;
   }
@@ -76,10 +81,10 @@ export class PackagesGrid extends Component {
     }
   }
 
-  closeFlyout = () => this.setState(closedFlyoutState);
+  closeModal = () => this.setState(closedModalState);
 
-  openFlyout = (flyoutName) => () => this.setState({
-    openFlyoutName: flyoutName
+  openModal = (modalName) => () => this.setState({
+    openModalName: modalName
   });
 
   render() {
@@ -103,7 +108,7 @@ export class PackagesGrid extends Component {
     return (
       <ComponentArray>
         <PcsGrid {...gridProps} />
-        {this.getOpenFlyout()}
+        {this.getOpenModal()}
       </ComponentArray>
     );
   }

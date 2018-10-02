@@ -79,7 +79,7 @@ export class Deployments extends Component {
           </ContextMenuAlign>
           <ContextMenuAlign>
             {this.state.contextBtns}
-            <Protected permission={permissions.createDevices}>
+            <Protected permission={permissions.createDeployments}>
               <Btn svg={svgs.plus} onClick={this.openNewDeploymentFlyout}>{t('deployments.flyouts.new.contextMenuName')}</Btn>
             </Protected>
           </ContextMenuAlign>

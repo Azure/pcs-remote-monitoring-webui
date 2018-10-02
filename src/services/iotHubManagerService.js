@@ -101,7 +101,7 @@ export class IoTHubManagerService {
 
   /** Delete a deployment */
   static deleteDeployment(id) {
-    return HttpClient.delete(`${ENDPOINT}deployments${id}`)
+    return HttpClient.delete(`${ENDPOINT}deployments/${id}`)
       .map(() => id);
   }
 

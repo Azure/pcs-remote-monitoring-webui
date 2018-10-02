@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import Config from 'app.config';
-import { TimeRenderer } from 'components/shared/cellRenderers';
+import { TimeRenderer, SoftSelectLinkRenderer } from 'components/shared/cellRenderers';
 import { gridValueFormatters } from 'components/shared/pcsGrid/pcsGridConfig';
 
 const { checkForEmpty } = gridValueFormatters;
@@ -11,7 +11,7 @@ export const deploymentDetailsColumnDefs = {
     headerName: 'deployments.details.grid.name',
     field: 'id',
     sort: 'asc',
-    valueFormatter: ({ value }) => checkForEmpty(value)
+    cellRendererFramework: SoftSelectLinkRenderer
   },
   deploymentStatus: {
     headerName: 'deployments.details.grid.deploymentStatus',

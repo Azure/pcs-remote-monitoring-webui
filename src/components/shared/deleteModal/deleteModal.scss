@@ -4,7 +4,7 @@
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
-.delete-package-container {
+.delete-modal-container {
   @include rem-fallback(font-size, 14px);
 
   .delete-header-container {

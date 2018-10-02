@@ -13,6 +13,7 @@ describe('Deployment details Component', () => {
       t: () => { },
       match: { params: { id: 'testId' } },
       fetchDeployment: () => { },
+      deleteItem: () => { },
       currentDeployment: {}
     };
 

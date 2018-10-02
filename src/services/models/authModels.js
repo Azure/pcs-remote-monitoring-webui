@@ -24,7 +24,10 @@ export const permissions = {
   updateSIMManagement: 'UpdateSIMManagement',
 
   deletePackages: 'DeletePackages',
-  addPackages: 'AddPackages'
+  createPackages: 'CreatePackages',
+
+  createDeployments: 'CreateDeployments',
+  delteDeployments: 'DeleteDeployments'
 };
 
 export const toUserModel = (user = {}) => camelCaseReshape(user, {

@@ -566,19 +566,12 @@
         "namePlaceHolder": "Enter name",
         "targetText": "targeted devices",
         "infoText": "* This deployment runs continuously. Every edge device (and any you add in the future) in the selected device group will receive this package.",
-        "successText": "View your deployment status detail for {{deplymentName}}",
+        "successText": "View your deployment status detail for {{deploymentName}}",
         "creating": "Creating deployment",
         "validation": {
           "required": "Is required",
           "nan": "Must be a number"
         }
-      },
-      "delete": {
-        "contextMenuName": "Delete",
-        "title": "Delete Deployment?",
-        "delete": "Delete",
-        "cancel": "Cancel",
-        "info": "Deleting {deploymentName} will stop this deployment from being applied to these devices. It may result in a lower priority deployment being applied"
       }
     },
     "details": {
@@ -600,6 +593,13 @@
         "lastMessage": "Last Message",
         "start": "Start",
         "end": "End"
+      }
+    },
+    "modals": {
+      "delete": {
+        "contextMenuName": "Delete",
+        "title": "Delete Deployment?",
+        "info": "Deleting '{{deploymentName}}' will stop this deployment from being applied to these devices. It may result in a lower priority edge manifest being applied."
       }
     },
     "typeOptions": {
@@ -646,17 +646,21 @@
         "validation": {
           "required": "Is required"
         }
-      },
+      }
+    },
+    "modals": {
       "delete": {
         "title": "Delete Package?",
-        "delete": "Delete",
-        "cancel": "Cancel",
         "info": "Deleting selected package will remove it. It will not impact any of the deployments of this package."
       }
     },
     "typeOptions": {
       "edgemanifest": "Edge Manifest"
     }
+  },
+  "modal": {
+    "delete": "Delete",
+    "cancel": "Cancel"
   },
   "walkthrough": {
     "tabs": {

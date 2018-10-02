@@ -93,7 +93,7 @@ export class ExampleGrid extends Component {
     }
   }
 
-  getSoftSelectId = ({ id } = {}) => id;
+  getSoftSelectId = ({ id } = '') => id;
 
   render() {
     const gridProps = {

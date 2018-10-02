@@ -2,12 +2,22 @@
 
 import React, { Component } from 'react';
 import { deploymentDetailsColumnDefs, defaultDeploymentDetailsGridProps } from './deploymentDetailsGridConfig';
-import { translateColumnDefs } from 'utilities';
-import { PcsGrid } from 'components/shared';
+import { translateColumnDefs, isFunc } from 'utilities';
+import { PcsGrid, ComponentArray } from 'components/shared';
+import { DeviceDetailsContainer } from 'components/pages/devices/flyouts';
+
+const closedFlyoutState = {
+  openFlyoutName: undefined,
+  selectedDevice: undefined
+};
 
 export class DeploymentDetailsGrid extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      ...closedFlyoutState
+    };
 
     this.columnDefs = [
       deploymentDetailsColumnDefs.name,
@@ -19,7 +29,43 @@ export class DeploymentDetailsGrid extends Component {
     ];
   }
 
-  onGridReady = gridReadyEvent => this.deployedDevicesGridApi = gridReadyEvent.api;
+  onGridReady = gridReadyEvent => {
+    this.deployedDevicesGridApi = gridReadyEvent.api;
+    // Call the onReady props if it exists
+    if (isFunc(this.props.onGridReady)) {
+      this.props.onGridReady(gridReadyEvent);
+    }
+  };
+
+  onSoftSelectChange = (deviceRowId, rowEvent) => {
+    const { onSoftSelectChange } = this.props;
+    const rowData = (this.deployedDevicesGridApi.getDisplayedRowAtIndex(deviceRowId) || {}).data;
+    if (rowData && rowData.device) {
+      this.setState({
+        openFlyoutName: 'deviceDetails',
+        selectedDevice: rowData.device
+      });
+    } else {
+      this.closeFlyout();
+    }
+    if (isFunc(onSoftSelectChange)) {
+      onSoftSelectChange(rowData, rowEvent);
+    }
+  }
+
+  closeFlyout = () => this.setState(closedFlyoutState);
+
+  getSoftSelectId = ({ id } = '') => id;
+
+  onRowClicked = (node, data) => {
+    node.setSelected(!node.isSelected());
+    if (data && data.device) {
+      this.setState({
+        openFlyoutName: 'deviceDetails',
+        selectedDevice: data.device
+      });
+    }
+  }
 
   render() {
     const gridProps = {
@@ -28,9 +74,21 @@ export class DeploymentDetailsGrid extends Component {
       t: this.props.t,
       rowData: this.props.deployedDevices,
       getRowNodeId: ({ id }) => id,
-      columnDefs: translateColumnDefs(this.props.t, this.columnDefs)
+      columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
+      onGridReady: this.onGridReady,
+      getSoftSelectId: this.getSoftSelectId,
+      onSoftSelectChange: this.onSoftSelectChange,
+      onRowClicked: ({ node, data }) => this.onRowClicked(node, data)
     };
 
-    return (<PcsGrid {...gridProps} />);
+    return (
+      <ComponentArray>
+        <PcsGrid {...gridProps} />
+        {
+          this.state.openFlyoutName === 'deviceDetails' &&
+          <DeviceDetailsContainer t={this.props.t} onClose={this.closeFlyout} device={this.state.selectedDevice} />
+        }
+      </ComponentArray>
+    );
   }
 }

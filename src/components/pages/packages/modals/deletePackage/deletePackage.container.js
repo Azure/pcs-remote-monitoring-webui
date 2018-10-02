@@ -2,7 +2,7 @@
 
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { PackageDelete } from './packageDelete';
+import { DeleteModal } from 'components/shared';
 import {
   getDeletePackageError,
   getDeletePackagePendingStatus,
@@ -17,7 +17,7 @@ const mapStateToProps = state => ({
 
 // Wrap the dispatch methods
 const mapDispatchToProps = dispatch => ({
-  deletePackage: packageId => dispatch(packagesEpics.actions.deletePackage(packageId))
+  deleteItem: packageId => dispatch(packagesEpics.actions.deletePackage(packageId))
 });
 
-export const PackageDeleteContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(PackageDelete));
+export const PackageDeleteContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(DeleteModal));

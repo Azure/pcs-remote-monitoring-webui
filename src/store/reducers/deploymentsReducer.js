@@ -109,10 +109,10 @@ const insertDeploymentReducer = (state, { payload, fromAction }) => {
   });
 };
 
-const deleteDeploymentReducer = (state, { payload, fromAction }) => {
-  const idx = state.items.indexOf(payload);
+const deleteDeploymentReducer = (state, { fromAction }) => {
+  const idx = state.items.indexOf(fromAction.payload);
   return update(state, {
-    entities: { deployments: { $unset: [payload] } },
+    entities: { deployments: { $unset: [fromAction.payload] } },
     items: { $splice: [[idx, 1]] },
     ...setPending(fromAction.type, false)
   });
@@ -139,15 +139,16 @@ const updateDeploymentReducer = (state, { payload, fromAction }) => {
 };
 
 const updateDeployedDevicesReducer = (state, { payload: [modules, devices], fromAction }) => {
-  const normalizedDevices = normalize(devices, deployedDevicesListSchema).entities.deployedDevices;
-  const normalizedModules = normalize(modules, deployedDevicesListSchema).entities.deployedDevices;
+  const normalizedDevices = normalize(devices, deployedDevicesListSchema).entities.deployedDevices || {};
+  const normalizedModules = normalize(modules, deployedDevicesListSchema).entities.deployedDevices || {};
   const deployedDevices = Object.keys(normalizedDevices)
     .reduce(
       (acc, deviceId) => ({
         ...acc,
         [deviceId]: {
           ...(acc[deviceId] || {}),
-          firmware: normalizedDevices[deviceId].firmware
+          firmware: normalizedDevices[deviceId].firmware,
+          device: normalizedDevices[deviceId]
         }
       }),
       normalizedModules

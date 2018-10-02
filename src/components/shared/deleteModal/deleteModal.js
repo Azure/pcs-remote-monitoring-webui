@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import React from 'react';
+import React, { Component } from 'react';
 
-import { LinkedComponent } from 'utilities';
 import {
   AjaxError,
   Btn,
@@ -12,9 +11,9 @@ import {
 } from 'components/shared';
 import { svgs } from 'utilities';
 
-import './packageDelete.css';
+import './deleteModal.css';
 
-export class PackageDelete extends LinkedComponent {
+export class DeleteModal extends Component {
 
   constructor(props) {
     super(props);
@@ -24,36 +23,36 @@ export class PackageDelete extends LinkedComponent {
     };
   }
 
-  componentWillReceiveProps({ error, isPending, onClose }) {
+  componentWillReceiveProps({ error, isPending, onDelete }) {
     if (this.state.changesApplied && !error && !isPending) {
-      onClose();
+      onDelete();
     }
   }
 
   apply = () => {
-    const { deletePackage, package: { id } } = this.props;
-    deletePackage(id);
+    const { deleteItem, itemId } = this.props;
+    deleteItem(itemId);
     this.setState({ changesApplied: true });
   }
 
   render() {
-    const { t, onClose, isPending, error } = this.props;
+    const { t, onClose, isPending, error, title, deleteInfo } = this.props;
     const { changesApplied } = this.state;
 
     return (
-      <Modal onClose={onClose} className="delete-package-container">
+      <Modal onClose={onClose} className="delete-modal-container">
         <div className="delete-header-container">
-          <div className="delete-title">{t('packages.flyouts.delete.title')}</div>
+          <div className="delete-title">{title}</div>
           <Btn className="delete-close-btn" onClick={onClose} svg={svgs.x} />
         </div>
         <div className="delete-info">
-          {t('packages.flyouts.delete.info')}
+          {deleteInfo}
         </div>
         <div className="delete-summary">
           {
             !changesApplied && <BtnToolbar>
-              <Btn svg={svgs.trash} primary={true} onClick={this.apply}>{t('packages.flyouts.delete.delete')}</Btn>
-              <Btn svg={svgs.cancelX} onClick={onClose}>{t('packages.flyouts.delete.cancel')}</Btn>
+              <Btn svg={svgs.trash} primary={true} onClick={this.apply}>{t('modal.delete')}</Btn>
+              <Btn svg={svgs.cancelX} onClick={onClose}>{t('modal.cancel')}</Btn>
             </BtnToolbar>
           }
           {isPending && <Indicator />}

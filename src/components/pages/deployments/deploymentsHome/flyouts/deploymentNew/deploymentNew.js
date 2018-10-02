@@ -294,7 +294,7 @@ export class DeploymentNew extends LinkedComponent {
               {/** Displays a success message if deployment is created successfully */
                 completedSuccessfully &&
                 <div className="new-deployment-info-text">
-                  {t('deployments.flyouts.new.successText', { deplymentName: name })}
+                  {t('deployments.flyouts.new.successText', { deploymentName: name })}
                 </div>
               }
               {/** Displays an error message if one occurs while creating deployment. */

@@ -16,9 +16,8 @@ describe('Packages Component', () => {
       error: undefined,
       isPending: false,
       lastUpdated: undefined,
-      fetchPackages: () => {},
-      deletePackages: (p) => {},
-      t: () => {},
+      fetchPackages: () => { },
+      t: () => { },
     };
 
     const wrapper = shallow(

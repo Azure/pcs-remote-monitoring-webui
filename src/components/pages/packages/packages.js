@@ -71,7 +71,7 @@ export class Packages extends Component {
           </ContextMenuAlign>
           <ContextMenuAlign>
             {this.state.contextBtns}
-            <Protected permission={permissions.addPackages}>
+            <Protected permission={permissions.createPackages}>
               <Btn svg={svgs.plus} onClick={this.openNewPackageFlyout}>{t('packages.new')}</Btn>
             </Protected>
           </ContextMenuAlign>

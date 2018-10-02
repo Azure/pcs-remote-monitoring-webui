@@ -21,8 +21,7 @@ const mapStateToProps = state => ({
 
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
-  fetchPackages: () => dispatch(packagesEpics.actions.fetchPackages()),
-  deletePackages: (packageIdArr) => dispatch(packagesEpics.actions.deletePackages(packageIdArr))
+  fetchPackages: () => dispatch(packagesEpics.actions.fetchPackages())
 });
 
 export const PackagesContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Packages));
