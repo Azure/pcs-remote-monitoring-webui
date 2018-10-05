@@ -47,6 +47,17 @@ export const epics = createEpicScenario({
     }
   },
 
+  /** Loads EdgeAgent json from device modules */
+  fetchEdgeAgent: {
+    type: 'DEVICES_FETCH_EDGE_AGENT',
+    epic: fromAction => IoTHubManagerService
+      .getModulesByQuery(`"deviceId IN ['${fromAction.payload}'] AND moduleId = '$edgeAgent'"`)
+      .map(([edgeAgent]) => edgeAgent)
+      .map(toActionCreator(redux.actions.updateModuleStatus, fromAction))
+      .catch(handleError(fromAction))
+
+  },
+
   /* Update the devices if the selected device group changes */
   refreshDevices: {
     type: 'DEVICES_REFRESH',
@@ -124,6 +135,17 @@ const updateTagsReducer = (state, { payload }) => {
   });
 };
 
+const updateModuleStatusReducer = (state, { payload, fromAction }) => {
+  const updateAction = payload
+    ? { deviceModuleStatus: { $set: payload } }
+    : { $unset: ['deviceModuleStatus'] };
+
+  return update(state, {
+    ...updateAction,
+    ...setPending(fromAction.type, false)
+  });
+};
+
 const updatePropertiesReducer = (state, { payload }) => {
   const updatedPropertyData = {};
   payload.updatedProperties.forEach(({ name, value }) => (updatedPropertyData[name] = value));
@@ -145,7 +167,8 @@ const updatePropertiesReducer = (state, { payload }) => {
 /* Action types that cause a pending flag */
 const fetchableTypes = [
   epics.actionTypes.fetchDevices,
-  epics.actionTypes.fetchDevicesByCondition
+  epics.actionTypes.fetchDevicesByCondition,
+  epics.actionTypes.fetchEdgeAgent
 ];
 
 export const redux = createReducerScenario({
@@ -156,6 +179,7 @@ export const redux = createReducerScenario({
   insertDevices: { type: 'DEVICE_INSERT', reducer: insertDevicesReducer },
   updateTags: { type: 'DEVICE_UPDATE_TAGS', reducer: updateTagsReducer },
   updateProperties: { type: 'DEVICE_UPDATE_PROPERTIES', reducer: updatePropertiesReducer },
+  updateModuleStatus: { type: 'DEVICE_MODULE_STATUS', reducer: updateModuleStatusReducer },
   resetPendingAndError: { type: 'DEVICE_REDUCER_RESET_ERROR_PENDING', reducer: resetPendingAndErrorReducer }
 });
 
@@ -179,4 +203,17 @@ export const getDevices = createSelector(
   getEntities, getItems,
   (entities, items) => items.map(id => entities[id])
 );
+export const getDeviceModuleStatus = state => {
+  const deviceModuleStatus = getDevicesReducer(state).deviceModuleStatus
+  return deviceModuleStatus
+    ? {
+      code: deviceModuleStatus.code,
+      description: deviceModuleStatus.description
+    }
+    : undefined
+};
+export const getDeviceModuleStatusPendingStatus = state =>
+  getPending(getDevicesReducer(state), epics.actionTypes.fetchEdgeAgent);
+export const getDeviceModuleStatusError = state =>
+  getError(getDevicesReducer(state), epics.actionTypes.fetchEdgeAgent);
 // ========================= Selectors - END

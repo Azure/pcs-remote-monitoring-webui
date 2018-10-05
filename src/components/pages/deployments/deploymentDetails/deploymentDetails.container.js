@@ -13,7 +13,8 @@ import {
   getDeployedDevices,
   getDeleteDeploymentError,
   getDeleteDeploymentPendingStatus,
-  epics as deploymentsEpics
+  epics as deploymentsEpics,
+  redux as deploymentsRedux
 } from 'store/reducers/deploymentsReducer';
 
 // Pass the global info needed
@@ -32,6 +33,7 @@ const mapStateToProps = state => ({
 // Wrap the dispatch methods
 const mapDispatchToProps = dispatch => ({
   fetchDeployment: id => dispatch(deploymentsEpics.actions.fetchDeployment(id)),
+  resetDeployedDevices: () => dispatch(deploymentsRedux.actions.resetDeployedDevices()),
   deleteItem: deploymentId => dispatch(deploymentsEpics.actions.deleteDeployment(deploymentId))
 });
 

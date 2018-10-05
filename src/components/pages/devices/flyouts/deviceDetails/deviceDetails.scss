@@ -27,6 +27,13 @@
     }
   }
 
+  .device-details-deployment-contentbox {
+    @include rem-fallback(padding, 20px, 0px, 20px, 20px);
+    @include rem-fallback(border-top, 1px, solid);
+    @include rem-fallback(margin-top, 20px);
+    @include rem-fallback(border-bottom, 1px, solid);
+  }
+
   .device-properties-actions .row {
     border: 0;
     @include rem-fallback(font-size, 12px);
@@ -53,5 +60,7 @@
     }
 
     .device-properties-actions .row { color: themed('colorContentTextDim'); }
+
+    .device-details-deployment-contentbox { border-color: themed('colorHeaderBorderColor'); }
   }
 }

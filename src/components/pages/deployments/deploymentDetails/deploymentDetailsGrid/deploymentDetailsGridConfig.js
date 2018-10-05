@@ -2,6 +2,7 @@
 
 import Config from 'app.config';
 import { TimeRenderer, SoftSelectLinkRenderer } from 'components/shared/cellRenderers';
+import { getEdgeAgentStatusCode } from 'utilities';
 import { gridValueFormatters } from 'components/shared/pcsGrid/pcsGridConfig';
 
 const { checkForEmpty } = gridValueFormatters;
@@ -25,8 +26,8 @@ export const deploymentDetailsColumnDefs = {
   },
   lastMessage: {
     headerName: 'deployments.details.grid.lastMessage',
-    field: 'lastMessage',
-    valueFormatter: ({ value }) => checkForEmpty(value)
+    field: 'code',
+    valueFormatter: ({ value, context: { t } }) => getEdgeAgentStatusCode(value, t)
   },
   start: {
     headerName: 'deployments.details.grid.start',

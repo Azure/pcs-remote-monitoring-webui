@@ -21,6 +21,15 @@
     "deployments": "Deployments"
   },
   "errorFormat": "Error: {{message}}",
+  "edgeAgentStatus": {
+    "200": "OK.",
+    "400": "The deployment configuration is malformed or invalid.",
+    "406": "The device is offline or not sending status reports.",
+    "412": "The deployment configuration schema version is invalid.",
+    "417": "The device's deployment configuration is not set.",
+    "500": "An error occurred in the IoT Edge runtime.",
+    "unknown": "An unknown code received."
+  },
   "errorCode": {
     "noResponse": "Oops, there was no response from the server.",
     "notLoggedIn": "You need to login to call the service.",
@@ -208,6 +217,11 @@
           "title": "Methods",
           "description": "To run a method on one or more devices, close this pane, select the checkbox for the device(s), click <1><0>{{jobs}}</0></1>, and then select <3><0>{{methods}}</0></3>.",
           "noneExist": "No methods found for this device."
+        },
+        "modules": {
+          "title": "Deployment messages",
+          "description": "Edge module messages on the device",
+          "noneExist": "No messages found for this device"
         },
         "properties": {
           "title": "Properties",

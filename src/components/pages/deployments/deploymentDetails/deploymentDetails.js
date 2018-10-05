@@ -38,6 +38,10 @@ export class DeploymentDetails extends Component {
     props.fetchDeployment(props.match.params.id);
   }
 
+  componentWillUnmount() {
+    this.props.resetDeployedDevices();
+  }
+
   getOpenModal = () => {
     const { t, deleteIsPending, deleteError, deleteItem } = this.props;
     if (this.state.openModalName === 'delete-deployment' && this.props.currentDeployment) {

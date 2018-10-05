@@ -32,6 +32,7 @@ import {
 import Flyout from 'components/shared/flyout';
 import { TelemetryChart, chartColorObjects } from 'components/pages/dashboard/panels/telemetry';
 import { transformTelemetryResponse } from 'components/pages/dashboard/panels';
+import { getEdgeAgentStatusCode } from 'utilities';
 
 import './deviceDetails.css';
 
@@ -50,9 +51,10 @@ export class DeviceDetails extends Component {
       telemetryIsPending: true,
       telemetryError: null,
 
-      showRawMessage: false
+      showRawMessage: false,
+      currentModuleStatus: undefined
     };
-
+    this.baseState = this.state;
     this.columnDefs = [
       {
         ...rulesColumnDefs.ruleName,
@@ -65,6 +67,14 @@ export class DeviceDetails extends Component {
 
     this.resetTelemetry$ = new Subject();
     this.telemetryRefresh$ = new Subject();
+    if (this.props.moduleStatus) {
+      this.state = {
+        ...this.state,
+        currentModuleStatus: this.props.moduleStatus
+      };
+    } else {
+      this.props.fetchModules(this.props.device.id);
+    }
   }
 
   componentDidMount() {
@@ -119,11 +129,49 @@ export class DeviceDetails extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ((this.props.device || {}).id !== nextProps.device.id) {
-      const deviceId = (nextProps.device || {}).id;
+    const {
+      deviceModuleStatus,
+      isDeviceModuleStatusPending,
+      deviceModuleStatusError,
+      moduleStatus,
+      resetPendingAndError,
+      device,
+      fetchModules
+    } = nextProps;
+    let tempState = {};
+    /*
+      deviceModuleStatus is a prop fetched by making fetchModules() API call through deviceDetails.container on demand.
+      moduleStatus is a prop sent from deploymentDetailsGrid which it already has in rowData.
+      Both deviceModuleStatus and moduleStatus have the same content,
+        but come from different sources based on the page that opens this flyout.
+      Depending on which one is available, currentModuleStatus is set in component state.
+    */
+
+    if ((this.props.device || {}).id !== device.id) {
+      // Reset state if the device changes.
+      resetPendingAndError();
+      tempState = { ...this.baseState };
+
+      if (moduleStatus) {
+        // If moduleStatus exist in props, set it in state.
+        tempState = {
+          ...tempState,
+          currentModuleStatus: moduleStatus
+        };
+      } else {
+        // Otherwise make an API call to get deviceModuleStatus.
+        fetchModules(device.id);
+      }
+
+      const deviceId = (device || {}).id;
       this.resetTelemetry$.next(deviceId);
       this.fetchAlerts(deviceId);
+    } else if (!moduleStatus && !isDeviceModuleStatusPending && !deviceModuleStatusError) {
+      // set deviceModuleStatus in state, if moduleStatus doesn't exist and devicesReducer successfully received the API response.
+      tempState = { currentModuleStatus: deviceModuleStatus };
     }
+
+    if (Object.keys(tempState).length) this.setState(tempState);
   }
 
   componentWillUnmount() {
@@ -162,8 +210,16 @@ export class DeviceDetails extends Component {
   }
 
   render() {
-    const { t, onClose, device, theme, timeSeriesExplorerUrl } = this.props;
-    const { telemetry, lastMessage } = this.state;
+    const {
+      t,
+      onClose,
+      device,
+      theme,
+      timeSeriesExplorerUrl,
+      isDeviceModuleStatusPending,
+      deviceModuleStatusError
+    } = this.props;
+    const { telemetry, lastMessage, currentModuleStatus } = this.state;
     const lastMessageTime = (lastMessage || {}).time;
     const isPending = this.state.isAlertsPending && this.props.isRulesPending;
     const rulesGridProps = {
@@ -176,8 +232,12 @@ export class DeviceDetails extends Component {
     };
     const tags = Object.entries(device.tags || {});
     const properties = Object.entries(device.properties || {});
-
+    const moduleQuerySuccessful = currentModuleStatus &&
+      currentModuleStatus !== {} &&
+      !isDeviceModuleStatusPending &&
+      !deviceModuleStatusError;
     // Add parameters to Time Series Insights Url
+
     const timeSeriesParamUrl =
       timeSeriesExplorerUrl
         ? timeSeriesExplorerUrl +
@@ -389,6 +449,28 @@ export class DeviceDetails extends Component {
                     </GridBody>
                   </Grid>
 
+                </Section.Content>
+              </Section.Container>
+
+              <Section.Container>
+                <Section.Header>{t('devices.flyouts.details.modules.title')}</Section.Header>
+                <Section.Content>
+                  <SectionDesc>
+                    {t("devices.flyouts.details.modules.description")}
+                  </SectionDesc>
+                  <div className="device-details-deployment-contentbox">
+                    {
+                      !moduleQuerySuccessful &&
+                      t('devices.flyouts.details.modules.noneExist')
+                    }
+                    {
+                      moduleQuerySuccessful &&
+                      <ComponentArray >
+                        <div>{currentModuleStatus.code}: {getEdgeAgentStatusCode(currentModuleStatus.code, t)}</div>
+                        <div>{currentModuleStatus.description}</div>
+                      </ComponentArray >
+                    }
+                  </div>
                 </Section.Content>
               </Section.Container>
             </div>

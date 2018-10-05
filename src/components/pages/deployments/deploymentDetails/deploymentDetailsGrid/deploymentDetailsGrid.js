@@ -37,13 +37,19 @@ export class DeploymentDetailsGrid extends Component {
     }
   };
 
+  getModuleStatus = data => ({
+    code: data.code,
+    description: data.description
+  });
+
   onSoftSelectChange = (deviceRowId, rowEvent) => {
     const { onSoftSelectChange } = this.props;
     const rowData = (this.deployedDevicesGridApi.getDisplayedRowAtIndex(deviceRowId) || {}).data;
     if (rowData && rowData.device) {
       this.setState({
         openFlyoutName: 'deviceDetails',
-        selectedDevice: rowData.device
+        selectedDevice: rowData.device,
+        moduleStatus: this.getModuleStatus(rowData)
       });
     } else {
       this.closeFlyout();
@@ -55,30 +61,21 @@ export class DeploymentDetailsGrid extends Component {
 
   closeFlyout = () => this.setState(closedFlyoutState);
 
-  getSoftSelectId = ({ id } = '') => id;
-
-  onRowClicked = (node, data) => {
-    node.setSelected(!node.isSelected());
-    if (data && data.device) {
-      this.setState({
-        openFlyoutName: 'deviceDetails',
-        selectedDevice: data.device
-      });
-    }
-  }
+  getSoftSelectId = ({ id = '' }) => id;
 
   render() {
     const gridProps = {
       /* Grid Properties */
       ...defaultDeploymentDetailsGridProps,
-      t: this.props.t,
+      context: {
+        t: this.props.t,
+      },
       rowData: this.props.deployedDevices,
       getRowNodeId: ({ id }) => id,
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
       onGridReady: this.onGridReady,
       getSoftSelectId: this.getSoftSelectId,
-      onSoftSelectChange: this.onSoftSelectChange,
-      onRowClicked: ({ node, data }) => this.onRowClicked(node, data)
+      onSoftSelectChange: this.onSoftSelectChange
     };
 
     return (
@@ -86,7 +83,11 @@ export class DeploymentDetailsGrid extends Component {
         <PcsGrid {...gridProps} />
         {
           this.state.openFlyoutName === 'deviceDetails' &&
-          <DeviceDetailsContainer t={this.props.t} onClose={this.closeFlyout} device={this.state.selectedDevice} />
+          <DeviceDetailsContainer
+            t={this.props.t}
+            onClose={this.closeFlyout}
+            device={this.state.selectedDevice}
+            moduleStatus={this.state.moduleStatus} />
         }
       </ComponentArray>
     );

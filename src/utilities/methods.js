@@ -99,6 +99,19 @@ export const getStatusCode = (code, t) => {
   }
 }
 
+/** Converts a deployment status code to a translated string equivalent */
+export const getEdgeAgentStatusCode = (code, t) => {
+  switch (code) {
+    case 200: return t('edgeAgentStatus.200');
+    case 400: return t('edgeAgentStatus.400');
+    case 406: return t('edgeAgentStatus.406');
+    case 412: return t('edgeAgentStatus.412');
+    case 417: return t('edgeAgentStatus.417');
+    case 500: return t('edgeAgentStatus.500');
+    default: return t('edgeAgentStatus.unknown');
+  }
+}
+
 /* A helper method to copy text to the clipbaord */
 export const copyToClipboard = (data) => {
   const textField = document.createElement('textarea');

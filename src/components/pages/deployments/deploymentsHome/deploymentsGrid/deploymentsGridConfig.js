@@ -59,5 +59,9 @@ export const deploymentsColumnDefs = {
 export const defaultDeploymentsGridProps = {
   enableColResize: true,
   pagination: true,
-  paginationPageSize: Config.paginationPageSize
+  paginationPageSize: Config.paginationPageSize,
+  enableSorting: true,
+  unSortIcon: true,
+  sizeColumnsToFit: true,
+  deltaRowDataMode: true
 };

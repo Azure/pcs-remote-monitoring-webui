@@ -58,7 +58,7 @@ export const epics = createEpicScenario({
     type: 'DEPLOYED_DEVICES_FETCH',
     epic: fromAction => Observable
       .forkJoin(
-        IoTHubManagerService.getEdgeAgentsByQuery(createEdgeAgentQuery(getDeployedDeviceIds(fromAction.payload))),
+        IoTHubManagerService.getModulesByQuery(createEdgeAgentQuery(getDeployedDeviceIds(fromAction.payload))),
         IoTHubManagerService.getDevicesByQuery(createDevicesQuery(getDeployedDeviceIds(fromAction.payload))),
       )
       .map(toActionCreator(redux.actions.updateDeployedDevices, fromAction))
@@ -161,6 +161,13 @@ const updateDeployedDevicesReducer = (state, { payload: [modules, devices], from
   });
 };
 
+const resetDeployedDevicesReducer = (state) => update(state, {
+  entities: {
+    $unset: ['deployedDevices']
+  }
+});
+
+
 /* Action types that cause a pending flag */
 const fetchableTypes = [
   epics.actionTypes.fetchDeployment,
@@ -177,6 +184,7 @@ export const redux = createReducerScenario({
   updateDeployment: { type: 'DEPLOYMENTS_DETAILS_UPDATE', reducer: updateDeploymentReducer },
   updateDeployedDevices: { type: 'DEPLOYED_DEVICES_UPDATE', reducer: updateDeployedDevicesReducer },
   registerError: { type: 'DEPLOYMENTS_REDUCER_ERROR', reducer: errorReducer },
+  resetDeployedDevices: { type: 'DEPLOYMETS_RESET_DEPLOYED_DEVICES', reducer: resetDeployedDevicesReducer },
   resetPendingAndError: { type: 'DEPLOYMENTS_REDUCER_RESET_ERROR_PENDING', reducer: resetPendingAndErrorReducer },
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer }
 });

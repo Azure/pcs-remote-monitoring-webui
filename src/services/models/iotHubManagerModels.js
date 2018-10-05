@@ -210,7 +210,8 @@ export const toDeploymentRequestModel = (deploymentModel = {}) => ({
 
 export const toEdgeAgentModel = (edgeAgent = {}) => camelCaseReshape(edgeAgent, {
   'deviceId': 'id',
-  'reported.lastDesiredStatus.code': 'lastMessage',
+  'reported.lastDesiredStatus.description': 'description',
+  'reported.lastDesiredStatus.code': 'code',
   'reported.systemModules.edgeAgent.lastStartTimeUtc': 'start',
   'reported.systemModules.edgeAgent.lastExitTimeUtc': 'end'
 });

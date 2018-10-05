@@ -82,7 +82,7 @@ export class IoTHubManagerService {
   }
 
   /** Queries EdgeAgent */
-  static getEdgeAgentsByQuery(query) {
+  static getModulesByQuery(query) {
     return HttpClient.post(`${ENDPOINT}modules/query`, query)
       .map(toEdgeAgentsModel);
   }

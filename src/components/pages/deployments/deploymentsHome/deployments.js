@@ -57,15 +57,23 @@ export class Deployments extends Component {
 
   onGridReady = gridReadyEvent => this.deploymentGridApi = gridReadyEvent.api;
 
+  getSoftSelectId = ({ id } = '') => id;
+
+  onSoftSelectChange = (deviceRowId) => {
+    const rowData = (this.deploymentGridApi.getDisplayedRowAtIndex(deviceRowId) || {}).data;
+    this.props.history.push(`/deployments/${rowData.id}`)
+  }
+
   render() {
-    const { t, deployments, error, isPending, fetchDeployments, lastUpdated, history } = this.props;
+    const { t, deployments, error, isPending, fetchDeployments, lastUpdated } = this.props;
     const gridProps = {
       onGridReady: this.onGridReady,
       rowData: isPending ? undefined : deployments || [],
       refresh: fetchDeployments,
       onContextMenuChange: this.onContextMenuChange,
       t: t,
-      onRowClicked: ({ data: { id } }) => history.push(`/deployments/${id}`)
+      getSoftSelectId: this.getSoftSelectId,
+      onSoftSelectChange: this.onSoftSelectChange
     };
 
     return (

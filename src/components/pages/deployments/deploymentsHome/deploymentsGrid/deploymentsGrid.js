@@ -38,13 +38,9 @@ export class DeploymentsGrid extends Component {
       /* Grid Properties */
       ...defaultDeploymentsGridProps,
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
-      sizeColumnsToFit: true,
-      deltaRowDataMode: true,
       ...this.props, // Allow default property overrides
       onGridReady: event => this.onGridReady(event), // Wrap in a function to avoid closure issues
       getRowNodeId: ({ id }) => id,
-      enableSorting: true,
-      unSortIcon: true,
       context: {
         t: this.props.t
       }
