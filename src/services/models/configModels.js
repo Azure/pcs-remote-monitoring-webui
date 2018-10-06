@@ -74,6 +74,7 @@ export const toPackageModel = (response = {}) => {
     'id': 'id',
     'type': 'type',
     'name': 'name',
-    'dateCreated': 'dateCreated'
+    'dateCreated': 'dateCreated',
+    'content': 'content'
   });
 };

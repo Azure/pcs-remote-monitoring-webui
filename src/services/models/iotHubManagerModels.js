@@ -183,7 +183,9 @@ export const toDeploymentModel = (deployment = {}) => {
     'id': 'id',
     'name': 'name',
     'deviceGroupId': 'deviceGroupId',
-    'packageId': 'packageId',
+    'deviceGroupQuery': 'deviceGroupQuery',
+    'deviceGroupName': 'deviceGroupName',
+    'packageName': 'packageName',
     'priority': 'priority',
     'type': 'type',
     'createdDateTimeUtc': 'createdDateTimeUtc',
@@ -202,8 +204,12 @@ export const toDeploymentsModel = (response = {}) => getItems(response)
 
 export const toDeploymentRequestModel = (deploymentModel = {}) => ({
   DeviceGroupId: deploymentModel.deviceGroupId,
+  DeviceGroupName: deploymentModel.deviceGroupName,
+  DeviceGroupQuery: deploymentModel.deviceGroupQuery,
   Name: deploymentModel.name,
   PackageId: deploymentModel.packageId,
+  PackageName: deploymentModel.packageName,
+  PackageContent: deploymentModel.packageContent,
   Priority: deploymentModel.priority,
   Type: deploymentModel.type
 });

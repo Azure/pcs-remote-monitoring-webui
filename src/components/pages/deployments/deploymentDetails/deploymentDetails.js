@@ -18,7 +18,7 @@ import {
   StatProperty
 } from 'components/shared';
 import { TimeRenderer } from 'components/shared/cellRenderers';
-import { svgs } from 'utilities';
+import { getPackageTypeTranslation, svgs } from 'utilities';
 import { DeploymentDetailsGrid } from './deploymentDetailsGrid/deploymentDetailsGrid';
 
 import "./deploymentDetails.css";
@@ -90,10 +90,10 @@ export class DeploymentDetails extends Component {
       failedCount,
       name,
       priority,
-      deviceGroupId,
+      deviceGroupName,
       createdDateTimeUtc,
       type,
-      packageId
+      packageName
     } = currentDeployment;
     const pendingCalc = appliedCount - succeededCount - failedCount;
     const pendingCount = pendingCalc ? pendingCalc : '0';
@@ -164,7 +164,7 @@ export class DeploymentDetails extends Component {
                       {t('deployments.details.deviceGroup')}
                     </div>
                     <div className="deployment-details-summary-values">
-                      {deviceGroupId}
+                      {deviceGroupName}
                     </div>
                   </StatGroup>
                   <StatGroup className="summary-container-second-row">
@@ -182,7 +182,7 @@ export class DeploymentDetails extends Component {
                       {t('deployments.details.packageType')}
                     </div>
                     <div className="deployment-details-summary-values">
-                      {type}
+                      {type ? getPackageTypeTranslation(type, t) : undefined}
                     </div>
                   </StatGroup>
                   <StatGroup className="summary-container-second-row">
@@ -190,7 +190,7 @@ export class DeploymentDetails extends Component {
                       {t('deployments.details.package')}
                     </div>
                     <div className="deployment-details-summary-values">
-                      {packageId}
+                      {packageName}
                     </div>
                   </StatGroup>
                 </StatGroup>

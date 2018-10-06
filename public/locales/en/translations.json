@@ -617,7 +617,8 @@
       }
     },
     "typeOptions": {
-      "edgemanifest": "Edge Manifest"
+      "edgemanifest": "Edge Manifest",
+      "unknown": "Unknown"
     },
     "grid": {
       "name": "Name",

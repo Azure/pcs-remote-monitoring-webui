@@ -2,6 +2,7 @@
 
 import Config from 'app.config';
 import { SoftSelectLinkRenderer, TimeRenderer } from 'components/shared/cellRenderers';
+import { getPackageTypeTranslation } from 'utilities';
 import { gridValueFormatters } from 'components/shared/pcsGrid/pcsGridConfig';
 
 const { checkForEmpty } = gridValueFormatters;
@@ -16,12 +17,12 @@ export const deploymentsColumnDefs = {
   },
   package: {
     headerName: 'deployments.grid.package',
-    field: 'packageId',
+    field: 'packageName',
     valueFormatter: ({ value }) => checkForEmpty(value)
   },
   deviceGroup: {
     headerName: 'deployments.grid.deviceGroup',
-    field: 'deviceGroupId',
+    field: 'deviceGroupName',
     valueFormatter: ({ value }) => checkForEmpty(value)
   },
   priority: {
@@ -32,7 +33,7 @@ export const deploymentsColumnDefs = {
   type: {
     headerName: 'deployments.grid.type',
     field: 'type',
-    valueFormatter: ({ value }) => checkForEmpty(value)
+    valueFormatter: ({ value, context: { t } }) => getPackageTypeTranslation(checkForEmpty(value), t)
   },
   applied: {
     headerName: 'deployments.grid.applied',

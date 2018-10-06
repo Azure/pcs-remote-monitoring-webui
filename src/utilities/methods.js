@@ -112,6 +112,14 @@ export const getEdgeAgentStatusCode = (code, t) => {
   }
 }
 
+/** Converts a packageType enum to a translated string equivalent */
+export const getPackageTypeTranslation = (packageType, t) => {
+  switch (packageType.toLowerCase()) {
+    case 'edgemanifest': return t('deployments.typeOptions.edgemanifest');
+    default: return t('deployments.typeOptions.unknown');
+  }
+}
+
 /* A helper method to copy text to the clipbaord */
 export const copyToClipboard = (data) => {
   const textField = document.createElement('textarea');

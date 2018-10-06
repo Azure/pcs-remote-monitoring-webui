@@ -35,6 +35,7 @@ export class DeploymentNew extends LinkedComponent {
       packageType: undefined,
       deviceGroupId: undefined,
       deviceGroupName: '',
+      deviceGroupQuery: '',
       name: '',
       priority: '',
       packageId: undefined,
@@ -70,10 +71,29 @@ export class DeploymentNew extends LinkedComponent {
 
   apply = (event) => {
     event.preventDefault();
-    const { createDeployment } = this.props;
-    const { packageType, deviceGroupId, name, priority, packageId } = this.state;
+    const { createDeployment, packages } = this.props;
+    const {
+      packageName,
+      deviceGroupName,
+      deviceGroupQuery,
+      deviceGroupId,
+      name,
+      priority,
+      packageId,
+      packageType } = this.state;
     if (this.formIsValid()) {
-      createDeployment({ 'type': packageType, deviceGroupId, name, priority, packageId });
+      const packageContent = packages.find(packageObj => packageObj.id === packageId).content;
+      createDeployment({
+        type: packageType,
+        packageName,
+        packageContent,
+        packageId,
+        deviceGroupName,
+        deviceGroupQuery,
+        deviceGroupId,
+        name,
+        priority
+      });
       this.setState({ changesApplied: true });
     }
   }
@@ -88,7 +108,7 @@ export class DeploymentNew extends LinkedComponent {
     ].every(link => !link.error);
   }
 
-  onPackageSelected = (e) => {
+  onPackageTypeSelected = (e) => {
     switch (e.target.value.value) {
       // case Edge manifest
       case 'EdgeManifest':
@@ -106,7 +126,8 @@ export class DeploymentNew extends LinkedComponent {
   onDeviceGroupSelected = (e) => {
     const { fetchDevices, deviceGroups } = this.props;
     const selectedDeviceGroupId = e.target.value.value;
-    const selectedDeviceGroup = deviceGroups.find(deviceGroup => deviceGroup.id === selectedDeviceGroupId)
+    const selectedDeviceGroup = deviceGroups.find(deviceGroup => deviceGroup.id === selectedDeviceGroupId);
+    this.setState({ deviceGroupQuery: JSON.stringify(selectedDeviceGroup.conditions) });
     fetchDevices(selectedDeviceGroup.conditions);
   }
 
@@ -199,7 +220,7 @@ export class DeploymentNew extends LinkedComponent {
                   type="select"
                   className="long"
                   link={this.packageTypeLink}
-                  onChange={this.onPackageSelected}
+                  onChange={this.onPackageTypeSelected}
                   options={typeOptions}
                   placeholder={t('deployments.flyouts.new.typePlaceHolder')}
                   clearable={false}
