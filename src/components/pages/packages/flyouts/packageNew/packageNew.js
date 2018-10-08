@@ -2,7 +2,11 @@
 
 import React from 'react';
 
-import { packageTypeOptions } from 'services/models';
+import {
+  packageTypeOptions,
+  toSinglePropertyDiagnosticsModel,
+  toDiagnosticsModel
+} from 'services/models';
 import { svgs, LinkedComponent, Validator } from 'utilities';
 import {
   AjaxError,
@@ -47,15 +51,28 @@ export class PackageNew extends LinkedComponent {
     event.preventDefault();
     const { createPackage } = this.props;
     const { type, packageFile } = this.state;
+    this.props.logEvent(
+      toDiagnosticsModel(
+        'NewPackage_Apply',
+        {
+          type,
+          packageName: packageFile.name
+        })
+    );
     if (this.formIsValid()) {
       createPackage({ type: type, packageFile: packageFile });
       this.setState({ changesApplied: true });
     }
   }
 
+  packageTypeChange = ({ target: { value: { value = {} } } }) => {
+    this.props.logEvent(toSinglePropertyDiagnosticsModel('NewPackage_TypeClick', 'Type', value));
+  }
+
   onFileSelected = (e) => {
     let file = e.target.files[0];
     this.setState({ packageFile: file });
+    this.props.logEvent(toSinglePropertyDiagnosticsModel('NewPackage_FileSelect', 'FileName', file.name));
   }
 
   formIsValid = () => {
@@ -64,8 +81,14 @@ export class PackageNew extends LinkedComponent {
     ].every(link => !link.error);
   }
 
+  genericCloseClick = (eventName) => {
+    const { onClose, logEvent } = this.props;
+    logEvent(toDiagnosticsModel(eventName, {}));
+    onClose();
+  }
+
   render() {
-    const { t, onClose, isPending, error } = this.props;
+    const { t, isPending, error } = this.props;
     const { packageFile, changesApplied } = this.state;
 
     const summaryCount = 1;
@@ -85,7 +108,7 @@ export class PackageNew extends LinkedComponent {
       <Flyout>
         <FlyoutHeader>
           <FlyoutTitle>{t('packages.flyouts.new.title')}</FlyoutTitle>
-          <FlyoutCloseBtn onClick={onClose} />
+          <FlyoutCloseBtn onClick={() => this.genericCloseClick('NewPackage_CloseClick')} />
         </FlyoutHeader>
         <FlyoutContent className="new-package-content">
           <form className="new-package-form" onSubmit={this.apply}>
@@ -97,6 +120,7 @@ export class PackageNew extends LinkedComponent {
               <FormControl
                 type="select"
                 className="long"
+                onChange={this.packageTypeChange}
                 link={this.packageTypeLink}
                 options={typeOptions}
                 placeholder={t('packages.flyouts.new.placeHolder')}
@@ -139,21 +163,27 @@ export class PackageNew extends LinkedComponent {
                 (packageFile && !completedSuccessfully) &&
                 <BtnToolbar>
                   <Btn svg={svgs.upload} primary={true} disabled={isPending || !this.formIsValid()} type="submit">{t('packages.flyouts.new.upload')}</Btn>
-                  <Btn svg={svgs.cancelX} onClick={onClose}>{t('packages.flyouts.new.cancel')}</Btn>
+                  <Btn svg={svgs.cancelX} onClick={() => this.genericCloseClick('NewPackage_CancelClick')}>
+                    {t('packages.flyouts.new.cancel')}
+                  </Btn>
                 </BtnToolbar>
               }
               {
                 /** If package is not selected, show only the cancel button. */
                 (!packageFile) &&
                 <BtnToolbar>
-                  <Btn svg={svgs.cancelX} onClick={onClose}>{t('packages.flyouts.new.cancel')}</Btn>
+                  <Btn svg={svgs.cancelX} onClick={() => this.genericCloseClick('NewPackage_CancelClick')}>
+                    {t('packages.flyouts.new.cancel')}
+                  </Btn>
                 </BtnToolbar>
               }
               {
                 /** After successful upload, show close button. */
                 (completedSuccessfully) &&
                 <BtnToolbar>
-                  <Btn svg={svgs.cancelX} onClick={onClose}>{t('packages.flyouts.new.close')}</Btn>
+                  <Btn svg={svgs.cancelX} onClick={() => this.genericCloseClick('NewPackage_CancelClick')}>
+                    {t('packages.flyouts.new.close')}
+                  </Btn>
                 </BtnToolbar>
               }
             </SummarySection>

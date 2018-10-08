@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { permissions } from 'services/models';
+import { permissions, toSinglePropertyDiagnosticsModel } from 'services/models';
 import {
   AjaxError,
   Btn,
@@ -35,6 +35,9 @@ export class DeploymentDetails extends Component {
       ...closedModalState,
       deploymentDeleted: false
     };
+
+    this.props.updateCurrentWindow('DeploymentDetails');
+
     props.fetchDeployment(props.match.params.id);
   }
 
@@ -43,8 +46,13 @@ export class DeploymentDetails extends Component {
   }
 
   getOpenModal = () => {
-    const { t, deleteIsPending, deleteError, deleteItem } = this.props;
+    const { t, deleteIsPending, deleteError, deleteItem, logEvent } = this.props;
     if (this.state.openModalName === 'delete-deployment' && this.props.currentDeployment) {
+      logEvent(
+        toSinglePropertyDiagnosticsModel(
+          'DeploymentDetail_DeleteClick',
+          'DeploymentId',
+          this.props.currentDeployment ? this.props.currentDeployment.id : ''));
       return <DeleteModal
         t={t}
         deleteItem={deleteItem}
@@ -53,6 +61,7 @@ export class DeploymentDetails extends Component {
         itemId={this.props.currentDeployment.id}
         onClose={this.closeModal}
         onDelete={this.onDelete}
+        logEvent={logEvent}
         title={this.props.t('deployments.modals.delete.title')}
         deleteInfo={this.props.t(
           'deployments.modals.delete.info',
@@ -82,7 +91,8 @@ export class DeploymentDetails extends Component {
       isDeployedDevicesPending,
       deployedDevicesError,
       fetchDeployment,
-      lastUpdated
+      lastUpdated,
+      logEvent
     } = this.props;
     const {
       appliedCount,
@@ -212,7 +222,7 @@ export class DeploymentDetails extends Component {
               error={deployedDevicesError} />
           }
 
-          {!isDeployedDevicesPending && <DeploymentDetailsGrid t={t} deployedDevices={deployedDevices} />}
+          {!isDeployedDevicesPending && <DeploymentDetailsGrid t={t} deployedDevices={deployedDevices} logEvent={logEvent} />}
         </PageContent>
       </ComponentArray>
     );

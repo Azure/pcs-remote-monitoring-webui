@@ -5,6 +5,7 @@ import { deploymentDetailsColumnDefs, defaultDeploymentDetailsGridProps } from '
 import { translateColumnDefs, isFunc } from 'utilities';
 import { PcsGrid, ComponentArray } from 'components/shared';
 import { DeviceDetailsContainer } from 'components/pages/devices/flyouts';
+import { toSinglePropertyDiagnosticsModel } from 'services/models';
 
 const closedFlyoutState = {
   openFlyoutName: undefined,
@@ -43,8 +44,13 @@ export class DeploymentDetailsGrid extends Component {
   });
 
   onSoftSelectChange = (deviceRowId, rowEvent) => {
-    const { onSoftSelectChange } = this.props;
+    const { onSoftSelectChange, logEvent } = this.props;
     const rowData = (this.deployedDevicesGridApi.getDisplayedRowAtIndex(deviceRowId) || {}).data;
+    logEvent(
+      toSinglePropertyDiagnosticsModel(
+        'DeploymentDetail_DeviceGridClick',
+        'DeviceId',
+        rowData ? rowData.id : ''));
     if (rowData && rowData.device) {
       this.setState({
         openFlyoutName: 'deviceDetails',

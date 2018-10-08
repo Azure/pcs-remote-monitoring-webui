@@ -16,7 +16,10 @@ import {
   epics as packagesEpics,
   redux as packagesRedux
 } from 'store/reducers/packagesReducer';
-import { getDeviceGroups } from 'store/reducers/appReducer';
+import {
+  getDeviceGroups,
+  epics as appEpics,
+} from 'store/reducers/appReducer';
 import {
   getDevices,
   getDevicesByConditionError,
@@ -45,7 +48,8 @@ const mapDispatchToProps = dispatch => ({
   fetchPackages: () => dispatch(packagesEpics.actions.fetchPackages()),
   resetPackagesPendingError: () => dispatch(packagesRedux.actions.resetPendingAndError(packagesEpics.actions.fetchPackages)),
   fetchDevices: condition => dispatch(devicesEpics.actions.fetchDevicesByCondition(condition)),
-  resetDevicesPendingError: () => dispatch(devicesRedux.actions.resetPendingAndError(devicesEpics.actions.fetchDevicesByCondition))
+  resetDevicesPendingError: () => dispatch(devicesRedux.actions.resetPendingAndError(devicesEpics.actions.fetchDevicesByCondition)),
+  logEvent: diagnosticsModel => dispatch(appEpics.actions.logEvent(diagnosticsModel))
 });
 
 export const DeploymentNewContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(DeploymentNew));

@@ -10,6 +10,10 @@ import {
   getPackagesLastUpdated,
   getPackagesPendingStatus
 } from 'store/reducers/packagesReducer';
+import {
+  redux as appRedux,
+  epics as appEpics,
+} from 'store/reducers/appReducer';
 
 // Pass the packages status
 const mapStateToProps = state => ({
@@ -21,7 +25,9 @@ const mapStateToProps = state => ({
 
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
-  fetchPackages: () => dispatch(packagesEpics.actions.fetchPackages())
+  fetchPackages: () => dispatch(packagesEpics.actions.fetchPackages()),
+  updateCurrentWindow: (currentWindow) => dispatch(appRedux.actions.updateCurrentWindow(currentWindow)),
+  logEvent: diagnosticsModel => dispatch(appEpics.actions.logEvent(diagnosticsModel))
 });
 
 export const PackagesContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Packages));

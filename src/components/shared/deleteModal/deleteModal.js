@@ -10,6 +10,7 @@ import {
   Modal
 } from 'components/shared';
 import { svgs } from 'utilities';
+import { toSinglePropertyDiagnosticsModel } from 'services/models';
 
 import './deleteModal.css';
 
@@ -30,20 +31,36 @@ export class DeleteModal extends Component {
   }
 
   apply = () => {
-    const { deleteItem, itemId } = this.props;
+    const { deleteItem, itemId, logEvent } = this.props;
+    logEvent(
+      toSinglePropertyDiagnosticsModel(
+        'DeleteModal_DeleteClick',
+        'ItemId',
+        itemId));
     deleteItem(itemId);
     this.setState({ changesApplied: true });
   }
 
+  genericCloseClick = (eventName) => {
+    const { onClose, itemId, logEvent } = this.props;
+    logEvent(
+      toSinglePropertyDiagnosticsModel(
+        eventName,
+        'DeleteModal_CloseClick',
+        'ItemId',
+        itemId));
+    onClose();
+  }
+
   render() {
-    const { t, onClose, isPending, error, title, deleteInfo } = this.props;
+    const { t, isPending, error, title, deleteInfo } = this.props;
     const { changesApplied } = this.state;
 
     return (
-      <Modal onClose={onClose} className="delete-modal-container">
+      <Modal onClose={() => this.genericCloseClick('DeleteModal_ModalClose')} className="delete-modal-container">
         <div className="delete-header-container">
           <div className="delete-title">{title}</div>
-          <Btn className="delete-close-btn" onClick={onClose} svg={svgs.x} />
+          <Btn className="delete-close-btn" onClick={() => this.genericCloseClick('DeleteModal_CloseClick')} svg={svgs.x} />
         </div>
         <div className="delete-info">
           {deleteInfo}
@@ -52,7 +69,7 @@ export class DeleteModal extends Component {
           {
             !changesApplied && <BtnToolbar>
               <Btn svg={svgs.trash} primary={true} onClick={this.apply}>{t('modal.delete')}</Btn>
-              <Btn svg={svgs.cancelX} onClick={onClose}>{t('modal.cancel')}</Btn>
+              <Btn svg={svgs.cancelX} onClick={() => this.genericCloseClick('DeleteModal_CancelClick')}>{t('modal.cancel')}</Btn>
             </BtnToolbar>
           }
           {isPending && <Indicator />}

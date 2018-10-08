@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { packageTypeOptions } from 'services/models';
+import { packageTypeOptions, toDiagnosticsModel, toSinglePropertyDiagnosticsModel } from 'services/models';
 import { svgs, LinkedComponent, Validator } from 'utilities';
 import {
   AjaxError,
@@ -71,7 +71,7 @@ export class DeploymentNew extends LinkedComponent {
 
   apply = (event) => {
     event.preventDefault();
-    const { createDeployment, packages } = this.props;
+    const { createDeployment, packages, logEvent } = this.props;
     const {
       packageName,
       deviceGroupName,
@@ -81,6 +81,18 @@ export class DeploymentNew extends LinkedComponent {
       priority,
       packageId,
       packageType } = this.state;
+
+    logEvent(
+      toDiagnosticsModel(
+        'NewDeployment_ApplyClick', {
+          packageId,
+          packageType,
+          priority,
+          name,
+          deviceGroupId,
+          packageName,
+        })
+    );
     if (this.formIsValid()) {
       const packageContent = packages.find(packageObj => packageObj.id === packageId).content;
       createDeployment({
@@ -109,7 +121,12 @@ export class DeploymentNew extends LinkedComponent {
   }
 
   onPackageTypeSelected = (e) => {
-    switch (e.target.value.value) {
+    const selectedPackageType = e.target.value.value;
+    this.props.logEvent(
+      toSinglePropertyDiagnosticsModel('NewDeployment_PackageTypeSelect', 'PackageType', selectedPackageType)
+    );
+
+    switch (selectedPackageType) {
       // case Edge manifest
       case 'EdgeManifest':
         const { fetchPackages } = this.props;
@@ -126,6 +143,9 @@ export class DeploymentNew extends LinkedComponent {
   onDeviceGroupSelected = (e) => {
     const { fetchDevices, deviceGroups } = this.props;
     const selectedDeviceGroupId = e.target.value.value;
+    this.props.logEvent(
+      toSinglePropertyDiagnosticsModel('NewDeployment_DeviceGroupSelect', 'DeviceGroup', selectedDeviceGroupId)
+    );
     const selectedDeviceGroup = deviceGroups.find(deviceGroup => deviceGroup.id === selectedDeviceGroupId);
     this.setState({ deviceGroupQuery: JSON.stringify(selectedDeviceGroup.conditions) });
     fetchDevices(selectedDeviceGroup.conditions);
@@ -141,10 +161,22 @@ export class DeploymentNew extends LinkedComponent {
 
   toDeviceGroupSelectOption = ({ id, displayName }) => ({ label: displayName, value: id });
 
+  genericCloseClick = (eventName) => {
+    const { onClose, logEvent } = this.props;
+    logEvent(toDiagnosticsModel(eventName, {}));
+    onClose();
+  }
+
+  genericOnChange = (eventName, key, value) => {
+    this.props.logEvent(
+      toSinglePropertyDiagnosticsModel(eventName, key, value)
+    );
+    this.formControlChange();
+  }
+
   render() {
     const {
       t,
-      onClose,
       createIsPending,
       createError,
       packagesPending,
@@ -193,7 +225,7 @@ export class DeploymentNew extends LinkedComponent {
       <Flyout>
         <FlyoutHeader>
           <FlyoutTitle>{t('deployments.flyouts.new.title')}</FlyoutTitle>
-          <FlyoutCloseBtn onClick={onClose} />
+          <FlyoutCloseBtn onClick={() => this.genericCloseClick('NewDeployment_CloseClick')} />
         </FlyoutHeader>
         <FlyoutContent className="new-deployment-content">
           <form className="new-deployment-form" onSubmit={this.apply}>
@@ -205,7 +237,7 @@ export class DeploymentNew extends LinkedComponent {
                   type="text"
                   className="long"
                   link={this.nameLink}
-                  onChange={this.formControlChange}
+                  onChange={(target) => this.genericOnChange('NewDeployment_NameText', 'Name', target.value)}
                   placeholder={t('deployments.flyouts.new.namePlaceHolder')} />
               }
               {
@@ -239,6 +271,7 @@ export class DeploymentNew extends LinkedComponent {
                   disabled={!isPackageTypeSelected}
                   link={this.packageIdLink}
                   options={packageOptions}
+                  onChange={(target) => this.genericOnChange('NewDeployment_PackageSelect', 'Package', target.value.value)}
                   placeholder={isPackageTypeSelected ? t('deployments.flyouts.new.packagePlaceHolder') : ""}
                   clearable={false}
                   searchable={false} />
@@ -280,7 +313,7 @@ export class DeploymentNew extends LinkedComponent {
                   type="text"
                   className="long"
                   link={this.priorityLink}
-                  onChange={this.formControlChange}
+                  onChange={(target) => this.genericOnChange('NewDeployment_PriorityNumber', 'Priority', target.value)}
                   placeholder={t('deployments.flyouts.new.priorityPlaceHolder')} />
               }
               {
@@ -326,14 +359,18 @@ export class DeploymentNew extends LinkedComponent {
                 (!completedSuccessfully) &&
                 <BtnToolbar>
                   <Btn primary={true} disabled={createIsPending || !this.formIsValid()} type="submit">{t('deployments.flyouts.new.apply')}</Btn>
-                  <Btn svg={svgs.cancelX} onClick={onClose}>{t('deployments.flyouts.new.cancel')}</Btn>
+                  <Btn svg={svgs.cancelX} onClick={() => this.genericCloseClick('NewDeployment_CancelClick')}>{
+                    t('deployments.flyouts.new.cancel')}
+                  </Btn>
                 </BtnToolbar>
               }
               {
                 /** After successful deployment creation, show only close button. */
                 (completedSuccessfully) &&
                 <BtnToolbar>
-                  <Btn svg={svgs.cancelX} onClick={onClose}>{t('deployments.flyouts.new.close')}</Btn>
+                  <Btn svg={svgs.cancelX} onClick={() => this.genericCloseClick('NewDeployment_CancelClick')}>
+                    {t('deployments.flyouts.new.close')}
+                  </Btn>
                 </BtnToolbar>
               }
             </SummarySection>

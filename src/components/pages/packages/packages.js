@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { permissions } from 'services/models';
+import { permissions, toDiagnosticsModel } from 'services/models';
 import { PackagesGrid } from './packagesGrid';
 import {
   AjaxError,
@@ -29,6 +29,8 @@ export class Packages extends Component {
       contextBtns: null
     };
 
+    this.props.updateCurrentWindow('Packages');
+
     if (!this.props.lastUpdated && !this.props.error) {
       this.props.fetchPackages();
     }
@@ -41,16 +43,22 @@ export class Packages extends Component {
     }
   }
 
-  closeFlyout = () => this.setState(closedFlyoutState);
+  closeFlyout = () => {
+    this.props.logEvent(toDiagnosticsModel('Packages_NewClose', {}));
+    this.setState(closedFlyoutState);
+  }
 
   onContextMenuChange = contextBtns => this.setState({
     contextBtns,
     openFlyoutName: undefined
   });
 
-  openNewPackageFlyout = () => this.setState({
-    openFlyoutName: 'new-Package'
-  });
+  openNewPackageFlyout = () => {
+    this.props.logEvent(toDiagnosticsModel('Packages_NewClick', {}));
+    this.setState({
+      openFlyoutName: 'new-Package'
+    });
+  }
 
   onGridReady = gridReadyEvent => this.packageGridApi = gridReadyEvent.api;
 

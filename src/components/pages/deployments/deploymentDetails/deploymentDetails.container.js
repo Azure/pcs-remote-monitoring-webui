@@ -16,6 +16,10 @@ import {
   epics as deploymentsEpics,
   redux as deploymentsRedux
 } from 'store/reducers/deploymentsReducer';
+import {
+  redux as appRedux,
+  epics as appEpics,
+} from 'store/reducers/appReducer';
 
 // Pass the global info needed
 const mapStateToProps = state => ({
@@ -34,7 +38,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchDeployment: id => dispatch(deploymentsEpics.actions.fetchDeployment(id)),
   resetDeployedDevices: () => dispatch(deploymentsRedux.actions.resetDeployedDevices()),
-  deleteItem: deploymentId => dispatch(deploymentsEpics.actions.deleteDeployment(deploymentId))
+  deleteItem: deploymentId => dispatch(deploymentsEpics.actions.deleteDeployment(deploymentId)),
+  updateCurrentWindow: (currentWindow) => dispatch(appRedux.actions.updateCurrentWindow(currentWindow)),
+  logEvent: diagnosticsModel => dispatch(appEpics.actions.logEvent(diagnosticsModel))
 });
 
 export const DeploymentDetailsContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(DeploymentDetails));

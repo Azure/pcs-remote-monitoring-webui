@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 
-import { permissions } from 'services/models';
+import { permissions, toDiagnosticsModel } from 'services/models';
 import {
   AjaxError,
   Btn,
@@ -32,6 +32,8 @@ export class Deployments extends Component {
       contextBtns: null
     };
 
+    this.props.updateCurrentWindow('Deployments');
+
     if (!this.props.lastUpdated && !this.props.error) {
       this.props.fetchDeployments();
     }
@@ -51,16 +53,24 @@ export class Deployments extends Component {
     openFlyoutName: undefined
   });
 
-  openNewDeploymentFlyout = () => this.setState({
-    openFlyoutName: 'newDeployment'
-  });
-
+  openNewDeploymentFlyout = () => {
+    this.props.logEvent(toDiagnosticsModel('Deployments_NewClick', {}));
+    this.setState({
+      openFlyoutName: 'newDeployment'
+    });
+  }
   onGridReady = gridReadyEvent => this.deploymentGridApi = gridReadyEvent.api;
 
   getSoftSelectId = ({ id } = '') => id;
 
   onSoftSelectChange = (deviceRowId) => {
     const rowData = (this.deploymentGridApi.getDisplayedRowAtIndex(deviceRowId) || {}).data;
+    this.props.logEvent(
+      toDiagnosticsModel('Deployments_GridRowClick', {
+        id: rowData.id,
+        displayName: rowData.name
+      })
+    );
     this.props.history.push(`/deployments/${rowData.id}`)
   }
 

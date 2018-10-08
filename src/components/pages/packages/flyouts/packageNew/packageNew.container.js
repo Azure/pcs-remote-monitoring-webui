@@ -9,6 +9,7 @@ import {
   epics as packagesEpics,
   redux as packagesRedux
 } from 'store/reducers/packagesReducer';
+import { epics as appEpics } from 'store/reducers/appReducer';
 
 // Pass the global info needed
 const mapStateToProps = state => ({
@@ -20,6 +21,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   createPackage: packageModel => dispatch(packagesEpics.actions.createPackage(packageModel)),
   resetPackagesPendingError: () => dispatch(packagesRedux.actions.resetPendingAndError(packagesEpics.actions.createPackage)),
+  logEvent: diagnosticsModel => dispatch(appEpics.actions.logEvent(diagnosticsModel))
 });
 
 export const PackageNewContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(PackageNew));
