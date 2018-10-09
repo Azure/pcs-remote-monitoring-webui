@@ -11,7 +11,8 @@ describe('Deployments Component', () => {
 
     const fakeProps = {
       t: () => {},
-      fetchDeployments: () => {}
+      fetchDeployments: () => {},
+      updateCurrentWindow: () => { }
     };
 
     const wrapper = shallow(

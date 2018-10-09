@@ -17,6 +17,7 @@ describe('Packages Component', () => {
       isPending: false,
       lastUpdated: undefined,
       fetchPackages: () => { },
+      updateCurrentWindow: () => { },
       t: () => { },
     };
 

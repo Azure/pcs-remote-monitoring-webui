@@ -14,7 +14,8 @@ describe('Deployment details Component', () => {
       match: { params: { id: 'testId' } },
       fetchDeployment: () => { },
       deleteItem: () => { },
-      currentDeployment: {}
+      currentDeployment: {},
+      updateCurrentWindow: () => { }
     };
 
     const wrapper = shallow(

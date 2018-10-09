@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter as Router } from 'react-router-dom';
 import i18n from 'i18next';
 import { I18nextProvider } from 'react-i18next';
-import configureStore from 'store/configureStore';
+import { configureStore } from 'store/configureStore';
 
 // Initialize internationalization for testing
 i18n
