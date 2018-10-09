@@ -244,4 +244,5 @@ export const getDeployedDevices = createSelector(
       }
     }), DeployedDevicesEntities))
 );
+export const getLastItemId = state => getItems(state).length > 0 ? getItems(state)[0] : '';
 // ========================= Selectors - END

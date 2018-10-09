@@ -6,6 +6,7 @@ import { DeploymentNew } from './deploymentNew';
 import {
   getCreateDeploymentError,
   getCreateDeploymentPendingStatus,
+  getLastItemId,
   epics as deploymentsEpics,
   redux as deploymentsRedux
 } from 'store/reducers/deploymentsReducer';
@@ -38,7 +39,8 @@ const mapStateToProps = state => ({
   devicesPending: getDevicesByConditionPendingStatus(state),
   devicesError: getDevicesByConditionError(state),
   createIsPending: getCreateDeploymentPendingStatus(state),
-  createError: getCreateDeploymentError(state)
+  createError: getCreateDeploymentError(state),
+  createdDeploymentId: getLastItemId(state)
 });
 
 // Wrap the dispatch methods

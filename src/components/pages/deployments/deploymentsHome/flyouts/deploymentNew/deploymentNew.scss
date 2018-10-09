@@ -7,7 +7,12 @@
 .new-deployment-content {
   @include rem-fallback(padding-top, 24px);
 
-  .new-deployment-info-text,
+  .new-deployment-info-text {
+    line-height: 1.7;
+    @include rem-fallback(padding-top, 24px);
+    @include rem-font-size(14px);
+   }
+
   .new-deployment-flyout-error { @include rem-fallback(padding-top, 24px); }
 
   .new-deployment-formGroup,
@@ -21,11 +26,18 @@
     @include rem-fallback(margin-left, 8px);
   }
 
+  .new-deployment-info-star { @include rem-font-size(24px); }
+
   @include themify($themes) {
     .summary-icon svg { fill: themed('colorContentText'); }
 
     .new-deployment-flyout-error { border-color: themed('colorAlert'); }
 
     .new-deployment-success-labels { color: themed('colorFlyoutText'); }
+
+    .new-deployment-detail-page-link,
+    .new-deployment-info-text, { color: themed('colorContentText'); }
+
+    .new-deployment-info-star { color: themed('colorAlert'); }
   }
 }

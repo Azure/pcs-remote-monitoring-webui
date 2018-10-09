@@ -15,6 +15,10 @@ A presentational component containing one or many StatPropertys. By default the 
 
 A presentational component containing number value, label, and an optional svg and svgClassname. The number value can be of three different sizes- large, medium or small, based on `size` parameter. By default the 'size' will be assigned 'small'.
 
+### StatProperty: 
+
+A presentational component containing label, and a value stacked vertically.
+
 ## Examples: 
 
 ```html
@@ -30,6 +34,14 @@ A presentational component containing number value, label, and an optional svg a
   <StatGroup>
     <StatProperty value="12" label="chillers"/>
     <StatProperty value="24" label="trucks"/>
+  </StatGroup>
+</StatSection>
+```
+
+```html
+<StatSection>
+  <StatGroup>
+    <StatPropertyPair value="12" label="chillers"/>
   </StatGroup>
 </StatSection>
 ```

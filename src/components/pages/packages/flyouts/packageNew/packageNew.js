@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
+import { Trans } from 'react-i18next';
+import { Link } from "react-router-dom";
 
 import {
   packageTypeOptions,
@@ -89,7 +91,7 @@ export class PackageNew extends LinkedComponent {
 
   render() {
     const { t, isPending, error } = this.props;
-    const { packageFile, changesApplied } = this.state;
+    const { type, packageFile, changesApplied } = this.state;
 
     const summaryCount = 1;
     const typeOptions = packageTypeOptions.map(value => ({
@@ -117,29 +119,38 @@ export class PackageNew extends LinkedComponent {
 
             <FormGroup>
               <FormLabel isRequired="true">{t('packages.flyouts.new.type')}</FormLabel>
-              <FormControl
-                type="select"
-                className="long"
-                onChange={this.packageTypeChange}
-                link={this.packageTypeLink}
-                options={typeOptions}
-                placeholder={t('packages.flyouts.new.placeHolder')}
-                clearable={false}
-                searchable={false} />
+              {
+                !completedSuccessfully &&
+                <FormControl
+                  type="select"
+                  className="long"
+                  onChange={this.packageTypeChange}
+                  link={this.packageTypeLink}
+                  options={typeOptions}
+                  placeholder={t('packages.flyouts.new.placeHolder')}
+                  clearable={false}
+                  searchable={false} />
+              }
+              {
+                completedSuccessfully && <FormLabel className="new-package-success-labels">{type}</FormLabel>
+              }
             </FormGroup>
 
-            <div className="new-package-upload-container">
-              <label htmlFor="hidden-input-id" className="new-package-browse-click">
-                {t('packages.flyouts.new.browse')}
-              </label>
-              <input
-                type="file"
-                id="hidden-input-id"
-                accept={fileInputAccept}
-                className="new-package-hidden-input"
-                onChange={this.onFileSelected} />
-              {t('packages.flyouts.new.browseText')}
-            </div>
+            {
+              !completedSuccessfully &&
+              <div className="new-package-upload-container">
+                <label htmlFor="hidden-input-id" className="new-package-browse-click">
+                  {t('packages.flyouts.new.browse')}
+                </label>
+                <input
+                  type="file"
+                  id="hidden-input-id"
+                  accept={fileInputAccept}
+                  className="new-package-hidden-input"
+                  onChange={this.onFileSelected} />
+                {t('packages.flyouts.new.browseText')}
+              </div>
+            }
 
             <SummarySection className="new-package-summary">
               <SummaryBody>
@@ -152,7 +163,13 @@ export class PackageNew extends LinkedComponent {
               {
                 completedSuccessfully &&
                 <div className="new-package-deployment-text">
-                  {t('packages.flyouts.new.deploymentText')}
+                  <Trans i18nKey={"packages.flyouts.new.deploymentText"}>
+                    To deploy packages, go to the
+                    <Link className="new-package-deployment-page-link" to={'/deployments'}>{t('packages.flyouts.new.deploymentsPage')}</Link>
+                    , and then click
+                      <strong>{t('packages.flyouts.new.newDeployment')}</strong>
+                    button.
+                    </Trans>
                 </div>
               }
               {/** Displays an error message if one occurs while applying changes. */

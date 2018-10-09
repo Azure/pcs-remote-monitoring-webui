@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
+import { Trans } from 'react-i18next';
+import { Link } from "react-router-dom";
 
 import { packageTypeOptions, toDiagnosticsModel, toSinglePropertyDiagnosticsModel } from 'services/models';
 import { svgs, LinkedComponent, Validator } from 'utilities';
@@ -184,7 +186,8 @@ export class DeploymentNew extends LinkedComponent {
       packages,
       deviceGroups,
       devicesPending,
-      devicesError
+      devicesError,
+      createdDeploymentId
     } = this.props;
     const {
       name,
@@ -237,7 +240,7 @@ export class DeploymentNew extends LinkedComponent {
                   type="text"
                   className="long"
                   link={this.nameLink}
-                  onChange={(target) => this.genericOnChange('NewDeployment_NameText', 'Name', target.value)}
+                  onBlur={(event) => this.genericOnChange('NewDeployment_NameText', 'Name', event.target.value)}
                   placeholder={t('deployments.flyouts.new.namePlaceHolder')} />
               }
               {
@@ -271,7 +274,7 @@ export class DeploymentNew extends LinkedComponent {
                   disabled={!isPackageTypeSelected}
                   link={this.packageIdLink}
                   options={packageOptions}
-                  onChange={(target) => this.genericOnChange('NewDeployment_PackageSelect', 'Package', target.value.value)}
+                  onChange={(event) => this.genericOnChange('NewDeployment_PackageSelect', 'Package', event.target.value.value)}
                   placeholder={isPackageTypeSelected ? t('deployments.flyouts.new.packagePlaceHolder') : ""}
                   clearable={false}
                   searchable={false} />
@@ -313,7 +316,7 @@ export class DeploymentNew extends LinkedComponent {
                   type="text"
                   className="long"
                   link={this.priorityLink}
-                  onChange={(target) => this.genericOnChange('NewDeployment_PriorityNumber', 'Priority', target.value)}
+                  onBlur={(event) => this.genericOnChange('NewDeployment_PriorityNumber', 'Priority', event.target.value)}
                   placeholder={t('deployments.flyouts.new.priorityPlaceHolder')} />
               }
               {
@@ -342,13 +345,22 @@ export class DeploymentNew extends LinkedComponent {
               {/** Displays a info message if package type selected is edge Manifest */
                 !changesApplied && edgePackageSelected &&
                 <div className="new-deployment-info-text">
+                  <strong className="new-deployment-info-star">* </strong>
                   {t('deployments.flyouts.new.infoText')}
                 </div>
               }
               {/** Displays a success message if deployment is created successfully */
                 completedSuccessfully &&
                 <div className="new-deployment-info-text">
-                  {t('deployments.flyouts.new.successText', { deploymentName: name })}
+                  <Trans i18nKey={"deployments.flyouts.new.successText"}>
+                    View your deployment status detail for
+                    <Link
+                      className="new-deployment-detail-page-link"
+                      to={`/deployments/${createdDeploymentId}`}>
+                      {{ deploymentName: name }}
+                    </Link>
+                    .
+                  </Trans>
                 </div>
               }
               {/** Displays an error message if one occurs while creating deployment. */

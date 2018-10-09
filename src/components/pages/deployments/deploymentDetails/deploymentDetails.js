@@ -15,7 +15,8 @@ import {
   RefreshBar,
   StatSection,
   StatGroup,
-  StatProperty
+  StatProperty,
+  StatPropertyPair
 } from 'components/shared';
 import { TimeRenderer } from 'components/shared/cellRenderers';
 import { getPackageTypeTranslation, svgs } from 'utilities';
@@ -135,20 +136,12 @@ export class DeploymentDetails extends Component {
               <div className="deployment-name">
                 {name}
               </div>
-              <StatSection className="summary-container">
+              <StatSection className="summary-container-row1">
                 <StatGroup className="summary-container-columns">
                   <StatProperty
                     value={appliedCount}
                     label={t('deployments.details.devices')}
                     size="large" />
-                  <StatGroup className="summary-container-second-row">
-                    <div className="deployment-details-summary-labels">
-                      {t('deployments.details.priority')}
-                    </div>
-                    <div className="deployment-details-summary-values">
-                      {priority}
-                    </div>
-                  </StatGroup>
                 </StatGroup>
                 <StatGroup className="summary-container-columns">
                   <StatProperty
@@ -157,52 +150,39 @@ export class DeploymentDetails extends Component {
                     svg={svgs.failed}
                     svgClassName="stat-failed"
                     size="large" />
-                  <StatGroup className="summary-container-second-row">
-                    <StatProperty
-                      value={succeededCount}
-                      label={t('deployments.details.succeeded')}
-                      size="small" />
-                    <StatProperty
-                      value={pendingCount}
-                      label={t('deployments.details.pending')}
-                      size="small" />
-                  </StatGroup>
                 </StatGroup>
                 <StatGroup className="summary-container-columns">
-                  <StatGroup>
-                    <div className="deployment-details-summary-labels">
-                      {t('deployments.details.deviceGroup')}
-                    </div>
-                    <div className="deployment-details-summary-values">
-                      {deviceGroupName}
-                    </div>
-                  </StatGroup>
-                  <StatGroup className="summary-container-second-row">
-                    <div className="deployment-details-summary-labels">
-                      {t('deployments.details.start')}
-                    </div>
-                    <div className="deployment-details-summary-values">
-                      {TimeRenderer({ value: createdDateTimeUtc })}
-                    </div>
-                  </StatGroup>
+                  <StatPropertyPair label={t('deployments.details.deviceGroup')} value={deviceGroupName} />
                 </StatGroup>
                 <StatGroup className="summary-container-columns">
-                  <StatGroup>
-                    <div className="deployment-details-summary-labels">
-                      {t('deployments.details.packageType')}
-                    </div>
-                    <div className="deployment-details-summary-values">
-                      {type ? getPackageTypeTranslation(type, t) : undefined}
-                    </div>
-                  </StatGroup>
-                  <StatGroup className="summary-container-second-row">
-                    <div className="deployment-details-summary-labels">
-                      {t('deployments.details.package')}
-                    </div>
-                    <div className="deployment-details-summary-values">
-                      {packageName}
-                    </div>
-                  </StatGroup>
+                  <StatPropertyPair
+                    label={t('deployments.details.packageType')}
+                    value={type ? getPackageTypeTranslation(type, t) : undefined} />
+                </StatGroup>
+              </StatSection>
+              <StatSection className="summary-container-row2">
+                <StatGroup className="summary-container-columns">
+                  <StatPropertyPair label={t('deployments.details.priority')} value={priority} />
+                </StatGroup>
+                <StatGroup className="summary-container-columns">
+                  <StatProperty
+                    className="summary-container-succeeded"
+                    value={succeededCount}
+                    label={t('deployments.details.succeeded')}
+                    size="small" />
+                  <StatProperty
+                    className="summary-container-pending"
+                    value={pendingCount}
+                    label={t('deployments.details.pending')}
+                    size="small" />
+                </StatGroup>
+                <StatGroup className="summary-container-columns">
+                  <StatPropertyPair
+                    label={t('deployments.details.start')}
+                    value={TimeRenderer({ value: createdDateTimeUtc })} />
+                </StatGroup>
+                <StatGroup className="summary-container-columns">
+                  <StatPropertyPair label={t('deployments.details.package')} value={packageName} />
                 </StatGroup>
               </StatSection>
             </div>

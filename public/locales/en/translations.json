@@ -579,8 +579,8 @@
         "priorityPlaceHolder": "Enter priority",
         "namePlaceHolder": "Enter name",
         "targetText": "targeted devices",
-        "infoText": "* This deployment runs continuously. Every edge device (and any you add in the future) in the selected device group will receive this package.",
-        "successText": "View your deployment status detail for {{deploymentName}}",
+        "infoText": "This deployment runs continuously. Every edge device (and any you add in the future) in the selected device group will receive this package.",
+        "successText": "View your deployment status detail for <1><0>{{deploymentName}}</0></1>.",
         "creating": "Creating deployment",
         "validation": {
           "required": "Is required",
@@ -657,7 +657,9 @@
         "browseText": "for a package file",
         "placeHolder": "Select package type",
         "package": "Package",
-        "deploymentText": "To deploy packages, go to the 'Deployments' page and click '+ New Deployment' button.",
+        "deploymentsPage": "Deployments page",
+        "newDeployment": "+ New Deployment",
+        "deploymentText": "To deploy packages, go to the <1>Deployments page</1>, and then click <3>+ New Deployment</3> button.",
         "validation": {
           "required": "Is required"
         }

@@ -23,9 +23,14 @@
   .new-package-hidden-input { display: none; }
 
   .new-package-file-name,
-  .new-package-deployment-text,
   .new-package-header,
   .new-package-flyout-error { @include rem-fallback(padding-top, 24px); }
+
+
+  .new-package-deployment-text {
+    @include rem-fallback(padding-top, 24px);
+    line-height: 1.7;
+  }
 
   .new-package-descr {
     @include rem-fallback(font-size, 12px);
@@ -41,7 +46,11 @@
   @include themify($themes) {
     .new-package-header,
     .new-package-browse-click,
-    .new-package-file-name { color: themed('colorContentText'); }
+    .new-package-file-name,
+    .new-package-deployment-text,
+    .new-package-deployment-page-link { color: themed('colorContentText'); }
+
+    .new-package-success-labels { color: themed('colorFlyoutText'); }
 
     .new-package-descr svg,
     .summary-icon svg { fill: themed('colorContentText'); }
