@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+// <panel>
 import React, { Component } from 'react';
 
 import {
@@ -33,3 +34,4 @@ export class ExamplePanel extends Component {
     );
   }
 }
+// </panel>

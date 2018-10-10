@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+// <styles>
 @import 'src/styles/variables';
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
 .basic-page-container { padding: $baseContentPadding; }
+// </styles>

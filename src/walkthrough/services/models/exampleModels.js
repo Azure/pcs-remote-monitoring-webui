@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+// <models>
 import { camelCaseReshape, getItems } from 'utilities';
 
 /**
@@ -15,3 +16,5 @@ export const toExampleItemModel = (data = {}) => camelCaseReshape(data, {
 
 export const toExampleItemsModel = (response = {}) => getItems(response)
   .map(toExampleItemModel);
+
+// </models>

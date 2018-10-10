@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+// <flyout>
 import React, { Component } from 'react';
 
 import { ExampleService } from 'walkthrough/services';
@@ -140,3 +141,4 @@ export class ExampleFlyout extends Component {
     );
   }
 }
+// </flyout>

@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+// <service>
+
 import { Observable } from 'rxjs';
 import { toExampleItemModel, toExampleItemsModel } from './models';
 
@@ -43,3 +45,4 @@ export class ExampleService {
     return this.getExampleItems().delay(2000);
   }
 }
+// </service>

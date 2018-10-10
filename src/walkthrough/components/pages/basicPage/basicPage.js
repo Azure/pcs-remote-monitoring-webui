@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+// <page>
 import React, { Component } from 'react';
 
 import { PageContent } from 'components/shared';
@@ -16,3 +17,5 @@ export class BasicPage extends Component {
     );
   }
 }
+
+// </page>

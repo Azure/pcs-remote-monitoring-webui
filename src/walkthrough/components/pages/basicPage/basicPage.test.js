@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+// <test>
 import React from 'react';
 import { shallow } from 'enzyme';
 import 'polyfills';
@@ -18,3 +19,5 @@ describe('BasicPage Component', () => {
     );
   });
 });
+
+// </test>

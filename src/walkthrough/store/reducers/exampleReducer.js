@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+// <reducer>
 import 'rxjs';
 import { Observable } from 'rxjs';
 import moment from 'moment';
@@ -81,3 +82,5 @@ export const getExamples = createSelector(
   (entities, items) => items.map(id => entities[id])
 );
 // ========================= Selectors - END
+
+// </reducer>

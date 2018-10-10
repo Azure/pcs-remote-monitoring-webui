@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+// <gridconfig>
+
 import Config from 'app.config';
 import { SoftSelectLinkRenderer } from 'components/shared/cellRenderers';
 
@@ -28,3 +30,5 @@ export const defaultExampleGridProps = {
   paginationPageSize: Config.paginationPageSize,
   rowSelection: 'multiple'
 };
+
+// </gridconfig>
