@@ -89,6 +89,13 @@ export class PackageNew extends LinkedComponent {
     onClose();
   }
 
+  onKeyEvent = (event) => {
+    if (event.keyCode === 32 || event.keyCode === 13) {
+      event.preventDefault();
+      this.inputElement.click();
+    }
+  }
+
   render() {
     const { t, isPending, error } = this.props;
     const { type, packageFile, changesApplied } = this.state;
@@ -140,12 +147,19 @@ export class PackageNew extends LinkedComponent {
               !completedSuccessfully &&
               <div className="new-package-upload-container">
                 <label htmlFor="hidden-input-id" className="new-package-browse-click">
-                  {t('packages.flyouts.new.browse')}
+                  <span
+                    role="button"
+                    aria-controls="hidden-input-id"
+                    tabindex="0"
+                    onKeyUp={this.onKeyEvent}>
+                    {t('packages.flyouts.new.browse')}
+                  </span>
                 </label>
                 <input
                   type="file"
                   id="hidden-input-id"
                   accept={fileInputAccept}
+                  ref={input => this.inputElement = input}
                   className="new-package-hidden-input"
                   onChange={this.onFileSelected} />
                 {t('packages.flyouts.new.browseText')}
