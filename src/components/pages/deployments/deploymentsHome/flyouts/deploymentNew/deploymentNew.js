@@ -176,6 +176,8 @@ export class DeploymentNew extends LinkedComponent {
     this.formControlChange();
   }
 
+  isPositiveInteger = (str) => /^\+?(0|[1-9]\d*)$/.test(str) && str <= 2147483647;
+
   render() {
     const {
       t,
@@ -210,7 +212,7 @@ export class DeploymentNew extends LinkedComponent {
     this.deviceGroupIdLink = this.linkTo('deviceGroupId').map(({ value }) => value).withValidator(requiredValidator);
     this.priorityLink = this.linkTo('priority')
       .check(Validator.notEmpty, () => this.props.t('deployments.flyouts.new.validation.required'))
-      .check(val => !isNaN(val), t('deployments.flyouts.new.validation.nan'));
+      .check(val => this.isPositiveInteger(val), t('deployments.flyouts.new.validation.positiveInteger'));
     this.packageIdLink = this.linkTo('packageId').map(({ value }) => value).withValidator(requiredValidator);
 
     const isPackageTypeSelected = packageType !== undefined;

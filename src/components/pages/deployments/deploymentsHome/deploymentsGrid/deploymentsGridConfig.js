@@ -35,6 +35,11 @@ export const deploymentsColumnDefs = {
     field: 'type',
     valueFormatter: ({ value, context: { t } }) => getPackageTypeTranslation(checkForEmpty(value), t)
   },
+  targeted: {
+    headerName: 'deployments.grid.targeted',
+    field: 'targetedCount',
+    valueFormatter: ({ value }) => checkForEmpty(value)
+  },
   applied: {
     headerName: 'deployments.grid.applied',
     field: 'appliedCount',

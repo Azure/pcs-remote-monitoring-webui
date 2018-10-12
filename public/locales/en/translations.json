@@ -584,7 +584,7 @@
         "creating": "Creating deployment",
         "validation": {
           "required": "Is required",
-          "nan": "Must be a number"
+          "positiveInteger": "Must be a positive integer less than 2147483648"
         }
       }
     },
@@ -595,7 +595,8 @@
       "packageType": "Package type",
       "package": "Package",
       "priority": "Priority",
-      "devices": "Devices",
+      "applied": "Applied",
+      "targeted": "Targeted",
       "failed": "Failed",
       "succeeded": "Succeeded",
       "pending": "Pending",
@@ -626,6 +627,7 @@
       "deviceGroup": "Device group",
       "priority": "Priority",
       "type": "Package Type",
+      "targeted": "Targeted",
       "applied": "Applied",
       "failed": "Failed",
       "succeeded": "Succeeded",

@@ -31,15 +31,32 @@ const closedModalState = {
 export class DeploymentDetails extends Component {
   constructor(props) {
     super(props);
+
+    this.props.resetDeployedDevices();
     // Set the initial state
     this.state = {
       ...closedModalState,
+      pendingCount: undefined,
       deploymentDeleted: false
     };
 
     this.props.updateCurrentWindow('DeploymentDetails');
 
     props.fetchDeployment(props.match.params.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentDeployment } = nextProps;
+    if (currentDeployment && currentDeployment.deviceStatuses) {
+      let pendingCount = 0;
+      Object.values(currentDeployment.deviceStatuses)
+        .forEach(
+          (status) => {
+            if (status.toLowerCase() === 'pending') pendingCount++;
+          }
+        );
+      this.setState({ pendingCount });
+    }
   }
 
   componentWillUnmount() {
@@ -96,7 +113,9 @@ export class DeploymentDetails extends Component {
       logEvent
     } = this.props;
     const {
+      id,
       appliedCount,
+      targetedCount,
       succeededCount,
       failedCount,
       name,
@@ -106,8 +125,7 @@ export class DeploymentDetails extends Component {
       type,
       packageName
     } = currentDeployment;
-    const pendingCalc = appliedCount - succeededCount - failedCount;
-    const pendingCount = pendingCalc ? pendingCalc : '0';
+    const pendingCount = this.state.pendingCount ? this.state.pendingCount : '0';
 
     return (
       <ComponentArray>
@@ -121,9 +139,9 @@ export class DeploymentDetails extends Component {
         </ContextMenu>
         <PageContent className="deployments-details-container">
 
-          <RefreshBar refresh={fetchDeployment} time={lastUpdated} isPending={isPending} t={t} />
+          <RefreshBar refresh={() => fetchDeployment(id)} time={lastUpdated} isPending={isPending} t={t} />
 
-          {!!error && <AjaxError t={t} error={error} />}
+          {error && <AjaxError t={t} error={error} />}
 
           {isPending && <Indicator />}
 
@@ -140,14 +158,14 @@ export class DeploymentDetails extends Component {
                 <StatGroup className="summary-container-columns">
                   <StatProperty
                     value={appliedCount}
-                    label={t('deployments.details.devices')}
+                    label={t('deployments.details.applied')}
                     size="large" />
                 </StatGroup>
                 <StatGroup className="summary-container-columns">
                   <StatProperty
                     value={failedCount}
                     label={t('deployments.details.failed')}
-                    svg={svgs.failed}
+                    svg={failedCount !== 0 ? svgs.failed : undefined}
                     svgClassName="stat-failed"
                     size="large" />
                 </StatGroup>
@@ -159,10 +177,16 @@ export class DeploymentDetails extends Component {
                     label={t('deployments.details.packageType')}
                     value={type ? getPackageTypeTranslation(type, t) : undefined} />
                 </StatGroup>
+                <StatGroup className="summary-container-columns">
+                  <StatPropertyPair label={t('deployments.details.priority')} value={priority} />
+                </StatGroup>
               </StatSection>
               <StatSection className="summary-container-row2">
                 <StatGroup className="summary-container-columns">
-                  <StatPropertyPair label={t('deployments.details.priority')} value={priority} />
+                  <StatProperty
+                    value={targetedCount}
+                    label={t('deployments.details.targeted')}
+                    size="large" />
                 </StatGroup>
                 <StatGroup className="summary-container-columns">
                   <StatProperty

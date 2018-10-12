@@ -95,7 +95,7 @@ const initialState = { ...errorPendingInitialState, entities: {} };
 
 const insertDeploymentReducer = (state, { payload, fromAction }) => {
   const { entities: { deployments }, result } = normalize({ ...payload, isNew: true }, deploymentSchema);
-  if (state.entities) {
+  if (state.entities && state.entities.deployments) {
     return update(state, {
       entities: { deployments: { $merge: deployments } },
       items: { $splice: [[0, 0, result]] },
@@ -129,10 +129,8 @@ const updateDeploymentsReducer = (state, { payload, fromAction }) => {
 };
 
 const updateDeploymentReducer = (state, { payload, fromAction }) => {
-  const { deviceStatuses } = payload || {};
   return update(state, {
     currentDeployment: { $set: payload },
-    deviceStatuses: { $set: deviceStatuses },
     currentDeploymentLastUpdated: { $set: moment() },
     ...setPending(fromAction.type, false)
   });
@@ -223,7 +221,7 @@ export const getDeployments = createSelector(
 );
 export const getCurrentDeploymentDetails = state => getDeploymentsReducer(state).currentDeployment || {};
 export const getCurrentDeploymentLastUpdated = state => getDeploymentsReducer(state).currentDeploymentLastUpdated;
-export const getDeviceStatuses = state => getDeploymentsReducer(state).deviceStatuses || {};
+export const getDeviceStatuses = state => getCurrentDeploymentDetails(state).deviceStatuses || {};
 export const getCurrentDeploymentDetailsPendingStatus = state =>
   getPending(getDeploymentsReducer(state), epics.actionTypes.fetchDeployment);
 export const getCurrentDeploymentDetailsError = state =>
