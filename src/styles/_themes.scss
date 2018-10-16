@@ -8,6 +8,7 @@ $themes: (
   dark: (
     // Functional colors
     colorAlert: $colorAlert,
+    colorFailed: $colorFailed,
     colorWarning: $colorWarning,
     colorSystem: $colorSystem,
     colorError: $colorError,
@@ -31,6 +32,8 @@ $themes: (
     colorCellRendererSvgFillHighlight: $colorWhite,
     colorCellRendererText: $colorSmoke,
     colorCellRendererTextHighlight: $colorWhite,
+
+    colorGlimmerSvgFill: #f4f4f4,
 
     gridSortIcon: '~assets/icons/sort_dark.svg',
     gridAscIcon: '~assets/icons/sort_a2z_dark.svg',
@@ -164,6 +167,13 @@ $themes: (
     colorFormActionsBorderColor: $colorGraphite,
     colorDurationLabelText: $colorSmoke,
     // Forms - END
+
+    // Modal - START
+    colorModalText: $colorWhite,
+    colorModalBackground: $colorNoir,
+    colorModalBorder: #60AAFF,
+    colorModalDropShadow: rgba(0, 0, 0, 0.6),
+    // Modal -  END
   ),
   light: (
     // Functional colors
@@ -191,6 +201,8 @@ $themes: (
     colorCellRendererSvgFillHighlight: #333,
     colorCellRendererText: #333,
     colorCellRendererTextHighlight: #333,
+
+    colorGlimmerSvgFill: #212121,
 
     gridSortIcon: '~assets/icons/sort_light.svg',
     gridAscIcon: '~assets/icons/sort_a2z_light.svg',
@@ -324,5 +336,12 @@ $themes: (
     colorFormActionsBorderColor: $colorGraphite,
     colorDurationLabelText: $colorSmoke,
     // Forms - END
+
+    // Modal - START
+    colorModalText: #333,
+    colorModalBackground: $colorWhite,
+    colorModalBorder: #136BFB,
+    colorModalDropShadow: rgba(0, 0, 0, 0.1),
+    // Modal -  END
   )
 );

@@ -1,10 +1,17 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import 'src/styles/variables';
 @import 'src/styles/mixins';
+@import 'src/styles/themes';
 
 .page-title {
   font-weight: 700;
   margin: 0;
-  margin-right: 10px;
+  @include rem-fallback(margin-right, 10px);
   @include rem-font-size(48px);
+  @include rem-fallback(padding-bottom, 30px);
+
+  @include themify($themes) {
+     color: themed('colorHeaderText');
+  }
 }

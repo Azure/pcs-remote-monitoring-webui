@@ -35,6 +35,22 @@ $iconSize: 14px;
     > .icon-only { display: none !important; }
   }
 
+  .soft-select-link-cell {
+    display: inline;
+    color: inherit;
+    text-decoration: underline;
+
+    &:hover { text-decoration: none; }
+  }
+
+  .glimmer-icon {
+    svg {
+      @include square-px-rem(10px);
+      @include rem-fallback(margin-left, -10px);
+      @include rem-fallback(margin-top, -18px);
+    }
+  }
+
   @include themify($themes) {
     .pcs-renderer-icon {
       margin-right: 10px;
@@ -56,7 +72,6 @@ $iconSize: 14px;
     .pcs-renderer-text { color: themed('colorCellRendererText'); }
 
     &.highlight {
-
       .pcs-renderer-icon svg {
         fill: themed('colorCellRendererSvgFillHighlight');
 
@@ -64,17 +79,10 @@ $iconSize: 14px;
       }
 
       .pcs-renderer-text { color: themed('colorCellRendererTextHighlight'); }
-
     }
+
+    .glimmer-icon svg { fill: themed('colorGlimmerSvgFill'); }
   }
-}
-
-.soft-select-link-cell {
-  display: inline;
-  color: inherit;
-  text-decoration: underline;
-
-  &:hover { text-decoration: none; }
 }
 
 .ag-row {

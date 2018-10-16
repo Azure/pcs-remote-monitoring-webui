@@ -6,5 +6,5 @@
   display: flex;
   flex-flow: row wrap;
   flex-shrink: 0;
-  @include rem-fallback(margin, 30px, 0px);
+
 }

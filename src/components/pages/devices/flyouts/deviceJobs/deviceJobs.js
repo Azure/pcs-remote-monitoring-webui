@@ -5,6 +5,7 @@ import React from 'react';
 import { LinkedComponent } from 'utilities';
 import { permissions } from 'services/models';
 import {
+  ComponentArray,
   Flyout,
   FlyoutHeader,
   FlyoutTitle,
@@ -72,8 +73,9 @@ export class DeviceJobs extends LinkedComponent {
                 <ErrorMsg className="device-jobs-error">{t("devices.flyouts.jobs.noDevices")}</ErrorMsg>
               }
               {
-                devices.length > 0 && [
-                  <FormGroup key="job-selection">
+                devices.length > 0 &&
+                <ComponentArray>
+                  <FormGroup>
                     <FormLabel>{t('devices.flyouts.jobs.selectJob')}</FormLabel>
                     <Radio link={this.jobTypeLink} value="tags">
                       {t('devices.flyouts.jobs.tags.radioLabel')}
@@ -84,17 +86,23 @@ export class DeviceJobs extends LinkedComponent {
                     <Radio link={this.jobTypeLink} value="properties">
                       {t('devices.flyouts.jobs.properties.radioLabel')}
                     </Radio>
-                  </FormGroup>,
-                  this.jobTypeLink.value === 'tags'
-                    ? <DeviceJobTags key="job-details" t={t} onClose={onClose} devices={devices} updateTags={updateTags} />
-                    : null,
-                  this.jobTypeLink.value === 'methods'
-                    ? <DeviceJobMethods key="job-details" t={t} onClose={onClose} devices={devices} />
-                    : null,
-                  this.jobTypeLink.value === 'properties'
-                    ? <DeviceJobProperties key="job-details" t={t} onClose={onClose} devices={devices} updateProperties={updateProperties} />
-                    : null
-                ]
+                  </FormGroup>
+                  {
+                    this.jobTypeLink.value === 'tags'
+                      ? <DeviceJobTags t={t} onClose={onClose} devices={devices} updateTags={updateTags} />
+                      : null
+                  }
+                  {
+                    this.jobTypeLink.value === 'methods'
+                      ? <DeviceJobMethods t={t} onClose={onClose} devices={devices} />
+                      : null
+                  }
+                  {
+                    this.jobTypeLink.value === 'properties'
+                      ? <DeviceJobProperties t={t} onClose={onClose} devices={devices} updateProperties={updateProperties} />
+                      : null
+                  }
+                </ComponentArray>
               }
             </div>
           </Protected>

@@ -11,6 +11,8 @@
     @include rem-font-size(20px);
   }
 
+  .summary-stat-container { @include rem-fallback(padding-bottom, 20px); }
+
   @include themify($themes) {
       .stat-warning { fill: themed('colorWarning'); }
       .stat-critical { fill: themed('colorAlert'); }

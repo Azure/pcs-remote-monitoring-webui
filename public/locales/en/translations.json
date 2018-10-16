@@ -16,9 +16,20 @@
     "dashboard": "Dashboard",
     "devices": "Devices",
     "rules": "Rules",
-    "maintenance": "Maintenance"
+    "maintenance": "Maintenance",
+    "packages": "Packages",
+    "deployments": "Deployments"
   },
   "errorFormat": "Error: {{message}}",
+  "edgeAgentStatus": {
+    "200": "OK.",
+    "400": "The deployment configuration is malformed or invalid.",
+    "406": "The device is offline or not sending status reports.",
+    "412": "The deployment configuration schema version is invalid.",
+    "417": "The device's deployment configuration is not set.",
+    "500": "An error occurred in the IoT Edge runtime.",
+    "unknown": "An unknown code received."
+  },
   "errorCode": {
     "noResponse": "Oops, there was no response from the server.",
     "notLoggedIn": "You need to login to call the service.",
@@ -166,6 +177,7 @@
     "lastRefreshed": "Last refreshed"
   },
   "devices": {
+    "title": "Devices",
     "searchPlaceholder": "Search devices...",
     "noneFound": "No devices found.",
     "refresh": "Refresh",
@@ -205,6 +217,11 @@
           "title": "Methods",
           "description": "To run a method on one or more devices, close this pane, select the checkbox for the device(s), click <1><0>{{jobs}}</0></1>, and then select <3><0>{{methods}}</0></3>.",
           "noneExist": "No methods found for this device."
+        },
+        "modules": {
+          "title": "Deployment messages",
+          "description": "Edge module messages on the device",
+          "noneExist": "No messages found for this device"
         },
         "properties": {
           "title": "Properties",
@@ -354,22 +371,24 @@
       },
       "SIMManagement": {
         "title": "SIM Management",
-        "provider" : "Provider",
+        "provider": "Provider",
         "summaryHeader": "Summary and instructions",
         "here": "here",
         "select": "Select...",
-        "header":{
-          "telefonica": "As a Telefónica IoT customer you have the advantage of adding this feature to enrich automatically your Azure Remote Monitoring Solution with the connectivity data available in Telefónica IoT Connectivity Platform (Network Information, Data Consumption & Network Based Location)."        },
+        "header": {
+          "telefonica": "As a Telefónica IoT customer you have the advantage of adding this feature to enrich automatically your Azure Remote Monitoring Solution with the connectivity data available in Telefónica IoT Connectivity Platform (Network Information, Data Consumption & Network Based Location)."
+        },
         "description": {
           "telefonica": "This feature is in Preview. In order to sync your connectivity data into Azure Remote Monitoring Solution, please fill a request <1><0>url</0></1>, select the option “Azure Remote Monitoring” and include your contact data and we will automatically activate your account. \n\nIf you are not a Telefónica client yet and you want to enjoy this or other IoT Connectivity Cloud Ready services, you can contact us <1><0>url</0></1> and select the option “Connectivity”; we will be glad to help you."
         },
-        "operator":{
+        "operator": {
           "telefonica": "Telefónica"
         }
       }
     }
   },
   "rules": {
+    "title": "Rules",
     "searchPlaceholder": "Search rules...",
     "severity": {
       "info": "Info",
@@ -540,6 +559,128 @@
     "P7D": "Last week",
     "P1M": "Last month"
   },
+  "deployments": {
+    "title": "Deployments",
+    "flyouts": {
+      "new": {
+        "contextMenuName": "New deployment",
+        "title": "New deployment",
+        "apply": "Apply",
+        "cancel": "Cancel",
+        "close": "Close",
+        "type": "Package type",
+        "deviceGroup": "Device Group",
+        "name": "Name",
+        "priority": "Priority",
+        "package": "Package",
+        "typePlaceHolder": "Select package type",
+        "packagePlaceHolder": "Select package",
+        "deviceGroupPlaceHolder": "Select device group",
+        "priorityPlaceHolder": "Enter priority",
+        "namePlaceHolder": "Enter name",
+        "targetText": "targeted devices",
+        "infoText": "This deployment runs continuously. Every edge device (and any you add in the future) in the selected device group will receive this package.",
+        "successText": "View your deployment status detail for <1><0>{{deploymentName}}</0></1>.",
+        "creating": "Creating deployment",
+        "validation": {
+          "required": "Is required",
+          "positiveInteger": "Must be a positive integer less than 2147483648"
+        }
+      }
+    },
+    "details": {
+      "deploymentName": "Deployment name",
+      "deviceGroup": "Device group",
+      "start": "Start",
+      "packageType": "Package type",
+      "package": "Package",
+      "priority": "Priority",
+      "applied": "Applied",
+      "targeted": "Targeted",
+      "failed": "Failed",
+      "succeeded": "Succeeded",
+      "pending": "Pending",
+      "devicesAffected": "Devices Affected",
+      "grid": {
+        "name": "Name",
+        "deploymentStatus": "Deployment Status",
+        "firmware": "Firmware",
+        "lastMessage": "Last Message",
+        "start": "Start",
+        "end": "End"
+      }
+    },
+    "modals": {
+      "delete": {
+        "contextMenuName": "Delete",
+        "title": "Delete Deployment?",
+        "info": "Deleting '{{deploymentName}}' will stop this deployment from being applied to these devices. It may result in a lower priority edge manifest being applied."
+      }
+    },
+    "typeOptions": {
+      "edgemanifest": "Edge Manifest",
+      "unknown": "Unknown"
+    },
+    "grid": {
+      "name": "Name",
+      "package": "Package",
+      "deviceGroup": "Device group",
+      "priority": "Priority",
+      "type": "Package Type",
+      "targeted": "Targeted",
+      "applied": "Applied",
+      "failed": "Failed",
+      "succeeded": "Succeeded",
+      "dateCreated": "Created On"
+    }
+  },
+  "packages": {
+    "searchPlaceholder": "Search packages...",
+    "noneFound": "No packages found.",
+    "title": "Packages",
+    "total": "total packages",
+    "new": "New Package",
+    "delete": "Delete",
+    "grid": {
+      "name": "Name",
+      "type": "Type",
+      "dateCreated": "Date Created"
+    },
+    "flyouts": {
+      "new": {
+        "title": "New Package",
+        "header": "Upload a package",
+        "description": "Add a package to your solution",
+        "upload": "Upload",
+        "cancel": "Cancel",
+        "close": "Close",
+        "type": "Package type",
+        "browse": "Browse",
+        "browseText": "for a package file",
+        "placeHolder": "Select package type",
+        "package": "Package",
+        "deploymentsPage": "Deployments page",
+        "newDeployment": "+ New Deployment",
+        "deploymentText": "To deploy packages, go to the <1>Deployments page</1>, and then click <3>+ New Deployment</3> button.",
+        "validation": {
+          "required": "Is required"
+        }
+      }
+    },
+    "modals": {
+      "delete": {
+        "title": "Delete Package?",
+        "info": "Deleting selected package will remove it. It will not impact any of the deployments of this package."
+      }
+    },
+    "typeOptions": {
+      "edgemanifest": "Edge Manifest"
+    }
+  },
+  "modal": {
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
   "walkthrough": {
     "tabs": {
       "dashboard": "Dashboard",
@@ -555,7 +696,7 @@
       "pageBody": "Click the context button above to open a flyout.",
       "open": "Open Flyout",
       "flyouts": {
-        "example" : {
+        "example": {
           "header": "Example Flyout",
           "description": "This example flyout contains a simple form with action buttons.",
           "insertFormHere": "Insert form controls here. See 'src/components/shared/forms' for form specific shared controls you might leverage.",
@@ -584,6 +725,10 @@
           "panelBody": "This is a new panel."
         }
       }
+    },
+    "panel": {
+      "header": "Example Panel",
+      "panelBody": "This is a new panel."
     }
   }
 }

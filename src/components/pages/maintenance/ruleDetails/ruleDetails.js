@@ -10,10 +10,12 @@ import { RulesGrid } from 'components/pages/rules/rulesGrid';
 import {
   AjaxError,
   Btn,
+  ComponentArray,
   ContextMenu,
   ContextMenuAlign,
   Indicator,
   PageContent,
+  PageTitle,
   Protected,
   RefreshBar
 } from 'components/shared';
@@ -91,10 +93,10 @@ export class RuleDetails extends Component {
               )
               .flatMap(transformTelemetryResponse(() => this.state.telemetry))
               .map(telemetry => ({ telemetry, telemetryIsPending: false }))
-            } else {
-              return Observable.empty();
-            }
+          } else {
+            return Observable.empty();
           }
+        }
         )
         .subscribe(
           telemetryState => this.setState(
@@ -138,12 +140,12 @@ export class RuleDetails extends Component {
     const devices = deviceIds.map(deviceId => deviceObjects[deviceId]);
     const deviceIdString = deviceIds.sort().join(idDelimiter);
     this.setState({
-        deviceIds: deviceIdString,
-        devices,
-        occurrences,
-        selectedAlert,
-        selectedRule
-      },
+      deviceIds: deviceIdString,
+      devices,
+      occurrences,
+      selectedAlert,
+      selectedRule
+    },
       () => this.restartTelemetry$.next(deviceIdString)
     );
   }
@@ -203,23 +205,24 @@ export class RuleDetails extends Component {
   onAlertGridHardSelectChange = selectedRows => {
     const alertContextBtns =
       selectedRows.length > 0
-        ? [
-            <Protected key="close" permission={permissions.updateAlarms}>
-              <Btn svg={svgs.closeAlert} onClick={this.closeAlerts}>
-                <Trans i18nKey="maintenance.close">Close</Trans>
-              </Btn>
-            </Protected>,
-            <Protected key="ack" permission={permissions.updateAlarms}>
-              <Btn svg={svgs.ackAlert} onClick={this.ackAlerts}>
-                <Trans i18nKey="maintenance.acknowledge">Acknowledge</Trans>
-              </Btn>
-            </Protected>,
-            <Protected key="delete" permission={permissions.deleteAlarms}>
-              <Btn svg={svgs.trash} onClick={this.deleteAlerts}>
-                <Trans i18nKey="maintenance.delete">Delete</Trans>
-              </Btn>
-            </Protected>
-          ]
+        ?
+        <ComponentArray>
+          <Protected permission={permissions.updateAlarms}>
+            <Btn svg={svgs.closeAlert} onClick={this.closeAlerts}>
+              <Trans i18nKey="maintenance.close">Close</Trans>
+            </Btn>
+          </Protected>
+          <Protected permission={permissions.updateAlarms}>
+            <Btn svg={svgs.ackAlert} onClick={this.ackAlerts}>
+              <Trans i18nKey="maintenance.acknowledge">Acknowledge</Trans>
+            </Btn>
+          </Protected>
+          <Protected permission={permissions.deleteAlarms}>
+            <Btn svg={svgs.trash} onClick={this.deleteAlerts}>
+              <Trans i18nKey="maintenance.delete">Delete</Trans>
+            </Btn>
+          </Protected>
+        </ComponentArray>
         : null;
     this.setState({
       selectedAlerts: selectedRows,
@@ -246,7 +249,7 @@ export class RuleDetails extends Component {
     deviceContextBtns: undefined
   }, this.props.refreshData);
 
-  render () {
+  render() {
     const {
       error,
       isPending,
@@ -280,137 +283,139 @@ export class RuleDetails extends Component {
 
     const { selectedTab, selectedAlert = {} } = this.state;
     const { counts = {} } = selectedAlert;
-    return [
-      <ContextMenu className="rule-details-context-menu-container" key="context-menu">
-        <ContextMenuAlign key="left" left={true}>
-          <DeviceGroupDropdown />
-          <Protected permission={permissions.updateDeviceGroups}>
-            <ManageDeviceGroupsBtn />
-          </Protected>
-        </ContextMenuAlign>
-        <ContextMenuAlign key="right">
-          {
-            this.state.updatingAlertStatus &&
-            <div className="alert-indicator-container">
-              <Indicator />
-            </div>
-          }
-          {
-            this.state.ruleContextBtns
-            || this.state.alertContextBtns
-            || this.state.deviceContextBtns
-          }
-          <TimeIntervalDropdown
-            onChange={onTimeIntervalChange}
-            value={timeInterval}
-            t={t} />
+    return (
+      <ComponentArray>
+        <ContextMenu className="rule-details-context-menu-container">
+          <ContextMenuAlign left={true}>
+            <DeviceGroupDropdown />
+            <Protected permission={permissions.updateDeviceGroups}>
+              <ManageDeviceGroupsBtn />
+            </Protected>
+          </ContextMenuAlign>
+          <ContextMenuAlign>
+            {
+              this.state.updatingAlertStatus &&
+              <div className="alert-indicator-container">
+                <Indicator />
+              </div>
+            }
+            {
+              this.state.ruleContextBtns
+              || this.state.alertContextBtns
+              || this.state.deviceContextBtns
+            }
+            <TimeIntervalDropdown
+              onChange={onTimeIntervalChange}
+              value={timeInterval}
+              t={t} />
+          </ContextMenuAlign>
+        </ContextMenu>
+        <PageContent className="maintenance-container rule-details-container">
           <RefreshBar
             refresh={this.refreshData}
             time={lastUpdated}
             isPending={isPending}
             t={t} />
-        </ContextMenuAlign>
-      </ContextMenu>,
-      <PageContent className="maintenance-container rule-details-container" key="page-content">
-      {
-        !this.props.error
-          ? <div>
-              <div className="header-container">
-                <h1 className="rule-maintenance-header">{alertName}</h1>
-                <div className="rule-stat-container">
-                  <div className="rule-stat-cell">
-                    <div className="rule-stat-header">{t('maintenance.total')}</div>
-                    <div className="rule-stat-value">{renderUndefined(counts.total)}</div>
-                  </div>
-                  <div className="rule-stat-cell">
-                    <div className="rule-stat-header">{t('maintenance.open')}</div>
-                    <div className="rule-stat-value">{renderUndefined(counts.open)}</div>
-                  </div>
-                  <div className="rule-stat-cell">
-                    <div className="rule-stat-header">{t('maintenance.acknowledged')}</div>
-                    <div className="rule-stat-value">{renderUndefined(counts.acknowledged)}</div>
-                  </div>
-                  <div className="rule-stat-cell">
-                    <div className="rule-stat-header">{t('maintenance.closed')}</div>
-                    <div className="rule-stat-value">{renderUndefined(counts.closed)}</div>
-                  </div>
-                  <div className="rule-stat-cell">
-                    <div className="rule-stat-header">{t('maintenance.lastEvent')}</div>
-                    <div className="rule-stat-value">
-                      {
-                        selectedAlert.lastOccurrence
-                          ? <TimeRenderer value={selectedAlert.lastOccurrence} />
-                          : Config.emptyValue
-                      }
+          <PageTitle titleValue={alertName} />
+          {
+            !this.props.error
+              ?
+              <div>
+                <div className="header-container">
+                  <div className="rule-stat-container">
+                    <div className="rule-stat-cell">
+                      <div className="rule-stat-header">{t('maintenance.total')}</div>
+                      <div className="rule-stat-value">{renderUndefined(counts.total)}</div>
                     </div>
-                  </div>
-                  <div className="rule-stat-cell">
-                    <div className="rule-stat-header">{t('maintenance.severity')}</div>
-                    <div className="rule-stat-value">
-                      {
-                        selectedAlert.severity
-                          ? <SeverityRenderer context={({ t: this.props.t })} value={selectedAlert.severity} />
-                          : Config.emptyValue
-                      }
+                    <div className="rule-stat-cell">
+                      <div className="rule-stat-header">{t('maintenance.open')}</div>
+                      <div className="rule-stat-value">{renderUndefined(counts.open)}</div>
+                    </div>
+                    <div className="rule-stat-cell">
+                      <div className="rule-stat-header">{t('maintenance.acknowledged')}</div>
+                      <div className="rule-stat-value">{renderUndefined(counts.acknowledged)}</div>
+                    </div>
+                    <div className="rule-stat-cell">
+                      <div className="rule-stat-header">{t('maintenance.closed')}</div>
+                      <div className="rule-stat-value">{renderUndefined(counts.closed)}</div>
+                    </div>
+                    <div className="rule-stat-cell">
+                      <div className="rule-stat-header">{t('maintenance.lastEvent')}</div>
+                      <div className="rule-stat-value">
+                        {
+                          selectedAlert.lastOccurrence
+                            ? <TimeRenderer value={selectedAlert.lastOccurrence} />
+                            : Config.emptyValue
+                        }
+                      </div>
+                    </div>
+                    <div className="rule-stat-cell">
+                      <div className="rule-stat-header">{t('maintenance.severity')}</div>
+                      <div className="rule-stat-value">
+                        {
+                          selectedAlert.severity
+                            ? <SeverityRenderer context={({ t: this.props.t })} value={selectedAlert.severity} />
+                            : Config.emptyValue
+                        }
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="details-description">
-                { t('maintenance.ruleDetailsDesc') }
-              </div>
-              <h4 className="sub-heading">{ t('maintenance.ruleDetail') }</h4>
-              <RulesGrid
-                t={t}
-                deviceGroups={deviceGroups}
-                style={{ height: 2 * ROW_HEIGHT + 2 }}
-                onGridReady={this.onRuleGridReady}
-                onContextMenuChange={this.onContextMenuChange('ruleContextBtns')}
-                onHardSelectChange={this.onHardSelectChange('rules')}
-                rowData={rule}
-                pagination={false}
-                refresh={this.props.fetchRules}
-                logEvent={this.props.logEvent} />
+                <div className="details-description">
+                  {t('maintenance.ruleDetailsDesc')}
+                </div>
+                <h4 className="sub-heading">{t('maintenance.ruleDetail')}</h4>
+                <RulesGrid
+                  t={t}
+                  deviceGroups={deviceGroups}
+                  style={{ height: 2 * ROW_HEIGHT + 2 }}
+                  onGridReady={this.onRuleGridReady}
+                  onContextMenuChange={this.onContextMenuChange('ruleContextBtns')}
+                  onHardSelectChange={this.onHardSelectChange('rules')}
+                  rowData={rule}
+                  pagination={false}
+                  refresh={this.props.fetchRules}
+                  logEvent={this.props.logEvent} />
 
-              <h4 className="sub-heading">{ t('maintenance.alertOccurrences') }</h4>
-              <AlertOccurrencesGrid {...alertsGridProps} />
+                <h4 className="sub-heading">{t('maintenance.alertOccurrences')}</h4>
+                <AlertOccurrencesGrid {...alertsGridProps} />
 
-              <h4 className="sub-heading">{ t('maintenance.relatedInfo') }</h4>
-              <div className="tab-container">
-                <button className={joinClasses('tab', selectedTab === tabIds.all ? 'active' : '')}
+                <h4 className="sub-heading">{t('maintenance.relatedInfo')}</h4>
+                <div className="tab-container">
+                  <button className={joinClasses('tab', selectedTab === tabIds.all ? 'active' : '')}
                     onClick={this.setTab(tabIds.all)}>{t('maintenance.all')}</button>
-                <button className={joinClasses('tab', selectedTab === tabIds.devices ? 'active' : '')}
+                  <button className={joinClasses('tab', selectedTab === tabIds.devices ? 'active' : '')}
                     onClick={this.setTab(tabIds.devices)}>{t('maintenance.devices')}</button>
-                <button className={joinClasses('tab', selectedTab === tabIds.telemetry ? 'active' : '')}
+                  <button className={joinClasses('tab', selectedTab === tabIds.telemetry ? 'active' : '')}
                     onClick={this.setTab(tabIds.telemetry)}>{t('maintenance.telemetry')}</button>
+                </div>
+                {
+                  (selectedTab === tabIds.all || selectedTab === tabIds.devices) &&
+                  <ComponentArray>
+                    <h4 className="sub-heading">{t('maintenance.alertedDevices')}</h4>
+                    <DevicesGrid
+                      t={t}
+                      domLayout={'autoHeight'}
+                      onGridReady={this.onDeviceGridReady}
+                      rowData={isPending ? undefined : this.state.devices}
+                      onContextMenuChange={this.onContextMenuChange('deviceContextBtns')}
+                      onHardSelectChange={this.onHardSelectChange('devices')} />
+                  </ComponentArray>
+                }
+                {
+                  !isPending && (selectedTab === tabIds.all || selectedTab === tabIds.telemetry) && Object.keys(this.state.telemetry).length > 0 &&
+                  <ComponentArray>
+                    <h4 className="sub-heading">{t('maintenance.alertedDeviceTelemetry')}</h4>
+                    <div className="details-chart-container">
+                      <TelemetryChart telemetry={this.state.telemetry} theme={theme} colors={chartColorObjects} />
+                    </div>
+                  </ComponentArray>
+                }
               </div>
-              {
-                (selectedTab === tabIds.all || selectedTab === tabIds.devices) &&
-                [
-                  <h4 className="sub-heading" key="header">{t('maintenance.alertedDevices')}</h4>,
-                  <DevicesGrid
-                    t={t}
-                    domLayout={'autoHeight'}
-                    onGridReady={this.onDeviceGridReady}
-                    rowData={isPending ? undefined : this.state.devices}
-                    onContextMenuChange={this.onContextMenuChange('deviceContextBtns')}
-                    onHardSelectChange={this.onHardSelectChange('devices')}
-                    key="chart" />
-                ]
-              }
-              {
-                !isPending && (selectedTab === tabIds.all || selectedTab === tabIds.telemetry) && Object.keys(this.state.telemetry).length > 0 &&
-                [
-                  <h4 className="sub-heading" key="header">{t('maintenance.alertedDeviceTelemetry')}</h4>,
-                  <div className="details-chart-container" key="chart">
-                    <TelemetryChart telemetry={this.state.telemetry} theme={theme} colors={chartColorObjects} />
-                  </div>
-                ]
-              }
-            </div>
-          : <AjaxError t={t} error={error} />
-      }
-      </PageContent>
-    ];
+              : <AjaxError t={t} error={error} />
+          }
+        </PageContent>
+      </ComponentArray>
+    );
   }
 }

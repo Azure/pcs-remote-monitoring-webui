@@ -1,0 +1,43 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/variables';
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.new-deployment-content {
+  @include rem-fallback(padding-top, 24px);
+
+  .new-deployment-info-text {
+    line-height: 1.7;
+    @include rem-fallback(padding-top, 24px);
+    @include rem-font-size(14px);
+   }
+
+  .new-deployment-flyout-error { @include rem-fallback(padding-top, 24px); }
+
+  .new-deployment-formGroup,
+  {
+    @include rem-fallback(padding-top, 12px);
+    @include rem-fallback(padding-bottom, 12px);
+  }
+
+  .summary-icon svg {
+    @include square-px-rem(16px);
+    @include rem-fallback(margin-left, 8px);
+  }
+
+  .new-deployment-info-star { @include rem-font-size(24px); }
+
+  @include themify($themes) {
+    .summary-icon svg { fill: themed('colorContentText'); }
+
+    .new-deployment-flyout-error { border-color: themed('colorAlert'); }
+
+    .new-deployment-success-labels { color: themed('colorFlyoutText'); }
+
+    .new-deployment-detail-page-link,
+    .new-deployment-info-text, { color: themed('colorContentText'); }
+
+    .new-deployment-info-star { color: themed('colorAlert'); }
+  }
+}

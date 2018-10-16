@@ -18,6 +18,7 @@ export const rulesColumnDefs = {
   ruleName: {
     headerName: 'rules.grid.ruleName',
     field: 'name',
+    sort: 'asc',
     filter: 'text',
     cellRendererFramework: SoftSelectLinkRenderer
   },
@@ -94,7 +95,7 @@ export const rulesColumnDefs = {
     headerName: 'rules.grid.explore',
     field: 'ruleId',
     cellRendererFramework: props => <LinkRenderer {...props} to={`/maintenance/rule/${props.value}`} />
-  },
+  }
 };
 
 export const defaultRulesGridProps = {

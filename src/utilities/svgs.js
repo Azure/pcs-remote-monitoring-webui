@@ -25,12 +25,15 @@ import EditIconPath from 'assets/icons/edit.svg';
 import EllipsisIconPath from 'assets/icons/ellipsis.svg';
 import EnableToggleIconPath from 'assets/icons/enableToggle.svg';
 import ErrorIconPath from 'assets/icons/errorAsterisk.svg';
+import FailedIconPath from 'assets/icons/failed.svg';
+import GlimmerIconPath from 'assets/icons/glimmer.svg';
 import HamburgerIconPath from 'assets/icons/hamburger.svg';
 import InfoBubbleIconPath from 'assets/icons/infoBubble.svg';
 import InfoIconPath from 'assets/icons/info.svg';
 import LinkToPath from 'assets/icons/linkTo.svg';
 import LoadingToggleIconPath from 'assets/icons/loadingToggle.svg';
 import ManageFiltersIconPath from 'assets/icons/manageFilters.svg';
+import TabPackagesIconPath from 'assets/icons/packages.svg';
 import PhysicalDeviceIconPath from 'assets/icons/physicalDevice.svg';
 import PlusIconPath from 'assets/icons/plus.svg';
 import QuestionMarkIconPath from 'assets/icons/questionMark.svg';
@@ -46,6 +49,7 @@ import SettingsIconPath from 'assets/icons/settings.svg';
 import SimulatedDeviceIconPath from 'assets/icons/simulatedDevice.svg';
 import TabDashboardIconPath from 'assets/icons/tabDashboard.svg';
 import TabDevicesIconPath from 'assets/icons/tabDevices.svg';
+import TabDeploymentsIconPath from 'assets/icons/tabDeployments.svg';
 import TabMaintenanceIconPath from 'assets/icons/tabMaintenance.svg';
 import TabRulesIconPath from 'assets/icons/tabRules.svg';
 import TrashIconPath from 'assets/icons/trash.svg';
@@ -58,7 +62,9 @@ export const svgs = {
   tabs: {
     dashboard: TabDashboardIconPath,
     devices: TabDevicesIconPath,
+    deployments: TabDeploymentsIconPath,
     maintenance: TabMaintenanceIconPath,
+    packages: TabPackagesIconPath,
     rules: TabRulesIconPath,
     example: InfoBubbleIconPath
   },
@@ -89,6 +95,8 @@ export const svgs = {
   ellipsis: EllipsisIconPath,
   enableToggle: EnableToggleIconPath,
   error: ErrorIconPath,
+  failed: FailedIconPath,
+  glimmer: GlimmerIconPath,
   hamburger: HamburgerIconPath,
   info: InfoIconPath,
   infoBubble: InfoBubbleIconPath,

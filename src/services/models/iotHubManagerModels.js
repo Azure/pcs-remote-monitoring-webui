@@ -114,7 +114,7 @@ export const toSubmitMethodJobRequestModel = (devices, { jobName, methodName, fi
       Firmware: firmwareVersion,
       FirmwareUri: firmwareUri
     })
-    : '{}';
+    : '';
   const request = {
     JobId: jobId,
     QueryCondition: `deviceId in [${deviceIds}]`,
@@ -177,3 +177,50 @@ export const toDevicePropertiesModel = (iotResponse, dsResponse) => {
   const propertySet = new Set([...getItems(iotResponse), ...getItems(dsResponse)]);
   return [...propertySet];
 };
+
+export const toDeploymentModel = (deployment = {}) => {
+  const modelData = camelCaseReshape(deployment, {
+    'id': 'id',
+    'name': 'name',
+    'deviceGroupId': 'deviceGroupId',
+    'deviceGroupQuery': 'deviceGroupQuery',
+    'deviceGroupName': 'deviceGroupName',
+    'packageName': 'packageName',
+    'priority': 'priority',
+    'type': 'type',
+    'createdDateTimeUtc': 'createdDateTimeUtc',
+    'metrics.appliedCount': 'appliedCount',
+    'metrics.failedCount': 'failedCount',
+    'metrics.succeededCount': 'succeededCount',
+    'metrics.targetedCount': 'targetedCount'
+  });
+  return update(modelData, {
+    deviceStatuses: { $set: dot.pick('Metrics.DeviceStatuses', deployment) }
+  });
+}
+
+export const toDeploymentsModel = (response = {}) => getItems(response)
+  .map(toDeploymentModel);
+
+export const toDeploymentRequestModel = (deploymentModel = {}) => ({
+  DeviceGroupId: deploymentModel.deviceGroupId,
+  DeviceGroupName: deploymentModel.deviceGroupName,
+  DeviceGroupQuery: deploymentModel.deviceGroupQuery,
+  Name: deploymentModel.name,
+  PackageId: deploymentModel.packageId,
+  PackageName: deploymentModel.packageName,
+  PackageContent: deploymentModel.packageContent,
+  Priority: deploymentModel.priority,
+  Type: deploymentModel.type
+});
+
+export const toEdgeAgentModel = (edgeAgent = {}) => camelCaseReshape(edgeAgent, {
+  'deviceId': 'id',
+  'reported.lastDesiredStatus.description': 'description',
+  'reported.lastDesiredStatus.code': 'code',
+  'reported.systemModules.edgeAgent.lastStartTimeUtc': 'start',
+  'reported.systemModules.edgeAgent.lastExitTimeUtc': 'end'
+});
+
+export const toEdgeAgentsModel = (response = []) => getItems(response)
+  .map(toEdgeAgentModel);

@@ -12,10 +12,11 @@ import { TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
 import { Notifications } from './notifications';
 import { Jobs } from './jobs';
 import {
-  PageContent,
+  ComponentArray,
   ContextMenu,
   ContextMenuAlign,
   RefreshBar,
+  PageContent,
   PageTitle,
   Protected,
   StatSection,
@@ -38,29 +39,30 @@ export const Summary = ({
   onTimeIntervalChange,
   timeInterval,
   ...props
-}) => [
-    <ContextMenu key="context-menu">
-      <ContextMenuAlign key="left" left={true}>
+}) =>
+  <ComponentArray>
+    <ContextMenu>
+      <ContextMenuAlign left={true}>
         <DeviceGroupDropdown />
         <Protected permission={permissions.updateDeviceGroups}>
           <ManageDeviceGroupsBtn />
         </Protected>
       </ContextMenuAlign>
-      <ContextMenuAlign key="right">
+      <ContextMenuAlign>
         <TimeIntervalDropdown
           onChange={onTimeIntervalChange}
           value={timeInterval}
           t={props.t} />
+      </ContextMenuAlign>
+    </ContextMenu>
+    <PageContent className="maintenance-container summary-container">
         <RefreshBar
           refresh={props.refreshData}
           time={props.lastUpdated}
           isPending={alertProps.isPending || jobProps.isPending}
           t={props.t} />
-      </ContextMenuAlign>
-    </ContextMenu>,
-    <PageContent className="maintenance-container summary-container" key="page-content">
       <PageTitle titleValue={props.t('maintenance.title')} />
-      <StatSection>
+      <StatSection className="summary-stat-container">
         <StatGroup>
           <StatProperty
             value={renderUndefined(alertCount)}
@@ -105,4 +107,4 @@ export const Summary = ({
         </Switch>
       </div>
     </PageContent>
-  ];
+  </ComponentArray>;

@@ -3,6 +3,7 @@
 // Exports the shared react components into as a library
 
 export * from './ajaxError/ajaxError';
+export * from './componentArray/componentArray';
 export * from './contextMenu';
 export * from './flyout';
 export * from './forms';
@@ -15,3 +16,5 @@ export * from './propertyGrid'
 export * from './protected'
 export * from './refreshBar/refreshBar';
 export * from './svg/svg';
+export * from './modal';
+export * from './deleteModal/deleteModal';

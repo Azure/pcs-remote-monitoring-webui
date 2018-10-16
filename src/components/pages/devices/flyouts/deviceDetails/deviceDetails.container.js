@@ -10,6 +10,13 @@ import {
   getRulesLastUpdated,
   getRulesPendingStatus
 } from 'store/reducers/rulesReducer';
+import {
+  getDeviceModuleStatus,
+  getDeviceModuleStatusPendingStatus,
+  getDeviceModuleStatusError,
+  epics as devicesEpics,
+  redux as devicesRedux
+} from 'store/reducers/devicesReducer';
 
 // Pass the device details
 const mapStateToProps = state => ({
@@ -18,12 +25,17 @@ const mapStateToProps = state => ({
   rulesLastUpdated: getRulesLastUpdated(state),
   deviceGroups: getDeviceGroups(state),
   theme: getTheme(state),
-  timeSeriesExplorerUrl: getTimeSeriesExplorerUrl(state)
+  timeSeriesExplorerUrl: getTimeSeriesExplorerUrl(state),
+  deviceModuleStatus: getDeviceModuleStatus(state),
+  isDeviceModuleStatusPending: getDeviceModuleStatusPendingStatus(state),
+  deviceModuleStatusError: getDeviceModuleStatusError(state)
 });
 
 // Wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
   fetchRules: () => dispatch(ruleEpics.actions.fetchRules()),
+  fetchModules: (deviceId) => dispatch(devicesEpics.actions.fetchEdgeAgent(deviceId)),
+  resetPendingAndError: () => dispatch(devicesRedux.actions.resetPendingAndError(devicesEpics.actions.fetchEdgeAgent))
 });
 
 export const DeviceDetailsContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(DeviceDetails));

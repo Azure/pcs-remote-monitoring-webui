@@ -1,0 +1,23 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.stat-property-pair {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: flex-start;
+  flex-shrink: 0;
+
+  .stat-property-pair-label {
+    text-transform: uppercase;
+    @include rem-font-size(12px);
+    @include rem-fallback(padding-bottom, 10px);
+  }
+
+  @include themify($themes) {
+    .stat-property-pair-label { color: themed('colorHeaderText'); }
+
+    .stat-property-pair-label-value { color: themed('colorContentText'); }
+  }
+}

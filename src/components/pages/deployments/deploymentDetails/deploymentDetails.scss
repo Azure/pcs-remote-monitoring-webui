@@ -1,0 +1,70 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/variables';
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.deployments-details-container {
+  display: flex;
+  flex-flow: column nowrap;
+  flex-grow: 1;
+
+  .deployment-details-summary-container {
+    @include rem-fallback(padding-right, 40px);
+
+    .deployment-name{
+      font-weight: 700;
+      @include rem-font-size(34px);
+      @include rem-fallback(padding, 10px, 24px, 0px, 0px);
+    }
+
+    .deployment-details-summary-labels {
+      text-transform: uppercase;
+      @include rem-font-size(12px);
+    }
+
+    .stat-failed { @include rem-font-size(16px); }
+
+    .summary-container { @include rem-fallback(padding-top, 30px); }
+
+    .summary-container-columns {
+      justify-content: space-around;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      @include rem-fallback(height, 50px);
+      @include rem-fallback(width, 200px);
+     }
+
+    .summary-container-row1 { @include rem-fallback(padding-top, 30px); }
+
+    .summary-container-row2 { @include rem-fallback(padding-top, 20px); }
+
+    .summary-container-succeeded {
+      line-height: unset;
+      @include rem-fallback(padding-top, 1px);
+      @include rem-fallback(padding-bottom, 6px);
+    }
+
+    .summary-container-pending {
+      padding-top: 0px;
+      line-height: unset;
+      @include rem-fallback(padding-bottom, 3px);
+    }
+  }
+
+  .deployment-details-devices-affected {
+    @include rem-fallback(border-top, 1px, solid);
+    @include rem-fallback(padding, 35px, 0px, 0px, 0px);
+    @include rem-fallback(margin-top, 30px);
+  }
+
+  @include themify($themes) {
+    .deployment-name,
+    .deployment-details-summary-labels { color: themed('colorHeaderText'); }
+
+    .stat-failed { fill: themed('colorFailed'); }
+
+    .deployment-details-devices-affected { border-color: themed('colorHeaderBorderColor'); }
+  }
+}

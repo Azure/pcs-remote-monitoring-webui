@@ -3,7 +3,7 @@
 // <grid>
 
 import React, { Component } from 'react';
-import { Btn, PcsGrid } from 'components/shared';
+import { Btn, ComponentArray, PcsGrid } from 'components/shared';
 import { exampleColumnDefs, defaultExampleGridProps } from './exampleGridConfig';
 import { isFunc, svgs, translateColumnDefs } from 'utilities';
 import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
@@ -33,10 +33,11 @@ export class ExampleGrid extends Component {
 
     // Set up the available context buttons.
     // If these are subject to user permissions, use the Protected component (src/components/shared/protected).
-    this.contextBtns = [
-      <Btn key="context-btn-1" svg={svgs.reconfigure} onClick={this.clickContextBtn('btn1')}>{props.t('walkthrough.pageWithGrid.grid.btn1')}</Btn>,
-      <Btn key="context-btn-2" svg={svgs.trash} onClick={this.clickContextBtn('btn2')}>{props.t('walkthrough.pageWithGrid.grid.btn2')}</Btn>
-    ];
+    this.contextBtns =
+      <ComponentArray>
+        <Btn svg={svgs.reconfigure} onClick={this.clickContextBtn('btn1')}>{props.t('walkthrough.pageWithGrid.grid.btn1')}</Btn>
+        <Btn svg={svgs.trash} onClick={this.clickContextBtn('btn2')}>{props.t('walkthrough.pageWithGrid.grid.btn2')}</Btn>
+      </ComponentArray>;
   }
 
   /**
@@ -94,7 +95,7 @@ export class ExampleGrid extends Component {
     }
   }
 
-  getSoftSelectId = ({ id } = {}) => id;
+  getSoftSelectId = ({ id } = '') => id;
 
   render() {
     const gridProps = {

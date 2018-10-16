@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { permissions } from 'services/models';
-import { Btn, PcsGrid, Protected } from 'components/shared';
+import { Btn, ComponentArray, PcsGrid, Protected } from 'components/shared';
 import { deviceColumnDefs, defaultDeviceGridProps } from './devicesGridConfig';
 import { DeviceDeleteContainer } from '../flyouts/deviceDelete';
 import { DeviceJobsContainer } from '../flyouts/deviceJobs';
@@ -39,14 +39,15 @@ export class DevicesGrid extends Component {
       deviceColumnDefs.lastConnection
     ];
 
-    this.contextBtns = [
-      <Protected key="jobs" permission={permissions.createJobs}>
-        <Btn svg={svgs.reconfigure} onClick={this.openFlyout('jobs')}>{props.t('devices.flyouts.jobs.title')}</Btn>
-      </Protected>,
-      <Protected key="delete" permission={permissions.deleteDevices}>
-        <Btn svg={svgs.trash} onClick={this.openFlyout('delete')}>{props.t('devices.flyouts.delete.title')}</Btn>
-      </Protected>
-    ];
+    this.contextBtns =
+      <ComponentArray>
+        <Protected permission={permissions.createJobs}>
+          <Btn svg={svgs.reconfigure} onClick={this.openFlyout('jobs')}>{props.t('devices.flyouts.jobs.title')}</Btn>
+        </Protected>
+        <Protected permission={permissions.deleteDevices}>
+          <Btn svg={svgs.trash} onClick={this.openFlyout('delete')}>{props.t('devices.flyouts.delete.title')}</Btn>
+        </Protected>
+      </ComponentArray>;
   }
 
   /**
@@ -119,7 +120,7 @@ export class DevicesGrid extends Component {
     }
   }
 
-  getSoftSelectId = ({ id } = {}) => id;
+  getSoftSelectId = ({ id } = '') => id;
 
   render() {
     const gridProps = {

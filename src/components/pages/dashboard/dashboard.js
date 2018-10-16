@@ -19,10 +19,12 @@ import {
   TelemetryPanel,
   AnalyticsPanel,
   MapPanel,
+  ExamplePanel,
   transformTelemetryResponse,
   chartColorObjects
 } from './panels';
 import {
+  ComponentArray,
   ContextMenu,
   ContextMenuAlign,
   PageContent,
@@ -94,158 +96,158 @@ export class Dashboard extends Component {
       .map(telemetry => ({ telemetry, telemetryIsPending: false })) // Stream emits new state
       // Retry any retryable errors
       .retryWhen(retryHandler(maxRetryAttempts, retryWaitTime));
-      // Telemetry stream - END
+    // Telemetry stream - END
 
-      // Analytics stream - START
+    // Analytics stream - START
 
-      // TODO: Add device ids to params - START
-      const getAnalyticsStream = ({ deviceIds = [], timeInterval }) => this.panelsRefresh$
-        .delay(Config.dashboardRefreshInterval)
-        .startWith(0)
-        .do(_ => this.setState({ analyticsIsPending: true }))
-        .flatMap(_ => {
-          const devices = deviceIds.length ? deviceIds.join(',') : undefined;
-          const [ currentIntervalParams, previousIntervalParams ] = getIntervalParams(timeInterval);
+    // TODO: Add device ids to params - START
+    const getAnalyticsStream = ({ deviceIds = [], timeInterval }) => this.panelsRefresh$
+      .delay(Config.dashboardRefreshInterval)
+      .startWith(0)
+      .do(_ => this.setState({ analyticsIsPending: true }))
+      .flatMap(_ => {
+        const devices = deviceIds.length ? deviceIds.join(',') : undefined;
+        const [currentIntervalParams, previousIntervalParams] = getIntervalParams(timeInterval);
 
-          const currentParams = { ...currentIntervalParams, devices };
-          const previousParams = { ...previousIntervalParams, devices };
+        const currentParams = { ...currentIntervalParams, devices };
+        const previousParams = { ...previousIntervalParams, devices };
 
-          return Observable.forkJoin(
-            TelemetryService.getActiveAlerts(currentParams),
-            TelemetryService.getActiveAlerts(previousParams),
+        return Observable.forkJoin(
+          TelemetryService.getActiveAlerts(currentParams),
+          TelemetryService.getActiveAlerts(previousParams),
 
-            TelemetryService.getAlerts(currentParams),
-            TelemetryService.getAlerts(previousParams)
-          )
-        }).map(([
-          currentActiveAlerts,
-          previousActiveAlerts,
+          TelemetryService.getAlerts(currentParams),
+          TelemetryService.getAlerts(previousParams)
+        )
+      }).map(([
+        currentActiveAlerts,
+        previousActiveAlerts,
 
-          currentAlerts,
-          previousAlerts
-        ]) => {
-          // Process all the data out of the currentAlerts list
-          const currentAlertsStats = currentAlerts.reduce((acc, alert) => {
-              const isOpen = alert.status === Config.alertStatus.open;
-              const isWarning = alert.severity === Config.ruleSeverity.warning;
-              const isCritical = alert.severity === Config.ruleSeverity.critical;
-              let updatedAlertsPerDeviceId = acc.alertsPerDeviceId;
-              if (alert.deviceId) {
-                updatedAlertsPerDeviceId = {
-                  ...updatedAlertsPerDeviceId,
-                  [alert.deviceId]: (updatedAlertsPerDeviceId[alert.deviceId] || 0) + 1
-                };
-              }
-              return {
-                openWarningCount: (acc.openWarningCount || 0) + (isWarning && isOpen ? 1 : 0),
-                openCriticalCount: (acc.openCriticalCount || 0) + (isCritical && isOpen ? 1 : 0),
-                totalCriticalCount: (acc.totalCriticalCount || 0) + (isCritical ? 1 : 0),
-                alertsPerDeviceId: updatedAlertsPerDeviceId
-              };
-            },
-            { alertsPerDeviceId: {} }
-          );
-
-          // ================== Critical Alerts Count - START
-          const currentCriticalAlerts = currentAlertsStats.totalCriticalCount;
-          const previousCriticalAlerts = previousAlerts.reduce(
-            (cnt, { severity }) => severity === Config.ruleSeverity.critical ? cnt + 1 : cnt,
-            0
-          );
-          const criticalAlertsChange = ((currentCriticalAlerts - previousCriticalAlerts) / currentCriticalAlerts * 100).toFixed(2);
-          // ================== Critical Alerts Count - END
-
-          // ================== Top Alerts - START
-          const currentTopAlerts = currentActiveAlerts
-            .sort(compareByProperty('count'))
-            .slice(0, Config.maxTopAlerts);
-
-          // Find the previous counts for the current top analytics
-          const previousTopAlertsMap = previousActiveAlerts.reduce(
-            (acc, { ruleId, count }) =>
-              (ruleId in acc)
-                ? { ...acc, [ruleId]: count }
-                : acc
-            ,
-            currentTopAlerts.reduce((acc, { ruleId }) => ({ ...acc, [ruleId]: 0 }), {})
-          );
-
-          const topAlerts = currentTopAlerts.map(({ ruleId, count }) => ({
-            ruleId,
-            count,
-            previousCount: previousTopAlertsMap[ruleId] || 0
-          }));
-          // ================== Top Alerts - END
-
-          const devicesInAlert = currentAlerts
-            .filter(({ status }) => status === Config.alertStatus.open)
-            .reduce((acc, { deviceId, severity, ruleId}) => {
-              return {
-                ...acc,
-                [deviceId]: { severity, ruleId }
-              };
-            }, {});
-
-          return ({
-            analyticsIsPending: false,
-            analyticsVersion: this.state.analyticsVersion + 1,
-
-            // Analytics data
-            currentActiveAlerts,
-            topAlerts,
-            criticalAlertsChange,
-            alertsPerDeviceId: currentAlertsStats.alertsPerDeviceId,
-
-            // Summary data
-            openWarningCount: currentAlertsStats.openWarningCount,
-            openCriticalCount: currentAlertsStats.openCriticalCount,
-
-            // Map data
-            devicesInAlert
-          });
-        })
-        // Retry any retryable errors
-        .retryWhen(retryHandler(maxRetryAttempts, retryWaitTime));
-      // Analytics stream - END
-
-      this.subscriptions.push(
-        this.dashboardRefresh$
-          .subscribe(() => this.setState(initialState))
-      );
-
-      this.subscriptions.push(
-        this.dashboardRefresh$
-          .switchMap(getTelemetryStream)
-          .subscribe(
-            telemetryState => this.setState(
-              { ...telemetryState, lastRefreshed: moment() },
-              () => this.telemetryRefresh$.next('r')
-            ),
-            telemetryError => this.setState({ telemetryError, telemetryIsPending: false })
-          )
-      );
-
-      this.subscriptions.push(
-        this.dashboardRefresh$
-          .switchMap(getAnalyticsStream)
-          .subscribe(
-            analyticsState => this.setState(
-              { ...analyticsState, lastRefreshed: moment() },
-              () => this.panelsRefresh$.next('r')
-            ),
-            analyticsError => this.setState({ analyticsError, analyticsIsPending: false })
-          )
-      );
-
-      // Start polling all panels
-      if (this.props.deviceLastUpdated) {
-        this.dashboardRefresh$.next(
-          refreshEvent(
-            Object.keys(this.props.devices || {}),
-            this.props.timeInterval
-          )
+        currentAlerts,
+        previousAlerts
+      ]) => {
+        // Process all the data out of the currentAlerts list
+        const currentAlertsStats = currentAlerts.reduce((acc, alert) => {
+          const isOpen = alert.status === Config.alertStatus.open;
+          const isWarning = alert.severity === Config.ruleSeverity.warning;
+          const isCritical = alert.severity === Config.ruleSeverity.critical;
+          let updatedAlertsPerDeviceId = acc.alertsPerDeviceId;
+          if (alert.deviceId) {
+            updatedAlertsPerDeviceId = {
+              ...updatedAlertsPerDeviceId,
+              [alert.deviceId]: (updatedAlertsPerDeviceId[alert.deviceId] || 0) + 1
+            };
+          }
+          return {
+            openWarningCount: (acc.openWarningCount || 0) + (isWarning && isOpen ? 1 : 0),
+            openCriticalCount: (acc.openCriticalCount || 0) + (isCritical && isOpen ? 1 : 0),
+            totalCriticalCount: (acc.totalCriticalCount || 0) + (isCritical ? 1 : 0),
+            alertsPerDeviceId: updatedAlertsPerDeviceId
+          };
+        },
+          { alertsPerDeviceId: {} }
         );
-      }
+
+        // ================== Critical Alerts Count - START
+        const currentCriticalAlerts = currentAlertsStats.totalCriticalCount;
+        const previousCriticalAlerts = previousAlerts.reduce(
+          (cnt, { severity }) => severity === Config.ruleSeverity.critical ? cnt + 1 : cnt,
+          0
+        );
+        const criticalAlertsChange = ((currentCriticalAlerts - previousCriticalAlerts) / currentCriticalAlerts * 100).toFixed(2);
+        // ================== Critical Alerts Count - END
+
+        // ================== Top Alerts - START
+        const currentTopAlerts = currentActiveAlerts
+          .sort(compareByProperty('count'))
+          .slice(0, Config.maxTopAlerts);
+
+        // Find the previous counts for the current top analytics
+        const previousTopAlertsMap = previousActiveAlerts.reduce(
+          (acc, { ruleId, count }) =>
+            (ruleId in acc)
+              ? { ...acc, [ruleId]: count }
+              : acc
+          ,
+          currentTopAlerts.reduce((acc, { ruleId }) => ({ ...acc, [ruleId]: 0 }), {})
+        );
+
+        const topAlerts = currentTopAlerts.map(({ ruleId, count }) => ({
+          ruleId,
+          count,
+          previousCount: previousTopAlertsMap[ruleId] || 0
+        }));
+        // ================== Top Alerts - END
+
+        const devicesInAlert = currentAlerts
+          .filter(({ status }) => status === Config.alertStatus.open)
+          .reduce((acc, { deviceId, severity, ruleId }) => {
+            return {
+              ...acc,
+              [deviceId]: { severity, ruleId }
+            };
+          }, {});
+
+        return ({
+          analyticsIsPending: false,
+          analyticsVersion: this.state.analyticsVersion + 1,
+
+          // Analytics data
+          currentActiveAlerts,
+          topAlerts,
+          criticalAlertsChange,
+          alertsPerDeviceId: currentAlertsStats.alertsPerDeviceId,
+
+          // Summary data
+          openWarningCount: currentAlertsStats.openWarningCount,
+          openCriticalCount: currentAlertsStats.openCriticalCount,
+
+          // Map data
+          devicesInAlert
+        });
+      })
+      // Retry any retryable errors
+      .retryWhen(retryHandler(maxRetryAttempts, retryWaitTime));
+    // Analytics stream - END
+
+    this.subscriptions.push(
+      this.dashboardRefresh$
+        .subscribe(() => this.setState(initialState))
+    );
+
+    this.subscriptions.push(
+      this.dashboardRefresh$
+        .switchMap(getTelemetryStream)
+        .subscribe(
+          telemetryState => this.setState(
+            { ...telemetryState, lastRefreshed: moment() },
+            () => this.telemetryRefresh$.next('r')
+          ),
+          telemetryError => this.setState({ telemetryError, telemetryIsPending: false })
+        )
+    );
+
+    this.subscriptions.push(
+      this.dashboardRefresh$
+        .switchMap(getAnalyticsStream)
+        .subscribe(
+          analyticsState => this.setState(
+            { ...analyticsState, lastRefreshed: moment() },
+            () => this.panelsRefresh$.next('r')
+          ),
+          analyticsError => this.setState({ analyticsError, analyticsIsPending: false })
+        )
+    );
+
+    // Start polling all panels
+    if (this.props.deviceLastUpdated) {
+      this.dashboardRefresh$.next(
+        refreshEvent(
+          Object.keys(this.props.devices || {}),
+          this.props.timeInterval
+        )
+      );
+    }
   }
 
   componentWillUnmount() {
@@ -270,7 +272,7 @@ export class Dashboard extends Component {
     )
   );
 
-  render () {
+  render() {
     const {
       theme,
       timeInterval,
@@ -354,85 +356,93 @@ export class Dashboard extends Component {
       };
     }, {});
 
-    return [
-      <ContextMenu key="context-menu">
-        <ContextMenuAlign key="left" left={true}>
-          <DeviceGroupDropdown />
-          <Protected permission={permissions.updateDeviceGroups}>
-            <ManageDeviceGroupsBtn />
-          </Protected>
-        </ContextMenuAlign>
-        <ContextMenuAlign key="right">
-          <TimeIntervalDropdown
-            onChange={this.props.updateTimeInterval}
-            value={timeInterval}
-            t={t} />
-          <RefreshBar
-            refresh={this.refreshDashboard}
-            time={lastRefreshed}
-            isPending={analyticsIsPending || devicesIsPending}
-            t={t} />
-        </ContextMenuAlign>
-      </ContextMenu>,
-      <PageContent className="dashboard-container" key="page-content">
-        <Grid>
-          <Cell className="col-1 devices-overview-cell">
-            <OverviewPanel
-              activeDeviceGroup={activeDeviceGroup}
-              openWarningCount={openWarningCount}
-              openCriticalCount={openCriticalCount}
-              onlineDeviceCount={onlineDeviceCount}
-              offlineDeviceCount={offlineDeviceCount}
+    return (
+      <ComponentArray>
+        <ContextMenu>
+          <ContextMenuAlign left={true}>
+            <DeviceGroupDropdown />
+            <Protected permission={permissions.updateDeviceGroups}>
+              <ManageDeviceGroupsBtn />
+            </Protected>
+          </ContextMenuAlign>
+          <ContextMenuAlign>
+            <TimeIntervalDropdown
+              onChange={this.props.updateTimeInterval}
+              value={timeInterval}
+              t={t} />
+            <RefreshBar
+              refresh={this.refreshDashboard}
+              time={lastRefreshed}
               isPending={analyticsIsPending || devicesIsPending}
-              error={deviceGroupError || devicesError || analyticsError}
               t={t} />
-          </Cell>
-          <Cell className="col-5">
-            <PanelErrorBoundary msg={t('dashboard.panels.map.runtimeError')}>
-              <MapPanel
-                analyticsVersion={analyticsVersion}
-                azureMapsKey={azureMapsKey}
-                devices={devices}
-                devicesInAlert={devicesInAlert}
-                mapKeyIsPending={azureMapsKeyIsPending}
-                isPending={devicesIsPending || analyticsIsPending}
-                error={azureMapsKeyError || devicesError || analyticsError}
+          </ContextMenuAlign>
+        </ContextMenu>
+        <PageContent className="dashboard-container">
+          <Grid>
+            <Cell className="col-1 devices-overview-cell">
+              <OverviewPanel
+                activeDeviceGroup={activeDeviceGroup}
+                openWarningCount={openWarningCount}
+                openCriticalCount={openCriticalCount}
+                onlineDeviceCount={onlineDeviceCount}
+                offlineDeviceCount={offlineDeviceCount}
+                isPending={analyticsIsPending || devicesIsPending}
+                error={deviceGroupError || devicesError || analyticsError}
                 t={t} />
-            </PanelErrorBoundary>
-          </Cell>
-          <Cell className="col-3">
-            <AlertsPanel
-              alerts={currentActiveAlertsWithName}
-              isPending={analyticsIsPending || rulesIsPending}
-              error={rulesError || analyticsError}
-              t={t}
-              deviceGroups={deviceGroups} />
-          </Cell>
-          <Cell className="col-6">
-            <TelemetryPanel
-              timeSeriesExplorerUrl={timeSeriesParamUrl}
-              telemetry={telemetry}
-              isPending={telemetryIsPending}
-              lastRefreshed={lastRefreshed}
-              error={deviceGroupError || telemetryError}
-              theme={theme}
-              colors={chartColorObjects}
-              t={t} />
-          </Cell>
-          <Cell className="col-4">
-            <AnalyticsPanel
-              timeSeriesExplorerUrl={timeSeriesParamUrl}
-              topAlerts={topAlertsWithName}
-              alertsPerDeviceId={alertsPerDeviceType}
-              criticalAlertsChange={criticalAlertsChange}
-              isPending={analyticsIsPending || rulesIsPending || devicesIsPending}
-              error={devicesError || rulesError || analyticsError}
-              theme={theme}
-              colors={chartColorObjects}
-              t={t} />
-          </Cell>
-        </Grid>
-      </PageContent>
-    ];
+            </Cell>
+            <Cell className="col-5">
+              <PanelErrorBoundary msg={t('dashboard.panels.map.runtimeError')}>
+                <MapPanel
+                  analyticsVersion={analyticsVersion}
+                  azureMapsKey={azureMapsKey}
+                  devices={devices}
+                  devicesInAlert={devicesInAlert}
+                  mapKeyIsPending={azureMapsKeyIsPending}
+                  isPending={devicesIsPending || analyticsIsPending}
+                  error={azureMapsKeyError || devicesError || analyticsError}
+                  t={t} />
+              </PanelErrorBoundary>
+            </Cell>
+            <Cell className="col-3">
+              <AlertsPanel
+                alerts={currentActiveAlertsWithName}
+                isPending={analyticsIsPending || rulesIsPending}
+                error={rulesError || analyticsError}
+                t={t}
+                deviceGroups={deviceGroups} />
+            </Cell>
+            <Cell className="col-6">
+              <TelemetryPanel
+                timeSeriesExplorerUrl={timeSeriesParamUrl}
+                telemetry={telemetry}
+                isPending={telemetryIsPending}
+                lastRefreshed={lastRefreshed}
+                error={deviceGroupError || telemetryError}
+                theme={theme}
+                colors={chartColorObjects}
+                t={t} />
+            </Cell>
+            <Cell className="col-4">
+              <AnalyticsPanel
+                timeSeriesExplorerUrl={timeSeriesParamUrl}
+                topAlerts={topAlertsWithName}
+                alertsPerDeviceId={alertsPerDeviceType}
+                criticalAlertsChange={criticalAlertsChange}
+                isPending={analyticsIsPending || rulesIsPending || devicesIsPending}
+                error={devicesError || rulesError || analyticsError}
+                theme={theme}
+                colors={chartColorObjects}
+                t={t} />
+            </Cell>
+            {
+              Config.showWalkthroughExamples &&
+              <Cell className="col-4">
+                <ExamplePanel t={t} />
+              </Cell>
+            }
+          </Grid>
+        </PageContent>
+      </ComponentArray>
+    );
   }
 }

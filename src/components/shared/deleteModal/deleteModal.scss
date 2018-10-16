@@ -1,0 +1,36 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/variables';
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.delete-modal-container {
+  @include rem-fallback(font-size, 14px);
+
+  .delete-header-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    @include rem-fallback(padding-bottom, 24px);
+  }
+
+   .delete-info {
+    @include rem-fallback(padding-bottom, 24px);
+    @include rem-fallback(height, 60px);
+  }
+
+  .delete-close-btn,
+  .delete-close-btn:hover {
+      background-color: transparent;
+      @include rem-fallback(padding, 0px, 16px);
+      @include rem-fallback(min-width, 14px);
+
+      &:hover { background-color: transparent; }
+
+      .btn-icon svg { @include square-px-rem(14px);  }
+  }
+
+  @include themify($themes) {
+    .delete-close-btn .btn-icon svg { stroke: themed('colorFlyoutText'); }
+  }
+}

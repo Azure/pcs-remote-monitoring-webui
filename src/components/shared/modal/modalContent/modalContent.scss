@@ -1,0 +1,20 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+.modal-container {
+  .modal-content {
+    border-style: solid;
+    width: 400px;
+    height: 200px;
+    z-index: 1;
+    @include rem-fallback(border-width, 1px);
+    @include rem-fallback(padding, 20px);
+
+    @include themify($themes) {
+      color: themed('colorModalText');
+      background-color: themed('colorModalBackground');
+      border-color: themed('colorModalBorder');
+    }
+  }
+}

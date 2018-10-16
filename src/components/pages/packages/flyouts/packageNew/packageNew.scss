@@ -1,0 +1,60 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/variables';
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.new-package-content {
+  .new-package-upload-container {
+    display: flex;
+    align-items: flex-start;
+    word-wrap: break-word;
+    flex-grow: 0;
+    @include rem-fallback(padding-top, 24px);
+    @include rem-fallback(padding-bottom, 24px);
+  }
+
+  .new-package-browse-click {
+    cursor: pointer;
+    text-decoration: underline;
+    @include rem-fallback(padding-right, 8px);
+   }
+
+  .new-package-hidden-input { display: none; }
+
+  .new-package-file-name,
+  .new-package-header,
+  .new-package-flyout-error { @include rem-fallback(padding-top, 24px); }
+
+
+  .new-package-deployment-text {
+    @include rem-fallback(padding-top, 24px);
+    line-height: 1.7;
+  }
+
+  .new-package-descr {
+    @include rem-fallback(font-size, 12px);
+    @include rem-fallback(padding-top, 16px);
+    @include rem-fallback(padding-bottom, 24px);
+  }
+
+  .summary-icon svg {
+    @include square-px-rem(16px);
+    @include rem-fallback(margin-left, 8px);
+  }
+
+  @include themify($themes) {
+    .new-package-header,
+    .new-package-browse-click,
+    .new-package-file-name,
+    .new-package-deployment-text,
+    .new-package-deployment-page-link { color: themed('colorContentText'); }
+
+    .new-package-success-labels { color: themed('colorFlyoutText'); }
+
+    .new-package-descr svg,
+    .summary-icon svg { fill: themed('colorContentText'); }
+
+    .new-package-flyout-error { border-color: themed('colorAlert'); }
+  }
+}

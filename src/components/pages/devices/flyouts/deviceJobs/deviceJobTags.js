@@ -13,6 +13,7 @@ import {
   AjaxError,
   Btn,
   BtnToolbar,
+  ComponentArray,
   ErrorMsg,
   FormControl,
   FormGroup,
@@ -261,24 +262,28 @@ export class DeviceJobTags extends LinkedComponent {
             <GridBody>
               {
                 Object.keys(commonTags).length > 0 &&
-                tagLinks.map(({ name, value, type, edited, error }, idx) => [
-                  <Row key={idx} className={error ? 'error-data-row' : ''}>
-                    <Cell className="col-3">
-                      <FormControl className="small" type="text" link={name} errorState={!!error} />
-                    </Cell>
-                    <Cell className="col-3">
-                      <FormControl className="small" type="text" link={value} errorState={!!error} /></Cell>
-                    <Cell className="col-3">
-                      <FormControl className="small" type="select" link={type} options={typeOptions} clearable={false} searchable={true} errorState={!!error} />
-                    </Cell>
-                    <Cell className="col-1">
-                      <Btn className="icon-only-btn" svg={svgs.trash} onClick={this.deleteTag(idx)} />
-                    </Cell>
-                  </Row>,
-                  error
-                    ? <Row key={`${idx}-error`} className="error-msg-row"><ErrorMsg>{error}</ErrorMsg></Row>
-                    : null
-                ])
+                tagLinks.map(({ name, value, type, edited, error }, idx) =>
+                  <ComponentArray>
+                    <Row className={error ? 'error-data-row' : ''}>
+                      <Cell className="col-3">
+                        <FormControl className="small" type="text" link={name} errorState={!!error} />
+                      </Cell>
+                      <Cell className="col-3">
+                        <FormControl className="small" type="text" link={value} errorState={!!error} /></Cell>
+                      <Cell className="col-3">
+                        <FormControl className="small" type="select" link={type} options={typeOptions} clearable={false} searchable={true} errorState={!!error} />
+                      </Cell>
+                      <Cell className="col-1">
+                        <Btn className="icon-only-btn" svg={svgs.trash} onClick={this.deleteTag(idx)} />
+                      </Cell>
+                    </Row>
+                    {
+                      error
+                        ? <Row className="error-msg-row"><ErrorMsg>{error}</ErrorMsg></Row>
+                        : null
+                    }
+                  </ComponentArray>
+                )
               }
             </GridBody>
           </Grid>

@@ -6,7 +6,10 @@ import {
   prepareLogoResponse,
   toDeviceGroupModel,
   toDeviceGroupsModel,
-  toSolutionSettingThemeModel
+  toSolutionSettingThemeModel,
+  toNewPackageRequestModel,
+  toPackagesModel,
+  toPackageModel
 } from './models';
 import { Observable } from '../../node_modules/rxjs';
 
@@ -84,5 +87,29 @@ export class ConfigService {
   static updateSolutionSettings(model) {
     return HttpClient.put(`${ENDPOINT}solution-settings/theme`, model)
       .map(toSolutionSettingThemeModel);
+  }
+
+  /** Creates a new package */
+  static createPackage(packageModel) {
+    var options = {
+      headers: {
+        'Accept': undefined,
+        'Content-Type': undefined
+      }
+    }
+    return HttpClient.post(`${ENDPOINT}packages`, toNewPackageRequestModel(packageModel), options)
+      .map(toPackageModel);
+  }
+
+  /** Returns all the account's packages */
+  static getPackages() {
+    return HttpClient.get(`${ENDPOINT}packages`)
+      .map(toPackagesModel);
+  }
+
+  /** Delete a package */
+  static deletePackage(id) {
+    return HttpClient.delete(`${ENDPOINT}packages/${id}`)
+      .map(_ => id);
   }
 }
