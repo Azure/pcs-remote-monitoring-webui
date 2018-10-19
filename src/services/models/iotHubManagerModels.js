@@ -148,6 +148,7 @@ export const authenticationTypeOptions = {
 export const toNewDeviceRequestModel = ({
   deviceId,
   isGenerateId,
+  isEdgeDevice,
   isSimulated,
   authenticationType,
   isGenerateKeys,
@@ -158,6 +159,7 @@ export const toNewDeviceRequestModel = ({
 
   return {
     Id: isGenerateId ? '' : deviceId,
+    isEdgeDevice: isEdgeDevice,
     IsSimulated: isSimulated,
     Enabled: true,
     Authentication:

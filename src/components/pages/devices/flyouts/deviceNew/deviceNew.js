@@ -53,6 +53,18 @@ const isIntRegex = /^-?\d*$/;
 const nonInteger = x => !x.match(isIntRegex);
 const stringToInt = x => x === '' || x === '-' ? x : int(x);
 
+const deviceOptions = {
+  labelName: 'devices.flyouts.new.device.label',
+  device: {
+    labelName: 'devices.flyouts.new.device.device',
+    value: false
+  },
+  edgeDevice: {
+    labelName: 'devices.flyouts.new.device.edgeDevice',
+    value: true
+  }
+};
+
 const deviceTypeOptions = {
   labelName: 'devices.flyouts.new.deviceType.label',
   simulated: {
@@ -149,6 +161,7 @@ export class DeviceNew extends LinkedComponent {
       formData: {
         count: 1,
         deviceId: '',
+        isEdgeDevice: deviceOptions.device.value,
         isGenerateId: deviceIdTypeOptions.manual.value,
         isSimulated: deviceTypeOptions.simulated.value,
         deviceModel: undefined,
@@ -166,6 +179,9 @@ export class DeviceNew extends LinkedComponent {
 
     // Linked components
     this.formDataLink = this.linkTo('formData');
+
+    this.deviceLink = this.formDataLink.forkTo('isEdgeDevice')
+      .map(stringToBoolean);
 
     this.deviceTypeLink = this.formDataLink.forkTo('isSimulated')
       .map(stringToBoolean);
@@ -239,6 +255,7 @@ export class DeviceNew extends LinkedComponent {
 
   formIsValid() {
     return [
+      this.deviceLink,
       this.deviceTypeLink,
       this.countLink,
       this.deviceIdLink,
@@ -249,6 +266,29 @@ export class DeviceNew extends LinkedComponent {
       this.primaryKeyLink,
       this.secondaryKeyLink
     ].every(link => !link.error);
+  }
+
+  deviceChange = ({ target: { value } }) => {
+    this.props.logEvent(toSinglePropertyDiagnosticsModel('Devices_DeviceSelect', 'Device',
+      (value === 'true') ? Config.device.edgeDevice : Config.device.device));
+    if (value === 'true') {
+      this.setState({
+        formData: {
+          ...this.state.formData,
+          isEdgeDevice: true,
+          isSimulated: false
+        }
+      });
+    } else {
+      this.setState({
+        formData: {
+          ...this.state.formData,
+          isEdgeDevice: false,
+          isSimulated: true
+        }
+      });
+    }
+    this.formControlChange();
   }
 
   deviceTypeChange = ({ target: { value } }) => {
@@ -344,6 +384,7 @@ export class DeviceNew extends LinkedComponent {
 
     const isGenerateId = this.isGenerateIdLink.value === deviceIdTypeOptions.generate.value;
     const deviceName = this.deviceModelLink.value || t('devices.flyouts.new.deviceIdExample.deviceName');
+    const isEdgeDevice = this.deviceLink.value === deviceOptions.device.value;
     const isSimulatedDevice = this.deviceTypeLink.value === deviceTypeOptions.simulated.value;
     const isX509 = this.authenticationTypeLink.value === authTypeOptions.x509.value;
     const isGenerateKeys = this.isGenerateKeysLink.value === authKeyTypeOptions.generate.value;
@@ -362,14 +403,26 @@ export class DeviceNew extends LinkedComponent {
             <form className="devices-new-container" onSubmit={this.apply}>
               <div className="devices-new-content">
                 <FormGroup>
-                  <FormLabel>{t(deviceTypeOptions.labelName)}</FormLabel>
-                  <Radio link={this.deviceTypeLink} value={deviceTypeOptions.simulated.value} onChange={this.deviceTypeChange}>
-                    {t(deviceTypeOptions.simulated.labelName)}
+                  <FormLabel>{t(deviceOptions.labelName)}</FormLabel>
+                  <Radio link={this.deviceLink} value={deviceOptions.device.value} onChange={this.deviceChange}>
+                    {t(deviceOptions.device.labelName)}
                   </Radio>
-                  <Radio link={this.deviceTypeLink} value={deviceTypeOptions.physical.value} onChange={this.deviceTypeChange}>
-                    {t(deviceTypeOptions.physical.labelName)}
+                  <Radio link={this.deviceLink} value={deviceOptions.edgeDevice.value} onChange={this.deviceChange}>
+                    {t(deviceOptions.edgeDevice.labelName)}
                   </Radio>
                 </FormGroup>
+                {
+                  isEdgeDevice &&
+                  <FormGroup>
+                    <FormLabel>{t(deviceTypeOptions.labelName)}</FormLabel>
+                    <Radio link={this.deviceTypeLink} value={deviceTypeOptions.simulated.value} onChange={this.deviceTypeChange}>
+                      {t(deviceTypeOptions.simulated.labelName)}
+                    </Radio>
+                    <Radio link={this.deviceTypeLink} value={deviceTypeOptions.physical.value} onChange={this.deviceTypeChange}>
+                      {t(deviceTypeOptions.physical.labelName)}
+                    </Radio>
+                  </FormGroup>
+                }
                 {
                   isSimulatedDevice &&
                   <ComponentArray>

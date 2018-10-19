@@ -44,9 +44,13 @@ const Config = {
     acknowledged: 'acknowledged'
   },
   maxLogoFileSizeInBytes: 307200,
+  device: {
+    device: 'IoT device',
+    edgeDevice: 'IoT Edge device'
+  },
   deviceType: {
     simulated: 'Simulated',
-    physical: 'Physical'
+    physical: 'Real'
   }
 };
 

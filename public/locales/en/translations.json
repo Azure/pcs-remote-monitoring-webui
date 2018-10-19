@@ -332,10 +332,15 @@
         "count": {
           "label": "Number of devices"
         },
+        "device": {
+          "label": "Device",
+          "device": "IoT device",
+          "edgeDevice": "IoT Edge device"
+        },
         "deviceType": {
-          "label": "Device type",
+          "label": "Type",
           "simulated": "Simulated",
-          "physical": "Physical"
+          "physical": "Real"
         },
         "deviceId": {
           "label": "Device ID",
