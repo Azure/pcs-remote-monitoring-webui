@@ -128,22 +128,23 @@ export class AuthService {
    * Acquires token from the cache if it is not expired.
    * Otherwise sends request to AAD to obtain a new token.
    */
-  static getAccessToken(callback) {
+  static getAccessToken() {
     if (AuthService.isDisabled()) {
-      if (callback) callback('client-auth-disabled');
-      return;
+      return Observable.of('client-auth-disabled');
     }
 
-    AuthService.authContext.acquireToken(
-      AuthService.appId,
-      function (error, accessToken) {
-        if (error || !accessToken) {
-          console.log(`Authentication Error: ${error}`);
-          AuthService.authContext.login();
-          return;
+    return Observable.create(observer => {
+      return AuthService.authContext.acquireToken(
+        AuthService.appId,
+        (error, accessToken) => {
+          if (error) {
+            console.log(`Authentication Error: ${error}`);
+            observer.error(error);
+          }
+          else observer.next(accessToken);
+          observer.complete();
         }
-        if (callback) callback(accessToken);
-      }
-    );
+      );
+    });
   }
 }
