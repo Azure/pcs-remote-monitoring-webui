@@ -15,6 +15,6 @@ export * from './pcsGrid/pcsGrid';
 export * from './propertyGrid'
 export * from './protected'
 export * from './refreshBar/refreshBar';
-export * from './svg/svg';
+export * from './svg';
 export * from './modal';
 export * from './deleteModal/deleteModal';

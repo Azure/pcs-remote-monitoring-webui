@@ -6,23 +6,7 @@ any specific view.
 SVG Icons
 ==========
 
-When you need a new SVG icon for use in the application,
-1. Add it to the `src/assets/icons` folder.
-    * Note that fill colors should not be included in the svg code.
-    If the colors are embedded in the svg, they will not be able to be restyled
-    using CSS for dark and light themes.
-1. Add an import in the [svgs.js] file for the new icon.
-    ```js
-    import FooIconPath from 'assets/icons/foo.svg';
-    ```
-1. So it can be easily referenced in the components, add an export in the [svgs.js] file for the new icon.
-    ```js
-    export const svgs = {
-      //...
-      foo: FooIconPath,
-      //...
-    };
-    ```
+See [src/components/shared/svg/README.md](/src/components/shared/svg/README.md) for information on adding and using SVG icons.
 
 Input Validation
 ==========
