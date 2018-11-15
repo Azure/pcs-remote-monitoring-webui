@@ -30,6 +30,11 @@ export const stringToBoolean = value => {
   else if (str === 'false') return false;
 };
 
+/** Returns true if value is an email address */
+export const isValidEmail = value => {
+  return value.match(/^$|^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@(([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+}
+
 /** Returns either Items or items from the given object, allowing for either casing from the server */
 export const getItems = (response) => response.Items || response.items || [];
 

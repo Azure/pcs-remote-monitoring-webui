@@ -11,7 +11,11 @@ export const toRuleDiagnosticsModel = (eventName, rule) => {
     SeverityLevel: rule.severity,
     ConditionCount: rule.conditions.length,
     FirstFieldChosen: rule.conditions[0].field,
-    FirstOperatorChosen: rule.conditions[0].operator
+    FirstOperatorChosen: rule.conditions[0].operator,
+    EmailActionEnabled: rule.actionEnabled,
+    EmailRecipientCount: rule.actionEnabled ? rule.actions[0].parameters.recipients.length : 0,
+    EmailSubjectAdded:  rule.actionEnabled ? rule.actions[0].parameters.subject.length > 0 : false,
+    EmailNotesAdded:  rule.actionEnabled ? rule.actions[0].parameters.notes.length > 0 : false,
   };
 
   return toDiagnosticsModel(eventName, metadata);

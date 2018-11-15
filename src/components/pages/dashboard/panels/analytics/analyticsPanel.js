@@ -1,9 +1,12 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { Trans } from 'react-i18next';
 import 'tsiclient';
 
-import { AjaxError, Indicator, Hyperlink } from 'components/shared';
+import Config from 'app.config';
+import { themedPaths } from 'utilities';
+import { AjaxError, Indicator, Hyperlink, ThemedSvgContainer, Tooltip } from 'components/shared';
 import {
   Panel,
   PanelHeader,
@@ -99,12 +102,22 @@ export class AnalyticsPanel extends Component {
       <Panel>
         <PanelHeader>
           <PanelHeaderLabel>{t('dashboard.panels.analytics.header')}</PanelHeaderLabel>
-          { !showOverlay && isPending && <Indicator size="small" /> }
+          {!showOverlay && isPending && <Indicator size="small" />}
         </PanelHeader>
         <PanelContent className="analytics-panel-container">
           {
             timeSeriesExplorerUrl &&
-            <Hyperlink className="time-series-explorer" href={timeSeriesExplorerUrl} target="_blank">{t('dashboard.panels.analytics.exploreTimeSeries')}</Hyperlink>
+            <div className="time-series-explorer">
+              <Hyperlink href={timeSeriesExplorerUrl} target="_blank">{t('dashboard.panels.analytics.exploreTimeSeries')}</Hyperlink>
+              <Tooltip position="bottom" content={
+                <Trans i18nKey={'dashboard.panels.analytics.exploreTimeSeriesTooltip'}>
+                  To view in TSI, get permissions from the solution owner.
+                  <Hyperlink href={Config.contextHelpUrls.exploreTimeSeries} target="_blank">{t('dashboard.panels.analytics.learnMore')}</Hyperlink>
+                </Trans>
+              }>
+                <ThemedSvgContainer paths={themedPaths.questionBubble} />
+              </Tooltip>
+            </div>
           }
           <div className="analytics-cell full-width">
             <div className="analytics-header">{t('dashboard.panels.analytics.topRule')}</div>
@@ -119,20 +132,20 @@ export class AnalyticsPanel extends Component {
             <div className="critical-alerts">
               {
                 !showOverlay &&
-                  <div className="analytics-percentage-container">
-                    <div className="analytics-value">{ !isNaN(criticalAlertsChange) ? criticalAlertsChange : 0 }</div>
-                    <div className="analytics-percentage-sign">%</div>
-                  </div>
+                <div className="analytics-percentage-container">
+                  <div className="analytics-value">{!isNaN(criticalAlertsChange) ? criticalAlertsChange : 0}</div>
+                  <div className="analytics-percentage-sign">%</div>
+                </div>
               }
             </div>
           </div>
           {
             (!showOverlay && !topAlerts.length && !Object.keys(alertsPerDeviceId).length)
-              && <PanelMsg>{t('dashboard.noData')}</PanelMsg>
+            && <PanelMsg>{t('dashboard.noData')}</PanelMsg>
           }
         </PanelContent>
-        { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
-        { error && <PanelError><AjaxError t={t} error={error} /></PanelError> }
+        {showOverlay && <PanelOverlay><Indicator /></PanelOverlay>}
+        {error && <PanelError><AjaxError t={t} error={error} /></PanelError>}
       </Panel>
     );
   }

@@ -84,6 +84,17 @@ $themes: (
     colorHyperlinkTextDisabled: $colorDarkLinkDisabled,
     // Hyperlink - END
 
+    // Pill - START
+    colorPillBackground: #3F3F3F,
+    colorPillBackgroundHover: #136BFB,
+    colorPillText: $colorWhite,
+    colorPillTextHover: $colorWhite,
+    colorPillSvg: $colorWhite,
+    colorPillSvgHover: $colorWhite,
+    colorPillBackgroundSvg: #2D2F33,
+    colorPillBackgroundSvgHover: #005A9E,
+    // Pill - END
+
     // Page Content Colors - START
     colorContentBackground: $colorNoir,
     colorPageContentBackground: $colorNoir,
@@ -167,6 +178,13 @@ $themes: (
     colorFormActionsBorderColor: $colorGraphite,
     colorDurationLabelText: $colorSmoke,
     // Forms - END
+
+    // Tooltip - START
+    colorTooltipText: $colorWhite,
+    colorTooltipBackground: $colorNoir,
+    colorTooltipBorder: #60AAFF,
+    colorTooltipDropShadow: rgba(0, 0, 0, 0.6),
+    // Tooltip - END
 
     // Modal - START
     colorModalText: $colorWhite,
@@ -253,6 +271,17 @@ $themes: (
     colorHyperlinkTextDisabled: $colorLightLinkDisabled,
     // Hyperlink - END
 
+    // Pill - START
+    colorPillBackground: #DADADA,
+    colorPillBackgroundHover: #136BFB,
+    colorPillText: $colorNoir,
+    colorPillTextHover: $colorWhite,
+    colorPillSvg: $colorNoir,
+    colorPillSvgHover: $colorWhite,
+    colorPillBackgroundSvg: #C8C8C8,
+    colorPillBackgroundSvgHover: #005A9E,
+    // Pill - END
+
     // Page Content Colors - START
     colorContentBackground: #f2f2f2, // Grey100
     colorPageContentBackground: $colorWhite,
@@ -336,6 +365,13 @@ $themes: (
     colorFormActionsBorderColor: $colorGraphite,
     colorDurationLabelText: $colorSmoke,
     // Forms - END
+
+    // Tooltip - START
+    colorTooltipText: #333,
+    colorTooltipBackground: $colorWhite,
+    colorTooltipBorder: #136BFB,
+    colorTooltipDropShadow: rgba(0, 0, 0, 0.1),
+    // Tooltip - END
 
     // Modal - START
     colorModalText: #333,

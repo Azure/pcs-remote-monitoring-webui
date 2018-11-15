@@ -1,0 +1,65 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+$pillHeight: 30px;
+$pillMinWidth: 127px;
+$pillIconSize: 16px;
+$pillIconWrapperSize: 30px;
+
+.pill {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  font-family: inherit;
+  @include rem-fallback(margin, 7px, 7px, 0px, 0px);
+  @include rem-fallback(padding, 0px, $pillHeight/4);
+  @include rem-fallback(min-width, $pillMinWidth);
+
+  .pill-icon {
+    position: relative;
+    @include rem-fallback(height, $pillHeight);
+    @include rem-fallback(width, $pillIconWrapperSize);
+    @include rem-fallback(min-width, $pillIconWrapperSize);
+    @include rem-fallback(margin-right, -8px);
+    @include rem-fallback(margin-left, 8px);
+    @include rem-fallback(padding, 0px);
+
+    div { @include square-px-rem($pillIconSize); }
+
+    + .pill-text { @include rem-fallback(padding-left, 5px); }
+  }
+
+  @include themify($themes) {
+    color: themed('colorPillText');
+    background-color: themed('colorPillBackground');
+
+    .pill-icon { background-color: themed('colorPillBackgroundSvg'); }
+
+    .pill-icon { fill: themed('colorPillSvg'); }
+
+    &:focus { outline: 1px dashed themed('colorBtnOutlineFocus'); }
+
+    &:hover {
+      color: themed('colorPillTextHover');
+      background-color: themed('colorPillBackgroundHover');
+
+      .pill-icon { background-color: themed('colorPillBackgroundSvgHover'); }
+
+      .pill-icon { fill: themed('colorPillSvgHover'); }
+
+    }
+
+    &:active {
+      color: themed('colorPillTextHover');
+      background-color: themed('colorPillBackgroundHover');
+
+      .pill-icon { fill: themed('colorPillSvgHover'); }
+    }
+  }
+}

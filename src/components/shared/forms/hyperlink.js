@@ -10,7 +10,7 @@ import './styles/hyperlink.css';
 export const Hyperlink = (props) => {
   const { children, className, href } = props;
 
-  if (href == null) return null;
+  if (!href) return null;
   return (
     <a {...props} className={joinClasses('hyperlink', className)} >
       {children}

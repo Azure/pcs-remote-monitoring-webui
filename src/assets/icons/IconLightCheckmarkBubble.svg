@@ -1,0 +1,7 @@
+<!-- Copyright (c) Microsoft. All rights reserved. -->
+
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path opacity="0.75" d="M8 14.5C11.5899 14.5 14.5 11.5899 14.5 8C14.5 4.41015 11.5899 1.5 8 1.5C4.41015 1.5 1.5 4.41015 1.5 8C1.5 11.5899 4.41015 14.5 8 14.5Z" fill="#1F801F" fill-opacity="0.1" stroke="#1F801F"/>
+  <path opacity="0.1" d="M11.4587 6.50391L7.0014 11.0039L4.47266 8.50391" stroke="black" stroke-miterlimit="1"/>
+  <path d="M11.4587 5.5L7.0014 10L4.47266 7.5" stroke="#1F801F" stroke-miterlimit="1"/>
+</svg>

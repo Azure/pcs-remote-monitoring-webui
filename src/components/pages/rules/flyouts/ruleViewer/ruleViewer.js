@@ -20,7 +20,7 @@ import {
   ruleCalculations,
   getRuleTimePeriodLabel,
   getRuleOperatorLabel
- } from 'services/models';
+} from 'services/models';
 
 import './ruleViewer.css';
 
@@ -128,13 +128,28 @@ export class RuleViewer extends Component {
           </Section.Content>
         </Section.Container>
 
+        {
+          rule.actions && rule.actions.length > 0 &&
+          <Section.Container collapsable={false}>
+            <Section.Content>
+              <div className="rule-action-title">{t('rules.flyouts.ruleEditor.actions.action')}</div>
+              <div className="rule-prop-label">{t('rules.flyouts.ruleEditor.actions.emailAddresses')}</div>
+              <div className="rule-prop-value">{rule.actions[0].parameters.recipients.join(", ")}</div>
+              <div className="rule-prop-label">{t('rules.flyouts.ruleEditor.actions.emailSubject')}</div>
+              <div className="rule-prop-value">{rule.actions[0].parameters.subject}</div>
+              <div className="rule-prop-label">{t('rules.flyouts.ruleEditor.actions.emailComments')}</div>
+              <div className="rule-prop-value">{rule.actions[0].parameters.notes}</div>
+            </Section.Content>
+          </Section.Container>
+        }
+
         <Section.Container>
           <Section.Content>
             <div className="rule-prop-label">{t('rules.flyouts.ruleEditor.severityLevel')}</div>
             <div className="rule-prop-value"><SeverityRenderer value={rule.severity} context={{ t }} /></div>
 
             <div className="rule-prop-label">{t('rules.flyouts.ruleEditor.ruleStatus')}</div>
-            <div className="rule-prop-value">{rule.status ? t('rules.flyouts.ruleEditor.ruleEnabled') : t('rules.flyouts.ruleEditor.ruleDisabled')}</div>
+            <div className="rule-prop-value">{rule.enabled ? t('rules.flyouts.ruleEditor.ruleEnabled') : t('rules.flyouts.ruleEditor.ruleDisabled')}</div>
           </Section.Content>
         </Section.Container>
 

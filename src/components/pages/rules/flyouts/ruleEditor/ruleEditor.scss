@@ -27,9 +27,16 @@
     @include rem-fallback(margin-left, 8px);
   }
 
+  .email-toggle-container {
+    display: flex;
+  }
+
   @include themify($themes) {
     .rule-editor-error { border-color: themed('colorAlert'); }
 
     .summary-icon svg { fill: themed('colorContentText'); }
+
+    input.form-control,
+    textarea.form-control { color: themed('colorContentText'); }
   }
 }

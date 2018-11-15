@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import update from 'immutability-helper';
 import { camelCaseReshape, reshape, getItems, stringToBoolean } from 'utilities';
 
 export const toDeviceGroupModel = (deviceGroup = {}) => camelCaseReshape(deviceGroup, {
@@ -53,6 +54,23 @@ export const toSolutionSettingThemeModel = (response = {}) => camelCaseReshape(r
   'diagnosticsOptIn': 'diagnosticsOptIn',
   'azureMapsKey': 'azureMapsKey'
 });
+
+export const toSolutionSettingActionModel = (action = {}) => {
+  const modelData = camelCaseReshape(action, {
+    'type': 'id',
+    'settings.isEnabled': 'isEnabled',
+    'settings.applicationPermissionsAssigned': 'applicationPermissionsAssigned',
+    'settings': 'settings'
+  });
+  return update(modelData, {
+    settings: {
+      $unset: ['isEnabled', 'applicationPermissionsAssigned']
+    }
+  });
+}
+
+export const toSolutionSettingActionsModel = (response = {}) => getItems(response)
+  .map(toSolutionSettingActionModel);
 
 export const packageTypeOptions = ['EdgeManifest'];
 

@@ -1,7 +1,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
+import { Trans } from 'react-i18next';
+import update from 'immutability-helper';
 
+import Config from 'app.config';
 import {
   AjaxError,
   Btn,
@@ -9,7 +12,9 @@ import {
   FormControl,
   FormGroup,
   FormLabel,
+  Hyperlink,
   Indicator,
+  PillGroup,
   Radio,
   SectionDesc,
   SectionHeader,
@@ -17,13 +22,18 @@ import {
   SummaryCount,
   SummarySection,
   Svg,
-  ToggleBtn
+  ThemedSvgContainer,
+  ToggleBtn,
+  Tooltip
 } from 'components/shared';
+import { ActionEmailSetupContainer } from './actionEmailSetup.container';
 import { SeverityRenderer } from 'components/shared/cellRenderers';
 import {
   Validator,
   svgs,
-  LinkedComponent
+  isValidEmail,
+  LinkedComponent,
+  themedPaths
 } from 'utilities';
 import Flyout from 'components/shared/flyout';
 import { IoTHubManagerService, TelemetryService } from 'services';
@@ -36,7 +46,7 @@ import {
   toDiagnosticsModel,
   toSinglePropertyDiagnosticsModel
 } from 'services/models';
-import Config from 'app.config';
+
 
 import './ruleEditor.css';
 
@@ -44,6 +54,9 @@ const Section = Flyout.Section;
 
 // A counter for creating unique keys per new condition
 let conditionKey = 0;
+
+// A counter for creating unique keys per new action
+let actionKey = 0;
 
 // Creates a state object for a condition
 const newCondition = () => ({
@@ -53,6 +66,16 @@ const newCondition = () => ({
   key: conditionKey++ // Used by react to track the rendered elements
 });
 
+const newAction = () => ({
+  type: 'Email',
+  parameters: {
+    recipients: [],
+    notes: '',
+    subject: ''
+  },
+  key: actionKey++
+})
+
 // A state object for a new rule
 const newRule = {
   name: '',
@@ -61,8 +84,10 @@ const newRule = {
   calculation: '',
   timePeriod: '',
   conditions: [newCondition()], // Start with one condition
+  actions: [newAction()], // Start with one action
   severity: Config.ruleSeverity.critical,
-  enabled: true
+  enabled: true,
+  actionEnabled: false
 }
 
 export class RuleEditor extends LinkedComponent {
@@ -76,9 +101,13 @@ export class RuleEditor extends LinkedComponent {
       fieldQueryPending: true,
       devicesAffected: 0,
       formData: newRule,
+      newEmail: '',
       isPending: false,
       changesApplied: undefined
     };
+
+    this.newEmailLink = this.linkTo('newEmail') // Matches email address pattern
+      .check(val => isValidEmail(val), () => this.props.t('rules.flyouts.ruleEditor.actions.syntaxError'));
   }
 
   componentDidMount() {
@@ -100,7 +129,13 @@ export class RuleEditor extends LinkedComponent {
       conditions: (rule.conditions || []).map(condition => ({
         ...condition,
         key: conditionKey++
-      }))
+      })),
+      actions:
+        !rule.actions || rule.actions.length === 0
+          ? [newAction()]
+          : rule.actions.map(action => ({ ...action, key: actionKey++ })
+          ),
+      actionEnabled: rule.actions === undefined ? false : (rule.actions || []).length > 0 ? true : false
     }
   });
 
@@ -123,6 +158,7 @@ export class RuleEditor extends LinkedComponent {
       this.ruleNameLink,
       this.deviceGroupLink,
       this.conditionsLink,
+      this.actionsLink,
       this.timePeriodLink,
       this.calculationLink
     ].every(link => !link.error);
@@ -130,10 +166,11 @@ export class RuleEditor extends LinkedComponent {
 
   apply = (event) => {
     event.preventDefault();
-    const { insertRules, modifyRules, logEvent } = this.props;
+    const { insertRules, modifyRules, logEvent, t } = this.props;
     const requestProps = { ...this.state.formData };
-    const { devicesAffected } = this.state;
+    const { devicesAffected, newEmail } = this.state;
     if (requestProps.calculation === ruleCalculations[1]) requestProps.timePeriod = '';
+    if (this.state.formData.actionEnabled === false) requestProps.actions = [];
     if (this.formIsValid()) {
       this.setState({ isPending: true, error: null });
       if (this.subscription) this.subscription.unsubscribe();
@@ -147,6 +184,20 @@ export class RuleEditor extends LinkedComponent {
           erroe: undefined
         }
       };
+
+      if (this.state.formData.actionEnabled) {
+        const action = requestProps.actions[0];
+        if (newEmail !== '') {
+          action.parameters.recipients.push(newEmail);
+          this.setState({ newEmail: '' });
+        }
+
+        if (action.parameters.subject === '') {
+          const ruleName = requestProps.name
+          action.parameters.subject = t('rules.flyouts.ruleEditor.actions.defaultEmailSubject', { ruleName });
+        }
+      }
+
       logEvent(toRuleDiagnosticsModel('Rule_ApplyClick', requestProps));
       if (this.props.rule) { // If rule object exist then update the existing rule
         this.subscription = TelemetryService.updateRule(this.props.rule.id, toEditRuleRequestModel(requestProps))
@@ -180,6 +231,28 @@ export class RuleEditor extends LinkedComponent {
     this.getDeviceCountAndFields(value);
     this.formControlChange();
   }
+
+  onAddEmail = (link) => (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!this.newEmailLink.error && this.newEmailLink.value !== '') {
+        const newState = update(
+          this.state,
+          {
+            // Saves user entered email value into action object's list of emails
+            ...link.setter({ $set: [...link.value, this.newEmailLink.value] }),
+            // Clears new email input textfield of user's entered email value
+            ...this.newEmailLink.setter({ $set: '' })
+          }
+        );
+        this.setState(newState);
+      }
+    }
+    this.formControlChange();
+  }
+
+  deleteEmail = (index) => (link) =>
+    (e) => link.set(link.value.filter((_, idx) => index !== idx));
 
   getDeviceCountAndFields(groupId) {
     this.props.deviceGroups.some(group => {
@@ -257,6 +330,17 @@ export class RuleEditor extends LinkedComponent {
     }
   }
 
+  deletePill = link => index => () => {
+    link.set(link.value.filter((_, idx) => index !== idx));
+    this.formControlChange();
+  }
+
+  onActionToggle = ({ target: { value } }) => {
+    this.setState({ formData: { ...this.state.formData, actionEnabled: value } });
+    this.props.logEvent(toSinglePropertyDiagnosticsModel('Rule_ActionToggle', 'EmailActionStatus', value ? 'Enabled' : 'Disabled'));
+    this.formControlChange();
+  }
+
   render() {
     const { t, deviceGroups = [] } = this.props;
     const {
@@ -290,6 +374,7 @@ export class RuleEditor extends LinkedComponent {
         this.props.t('rules.flyouts.ruleEditor.validation.required')
       );
     this.conditionsLink = this.formDataLink.forkTo('conditions').withValidator(requiredValidator);
+    this.actionsLink = this.formDataLink.forkTo('actions').withValidator(requiredValidator);
     this.severityLink = this.formDataLink.forkTo('severity');
     //todo toggle button didn't support link
     this.enabledLink = this.formDataLink.forkTo('enabled');
@@ -304,7 +389,22 @@ export class RuleEditor extends LinkedComponent {
       return { fieldLink, operatorLink, valueLink, error };
     });
 
+    const actionLinks = this.actionsLink.getLinkedChildren(actionLink => {
+      const parametersLink = actionLink.forkTo('parameters');
+      // recipients is valid if email input box is empty and at least one email has been
+      // entered, or if email input box has a valid email
+      const recipientsLink = parametersLink.forkTo('recipients')
+        .check(val => ((this.state.newEmail !== '' && isValidEmail(this.state.newEmail))
+          || (val.length > 0 && (isValidEmail(this.state.newEmail)))),
+          this.props.t('rules.flyouts.ruleEditor.validation.required'));
+      const notesLink = parametersLink.forkTo('notes');
+      const subjectLink = parametersLink.forkTo('subject');
+      const error = formData.actionEnabled ? (recipientsLink.error) : false;
+      return { recipientsLink, notesLink, subjectLink, error };
+    });
+
     const conditionsHaveErrors = conditionLinks.some(({ error }) => error);
+    const actionsHaveErrors = actionLinks.some(({ error }) => error);
     const completedSuccessfully = changesApplied && !error;
 
     return (
@@ -422,9 +522,9 @@ export class RuleEditor extends LinkedComponent {
               </Section.Content>
             </Section.Container>
             <Section.Container collapsable={false}>
+              <Section.Header>{t('rules.flyouts.ruleEditor.severityLevel')}</Section.Header>
               <Section.Content>
-                <FormGroup className="padded-top">
-                  <FormLabel>{t('rules.flyouts.ruleEditor.severityLevel')}</FormLabel>
+                <FormGroup>
                   <Radio
                     onChange={this.onSeverityChange}
                     link={this.severityLink}
@@ -451,16 +551,78 @@ export class RuleEditor extends LinkedComponent {
                   </Radio>
                 </FormGroup>
               </Section.Content>
-              <Section.Content>
-                <FormGroup>
-                  <FormLabel>{t('rules.flyouts.ruleEditor.ruleStatus')}</FormLabel>
+              <Section.Container collapsable={false}>
+                <Section.Header>{t('rules.flyouts.ruleEditor.actions.action')}</Section.Header>
+                <div className="email-toggle-container">
                   <ToggleBtn
-                    value={formData.enabled}
-                    onChange={this.onStatusToggle} >
-                    {formData.enabled ? t('rules.flyouts.ruleEditor.ruleEnabled') : t('rules.flyouts.ruleEditor.ruleDisabled')}
+                    value={formData.actionEnabled}
+                    onChange={this.onActionToggle} >
+                    {formData.actionEnabled ? t('rules.flyouts.ruleEditor.actions.on') : t('rules.flyouts.ruleEditor.actions.off')}
                   </ToggleBtn>
-                </FormGroup>
-              </Section.Content>
+                  <Tooltip content={
+                    <Trans i18nKey={`rules.flyouts.ruleEditor.actions.emailSetupHelp`}>
+                      Manual setup is required.
+                      <Hyperlink href={Config.contextHelpUrls.ruleActionsEmail} target="_blank">{t('rules.flyouts.ruleEditor.actions.learnMore')}</Hyperlink>
+                    </Trans>
+                  }>
+                    <ThemedSvgContainer paths={themedPaths.questionBubble} />
+                  </Tooltip>
+                </div>
+                {
+                  formData.actionEnabled &&
+                  <ActionEmailSetupContainer />
+                }
+                <Section.Content>
+                  {
+                    formData.actionEnabled && actionLinks.map((action, idx) => (
+                      <Section.Content key={formData.actions[idx].key}>
+                        <p className="padded-top">{t('rules.flyouts.ruleEditor.actions.emailAddresses')}</p>
+                        <FormGroup>
+                          <FormControl
+                            type="text"
+                            className="long"
+                            onKeyPress={this.onAddEmail(action.recipientsLink)}
+                            link={this.newEmailLink}
+                            placeholder={t('rules.flyouts.ruleEditor.actions.enterEmail')} />
+                        </FormGroup>
+                        <PillGroup
+                          pills={action.recipientsLink.value}
+                          svg={svgs.cancelX}
+                          onSvgClick={this.deletePill(action.recipientsLink)}
+                          altSvgText={t('rules.flyouts.ruleEditor.actions.deleteEmail')} />
+                        <p className="padded-top">{t('rules.flyouts.ruleEditor.actions.emailSubject')}</p>
+                        <FormGroup>
+                          <FormControl
+                            type="textarea"
+                            link={action.subjectLink}
+                            placeholder={t('rules.flyouts.ruleEditor.actions.enterEmailSubject')}
+                            onChange={this.formControlChange} />
+                        </FormGroup>
+                        <p className="padded-top">{t('rules.flyouts.ruleEditor.actions.emailComments')}</p>
+                        <FormGroup>
+                          <FormControl
+                            type="textarea"
+                            link={action.notesLink}
+                            placeholder={t('rules.flyouts.ruleEditor.actions.enterEmailComments')}
+                            onChange={this.formControlChange} />
+                        </FormGroup>
+                      </Section.Content>
+                    ))
+                  }
+                </Section.Content>
+              </Section.Container>
+              <Section.Container>
+                <Section.Header>{t('rules.flyouts.ruleEditor.ruleStatus')}</Section.Header>
+                <Section.Content>
+                  <FormGroup>
+                    <ToggleBtn
+                      value={formData.enabled}
+                      onChange={this.onStatusToggle} >
+                      {formData.enabled ? t('rules.flyouts.ruleEditor.ruleEnabled') : t('rules.flyouts.ruleEditor.ruleDisabled')}
+                    </ToggleBtn>
+                  </FormGroup>
+                </Section.Content>
+              </Section.Container>
             </Section.Container>
           </div>
         }
@@ -478,7 +640,11 @@ export class RuleEditor extends LinkedComponent {
         {error && <AjaxError className="rule-editor-error" t={t} error={error} />}
         {
           <BtnToolbar>
-            <Btn primary={true} disabled={!!changesApplied || isPending || !this.formIsValid() || conditionsHaveErrors} type="submit">{t('rules.flyouts.ruleEditor.apply')}</Btn>
+            <Btn primary={true}
+              disabled={!!changesApplied || isPending || !this.formIsValid() || conditionsHaveErrors || actionsHaveErrors}
+              type="submit">
+              {t('rules.flyouts.ruleEditor.apply')}
+            </Btn>
             <Btn svg={svgs.cancelX} onClick={this.onCloseClick}>{t('rules.flyouts.ruleEditor.cancel')}</Btn>
           </BtnToolbar>
         }

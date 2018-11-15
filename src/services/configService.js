@@ -6,6 +6,7 @@ import {
   prepareLogoResponse,
   toDeviceGroupModel,
   toDeviceGroupsModel,
+  toSolutionSettingActionsModel,
   toSolutionSettingThemeModel,
   toNewPackageRequestModel,
   toPackagesModel,
@@ -87,6 +88,11 @@ export class ConfigService {
   static updateSolutionSettings(model) {
     return HttpClient.put(`${ENDPOINT}solution-settings/theme`, model)
       .map(toSolutionSettingThemeModel);
+  }
+
+  static getActionSettings() {
+    return HttpClient.get(`${ENDPOINT}solution-settings/actions`)
+      .map(toSolutionSettingActionsModel);
   }
 
   /** Creates a new package */

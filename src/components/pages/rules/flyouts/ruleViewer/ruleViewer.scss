@@ -5,7 +5,7 @@
 
 .view-rule-flyout-container {
 
-  .rule-name {
+  .rule-name, .rule-action-title {
     @include rem-fallback(font-size, 18px);
     @include rem-fallback(margin-top, 32px);
   }

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+
 import { permissions, toDiagnosticsModel } from 'services/models';
 import { RulesGrid } from './rulesGrid';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/shell/deviceGroupDropdown';
@@ -19,6 +20,7 @@ import {
 } from 'components/shared';
 import { NewRuleFlyout } from './flyouts';
 import { svgs } from 'utilities';
+import { toSinglePropertyDiagnosticsModel } from  'services/models';
 
 import './rules.css';
 
@@ -41,12 +43,19 @@ export class Rules extends Component {
     }
 
     this.props.updateCurrentWindow('Rules');
+    if (this.props.applicationPermissionsAssigned !== undefined) {
+      this.logApplicationPermissions(this.props.applicationPermissionsAssigned);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.isPending && nextProps.isPending !== this.props.isPending) {
       // If the grid data refreshes, hide the flyout and deselect soft selections
       this.setState(closedFlyoutState);
+    }
+    if (nextProps.applicationPermissionsAssigned !== undefined
+      && nextProps.applicationPermissionsAssigned !== this.props.applicationPermissionsAssigned) {
+      this.logApplicationPermissions(nextProps.applicationPermissionsAssigned);
     }
   }
 
@@ -68,6 +77,15 @@ export class Rules extends Component {
   };
 
   onContextMenuChange = contextBtns => this.setState({ contextBtns });
+
+  logApplicationPermissions(applicationPermissionsAssigned) {
+    if (applicationPermissionsAssigned !== undefined) {
+      this.props.logEvent(toSinglePropertyDiagnosticsModel(
+        'ApplicationPermissions',
+        'AssignedPermissions',
+        applicationPermissionsAssigned));
+    }
+  }
 
   render() {
     const {

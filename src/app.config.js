@@ -31,6 +31,8 @@ const Config = {
   gridResizeDebounceTime: 200, // ms
   dashboardRefreshInterval: 15000, // 15 seconds
   telemetryRefreshInterval: 1000, // 1 seconds
+  actionSetupPollingInterval: 20 * 1000, // every 20 seconds
+  actionSetupPollingTimeLimit: 2 * 60 * 1000, // for up to 2 minutes
   simulationId: '1',
   validExtensions: validExtensions.join(),
   emptyValue: '--',

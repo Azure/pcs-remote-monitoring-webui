@@ -14,7 +14,8 @@ import {
 import {
   epics as appEpics,
   redux as appRedux,
-  getDeviceGroups
+  getDeviceGroups,
+  getApplicationPermissionsAssigned
 } from 'store/reducers/appReducer';
 
 // Pass the devices status
@@ -24,7 +25,8 @@ const mapStateToProps = state => ({
   error: getRulesError(state),
   isPending: getRulesPendingStatus(state),
   deviceGroups: getDeviceGroups(state),
-  lastUpdated: getRulesLastUpdated(state)
+  lastUpdated: getRulesLastUpdated(state),
+  applicationPermissionsAssigned: getApplicationPermissionsAssigned(state)
 });
 
 // Wrap the dispatch method

@@ -108,14 +108,14 @@ const insertRulesReducer = (state, { payload }) => {
 };
 
 const modifyRulesReducer = (state, { payload }) => {
-  const { entities: { rules } } = normalize(payload, ruleListSchema);
+  const { entities: { rules = {} } } = normalize(payload, ruleListSchema);
   return update(state, {
     entities: { $merge: rules }
   });
 };
 
 const updateRulesReducer = (state, { payload, fromAction }) => {
-  const { entities: { rules }, result } = normalize(payload, ruleListSchema);
+  const { entities: { rules = {} }, result } = normalize(payload, ruleListSchema);
   return update(state, {
     entities: { $set: rules },
     items: { $set: result },

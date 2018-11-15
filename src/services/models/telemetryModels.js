@@ -49,11 +49,12 @@ export const toRuleModel = (response = {}) => {
     'calculation': 'calculation',
     'timePeriod': 'timePeriod',
     'action.type': 'type',
-    'deleted': 'deleted'
+    'deleted': 'deleted',
+    'actions': 'actions'
   });
   return update(model, {
     severity: { $set: (model.severity || '').toLowerCase() },
-    status: { $set: (model.deleted ? 'Deleted' : model.enabled ? 'Enabled' : 'Disabled')}
+    status: { $set: (model.deleted ? 'Deleted' : model.enabled ? 'Enabled' : 'Disabled') }
   });
 };
 
@@ -133,6 +134,7 @@ export const toEditRuleRequestModel = ({
   description,
   groupId,
   conditions,
+  actions,
   severity,
   enabled,
   calculation,
@@ -144,6 +146,16 @@ export const toEditRuleRequestModel = ({
     Operator: condition.operator,
     Value: condition.value
   }));
+
+  const Actions =  (actions || []).map(act => ({
+    Type: act.type,
+    Parameters: {
+      Notes: act.parameters.notes,
+      Recipients: act.parameters.recipients,
+      Subject: act.parameters.subject
+    }
+  }));
+
   return {
     Id: id,
     Name: name,
@@ -154,6 +166,7 @@ export const toEditRuleRequestModel = ({
     Calculation: calculation,
     TimePeriod: timePeriod,
     ETag: eTag,
-    Conditions
+    Conditions,
+    Actions
   };
 }
