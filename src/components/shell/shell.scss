@@ -38,12 +38,3 @@
     ::-webkit-scrollbar-thumb { background-color: themed('colorScrollBarButton'); }
   }
 }
-
-.access-denied {
-  height: 100%;
-  font-family: $fontSelawikLight;
-  font-style: italic;
-  text-align: center;
-  @include rem-font-size(20px);
-  @include rem-fallback(padding, 100px);
-}

@@ -2,9 +2,7 @@
 
 import React, { Component } from 'react';
 
-import { permissions } from 'services/models';
 import { svgs } from 'utilities';
-import { Protected } from 'components/shared';
 import Shell from "components/shell/shell";
 import { ManageDeviceGroupsContainer, SettingsContainer } from 'components/shell/flyouts';
 import {
@@ -150,15 +148,10 @@ class App extends Component {
     };
 
     return (
-      <Protected permission={permissions.readAll}>
-        {
-          (hasPermission) =>
-            <Shell denyAccess={!hasPermission} {...shellProps}>
-              {deviceGroupFlyoutIsOpen && <ManageDeviceGroupsContainer />}
-              {openFlyout === 'settings' && <SettingsContainer onClose={this.closeFlyout} />}
-            </Shell>
-        }
-      </Protected>
+      <Shell {...shellProps}>
+        {deviceGroupFlyoutIsOpen && <ManageDeviceGroupsContainer />}
+        {openFlyout === 'settings' && <SettingsContainer onClose={this.closeFlyout} />}
+      </Shell>
     );
   }
 }

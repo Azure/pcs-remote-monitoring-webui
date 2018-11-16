@@ -99,12 +99,9 @@ class Header extends Component {
               </div>
             }
           </div>
-          {
-            this.props.openSettings &&
-            <button onClick={this.props.openSettings}>
-              <Svg path={svgs.settings} className="item-icon" />
-            </button>
-          }
+          <button onClick={this.props.openSettings}>
+            <Svg path={svgs.settings} className="item-icon" />
+          </button>
           <div className="menu-container">
             <button className="item-icon profile menu-trigger" onClick={this.toggleDropdown(profileDropdown)}>
               <img src={ProfileImagePath} alt={ this.props.t('header.profile') } />

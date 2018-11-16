@@ -2,15 +2,12 @@
 
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
-import { Trans } from 'react-i18next';
 
 // App Components
-import Config from 'app.config';
 import Header from './header/header';
 import NavigationContainer from './navigation/navigationContainer';
 import Main from './main/main';
 import { PageNotFoundContainer as PageNotFound } from './pageNotFound'
-import { Hyperlink } from 'components/shared';
 
 import './shell.css';
 
@@ -30,26 +27,12 @@ class Shell extends Component {
   }
 
   render() {
-    const { pagesConfig, crumbsConfig, openSettings, logout, t, theme, children, denyAccess } = this.props;
+    const { pagesConfig, crumbsConfig, openSettings, logout, t, theme, children } = this.props;
 
     return (
       <div className={`shell-container theme-${theme}`}>
         {
-          denyAccess &&
-          <div className="shell">
-            <Main>
-              <Header crumbsConfig={crumbsConfig} logout={logout} t={t} />
-              <div className="access-denied">
-                <Trans i18nKey={'accessDenied.message'}>
-                  You don't have permissions.
-                <Hyperlink href={Config.contextHelpUrls.accessDenied} target="_blank">{t('accessDenied.learnMore')}</Hyperlink>
-                </Trans>
-              </div>
-            </Main>
-          </div>
-        }
-        {
-          (!denyAccess && pagesConfig) &&
+          pagesConfig &&
           <div className="shell">
             <NavigationContainer tabs={pagesConfig} t={t} />
             <Main>
