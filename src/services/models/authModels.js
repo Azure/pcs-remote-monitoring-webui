@@ -29,13 +29,14 @@ export const permissions = {
   createPackages: 'CreatePackages',
 
   createDeployments: 'CreateDeployments',
-  delteDeployments: 'DeleteDeployments'
+  deleteDeployments: 'DeleteDeployments'
 };
 
 export const toUserModel = (user = {}) => camelCaseReshape(user, {
   'id': 'id',
   'email': 'email',
   'name': 'name',
+  'roles': 'roles',
   'allowedActions': 'permissions'
 });
 
@@ -44,5 +45,6 @@ export const authDisabledUser = {
   id: 'AuthIsDisabled',
   email: 'authdisabled@iot.auth',
   name: 'Disabled Auth',
+  roles: ['Admin'],
   permissions: Object.values(permissions)
 };

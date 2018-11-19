@@ -125,6 +125,16 @@ export const getPackageTypeTranslation = (packageType, t) => {
   }
 }
 
+/** Converts an enum string with its translated string. */
+export const getEnumTranslation = (t, rootPath, name, defaultVal) => {
+  const fullPath = `${rootPath}.${name}`;
+  const val = t(fullPath);
+  if (val === fullPath) {
+    return defaultVal || name;
+  }
+  return val;
+}
+
 /* A helper method to copy text to the clipbaord */
 export const copyToClipboard = (data) => {
   const textField = document.createElement('textarea');

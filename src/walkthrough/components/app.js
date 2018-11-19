@@ -7,7 +7,9 @@ import Shell from "components/shell/shell";
 import { DashboardContainer, BasicPageContainer, PageWithFlyoutContainer, PageWithGridContainer } from './pages';
 
 class App extends Component {
-  openSettings = () => alert('There are no settings in the walkthrough.');
+  openSystemSettings = () => alert('There are no system settings in the walkthrough.');
+
+  openUserProfile = () => alert('There are no user settings in the walkthrough.');
 
   render() {
     const pagesConfig = [
@@ -67,7 +69,8 @@ class App extends Component {
     const shellProps = {
       pagesConfig,
       crumbsConfig,
-      openSettings: this.openSettings,
+      openSystemSettings: this.openSystemSettings,
+      openUserProfile: this.openUserProfile,
       ...this.props
     };
 

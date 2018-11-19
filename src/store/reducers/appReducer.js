@@ -236,17 +236,25 @@ const initialState = {
     name: '',
     diagnosticsOptIn: true
   },
+  user: {
+    email: '',
+    roles: new Set(),
+    permissions: new Set(),
+  },
   actionSettings: undefined,
   applicationPermissionsAssigned: undefined,
   actionPollingTimeout: undefined,
-  userPermissions: new Set(),
   sessionId: moment().utc().unix(),
   currentWindow: ''
 };
 
 const updateUserReducer = (state, { payload, fromAction }) => {
   return update(state, {
-    userPermissions: { $set: new Set(payload.permissions) },
+    user: {
+      email: { $set: payload.email },
+      roles: { $set: new Set(payload.roles) },
+      permissions: { $set: new Set(payload.permissions) }
+    },
     ...setPending(fromAction.type, false)
   });
 };
@@ -418,7 +426,7 @@ export const getLogoPendingStatus = state =>
 
 export const getTimeInterval = state => getAppReducer(state).timeInterval;
 
-export const getUserPermissions = state => getAppReducer(state).userPermissions;
+export const getUser = state => getAppReducer(state).user;
 export const getSessionId = state => getAppReducer(state).sessionId;
 export const getCurrentWindow = state => getAppReducer(state).currentWindow
 

@@ -2,7 +2,6 @@
   "companyName": "Contoso",
   "header": {
     "appName": "Azure IoT Remote Monitoring",
-    "logout": "Logout",
     "profile": "Profile",
     "getStarted": "Get started",
     "documentation": "Documentation",
@@ -43,6 +42,26 @@
     "retryFailure": "Oops, we got a temporary error from the service but were unable to recover. Try again later.",
     "unknown": "An unknown error occurred. {{message}}"
   },
+  "permissions": {
+    "ReadAll": "View solution",
+    "CreateDeviceGroups": "Create device groups",
+    "DeleteDeviceGroups": "Delete device groups",
+    "UpdateDeviceGroups": "Update device groups",
+    "CreateDevices": "Create devices",
+    "DeleteDevices": "Delete devices",
+    "UpdateDevices": "Update devices",
+    "CreateRules": "Create rules",
+    "DeleteRules": "Delete rules",
+    "UpdateRules": "Update rules",
+    "DeleteAlarms": "Delete alerts",
+    "UpdateAlarms": "Update alerts",
+    "CreateJobs": "Create jobs",
+    "UpdateSIMManagement": "Update SIM management",
+    "DeletePackages": "Delete packages",
+    "CreatePackages": "Create packages",
+    "CreateDeployments": "Create deployments",
+    "DeleteDeployments": "Delete deployments"
+  },
   "protected": {
     "permissionDenied": "Permission {{permission}} is denied."
   },
@@ -71,6 +90,18 @@
     "sendDiagnosticsCheckbox": "Yes, share information with Microsoft",
     "sendDiagnosticsMicrosoftPrivacyUrl": "Privacy Statement",
     "diagnosticsLoadError": "Error updating diagnostics preference"
+  },
+  "profileFlyout": {
+    "title": "User Profile",
+    "description": "<0><0>learnMore</0></0> about roles and permissions.",
+    "learnMore": "Learn more",
+    "logout": "Logout",
+    "noUser": "No user found",
+    "roles": "Roles",
+    "noRoles": "No roles found",
+    "permissions": "Permissions",
+    "noPermissions": "No permissions found",
+    "close": "Close"
   },
   "deviceGroupsFlyout": {
     "actions": "Actions",

@@ -3,7 +3,7 @@
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
-import { AuthService } from 'services';
+
 import {
   epics as appEpics,
   getTheme,
@@ -18,8 +18,7 @@ const mapStateToProps = state => ({
 
 // Wrap with the router and wrap the dispatch method
 const mapDispatchToProps = dispatch => ({
-  registerRouteEvent: pathname => dispatch(appEpics.actions.detectRouteChange(pathname)),
-  logout: () => AuthService.logout()
+  registerRouteEvent: pathname => dispatch(appEpics.actions.detectRouteChange(pathname))
 });
 
 export const AppContainer = withRouter(translate()(connect(mapStateToProps, mapDispatchToProps)(App)));

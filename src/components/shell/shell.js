@@ -30,7 +30,7 @@ class Shell extends Component {
   }
 
   render() {
-    const { pagesConfig, crumbsConfig, openSettings, logout, t, theme, children, denyAccess } = this.props;
+    const { pagesConfig, crumbsConfig, openSystemSettings, openUserProfile, t, theme, children, denyAccess } = this.props;
 
     return (
       <div className={`shell-container theme-${theme}`}>
@@ -38,11 +38,11 @@ class Shell extends Component {
           denyAccess &&
           <div className="shell">
             <Main>
-              <Header crumbsConfig={crumbsConfig} logout={logout} t={t} />
+              <Header crumbsConfig={crumbsConfig} openUserProfile={openUserProfile} t={t} />
               <div className="access-denied">
                 <Trans i18nKey={'accessDenied.message'}>
                   You don't have permissions.
-                <Hyperlink href={Config.contextHelpUrls.accessDenied} target="_blank">{t('accessDenied.learnMore')}</Hyperlink>
+                  <Hyperlink href={Config.contextHelpUrls.accessDenied} target="_blank">{t('accessDenied.learnMore')}</Hyperlink>
                 </Trans>
               </div>
             </Main>
@@ -53,7 +53,7 @@ class Shell extends Component {
           <div className="shell">
             <NavigationContainer tabs={pagesConfig} t={t} />
             <Main>
-              <Header crumbsConfig={crumbsConfig} openSettings={openSettings} logout={logout} t={t} />
+              <Header crumbsConfig={crumbsConfig} openSystemSettings={openSystemSettings} openUserProfile={openUserProfile} t={t} />
               <Switch>
                 <Redirect exact from="/" to={pagesConfig[0].to} />
                 {

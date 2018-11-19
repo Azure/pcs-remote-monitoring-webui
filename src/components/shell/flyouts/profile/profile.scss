@@ -1,0 +1,32 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.profile-container {
+  @include rem-font-size(14px);
+
+  .profile-header {
+    @include rem-fallback(margin-bottom, 24px);
+
+    .profile-header-grid {
+      @include rem-fallback(padding, 0px);
+
+      .row {
+        @include rem-fallback(padding, 0px);
+
+        .cell { display: inline !important; }
+      }
+    }
+  }
+
+  .profile-error {
+    border: 1px transparent solid;
+    @include rem-fallback(margin, 12px, 0px);
+    @include rem-fallback(padding, 16px);
+  }
+
+  @include themify($themes) {
+    .profile-error { border-color: themed('colorAlert'); }
+  }
+}

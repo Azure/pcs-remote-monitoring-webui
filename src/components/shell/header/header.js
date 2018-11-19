@@ -5,13 +5,12 @@ import { Link } from 'react-router-dom';
 
 import { Breadcrumbs } from './breadcrumbs';
 import { Svg } from 'components/shared';
-import { svgs } from 'utilities';
+import { isFunc, svgs } from 'utilities';
 import ProfileImagePath from 'assets/images/profile.png';
 
 import './header.css';
 
 const docsDropdown = 'docsDropdown';
-const profileDropdown = 'profileDropdown';
 
 const parentHasClass = (element, ...searchClasses) => {
   if (
@@ -64,11 +63,6 @@ class Header extends Component {
     }
   }
 
-  logout = () => {
-    this.setState({ openDropdown: '' });
-    this.props.logout();
-  }
-
   toggleDropdown = (openDropdown) => () => this.setState({ openDropdown });
 
   render() {
@@ -100,22 +94,17 @@ class Header extends Component {
             }
           </div>
           {
-            this.props.openSettings &&
-            <button onClick={this.props.openSettings}>
+            isFunc(this.props.openSystemSettings) &&
+            <button onClick={this.props.openSystemSettings}>
               <Svg path={svgs.settings} className="item-icon" />
             </button>
           }
-          <div className="menu-container">
-            <button className="item-icon profile menu-trigger" onClick={this.toggleDropdown(profileDropdown)}>
+          {
+            isFunc(this.props.openUserProfile) &&
+            <button className="item-icon profile" onClick={this.props.openUserProfile}>
               <img src={ProfileImagePath} alt={ this.props.t('header.profile') } />
             </button>
-            {
-              this.state.openDropdown === profileDropdown &&
-              <div className="menu">
-                <button className="menu-item" onClick={this.logout}>{ this.props.t('header.logout') }</button>
-              </div>
-            }
-          </div>
+          }
         </div>
       </header>
     );
