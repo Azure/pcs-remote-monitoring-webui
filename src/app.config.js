@@ -15,6 +15,7 @@ const Config = {
     gitHubReleases: 'https://api.github.com/repos/Azure/azure-iot-pcs-remote-monitoring-dotnet/releases'
   },
   contextHelpUrls: {
+    accessDenied: 'https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac#add-or-remove-users',
     ruleActionsEmail: 'https://go.microsoft.com/fwlink/?linkid=2041110&clcid=0x409',
     exploreTimeSeries: 'https://docs.microsoft.com/en-us/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac-tsi'
   },

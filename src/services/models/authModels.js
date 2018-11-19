@@ -4,6 +4,8 @@ import 'polyfills';
 import { camelCaseReshape } from 'utilities';
 
 export const permissions = {
+  readAll: 'ReadAll',
+
   createDeviceGroups: 'CreateDeviceGroups',
   deleteDeviceGroups: 'DeleteDeviceGroups',
   updateDeviceGroups: 'UpdateDeviceGroups',
