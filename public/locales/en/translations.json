@@ -184,10 +184,7 @@
         "deviceTypeAlerts": "Alert by device type",
         "criticalAlerts": "Critical alerts",
         "currentWindow": "Currently",
-        "previousWindow": "Previously",
-        "exploreTimeSeries": "Explore in Time Series Insights",
-        "exploreTimeSeriesTooltip": "To view data in the Time Series Insights explorer, please ask the solution owner to grant you data access. <1><0>learnMore</0></1>",
-        "learnMore": "Learn more"
+        "previousWindow": "Previously"
       },
       "map": {
         "header": "Device locations",
@@ -204,10 +201,7 @@
         "notConnected": "Offline"
       },
       "telemetry": {
-        "header": "Telemetry",
-        "exploreTimeSeries": "Explore in Time Series Insights",
-        "exploreTimeSeriesTooltip": "To view data in the Time Series Insights explorer, please ask the solution owner to grant you data access. <1><0>learnMore</0></1>",
-        "learnMore": "Learn more"
+        "header": "Telemetry"
       }
     }
   },
@@ -280,8 +274,7 @@
           "noneExist": "No tags found for this device."
         },
         "telemetry": {
-          "title": "Telemetry",
-          "exploreTimeSeries": "Explore in Time Series Insights"
+          "title": "Telemetry"
         }
       },
       "delete": {
@@ -626,6 +619,11 @@
     "P1D": "Last day",
     "P7D": "Last week",
     "P1M": "Last month"
+  },
+  "timeSeriesInsights": {
+    "explore": "Explore in Time Series Insights",
+    "exploreTooltip": "To view data in the Time Series Insights explorer, please ask the solution owner to grant you data access. <1><0>learnMore</0></1>",
+    "learnMore": "Learn more"
   },
   "deployments": {
     "title": "Deployments",

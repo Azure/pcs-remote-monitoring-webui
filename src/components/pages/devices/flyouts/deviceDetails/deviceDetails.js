@@ -21,13 +21,13 @@ import {
   BtnToolbar,
   ComponentArray,
   ErrorMsg,
-  Hyperlink,
   PropertyGrid as Grid,
   PropertyGridBody as GridBody,
   PropertyGridHeader as GridHeader,
   PropertyRow as Row,
   PropertyCell as Cell,
-  SectionDesc
+  SectionDesc,
+  TimeSeriesInsightsLinkContainer
 } from 'components/shared';
 import Flyout from 'components/shared/flyout';
 import { TelemetryChart, chartColorObjects } from 'components/pages/dashboard/panels/telemetry';
@@ -282,7 +282,7 @@ export class DeviceDetails extends Component {
                 <Section.Content>
                   {
                     timeSeriesExplorerUrl &&
-                    <Hyperlink className="time-series-explorer" href={timeSeriesParamUrl} target="_blank">{t('devices.flyouts.details.telemetry.exploreTimeSeries')}</Hyperlink>
+                    <TimeSeriesInsightsLinkContainer href={timeSeriesParamUrl} />
                   }
                   <TelemetryChart className="telemetry-chart" telemetry={telemetry} theme={theme} colors={chartColorObjects} />
                 </Section.Content>

@@ -46,8 +46,6 @@
     @include rem-fallback(margin-right, 10px);
   }
 
-  .time-series-explorer { display: block; }
-
   @include themify($themes) {
     .device-details-header {
       .device-icon svg { fill: themed('colorContentTextDim'); }

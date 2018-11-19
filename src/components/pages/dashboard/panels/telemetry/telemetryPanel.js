@@ -1,12 +1,9 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { Trans } from 'react-i18next';
 import 'tsiclient';
 
-import Config from 'app.config';
-import { themedPaths } from 'utilities';
-import { AjaxError, Hyperlink, Indicator, ThemedSvgContainer, Tooltip } from 'components/shared';
+import { AjaxError, Indicator, TimeSeriesInsightsLinkContainer } from 'components/shared';
 import {
   Panel,
   PanelContent,
@@ -34,17 +31,7 @@ export class TelemetryPanel extends Component {
         <PanelContent className="telemetry-panel-container">
           {
             timeSeriesExplorerUrl &&
-            <div className="time-series-explorer">
-              <Hyperlink href={timeSeriesExplorerUrl} target="_blank">{t('dashboard.panels.telemetry.exploreTimeSeries')}</Hyperlink>
-              <Tooltip position="bottom" content={
-                <Trans i18nKey={'dashboard.panels.telemetry.exploreTimeSeriesTooltip'}>
-                  To view in TSI, get permissions from the solution owner.
-                  <Hyperlink href={Config.contextHelpUrls.exploreTimeSeries} target="_blank">{t('dashboard.panels.telemetry.learnMore')}</Hyperlink>
-                </Trans>
-              }>
-                <ThemedSvgContainer paths={themedPaths.questionBubble} />
-              </Tooltip>
-            </div>
+            <TimeSeriesInsightsLinkContainer href={timeSeriesExplorerUrl} />
           }
           <TelemetryChart telemetry={telemetry} theme={theme} colors={colors} />
           {
