@@ -34,7 +34,7 @@ export const Profile = (props) => {
       </Flyout.Header>
       <Flyout.Content className="profile-container">
         {
-          !!user &&
+          !user &&
           <div className="profile-container">
             <ErrorMsg className="profile-error">{t("profileFlyout.noUser")}</ErrorMsg>
             <Trans i18nKey={'profileFlyout.description'}>
@@ -44,7 +44,7 @@ export const Profile = (props) => {
           </div>
         }
         {
-          !user &&
+          user &&
           <div className="profile-container">
             <div className="profile-header">
               <h2>{user.email}</h2>
