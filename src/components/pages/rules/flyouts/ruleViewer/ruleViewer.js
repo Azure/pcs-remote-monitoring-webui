@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 
+import { getEnumTranslation } from 'utilities';
 import {
   PropertyGrid as Grid,
   PropertyGridHeader as GridHeader,
@@ -18,8 +19,7 @@ import Flyout from 'components/shared/flyout';
 import { IoTHubManagerService } from 'services';
 import {
   ruleCalculations,
-  getRuleTimePeriodLabel,
-  getRuleOperatorLabel
+  getRuleTimePeriodLabel
 } from 'services/models';
 
 import './ruleViewer.css';
@@ -118,7 +118,7 @@ export class RuleViewer extends Component {
                   rule.conditions.map((condition, idx) =>
                     <Row key={idx}>
                       <Cell className="col-4">{condition.field}</Cell>
-                      <Cell className="col-3">{getRuleOperatorLabel(condition.operator)}</Cell>
+                      <Cell className="col-3">{getEnumTranslation(t, 'rules.flyouts.ruleEditor.condition.operatorOptions', condition.operator)}</Cell>
                       <Cell className="col-3">{condition.value}</Cell>
                     </Row>
                   )

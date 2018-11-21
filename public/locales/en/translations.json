@@ -113,6 +113,7 @@
     "edit": "Edit a device group",
     "name": "Name",
     "namePlaceHolder": "Device group name",
+    "addCondition": "Add condition",
     "save": "Save",
     "errorMsg": {
       "nameCantBeEmpty": "Name is required",
@@ -127,50 +128,24 @@
       "delete": "Delete",
       "field": "Field",
       "operator": "Operator",
-      "operatorPlaceholder": "> =",
+      "operatorPlaceholder": ">=",
+      "operatorOptions": {
+        "EQ": "= Equals",
+        "GT": "> Greater than",
+        "LT": "< Less than",
+        "GE": ">= Greater than or equal",
+        "LE": "<= Less than or equal"
+      },
       "value": "Value",
       "valuePlaceholder": "Enter value",
       "type": "Type",
       "typePlaceholder": "Select type",
+      "typeOptions": {
+        "Number": "Number",
+        "Text": "Text"
+      },
       "remove": "Remove condition"
-    },
-    "options": {
-      "EQ": "= Equals",
-      "GT": "> Greater than",
-      "LT": "< Less than",
-      "GE": ">= Greater than/equal",
-      "LE": "<= Less than/equal",
-      "Number": "Number",
-      "Text": "Text"
     }
-  },
-  "rulesFlyout": {
-    "newRule": "New rule",
-    "ruleName": "Rule name",
-    "namePlaceholder": "Enter rule name",
-    "description": "Description",
-    "descriptionPlaceholder": "Enter rule description",
-    "deviceGroup": "Device group",
-    "deviceGroupPlaceholder": "Select device group",
-    "conditions": "Conditions",
-    "addCondition": "Add condition",
-    "condition": {
-      "condition": "Condition",
-      "field": "Field",
-      "fieldPlaceholder": "Select field",
-      "calculation": "Calculation",
-      "calculationPlaceholder": "select",
-      "timePeriod": "Time period",
-      "operator": "Operator",
-      "operatorPlaceholder": ">=",
-      "value": "Value",
-      "valuePlaceholder": "Enter value"
-    },
-    "severityLevel": "Severity level",
-    "ruleStatus": "Rule status",
-    "devicesAffected": "Devices affected by this rule",
-    "apply": "Apply",
-    "cancel": "Cancel"
   },
   "dashboard": {
     "noData": "No data available",
@@ -477,6 +452,13 @@
           "fieldPlaceholder": "Select field",
           "operator": "Operator",
           "operatorPlaceholder": ">=",
+          "operatorOptions": {
+            "Equals": "= Equals",
+            "GreaterThan": "> Greater than",
+            "LessThan": "< Less than",
+            "GreaterThanOrEqual": ">= Greater than or equal",
+            "LessThanOrEqual": "<= Less than or equal"
+          },
           "value": "Value",
           "valuePlaceholder": "Enter value"
         },

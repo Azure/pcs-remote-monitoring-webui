@@ -18,18 +18,7 @@ export const getRuleTimePeriodLabel = (value) => {
 
 };
 
-export const ruleOperators = [
-  { label: '>', value: 'GreaterThan' },
-  { label: '>=', value: 'GreaterThanOrEqual' },
-  { label: '<', value: 'LessThan' },
-  { label: '<=', value: 'LessThanOrEqual' },
-  { label: '=', value: 'Equals' }
-];
-
-export const getRuleOperatorLabel = (value) => {
-  const operator = ruleOperators.find(item => item.value === value);
-  return (operator || {}).label || value;
-};
+export const ruleOperators = ['Equals', 'GreaterThan', 'LessThan', 'GreaterThanOrEqual', 'LessThanOrEqual'];
 
 export const toRulesModel = (response = {}) => getItems(response)
   .map(toRuleModel);

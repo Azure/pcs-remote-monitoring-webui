@@ -168,11 +168,11 @@ class DeviceGroupForm extends LinkedComponent {
     const conditionsHaveErrors = conditionHasErrors
 
     const operatorOptions = operators.map(value => ({
-      label: t(`deviceGroupsFlyout.options.${value}`),
+      label: t(`deviceGroupsFlyout.conditions.operatorOptions.${value}`),
       value
     }));
     const typeOptions = valueTypes.map(value => ({
-      label: t(`deviceGroupsFlyout.options.${value}`),
+      label: t(`deviceGroupsFlyout.conditions.typeOptions.${value}`),
       value
     }));
 
@@ -198,7 +198,7 @@ class DeviceGroupForm extends LinkedComponent {
                 link={this.nameLink} />
             </FormGroup>
             <Btn className="add-btn" svg={svgs.plus} onClick={this.addCondition}>
-              {t(`rulesFlyout.addCondition`)}
+              {t(`deviceGroupsFlyout.addCondition`)}
             </Btn>
             {
               conditionLinks.map((condition, idx) => (

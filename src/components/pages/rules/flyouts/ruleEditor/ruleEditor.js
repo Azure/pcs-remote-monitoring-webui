@@ -60,9 +60,9 @@ let actionKey = 0;
 
 // Creates a state object for a condition
 const newCondition = () => ({
-  field: '',
-  operator: ruleOperators[0].value,
-  value: '',
+  field: undefined,
+  operator: undefined,
+  value: undefined,
   key: conditionKey++ // Used by react to track the rendered elements
 });
 
@@ -407,6 +407,11 @@ export class RuleEditor extends LinkedComponent {
     const actionsHaveErrors = actionLinks.some(({ error }) => error);
     const completedSuccessfully = changesApplied && !error;
 
+    const operatorOptions = ruleOperators.map(value => ({
+      label: t(`rules.flyouts.ruleEditor.condition.operatorOptions.${value}`),
+      value
+    }));
+
     return (
       <form onSubmit={this.apply} className="new-rule-flyout-container">
         <Section.Container className="rule-property-container">
@@ -491,11 +496,11 @@ export class RuleEditor extends LinkedComponent {
                       <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.operator')}</FormLabel>
                       <FormControl
                         type="select"
-                        className="short"
+                        className="long"
                         placeholder={t('rules.flyouts.ruleEditor.condition.operatorPlaceholder')}
                         onChange={(target) => this.onOperatorChange(idx + 1, target)}
                         link={condition.operatorLink}
-                        options={ruleOperators}
+                        options={operatorOptions}
                         clearable={false}
                         searchable={false} />
                     </FormGroup>
