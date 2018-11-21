@@ -57,6 +57,7 @@ export class Maintenance extends Component {
     const devices = deviceIds.length ? deviceIds.join(',') : undefined;
     const [timeParams] = getIntervalParams(timeInterval || this.props.timeInterval);
     const params = { ...timeParams, devices };
+    const jobParams = { ...timeParams };
     this.setState({
       alertsIsPending: true,
       jobsIsPending: true,
@@ -120,7 +121,7 @@ export class Maintenance extends Component {
     );
 
     this.subscriptions.push(
-      IoTHubManagerService.getJobs(params)
+      IoTHubManagerService.getJobs(jobParams)
         .subscribe(
           jobs => {
             const { failedJobsCount, succeededJobsCount } = jobs.reduce(
