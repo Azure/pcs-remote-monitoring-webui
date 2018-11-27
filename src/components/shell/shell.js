@@ -38,7 +38,7 @@ class Shell extends Component {
           denyAccess &&
           <div className="shell">
             <Main>
-              <Header crumbsConfig={crumbsConfig} openUserProfile={openUserProfile} t={t} />
+              <Header crumbsConfig={crumbsConfig} t={t} />
               <div className="access-denied">
                 <Trans i18nKey={'accessDenied.message'}>
                   You don't have permissions.
