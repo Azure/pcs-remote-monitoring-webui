@@ -263,7 +263,7 @@ export class DeviceJobTags extends LinkedComponent {
               {
                 Object.keys(commonTags).length > 0 &&
                 tagLinks.map(({ name, value, type, edited, error }, idx) =>
-                  <ComponentArray>
+                  <ComponentArray key={idx}>
                     <Row className={error ? 'error-data-row' : ''}>
                       <Cell className="col-3">
                         <FormControl className="small" type="text" link={name} errorState={!!error} />

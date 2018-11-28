@@ -33,6 +33,13 @@ export const epics = createEpicScenario({
         .map(toActionCreator(redux.actions.updatePackages, fromAction))
         .catch(handleError(fromAction))
   },
+  /** Loads filtered Packages*/
+  fetchFilteredPackages: {
+    type: 'PACKAGES_FILTERED_FETCH',
+    epic: fromAction => ConfigService.getFilteredPackages(fromAction.payload.packageType, fromAction.payload.configType)
+      .map(toActionCreator(redux.actions.updatePackages, fromAction))
+      .catch(handleError(fromAction))
+  },
   /** Create a new package */
   createPackage: {
     type: 'PACKAGES_CREATE',
@@ -48,7 +55,15 @@ export const epics = createEpicScenario({
       ConfigService.deletePackage(fromAction.payload)
         .map(toActionCreator(redux.actions.deletePackage, fromAction))
         .catch(handleError(fromAction))
-  }
+  },
+  /** Gets configuration types*/
+  fetchConfigTypes: {
+    type: 'PACKAGES_CONFIG_TYPE_FETCH',
+    epic: fromAction =>
+      ConfigService.getConfigTypes()
+        .map(toActionCreator(redux.actions.updateConfigTypes, fromAction))
+        .catch(handleError(fromAction))
+  },
 });
 // ========================= Epics - END
 
@@ -61,7 +76,7 @@ const packageListSchema = new schema.Array(packageSchema);
 const initialState = { ...errorPendingInitialState, entities: {} };
 
 const insertPackageReducer = (state, { payload, fromAction }) => {
-  const { entities: { packages }, result } = normalize({...payload, isNew: true}, packageSchema);
+  const { entities: { packages }, result } = normalize({ ...payload, isNew: true }, packageSchema);
 
   if (state.entities) {
     return update(state, {
@@ -96,9 +111,17 @@ const updatePackagesReducer = (state, { payload, fromAction }) => {
   });
 };
 
+const updateConfigTypesReducer = (state, { payload, fromAction }) => {
+  return update(state, {
+    configTypes: { $set: payload },
+    ...setPending(fromAction.type, false)
+  });
+};
+
 /* Action types that cause a pending flag */
 const fetchableTypes = [
   epics.actionTypes.fetchPackages,
+  epics.actionTypes.fetchConfigTypes,
   epics.actionTypes.createPackage,
   epics.actionTypes.deletePackage
 ];
@@ -107,6 +130,7 @@ export const redux = createReducerScenario({
   insertPackage: { type: 'PACKAGE_INSERT', reducer: insertPackageReducer },
   deletePackage: { type: 'PACKAGES_DELETE', reducer: deletePackageReducer },
   updatePackages: { type: 'PACKAGES_UPDATE', reducer: updatePackagesReducer },
+  updateConfigTypes: { type: 'PACKAGES_CONFIG_TYPES_UPDATE', reducer: updateConfigTypesReducer },
   registerError: { type: 'PACKAGES_REDUCER_ERROR', reducer: errorReducer },
   resetPendingAndError: { type: 'PACKAGES_REDUCER_RESET_ERROR_PENDING', reducer: resetPendingAndErrorReducer },
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer }
@@ -136,4 +160,9 @@ export const getPackages = createSelector(
   getEntities, getItems,
   (entities, items) => items.map(id => entities[id])
 );
+export const getConfigTypes = state => getPackagesReducer(state).configTypes || [];
+export const getConfigTypesError = state =>
+  getError(getPackagesReducer(state), epics.actionTypes.fetchConfigTypes);
+export const getConfigTypesPendingStatus = state =>
+  getPending(getPackagesReducer(state), epics.actionTypes.fetchConfigTypes);
 // ========================= Selectors - END

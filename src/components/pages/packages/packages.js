@@ -31,9 +31,7 @@ export class Packages extends Component {
 
     this.props.updateCurrentWindow('Packages');
 
-    if (!this.props.lastUpdated && !this.props.error) {
-      this.props.fetchPackages();
-    }
+    this.props.fetchPackages();
   }
 
   componentWillReceiveProps(nextProps) {

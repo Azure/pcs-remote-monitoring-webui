@@ -18,7 +18,8 @@ const Config = {
     accessDenied: 'https://docs.microsoft.com/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac#add-or-remove-users',
     rolesAndPermissions: 'https://docs.microsoft.com/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac',
     ruleActionsEmail: 'https://go.microsoft.com/fwlink/?linkid=2041110&clcid=0x409',
-    exploreTimeSeries: 'https://docs.microsoft.com/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac-tsi'
+    exploreTimeSeries: 'https://docs.microsoft.com/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac-tsi',
+    deploymentPriority: 'https://docs.microsoft.com/en-us/azure/iot-edge/module-deployment-monitoring#priority'
   },
   // Constants
   showWalkthroughExamples: false,

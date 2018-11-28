@@ -91,40 +91,6 @@ export const isDef = (val) => typeof val !== 'undefined';
 /** Return a generic config value if the value is undefined */
 export const renderUndefined = (value) => !isDef(value) ? Config.emptyValue : value;
 
-/** Converts a job status code to a translated string equivalent */
-export const getStatusCode = (code, t) => {
-  switch (code) {
-    case 1: return t('maintenance.jobStatus.enqueued');
-    case 2: return t('maintenance.jobStatus.running');
-    case 3: return t('maintenance.jobStatus.completed');
-    case 4: return t('maintenance.jobStatus.failed');
-    case 5: return t('maintenance.jobStatus.cancelled');
-    case 6: return t('maintenance.jobStatus.scheduled');
-    default: return t('maintenance.jobStatus.queued');
-  }
-}
-
-/** Converts a deployment status code to a translated string equivalent */
-export const getEdgeAgentStatusCode = (code, t) => {
-  switch (code) {
-    case 200: return t('edgeAgentStatus.200');
-    case 400: return t('edgeAgentStatus.400');
-    case 406: return t('edgeAgentStatus.406');
-    case 412: return t('edgeAgentStatus.412');
-    case 417: return t('edgeAgentStatus.417');
-    case 500: return t('edgeAgentStatus.500');
-    default: return t('edgeAgentStatus.unknown');
-  }
-}
-
-/** Converts a packageType enum to a translated string equivalent */
-export const getPackageTypeTranslation = (packageType, t) => {
-  switch (packageType.toLowerCase()) {
-    case 'edgemanifest': return t('deployments.typeOptions.edgemanifest');
-    default: return t('deployments.typeOptions.unknown');
-  }
-}
-
 /** Converts an enum string with its translated string. */
 export const getEnumTranslation = (t, rootPath, name, defaultVal) => {
   const fullPath = `${rootPath}.${name}`;
@@ -134,6 +100,21 @@ export const getEnumTranslation = (t, rootPath, name, defaultVal) => {
   }
   return val;
 }
+
+/** Converts a packageType enum to a translated string equivalent */
+export const getPackageTypeTranslation = (packageType, t) => getEnumTranslation(t, 'packageTypes', toCamelcase(packageType), t('packageTypes.unknown'));
+
+/** Converts a packageType enum to a translated string equivalent */
+export const getConfigTypeTranslation = (configType, t) => getEnumTranslation(t, 'configTypes', toCamelcase(configType), configType);
+
+/** Converts a deployment status code to a translated string equivalent */
+export const getEdgeAgentStatusCode = (code, t) => getEnumTranslation(t, 'edgeAgentStatus', code, t('edgeAgentStatus.unknown'));
+
+/** Converts a job status code to a translated string equivalent */
+export const getStatusCode = (code, t) => getEnumTranslation(t, 'maintenance.jobStatus', code, t('maintenance.jobStatus.queued'));
+
+/** Converts a device status to a translated string equivalent */
+export const getDeviceStatusTranslation = (status, t) => getEnumTranslation(t, 'deployments.details', status, status);
 
 /* A helper method to copy text to the clipbaord */
 export const copyToClipboard = (data) => {

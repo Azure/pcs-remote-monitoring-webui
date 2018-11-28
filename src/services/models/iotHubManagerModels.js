@@ -17,10 +17,12 @@ export const toDeviceModel = (device = {}) => {
     'lastActivity': 'lastActivity',
     'connected': 'connected',
     'isSimulated': 'isSimulated',
-    'properties.reported.firmware': 'firmware',
     'properties.reported.supportedMethods': 'methods',
     'properties.reported.telemetry': 'telemetry',
     'properties.reported.type': 'type',
+    'properties.reported.firmware.currentFwVersion': 'currentFwVersion',
+    'properties.reported.firmware.lastFwUpdateStartTime': 'lastFwUpdateStartTime',
+    'properties.reported.firmware.lastFwUpdateEndTime': 'lastFwUpdateEndTime',
     'c2DMessageCount': 'c2DMessageCount',
     'enabled': 'enabled',
     'lastStatusUpdated': 'lastStatusUpdated',
@@ -39,6 +41,9 @@ export const toDeviceModel = (device = {}) => {
     },
     desiredProperties: {
       $set: dot.pick('Properties.Desired', device)
+    },
+    firmware: {
+      $set: modelData.currentFwVersion ? modelData.currentFwVersion : dot.pick('Properties.Reported.Firmware', device)
     }
   });
 }
@@ -189,15 +194,18 @@ export const toDeploymentModel = (deployment = {}) => {
     'deviceGroupName': 'deviceGroupName',
     'packageName': 'packageName',
     'priority': 'priority',
-    'type': 'type',
+    'packageType': 'packageType',
+    'configType': 'configType',
     'createdDateTimeUtc': 'createdDateTimeUtc',
-    'metrics.appliedCount': 'appliedCount',
-    'metrics.failedCount': 'failedCount',
-    'metrics.succeededCount': 'succeededCount',
-    'metrics.targetedCount': 'targetedCount'
+    'metrics.systemMetrics.appliedCount': 'appliedCount',
+    'metrics.systemMetrics.failedCount': 'failedCount',
+    'metrics.systemMetrics.succeededCount': 'succeededCount',
+    'metrics.systemMetrics.targetedCount': 'targetedCount',
+    'metrics.systemMetrics.pendingCount': 'pendingCount'
   });
   return update(modelData, {
-    deviceStatuses: { $set: dot.pick('Metrics.DeviceStatuses', deployment) }
+    deviceStatuses: { $set: dot.pick('Metrics.DeviceStatuses', deployment) },
+    customMetrics: { $set: dot.pick('Metrics.CustomMetrics', deployment) }
   });
 }
 
@@ -213,7 +221,8 @@ export const toDeploymentRequestModel = (deploymentModel = {}) => ({
   PackageName: deploymentModel.packageName,
   PackageContent: deploymentModel.packageContent,
   Priority: deploymentModel.priority,
-  Type: deploymentModel.type
+  PackageType: deploymentModel.packageType,
+  ConfigType: deploymentModel.configType
 });
 
 export const toEdgeAgentModel = (edgeAgent = {}) => camelCaseReshape(edgeAgent, {

@@ -24,10 +24,12 @@ export class DeploymentDetailsGrid extends Component {
       deploymentDetailsColumnDefs.name,
       deploymentDetailsColumnDefs.deploymentStatus,
       deploymentDetailsColumnDefs.firmware,
-      deploymentDetailsColumnDefs.lastMessage,
       deploymentDetailsColumnDefs.start,
       deploymentDetailsColumnDefs.end
     ];
+    if (!props.isADMDeployment) {
+      this.columnDefs.push(deploymentDetailsColumnDefs.lastMessage);
+    }
   }
 
   getModuleStatus = data => ({

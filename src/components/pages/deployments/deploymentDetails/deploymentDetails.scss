@@ -46,6 +46,13 @@
       @include rem-fallback(padding-bottom, 6px);
     }
 
+    .summary-custom-column {
+      @include rem-fallback(padding-top, 10px);
+      @include rem-fallback(height, 150px);
+    }
+
+    .summary-container-groups { margin-right: 0px; }
+
     .summary-container-pending {
       padding-top: 0px;
       line-height: unset;

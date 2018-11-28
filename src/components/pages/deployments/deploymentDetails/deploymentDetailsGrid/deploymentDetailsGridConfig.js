@@ -2,7 +2,7 @@
 
 import Config from 'app.config';
 import { TimeRenderer, SoftSelectLinkRenderer } from 'components/shared/cellRenderers';
-import { getEdgeAgentStatusCode } from 'utilities';
+import { getEdgeAgentStatusCode, getDeviceStatusTranslation } from 'utilities';
 import { gridValueFormatters } from 'components/shared/pcsGrid/pcsGridConfig';
 
 const { checkForEmpty } = gridValueFormatters;
@@ -17,7 +17,7 @@ export const deploymentDetailsColumnDefs = {
   deploymentStatus: {
     headerName: 'deployments.details.grid.deploymentStatus',
     field: 'deploymentStatus',
-    valueFormatter: ({ value }) => checkForEmpty(value)
+    valueFormatter: ({ value, context: { t } }) => getDeviceStatusTranslation(checkForEmpty(value), t)
   },
   firmware: {
     headerName: 'deployments.details.grid.firmware',

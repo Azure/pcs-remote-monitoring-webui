@@ -10,7 +10,8 @@ import {
   toSolutionSettingThemeModel,
   toNewPackageRequestModel,
   toPackagesModel,
-  toPackageModel
+  toPackageModel,
+  toConfigTypesModel
 } from './models';
 import { Observable } from '../../node_modules/rxjs';
 
@@ -111,6 +112,18 @@ export class ConfigService {
   static getPackages() {
     return HttpClient.get(`${ENDPOINT}packages`)
       .map(toPackagesModel);
+  }
+
+  /** Returns filtered packages */
+  static getFilteredPackages(packageType, configType) {
+    return HttpClient.get(`${ENDPOINT}packages?packagetype=${packageType}&configtype=${configType}`)
+      .map(toPackagesModel);
+  }
+
+  /** Returns all the account's packages */
+  static getConfigTypes() {
+    return HttpClient.get(`${ENDPOINT}configtypes`)
+      .map(toConfigTypesModel);
   }
 
   /** Delete a package */

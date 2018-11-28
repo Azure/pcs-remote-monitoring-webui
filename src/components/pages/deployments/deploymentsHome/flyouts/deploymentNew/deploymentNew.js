@@ -4,8 +4,21 @@ import React from 'react';
 import { Trans } from 'react-i18next';
 import { Link } from "react-router-dom";
 
-import { packageTypeOptions, toDiagnosticsModel, toSinglePropertyDiagnosticsModel } from 'services/models';
-import { svgs, LinkedComponent, Validator } from 'utilities';
+import Config from 'app.config';
+import {
+  packageTypeOptions,
+  packagesEnum,
+  toDiagnosticsModel,
+  toSinglePropertyDiagnosticsModel
+} from 'services/models';
+import {
+  svgs,
+  LinkedComponent,
+  Validator,
+  getPackageTypeTranslation,
+  getConfigTypeTranslation,
+  themedPaths
+} from 'utilities';
 import {
   AjaxError,
   Btn,
@@ -16,6 +29,7 @@ import {
   FlyoutTitle,
   FlyoutCloseBtn,
   FlyoutContent,
+  Hyperlink,
   Indicator,
   FormControl,
   FormGroup,
@@ -24,17 +38,22 @@ import {
   SectionDesc,
   SummaryCount,
   SummarySection,
-  Svg
+  Svg,
+  Tooltip,
+  ThemedSvgContainer
 } from 'components/shared';
 
 import './deploymentNew.css';
+
+const isPositiveInteger = (str) => /^\+?(0|[1-9]\d*)$/.test(str) && str <= 2147483647;
 
 export class DeploymentNew extends LinkedComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      packageType: undefined,
+      packageType: '',
+      configType: '',
       deviceGroupId: undefined,
       deviceGroupName: '',
       deviceGroupQuery: '',
@@ -43,7 +62,6 @@ export class DeploymentNew extends LinkedComponent {
       packageId: undefined,
       packageName: '',
       targetedDeviceCount: '',
-      edgePackageSelected: false,
       changesApplied: false
     };
   }
@@ -82,13 +100,15 @@ export class DeploymentNew extends LinkedComponent {
       name,
       priority,
       packageId,
-      packageType } = this.state;
+      packageType,
+      configType } = this.state;
 
     logEvent(
       toDiagnosticsModel(
         'NewDeployment_ApplyClick', {
           packageId,
           packageType,
+          configType,
           priority,
           name,
           deviceGroupId,
@@ -98,7 +118,8 @@ export class DeploymentNew extends LinkedComponent {
     if (this.formIsValid()) {
       const packageContent = packages.find(packageObj => packageObj.id === packageId).content;
       createDeployment({
-        type: packageType,
+        packageType,
+        configType,
         packageName,
         packageContent,
         packageId,
@@ -129,17 +150,25 @@ export class DeploymentNew extends LinkedComponent {
     );
 
     switch (selectedPackageType) {
-      // case Edge manifest
-      case 'EdgeManifest':
-        const { fetchPackages } = this.props;
-        fetchPackages();
-        this.setState({ edgePackageSelected: true });
+      // case - Edge manifest
+      case packagesEnum.edgeManifest:
+        this.props.fetchPackages(packagesEnum.edgeManifest, '');
+        this.setState({ configType: '', changesApplied: false, packageId: undefined, packageName: '' });
         break;
-      // other cases to be impletmented in Edge walk iteration
+      // case - Device Configuration
+      case packagesEnum.deviceConfiguration:
+        this.props.fetchConfigTypes();
+        this.formControlChange();
+        break;
       default:
         break;
     }
-    this.formControlChange();
+  }
+
+  configTypeChange = ({ target: { value: { value = {} } } }) => {
+    this.props.logEvent(toSinglePropertyDiagnosticsModel('NewDeployment_ConfigTypeClick', 'ConfigType', value));
+    this.props.fetchPackages(packagesEnum.deviceConfiguration, value);
+    this.setState({ changesApplied: false, packageId: undefined, packageName: '' });
   }
 
   onDeviceGroupSelected = (e) => {
@@ -176,8 +205,6 @@ export class DeploymentNew extends LinkedComponent {
     this.formControlChange();
   }
 
-  isPositiveInteger = (str) => /^\+?(0|[1-9]\d*)$/.test(str) && str <= 2147483647;
-
   render() {
     const {
       t,
@@ -189,18 +216,20 @@ export class DeploymentNew extends LinkedComponent {
       deviceGroups,
       devicesPending,
       devicesError,
-      createdDeploymentId
-    } = this.props;
+      createdDeploymentId,
+      configTypes,
+      configTypesError,
+      configTypesIsPending } = this.props;
     const {
       name,
       packageType,
+      configType,
       deviceGroupId,
       deviceGroupName,
       packageName,
       priority,
       targetedDeviceCount,
-      changesApplied,
-      edgePackageSelected,
+      changesApplied
     } = this.state;
 
     // Validators
@@ -208,23 +237,39 @@ export class DeploymentNew extends LinkedComponent {
 
     // Links
     this.packageTypeLink = this.linkTo('packageType').map(({ value }) => value).withValidator(requiredValidator);
-    this.nameLink = this.linkTo('name').withValidator(requiredValidator);
+    this.configTypeLink = this.linkTo('configType')
+      .map(({ value }) => value)
+      .check(
+        // Validate for non-empty value if packageType is of type 'Device Configuration'
+        configValue => this.packageTypeLink.value === packagesEnum.deviceConfiguration ? Validator.notEmpty(configValue) : true,
+        this.props.t('deployments.flyouts.new.validation.required')
+      );
+    this.nameLink = this.linkTo('name')
+      .withValidator(requiredValidator)
+      .check(name => name.length <= 50, this.props.t('deployments.flyouts.new.validation.name'));
     this.deviceGroupIdLink = this.linkTo('deviceGroupId').map(({ value }) => value).withValidator(requiredValidator);
     this.priorityLink = this.linkTo('priority')
       .check(Validator.notEmpty, () => this.props.t('deployments.flyouts.new.validation.required'))
-      .check(val => this.isPositiveInteger(val), t('deployments.flyouts.new.validation.positiveInteger'));
+      .check(val => isPositiveInteger(val), t('deployments.flyouts.new.validation.positiveInteger'));
     this.packageIdLink = this.linkTo('packageId').map(({ value }) => value).withValidator(requiredValidator);
 
-    const isPackageTypeSelected = packageType !== undefined;
+    const isPackageTypeSelected = packageType === packagesEnum.edgeManifest || (packageType !== '' && configType !== '');
     const isDeviceGroupSelected = deviceGroupId !== undefined;
     const packageOptions = packages.map(this.toPackageSelectOption);
     const deviceGroupOptions = deviceGroups.map(this.toDeviceGroupSelectOption);
-    const typeOptions = packageTypeOptions.map(value => ({
-      label: t(`deployments.typeOptions.${value.toLowerCase()}`),
+    const packageTypeSelectOptions = packageTypeOptions.map(value => ({
+      label: getPackageTypeTranslation(value, t),
       value
-    }));
+    }))
+    const configTypeSelectOptions = configTypes ?
+      configTypes.map(value => ({
+        label: getConfigTypeTranslation(value, t),
+        value
+      }))
+      : {};
     const completedSuccessfully = changesApplied && !createError && !createIsPending;
     const deviceFetchSuccessful = isDeviceGroupSelected && !devicesError && !devicesPending;
+    const configTypeEnabled = this.packageTypeLink.value === packagesEnum.deviceConfiguration;
 
     return (
       <Flyout>
@@ -245,12 +290,10 @@ export class DeploymentNew extends LinkedComponent {
                   onBlur={(event) => this.genericOnChange('NewDeployment_NameText', 'Name', event.target.value)}
                   placeholder={t('deployments.flyouts.new.namePlaceHolder')} />
               }
-              {
-                completedSuccessfully && <FormLabel className="new-deployment-success-labels">{name}</FormLabel>
-              }
+              {completedSuccessfully && <FormLabel className="new-deployment-success-labels">{name}</FormLabel>}
             </FormGroup>
             <FormGroup className="new-deployment-formGroup">
-              <FormLabel isRequired="true">{t('deployments.flyouts.new.type')}</FormLabel>
+              <FormLabel isRequired="true">{t('deployments.flyouts.new.packageType')}</FormLabel>
               {
                 !completedSuccessfully &&
                 <FormControl
@@ -258,18 +301,41 @@ export class DeploymentNew extends LinkedComponent {
                   className="long"
                   link={this.packageTypeLink}
                   onChange={this.onPackageTypeSelected}
-                  options={typeOptions}
-                  placeholder={t('deployments.flyouts.new.typePlaceHolder')}
+                  options={packageTypeSelectOptions}
+                  placeholder={t('deployments.flyouts.new.packageTypePlaceHolder')}
                   clearable={false}
                   searchable={false} />
               }
-              {
-                completedSuccessfully && <FormLabel className="new-deployment-success-labels">{packageType}</FormLabel>
-              }
+              {completedSuccessfully && <FormLabel className="new-deployment-success-labels">{packageType}</FormLabel>}
             </FormGroup>
+            {
+              configTypeEnabled &&
+              <FormGroup className="new-deployment-formGroup">
+                <FormLabel isRequired="true">{t('deployments.flyouts.new.configType')}</FormLabel>
+                {
+                  !completedSuccessfully &&
+                  <FormControl
+                    type="select"
+                    className="long"
+                    onChange={this.configTypeChange}
+                    link={this.configTypeLink}
+                    options={configTypeSelectOptions}
+                    placeholder={t('deployments.flyouts.new.configTypePlaceHolder')}
+                    clearable={false}
+                    searchable={false} />
+                }
+                {configTypesIsPending && <Indicator />}
+                {
+                  /** Displays an error message if one occurs while fetching configTypes. */
+                  configTypesError && <AjaxError className="new-deployment-flyout-error" t={t} error={configTypesError} />
+                }
+                {completedSuccessfully && <FormLabel className="new-deployment-success-labels">{configType}</FormLabel>}
+              </FormGroup>
+            }
             <FormGroup className="new-deployment-formGroup">
               <FormLabel isRequired="true">{t('deployments.flyouts.new.package')}</FormLabel>
-              {!packagesPending && !completedSuccessfully &&
+              {
+                !packagesPending && !completedSuccessfully &&
                 <FormControl
                   type="select"
                   className="long"
@@ -281,15 +347,12 @@ export class DeploymentNew extends LinkedComponent {
                   clearable={false}
                   searchable={false} />
               }
+              {packagesPending && <Indicator />}
               {
-                packagesPending && <Indicator />
-              }
-              {/** Displays an error message if one occurs while fetching packages. */
+                /** Displays an error message if one occurs while fetching packages. */
                 packagesError && <AjaxError className="new-deployment-flyout-error" t={t} error={packagesError} />
               }
-              {
-                completedSuccessfully && <FormLabel className="new-deployment-success-labels">{packageName}</FormLabel>
-              }
+              {completedSuccessfully && <FormLabel className="new-deployment-success-labels">{packageName}</FormLabel>}
             </FormGroup>
             <FormGroup className="new-deployment-formGroup">
               <FormLabel isRequired="true">{t('deployments.flyouts.new.deviceGroup')}</FormLabel>
@@ -306,12 +369,20 @@ export class DeploymentNew extends LinkedComponent {
                   clearable={false}
                   searchable={false} />
               }
-              {
-                completedSuccessfully && <FormLabel className="new-deployment-success-labels">{deviceGroupName}</FormLabel>
-              }
+              {completedSuccessfully && <FormLabel className="new-deployment-success-labels">{deviceGroupName}</FormLabel>}
             </FormGroup>
             <FormGroup className="new-deployment-formGroup">
-              <FormLabel isRequired="true">{t('deployments.flyouts.new.priority')}</FormLabel>
+              <FormLabel isRequired="true">
+                {t('deployments.flyouts.new.priority')}
+                <Tooltip content={
+                  <Trans i18nKey={`deployments.flyouts.new.priorityToolTip`}>
+                    Manual setup is required.
+                      <Hyperlink href={Config.contextHelpUrls.deploymentPriority} target="_blank">{t('deployments.flyouts.new.priorityLearnMore')}</Hyperlink>
+                  </Trans>
+                }>
+                  <ThemedSvgContainer paths={themedPaths.questionBubble} />
+                </Tooltip>
+              </FormLabel>
               {
                 !completedSuccessfully &&
                 <FormControl
@@ -321,13 +392,12 @@ export class DeploymentNew extends LinkedComponent {
                   onBlur={(event) => this.genericOnChange('NewDeployment_PriorityNumber', 'Priority', event.target.value)}
                   placeholder={t('deployments.flyouts.new.priorityPlaceHolder')} />
               }
-              {
-                completedSuccessfully && <FormLabel className="new-deployment-success-labels">{priority}</FormLabel>
-              }
+              {completedSuccessfully && <FormLabel className="new-deployment-success-labels">{priority}</FormLabel>}
             </FormGroup>
             <SummarySection className="new-deployment-summary">
               <SummaryBody>
-                {/** Displays targeted devices count once device goup is selected. */
+                {
+                  /** Displays targeted devices count once device goup is selected. */
                   deviceFetchSuccessful &&
                   <ComponentArray>
                     <SummaryCount> {targetedDeviceCount}</SummaryCount>
@@ -344,14 +414,16 @@ export class DeploymentNew extends LinkedComponent {
                 }
 
               </SummaryBody>
-              {/** Displays a info message if package type selected is edge Manifest */
-                !changesApplied && edgePackageSelected &&
+              {
+                /** Displays a info message if package type selected is edge Manifest */
+                !changesApplied &&
                 <div className="new-deployment-info-text">
                   <strong className="new-deployment-info-star">* </strong>
                   {t('deployments.flyouts.new.infoText')}
                 </div>
               }
-              {/** Displays a success message if deployment is created successfully */
+              {
+                /** Displays a success message if deployment is created successfully */
                 completedSuccessfully &&
                 <div className="new-deployment-info-text">
                   <Trans i18nKey={"deployments.flyouts.new.successText"}>
@@ -365,7 +437,8 @@ export class DeploymentNew extends LinkedComponent {
                   </Trans>
                 </div>
               }
-              {/** Displays an error message if one occurs while creating deployment. */
+              {
+                /** Displays an error message if one occurs while creating deployment. */
                 changesApplied && createError && <AjaxError className="new-deployment-flyout-error" t={t} error={createError} />
               }
               {

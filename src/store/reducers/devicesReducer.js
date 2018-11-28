@@ -42,7 +42,7 @@ export const epics = createEpicScenario({
     type: 'DEVICES_FETCH_BY_CONDITION',
     epic: fromAction => {
       return IoTHubManagerService.getDevices(fromAction.payload)
-        .map(toActionCreator(redux.actions.updateDevices, fromAction))
+        .map(toActionCreator(redux.actions.updateDevicesByCondition, fromAction))
         .catch(handleError(fromAction))
     }
   },
@@ -84,6 +84,14 @@ const updateDevicesReducer = (state, { payload, fromAction }) => {
     entities: { $set: devices },
     items: { $set: result },
     lastUpdated: { $set: moment() },
+    ...setPending(fromAction.type, false)
+  });
+};
+
+const updateDevicesByConditionReducer = (state, { payload, fromAction }) => {
+  const { entities: { devices } } = normalize(payload, deviceListSchema);
+  return update(state, {
+    devicesByCondition: { $set: devices },
     ...setPending(fromAction.type, false)
   });
 };
@@ -173,6 +181,7 @@ const fetchableTypes = [
 
 export const redux = createReducerScenario({
   updateDevices: { type: 'DEVICES_UPDATE', reducer: updateDevicesReducer },
+  updateDevicesByCondition: { type: 'DEVICES_UPDATE_BY_CONDITION', reducer: updateDevicesByConditionReducer },
   registerError: { type: 'DEVICES_REDUCER_ERROR', reducer: errorReducer },
   isFetching: { multiType: fetchableTypes, reducer: pendingReducer },
   deleteDevices: { type: 'DEVICE_DELETE', reducer: deleteDevicesReducer },
@@ -195,6 +204,7 @@ export const getDevicesError = state =>
   getError(getDevicesReducer(state), epics.actionTypes.fetchDevices);
 export const getDevicesPendingStatus = state =>
   getPending(getDevicesReducer(state), epics.actionTypes.fetchDevices);
+export const getDevicesByCondition = state => getDevicesReducer(state).devicesByCondition || {};
 export const getDevicesByConditionError = state =>
   getError(getDevicesReducer(state), epics.actionTypes.fetchDevicesByCondition);
 export const getDevicesByConditionPendingStatus = state =>

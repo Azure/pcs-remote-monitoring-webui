@@ -175,9 +175,9 @@ export const setError = (type, error) => ({
   errors: { [type]: { $set: error } }
 });
 
-export const resetPendingAndErrorReducer = (state, { type }) => update(state, {
-  ...setPending(type, false),
-  ...setError(type)
+export const resetPendingAndErrorReducer = (state, { payload }) => update(state, {
+  ...setPending(payload, false),
+  ...setError(payload)
 });
 
 export const pendingReducer = (state, { type }) => update(state, {

@@ -72,14 +72,28 @@ export const toSolutionSettingActionModel = (action = {}) => {
 export const toSolutionSettingActionsModel = (response = {}) => getItems(response)
   .map(toSolutionSettingActionModel);
 
-export const packageTypeOptions = ['EdgeManifest'];
+export const packagesEnum = {
+  'edgeManifest': 'EdgeManifest',
+  'deviceConfiguration': 'DeviceConfiguration'
+}
+
+export const packageTypeOptions = Object.values(packagesEnum);
+
+export const configsEnum = {
+  'firmware': 'Firmware',
+  'custom': 'Custom'
+}
+
+export const configTypeOptions = Object.values(configsEnum);
 
 export const toNewPackageRequestModel = ({
-  type,
+  packageType,
+  configType,
   packageFile
 }) => {
   const data = new FormData();
-  data.append('Type', type);
+  data.append('PackageType', packageType);
+  data.append('ConfigType', configType);
   data.append('Package', packageFile);
   return data;
 }
@@ -90,9 +104,12 @@ export const toPackagesModel = (response = {}) => getItems(response)
 export const toPackageModel = (response = {}) => {
   return camelCaseReshape(response, {
     'id': 'id',
-    'type': 'type',
+    'packageType': 'packageType',
+    'configType': 'configType',
     'name': 'name',
     'dateCreated': 'dateCreated',
     'content': 'content'
   });
 };
+
+export const toConfigTypesModel = (response = {}) => getItems(response);
