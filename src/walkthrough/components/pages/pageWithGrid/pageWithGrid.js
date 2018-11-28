@@ -24,14 +24,11 @@ export class PageWithGrid extends Component {
     if (!lastUpdated && !isPending) fetchData();
   }
 
-  onGridReady = gridReadyEvent => this.gridApi = gridReadyEvent.api;
-
   onContextMenuChange = contextBtns => this.setState({ contextBtns });
 
   render() {
     const { t, data, error, isPending, lastUpdated, fetchData } = this.props;
     const gridProps = {
-      onGridReady: this.onGridReady,
       rowData: isPending ? undefined : data || [],
       onContextMenuChange: this.onContextMenuChange,
       t: this.props.t

@@ -11,6 +11,7 @@ import {
   getRulesPendingStatus
 } from 'store/reducers/rulesReducer';
 import {
+  getDeviceById,
   getDeviceModuleStatus,
   getDeviceModuleStatusPendingStatus,
   getDeviceModuleStatusError,
@@ -19,7 +20,8 @@ import {
 } from 'store/reducers/devicesReducer';
 
 // Pass the device details
-const mapStateToProps = state => ({
+const mapStateToProps = (state, props) => ({
+  device: getDeviceById(state, props.deviceId),
   isRulesPending: getRulesPendingStatus(state),
   rules: getRulesEntities(state),
   rulesLastUpdated: getRulesLastUpdated(state),

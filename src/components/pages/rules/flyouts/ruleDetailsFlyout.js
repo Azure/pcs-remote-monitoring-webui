@@ -21,7 +21,7 @@ export class RuleDetailsFlyout extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ((this.props.rule || {}).id !== nextProps.rule.id) {
+    if (this.props.ruleId !== nextProps.ruleId) {
       this.setState({ isEditable: false });
     }
   }
@@ -40,7 +40,7 @@ export class RuleDetailsFlyout extends Component {
   }
 
   render() {
-    const { t, onClose, rule } = this.props;
+    const { t, onClose, ruleId } = this.props;
     const { isEditable } = this.state;
 
     return (
@@ -53,7 +53,7 @@ export class RuleDetailsFlyout extends Component {
           {!isEditable
             ?
             <ComponentArray>
-              <RuleViewerContainer onClose={onClose} rule={rule} />
+              <RuleViewerContainer onClose={onClose} ruleId={ruleId} />
               <Protected permission={permissions.updateRules}>
                 <Btn className="edit-mode-btn" svg={svgs.edit} onClick={this.goToEditMode}>
                   {t('rules.flyouts.edit')}
@@ -64,7 +64,7 @@ export class RuleDetailsFlyout extends Component {
             <Protected id="rule-details-edit" permission={permissions.updateRules}>
               {
                 (hasPermission, permission) => hasPermission
-                  ? <RuleEditorContainer onClose={onClose} rule={rule} />
+                  ? <RuleEditorContainer onClose={onClose} ruleId={ruleId} />
                   : <ProtectedError t={t} permission={permission} />
               }
             </Protected>

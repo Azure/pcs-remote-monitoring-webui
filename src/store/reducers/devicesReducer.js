@@ -203,6 +203,8 @@ export const getDevices = createSelector(
   getEntities, getItems,
   (entities, items) => items.map(id => entities[id])
 );
+export const getDeviceById = (state, id) =>
+  getEntities(state)[id];
 export const getDeviceModuleStatus = state => {
   const deviceModuleStatus = getDevicesReducer(state).deviceModuleStatus
   return deviceModuleStatus

@@ -9,7 +9,7 @@ import { isFunc, svgs, translateColumnDefs } from 'utilities';
 import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
 
 const initialState = {
-  softSelectedObj: undefined
+  softSelectedId: undefined
 };
 
 /**
@@ -56,7 +56,7 @@ export class ExampleGrid extends Component {
   clickContextBtn = (input) => () => {
     //Just for demo purposes. Don't console log in a real grid.
     console.log('Context button clicked', input);
-    console.log('hard selected rows', this.gridApi.getSelectedRows());
+    console.log('Hard selected rows', this.gridApi.getSelectedRows());
   };
 
   /**
@@ -64,17 +64,17 @@ export class ExampleGrid extends Component {
    * Soft selection happens when the user clicks on the row.
    *
    * @param rowId The id of the currently soft selected item
-   * @param rowEvent The rowEvent to pass on to the underlying grid
+   * @param rowData The rowData from the underlying grid. MAY BE OUT OF DATE.
    */
-  onSoftSelectChange = (rowId, rowEvent) => {
+  onSoftSelectChange = (rowId, rowData) => {
+    //Note: only the Id is reliable, rowData may be out of date
     const { onSoftSelectChange } = this.props;
-    const obj = (this.gridApi.getDisplayedRowAtIndex(rowId) || {}).data;
-    if (obj) {
-      console.log('Soft selected', obj); //Just for demo purposes. Don't console log a real grid.
-      this.setState({ softSelectedObj: obj });
+    if (rowId) {
+      console.log('Soft selected', rowId); //Just for demo purposes. Don't console log a real grid.
+      this.setState({ softSelectedId: rowId });
     }
     if (isFunc(onSoftSelectChange)) {
-      onSoftSelectChange(obj, rowEvent);
+      onSoftSelectChange(rowId, rowData);
     }
   }
 

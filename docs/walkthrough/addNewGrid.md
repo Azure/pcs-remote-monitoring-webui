@@ -128,7 +128,7 @@ The user may need to act on mulitple rows at the same time. Checking a row's che
     ```js
     doSomething = () => {
       //Just for demo purposes. Don't console log in a real grid.
-      console.log('hard selected rows', this.gridApi.getSelectedRows());
+      console.log('Hard selected rows', this.gridApi.getSelectedRows());
     };
     ```
 
@@ -148,16 +148,16 @@ The user may need to act on a single row. A soft select link can be configured f
     ```
 1. When a soft select link is clicked, the `onSoftSelectChange` event is triggered. Perform whatever action is desired for that row (often opening a "details" flyout, but we'll just console log in this demo).
     ```js
-    onSoftSelectChange = (rowId, rowEvent) => {
+    onSoftSelectChange = (rowId, rowData) => {
+      //Note: only the Id is reliable, rowData may be out of date
       const { onSoftSelectChange } = this.props;
-      const obj = (this.gridApi.getDisplayedRowAtIndex(rowId) || {}).data;
-      if (obj) {
+      if (rowId) {
         //Just for demo purposes. Don't console log a real grid.
-        console.log('Soft selected', obj);
-        this.setState({ softSelectedObj: obj });
+        console.log('Soft selected', rowId);
+        this.setState({ softSelectedId: rowId });
       }
       if (isFunc(onSoftSelectChange)) {
-        onSoftSelectChange(obj, rowEvent);
+        onSoftSelectChange(rowId, rowData);
       }
     }
     ```

@@ -4,11 +4,12 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { RuleEditor } from './ruleEditor';
 import { getDeviceGroups } from 'store/reducers/appReducer';
-import { redux as rulesRedux } from 'store/reducers/rulesReducer';
+import { redux as rulesRedux, getRuleById } from 'store/reducers/rulesReducer';
 import { epics as appEpics } from 'store/reducers/appReducer';
 
 // Pass device groups
-const mapStateToProps = state => ({
+const mapStateToProps = (state, props) => ({
+  rule: getRuleById(state, props.ruleId),
   deviceGroups: getDeviceGroups(state)
 });
 

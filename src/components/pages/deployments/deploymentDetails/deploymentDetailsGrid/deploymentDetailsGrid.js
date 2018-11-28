@@ -9,7 +9,7 @@ import { toSinglePropertyDiagnosticsModel } from 'services/models';
 
 const closedFlyoutState = {
   openFlyoutName: undefined,
-  selectedDevice: undefined
+  selectedDeviceId: undefined
 };
 
 export class DeploymentDetailsGrid extends Component {
@@ -30,38 +30,30 @@ export class DeploymentDetailsGrid extends Component {
     ];
   }
 
-  onGridReady = gridReadyEvent => {
-    this.deployedDevicesGridApi = gridReadyEvent.api;
-    // Call the onReady props if it exists
-    if (isFunc(this.props.onGridReady)) {
-      this.props.onGridReady(gridReadyEvent);
-    }
-  };
-
   getModuleStatus = data => ({
     code: data.code,
     description: data.description
   });
 
-  onSoftSelectChange = (deviceRowId, rowEvent) => {
+  onSoftSelectChange = (deviceId, rowData) => {
+    //Note: only the Id is reliable, rowData may be out of date
     const { onSoftSelectChange, logEvent } = this.props;
-    const rowData = (this.deployedDevicesGridApi.getDisplayedRowAtIndex(deviceRowId) || {}).data;
     logEvent(
       toSinglePropertyDiagnosticsModel(
         'DeploymentDetail_DeviceGridClick',
         'DeviceId',
-        rowData ? rowData.id : ''));
-    if (rowData && rowData.device) {
+        deviceId));
+    if (deviceId) {
       this.setState({
         openFlyoutName: 'deviceDetails',
-        selectedDevice: rowData.device,
+        selectedDeviceId: deviceId,
         moduleStatus: this.getModuleStatus(rowData)
       });
     } else {
       this.closeFlyout();
     }
     if (isFunc(onSoftSelectChange)) {
-      onSoftSelectChange(rowData, rowEvent);
+      onSoftSelectChange(deviceId, rowData);
     }
   }
 
@@ -79,7 +71,6 @@ export class DeploymentDetailsGrid extends Component {
       rowData: this.props.deployedDevices,
       getRowNodeId: ({ id }) => id,
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
-      onGridReady: this.onGridReady,
       getSoftSelectId: this.getSoftSelectId,
       onSoftSelectChange: this.onSoftSelectChange
     };
@@ -92,7 +83,7 @@ export class DeploymentDetailsGrid extends Component {
           <DeviceDetailsContainer
             t={this.props.t}
             onClose={this.closeFlyout}
-            device={this.state.selectedDevice}
+            deviceId={this.state.selectedDeviceId}
             moduleStatus={this.state.moduleStatus} />
         }
       </ComponentArray>

@@ -60,12 +60,9 @@ export class Packages extends Component {
     });
   }
 
-  onGridReady = gridReadyEvent => this.packageGridApi = gridReadyEvent.api;
-
   render() {
     const { t, packages, error, isPending, fetchPackages, lastUpdated } = this.props;
     const gridProps = {
-      onGridReady: this.onGridReady,
       rowData: isPending ? undefined : packages || [],
       onContextMenuChange: this.onContextMenuChange,
       t: this.props.t

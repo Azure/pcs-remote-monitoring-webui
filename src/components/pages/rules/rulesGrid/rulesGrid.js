@@ -14,7 +14,7 @@ import './rulesGrid.css';
 
 const closedFlyoutState = {
   openFlyoutName: undefined,
-  softSelectedRule: undefined
+  softSelectedRuleId: undefined
 };
 
 export class RulesGrid extends Component {
@@ -75,20 +75,20 @@ export class RulesGrid extends Component {
   }
 
   componentWillReceiveProps({ rowData }) {
-    const { selectedRules = [], softSelectedRule } = this.state;
-    if (rowData && (selectedRules.length || softSelectedRule)) {
+    const { selectedRules = [], softSelectedRuleId } = this.state;
+    if (rowData && (selectedRules.length || softSelectedRuleId)) {
       let updatedSoftSelectedRule = undefined;
       const selectedIds = new Set(selectedRules.map(({ id }) => id));
       const updatedSelectedRules = rowData.reduce((acc, rule) => {
         if (selectedIds.has(rule.id)) acc.push(rule);
-        if (softSelectedRule && rule.id === softSelectedRule.id) {
+        if (softSelectedRuleId && rule.id === softSelectedRuleId) {
           updatedSoftSelectedRule = rule;
         }
         return acc;
       }, []);
       this.setState({
         selectedRules: updatedSelectedRules,
-        softSelectedRule: updatedSoftSelectedRule
+        softSelectedRuleId: (updatedSoftSelectedRule || {}).id
       });
     }
   }
@@ -107,9 +107,9 @@ export class RulesGrid extends Component {
   getOpenFlyout = () => {
     switch (this.state.openFlyoutName) {
       case 'view':
-        return <RuleDetailsFlyout onClose={this.closeFlyout} t={this.props.t} rule={this.state.softSelectedRule || this.state.selectedRules[0]} key="view-rule-flyout" logEvent={this.props.logEvent} />
+        return <RuleDetailsFlyout onClose={this.closeFlyout} t={this.props.t} ruleId={this.state.softSelectedRuleId || this.state.selectedRules[0].id} key="view-rule-flyout" logEvent={this.props.logEvent} />
       case 'edit':
-        return <EditRuleFlyout onClose={this.closeFlyout} t={this.props.t} rule={this.state.softSelectedRule || this.state.selectedRules[0]} key="edit-rule-flyout" logEvent={this.props.logEvent} />
+        return <EditRuleFlyout onClose={this.closeFlyout} t={this.props.t} ruleId={this.state.softSelectedRuleId || this.state.selectedRules[0].id} key="edit-rule-flyout" logEvent={this.props.logEvent} />
       case 'status':
         return <RuleStatusContainer onClose={this.closeFlyout} t={this.props.t} rules={this.state.selectedRules} key="edit-rule-flyout" />
       case 'delete':
@@ -150,28 +150,20 @@ export class RulesGrid extends Component {
     }
   }
 
-  onGridReady = gridReadyEvent => {
-    this.gridApi = gridReadyEvent.api;
-    if (isFunc(this.props.onGridReady)) {
-      this.props.onGridReady(gridReadyEvent);
-    }
-  }
-
-  onSoftSelectChange = (ruleRowId, rowEvent) => {
-    const rule = (this.gridApi.getDisplayedRowAtIndex(ruleRowId) || {}).data;
+  onSoftSelectChange = (ruleId) => {
     const { onSoftSelectChange, suppressFlyouts } = this.props;
     if (!suppressFlyouts) {
-      if (rule) {
+      if (ruleId) {
         this.setState({
           openFlyoutName: 'view',
-          softSelectedRule: rule
+          softSelectedRuleId: ruleId
         });
       } else {
         this.closeFlyout();
       }
     }
     if (isFunc(onSoftSelectChange)) {
-      onSoftSelectChange(rule, rowEvent);
+      onSoftSelectChange(ruleId);
     }
   }
 
@@ -186,10 +178,9 @@ export class RulesGrid extends Component {
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
       sizeColumnsToFit: true,
       getSoftSelectId: this.getSoftSelectId,
-      softSelectId: (this.state.softSelectedRule || {}).id,
+      softSelectId: this.state.softSelectedRuleId || {},
       deltaRowDataMode: true,
       ...this.props, // Allow default property overrides
-      onGridReady: event => this.onGridReady(event), // Wrap in a function to avoid closure issues
       getRowNodeId: ({ id }) => id,
       enableSorting: true,
       unSortIcon: true,
@@ -200,7 +191,7 @@ export class RulesGrid extends Component {
       /* Grid Events */
       onRowClicked: ({ node }) => node.setSelected(!node.isSelected()),
       onHardSelectChange: this.onHardSelectChange,
-      onSoftSelectChange: rule => this.onSoftSelectChange(rule) // See above comment about closures
+      onSoftSelectChange: this.onSoftSelectChange
     };
 
     return (

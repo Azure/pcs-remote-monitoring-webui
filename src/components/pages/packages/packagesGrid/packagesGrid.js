@@ -51,19 +51,6 @@ export class PackagesGrid extends Component {
   }
 
   /**
-   * Get the grid api options
-   *
-   * @param {Object} gridReadyEvent An object containing access to the grid APIs
-  */
-  onGridReady = gridReadyEvent => {
-    this.packagesGridApi = gridReadyEvent.api;
-    // Call the onReady props if it exists
-    if (isFunc(this.props.onGridReady)) {
-      this.props.onGridReady(gridReadyEvent);
-    }
-  };
-
-  /**
    * Handles context filter changes and calls any hard select props method
    *
    * @param {Array} selectedPackages A list of currently selected packages
@@ -95,7 +82,6 @@ export class PackagesGrid extends Component {
       sizeColumnsToFit: true,
       deltaRowDataMode: true,
       ...this.props, // Allow default property overrides
-      onGridReady: event => this.onGridReady(event), // Wrap in a function to avoid closure issues
       getRowNodeId: ({ id }) => id,
       enableSorting: true,
       unSortIcon: true,

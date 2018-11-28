@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { deploymentsColumnDefs, defaultDeploymentsGridProps } from './deploymentsGridConfig';
 import { PcsGrid } from 'components/shared';
-import { isFunc, translateColumnDefs } from 'utilities';
+import { translateColumnDefs } from 'utilities';
 
 export class DeploymentsGrid extends Component {
   constructor(props) {
@@ -21,18 +21,6 @@ export class DeploymentsGrid extends Component {
       deploymentsColumnDefs.dateCreated,
     ];
   }
-  /**
-   * Get the grid api options
-   *
-   * @param {Object} gridReadyEvent An object containing access to the grid APIs
-  */
-  onGridReady = gridReadyEvent => {
-    this.deploymentsGridApi = gridReadyEvent.api;
-    // Call the onReady props if it exists
-    if (isFunc(this.props.onGridReady)) {
-      this.props.onGridReady(gridReadyEvent);
-    }
-  };
 
   render() {
     const gridProps = {
@@ -40,7 +28,6 @@ export class DeploymentsGrid extends Component {
       ...defaultDeploymentsGridProps,
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
       ...this.props, // Allow default property overrides
-      onGridReady: event => this.onGridReady(event), // Wrap in a function to avoid closure issues
       getRowNodeId: ({ id }) => id,
       context: {
         t: this.props.t

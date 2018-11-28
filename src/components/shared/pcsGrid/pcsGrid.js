@@ -139,7 +139,8 @@ export class PcsGrid extends Component {
       },
       context: {
         ...context,
-        onSoftSelectChange // Pass soft select logic to cell renderers
+        onSoftSelectChange, // Pass soft select logic to cell renderers
+        getSoftSelectId // Pass soft select id logic to cell renderers
       }
     };
     const { rowData, pcsLoadingTemplate } = this.props;

@@ -170,4 +170,6 @@ export const getRules = createSelector(
         : acc
     }, [])
 );
+export const getRuleById = (state, id) =>
+  getEntities(state)[id];
 // ========================= Selectors - END

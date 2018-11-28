@@ -12,7 +12,7 @@ import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
 
 const closedFlyoutState = {
   openFlyoutName: undefined,
-  softSelectedDevice: undefined
+  softSelectedDeviceId: undefined
 };
 
 /**
@@ -65,7 +65,7 @@ export class DevicesGrid extends Component {
 
   openFlyout = (flyoutName) => () => this.setState({
     openFlyoutName: flyoutName,
-    softSelectedDevice: undefined
+    softSelectedDeviceId: undefined
   });
 
   getOpenFlyout = () => {
@@ -75,7 +75,7 @@ export class DevicesGrid extends Component {
       case 'jobs':
         return <DeviceJobsContainer key="jobs-device-key" onClose={this.closeFlyout} devices={this.deviceGridApi.getSelectedRows()} />
       case 'details':
-        return <DeviceDetailsContainer key="details-device-key" onClose={this.closeFlyout} device={this.state.softSelectedDevice} />
+        return <DeviceDetailsContainer key="details-device-key" onClose={this.closeFlyout} deviceId={this.state.softSelectedDeviceId} />
       default:
         return null;
     }
@@ -86,22 +86,20 @@ export class DevicesGrid extends Component {
   /**
    * Handles soft select props method
    *
-   * @param device The currently soft selected device
-   * @param rowEvent The rowEvent to pass on to the underlying grid
+   * @param deviceId The ID of the currently soft selected device
    */
-  onSoftSelectChange = (deviceRowId, rowEvent) => {
+  onSoftSelectChange = (deviceId) => {
     const { onSoftSelectChange } = this.props;
-    const device = (this.deviceGridApi.getDisplayedRowAtIndex(deviceRowId) || {}).data;
-    if (device) {
+    if (deviceId) {
       this.setState({
         openFlyoutName: 'details',
-        softSelectedDevice: device
+        softSelectedDeviceId: deviceId
       });
     } else {
       this.closeFlyout();
     }
     if (isFunc(onSoftSelectChange)) {
-      onSoftSelectChange(device, rowEvent);
+      onSoftSelectChange(deviceId);
     }
   }
 
@@ -129,7 +127,7 @@ export class DevicesGrid extends Component {
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
       sizeColumnsToFit: true,
       getSoftSelectId: this.getSoftSelectId,
-      softSelectId: (this.state.softSelectedDevice || {}).id,
+      softSelectId: this.state.softSelectedDeviceId || {},
       ...this.props, // Allow default property overrides
       deltaRowDataMode: true,
       enableSorting: true,
