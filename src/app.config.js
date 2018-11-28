@@ -36,7 +36,8 @@ const Config = {
   actionSetupPollingTimeLimit: 2 * 60 * 1000, // for up to 2 minutes
   simulationId: '1',
   validExtensions: validExtensions.join(),
-  emptyValue: '--',
+  emptyFieldValue: '---', // for use in grid columns
+  emptyValue: '--', // for use in stat components
   maxTopAlerts: 5,
   maxAlertsCount: 1000,
   gridMinResize: 1200, // In px

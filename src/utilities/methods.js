@@ -179,3 +179,11 @@ export const getIntervalParams = (timeInterval) => {
       ];
   }
 };
+
+// Helper to format conditions for display
+export const formatConditions = (rule) => {
+  if (rule && Array.isArray(rule.conditions) && rule.conditions.length) {
+    return rule.conditions.map(trigger => trigger['field'] || Config.emptyFieldValue).join(' & ');
+  }
+  return Config.emptyFieldValue;
+};

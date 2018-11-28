@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 /* This file contains default values useful for creating PcsGrid */
+import Config from 'app.config';
 
 export const ROW_HEIGHT = 48;
 
 /** The default value for PcsGrid cells that are empty */
-export const EMPTY_FIELD_VAL = '---';
+export const EMPTY_FIELD_VAL = Config.emptyFieldValue;
 
 /** The default formatting for dates in the PcsGrid */
 export const DEFAULT_TIME_FORMAT = 'hh:mm:ss A MM.DD.YYYY';

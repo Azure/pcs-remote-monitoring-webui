@@ -4,6 +4,7 @@ import React from "react";
 
 import Config from 'app.config';
 
+import { compareByProperty } from 'utilities';
 import {
   SeverityRenderer,
   RuleStatusRenderer,
@@ -52,15 +53,9 @@ export const rulesColumnDefs = {
   },
   trigger: {
     headerName: 'rules.grid.trigger',
-    field: 'conditions',
+    field: 'sortableConditions',
     filter: 'text',
-    cellClass: 'capitalize-cell',
-    valueFormatter: ({ value, context: { t } }) => {
-      if (Array.isArray(value) && value.length) {
-        return value.map(trigger => trigger['field'] || t('rules.grid.unknown')).join(' & ');
-      }
-      return t('rules.grid.unknown');
-    }
+    cellClass: 'capitalize-cell'
   },
   notificationType: {
     headerName: 'rules.grid.notificationType',
@@ -83,12 +78,14 @@ export const rulesColumnDefs = {
   count: {
     headerName: 'rules.grid.count',
     field: 'count',
-    cellRendererFramework: CountRenderer
+    cellRendererFramework: CountRenderer,
+    comparator: compareByProperty('response', true)
   },
   lastTrigger: {
     headerName: 'rules.grid.lastTrigger',
     field: 'lastTrigger',
     cellRendererFramework: LastTriggerRenderer,
+    comparator: compareByProperty('response', true),
     width: LAST_TRIGGER_DEFAULT_WIDTH
   },
   explore: {

@@ -22,6 +22,7 @@ import {
   getPending,
   getError
 } from 'store/utilities';
+import {formatConditions} from 'utilities';
 
 // ========================= Epics - START
 const handleError = fromAction => error =>
@@ -163,7 +164,7 @@ export const getRules = createSelector(
   getEntities, getItems, getActiveDeviceGroupId, getActiveDeviceGroupConditions,
   (entities, items, deviceGroupId, deviceGroupConditions = [], includeDeleted = false) =>
     items.reduce((acc, id) => {
-      const rule = entities[id];
+      const rule = {...entities[id], sortableConditions: formatConditions(entities[id])};
       const activeDeviceGroup = deviceGroupConditions.length > 0 ? deviceGroupId : undefined;
       return ((rule.groupId === activeDeviceGroup || !activeDeviceGroup) && (!rule.deleted || includeDeleted))
         ? [...acc, rule]
