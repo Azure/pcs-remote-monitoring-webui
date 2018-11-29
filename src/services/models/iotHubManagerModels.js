@@ -30,13 +30,16 @@ export const toDeviceModel = (device = {}) => {
     'eTag': 'eTag',
     'authentication': 'authentication'
   });
+  // TODO: Remove this once device simulation has removed FirmwareUpdate from supportedMethods of devices
+  const methods = (modelData.methods ? modelData.methods.split(',') : [])
+    .filter((methodName) => methodName !== "FirmwareUpdate");
   return update(modelData, {
-    methods: { $set: modelData.methods ? modelData.methods.split(',') : [] },
+    methods: { $set: methods },
     tags: { $set: device.Tags || {} },
     // TODO: Rename properties to reportedProperties
     properties: {
       $set: update(dot.pick('Properties.Reported', device), {
-        $unset: ['Telemetry', 'SupportedMethods']
+        $unset: ['Telemetry', 'SupportedMethods', 'firmware']
       })
     },
     desiredProperties: {
