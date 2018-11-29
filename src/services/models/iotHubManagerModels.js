@@ -107,26 +107,16 @@ export const toSubmitPropertiesJobRequestModel = (devices, { jobName, updatedPro
   return request;
 };
 
-export const methodJobConstants = {
-  firmwareUpdate: 'FirmwareUpdate'
-};
-
-export const toSubmitMethodJobRequestModel = (devices, { jobName, methodName, firmwareVersion, firmwareUri }) => {
+export const toSubmitMethodJobRequestModel = (devices, { jobName, methodName }) => {
   const jobId = jobName ? jobName + '-' + uuid() : uuid();
   const deviceIds = devices.map(({ id }) => `'${id}'`).join(',');
-  const JsonPayload = (methodName === methodJobConstants.firmwareUpdate)
-    ? JSON.stringify({
-      Firmware: firmwareVersion,
-      FirmwareUri: firmwareUri
-    })
-    : '';
   const request = {
     JobId: jobId,
     QueryCondition: `deviceId in [${deviceIds}]`,
     MaxExecutionTimeInSeconds: 0,
     MethodParameter: {
       Name: methodName,
-      JsonPayload
+      JsonPayload: ''
     }
   };
   return request;

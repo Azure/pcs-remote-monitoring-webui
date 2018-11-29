@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Observable } from 'rxjs';
 
 import { IoTHubManagerService } from 'services';
-import { toSubmitMethodJobRequestModel, methodJobConstants } from 'services/models';
+import { toSubmitMethodJobRequestModel } from 'services/models';
 import { LinkedComponent } from 'utilities';
 import { svgs, Validator } from 'utilities';
 import {
@@ -81,9 +81,7 @@ export class DeviceJobMethods extends LinkedComponent {
           : deviceMethods
       )
       .subscribe(commonMethodSet => {
-        // TODO: Remove this once 'FirmwareUpdate' is removed from device simulation service
-        const filteredMethods = new Set([...commonMethodSet].filter(method => method !== 'FirmwareUpdate'));
-        const commonMethods = [...filteredMethods];
+        const commonMethods = [...commonMethodSet];
         this.setState({ commonMethods });
       });
   }
@@ -114,12 +112,6 @@ export class DeviceJobMethods extends LinkedComponent {
           }
         );
     }
-  }
-
-  isFirmwareUpdate() {
-    return this.methodNameLink.value
-      ? this.methodNameLink.value === methodJobConstants.firmwareUpdate
-      : undefined;
   }
 
   getSummaryMessage() {
