@@ -191,8 +191,8 @@ export const toDeploymentModel = (deployment = {}) => {
     'configType': 'configType',
     'createdDateTimeUtc': 'createdDateTimeUtc',
     'metrics.systemMetrics.appliedCount': 'appliedCount',
-    'metrics.systemMetrics.failedCount': 'failedCount',
-    'metrics.systemMetrics.succeededCount': 'succeededCount',
+    'metrics.systemMetrics.reportedFailedCount': 'failedCount',
+    'metrics.systemMetrics.reportedSuccessfulCount': 'succeededCount',
     'metrics.systemMetrics.targetedCount': 'targetedCount',
     'metrics.systemMetrics.pendingCount': 'pendingCount'
   });
