@@ -9,7 +9,7 @@ import { toDiagnosticsModel } from 'services/models';
 import { themedPaths } from 'utilities';
 import { Hyperlink, ThemedSvgContainer, Tooltip } from 'components/shared';
 
-import './timeSeriesInsightsLink.css';
+import './timeSeriesInsightsLink.scss';
 
 export class TimeSeriesInsightsLink extends Component {
   onClick = () => {

@@ -17,7 +17,7 @@ import {
 
 import Flyout from 'components/shared/flyout';
 
-import './SIMManagement.css';
+import './SIMManagement.scss';
 
 const Section = Flyout.Section;
 

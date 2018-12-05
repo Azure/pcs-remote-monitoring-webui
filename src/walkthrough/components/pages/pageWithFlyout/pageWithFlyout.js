@@ -6,7 +6,7 @@ import { Btn, ComponentArray, ContextMenu, PageContent } from 'components/shared
 import { svgs } from 'utilities';
 import { ExampleFlyoutContainer } from './flyouts/exampleFlyout';
 
-import './pageWithFlyout.css';
+import './pageWithFlyout.scss';
 
 const closedFlyoutState = { openFlyoutName: undefined };
 

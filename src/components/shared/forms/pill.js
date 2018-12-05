@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { Btn } from 'components/shared';
 
-import './styles/pill.css';
+import './styles/pill.scss';
 
 export const Pill = ({ svg, label, onSvgClick, altSvgText }) => (
     <div className="pill">

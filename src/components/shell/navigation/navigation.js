@@ -6,7 +6,7 @@ import { Svg, Indicator } from 'components/shared';
 
 import { svgs } from 'utilities';
 
-import './navigation.css';
+import './navigation.scss';
 
 /** A window size less than this will automatically collapse the left nav */
 const minExpandedNavWindowWidth = 800;

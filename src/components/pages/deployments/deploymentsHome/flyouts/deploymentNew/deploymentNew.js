@@ -43,7 +43,7 @@ import {
   ThemedSvgContainer
 } from 'components/shared';
 
-import './deploymentNew.css';
+import './deploymentNew.scss';
 
 const isPositiveInteger = (str) => /^\+?(0|[1-9]\d*)$/.test(str) && str <= 2147483647;
 

@@ -4,7 +4,7 @@ import React from 'react';
 
 import { joinClasses } from 'utilities';
 import { Svg } from 'components/shared';
-import './statProperty.css';
+import './statProperty.scss';
 
 const validSizes = new Set(['large', 'medium', 'small', 'normal']);
 

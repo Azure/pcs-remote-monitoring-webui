@@ -14,7 +14,7 @@ import {
   PanelError
 } from 'components/pages/dashboard/panel';
 
-import './overviewPanel.css';
+import './overviewPanel.scss';
 
 export class OverviewPanel extends Component {
   constructor(props) {

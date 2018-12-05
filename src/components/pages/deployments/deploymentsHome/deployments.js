@@ -20,7 +20,7 @@ import { DeploymentsGrid } from './deploymentsGrid';
 import { DeploymentNewContainer } from './flyouts';
 import { svgs } from 'utilities';
 
-import './deployments.css';
+import './deployments.scss';
 
 const closedFlyoutState = { openFlyoutName: undefined };
 

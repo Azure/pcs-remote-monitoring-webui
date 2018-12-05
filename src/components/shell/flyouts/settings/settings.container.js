@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import {
   redux as appRedux,
   getTheme,
@@ -56,4 +56,4 @@ const mapDispatchToProps = dispatch => ({
   toggleSimulationStatus: (etag, enabled) => dispatch(simulationEpics.actions.toggleSimulationStatus({etag, enabled}))
 });
 
-export const SettingsContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Settings));
+export const SettingsContainer = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(Settings));

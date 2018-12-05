@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { ManageDeviceGroups } from './manageDeviceGroups';
 import {
   redux as appRedux,
@@ -20,4 +20,4 @@ const mapDispatchToProps = dispatch => ({
   insertDeviceGroups: (deviceGroups) => dispatch(appRedux.actions.insertDeviceGroups(deviceGroups))
 });
 
-export const ManageDeviceGroupsContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(ManageDeviceGroups));
+export const ManageDeviceGroupsContainer = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(ManageDeviceGroups));

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { redux as appRedux, getDeviceGroups, getActiveDeviceGroupId } from 'store/reducers/appReducer';
 
 import { DeviceGroupDropdown } from './deviceGroupDropdown';
@@ -16,4 +16,4 @@ const mapDispatchToProps = dispatch => ({
   changeDeviceGroup: (id) => dispatch(appRedux.actions.updateActiveDeviceGroup(id))
 });
 
-export const DeviceGroupDropdownContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(DeviceGroupDropdown));
+export const DeviceGroupDropdownContainer = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(DeviceGroupDropdown));

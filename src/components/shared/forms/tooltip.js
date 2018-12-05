@@ -4,7 +4,7 @@ import React from 'react';
 
 import { joinClasses } from 'utilities';
 
-import './styles/tooltip.css';
+import './styles/tooltip.scss';
 
 export const Tooltip = (props) => {
   const { content, children, position } = props;

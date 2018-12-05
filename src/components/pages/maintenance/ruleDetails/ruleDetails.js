@@ -30,7 +30,7 @@ import { TimeRenderer, SeverityRenderer } from 'components/shared/cellRenderers'
 import { AlertOccurrencesGrid } from 'components/pages/maintenance/grids';
 import { ROW_HEIGHT } from 'components/shared/pcsGrid/pcsGridConfig';
 
-import './ruleDetails.css';
+import './ruleDetails.scss';
 
 const tabIds = {
   all: 'all',
@@ -266,7 +266,7 @@ export class RuleDetails extends Component {
     const alertName = (this.state.selectedRule || {}).name || selectedId;
 
     const alertsGridProps = {
-      domLayout: 'autoHeight',
+      gridAutoHeight: true,
       rowSelection: 'multiple',
       deltaRowDataMode: true,
       getRowNodeId: ({ id }) => id,
@@ -395,7 +395,7 @@ export class RuleDetails extends Component {
                     <h4 className="sub-heading">{t('maintenance.alertedDevices')}</h4>
                     <DevicesGrid
                       t={t}
-                      domLayout={'autoHeight'}
+                      gridAutoHeight={true}
                       onGridReady={this.onDeviceGridReady}
                       rowData={isPending ? undefined : this.state.devices}
                       onContextMenuChange={this.onContextMenuChange('deviceContextBtns')}

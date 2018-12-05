@@ -33,7 +33,7 @@ import {
   Svg
 } from 'components/shared';
 
-import './packageNew.css';
+import './packageNew.scss';
 
 const fileInputAccept = ".json,application/json";
 

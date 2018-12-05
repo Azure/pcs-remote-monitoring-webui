@@ -15,7 +15,7 @@ import { TelemetryService } from 'services';
 import { permissions, toEditRuleRequestModel } from 'services/models';
 import Flyout from 'components/shared/flyout';
 
-import './ruleStatus.css';
+import './ruleStatus.scss';
 import { RuleSummary } from './ruleSummary';
 
 export class RuleStatus extends Component {

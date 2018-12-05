@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { DeviceJobs } from './deviceJobs';
 import { redux as devicesRedux } from 'store/reducers/devicesReducer';
 
@@ -11,4 +11,4 @@ const mapDispatchToProps = dispatch => ({
   updateProperties: device => dispatch(devicesRedux.actions.updateProperties(device))
 });
 
-export const DeviceJobsContainer = translate()(connect(null, mapDispatchToProps)(DeviceJobs));
+export const DeviceJobsContainer = withNamespaces()(connect(null, mapDispatchToProps)(DeviceJobs));

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import {
   redux as appRedux,
   getActiveDeviceGroup,
@@ -55,4 +55,4 @@ const mapDispatchToProps = dispatch => ({
   updateCurrentWindow: (currentWindow) => dispatch(appRedux.actions.updateCurrentWindow(currentWindow))
 });
 
-export const DashboardContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Dashboard));
+export const DashboardContainer = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(Dashboard));

@@ -8,9 +8,9 @@ import { isFunc } from 'utilities';
 import { Indicator } from '../indicator/indicator';
 import { ROW_HEIGHT } from 'components/shared/pcsGrid/pcsGridConfig';
 
-import '../../../../node_modules/ag-grid/dist/styles/ag-grid.css';
-import '../../../../node_modules/ag-grid/dist/styles/ag-theme-dark.css';
-import './pcsGrid.css';
+import '../../../../node_modules/ag-grid-community/src/styles/ag-grid.scss';
+import '../../../../node_modules/ag-grid-community/src/styles/ag-theme-dark.scss';
+import './pcsGrid.scss';
 
 /**
  * PcsGrid is a helper wrapper around AgGrid. The primary functionality of this wrapper
@@ -108,7 +108,7 @@ export class PcsGrid extends Component {
   /** When a row is clicked, select the row unless a soft select link was clicked */
   onRowClicked = rowEvent => {
     const className = rowEvent.event.target.className;
-    if (className.indexOf && className.indexOf('soft-select-link-cell') === -1) {
+    if (className.indexOf && className.indexOf('soft-select-link') === -1) {
       const { onRowClicked } = this.props;
       if (isFunc(onRowClicked)) onRowClicked(rowEvent);
     }

@@ -41,7 +41,7 @@ export class AlertsPanel extends Component {
       columnDefs: translateColumnDefs(t, this.columnDefs),
       rowData: alerts,
       suppressFlyouts: true,
-      domLayout: 'autoHeight',
+      gridAutoHeight: true,
       deltaRowDataMode: false,
       t
     };

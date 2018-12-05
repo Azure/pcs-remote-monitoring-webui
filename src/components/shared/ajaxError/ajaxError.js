@@ -5,7 +5,7 @@ import React from 'react';
 import { ErrorMsg } from '../forms';
 import { joinClasses } from 'utilities';
 
-import './ajaxError.css';
+import './ajaxError.scss';
 
 export const AjaxError = ({ error, t, className }) => (
   <div className={joinClasses('ajax-error-container', className)}>

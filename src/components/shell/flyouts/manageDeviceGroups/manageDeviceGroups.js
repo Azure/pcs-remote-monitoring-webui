@@ -10,7 +10,7 @@ import Flyout from 'components/shared/flyout';
 import DeviceGroupForm from './views/deviceGroupForm';
 import DeviceGroups from './views/deviceGroups';
 
-import './manageDeviceGroups.css';
+import './manageDeviceGroups.scss';
 
 const toOption = (value, label) => ({
   label: label || value,

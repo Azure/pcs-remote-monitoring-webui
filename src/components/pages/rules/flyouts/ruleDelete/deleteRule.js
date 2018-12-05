@@ -18,7 +18,7 @@ import { toEditRuleRequestModel } from 'services/models';
 import Flyout from 'components/shared/flyout';
 import { RuleSummary } from '..';
 
-import './deleteRule.css';
+import './deleteRule.scss';
 
 export class DeleteRule extends Component {
   constructor(props) {

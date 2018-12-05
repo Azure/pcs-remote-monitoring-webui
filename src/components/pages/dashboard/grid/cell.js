@@ -4,7 +4,7 @@ import React from 'react';
 
 import { joinClasses } from 'utilities';
 
-import './grid.css';
+import './grid.scss';
 
 export const Cell = ({ className, children }) => (
   <div className={joinClasses('grid-cell', className)}>

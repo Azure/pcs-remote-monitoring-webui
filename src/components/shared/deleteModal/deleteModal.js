@@ -12,7 +12,7 @@ import {
 import { svgs } from 'utilities';
 import { toSinglePropertyDiagnosticsModel } from 'services/models';
 
-import './deleteModal.css';
+import './deleteModal.scss';
 
 export class DeleteModal extends Component {
 

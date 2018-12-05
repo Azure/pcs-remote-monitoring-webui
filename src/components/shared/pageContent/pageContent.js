@@ -4,7 +4,7 @@ import React from 'react';
 
 import { joinClasses } from 'utilities';
 
-import './pageContent.css';
+import './pageContent.scss';
 
 /** A presentational component containing the content for a page */
 export const PageContent = ({ className, children }) => (

@@ -8,7 +8,7 @@ import { RuleEditorContainer } from './ruleEditor';
 import { RuleViewerContainer } from './ruleViewer';
 import Flyout from 'components/shared/flyout';
 
-import './ruleDetailsFlyout.css';
+import './ruleDetailsFlyout.scss';
 
 export class RuleDetailsFlyout extends Component {
   constructor(props) {

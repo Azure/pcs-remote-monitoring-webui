@@ -8,7 +8,7 @@ import { Select } from './select';
 import { ErrorMsg } from './errorMsg';
 import { joinClasses, isFunc, Link } from 'utilities';
 
-import './styles/formControl.css';
+import './styles/formControl.scss';
 
 export class FormControl extends Component {
   constructor(props) {

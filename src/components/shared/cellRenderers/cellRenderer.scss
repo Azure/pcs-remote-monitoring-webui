@@ -35,12 +35,20 @@ $iconSize: 14px;
     > .icon-only { display: none !important; }
   }
 
-  .soft-select-link-cell {
+  .soft-select-link {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
     display: inline;
     color: inherit;
     text-decoration: underline;
+    font-family: inherit;
+    padding: 0;
+    @include rem-fallback(margin, 4px, 0px);
+    @include rem-font-size(14px);
 
-    &:hover { text-decoration: none; }
+    &:hover,
+    &:focus { text-decoration: none; }
   }
 
   .glimmer-icon {

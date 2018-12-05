@@ -12,7 +12,7 @@ import Main from './main/main';
 import { PageNotFoundContainer as PageNotFound } from './pageNotFound'
 import { Hyperlink } from 'components/shared';
 
-import './shell.css';
+import './shell.scss';
 
 /** The base component for the app shell */
 class Shell extends Component {

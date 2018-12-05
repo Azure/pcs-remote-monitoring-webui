@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import '../cellRenderer.css';
+import '../cellRenderer.scss';
 
 export const RuleStatusRenderer = ({ value, context: { t } }) => (
   <div className={`pcs-renderer-cell ${value === 'Enabled' ? 'highlight' : ''}`}>

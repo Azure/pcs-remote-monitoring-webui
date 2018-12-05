@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { Select } from 'components/shared';
 import { isFunc } from 'utilities';
 
-import './timeIntervalDropdown.css';
+import './timeIntervalDropdown.scss';
 
 const optionValues = [
   { value: 'PT1H' },

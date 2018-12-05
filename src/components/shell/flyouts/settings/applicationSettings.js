@@ -7,7 +7,7 @@ import { svgs, isValidExtension } from 'utilities';
 import Flyout from 'components/shared/flyout';
 import Config from 'app.config';
 
-import './applicationSettings.css';
+import './applicationSettings.scss';
 
 const Section = Flyout.Section;
 

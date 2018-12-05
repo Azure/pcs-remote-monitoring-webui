@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { joinClasses } from 'utilities';
 
-import './styles/hyperlink.css';
+import './styles/hyperlink.scss';
 
 export const Hyperlink = (props) => {
   const { children, className, href } = props;

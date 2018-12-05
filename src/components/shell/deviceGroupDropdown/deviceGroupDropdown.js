@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 
 import { Select } from 'components/shared';
 
-import './deviceGroupDropdown.css';
+import './deviceGroupDropdown.scss';
 
 export class DeviceGroupDropdown extends Component {
 

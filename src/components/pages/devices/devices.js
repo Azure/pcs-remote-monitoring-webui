@@ -22,7 +22,7 @@ import { DeviceNewContainer } from './flyouts/deviceNew';
 import { SIMManagementContainer } from './flyouts/SIMManagement';
 import { svgs } from 'utilities';
 
-import './devices.css';
+import './devices.scss';
 
 const closedFlyoutState = { openFlyoutName: undefined };
 

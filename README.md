@@ -44,7 +44,6 @@ Build, run and test locally
 * `npm start`: Launches the project in browser - watches for code changes and refreshes the page.
 * `npm run build`: Creates a production ready build.
 * `npm test`: Runs test in watch mode, press `q` to quit
-* `npm flow`: Runs Flow type checker. Learn more about Flow [here](https://flow.org/).
 
 Project Structure
 ===========================

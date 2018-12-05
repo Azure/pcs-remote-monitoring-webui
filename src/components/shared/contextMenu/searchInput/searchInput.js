@@ -5,7 +5,7 @@ import React from 'react';
 import { Svg } from 'components/shared';
 import { svgs, joinClasses } from 'utilities';
 
-import './searchInput.css';
+import './searchInput.scss';
 
 export const SearchInput = ({ children, className, ...rest }) => (
   <div className={joinClasses('context-menu-search-input', className)}>

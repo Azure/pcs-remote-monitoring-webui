@@ -7,7 +7,7 @@ import 'tsiclient';
 
 import { joinClasses } from 'utilities';
 
-import './telemetryChart.css';
+import './telemetryChart.scss';
 
 const maxDatums = 100; // Max telemetry messages for the telemetry graph
 

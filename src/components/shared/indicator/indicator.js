@@ -3,7 +3,7 @@
 import React from 'react';
 import { joinClasses } from 'utilities';
 
-import './indicator.css';
+import './indicator.scss';
 
 const Dot = () => (
   <div className="dot">

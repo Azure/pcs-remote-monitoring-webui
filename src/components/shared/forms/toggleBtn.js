@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Svg } from 'components/shared';
 import { isFunc, svgs, joinClasses } from 'utilities';
 import { FormLabel } from './formLabel';
-import './styles/toggleBtn.css';
+import './styles/toggleBtn.scss';
 
 export class ToggleBtn extends Component {
 

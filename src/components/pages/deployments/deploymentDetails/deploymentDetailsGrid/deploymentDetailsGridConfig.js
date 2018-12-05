@@ -49,5 +49,5 @@ export const defaultDeploymentDetailsGridProps = {
   deltaRowDataMode: true,
   enableSorting: true,
   unSortIcon: true,
-  domLayout: 'autoHeight'
+  gridAutoHeight: true
 };

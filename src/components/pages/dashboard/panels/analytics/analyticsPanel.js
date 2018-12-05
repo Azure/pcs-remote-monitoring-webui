@@ -14,7 +14,7 @@ import {
   PanelMsg
 } from 'components/pages/dashboard/panel';
 
-import './analyticsPanel.css';
+import './analyticsPanel.scss';
 
 const barChartId = 'analytics-bar-chart-container';
 const pieChartId = 'analytics-pie-chart-container';

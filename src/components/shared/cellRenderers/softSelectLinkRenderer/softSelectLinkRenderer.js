@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import { isFunc } from 'utilities';
 import { GlimmerRenderer } from 'components/shared/cellRenderers';
 
-import '../cellRenderer.css';
+import '../cellRenderer.scss';
 
 export class SoftSelectLinkRenderer extends Component {
 
@@ -27,7 +27,7 @@ export class SoftSelectLinkRenderer extends Component {
         <GlimmerRenderer value={data.isNew} />
         {
           isFunc(context.onSoftSelectChange)
-            ? <a href="" className="soft-select-link-cell" onClick={this.onClick}>{value}</a>
+            ? <button type="button" className="pcs-renderer-link soft-select-link" onClick={this.onClick}>{value}</button>
             : value
         }
       </div>

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { DeviceDetails } from './deviceDetails';
 import { getTheme, getDeviceGroups, getTimeSeriesExplorerUrl } from 'store/reducers/appReducer';
 import {
@@ -40,4 +40,4 @@ const mapDispatchToProps = dispatch => ({
   resetPendingAndError: () => dispatch(devicesRedux.actions.resetPendingAndError(devicesEpics.actions.fetchEdgeAgent))
 });
 
-export const DeviceDetailsContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(DeviceDetails));
+export const DeviceDetailsContainer = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(DeviceDetails));

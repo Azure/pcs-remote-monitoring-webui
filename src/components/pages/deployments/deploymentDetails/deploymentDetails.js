@@ -28,7 +28,7 @@ import { getPackageTypeTranslation, getConfigTypeTranslation, svgs, renderUndefi
 import { DeploymentDetailsGrid } from './deploymentDetailsGrid/deploymentDetailsGrid';
 import Config from 'app.config';
 
-import "./deploymentDetails.css";
+import "./deploymentDetails.scss";
 
 const closedModalState = {
   openModalName: undefined

@@ -26,7 +26,7 @@ import {
   ToggleBtn
 } from 'components/shared';
 
-import './deviceDelete.css';
+import './deviceDelete.scss';
 
 export class DeviceDelete extends Component {
   constructor(props) {

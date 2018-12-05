@@ -7,7 +7,7 @@ import { isFunc, translateColumnDefs, svgs } from 'utilities';
 import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
 import { PackageDeleteContainer } from '../modals';
 
-import './packagesGrid.css';
+import './packagesGrid.scss';
 
 const closedModalState = {
   openModalName: undefined

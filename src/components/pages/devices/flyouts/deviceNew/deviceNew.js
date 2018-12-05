@@ -46,7 +46,7 @@ import {
   Svg
 } from 'components/shared';
 
-import './deviceNew.css';
+import './deviceNew.scss';
 import Config from 'app.config';
 
 const isIntRegex = /^-?\d*$/;

@@ -4,7 +4,7 @@ import React from 'react';
 
 import { joinClasses } from 'utilities';
 
-import './pageTitle.css';
+import './pageTitle.scss';
 
 /** A presentational component containing the title for a page */
 export const PageTitle = ({ titleValue, className }) => (

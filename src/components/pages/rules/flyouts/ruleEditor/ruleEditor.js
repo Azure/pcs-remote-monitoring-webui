@@ -48,7 +48,7 @@ import {
 } from 'services/models';
 
 
-import './ruleEditor.css';
+import './ruleEditor.scss';
 
 const Section = Flyout.Section;
 

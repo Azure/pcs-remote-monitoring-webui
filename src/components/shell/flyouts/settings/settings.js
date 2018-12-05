@@ -8,7 +8,7 @@ import { Btn, Indicator, ToggleBtn } from 'components/shared';
 import { svgs, LinkedComponent, isDef } from 'utilities';
 import ApplicationSettings from './applicationSettings';
 
-import './settings.css';
+import './settings.scss';
 
 const Section = Flyout.Section;
 
@@ -188,7 +188,7 @@ export class Settings extends LinkedComponent {
             <Section.Container collapsable={false} className="app-version">
               <Section.Header>{t('settingsFlyout.version', { version })}</Section.Header>
               <Section.Content className="release-notes">
-                <a href={releaseNotesUrl} target="_blank">{t('settingsFlyout.viewRelNotes')}</a>
+                <a href={releaseNotesUrl} target="_blank" rel="noopener noreferrer">{t('settingsFlyout.viewRelNotes')}</a>
               </Section.Content>
             </Section.Container>
             <Section.Container className="simulation-toggle-container">

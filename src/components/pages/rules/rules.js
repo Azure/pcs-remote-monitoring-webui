@@ -22,7 +22,7 @@ import { NewRuleFlyout } from './flyouts';
 import { svgs } from 'utilities';
 import { toSinglePropertyDiagnosticsModel } from  'services/models';
 
-import './rules.css';
+import './rules.scss';
 
 const closedFlyoutState = {
   openFlyoutName: '',

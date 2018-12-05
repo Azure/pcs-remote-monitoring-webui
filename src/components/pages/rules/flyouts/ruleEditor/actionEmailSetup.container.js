@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { ActionEmailSetup } from './actionEmailSetup';
 import {
   getActionSettings,
@@ -31,4 +31,4 @@ const mapDispatchToProps = dispatch => ({
   pollActionSettings: () => dispatch(appEpics.actions.pollActionSettings())
 });
 
-export const ActionEmailSetupContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(ActionEmailSetup));
+export const ActionEmailSetupContainer = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(ActionEmailSetup));

@@ -23,7 +23,7 @@ import {
   Svg
 } from 'components/shared';
 
-import './exampleFlyout.css';
+import './exampleFlyout.scss';
 
 export class ExampleFlyout extends Component {
   constructor(props) {

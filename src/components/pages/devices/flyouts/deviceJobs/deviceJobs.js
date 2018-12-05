@@ -23,7 +23,7 @@ import {
   DeviceJobProperties
 } from './';
 
-import './deviceJobs.css';
+import './deviceJobs.scss';
 
 export class DeviceJobs extends LinkedComponent {
   constructor(props) {

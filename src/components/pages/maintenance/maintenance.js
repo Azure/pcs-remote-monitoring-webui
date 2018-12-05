@@ -14,7 +14,7 @@ import { getIntervalParams } from 'utilities';
 
 import { TelemetryService, IoTHubManagerService } from 'services';
 
-import './maintenance.css';
+import './maintenance.scss';
 
 const alertSchema = new schema.Entity('alerts');
 const alertListSchema = new schema.Array(alertSchema);

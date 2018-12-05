@@ -6,7 +6,7 @@ import ReactSelect from 'react-select';
 
 import { joinClasses } from 'utilities';
 
-import './styles/select.css';
+import './styles/select.scss';
 
 const onChangeSelect = (onChange, name) => (value) => onChange({ target: { name, value } });
 

@@ -25,7 +25,7 @@ import {
 } from 'components/shared';
 import { svgs, renderUndefined } from 'utilities';
 
-import './summary.css';
+import './summary.scss';
 
 export const Summary = ({
   alertProps,

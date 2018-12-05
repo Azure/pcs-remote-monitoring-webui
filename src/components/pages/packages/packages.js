@@ -17,7 +17,7 @@ import {
 import { PackageNewContainer } from './flyouts';
 import { svgs } from 'utilities';
 
-import './packages.css';
+import './packages.scss';
 
 const closedFlyoutState = { openFlyoutName: undefined };
 

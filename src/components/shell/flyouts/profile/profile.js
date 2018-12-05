@@ -16,7 +16,7 @@ import {
 } from 'components/shared';
 import Flyout from 'components/shared/flyout';
 
-import './profile.css';
+import './profile.scss';
 
 const Section = Flyout.Section;
 

@@ -10,7 +10,7 @@ $headerResizeHeight: 18px;
 $pageTitleHeight: 85px;
 $refreshBarHeight: 16px;
 
-$icons-path: "~ag-grid/src/styles/icons/";
+$icons-path: "~ag-grid-community/src/styles/icons/";
 $row-height: $rowHeight;
 $header-height: $rowHeight;
 $background-color: transparent;
@@ -24,8 +24,8 @@ $cell-highlight-border: transparent;
 $cell-horizontal-border: transparent;
 $header-background-color: transparent;
 
-@import 'node_modules/ag-grid/src/styles/ag-grid.scss';
-@import 'node_modules/ag-grid/src/styles/ag-theme-dark.scss';
+@import 'node_modules/ag-grid-community/src/styles/ag-grid.scss';
+@import 'node_modules/ag-grid-community/src/styles/ag-theme-dark.scss';
 
 $doublePadding: $baseContentPadding * 2;
 .pcs-grid-container.ag-theme-dark {

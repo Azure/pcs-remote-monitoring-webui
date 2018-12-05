@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { Maintenance } from './maintenance';
 import {
   epics as appEpics,
@@ -45,4 +45,4 @@ const mapDispatchToProps = dispatch => ({
   logEvent: diagnosticsModel => dispatch(appEpics.actions.logEvent(diagnosticsModel))
 });
 
-export const MaintenanceContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Maintenance));
+export const MaintenanceContainer = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(Maintenance));

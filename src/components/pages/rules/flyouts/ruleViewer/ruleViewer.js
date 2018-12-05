@@ -22,7 +22,7 @@ import {
   getRuleTimePeriodLabel
 } from 'services/models';
 
-import './ruleViewer.css';
+import './ruleViewer.scss';
 
 const Section = Flyout.Section;
 

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { PackageNew } from './packageNew';
 import {
   getCreatePackageError,
@@ -31,4 +31,4 @@ const mapDispatchToProps = dispatch => ({
   fetchConfigTypes: () => dispatch(packagesEpics.actions.fetchConfigTypes())
 });
 
-export const PackageNewContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(PackageNew));
+export const PackageNewContainer = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(PackageNew));

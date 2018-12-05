@@ -6,8 +6,8 @@ import Config from 'app.config';
 import { Svg } from 'components/shared/svg/svg';
 import { svgs } from 'utilities';
 
-import '../cellRenderer.css';
-import './severityRenderer.css';
+import '../cellRenderer.scss';
+import './severityRenderer.scss';
 
 const getSvg = value => {
   if (value === Config.ruleSeverity.warning) return svgs.warning;
