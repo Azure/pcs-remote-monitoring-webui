@@ -5,7 +5,7 @@ import { Trans } from 'react-i18next';
 import { Observable, Subject } from 'rxjs';
 
 import Config from 'app.config';
-import { permissions } from 'services/models';
+import { permissions, toDiagnosticsModel } from 'services/models';
 import { RulesGrid } from 'components/pages/rules/rulesGrid';
 import {
   AjaxError,
@@ -20,7 +20,7 @@ import {
   RefreshBar
 } from 'components/shared';
 import { svgs, joinClasses, renderUndefined } from 'utilities';
-import { DevicesGrid } from 'components/pages/devices/devicesGrid';
+import { DevicesGridContainer } from 'components/pages/devices/devicesGrid/devicesGrid.container';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/shell/deviceGroupDropdown';
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/shell/manageDeviceGroupsBtn';
 import { TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
@@ -108,6 +108,7 @@ export class RuleDetails extends Component {
     );
 
     this.handleProps(this.props);
+    this.props.logEvent(toDiagnosticsModel('AlertDetails_Click', {}));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -182,12 +183,19 @@ export class RuleDetails extends Component {
           () => this.setState({ updatingAlertStatus: false })
         )
     )
+    this.props.logEvent(toDiagnosticsModel('AlertDelete_Click', {}));
   }
 
   // TODO: Move constant values to central location
-  closeAlerts = () => this.updateAlertStatus(this.state.selectedAlerts, Config.alertStatus.closed);
+  closeAlerts = () => {
+    this.props.logEvent(toDiagnosticsModel('AlertClose_Click', {}));
+    return this.updateAlertStatus(this.state.selectedAlerts, Config.alertStatus.closed);
+  }
 
-  ackAlerts = () => this.updateAlertStatus(this.state.selectedAlerts, Config.alertStatus.acknowledged);
+  ackAlerts = () => {
+    this.props.logEvent(toDiagnosticsModel('AlertAcknowledge_Click', {}));
+    return this.updateAlertStatus(this.state.selectedAlerts, Config.alertStatus.acknowledged);
+  }
 
   setTab = selectedTab => () => this.setState({ selectedTab })
 
@@ -276,7 +284,11 @@ export class RuleDetails extends Component {
       paginationPageSize: Config.smallGridPageSize,
       onHardSelectChange: this.onAlertGridHardSelectChange,
       onGridReady: this.onAlertGridReady,
-      onRowClicked: ({ node }) => node.setSelected(!node.isSelected()),
+      onColumnMoved: this.props.onColumnMoved,
+      onRowClicked: ({ node }) => {
+        this.props.logEvent(toDiagnosticsModel('Alert_Click', {}));
+        return node.setSelected(!node.isSelected());
+      },
       t,
       deviceGroups
     };
@@ -393,7 +405,7 @@ export class RuleDetails extends Component {
                   (selectedTab === tabIds.all || selectedTab === tabIds.devices) &&
                   <ComponentArray>
                     <h4 className="sub-heading">{t('maintenance.alertedDevices')}</h4>
-                    <DevicesGrid
+                    <DevicesGridContainer
                       t={t}
                       gridAutoHeight={true}
                       onGridReady={this.onDeviceGridReady}

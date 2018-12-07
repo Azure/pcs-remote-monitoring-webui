@@ -7,12 +7,13 @@ import update from 'immutability-helper';
 import moment from 'moment';
 
 import Config from 'app.config';
-import { Summary } from './summary/summary';
-import { RuleDetails } from './ruleDetails/ruleDetails';
-import { JobDetails } from './jobDetails/jobDetails';
+import { SummaryContainer } from './summary/summary.container';
+import { RuleDetailsContainer } from './ruleDetails/ruleDetails.container';
+import { JobDetailsContainer} from './jobDetails/jobDetails.container';
 import { getIntervalParams } from 'utilities';
 
 import { TelemetryService, IoTHubManagerService } from 'services';
+import { toDiagnosticsModel } from 'services/models';
 
 import './maintenance.scss';
 
@@ -181,7 +182,14 @@ export class Maintenance extends Component {
     }));
   };
 
-  onTimeIntervalChange = (timeInterval) => this.props.updateTimeInterval(timeInterval);
+  onTimeIntervalChange = (timeInterval) => {
+    this.props.logEvent(toDiagnosticsModel('TimeFilter_Select', {}));
+    return this.props.updateTimeInterval(timeInterval);
+  }
+
+  onColumnMoved = (eventName) => {
+    this.props.logEvent(toDiagnosticsModel(eventName, {}));
+  }
 
   render() {
     const {
@@ -244,19 +252,21 @@ export class Maintenance extends Component {
       isPending: rulesIsPending || alertsIsPending,
       error: alertsError,
       alerts: alertsWithRulename,
-      deviceGroups
+      deviceGroups,
+      onColumnMoved: this.onColumnMoved.bind(this, 'Alerts_ColumnArranged')
     };
     const jobProps = {
       isPending: jobsIsPending,
       jobs,
-      error: jobsError
+      error: jobsError,
+      onColumnMoved: this.onColumnMoved.bind(this, 'Jobs_ColumnArranged')
     };
 
     return (
       <Switch>
         <Route exact path={'/maintenance/:path(notifications|jobs)'}
           render={() =>
-            <Summary
+            <SummaryContainer
               {...generalProps}
 
               criticalAlertCount={criticalAlertCount}
@@ -272,7 +282,7 @@ export class Maintenance extends Component {
           } />
         <Route exact path={'/maintenance/rule/:id'}
           render={(routeProps) =>
-            <RuleDetails
+            <RuleDetailsContainer
               {...generalProps}
               {...alertProps}
               {...routeProps}
@@ -285,7 +295,7 @@ export class Maintenance extends Component {
           } />
         <Route exact path={'/maintenance/job/:id'}
           render={(routeProps) =>
-            <JobDetails
+            <JobDetailsContainer
               {...generalProps}
               {...jobProps}
               {...routeProps}

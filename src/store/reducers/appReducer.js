@@ -23,7 +23,7 @@ import {
   getError
 } from 'store/utilities';
 import { svgs, compareByProperty } from 'utilities';
-import { toDiagnosticsModel } from 'services/models';
+import { toSinglePropertyDiagnosticsModel } from 'services/models';
 
 // ========================= Epics - START
 const handleError = fromAction => error =>
@@ -101,11 +101,8 @@ export const epics = createEpicScenario({
         diagnosticsOptIn: fromAction.payload
       };
 
-      var logEventName = 'Diagnostics_OptIn';
-      if (!fromAction.payload) {
-        logEventName = 'Diagnostics_OptOut';
-      }
-      var logPayload = toDiagnosticsModel(logEventName, {});
+      var isDiagnosticOptIn = fromAction.payload ? 'true' : 'false';
+      var logPayload = toSinglePropertyDiagnosticsModel('Settings_DiagnosticsToggle', 'isEnabled', isDiagnosticOptIn);
       logPayload.sessionId = getSessionId(store.getState());
       logPayload.eventProperties.CurrentWindow = getCurrentWindow(store.getState());
       DiagnosticsService.logEvent(logPayload).subscribe();

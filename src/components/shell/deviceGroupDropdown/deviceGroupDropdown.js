@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 
 import { Select } from 'components/shared';
+import { toDiagnosticsModel } from 'services/models';
 
 import './deviceGroupDropdown.scss';
 
@@ -13,6 +14,7 @@ export class DeviceGroupDropdown extends Component {
     if (deviceGroupIds.indexOf(value) > -1) {
       this.props.changeDeviceGroup(value);
     }
+    this.props.logEvent(toDiagnosticsModel('DeviceFilter_Select', {}));
   }
 
   deviceGroupsToOptions = deviceGroups => deviceGroups

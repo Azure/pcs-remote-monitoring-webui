@@ -297,6 +297,18 @@ export class DeviceNew extends LinkedComponent {
     this.formControlChange();
   }
 
+  onAuthenticationTypeChange = ({ target: { value } }) => {
+    this.formControlChange();
+    this.props.logEvent(toSinglePropertyDiagnosticsModel('Devices_AuthTypeSelect', 'AuthType',
+      (value === 0) ? Config.authenticationType.symmetricKey : Config.authenticationType.x509));
+  }
+
+  onAuthenticationKeyChange = ({ target: { value } }) => {
+    this.formControlChange();
+    this.props.logEvent(toSinglePropertyDiagnosticsModel('Devices_AuthKeySelect', 'AuthKey',
+      (value === 'true') ? Config.authenticationKey.autoKey : Config.authenticationKey.manualKey));
+  }
+
   formControlChange = () => {
     if (this.state.changesApplied) {
       this.setState({
@@ -458,19 +470,19 @@ export class DeviceNew extends LinkedComponent {
                     </FormGroup>
                     <FormGroup>
                       <FormLabel>{t(authTypeOptions.labelName)}</FormLabel>
-                      <Radio link={this.authenticationTypeLink} value={authTypeOptions.symmetric.value} onChange={this.formControlChange}>
+                      <Radio link={this.authenticationTypeLink} value={authTypeOptions.symmetric.value} onChange={this.onAuthenticationTypeChange}>
                         {t(authTypeOptions.symmetric.labelName)}
                       </Radio>
-                      <Radio link={this.authenticationTypeLink} value={authTypeOptions.x509.value} onChange={this.formControlChange}>
+                      <Radio link={this.authenticationTypeLink} value={authTypeOptions.x509.value} onChange={this.onAuthenticationTypeChange}>
                         {t(authTypeOptions.x509.labelName)}
                       </Radio>
                     </FormGroup>
                     <FormGroup>
                       <FormLabel>{t(authKeyTypeOptions.labelName)}</FormLabel>
-                      <Radio link={this.isGenerateKeysLink} value={authKeyTypeOptions.generate.value} disabled={isX509} onChange={this.formControlChange}>
+                      <Radio link={this.isGenerateKeysLink} value={authKeyTypeOptions.generate.value} disabled={isX509} onChange={this.onAuthenticationKeyChange}>
                         {t(authKeyTypeOptions.generate.labelName)}
                       </Radio>
-                      <Radio link={this.isGenerateKeysLink} value={authKeyTypeOptions.manual.value} onChange={this.formControlChange}>
+                      <Radio link={this.isGenerateKeysLink} value={authKeyTypeOptions.manual.value} onChange={this.onAuthenticationKeyChange}>
                         {t(authKeyTypeOptions.manual.labelName)}
                       </Radio>
                       <FormGroup className="sub-settings">

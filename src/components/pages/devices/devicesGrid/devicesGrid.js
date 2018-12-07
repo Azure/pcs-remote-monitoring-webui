@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { permissions } from 'services/models';
+import { permissions, toDiagnosticsModel } from 'services/models';
 import { Btn, ComponentArray, PcsGrid, Protected } from 'components/shared';
 import { deviceColumnDefs, defaultDeviceGridProps } from './devicesGridConfig';
 import { DeviceDeleteContainer } from '../flyouts/deviceDelete';
@@ -118,6 +118,14 @@ export class DevicesGrid extends Component {
     }
   }
 
+  onColumnMoved = () => {
+    this.props.logEvent(toDiagnosticsModel('Devices_ColumnArranged', {}));
+  }
+
+  onSortChanged = () => {
+    this.props.logEvent(toDiagnosticsModel('Devices_Sort_Click', {}));
+  }
+
   getSoftSelectId = ({ id } = '') => id;
 
   render() {
@@ -140,7 +148,9 @@ export class DevicesGrid extends Component {
       onRowClicked: ({ node }) => node.setSelected(!node.isSelected()),
       onGridReady: this.onGridReady,
       onSoftSelectChange: this.onSoftSelectChange,
-      onHardSelectChange: this.onHardSelectChange
+      onHardSelectChange: this.onHardSelectChange,
+      onColumnMoved: this.onColumnMoved,
+      onSortChanged: this.onSortChanged
     };
 
     return ([

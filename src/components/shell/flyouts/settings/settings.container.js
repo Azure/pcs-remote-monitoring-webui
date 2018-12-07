@@ -53,7 +53,8 @@ const mapDispatchToProps = dispatch => ({
   updateDiagnosticsOptIn: diagnosticsOptIn => dispatch(appEpics.actions.updateDiagnosticsOptIn(diagnosticsOptIn)),
   updateLogo: (logo, headers) => dispatch(appEpics.actions.updateLogo({logo, headers})),
   getSimulationStatus: () => dispatch(simulationEpics.actions.fetchSimulationStatus()),
-  toggleSimulationStatus: (etag, enabled) => dispatch(simulationEpics.actions.toggleSimulationStatus({etag, enabled}))
+  toggleSimulationStatus: (etag, enabled) => dispatch(simulationEpics.actions.toggleSimulationStatus({etag, enabled})),
+  logEvent: diagnosticsModel => dispatch(appEpics.actions.logEvent(diagnosticsModel))
 });
 
 export const SettingsContainer = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(Settings));

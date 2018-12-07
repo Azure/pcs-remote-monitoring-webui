@@ -3,8 +3,8 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Svg, Indicator } from 'components/shared';
-
 import { svgs } from 'utilities';
+import { toDiagnosticsModel } from 'services/models';
 
 import './navigation.scss';
 
@@ -20,9 +20,13 @@ const NavIcon = (props) => (
   <Svg {...props} className="nav-item-icon" />
 );
 
+const onNavTabClick = (props) => {
+  props.logEvent(toDiagnosticsModel(props.t(props.labelId) + 'Page_Click', {}));
+}
+
 /** A presentational component navigation tab links */
 const TabLink = (props) => (
-  <NavLink to={props.to} className="nav-item" activeClassName="active">
+  <NavLink to={props.to} className="nav-item" activeClassName="active" onClick={() => onNavTabClick(props)}>
     <NavIcon path={props.svg} />
     <div className="nav-item-text">{props.t(props.labelId)}</div>
   </NavLink>
@@ -88,7 +92,7 @@ class Navigation extends Component {
         <button className="nav-item hamburger" onClick={this.toggleExpanded} aria-label="Hamburger">
           <NavIcon path={svgs.hamburger} />
         </button>
-        {this.props.tabs.map((tabProps, i) => <TabLink {...tabProps} t={t} key={i} />)}
+        {this.props.tabs.map((tabProps, i) => <TabLink {...tabProps} t={t} key={i} logEvent={this.props.logEvent}/>)}
       </nav>
     );
   }

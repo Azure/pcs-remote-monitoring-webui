@@ -4,7 +4,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import 'polyfills';
 
-import { Devices } from './devices';
+import { DevicesContainer } from './devices.container';
 
 describe('Devices Component', () => {
   it('Renders without crashing', () => {
@@ -19,11 +19,12 @@ describe('Devices Component', () => {
       fetchDevices: () => {},
       changeDeviceGroup: (id) => {},
       t: () => {},
-      updateCurrentWindow: () => {}
+      updateCurrentWindow: () => {},
+      logEvent: () => {}
     };
 
     const wrapper = shallow(
-      <Devices {...fakeProps} />
+      <DevicesContainer {...fakeProps} />
     );
   });
 });

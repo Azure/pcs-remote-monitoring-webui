@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Observable } from 'rxjs';
 
 import { IoTHubManagerService } from 'services';
-import { toSubmitMethodJobRequestModel } from 'services/models';
+import { toSubmitMethodJobRequestModel, toDiagnosticsModel } from 'services/models';
 import { LinkedComponent } from 'utilities';
 import { svgs, Validator } from 'utilities';
 import {
@@ -97,6 +97,7 @@ export class DeviceJobMethods extends LinkedComponent {
     event.preventDefault();
     if (this.formIsValid()) {
       this.setState({ isPending: true });
+      this.props.logEvent(toDiagnosticsModel('Devices_NewJobApply_Click', {}));
 
       const { devices } = this.props;
       const request = toSubmitMethodJobRequestModel(devices, this.state);

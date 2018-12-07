@@ -7,6 +7,7 @@ import {
   getName,
   isDefaultLogo,
   getLogoPendingStatus,
+  epics as appEpics
 } from 'store/reducers/appReducer';
 import Navigation from './navigation';
 
@@ -17,6 +18,10 @@ const mapStateToProps = state => ({
   getLogoPending: getLogoPendingStatus(state)
 });
 
-const NavigationContainer = withRouter(connect(mapStateToProps)(Navigation));
+const mapDispatchToProps = dispatch => ({
+  logEvent: diagnosticsModel => dispatch(appEpics.actions.logEvent(diagnosticsModel))
+});
+
+const NavigationContainer = withRouter(connect(mapStateToProps, mapDispatchToProps)(Navigation));
 
 export default NavigationContainer;

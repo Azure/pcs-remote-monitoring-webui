@@ -61,6 +61,14 @@ const Config = {
   deviceType: {
     simulated: 'Simulated',
     physical: 'Real'
+  },
+  authenticationType: {
+    symmetricKey: 'Symmetric key',
+    x509: 'X.509'
+  },
+  authenticationKey: {
+    autoKey: 'Auto generate keys',
+    manualKey: 'Enter keys manually'
   }
 };
 
