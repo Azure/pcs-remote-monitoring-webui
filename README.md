@@ -31,11 +31,13 @@ It is also possible to [deploy the solution locally](https://docs.microsoft.com/
    -  or other preferred editor
 
 ### 3. Environment variables required to run the Web UI
-In order to run the Web UI, the environment variables need to be created at least once. More information on configuring environment variables [here](#configuration-and-environment-variables).
+In order to run the Web UI, the following environment variables need to be created at least once. More information on configuring environment variables [here][envvars-howto-url].
 
 * `REACT_APP_BASE_SERVICE_URL` = {your-remote-monitoring-endpoint}
 
 The endpoint given above is the base url you navigate to in order to see your deployed solution.
+
+The Web UI configuration is stored in [app.config.js](src/app.config.js). You can edit this file to update the endpoints. 
 
 Build, run and test locally
 ===========================
@@ -58,28 +60,6 @@ request/response objects to front end models.
 - `styles`: Contains sass used across the application mixins, theming, variables,
 etc.
 - `utilities`: Contains helper scripts used across the application.
-
-Configuration and Environment variables
-===========================
-
-The Web UI configuration is stored in [app.config.js](src/app.config.js)
-
-The configuration files in the repository reference some environment
-variables that need to be created at least once. Depending on your OS and
-the IDE, there are several ways to manage environment variables:
-
-* Windows: the variables can be set [in the system][windows-envvars-howto-url]
-  as a one time only task. The
-  [env-vars-setup.cmd](scripts/env-vars-setup.cmd) script included needs to
-  be prepared and executed just once. The settings will persist across
-  terminal sessions and reboots.
-* For Linux and OSX environments, the [env-vars-setup](scripts/env-vars-setup)
-  script needs to be executed every time a new console is opened.
-  Depending on the OS and terminal, there are ways to persist values
-  globally, for more information these pages should help:
-  * https://stackoverflow.com/questions/13046624/how-to-permanently-export-a-variable-in-linux
-  * https://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x
-  * https://help.ubuntu.com/community/EnvironmentVariables
 
 Contributing to the solution
 ==============================
@@ -111,3 +91,5 @@ You can find a guide to using it [here](https://github.com/facebookincubator/cre
 [gitter-badge]: https://img.shields.io/gitter/room/azure/iot-solutions.js.svg
 [gitter-url]: https://gitter.im/azure/iot-solutions
 [windows-envvars-howto-url]: https://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10
+[envvars-howto-url]: https://www.schrodinger.com/kb/1842
+
