@@ -35,6 +35,13 @@ $iconSize: 14px;
     > .icon-only { display: none !important; }
   }
 
+  .soft-select-text,
+  .pcs-renderer-time-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .soft-select-link {
     background-color: transparent;
     border: none;
@@ -44,6 +51,8 @@ $iconSize: 14px;
     text-decoration: underline;
     font-family: inherit;
     padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
     @include rem-fallback(margin, 4px, 0px);
     @include rem-font-size(14px);
 
@@ -90,6 +99,8 @@ $iconSize: 14px;
     }
 
     .glimmer-icon svg { fill: themed('colorGlimmerSvgFill'); }
+
+    .soft-select-text { color: themed('colorGridCellText'); }
   }
 }
 

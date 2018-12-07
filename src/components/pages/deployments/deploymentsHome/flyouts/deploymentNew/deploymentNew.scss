@@ -28,6 +28,17 @@
 
   .new-deployment-info-star { @include rem-font-size(24px); }
 
+  .config-type-select {
+    @include rem-fallback(width, 400px);
+
+    .Select-value {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      @include rem-fallback(width, 370px);
+    }
+  }
+
   @include themify($themes) {
     .summary-icon svg { fill: themed('colorContentText'); }
 

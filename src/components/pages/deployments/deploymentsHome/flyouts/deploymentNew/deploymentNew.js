@@ -316,7 +316,7 @@ export class DeploymentNew extends LinkedComponent {
                   !completedSuccessfully &&
                   <FormControl
                     type="select"
-                    className="long"
+                    className="config-type-select"
                     onChange={this.configTypeChange}
                     link={this.configTypeLink}
                     options={configTypeSelectOptions}

@@ -28,7 +28,7 @@ export class SoftSelectLinkRenderer extends Component {
         {
           isFunc(context.onSoftSelectChange)
             ? <button type="button" className="pcs-renderer-link soft-select-link" onClick={this.onClick}>{value}</button>
-            : value
+            : <div className="soft-select-text">{value}</div>
         }
       </div>
     );

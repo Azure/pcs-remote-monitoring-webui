@@ -680,7 +680,9 @@
       "packageType": "Package Type",
       "configType": "Configuration Type",
       "targeted": "Targeted",
+      "targetedTooltip": "Number of device twins that match the target condition.",
       "applied": "Applied",
+      "appliedTooltip": "Number of device twins that have been modified by the configuration.",
       "failed": "Failed",
       "succeeded": "Succeeded",
       "dateCreated": "Created On"

@@ -15,6 +15,11 @@
     @include rem-fallback(padding-bottom, 10px);
   }
 
+  .stat-property-pair-label-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   @include themify($themes) {
     .stat-property-pair-label { color: themed('colorHeaderText'); }
 
