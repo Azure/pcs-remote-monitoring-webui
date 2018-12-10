@@ -10,11 +10,11 @@ import {
   ContextMenuAlign,
   PageContent,
   PageTitle,
-  RefreshBar
+  RefreshBarContainer as RefreshBar
 } from 'components/shared';
 import { DevicesGridContainer } from 'components/pages/devices/devicesGrid/devicesGrid.container';
 import { JobGrid, JobStatusGrid } from 'components/pages/maintenance/grids';
-import { TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
+import { TimeIntervalDropdownContainer as TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
 
 import { IoTHubManagerService } from 'services';
 import { toDiagnosticsModel } from 'services/models';

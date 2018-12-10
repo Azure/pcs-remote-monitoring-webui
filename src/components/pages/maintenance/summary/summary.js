@@ -8,14 +8,14 @@ import { NavLink } from 'react-router-dom';
 import { permissions, toDiagnosticsModel } from 'services/models';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/shell/deviceGroupDropdown';
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/shell/manageDeviceGroupsBtn';
-import { TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
+import { TimeIntervalDropdownContainer as TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
 import { Notifications } from './notifications';
 import { Jobs } from './jobs';
 import {
   ComponentArray,
   ContextMenu,
   ContextMenuAlign,
-  RefreshBar,
+  RefreshBarContainer as RefreshBar,
   PageContent,
   PageTitle,
   Protected,

@@ -15,7 +15,7 @@ import {
   PageContent,
   PageTitle,
   Protected,
-  RefreshBar,
+  RefreshBarContainer as RefreshBar,
   SearchInput
 } from 'components/shared';
 import { NewRuleFlyout } from './flyouts';
@@ -43,6 +43,7 @@ export class Rules extends Component {
     }
 
     this.props.updateCurrentWindow('Rules');
+
     if (this.props.applicationPermissionsAssigned !== undefined) {
       this.logApplicationPermissions(this.props.applicationPermissionsAssigned);
     }

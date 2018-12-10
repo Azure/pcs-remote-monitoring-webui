@@ -2,7 +2,12 @@
 
 import { connect } from 'react-redux';
 import { withNamespaces } from 'react-i18next';
-import { redux as appRedux, epics as appEpics, getDeviceGroups, getActiveDeviceGroupId } from 'store/reducers/appReducer';
+import {
+  redux as appRedux,
+  epics as appEpics,
+  getDeviceGroups,
+  getActiveDeviceGroupId
+} from 'store/reducers/appReducer';
 
 import { DeviceGroupDropdown } from './deviceGroupDropdown';
 

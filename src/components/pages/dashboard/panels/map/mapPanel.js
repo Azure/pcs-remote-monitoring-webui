@@ -14,6 +14,7 @@ import {
   PanelError
 } from 'components/pages/dashboard/panel';
 import { DeviceDetailsContainer } from 'components/pages/devices/flyouts/deviceDetails';
+import { toDiagnosticsModel } from 'services/models';
 import { AzureMap } from './azureMap';
 
 import './mapPanel.scss';
@@ -62,6 +63,7 @@ export class MapPanel extends Component {
           position: pin.geometry.coordinates,
           content: this.buildDevicePopup(pin.properties, classname)
         });
+        this.props.logEvent(toDiagnosticsModel('Map_DeviceClick', {}));
         this.popup.open(map);
       });
     });

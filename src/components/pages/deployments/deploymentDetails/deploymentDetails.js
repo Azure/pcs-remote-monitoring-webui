@@ -17,7 +17,7 @@ import {
   Indicator,
   PageContent,
   Protected,
-  RefreshBar,
+  RefreshBarContainer as RefreshBar,
   StatSection,
   StatGroup,
   StatProperty,

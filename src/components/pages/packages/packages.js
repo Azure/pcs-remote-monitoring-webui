@@ -11,7 +11,7 @@ import {
   ContextMenuAlign,
   PageContent,
   Protected,
-  RefreshBar,
+  RefreshBarContainer as RefreshBar,
   PageTitle
 } from 'components/shared';
 import { PackageNewContainer } from './flyouts';

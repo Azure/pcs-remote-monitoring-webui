@@ -14,7 +14,7 @@ import {
   PanelOverlay
 } from 'components/pages/dashboard/panel';
 
-import { TelemetryChart } from './telemetryChart';
+import { TelemetryChartContainer as TelemetryChart } from './telemetryChart.container';
 
 import './telemetryPanel.scss';
 

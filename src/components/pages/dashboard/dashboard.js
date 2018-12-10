@@ -12,13 +12,13 @@ import { Grid, Cell } from './grid';
 import { PanelErrorBoundary } from './panel';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/shell/deviceGroupDropdown';
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/shell/manageDeviceGroupsBtn';
-import { TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
+import { TimeIntervalDropdownContainer as TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
 import {
   OverviewPanel,
-  AlertsPanel,
+  AlertsPanelContainer as AlertsPanel,
   TelemetryPanel,
   AnalyticsPanel,
-  MapPanel,
+  MapPanelContainer as MapPanel,
   ExamplePanel,
   transformTelemetryResponse,
   chartColorObjects
@@ -29,7 +29,7 @@ import {
   ContextMenuAlign,
   PageContent,
   Protected,
-  RefreshBar
+  RefreshBarContainer as RefreshBar
 } from 'components/shared';
 
 import './dashboard.scss';

@@ -6,7 +6,7 @@ import { Trans } from 'react-i18next';
 
 // App Components
 import Config from 'app.config';
-import Header from './header/header';
+import { HeaderContainer as Header } from './header/header.container';
 import NavigationContainer from './navigation/navigationContainer';
 import Main from './main/main';
 import { PageNotFoundContainer as PageNotFound } from './pageNotFound'

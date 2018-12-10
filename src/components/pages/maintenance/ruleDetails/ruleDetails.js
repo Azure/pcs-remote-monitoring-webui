@@ -17,14 +17,14 @@ import {
   PageContent,
   PageTitle,
   Protected,
-  RefreshBar
+  RefreshBarContainer as RefreshBar
 } from 'components/shared';
 import { svgs, joinClasses, renderUndefined } from 'utilities';
 import { DevicesGridContainer } from 'components/pages/devices/devicesGrid/devicesGrid.container';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/shell/deviceGroupDropdown';
 import { ManageDeviceGroupsBtnContainer as ManageDeviceGroupsBtn } from 'components/shell/manageDeviceGroupsBtn';
-import { TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
-import { TelemetryChart, transformTelemetryResponse, chartColorObjects } from 'components/pages/dashboard/panels/telemetry';
+import { TimeIntervalDropdownContainer as TimeIntervalDropdown } from 'components/shell/timeIntervalDropdown';
+import { TelemetryChartContainer as TelemetryChart, transformTelemetryResponse, chartColorObjects } from 'components/pages/dashboard/panels/telemetry';
 import { TelemetryService } from 'services';
 import { TimeRenderer, SeverityRenderer } from 'components/shared/cellRenderers';
 import { AlertOccurrencesGrid } from 'components/pages/maintenance/grids';

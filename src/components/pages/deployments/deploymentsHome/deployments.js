@@ -11,7 +11,7 @@ import {
   ContextMenuAlign,
   PageContent,
   Protected,
-  RefreshBar,
+  RefreshBarContainer as RefreshBar,
   PageTitle
 } from 'components/shared';
 import { DeviceGroupDropdownContainer as DeviceGroupDropdown } from 'components/shell/deviceGroupDropdown';

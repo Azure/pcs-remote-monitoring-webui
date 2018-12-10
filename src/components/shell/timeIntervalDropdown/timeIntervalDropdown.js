@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 
 import { Select } from 'components/shared';
 import { isFunc } from 'utilities';
+import { toDiagnosticsModel } from 'services/models';
 
 import './timeIntervalDropdown.scss';
 
@@ -17,6 +18,7 @@ const optionValues = [
 export class TimeIntervalDropdown extends Component {
 
   onChange = (propOnChange) => ({ target: { value: { value } = {} } = {} }) => {
+    this.props.logEvent(toDiagnosticsModel('TimeFilter_Select', {}));
     if (isFunc(propOnChange)) propOnChange(value);
   }
 

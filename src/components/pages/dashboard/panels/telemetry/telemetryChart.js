@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import 'tsiclient';
 
 import { joinClasses } from 'utilities';
+import { toDiagnosticsModel } from 'services/models';
 
 import './telemetryChart.scss';
 
@@ -141,7 +142,10 @@ export class TelemetryChart extends Component {
     }
   }
 
-  setTelemetryKey = telemetryKey => () => this.setState({ telemetryKey });
+  setTelemetryKey = telemetryKey => () => {
+    this.props.logEvent(toDiagnosticsModel('TelemetryChartFilter_Click', {}));
+    this.setState({ telemetryKey });
+  }
 
   render() {
     const { telemetry } = this.props;

@@ -17,5 +17,6 @@ export * from './pcsGrid/pcsGrid';
 export * from './propertyGrid'
 export * from './protected'
 export * from './refreshBar/refreshBar';
+export * from './refreshBar/refreshBar.container';
 export * from './svg';
 export * from './timeSeriesInsightsLink';

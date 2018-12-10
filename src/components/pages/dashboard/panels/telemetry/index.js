@@ -2,3 +2,4 @@
 
 export * from './telemetryPanel';
 export * from './telemetryChart';
+export * from './telemetryChart.container'
