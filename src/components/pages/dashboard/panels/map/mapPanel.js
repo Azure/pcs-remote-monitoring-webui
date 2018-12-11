@@ -91,7 +91,7 @@ export class MapPanel extends Component {
     popupContentBox.appendChild(name);
 
     popupContentBox.onclick = () => {
-      // Check this to void any potential attempts to refernce the component after unmount
+      // Check this to void any potential attempts to reference the component after unmount
       if (this) this.openDeviceDetails(properties.id);
     };
 
@@ -187,7 +187,7 @@ export class MapPanel extends Component {
   closeDeviceDetails = () => this.setState({ selectedDeviceId: undefined });
 
   render() {
-    const { t, isPending, devices, mapKeyIsPending, azureMapsKey, error } = this.props;
+    const { t, isPending, mapKeyIsPending, azureMapsKey, error } = this.props;
     const showOverlay = !error && isPending && mapKeyIsPending;
     return (
       <Panel className="map-panel-container">
@@ -205,7 +205,7 @@ export class MapPanel extends Component {
         { error && <PanelError><AjaxError t={t} error={error} /></PanelError> }
         {
           this.state.selectedDeviceId
-          && <DeviceDetailsContainer onClose={this.closeDeviceDetails} device={devices[this.state.selectedDeviceId]} />
+          && <DeviceDetailsContainer onClose={this.closeDeviceDetails} deviceId={this.state.selectedDeviceId} />
         }
       </Panel>
     );
