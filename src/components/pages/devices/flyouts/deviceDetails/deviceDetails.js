@@ -226,7 +226,7 @@ export class DeviceDetails extends Component {
       rowData: isPending ? undefined : this.applyRuleNames(this.state.alerts || [], this.props.rules || []),
       t: this.props.t,
       deviceGroups: this.props.deviceGroups,
-      gridAutoHeight: true,
+      domLayout: 'autoHeight',
       columnDefs: translateColumnDefs(this.props.t, this.columnDefs),
       suppressFlyouts: true
     };

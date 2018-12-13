@@ -105,7 +105,7 @@ export class JobDetails extends Component {
 
     const selectedJob = this.state.selectedJob;
     const jobGridProps = {
-      gridAutoHeight: true,
+      domLayout: 'autoHeight',
       rowData: isPending ? undefined : selectedJob ? [selectedJob] : [],
       pagination: false,
       t,
@@ -113,7 +113,7 @@ export class JobDetails extends Component {
     };
 
     const jobStatusGridProps = {
-      gridAutoHeight: true,
+      domLayout: 'autoHeight',
       rowData: this.state.jobStatusIsPending ? undefined : [this.state.jobStatus],
       pagination: true,
       paginationPageSize: Config.smallGridPageSize,
@@ -157,7 +157,7 @@ export class JobDetails extends Component {
                     ?
                     <DevicesGridContainer
                       t={t}
-                      gridAutoHeight={true}
+                      domLayout="autoHeight"
                       rowData={this.state.selectedDevices}
                       onContextMenuChange={this.onContextMenuChange} />
                     : t('maintenance.noOccurrenceSelected')

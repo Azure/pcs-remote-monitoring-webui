@@ -79,8 +79,8 @@ export class Dashboard extends Component {
   }
 
   componentDidMount() {
-    // Load the rules
-    if (!this.props.rulesError) this.props.fetchRules();
+    // Ensure the rules are loaded
+    this.refreshRules();
 
     // Telemetry stream - START
     const onPendingStart = () => this.setState({ telemetryIsPending: true });
@@ -272,6 +272,10 @@ export class Dashboard extends Component {
     )
   );
 
+  refreshRules = () => {
+    if (!this.props.rulesError && !this.props.rulesIsPending) this.props.fetchRules();
+  }
+
   render() {
     const {
       theme,
@@ -346,6 +350,16 @@ export class Dashboard extends Component {
       // limit the number shown in the UI to 1000 active
       count: Math.min(alert.count, Config.maxAlertsCount)
     }));
+
+    // Determine if the rules for all of the alerts are actually loaded.
+    const unloadedRules =
+      topAlerts.filter(alert => !rules[alert.ruleId]).length
+      + currentActiveAlerts.filter(alert => !rules[alert.ruleId]).length;
+    if (unloadedRules > 0) {
+      // Fetch the rules since at least one alert doesn't know the name for its rule
+      this.refreshRules();
+    }
+
 
     // Convert the list of alerts by device id to alerts by device type
     const alertsPerDeviceType = Object.keys(alertsPerDeviceId).reduce((acc, deviceId) => {

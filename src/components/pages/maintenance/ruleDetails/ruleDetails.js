@@ -274,7 +274,7 @@ export class RuleDetails extends Component {
     const alertName = (this.state.selectedRule || {}).name || selectedId;
 
     const alertsGridProps = {
-      gridAutoHeight: true,
+      domLayout: 'autoHeight',
       rowSelection: 'multiple',
       deltaRowDataMode: true,
       getRowNodeId: ({ id }) => id,
@@ -407,7 +407,7 @@ export class RuleDetails extends Component {
                     <h4 className="sub-heading">{t('maintenance.alertedDevices')}</h4>
                     <DevicesGridContainer
                       t={t}
-                      gridAutoHeight={true}
+                      domLayout="autoHeight"
                       onGridReady={this.onDeviceGridReady}
                       rowData={isPending ? undefined : this.state.devices}
                       onContextMenuChange={this.onContextMenuChange('deviceContextBtns')}
