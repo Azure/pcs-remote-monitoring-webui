@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-import { camelCaseReshape, getItems } from 'utilities';
+import { camelCaseReshape, getItems, reshape } from 'utilities';
 import update from 'immutability-helper';
 
 export const ruleCalculations = ['Average', 'Instant'];
@@ -159,3 +159,11 @@ export const toEditRuleRequestModel = ({
     Actions
   };
 }
+
+export const toTelemetryRequestModel = (alarmQueryModel = {}) => reshape(alarmQueryModel, {
+  'from': 'From',
+  'to': 'To',
+  'order': 'Order',
+  'limit': 'Limit',
+  'devices': 'Devices'
+});
