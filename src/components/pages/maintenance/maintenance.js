@@ -54,9 +54,9 @@ export class Maintenance extends Component {
 
   getData = (deviceEntities, timeInterval) => {
     const deviceIds = Object.keys(deviceEntities || this.props.deviceEntities);
-    const devices = deviceIds.length ? deviceIds.join(',') : undefined;
+    const Devices = deviceIds.length ? deviceIds.join(',') : undefined;
     const [timeParams] = getIntervalParams(timeInterval || this.props.timeInterval);
-    const params = { ...timeParams, devices };
+    const params = { ...timeParams, Devices };
     const jobParams = { ...timeParams };
     this.setState({
       alertsIsPending: true,
@@ -76,7 +76,7 @@ export class Maintenance extends Component {
         .flatMap(alerts => alerts)
         .flatMap(alert =>
           // Get the last occurrence of the alert and the counts per alert status
-          TelemetryService.getAlertsForRule(alert.ruleId, { ...params, order: 'desc' })
+          TelemetryService.getAlertsForRule(alert.ruleId, { ...params, Order: 'desc' })
             .map(alerts => ({
               ...alert,
               alerts,

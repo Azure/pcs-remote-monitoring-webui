@@ -45,8 +45,8 @@ export class TelemetryService {
 
   /** Returns a list of alarms (all statuses) */
   static getAlerts(params = {}) {
-    if (params.devices && !Array.isArray(params.devices)) {
-      params.devices = params.devices.split(",");
+    if (params.Devices && !Array.isArray(params.Devices)) {
+      params.Devices = params.Devices.split(",");
     }
     return HttpClient.post(`${ENDPOINT}alarms`, params)
         .map(toAlertsModel);
@@ -54,8 +54,8 @@ export class TelemetryService {
 
   /** Returns a list of active alarms (open or ack) */
   static getActiveAlerts(params = {}) {
-    if (params.devices && !Array.isArray(params.devices)) {
-      params.devices = params.devices.split(",");
+    if (params.Devices && !Array.isArray(params.Devices)) {
+      params.Devices = params.Devices.split(",");
     }
     return HttpClient.post(`${ENDPOINT}alarmsbyrule`, params)
         .map(toActiveAlertsModel);
@@ -63,8 +63,8 @@ export class TelemetryService {
 
   /** Returns a list of alarms created from a given rule */
   static getAlertsForRule(id, params = {}) {
-    if (params.devices && !Array.isArray(params.devices)) {
-      params.devices = params.devices.split(",");
+    if (params.Devices && !Array.isArray(params.Devices)) {
+      params.Devices = params.Devices.split(",");
     }
     return HttpClient.post(`${ENDPOINT}alarmsbyrule/${id}`, params)
         .map(toAlertsForRuleModel);
@@ -87,21 +87,21 @@ export class TelemetryService {
         .map(toMessagesModel);
   }
 
-  static getTelemetryByDeviceIdP1M(devices = []) {
+  static getTelemetryByDeviceIdP1M(Devices = []) {
     return TelemetryService.getTelemetryByMessages({
-      from: 'NOW-PT1M',
-      to: 'NOW',
-      order: 'desc',
-      devices
+      From: 'NOW-PT1M',
+      To: 'NOW',
+      Order: 'desc',
+      Devices
     });
   }
 
-  static getTelemetryByDeviceIdP15M(devices = []) {
+  static getTelemetryByDeviceIdP15M(Devices = []) {
     return TelemetryService.getTelemetryByMessages({
-      from: 'NOW-PT15M',
-      to: 'NOW',
-      order: 'desc',
-      devices
+      From: 'NOW-PT15M',
+      To: 'NOW',
+      Order: 'desc',
+      Devices
     });
   }
 

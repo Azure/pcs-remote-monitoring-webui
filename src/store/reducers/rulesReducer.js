@@ -69,8 +69,8 @@ export const epics = createEpicScenario({
     type: 'RULES_LAST_TRIGGER_FETCH',
     epic: (fromAction, store, action$) =>
       TelemetryService.getAlertsForRule(fromAction.payload, {
-        order: 'desc',
-        limit: 1
+        Order: 'desc',
+        Limit: 1
       })
         .map(([alert]) =>
           redux.actions.updateRuleLastTrigger({ id: fromAction.payload, lastTrigger: cellResponse(alert.dateModified) })

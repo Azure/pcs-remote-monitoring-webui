@@ -199,9 +199,9 @@ export class DeviceDetails extends Component {
     this.setState({ isAlertsPending: true });
 
     this.alertSubscription = TelemetryService.getAlerts({
-      limit: 5,
-      order: "desc",
-      devices: deviceId
+      Limit: 5,
+      Order: "desc",
+      Devices: deviceId
     })
       .subscribe(
         alerts => this.setState({ alerts, isAlertsPending: false, alertsError: undefined }),

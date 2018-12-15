@@ -106,11 +106,11 @@ export class Dashboard extends Component {
       .startWith(0)
       .do(_ => this.setState({ analyticsIsPending: true }))
       .flatMap(_ => {
-        const devices = deviceIds.length ? deviceIds.join(',') : undefined;
+        const Devices = deviceIds.length ? deviceIds.join(',') : undefined;
         const [currentIntervalParams, previousIntervalParams] = getIntervalParams(timeInterval);
 
-        const currentParams = { ...currentIntervalParams, devices };
-        const previousParams = { ...previousIntervalParams, devices };
+        const currentParams = { ...currentIntervalParams, Devices };
+        const previousParams = { ...previousIntervalParams, Devices };
 
         return Observable.forkJoin(
           TelemetryService.getActiveAlerts(currentParams),

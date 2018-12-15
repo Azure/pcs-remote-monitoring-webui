@@ -137,26 +137,26 @@ export const getIntervalParams = (timeInterval) => {
   switch (timeInterval) {
     case 'P1D':
       return [
-        { from: 'NOW-P1D', to: 'NOW' },
-        { from: 'NOW-P2D', to: 'NOW-P1D' }
+        { From: 'NOW-P1D', To: 'NOW' },
+        { From: 'NOW-P2D', To: 'NOW-P1D' }
       ];
 
     case 'P7D':
       return [
-        { from: 'NOW-P7D', to: 'NOW' },
-        { from: 'NOW-P14D', to: 'NOW-P7D' }
+        { From: 'NOW-P7D', To: 'NOW' },
+        { From: 'NOW-P14D', To: 'NOW-P7D' }
       ];
 
     case 'P1M':
       return [
-        { from: 'NOW-P1M', to: 'NOW' },
-        { from: 'NOW-P2M', to: 'NOW-P1M' }
+        { From: 'NOW-P1M', To: 'NOW' },
+        { From: 'NOW-P2M', To: 'NOW-P1M' }
       ];
 
     default: // Use PT1H as the default case
       return [
-        { from: 'NOW-PT1H', to: 'NOW' },
-        { from: 'NOW-PT2H', to: 'NOW-PT1H' }
+        { From: 'NOW-PT1H', To: 'NOW' },
+        { From: 'NOW-PT2H', To: 'NOW-PT1H' }
       ];
   }
 };
