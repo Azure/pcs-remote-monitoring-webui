@@ -2,7 +2,7 @@ Store
 ==========
 The store folder contains all of the logic related to creating, updating
 and accessing the [Redux](https://redux.js.org/) store. For handling async
-actions in the store, we are using the [Redux-Observbale](https://redux-observable.js.org/)
+actions in the store, we are using the [Redux-Observable](https://redux-observable.js.org/)
 middleware making use of [RxJs](http://reactivex.io/rxjs/). You will notice
 that there isn't a file or folder contain actions. The reason for this is
 that, in an effort to avoid boilerplate, much of that functionality has
