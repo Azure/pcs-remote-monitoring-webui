@@ -259,11 +259,20 @@ export class RuleEditor extends LinkedComponent {
       if (group.id === groupId) {
         if (this.subscription) this.subscription.unsubscribe();
         this.subscription = IoTHubManagerService.getDevices(group.conditions)
+          .flatMap(devices => {
+            const deviceIds = devices.map(dvc => `'${dvc.id}'`).join(",");
+            const modulesQuery = `deviceId IN [${deviceIds}]`;
+            return IoTHubManagerService.getModulesFields(modulesQuery);
+          }, (devices, modules) => {
+            return [devices, modules];
+          })
           .subscribe(
-            groupDevices => {
+            groupDevicesAndModules => {
+              var groupDevices = groupDevicesAndModules[0];
+              var modules = groupDevicesAndModules[1];
               this.setState({
                 fieldQueryPending: false,
-                fieldOptions: this.getConditionFields(groupDevices),
+                fieldOptions: this.getConditionFields(groupDevices, modules),
                 devicesAffected: groupDevices.length,
                 isPending: false
               });
@@ -276,7 +285,7 @@ export class RuleEditor extends LinkedComponent {
     });
   }
 
-  getConditionFields(devices) {
+  getConditionFields(devices, modules) {
     const conditions = new Set(); // Using a set to avoid searching the array multiple times in the every
     devices.forEach(({ telemetry = {} }) => {
       Object.values(telemetry).forEach(({ messageSchema: { fields } }) => {
@@ -285,6 +294,13 @@ export class RuleEditor extends LinkedComponent {
         })
       })
     })
+
+    modules.forEach(({ moduleFields = {} }) => {
+      Object.keys(moduleFields).forEach( (field) => {
+        conditions.add(field);
+      })
+    })
+
     return [...conditions.values()].map(field => ({ label: field, value: field }));
   }
 

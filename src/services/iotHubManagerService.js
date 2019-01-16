@@ -8,6 +8,7 @@ import { HttpClient } from 'utilities/httpClient';
 import {
   toDevicesModel,
   toDeviceModel,
+  toModuleFieldsModel,
   toJobsModel,
   toJobStatusModel,
   toDevicePropertiesModel,
@@ -27,6 +28,12 @@ export class IoTHubManagerService {
     const query = encodeURIComponent(JSON.stringify(conditions));
     return HttpClient.get(`${ENDPOINT}devices?query=${query}`)
       .map(toDevicesModel);
+  }
+
+  /** Returns a list of all modules message schema fields */
+  static getModulesFields(query) {
+    return HttpClient.post(`${ENDPOINT}modules/query`, `"${query}"`)
+      .map(toModuleFieldsModel);
   }
 
   /** Returns a list of all jobs */

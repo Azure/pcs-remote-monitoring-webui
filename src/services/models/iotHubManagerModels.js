@@ -51,6 +51,25 @@ export const toDeviceModel = (device = {}) => {
   });
 }
 
+export const toModuleFieldsModel = (response = {}) => getItems(response)
+  .map(toModuleFieldModel);
+
+export const toModuleFieldModel = (module = {}) => camelCaseReshape(module, {
+  /* Expected schema for modules
+    "reported": {
+      "Telemetry": {
+        "MessageSchema": {
+          "Fields": {
+            "temperature": "Double",
+            ...
+          }
+        }
+      }
+    }
+    */
+  'reported.telemetry.messageSchema.fields': 'moduleFields',
+});
+
 export const toJobsModel = (response = []) => response.map(job => camelCaseReshape(job, {
   'jobId': 'jobId',
   'createdTimeUtc': 'createdTimeUtc',
