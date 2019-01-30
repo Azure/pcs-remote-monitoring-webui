@@ -77,10 +77,10 @@ export class Packages extends Component {
             <Protected permission={permissions.createPackages}>
               <Btn svg={svgs.plus} onClick={this.openNewPackageFlyout}>{t('packages.new')}</Btn>
             </Protected>
+            <RefreshBar refresh={fetchPackages} time={lastUpdated} isPending={isPending} t={t} />
           </ContextMenuAlign>
         </ContextMenu>
         <PageContent className="package-container">
-          <RefreshBar refresh={fetchPackages} time={lastUpdated} isPending={isPending} t={t} />
           <PageTitle className="package-title" titleValue={t('packages.title')} />
           {!!error && <AjaxError t={t} error={error} />}
           {!error && <PackagesGrid {...gridProps} />}

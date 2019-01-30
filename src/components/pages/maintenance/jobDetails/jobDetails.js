@@ -135,14 +135,15 @@ export class JobDetails extends Component {
               onChange={this.onTimeIntervalChange}
               value={timeInterval}
               t={t} />
+              <RefreshBar
+                refresh={this.refreshData}
+                time={lastUpdated}
+                isPending={isPending}
+                t={t} />
           </ContextMenuAlign>
         </ContextMenu>
         <PageContent className="maintenance-container">
-          <RefreshBar
-            refresh={this.refreshData}
-            time={lastUpdated}
-            isPending={isPending}
-            t={t} />
+
           <PageTitle titleValue={selectedJob ? selectedJob.jobId : ''} />
           {
             !error

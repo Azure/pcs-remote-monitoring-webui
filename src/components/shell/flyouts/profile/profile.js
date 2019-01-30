@@ -27,12 +27,8 @@ export const Profile = (props) => {
   const permissionArray = Array.from(user.permissions);
 
   return (
-    <Flyout.Container>
-      <Flyout.Header>
-        <Flyout.Title>{t('profileFlyout.title')}</Flyout.Title>
-        <Flyout.CloseBtn onClick={onClose} />
-      </Flyout.Header>
-      <Flyout.Content className="profile-container">
+    <Flyout.Container header={t('profileFlyout.title')} onClose={onClose}>
+      <div className="profile-container">
         {
           !user &&
           <div className="profile-container">
@@ -106,7 +102,7 @@ export const Profile = (props) => {
             </BtnToolbar>
           </div>
         }
-      </Flyout.Content>
+      </div>
     </Flyout.Container>
   );
 }

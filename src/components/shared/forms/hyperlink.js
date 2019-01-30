@@ -5,14 +5,12 @@ import PropTypes from 'prop-types';
 
 import { joinClasses } from 'utilities';
 
-import './styles/hyperlink.scss';
-
 export const Hyperlink = (props) => {
   const { children, className, href } = props;
 
   if (!href) return null;
   return (
-    <a {...props} className={joinClasses('hyperlink', className)} >
+    <a {...props} className={joinClasses('link', className)} >
       {children}
     </a>
   );

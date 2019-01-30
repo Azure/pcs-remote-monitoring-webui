@@ -6,7 +6,7 @@
 
 .devices-container {
   padding: $baseContentPadding;
-
+  overflow: hidden;
   @include themify($themes) {
     .status { color: themed('colorContentText'); }
   }

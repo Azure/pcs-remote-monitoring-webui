@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import 'src/styles/variables';
 @import 'src/styles/themes';
 @import 'src/styles/mixins';
 
@@ -16,6 +17,7 @@ $btnIconSize: 14px;
   border: 0;
   cursor: pointer;
   font-family: inherit;
+  line-height: $input-height;
   @include rem-fallback(padding, 0px, $btnHeight);
   @include rem-fallback(min-width, $btnMinWidth);
 
@@ -29,9 +31,7 @@ $btnIconSize: 14px;
   }
 
   .btn-text {
-    @include rem-fallback(line-height, $btnHeight);
     @include rem-fallback(padding-right, (($btnHeight - $btnIconSize) / 2));
-    @include rem-font-size(14px);
   }
 
   &:disabled {
@@ -46,18 +46,21 @@ $btnIconSize: 14px;
 
     .btn-icon svg { fill: themed('colorBtnSvgFill'); }
 
-    &:focus { outline: 1px dashed themed('colorBtnOutlineFocus'); }
+    &:focus {
+      outline: 1px dashed themed('colorBtnOutlineFocus');
+      outline-offset: -1px;
+    }
 
     &:hover {
       color: themed('colorBtnTextHover');
-      background-color: themed('colorBtnBackgroundHover');
+      background-color: themed('color-bg-item-hover');
 
       .btn-icon svg { fill: themed('colorBtnSvgFillHover'); }
     }
 
     &:active {
       color: themed('colorBtnTextActive');
-      background-color: themed('colorBtnBackgroundActive');
+      background-color: themed('color-bg-item-selected');
 
       .btn-icon svg { fill: themed('colorBtnSvgFillActive'); }
     }

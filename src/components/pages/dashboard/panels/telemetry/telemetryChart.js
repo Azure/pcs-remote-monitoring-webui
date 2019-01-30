@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import update from 'immutability-helper';
 import { Observable } from 'rxjs';
 import 'tsiclient';
+import { PivotMenu } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Pivot';
 
-import { joinClasses } from 'utilities';
 import { toDiagnosticsModel } from 'services/models';
 
 import './telemetryChart.scss';
@@ -149,23 +149,20 @@ export class TelemetryChart extends Component {
 
   render() {
     const { telemetry } = this.props;
-    const { telemetryKeys, telemetryKey } = this.state;
+    const { telemetryKeys} = this.state;
+
+    const telemetryList = telemetryKeys.map((key) => {
+      const count = Object.keys(telemetry[key]).length;
+      return {
+        label: `${key} [${count}]`,
+        key,
+        onClick: this.setTelemetryKey(key)
+      };
+    });
+
     return (
       <div className="telemetry-chart-container">
-        <div className="options-container">
-          {
-            telemetryKeys.map((key, index) => {
-              const count = Object.keys(telemetry[key]).length;
-              return (
-                <button key={index}
-                      onClick={this.setTelemetryKey(key)}
-                      className={joinClasses('telemetry-option', telemetryKey === key ? 'active' : '')}>
-                  {`${key} [${count}]`}
-                </button>
-              );
-            })
-          }
-        </div>
+        <PivotMenu className="options-container" links={telemetryList} active={this.state.telemetryKey}/>
         <div className="chart-container" id={this.chartId} />
       </div>
     );

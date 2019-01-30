@@ -193,7 +193,6 @@ export class MapPanel extends Component {
       <Panel className="map-panel-container">
         <PanelHeader>
           <PanelHeaderLabel>{t('dashboard.panels.map.header')}</PanelHeaderLabel>
-          { !showOverlay && isPending && <Indicator size="small" /> }
         </PanelHeader>
         <PanelContent className="map-panel-container">
           <AzureMap azureMapsKey={azureMapsKey} onMapReady={this.onMapReady} />

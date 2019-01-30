@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { SelectInput } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Input/SelectInput';
 
-import { Select } from 'components/shared';
 import { isFunc } from 'utilities';
 import { toDiagnosticsModel } from 'services/models';
 
@@ -28,12 +28,19 @@ export class TimeIntervalDropdown extends Component {
       value
     }));
     return (
-      <Select
+      <SelectInput
+        name="time-interval-dropdown"
         className="time-interval-dropdown"
+        attr={{
+          select: {
+            className: 'time-interval-dropdown-select',
+          },
+          chevron: {
+            className: 'time-interval-dropdown-chevron',
+          },
+        }}
         options={options}
         value={this.props.value}
-        searchable={false}
-        clearable={false}
         onChange={this.onChange(this.props.onChange)} />
     );
   }

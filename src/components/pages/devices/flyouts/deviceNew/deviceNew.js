@@ -27,10 +27,6 @@ import {
   BtnToolbar,
   ComponentArray,
   Flyout,
-  FlyoutHeader,
-  FlyoutTitle,
-  FlyoutCloseBtn,
-  FlyoutContent,
   FormControl,
   FormGroup,
   FormLabel,
@@ -405,12 +401,7 @@ export class DeviceNew extends LinkedComponent {
     const summaryMessage = this.getSummaryMessage();
 
     return (
-      <Flyout>
-        <FlyoutHeader>
-          <FlyoutTitle>{t('devices.flyouts.new.title')}</FlyoutTitle>
-          <FlyoutCloseBtn onClick={() => this.onFlyoutClose('Devices_TopXCloseClick')} />
-        </FlyoutHeader>
-        <FlyoutContent>
+      <Flyout header={t('devices.flyouts.new.title')} onClose={() => this.onFlyoutClose('Devices_TopXCloseClick')}>
           <Protected permission={permissions.createDevices}>
             <form className="devices-new-container" onSubmit={this.apply}>
               <div className="devices-new-content">
@@ -529,7 +520,6 @@ export class DeviceNew extends LinkedComponent {
               }
             </form>
           </Protected>
-        </FlyoutContent>
       </Flyout>
     );
   }

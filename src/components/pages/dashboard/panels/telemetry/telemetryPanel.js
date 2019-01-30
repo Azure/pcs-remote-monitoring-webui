@@ -26,17 +26,16 @@ export class TelemetryPanel extends Component {
       <Panel>
         <PanelHeader>
           <PanelHeaderLabel>{t('dashboard.panels.telemetry.header')}</PanelHeaderLabel>
-          {!showOverlay && isPending && <Indicator size="small" />}
         </PanelHeader>
         <PanelContent className="telemetry-panel-container">
-          {
-            timeSeriesExplorerUrl &&
-            <TimeSeriesInsightsLinkContainer href={timeSeriesExplorerUrl} />
-          }
           <TelemetryChart telemetry={telemetry} theme={theme} colors={colors} />
           {
             !showOverlay && Object.keys(telemetry).length === 0
             && <PanelMsg>{t('dashboard.noData')}</PanelMsg>
+          }
+          {
+            timeSeriesExplorerUrl &&
+            <TimeSeriesInsightsLinkContainer href={timeSeriesExplorerUrl} />
           }
         </PanelContent>
         {showOverlay && <PanelOverlay><Indicator /></PanelOverlay>}

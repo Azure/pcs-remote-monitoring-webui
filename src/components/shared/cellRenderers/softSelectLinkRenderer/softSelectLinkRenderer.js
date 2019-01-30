@@ -27,8 +27,8 @@ export class SoftSelectLinkRenderer extends Component {
         <GlimmerRenderer value={data.isNew} />
         {
           isFunc(context.onSoftSelectChange)
-            ? <button type="button" className="pcs-renderer-link soft-select-link" onClick={this.onClick}>{value}</button>
-            : <div className="soft-select-text">{value}</div>
+            ? <button type="button" className="link pcs-renderer-link soft-select-link" onClick={this.onClick}>{value}</button>
+            : <div className="link soft-select-text">{value}</div>
         }
       </div>
     );

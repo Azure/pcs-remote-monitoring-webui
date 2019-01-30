@@ -48,14 +48,14 @@ export class Summary extends Component {
             onChange={this.props.onTimeIntervalChange}
             value={this.props.timeInterval}
             t={this.props.t} />
-        </ContextMenuAlign>
-      </ContextMenu>
-      <PageContent className="maintenance-container summary-container">
           <RefreshBar
             refresh={this.props.refreshData}
             time={this.props.lastUpdated}
             isPending={this.props.alertProps.isPending || this.props.jobProps.isPending}
             t={this.props.t} />
+        </ContextMenuAlign>
+      </ContextMenu>
+      <PageContent className="maintenance-container summary-container">
         <PageTitle titleValue={this.props.t('maintenance.title')} />
         <StatSection className="summary-stat-container">
           <StatGroup>

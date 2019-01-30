@@ -98,10 +98,10 @@ export class Deployments extends Component {
             <Protected permission={permissions.createDeployments}>
               <Btn svg={svgs.plus} onClick={this.openNewDeploymentFlyout}>{t('deployments.flyouts.new.contextMenuName')}</Btn>
             </Protected>
+            <RefreshBar refresh={fetchDeployments} time={lastUpdated} isPending={isPending} t={t} />
           </ContextMenuAlign>
         </ContextMenu>
         <PageContent className="deployments-page-container">
-          <RefreshBar refresh={fetchDeployments} time={lastUpdated} isPending={isPending} t={t} />
           <PageTitle className="deployments-title" titleValue={t('deployments.title')} />
           {!!error && <AjaxError t={t} error={error} />}
           {!error && <DeploymentsGrid {...gridProps} />}

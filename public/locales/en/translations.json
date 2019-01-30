@@ -3,9 +3,14 @@
   "header": {
     "appName": "Azure IoT Remote Monitoring",
     "profile": "Profile",
+    "more": "More",
     "getStarted": "Get started",
     "documentation": "Documentation",
     "sendSuggestion": "Send a suggestion"
+  },
+  "globalNav": {
+    "expand": "Expand Side Navigation",
+    "collapse": "Collapse Side Navigation"
   },
   "accessDenied": {
     "message": "Oops, you don't have permissions for the the page you requested. Please contact your administrator. <1><0>learnMore</0></1>",
@@ -17,7 +22,7 @@
   },
   "tabs": {
     "dashboard": "Dashboard",
-    "devices": "Devices",
+    "devices": "Device Explorer",
     "rules": "Rules",
     "maintenance": "Maintenance",
     "packages": "Packages",
@@ -90,6 +95,9 @@
     "sendDiagnosticsCheckbox": "Yes, share information with Microsoft",
     "sendDiagnosticsMicrosoftPrivacyUrl": "Privacy Statement",
     "diagnosticsLoadError": "Error updating diagnostics preference"
+  },
+  "helpFlyout": {
+    "title": "Documentation"
   },
   "profileFlyout": {
     "title": "User Profile",
@@ -185,7 +193,7 @@
     "lastRefreshed": "Last refreshed"
   },
   "devices": {
-    "title": "Devices",
+    "title": "Device Explorer",
     "searchPlaceholder": "Search devices...",
     "noneFound": "No devices found.",
     "refresh": "Refresh",

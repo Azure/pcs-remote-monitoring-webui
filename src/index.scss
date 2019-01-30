@@ -1,13 +1,22 @@
 // Copyright (c) Microsoft. All rights reserved.
 
-@import 'styles/normalize';
 @import 'styles/font-face-imports';
+@import 'styles/variables';
+
+// @font-face urls don't work with CSS modules, so we need to declare them in a
+// non-module file: https://github.com/css-modules/css-modules/issues/95
+@font-face {
+  font-family: $icon-font-family;
+  src: url("https://static.azureiotcentral.com/ux/static/media/segmdl2.1.61.38af5f02.woff") format('woff'),
+      url("https://static.azureiotcentral.com/ux/static/media/segmdl2.1.61.35c95dc2.ttf") format('truetype');
+}
 
 html {
   width: 100%;
   height: 100%;
-  font-family: $fontSelawik, sans-serif;
-  font-size: 16px; // Define the base font size to allow the REMs to work
+  font-family: $font-family-default;
+  font-size: $font-size-default; // Define the base font size to allow the REMs to work
+  line-height: $line-height-base;
 
   body {
     width: 100%;

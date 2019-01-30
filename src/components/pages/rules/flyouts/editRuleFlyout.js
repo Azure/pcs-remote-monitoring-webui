@@ -17,12 +17,7 @@ export class EditRuleFlyout extends Component {
   render() {
     const { onClose, t, ruleId } = this.props;
     return (
-      <Flyout.Container>
-        <Flyout.Header>
-          <Flyout.Title>{t('rules.flyouts.editRule')}</Flyout.Title>
-          <Flyout.CloseBtn onClick={this.onTopXClose} />
-        </Flyout.Header>
-        <Flyout.Content>
+      <Flyout.Container header={t('rules.flyouts.editRule')} onClose={this.onTopXClose}>
           <Protected permission={permissions.updateRules}>{
             (hasPermission, permission) =>
               hasPermission
@@ -34,7 +29,6 @@ export class EditRuleFlyout extends Component {
                 </div>
           }
           </Protected>
-        </Flyout.Content>
       </Flyout.Container>
     );
   }

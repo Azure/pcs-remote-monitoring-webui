@@ -3,6 +3,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 import { Link } from "react-router-dom";
+import { Balloon, BalloonPosition, BalloonAlignment } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Balloon';
 
 import Config from 'app.config';
 import {
@@ -25,10 +26,6 @@ import {
   BtnToolbar,
   ComponentArray,
   Flyout,
-  FlyoutHeader,
-  FlyoutTitle,
-  FlyoutCloseBtn,
-  FlyoutContent,
   Hyperlink,
   Indicator,
   FormControl,
@@ -39,7 +36,6 @@ import {
   SummaryCount,
   SummarySection,
   Svg,
-  Tooltip,
   ThemedSvgContainer
 } from 'components/shared';
 
@@ -272,12 +268,8 @@ export class DeploymentNew extends LinkedComponent {
     const configTypeEnabled = this.packageTypeLink.value === packagesEnum.deviceConfiguration;
 
     return (
-      <Flyout>
-        <FlyoutHeader>
-          <FlyoutTitle>{t('deployments.flyouts.new.title')}</FlyoutTitle>
-          <FlyoutCloseBtn onClick={() => this.genericCloseClick('NewDeployment_CloseClick')} />
-        </FlyoutHeader>
-        <FlyoutContent className="new-deployment-content">
+      <Flyout header={t('deployments.flyouts.new.title')} onClose={() => this.genericCloseClick('NewDeployment_CloseClick')}>
+        <div className="new-deployment-content">
           <form className="new-deployment-form" onSubmit={this.apply}>
             <FormGroup className="new-deployment-formGroup">
               <FormLabel isRequired="true">{t('deployments.flyouts.new.name')}</FormLabel>
@@ -374,14 +366,17 @@ export class DeploymentNew extends LinkedComponent {
             <FormGroup className="new-deployment-formGroup">
               <FormLabel isRequired="true">
                 {t('deployments.flyouts.new.priority')}
-                <Tooltip content={
+                <Balloon
+                  position={BalloonPosition.Top}
+                  align={BalloonAlignment.End}
+                  tooltip={
                   <Trans i18nKey={`deployments.flyouts.new.priorityToolTip`}>
                     Manual setup is required.
                       <Hyperlink href={Config.contextHelpUrls.deploymentPriority} target="_blank">{t('deployments.flyouts.new.priorityLearnMore')}</Hyperlink>
                   </Trans>
                 }>
                   <ThemedSvgContainer paths={themedPaths.questionBubble} />
-                </Tooltip>
+                </Balloon>
               </FormLabel>
               {
                 !completedSuccessfully &&
@@ -462,7 +457,7 @@ export class DeploymentNew extends LinkedComponent {
               }
             </SummarySection>
           </form>
-        </FlyoutContent>
+        </div>
       </Flyout>
     );
   }

@@ -3,6 +3,8 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@microsoft/azure-iot-ux-fluent-controls": "^6.0.0-uialignment.10",
+    "@microsoft/azure-iot-ux-fluent-css": "6.0.0-uialignment.7",
     "adal-angular": "1.0.17",
     "ag-grid-community": "19.1.4",
     "ag-grid-react": "19.1.2",
@@ -23,7 +25,6 @@
     "react-redux": "5.1.1",
     "react-router-dom": "4.3.1",
     "react-scripts": "^2.1.3",
-    "react-select": "1.3.0",
     "react-svg": "2.2.18",
     "redux": "4.0.1",
     "redux-devtools-extension": "2.13.7",

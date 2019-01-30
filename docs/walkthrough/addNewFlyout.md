@@ -20,20 +20,14 @@ The following is for creating a new flyout called "**exampleFlyout**."
 1. Open your flyout's container file [exampleFlyout.container.js](/src/walkthrough/components/pages/pageWithFlyout/flyouts/exampleFlyout/exampleFlyout.container.js) so the data and actions can be connected to the page props.
     - To keep our example simple, no actions are mapped. But in a real world scenario, you would very likely need this. See the [Add a New Grid walkthrough](addNewGrid.md) for more information on mapping data and actions via a `container.js.`
 
-1. Open your flyout's file [exampleFlyout.js](/src/walkthrough/components/pages/pageWithFlyout/flyouts/exampleFlyout/exampleFlyout.js). Use the various Flyout components to ensure consistency with others. Then, add whatever components are needed inside `FlyoutContent`. Notice that the FlyoutCloseBtn provides a way to close the flyout.
+1. Open your flyout's file [exampleFlyout.js](/src/walkthrough/components/pages/pageWithFlyout/flyouts/exampleFlyout/exampleFlyout.js). Use the various Flyout properties to ensure consistency with others. Then, add whatever properties are needed inside `Flyout`. Notice that the onClose property provides a way to close the flyout.
     ```jsx
-    <Flyout>
-      <FlyoutHeader>
-        <FlyoutTitle>My New Flyout</FlyoutTitle>
-        <FlyoutCloseBtn onClick={this.props.onClose} />
-      </FlyoutHeader>
-      <FlyoutContent>
-        {
-          /**
-           * Really, anything you need could go inside a flyout.
-           * */
-        }
-      </FlyoutContent>
+    <Flyout header='My New Flyout' onClose={this.props.onClose}>
+      {
+        /**
+         * Really, anything you need could go inside a flyout.
+         */
+      }
     </Flyout>
     ```
 

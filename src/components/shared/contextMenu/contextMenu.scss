@@ -27,6 +27,11 @@ $headerHeight: 48px;
     @include rem-fallback(padding, 0px, 10px);
   }
 
+  // buttons in the context menu should be centered vertically:
+  :global(.btn) {
+    height: 100%;
+  }
+
   @include themify($themes) {
     border-bottom: 1px solid themed('colorContextMenuBorderColor');
 

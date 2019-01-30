@@ -36,7 +36,12 @@ $zoomBtnFont: 20px;
     }
   }
 
+  .popup-close{
+    margin: $grid-size;
+  }
+
   .popup-content-box {
+    border: 1px solid;
     border-left: 6px solid transparent;
     cursor: pointer;
     @include rem-font-size(14px);
@@ -49,13 +54,18 @@ $zoomBtnFont: 20px;
 
   @include themify($themes) {
     .zoom-btn {
-      color: themed('colorContentText');
-      background-color: themed('colorDashboardPanelHeaderBg');
+      color: themed('color-text-rest');
+      background-color: themed('color-bg-balloon');
+    }
+
+    .popup-close{
+      color: themed('color-text-rest');
     }
 
     .popup-content-box {
-      color: themed('colorDashboardMapPopupText');
-
+      color: themed('color-text-rest');
+      background-color: themed('color-bg-balloon');
+      border-color: themed('color-border-controls');
       &.nominal { border-color: themed('colorGridSelectedRowBorder'); }
       &.warning { border-color: themed('colorWarning'); }
       &.alert { border-color: themed('colorAlert'); }

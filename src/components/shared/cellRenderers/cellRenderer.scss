@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import 'src/styles/variables';
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
@@ -9,7 +10,7 @@ $iconSize: 14px;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-
+  height: 12*$grid-size; // fluent management-list-row-height
   .pcs-renderer-icon {
     margin-right: 10px;
 
@@ -46,9 +47,8 @@ $iconSize: 14px;
     background-color: transparent;
     border: none;
     cursor: pointer;
-    display: inline;
-    color: inherit;
-    text-decoration: underline;
+    display: inline-block;
+    height: 100%; // center align vertically
     font-family: inherit;
     padding: 0;
     overflow: hidden;

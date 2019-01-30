@@ -122,10 +122,10 @@ export class Rules extends Component {
             <Protected permission={permissions.createRules}>
               <Btn svg={svgs.plus} onClick={this.openNewRuleFlyout}>{t('rules.flyouts.newRule')}</Btn>
             </Protected>
+            <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} t={t} />
           </ContextMenuAlign>
         </ContextMenu>
         <PageContent className="rules-container">
-          <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} t={t} />
           <PageTitle titleValue={t('rules.title')} />
           {!!error && <AjaxError t={t} error={error} />}
           {!error && <RulesGrid {...gridProps} />}

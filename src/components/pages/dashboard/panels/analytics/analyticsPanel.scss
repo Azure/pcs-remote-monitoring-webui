@@ -3,6 +3,8 @@
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
+$read-more: 4*$grid-size;
+
 .analytics-panel-container {
   display: flex;
   flex-flow: row wrap;
@@ -14,7 +16,13 @@
     width: 50%;
     height: 50%;
 
-    &.full-width { width: 100%; }
+    &.full-width {
+      width: 100%;
+    }
+
+    &.read-more {
+      height: calc(50% - #{$read-more});
+    }
 
     .critical-alerts {
       display: flex;
@@ -22,13 +30,15 @@
       justify-content: center;
       flex-grow: 1;
       font-family: $fontSelawikLight;
-      @include rem-font-size(60px);
+      @include rem-font-size(15*$grid-size);
 
       .analytics-percentage-container {
         display: flex;
         align-items: flex-end;
 
-        .analytics-percentage-sign { @include rem-font-size(40px); }
+        .analytics-percentage-sign {
+          @include rem-font-size(10*$grid-size);
+        }
       }
     }
   }
@@ -40,25 +50,37 @@
   }
 
   @include themify($themes) {
+
     // Overrides of the TSIChart Lib
-    text { fill: themed('colorContentText'); }
+    text {
+      fill: themed('colorContentText');
+    }
 
     .tsi-barChart {
       background: transparent;
 
-      text { fill: themed('colorContentText') !important; }
+      text {
+        fill: themed('colorContentText') !important;
+      }
     }
+
     .tsi-pieChart {
       background: transparent;
 
-      .tsi-pieChartSVG path { stroke: themed('colorDashboardPanelContentBg'); }
+      .tsi-pieChartSVG path {
+        stroke: themed('colorDashboardPanelContentBg');
+      }
     }
 
     .analytics-cell {
-      .analytics-header { color: themed('colorContentTextDim'); }
+      .analytics-header {
+        color: themed('colorContentText');
+      }
 
       .critical-alerts {
-        .analytics-header { color: themed('colorContentText'); }
+        .analytics-header {
+          color: themed('colorContentText');
+        }
       }
     }
   }

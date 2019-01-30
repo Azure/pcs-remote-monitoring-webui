@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
+import { Toggle } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle';
 
 import Config from 'app.config';
 import Flyout from 'components/shared/flyout';
-import { Btn, Indicator, ToggleBtn } from 'components/shared';
+import { Btn, Indicator } from 'components/shared';
 import { svgs, LinkedComponent, isDef } from 'utilities';
 import { ApplicationSettingsContainer } from './applicationSettings.container';
 import { toDiagnosticsModel, toSinglePropertyDiagnosticsModel } from 'services/models';
@@ -170,14 +171,9 @@ export class Settings extends LinkedComponent {
       : this.currSimulationLabel[isSimulationEnabled];
 
     return (
-
-      <form onSubmit={this.apply}>
-        <Flyout.Container>
-          <Flyout.Header>
-            <Flyout.Title>{t('settingsFlyout.title')}</Flyout.Title>
-            <Flyout.CloseBtn onClick={this.onFlyoutClose.bind(this, 'Settings_TopXClose_Click')} />
-          </Flyout.Header>
-          <Flyout.Content className="settings-workflow-container">
+      <Flyout.Container header={t('settingsFlyout.title')} onClose={this.onFlyoutClose.bind(this, 'Settings_TopXClose_Click')}>
+        <form onSubmit={this.apply}>
+          <div className="settings-workflow-container">
             <Section.Container collapsable={false}>
               <Section.Header>{t('settingsFlyout.sendDiagnosticsHeader')}</Section.Header>
               <Section.Content className="diagnostics-content">
@@ -193,12 +189,13 @@ export class Settings extends LinkedComponent {
                       {t('settingsFlyout.diagnosticsLoadError')}
                     </div>
                     : <div className="toggle">
-                      <ToggleBtn
-                        value={this.state.diagnosticsOptIn}
-                        onChange={this.toggleDiagnostics} />
-                      <div className="label">
-                        {getDiagnosticsPending ? t('settingsFlyout.loading') : t('settingsFlyout.sendDiagnosticsCheckbox')}
-                      </div>
+                      <Toggle
+                        name="settings-diagnostics-opt-in"
+                        on={this.state.diagnosticsOptIn}
+                        disabled={getDiagnosticsPending}
+                        onChange={this.toggleDiagnostics}
+                        onLabel={t(getDiagnosticsPending ? 'settingsFlyout.loading' : 'settingsFlyout.sendDiagnosticsCheckbox')}
+                        offLabel={t(getDiagnosticsPending ? 'settingsFlyout.loading' : 'settingsFlyout.sendDiagnosticsCheckbox')} />
                     </div>
                 }
               </Section.Content>
@@ -219,15 +216,14 @@ export class Settings extends LinkedComponent {
                       {t('settingsFlyout.simulationLoadError')}
                     </div>
                     : <div className="simulation-toggle">
-                      <ToggleBtn
+                      <Toggle
                         className="simulation-toggle-button"
                         name="desiredSimulationState"
-                        value={desiredSimulationState}
+                        on={desiredSimulationState}
                         disabled={getSimulationPending}
-                        onChange={this.onSimulationChange} />
-                      <div className="simulation-toggle-label">
-                        {getSimulationPending ? t('settingsFlyout.loading') : simulationLabel}
-                      </div>
+                        onChange={this.onSimulationChange}
+                        onLabel={getSimulationPending ? t('settingsFlyout.loading') : simulationLabel}
+                        offLabel={getSimulationPending ? t('settingsFlyout.loading') : simulationLabel} />
                     </div>
                 }
               </Section.Content>
@@ -266,9 +262,9 @@ export class Settings extends LinkedComponent {
                 {hasChanged ? t('settingsFlyout.cancel') : t('settingsFlyout.close')}</Btn>
               {loading && <Indicator size='small' />}
             </div>
-          </Flyout.Content>
-        </Flyout.Container>
-      </form>
+          </div>
+        </form>
+      </Flyout.Container>
     );
   }
 }

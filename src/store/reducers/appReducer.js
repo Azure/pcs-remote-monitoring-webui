@@ -218,7 +218,7 @@ const initialState = {
   deviceGroups: {},
   deviceGroupFilters: {},
   activeDeviceGroupId: undefined,
-  theme: 'dark',
+  theme: 'light',
   version: undefined,
   releaseNotesUrl: undefined,
   timeSeriesExplorerUrl: undefined,

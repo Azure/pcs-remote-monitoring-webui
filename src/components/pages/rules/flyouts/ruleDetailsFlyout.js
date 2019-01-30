@@ -44,12 +44,8 @@ export class RuleDetailsFlyout extends Component {
     const { isEditable } = this.state;
 
     return (
-      <Flyout.Container>
-        <Flyout.Header>
-          <Flyout.Title>{isEditable ? t('rules.flyouts.editRule') : t('rules.flyouts.viewRule')}</Flyout.Title>
-          <Flyout.CloseBtn onClick={this.onTopXClose} />
-        </Flyout.Header>
-        <Flyout.Content className="rule-details">
+      <Flyout.Container header={isEditable ? t('rules.flyouts.editRule') : t('rules.flyouts.viewRule')} onClose={this.onTopXClose}>
+        <div className="rule-details">
           {!isEditable
             ?
             <ComponentArray>
@@ -69,7 +65,7 @@ export class RuleDetailsFlyout extends Component {
               }
             </Protected>
           }
-        </Flyout.Content>
+        </div>
       </Flyout.Container>
     );
   }

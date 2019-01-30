@@ -13,6 +13,10 @@ $scrollbarWidth: 4px;
   position: relative;
   @include rem-fallback(padding-left, 8px);
 
+  .grid-header {
+    @include rem-font-size($font-size-small);
+  }
+
   .grid-header .cell {
     font-family: $fontSelawikBold;
     text-transform: uppercase;
@@ -23,22 +27,6 @@ $scrollbarWidth: 4px;
   .grid-scrollable {
     overflow-y: auto;
     @include rem-fallback(max-height, $maxScrollableHeight);
-
-    &::-webkit-scrollbar {
-      width: $scrollbarWidth;
-      height: $scrollbarWidth;
-    }
-
-    // Adds the gradient after the scrollable area
-    &:after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: $scrollbarWidth;
-      height: $heightOfGradient;
-      pointer-events: none; // Allow clicking through the gradient
-    }
   }
 
   .row {

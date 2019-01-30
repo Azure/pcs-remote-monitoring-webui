@@ -245,12 +245,8 @@ export class DeviceDetails extends Component {
         : undefined;
 
     return (
-      <Flyout.Container>
-        <Flyout.Header>
-          <Flyout.Title>{t('devices.flyouts.details.title')}</Flyout.Title>
-          <Flyout.CloseBtn onClick={onClose} />
-        </Flyout.Header>
-        <Flyout.Content className="device-details-container">
+      <Flyout.Container header={t('devices.flyouts.details.title')} onClose={onClose}>
+        <div className="device-details-container">
           {
             !device &&
             <div className="device-details-container">
@@ -478,7 +474,7 @@ export class DeviceDetails extends Component {
           <BtnToolbar>
             <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.details.close')}</Btn>
           </BtnToolbar>
-        </Flyout.Content>
+        </div>
       </Flyout.Container>
     );
   }

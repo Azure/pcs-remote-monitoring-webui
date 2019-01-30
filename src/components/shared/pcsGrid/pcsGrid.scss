@@ -4,12 +4,14 @@
 
 // Variable overrides
 $selectedRowBorderWidth: 4px;
-$rowHeight: 48px;
+$rowBorderHeight: $grid-size;
+$rowLineHeight: 12*$grid-size; // fluent management-list-row-height
+$rowHeight: $rowLineHeight + 2*$rowBorderHeight;
 $headerResizeHeight: 18px;
 
 $pageTitleHeight: 85px;
 $refreshBarHeight: 16px;
-
+$font-family: $font-family-default;
 $icons-path: "~ag-grid-community/src/styles/icons/";
 $row-height: $rowHeight;
 $header-height: $rowHeight;
@@ -32,7 +34,6 @@ $doublePadding: $baseContentPadding * 2;
   @include ag-theme-classic($params);
   height: calc(100% - #{$pageTitleHeight} - #{$refreshBarHeight});
   position: relative;
-  font-family: $fontSelawik;
   flex-shrink: 0;
 
   > .pcs-grid-loading-container {
@@ -52,8 +53,7 @@ $doublePadding: $baseContentPadding * 2;
   }
 
   .ag-header-cell {
-    text-transform: uppercase;
-    @include rem-font-size(12px);
+    @include rem-font-size($font-size-small);
 
     .ag-icon { cursor: auto; }
   }
@@ -66,9 +66,7 @@ $doublePadding: $baseContentPadding * 2;
     .ag-cell {
       outline: none;
       border: none;
-      @include rem-font-size(14px);
-
-      &.capitalize-cell { text-transform: capitalize; }
+      @include rem-fallback(line-height, $rowLineHeight);
 
       &.first-child-column {
         // Correct alignment of the padding since the border will add width
@@ -86,8 +84,6 @@ $doublePadding: $baseContentPadding * 2;
       background-color: themed('colorGridRowSelectedBackground');
       color: themed('colorGridCellText');
     }
-
-    .ag-header { border-bottom: 1px solid themed('colorGridRowBorder'); }
 
     .ag-header-cell {
       color: themed('colorGridCellText');
@@ -123,21 +119,14 @@ $doublePadding: $baseContentPadding * 2;
     }
 
     .ag-row {
-      border-bottom: 1px solid themed('colorGridRowBorder');
+      background-color: themed('color-bg-table');
+
+      // ag-grid doesn't really support row separators, so to emulate the fluent styling,
+      // add a big vertical border with the page content background color:
+      border-top: $rowBorderHeight solid themed('color-bg-content');
+      border-bottom: $rowBorderHeight solid themed('color-bg-content');
 
       .ag-cell { color: themed('colorGridCellText'); }
-
-      &.ag-row-hover:not(.ag-row-selected) {
-        background-color: themed('colorGridRowHoverBackground');
-
-        .first-child-column { border-color: themed('colorGridSelectedRowBorder'); }
-      }
-
-      &.ag-row-selected {
-        background-color: themed('colorGridRowSelectedBackground');
-
-        .first-child-column { border-color: themed('colorGridSelectedRowBorder'); }
-      }
     }
 
     .ag-paging-panel {

@@ -3,6 +3,8 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 import update from 'immutability-helper';
+import { Balloon, BalloonAlignment, BalloonPosition } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Balloon/Balloon';
+import { Toggle } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle';
 
 import Config from 'app.config';
 import {
@@ -23,8 +25,6 @@ import {
   SummarySection,
   Svg,
   ThemedSvgContainer,
-  ToggleBtn,
-  Tooltip
 } from 'components/shared';
 import { ActionEmailSetupContainer } from './actionEmailSetup.container';
 import { SeverityRenderer } from 'components/shared/cellRenderers';
@@ -305,7 +305,7 @@ export class RuleEditor extends LinkedComponent {
   }
 
   //todo toggle button didn't support link
-  onStatusToggle = ({ target: { value } }) => {
+  onStatusToggle = (value) => {
     this.setState({ formData: { ...this.state.formData, enabled: value } });
     this.props.logEvent(toSinglePropertyDiagnosticsModel('Rule_StatusToggle', 'RuleStatus', value ? 'Enabled' : 'Disabled'));
     this.formControlChange();
@@ -351,7 +351,7 @@ export class RuleEditor extends LinkedComponent {
     this.formControlChange();
   }
 
-  onActionToggle = ({ target: { value } }) => {
+  onActionToggle = (value) => {
     this.setState({ formData: { ...this.state.formData, actionEnabled: value } });
     this.props.logEvent(toSinglePropertyDiagnosticsModel('Rule_ActionToggle', 'EmailActionStatus', value ? 'Enabled' : 'Disabled'));
     this.formControlChange();
@@ -575,19 +575,24 @@ export class RuleEditor extends LinkedComponent {
               <Section.Container collapsable={false}>
                 <Section.Header>{t('rules.flyouts.ruleEditor.actions.action')}</Section.Header>
                 <div className="email-toggle-container">
-                  <ToggleBtn
-                    value={formData.actionEnabled}
-                    onChange={this.onActionToggle} >
-                    {formData.actionEnabled ? t('rules.flyouts.ruleEditor.actions.on') : t('rules.flyouts.ruleEditor.actions.off')}
-                  </ToggleBtn>
-                  <Tooltip content={
-                    <Trans i18nKey={`rules.flyouts.ruleEditor.actions.emailSetupHelp`}>
-                      Manual setup is required.
-                      <Hyperlink href={Config.contextHelpUrls.ruleActionsEmail} target="_blank">{t('rules.flyouts.ruleEditor.actions.learnMore')}</Hyperlink>
-                    </Trans>
-                  }>
-                    <ThemedSvgContainer paths={themedPaths.questionBubble} />
-                  </Tooltip>
+                  <Toggle
+                    name='rules-flyouts-enable-action'
+                    on={formData.actionEnabled}
+                    onChange={this.onActionToggle}
+                    onLabel={t('rules.flyouts.ruleEditor.actions.on')}
+                    offLabel={t('rules.flyouts.ruleEditor.actions.off')} />
+                  <Balloon
+                    position={BalloonPosition.Top}
+                    align={BalloonAlignment.End}
+                    tooltip={
+                      <Trans i18nKey={`rules.flyouts.ruleEditor.actions.emailSetupHelp`}>
+                        Manual setup is required.
+                        <Hyperlink href={Config.contextHelpUrls.ruleActionsEmail} target="_blank">{t('rules.flyouts.ruleEditor.actions.learnMore')}</Hyperlink>
+                      </Trans>
+                    }
+                  >
+                  <ThemedSvgContainer paths={themedPaths.questionBubble} />
+                  </Balloon>
                 </div>
                 {
                   formData.actionEnabled &&
@@ -636,11 +641,12 @@ export class RuleEditor extends LinkedComponent {
                 <Section.Header>{t('rules.flyouts.ruleEditor.ruleStatus')}</Section.Header>
                 <Section.Content>
                   <FormGroup>
-                    <ToggleBtn
-                      value={formData.enabled}
-                      onChange={this.onStatusToggle} >
-                      {formData.enabled ? t('rules.flyouts.ruleEditor.ruleEnabled') : t('rules.flyouts.ruleEditor.ruleDisabled')}
-                    </ToggleBtn>
+                    <Toggle
+                      name='rules-flyouts-enable-rule'
+                      on={formData.enabled}
+                      onChange={this.onStatusToggle}
+                      onLabel={t('rules.flyouts.ruleEditor.ruleEnabled')}
+                      offLabel={t('rules.flyouts.ruleEditor.ruleDisabled')} />
                   </FormGroup>
                 </Section.Content>
               </Section.Container>

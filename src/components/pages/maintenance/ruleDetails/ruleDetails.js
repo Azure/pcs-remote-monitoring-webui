@@ -320,14 +320,15 @@ export class RuleDetails extends Component {
               onChange={onTimeIntervalChange}
               value={timeInterval}
               t={t} />
+            <RefreshBar
+              refresh={this.refreshData}
+              time={lastUpdated}
+              isPending={isPending}
+              t={t} />
           </ContextMenuAlign>
         </ContextMenu>
         <PageContent className="maintenance-container rule-details-container">
-          <RefreshBar
-            refresh={this.refreshData}
-            time={lastUpdated}
-            isPending={isPending}
-            t={t} />
+
           <PageTitle titleValue={alertName} />
           {
             !this.props.error

@@ -49,7 +49,6 @@ export class OverviewPanel extends Component {
       <Panel>
         <PanelHeader>
           <PanelHeaderLabel>{t('dashboard.panels.overview.header')}</PanelHeaderLabel>
-          { !showOverlay && isPending && <Indicator size="small" /> }
         </PanelHeader>
         <PanelContent className="device-stats-container">
           <div className="stat-header">{deviceGroupName}</div>

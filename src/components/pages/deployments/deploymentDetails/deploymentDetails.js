@@ -141,16 +141,12 @@ export class DeploymentDetails extends Component {
             <Protected permission={permissions.createDevices}>
               <Btn svg={svgs.trash} onClick={this.openModal('delete-deployment')}>{t('deployments.modals.delete.contextMenuName')}</Btn>
             </Protected>
+            <RefreshBar refresh={() => fetchDeployment(id)} time={lastUpdated} isPending={isPending} t={t} />
           </ContextMenuAlign>
         </ContextMenu>
         <PageContent className="deployments-details-container">
-
-          <RefreshBar refresh={() => fetchDeployment(id)} time={lastUpdated} isPending={isPending} t={t} />
-
           {error && <AjaxError t={t} error={error} />}
-
           {isPending && <Indicator />}
-
           {
             !isPending &&
             <div className="deployment-details-summary-container">
@@ -257,13 +253,10 @@ export class DeploymentDetails extends Component {
               </StatSection>
             </div>
           }
-
           <h4 className="deployment-details-devices-affected">
             {t('deployments.details.devicesAffected')}
           </h4>
-
           {isDeployedDevicesPending && <Indicator />}
-
           {
             deployedDevicesError &&
             <AjaxError

@@ -17,16 +17,10 @@ export class NewRuleFlyout extends Component {
  render () {
   const { onClose, t } = this.props;
   return (
-    <Flyout.Container>
-      <Flyout.Header>
-        <Flyout.Title>{t('rules.flyouts.newRule')}</Flyout.Title>
-        <Flyout.CloseBtn onClick={this.onTopXClose} />
-      </Flyout.Header>
-      <Flyout.Content>
+    <Flyout.Container header={t('rules.flyouts.newRule')} onClose={this.onTopXClose}>
         <Protected permission={permissions.createRules}>
           <RuleEditorContainer onClose={onClose} />
         </Protected>
-      </Flyout.Content>
     </Flyout.Container>
   );
  }

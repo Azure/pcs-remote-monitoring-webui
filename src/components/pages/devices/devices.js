@@ -99,10 +99,10 @@ export class Devices extends Component {
             <Protected permission={permissions.createDevices}>
               <Btn svg={svgs.plus} onClick={this.openNewDeviceFlyout}>{t('devices.flyouts.new.contextMenuName')}</Btn>
             </Protected>
+            <RefreshBar refresh={fetchDevices} time={lastUpdated} isPending={isPending} t={t} />
           </ContextMenuAlign>
         </ContextMenu>
         <PageContent className="devices-container">
-          <RefreshBar refresh={fetchDevices} time={lastUpdated} isPending={isPending} t={t} />
           <PageTitle titleValue={t('devices.title')} />
           {!!error && <AjaxError t={t} error={error} />}
           {!error && <DevicesGridContainer {...gridProps} />}

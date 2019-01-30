@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
+import { SelectInput } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Input/SelectInput';
 
-import { Select } from 'components/shared';
 import { toDiagnosticsModel } from 'services/models';
 
 import './deviceGroupDropdown.scss';
@@ -25,11 +25,19 @@ export class DeviceGroupDropdown extends Component {
     const { deviceGroups, activeDeviceGroupId } = this.props;
     const deviceGroupIds = deviceGroups.map(({ id }) => id);
     return (
-      <Select
+      <SelectInput
+        name="device-group-dropdown"
         className="device-group-dropdown"
+        attr={{
+          select: {
+            className: "device-group-dropdown-select",
+          },
+          chevron: {
+            className: "device-group-dropdown-chevron",
+          },
+        }}
         options={this.deviceGroupsToOptions(deviceGroups)}
         value={activeDeviceGroupId}
-        clearable={false}
         onChange={this.onChange(deviceGroupIds)} />
     );
   }
