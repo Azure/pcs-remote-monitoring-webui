@@ -229,6 +229,7 @@ class DeviceGroupForm extends LinkedComponent {
                           ? <AjaxError t={t} error={this.props.filtersError} />
                           : <FormControl
                               type="select"
+                              ariaLabel={t('deviceGroupsFlyout.conditions.field')}
                               className="long"
                               searchable={false}
                               clearable={false}
@@ -243,6 +244,7 @@ class DeviceGroupForm extends LinkedComponent {
                       </FormLabel>
                       <FormControl
                         type="select"
+                        ariaLabel={t('deviceGroupsFlyout.conditions.operator')}
                         className="long"
                         searchable={false}
                         clearable={false}
@@ -265,6 +267,7 @@ class DeviceGroupForm extends LinkedComponent {
                       </FormLabel>
                       <FormControl
                         type="select"
+                        ariaLabel={t('deviceGroupsFlyout.conditions.type')}
                         className="short"
                         clearable={false}
                         searchable={false}

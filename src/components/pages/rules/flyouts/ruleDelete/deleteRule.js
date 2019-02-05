@@ -108,7 +108,7 @@ export class DeleteRule extends Component {
     const completedSuccessfully = changesApplied && !error;
 
     return (
-      <Flyout.Container header={t('rules.flyouts.deleteRule.title')} onClose={onClose}>
+      <Flyout.Container header={t('rules.flyouts.deleteRule.title')} t={t} onClose={onClose}>
           <Protected permission={permissions.deleteRules}>
             <form onSubmit={this.deleteRule} className="delete-rule-flyout-container">
               {rule && <RuleSummary rule={rule} isPending={isPending} completedSuccessfully={completedSuccessfully} t={t} className="rule-details"/>}

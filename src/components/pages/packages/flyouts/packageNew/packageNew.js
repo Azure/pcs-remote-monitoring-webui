@@ -175,7 +175,7 @@ export class PackageNew extends LinkedComponent {
     const customTextVisible = configTypeEnabled && this.configTypeLink.value === configsEnum.custom;
 
     return (
-      <Flyout header={t('packages.flyouts.new.title')} onClose={() => this.genericCloseClick('NewPackage_CloseClick')}>
+      <Flyout header={t('packages.flyouts.new.title')} t={t} onClose={() => this.genericCloseClick('NewPackage_CloseClick')}>
         <div className="new-package-content">
           <form className="new-package-form" onSubmit={this.apply}>
             <div className="new-package-header">{t('packages.flyouts.new.header')}</div>
@@ -187,6 +187,7 @@ export class PackageNew extends LinkedComponent {
                 !completedSuccessfully &&
                 <FormControl
                   type="select"
+                  ariaLabel={t('packages.flyouts.new.packageType')}
                   className="long"
                   onChange={this.packageTypeChange}
                   link={this.packageTypeLink}
@@ -206,6 +207,7 @@ export class PackageNew extends LinkedComponent {
                 {!completedSuccessfully &&
                   <FormControl
                     type="select"
+                    ariaLabel={t('packages.flyouts.new.configType')}
                     className="long"
                     onChange={this.configTypeChange}
                     link={this.configTypeLink}

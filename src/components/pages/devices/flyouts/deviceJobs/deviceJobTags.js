@@ -273,7 +273,15 @@ export class DeviceJobTags extends LinkedComponent {
                       <Cell className="col-3">
                         <FormControl className="small" type="text" link={value} errorState={!!error} /></Cell>
                       <Cell className="col-3">
-                        <FormControl className="small" type="select" link={type} options={typeOptions} clearable={false} searchable={true} errorState={!!error} />
+                        <FormControl
+                          className="small"
+                          type="select"
+                          ariaLabel={t('devices.flyouts.jobs.tags.typeHeader')}
+                          link={type}
+                          options={typeOptions}
+                          clearable={false}
+                          searchable={true}
+                          errorState={!!error} />
                       </Cell>
                       <Cell className="col-1">
                         <Btn className="icon-only-btn" svg={svgs.trash} onClick={this.deleteTag(idx)} />

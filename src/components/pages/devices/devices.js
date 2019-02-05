@@ -91,7 +91,11 @@ export class Devices extends Component {
             </Protected>
           </ContextMenuAlign>
           <ContextMenuAlign>
-            <SearchInput onChange={this.searchOnChange} onClick={this.onSearchClick} placeholder={t('devices.searchPlaceholder')} />
+            <SearchInput
+            onChange={this.searchOnChange}
+            onClick={this.onSearchClick}
+            aria-label={t('devices.ariaLabel')}
+            placeholder={t('devices.searchPlaceholder')} />
             {this.state.contextBtns}
             <Protected permission={permissions.updateSIMManagement}>
               <Btn svg={svgs.simmanagement} onClick={this.openSIMManagement}>{t('devices.flyouts.SIMManagement.title')}</Btn>

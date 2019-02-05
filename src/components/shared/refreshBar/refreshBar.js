@@ -27,7 +27,11 @@ export class RefreshBar extends Component {
               </span>
             : null
         }
-        <Btn svg={svgs.refresh} className={`refresh-btn ${isPending ? 'refreshing' : ''}`} onClick={this.refresh} />
+        <Btn
+        svg={svgs.refresh}
+        aria-label={t('refreshBar.ariaLabel')}
+        className={`refresh-btn ${isPending ? 'refreshing' : ''}`}
+        onClick={this.refresh} />
       </div>
     );
   }

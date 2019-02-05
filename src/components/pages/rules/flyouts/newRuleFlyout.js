@@ -17,7 +17,7 @@ export class NewRuleFlyout extends Component {
  render () {
   const { onClose, t } = this.props;
   return (
-    <Flyout.Container header={t('rules.flyouts.newRule')} onClose={this.onTopXClose}>
+    <Flyout.Container header={t('rules.flyouts.newRule')} t={t} onClose={this.onTopXClose}>
         <Protected permission={permissions.createRules}>
           <RuleEditorContainer onClose={onClose} />
         </Protected>

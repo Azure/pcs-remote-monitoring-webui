@@ -44,7 +44,7 @@ export class RuleDetailsFlyout extends Component {
     const { isEditable } = this.state;
 
     return (
-      <Flyout.Container header={isEditable ? t('rules.flyouts.editRule') : t('rules.flyouts.viewRule')} onClose={this.onTopXClose}>
+      <Flyout.Container header={isEditable ? t('rules.flyouts.editRule') : t('rules.flyouts.viewRule')} t={t} onClose={this.onTopXClose}>
         <div className="rule-details">
           {!isEditable
             ?

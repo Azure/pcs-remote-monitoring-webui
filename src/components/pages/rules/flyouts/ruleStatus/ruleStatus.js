@@ -79,12 +79,15 @@ export class RuleStatus extends Component {
     const completedSuccessfully = changesApplied && !error;
 
     return (
-      <Flyout.Container header={t('rules.flyouts.statusTitle')}onClose={onClose}>
+      <Flyout.Container header={t('rules.flyouts.statusTitle')} t={t} onClose={onClose}>
           <Protected permission={permissions.updateRules}>
             <form onSubmit={this.changeRuleStatus} className="disable-rule-flyout-container">
               <div className="padded-top-bottom">
                 <Toggle
-                  name='rules-flyouts-status-enable'
+                  name="rules-flyouts-status-enable"
+                  attr={{
+                    button: { 'aria-label': t('rules.flyouts.statusToggle') }
+                  }}
                   on={status}
                   onChange={this.onToggle}
                   onLabel={t('rules.flyouts.enable')}

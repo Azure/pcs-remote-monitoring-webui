@@ -8,7 +8,7 @@ const onChangeSelect = (onChange, name) => (value) => {
   onChange({ target: { name, value: { value } } });
 }
 
-export const Select = ({ className, onChange, name, options, placeholder, value, ...props }) => {
+export const Select = ({ className, onChange, name, options, placeholder, value, ariaLabel, ...props }) => {
   if (!options) {
     options = [];
   }
@@ -29,6 +29,9 @@ export const Select = ({ className, onChange, name, options, placeholder, value,
     className={className}
     options={options}
     value={value}
+    attr={{
+      select: { 'aria-label': ariaLabel }
+    }}
     {...props}
     onChange={onChangeSelect(onChange, name)} />;
 };

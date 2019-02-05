@@ -34,6 +34,7 @@ export class TimeIntervalDropdown extends Component {
         attr={{
           select: {
             className: 'time-interval-dropdown-select',
+            'aria-label': this.props.t(`timeInterval.ariaLabel`)
           },
           chevron: {
             className: 'time-interval-dropdown-chevron',

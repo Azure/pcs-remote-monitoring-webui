@@ -88,9 +88,9 @@ export class Settings extends LinkedComponent {
       toggledSimulation: true,
       [name]: value
     },
-    () => {
-      this.props.logEvent(toSinglePropertyDiagnosticsModel('Settings_SimulationToggle', 'isEnabled', toggledSimulation));
-    });
+      () => {
+        this.props.logEvent(toSinglePropertyDiagnosticsModel('Settings_SimulationToggle', 'isEnabled', toggledSimulation));
+      });
     this.props.toggleSimulationStatus(etag, value);
   }
 
@@ -171,7 +171,7 @@ export class Settings extends LinkedComponent {
       : this.currSimulationLabel[isSimulationEnabled];
 
     return (
-      <Flyout.Container header={t('settingsFlyout.title')} onClose={this.onFlyoutClose.bind(this, 'Settings_TopXClose_Click')}>
+      <Flyout.Container header={t('settingsFlyout.title')} t={t} onClose={this.onFlyoutClose.bind(this, 'Settings_TopXClose_Click')}>
         <form onSubmit={this.apply}>
           <div className="settings-workflow-container">
             <Section.Container collapsable={false}>
@@ -191,11 +191,14 @@ export class Settings extends LinkedComponent {
                     : <div className="toggle">
                       <Toggle
                         name="settings-diagnostics-opt-in"
+                        attr={{
+                          button: { 'aria-label': t('settingsFlyout.optInButton') }
+                        }}
                         on={this.state.diagnosticsOptIn}
                         disabled={getDiagnosticsPending}
                         onChange={this.toggleDiagnostics}
                         onLabel={t(getDiagnosticsPending ? 'settingsFlyout.loading' : 'settingsFlyout.sendDiagnosticsCheckbox')}
-                        offLabel={t(getDiagnosticsPending ? 'settingsFlyout.loading' : 'settingsFlyout.sendDiagnosticsCheckbox')} />
+                        offLabel={t(getDiagnosticsPending ? 'settingsFlyout.loading' : 'settingsFlyout.dontSendDiagnosticsCheckbox')} />
                     </div>
                 }
               </Section.Content>
@@ -218,7 +221,10 @@ export class Settings extends LinkedComponent {
                     : <div className="simulation-toggle">
                       <Toggle
                         className="simulation-toggle-button"
-                        name="desiredSimulationState"
+                        name={t('settingsFlyout.simulationToggle')}
+                        attr={{
+                          button: { 'aria-label': t('settingsFlyout.simulationToggle') }
+                        }}
                         on={desiredSimulationState}
                         disabled={getSimulationPending}
                         onChange={this.onSimulationChange}

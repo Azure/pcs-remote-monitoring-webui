@@ -40,7 +40,7 @@ $doublePadding: $baseContentPadding * 2;
     display: flex;
     align-content: center;
     justify-content: center;
-    padding: 20px 0px;
+    @include rem-fallback(padding, 20px 0px);
 
     // When the grid loader is visible, we don't want to show the
     // grid but we don't want to destroy the element either and
@@ -70,8 +70,8 @@ $doublePadding: $baseContentPadding * 2;
 
       &.first-child-column {
         // Correct alignment of the padding since the border will add width
-        padding-left: $cell-horizontal-padding - 1px - $selectedRowBorderWidth;
-        border-left: $selectedRowBorderWidth solid transparent;
+        @include rem-fallback(padding-left, $cell-horizontal-padding - 1px - $selectedRowBorderWidth);
+        @include rem-fallback(border-left, $selectedRowBorderWidth solid transparent);
       }
     }
 
@@ -104,8 +104,8 @@ $doublePadding: $baseContentPadding * 2;
         visibility: hidden;
         opacity: 0;
         transition: visibility 0s, opacity 0.1s linear;
-        width: 3px;
-        border-left: 1px solid transparent;
+        @include rem-fallback(width, 3px);
+        @include rem-fallback(border-left, 1px solid transparent);
         border-color: themed('colorGridRowBorder');
       }
 

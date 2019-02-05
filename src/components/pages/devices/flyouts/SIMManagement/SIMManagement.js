@@ -52,7 +52,7 @@ export class SIMManagement extends LinkedComponent {
     }));
 
     return (
-      <Flyout.Container header={t('devices.flyouts.SIMManagement.title')} onClose={onClose}>
+      <Flyout.Container header={t('devices.flyouts.SIMManagement.title')} t={t} onClose={onClose}>
         <div className="sim-management-container">
           <Protected permission={permissions.updateSIMManagement}>
             <div className="sim-management-selector">
@@ -60,6 +60,7 @@ export class SIMManagement extends LinkedComponent {
               <div className="sim-management-dropdown">
                 <FormControl
                   type="select"
+                  ariaLabel={t(`devices.flyouts.SIMManagement.provider`)}
                   className="sim-management-dropdown"
                   options={options}
                   searchable={false}

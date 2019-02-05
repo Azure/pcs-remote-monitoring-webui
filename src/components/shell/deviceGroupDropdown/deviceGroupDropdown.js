@@ -31,6 +31,7 @@ export class DeviceGroupDropdown extends Component {
         attr={{
           select: {
             className: "device-group-dropdown-select",
+            'aria-label': this.props.t(`deviceGroupDropDown.ariaLabel`)
           },
           chevron: {
             className: "device-group-dropdown-chevron",

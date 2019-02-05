@@ -296,7 +296,7 @@ export class RuleEditor extends LinkedComponent {
     })
 
     modules.forEach(({ moduleFields = {} }) => {
-      Object.keys(moduleFields).forEach( (field) => {
+      Object.keys(moduleFields).forEach((field) => {
         conditions.add(field);
       })
     })
@@ -453,6 +453,7 @@ export class RuleEditor extends LinkedComponent {
               <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.deviceGroup')}</FormLabel>
               <FormControl
                 type="select"
+                ariaLabel={t('rules.flyouts.ruleEditor.deviceGroup')}
                 className="long"
                 options={deviceGroupOptions}
                 onChange={this.onGroupIdChange}
@@ -465,6 +466,7 @@ export class RuleEditor extends LinkedComponent {
               <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.calculation')}</FormLabel>
               <FormControl
                 type="select"
+                ariaLabel={t('rules.flyouts.ruleEditor.calculation')}
                 className="long"
                 placeholder={t('rules.flyouts.ruleEditor.calculationPlaceholder')}
                 link={this.calculationLink}
@@ -479,6 +481,7 @@ export class RuleEditor extends LinkedComponent {
                 <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.timePeriod')}</FormLabel>
                 <FormControl
                   type="select"
+                  ariaLabel={t('rules.flyouts.ruleEditor.timePeriod')}
                   className="short"
                   onChange={this.formControlChange}
                   link={this.timePeriodLink}
@@ -500,6 +503,7 @@ export class RuleEditor extends LinkedComponent {
                       <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.field')}</FormLabel>
                       <FormControl
                         type="select"
+                        ariaLabel={t('rules.flyouts.ruleEditor.condition.field')}
                         className="long"
                         placeholder={t('rules.flyouts.ruleEditor.condition.fieldPlaceholder')}
                         onChange={(target) => this.onFieldChange(idx + 1, target)}
@@ -512,6 +516,7 @@ export class RuleEditor extends LinkedComponent {
                       <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.operator')}</FormLabel>
                       <FormControl
                         type="select"
+                        ariaLabel={t('rules.flyouts.ruleEditor.condition.operator')}
                         className="long"
                         placeholder={t('rules.flyouts.ruleEditor.condition.operatorPlaceholder')}
                         onChange={(target) => this.onOperatorChange(idx + 1, target)}
@@ -576,7 +581,10 @@ export class RuleEditor extends LinkedComponent {
                 <Section.Header>{t('rules.flyouts.ruleEditor.actions.action')}</Section.Header>
                 <div className="email-toggle-container">
                   <Toggle
-                    name='rules-flyouts-enable-action'
+                    name="rules-flyouts-enable-action"
+                    attr={{
+                      button: { 'aria-label': t('rules.flyouts.ruleEditor.actions.action') }
+                    }}
                     on={formData.actionEnabled}
                     onChange={this.onActionToggle}
                     onLabel={t('rules.flyouts.ruleEditor.actions.on')}
@@ -591,7 +599,7 @@ export class RuleEditor extends LinkedComponent {
                       </Trans>
                     }
                   >
-                  <ThemedSvgContainer paths={themedPaths.questionBubble} />
+                    <ThemedSvgContainer paths={themedPaths.questionBubble} />
                   </Balloon>
                 </div>
                 {
@@ -642,7 +650,10 @@ export class RuleEditor extends LinkedComponent {
                 <Section.Content>
                   <FormGroup>
                     <Toggle
-                      name='rules-flyouts-enable-rule'
+                      name={t('rules.flyouts.ruleEditor.ruleStatus')}
+                      attr={{
+                        button: { 'aria-label': t('rules.flyouts.ruleEditor.ruleStatus') }
+                      }}
                       on={formData.enabled}
                       onChange={this.onStatusToggle}
                       onLabel={t('rules.flyouts.ruleEditor.ruleEnabled')}

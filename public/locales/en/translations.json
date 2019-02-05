@@ -70,6 +70,12 @@
   "protected": {
     "permissionDenied": "Permission {{permission}} is denied."
   },
+  "deviceGroupDropDown": {
+    "ariaLabel": "Device group"
+  },
+  "flyout": {
+    "closeTitle": "Close"
+  },
   "settingsFlyout": {
     "title": "System settings",
     "version": "Version {{version}}",
@@ -81,6 +87,8 @@
     "cancel": "Cancel",
     "close": "Close",
     "flowing": "Flowing",
+    "optInButton": "Diagnostics",
+    "simulationToggle": "Simulation",
     "start": "Start",
     "stop": "Stop",
     "stopped": "Stopped",
@@ -93,6 +101,7 @@
     "sendDiagnosticsHeader": "Help us improve",
     "sendDiagnosticsText": "Remote Monitoring can send anonymous information to Microsoft, such as error logs, configuration, and information about how you use the application. No personal information is collected.",
     "sendDiagnosticsCheckbox": "Yes, share information with Microsoft",
+    "dontSendDiagnosticsCheckbox": "No, don't share information with Microsoft",
     "sendDiagnosticsMicrosoftPrivacyUrl": "Privacy Statement",
     "diagnosticsLoadError": "Error updating diagnostics preference"
   },
@@ -190,10 +199,12 @@
   },
   "refreshBar": {
     "refreshing": "Refreshing",
-    "lastRefreshed": "Last refreshed"
+    "lastRefreshed": "Last refreshed",
+    "ariaLabel": "Refresh page"
   },
   "devices": {
     "title": "Device Explorer",
+    "ariaLabel": "Search devices",
     "searchPlaceholder": "Search devices...",
     "noneFound": "No devices found.",
     "refresh": "Refresh",
@@ -410,6 +421,7 @@
   "rules": {
     "title": "Rules",
     "searchPlaceholder": "Search rules...",
+    "ariaLabel": "Search rules",
     "severity": {
       "info": "Info",
       "warning": "Warning",
@@ -432,6 +444,7 @@
     },
     "flyouts": {
       "edit": "Edit",
+      "statusToggle": "Status",
       "enable": "Enable",
       "disable": "Disable",
       "changeStatus": "Change status",
@@ -607,7 +620,8 @@
     "PT1H": "Last hour",
     "P1D": "Last day",
     "P7D": "Last week",
-    "P1M": "Last month"
+    "P1M": "Last month",
+    "ariaLabel": "Time interval"
   },
   "timeSeriesInsights": {
     "explore": "Explore in Time Series Insights",

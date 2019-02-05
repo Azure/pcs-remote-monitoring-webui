@@ -116,13 +116,16 @@ export class DeviceDelete extends Component {
     const summaryMessage = this.getSummaryMessage();
 
     return (
-      <Flyout header={t('devices.flyouts.delete.title')} onClose={onClose}>
+      <Flyout header={t('devices.flyouts.delete.title')} t={t} onClose={onClose}>
           <Protected permission={permissions.deleteDevices}>
             <form className="device-delete-container" onSubmit={this.deleteDevices}>
               <div className="device-delete-header">{t('devices.flyouts.delete.header')}</div>
               <div className="device-delete-descr">{t('devices.flyouts.delete.description')}</div>
               <Toggle
-                name='device-flyouts-delete'
+                name="device-flyouts-delete"
+                attr={{
+                  button: { 'aria-label': t('devices.flyouts.delete.header') }
+                }}
                 on={confirmStatus}
                 onChange={this.toggleConfirm}
                 onLabel={t('devices.flyouts.delete.confirmYes')}

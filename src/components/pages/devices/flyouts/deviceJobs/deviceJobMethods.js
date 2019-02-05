@@ -155,7 +155,16 @@ export class DeviceJobMethods extends LinkedComponent {
 
           <FormGroup>
             <FormLabel>{t('devices.flyouts.jobs.methods.methodName')}</FormLabel>
-            <FormControl className="long" type="select" link={this.methodNameLink} options={methodOptions} placeholder={t('devices.flyouts.jobs.methods.methodNameHint')} clearable={false} searchable={true} errorState={!!error} />
+            <FormControl
+              className="long"
+              type="select"
+              ariaLabel={t('devices.flyouts.jobs.methods.methodName')}
+              link={this.methodNameLink}
+              options={methodOptions}
+              placeholder={t('devices.flyouts.jobs.methods.methodNameHint')}
+              clearable={false}
+              searchable={true}
+              errorState={!!error} />
           </FormGroup>
 
           <FormGroup>

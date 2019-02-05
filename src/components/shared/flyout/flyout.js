@@ -5,8 +5,15 @@ import { ContextPanel } from '@microsoft/azure-iot-ux-fluent-controls/lib/compon
 
 import './flyout.scss';
 
-export const Flyout = ({ header, children, footer, onClose }) => (
-  <ContextPanel header={header} footer={footer} onClose={onClose} attr={{ container: { className: 'flyout-container' } }}>
-    { children }
+export const Flyout = ({ header, children, footer, onClose, t }) => (
+  <ContextPanel
+    header={header}
+    footer={footer}
+    onClose={onClose}
+    attr={{
+      container: { className: 'flyout-container' },
+      closeButton: {button :{"title": t('flyout.closeTitle')}}
+    }}>
+    {children}
   </ContextPanel>
 );

@@ -64,7 +64,7 @@ export class DeviceJobs extends LinkedComponent {
     } = this.props;
 
     return (
-      <Flyout header={t('devices.flyouts.jobs.title')} onClose={onClose}>
+      <Flyout header={t('devices.flyouts.jobs.title')} t={t} onClose={onClose}>
           <Protected permission={permissions.createJobs}>
             <div className="device-jobs-container">
               {

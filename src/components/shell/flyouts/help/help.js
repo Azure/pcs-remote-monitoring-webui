@@ -24,7 +24,7 @@ const docLinks = [
 export const Help = (props) => {
   const { t, onClose } = props;
   return (
-    <Flyout.Container header={t('helpFlyout.title')} onClose={onClose}>
+    <Flyout.Container header={t('helpFlyout.title')} t={t} onClose={onClose}>
       <ul className='help-list'>
       {docLinks.map(({ url, translationId }) =>
         <li key={translationId}>

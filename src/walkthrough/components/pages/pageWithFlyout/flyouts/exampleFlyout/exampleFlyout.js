@@ -81,7 +81,7 @@ export class ExampleFlyout extends Component {
     const summaryMessage = this.getSummaryMessage();
 
     return (
-      <Flyout header={t('walkthrough.pageWithFlyout.flyouts.example.header')} onClose={onClose}>
+      <Flyout header={t('walkthrough.pageWithFlyout.flyouts.example.header')} t={t} onClose={onClose}>
           {
             /**
              * Really, anything you need could go inside a flyout.

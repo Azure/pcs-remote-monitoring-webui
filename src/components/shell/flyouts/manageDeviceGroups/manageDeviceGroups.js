@@ -71,7 +71,7 @@ export class ManageDeviceGroups extends LinkedComponent {
     const { t, deviceGroups = [] } = this.props;
 
     return (
-      <Flyout.Container header={t('deviceGroupsFlyout.title')} onClose={this.onCloseFlyout}>
+      <Flyout.Container header={t('deviceGroupsFlyout.title')} t={t} onClose={this.onCloseFlyout}>
         <div className="manage-filters-flyout-container">
           {
             this.state.addNewDeviceGroup || !!this.state.selectedDeviceGroup

@@ -268,7 +268,10 @@ export class DeploymentNew extends LinkedComponent {
     const configTypeEnabled = this.packageTypeLink.value === packagesEnum.deviceConfiguration;
 
     return (
-      <Flyout header={t('deployments.flyouts.new.title')} onClose={() => this.genericCloseClick('NewDeployment_CloseClick')}>
+      <Flyout 
+        header={t('deployments.flyouts.new.title')} 
+        t={t} 
+        onClose={() => this.genericCloseClick('NewDeployment_CloseClick')}>
         <div className="new-deployment-content">
           <form className="new-deployment-form" onSubmit={this.apply}>
             <FormGroup className="new-deployment-formGroup">
@@ -290,6 +293,7 @@ export class DeploymentNew extends LinkedComponent {
                 !completedSuccessfully &&
                 <FormControl
                   type="select"
+                  ariaLabel={t('deployments.flyouts.new.packageType')}
                   className="long"
                   link={this.packageTypeLink}
                   onChange={this.onPackageTypeSelected}
@@ -308,6 +312,7 @@ export class DeploymentNew extends LinkedComponent {
                   !completedSuccessfully &&
                   <FormControl
                     type="select"
+                    ariaLabel={t('deployments.flyouts.new.configType')}
                     className="config-type-select"
                     onChange={this.configTypeChange}
                     link={this.configTypeLink}
@@ -330,6 +335,7 @@ export class DeploymentNew extends LinkedComponent {
                 !packagesPending && !completedSuccessfully &&
                 <FormControl
                   type="select"
+                  ariaLabel={t('deployments.flyouts.new.package')}
                   className="long"
                   disabled={!isPackageTypeSelected}
                   link={this.packageIdLink}
@@ -352,6 +358,7 @@ export class DeploymentNew extends LinkedComponent {
                 !completedSuccessfully &&
                 <FormControl
                   type="select"
+                  ariaLabel={t('deployments.flyouts.new.deviceGroup')}
                   disabled={!isPackageTypeSelected}
                   className="long"
                   onChange={this.onDeviceGroupSelected}

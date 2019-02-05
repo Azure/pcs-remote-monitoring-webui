@@ -2,8 +2,12 @@
 
 import React, { Component } from 'react';
 
-import { AjaxError, Indicator } from 'components/shared';
-import { Svg } from 'components/shared/svg/svg';
+import {
+  AjaxError,
+  Indicator,
+  StatGroup,
+  StatProperty
+} from 'components/shared';
 import { svgs, renderUndefined, isDef } from 'utilities';
 import {
   Panel,
@@ -52,41 +56,40 @@ export class OverviewPanel extends Component {
         </PanelHeader>
         <PanelContent className="device-stats-container">
           <div className="stat-header">{deviceGroupName}</div>
-          <div className="stat-container">
-            <div className="stat-cell col-third">
-              <div className="stat-value critical">
-                <span>{renderUndefined(openCriticalCount)}</span>
-                <Svg path={svgs.critical} className="severity-icon"/>
-              </div>
-              <div className="stat-label">{t('dashboard.panels.overview.critical')}</div>
-            </div>
-
-            <div className="stat-cell col-third">
-              <div className="stat-value warning">
-                <span>{renderUndefined(openWarningCount)}</span>
-                <Svg path={svgs.warning} className="severity-icon"/>
-              </div>
-              <div className="stat-label">{t('dashboard.panels.overview.warnings')}</div>
-            </div>
-
-            <div className="stat-cell col-third">
-              <div className="stat-value">{renderUndefined(total)}</div>
-              <div className="stat-label">{t('dashboard.panels.overview.total')}</div>
-            </div>
-
-            <div className="stat-cell col-third">
-              <div className="stat-value">{renderUndefined(onlineDeviceCount)}</div>
-              <div className="stat-label">{t('dashboard.panels.overview.connected')}</div>
-            </div>
-
-            <div className="stat-cell col-third">
-              <div className="stat-value">{renderUndefined(offlineDeviceCount)}</div>
-              <div className="stat-label">{t('dashboard.panels.overview.notConnected')}</div>
-            </div>
-          </div>
+          <StatGroup className="stats-group">
+            <StatProperty
+              className="stat-property"
+              value={renderUndefined(openCriticalCount)}
+              label={t('dashboard.panels.overview.critical')}
+              svg={svgs.critical}
+              size="medium"
+              svgClassName="severity-critical" />
+            <StatProperty
+              className="stat-property"
+              value={renderUndefined(openWarningCount)}
+              label={t('dashboard.panels.overview.warnings')}
+              svg={svgs.warning}
+              size="medium"
+              svgClassName="severity-warning" />
+            <StatProperty
+              className="stat-property"
+              value={renderUndefined(total)}
+              label={t('dashboard.panels.overview.total')}
+              size="medium" />
+            <StatProperty
+              className="stat-property"
+              value={renderUndefined(onlineDeviceCount)}
+              label={t('dashboard.panels.overview.connected')}
+              size="medium" />
+            <StatProperty
+              className="stat-property"
+              value={renderUndefined(offlineDeviceCount)}
+              label={t('dashboard.panels.overview.notConnected')}
+              size="medium" />
+          </StatGroup>
         </PanelContent>
-        { showOverlay && <PanelOverlay><Indicator /></PanelOverlay> }
-        { error && <PanelError><AjaxError t={t} error={error} /></PanelError> }
+        {showOverlay && <PanelOverlay><Indicator /></PanelOverlay>}
+        {error && <PanelError><AjaxError t={t} error={error} /></PanelError>}
       </Panel>
     );
   }

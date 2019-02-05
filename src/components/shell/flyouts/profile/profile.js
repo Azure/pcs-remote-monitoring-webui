@@ -27,7 +27,7 @@ export const Profile = (props) => {
   const permissionArray = Array.from(user.permissions);
 
   return (
-    <Flyout.Container header={t('profileFlyout.title')} onClose={onClose}>
+    <Flyout.Container header={t('profileFlyout.title')} t={t} onClose={onClose}>
       <div className="profile-container">
         {
           !user &&

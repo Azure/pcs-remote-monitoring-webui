@@ -117,7 +117,10 @@ export class Rules extends Component {
             </Protected>
           </ContextMenuAlign>
           <ContextMenuAlign>
-            <SearchInput onChange={this.searchOnChange} placeholder={t('rules.searchPlaceholder')} />
+            <SearchInput
+            onChange={this.searchOnChange}
+            placeholder={t('rules.searchPlaceholder')}
+            aria-label={t('rules.ariaLabel')}/>
             {this.state.contextBtns}
             <Protected permission={permissions.createRules}>
               <Btn svg={svgs.plus} onClick={this.openNewRuleFlyout}>{t('rules.flyouts.newRule')}</Btn>

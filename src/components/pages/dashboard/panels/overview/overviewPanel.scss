@@ -4,9 +4,6 @@
 @import 'src/styles/themes';
 
 .device-stats-container {
-  display: flex;
-  flex-flow: column nowrap;
-  // justify-content: space-between;
   padding: 0 !important;
 
   .stat-header {
@@ -15,81 +12,14 @@
     @include rem-font-size(40px);
   }
 
-  .stat-container {
-    display: flex;
-    flex-flow: column nowrap;
-    flex-shrink: 0;
-    @include rem-fallback(margin, 0px, 0px, 0px, 0px);
-    @include rem-fallback(padding, 0px, 10px, 20px, 10px);
-    align-items: flex-start;
-
-    .stat-cell {
-      display: flex;
-      flex-flow: row wrap;
-      flex-shrink: 0;
-      flex-grow: 1;
-      align-items: flex-end;
-      @include rem-fallback(padding, 6px, 6px, 6px, 0px);
-
-      .stat-value {
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: flex-end;
-        flex-shrink: 0;
-        font-family: $fontSelawikLight;
-        @include rem-font-size(35px);
-
-        > span {
-          font-size: 1em;
-          line-height: 1em;
-          flex-shrink: 0;
-        }
-
-        &.critical,
-        &.warning { font-family: $fontSelawikSemibold; }
-
-        .severity-icon {
-          flex-shrink: 0;
-          @include rem-fallback(margin-left, 8px);
-          @include rem-fallback(margin-bottom, 3px);
-          @include square-px-rem(10px);
-
-          svg { @include square-px-rem(10px); }
-        }
-      }
-
-      .stat-label {
-        @include rem-fallback(padding-left, 8px);
-        @include rem-font-size(14px);
-      }
-    }
-  }
-
-  @media (max-width: 1200px) {
-    .stat-container {
-      flex-flow: row wrap;
-
-      .stat-cell { flex-basis: 48%; }
-    }
-  }
+  .stats-group { @include rem-fallback(padding-left, 20px); }
+  .stat-property { @include rem-fallback(padding-bottom, 20px); }
 
   @include themify($themes) {
     color: themed('colorContentTextDim');
 
-    .stat-value {
-      color: themed('colorContentText');
-
-      &.critical {
-        color: themed('colorAlert');
-
-        .severity-icon svg { fill: themed('colorAlert');  }
-      }
-
-      &.warning {
-        color: themed('colorWarning');
-
-        .severity-icon svg { fill: themed('colorWarning');  }
-      }
-    }
+    .stat-value { color: themed('colorContentText'); }
+    .severity-critical { fill: themed('colorAlert'); }
+    .severity-warning { fill: themed('colorWarning'); }
   }
 }

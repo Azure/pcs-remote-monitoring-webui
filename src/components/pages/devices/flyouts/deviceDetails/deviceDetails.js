@@ -245,7 +245,7 @@ export class DeviceDetails extends Component {
         : undefined;
 
     return (
-      <Flyout.Container header={t('devices.flyouts.details.title')} onClose={onClose}>
+      <Flyout.Container header={t('devices.flyouts.details.title')} t={t} onClose={onClose}>
         <div className="device-details-container">
           {
             !device &&
