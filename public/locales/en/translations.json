@@ -168,7 +168,8 @@
     "noData": "No data available",
     "panels": {
       "alerts": {
-        "header": "Alerts"
+        "header": "Alerts",
+        "explore": "Explore"
       },
       "analytics": {
         "header": "Analytics",

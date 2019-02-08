@@ -22,6 +22,7 @@ export class AlertsPanel extends Component {
   constructor(props) {
     super(props);
 
+    const exploreText = props.t('dashboard.panels.alerts.explore');
     this.columnDefs = [
       {
         ...rulesColumnDefs.ruleName,
@@ -35,7 +36,7 @@ export class AlertsPanel extends Component {
       },
       {
         ...rulesColumnDefs.explore,
-        cellRendererFramework: props => <LinkRenderer {...props} to={`/maintenance/rule/${props.value}`} onLinkClick={this.logExploreClick} />
+        cellRendererFramework: props => <LinkRenderer {...props} ariaLabel={exploreText} to={`/maintenance/rule/${props.value}`} onLinkClick={this.logExploreClick} />
       }
     ];
   }

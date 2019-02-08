@@ -8,11 +8,11 @@ import { svgs } from 'utilities';
 
 import '../cellRenderer.scss';
 
-export const LinkRenderer = ({ to, svgPath, onLinkClick }) => {
+export const LinkRenderer = ({ to, svgPath, ariaLabel, onLinkClick }) => {
   return (
     <div className="pcs-renderer-cell">
-      <NavLink to={to} className="pcs-renderer-link">
-        <Svg path={svgPath || svgs.ellipsis} onClick = {onLinkClick} />
+      <NavLink to={to} aria-label={ariaLabel} className="pcs-renderer-link">
+        <Svg path={svgPath || svgs.ellipsis} onClick={onLinkClick} />
       </NavLink>
     </div>
   );
