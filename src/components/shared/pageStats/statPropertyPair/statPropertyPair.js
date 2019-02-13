@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { joinClasses } from 'utilities';
-import './statPropertyPair.css';
+import './statPropertyPair.scss';
 
 /** A presentational component containing statistics value, label and icon */
 export const StatPropertyPair = ({ label, value, className }) => {

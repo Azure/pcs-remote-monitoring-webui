@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { DeploymentNew } from './deploymentNew';
 import {
   getCreateDeploymentError,
@@ -61,4 +61,4 @@ const mapDispatchToProps = dispatch => ({
   fetchConfigTypes: () => dispatch(packagesEpics.actions.fetchConfigTypes())
 });
 
-export const DeploymentNewContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(DeploymentNew));
+export const DeploymentNewContainer = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(DeploymentNew));

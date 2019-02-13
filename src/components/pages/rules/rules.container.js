@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import { Rules } from './rules';
 import {
   epics as rulesEpics,
@@ -36,4 +36,4 @@ const mapDispatchToProps = dispatch => ({
   logEvent: diagnosticsModel => dispatch(appEpics.actions.logEvent(diagnosticsModel))
 });
 
-export const RulesContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Rules));
+export const RulesContainer = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(Rules));

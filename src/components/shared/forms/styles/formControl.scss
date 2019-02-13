@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import 'src/styles/variables';
 @import 'src/styles/themes';
 @import 'src/styles/mixins';
 
 $horizontalPadding: 8px;
 $verticalPadding: 5px;
-$inputHeight: 24px;
 $defaultInputWidth: 124px;
 $smallInputWidth: 80px;
 $longInputWidth: 248px;
 $textareaWidth: 348px;
 $textareaHeight: 60px;
+$borderWidth: 1px;
 
 .form-control-container {
   input.form-control,
@@ -39,7 +40,7 @@ $textareaHeight: 60px;
 
     @include themify($themes) {
       color: themed('colorInputText');
-      border: 1px solid themed('colorInputBorderColor');
+      border: $borderWidth solid themed('colorInputBorderColor');
 
       // Set RGBa opacity to .99 to get correct color in the selection styling
       &::selection {
@@ -65,7 +66,7 @@ $textareaHeight: 60px;
       &:disabled {
         background-color: themed('colorDisabledInputBg');
         color: themed('colorDisabledInputBg');
-        border: 1px solid themed('colorDisabledInputBg');
+        border: $borderWidth solid themed('colorDisabledInputBg');
 
         &::-webkit-input-placeholder { color: themed('colorDisabledInputBg'); }
              &:-ms-input-placeholder { color: themed('colorDisabledInputBg'); }
@@ -76,7 +77,7 @@ $textareaHeight: 60px;
   }
 
   input.form-control {
-    @include rem-fallback(height, $inputHeight - (2 * $verticalPadding));
+    @include rem-fallback(height, $input-height);
     @include rem-fallback(width, $defaultInputWidth - $horizontalPadding);
 
     &.small { @include rem-fallback(width, $smallInputWidth - $horizontalPadding); }

@@ -3,14 +3,10 @@
 import React from 'react';
 
 import { LinkedComponent } from 'utilities';
-import { permissions } from 'services/models';
+import { permissions, toDiagnosticsModel, toSinglePropertyDiagnosticsModel } from 'services/models';
 import {
   ComponentArray,
   Flyout,
-  FlyoutHeader,
-  FlyoutTitle,
-  FlyoutCloseBtn,
-  FlyoutContent,
   ErrorMsg,
   FormGroup,
   FormLabel,
@@ -18,12 +14,12 @@ import {
   Radio
 } from 'components/shared';
 import {
-  DeviceJobTags,
-  DeviceJobMethods,
-  DeviceJobProperties
+  DeviceJobTagsContainer,
+  DeviceJobMethodsContainer,
+  DeviceJobPropertiesContainer
 } from './';
 
-import './deviceJobs.css';
+import './deviceJobs.scss';
 
 export class DeviceJobs extends LinkedComponent {
   constructor(props) {
@@ -44,6 +40,14 @@ export class DeviceJobs extends LinkedComponent {
     this.jobTypeLink = this.formDataLink.forkTo('jobType');
   }
 
+  componentDidMount() {
+    this.props.logEvent(toDiagnosticsModel('Devices_NewJob_Click', {}));
+  }
+
+  onJobTypeChange = ({ target: { value } }) => {
+    this.props.logEvent(toSinglePropertyDiagnosticsModel('Devices_JobType_Select', 'JobType', value));
+  }
+
   formIsValid() {
     return [
       this.jobTypeLink
@@ -60,12 +64,7 @@ export class DeviceJobs extends LinkedComponent {
     } = this.props;
 
     return (
-      <Flyout>
-        <FlyoutHeader>
-          <FlyoutTitle>{t('devices.flyouts.jobs.title')}</FlyoutTitle>
-          <FlyoutCloseBtn onClick={onClose} />
-        </FlyoutHeader>
-        <FlyoutContent>
+      <Flyout header={t('devices.flyouts.jobs.title')} t={t} onClose={onClose}>
           <Protected permission={permissions.createJobs}>
             <div className="device-jobs-container">
               {
@@ -77,36 +76,35 @@ export class DeviceJobs extends LinkedComponent {
                 <ComponentArray>
                   <FormGroup>
                     <FormLabel>{t('devices.flyouts.jobs.selectJob')}</FormLabel>
-                    <Radio link={this.jobTypeLink} value="tags">
+                    <Radio link={this.jobTypeLink} value="tags" onClick={this.onJobTypeChange}>
                       {t('devices.flyouts.jobs.tags.radioLabel')}
                     </Radio>
-                    <Radio link={this.jobTypeLink} value="methods">
+                    <Radio link={this.jobTypeLink} value="methods" onClick={this.onJobTypeChange}>
                       {t('devices.flyouts.jobs.methods.radioLabel')}
                     </Radio>
-                    <Radio link={this.jobTypeLink} value="properties">
+                    <Radio link={this.jobTypeLink} value="properties" onClick={this.onJobTypeChange}>
                       {t('devices.flyouts.jobs.properties.radioLabel')}
                     </Radio>
                   </FormGroup>
                   {
                     this.jobTypeLink.value === 'tags'
-                      ? <DeviceJobTags t={t} onClose={onClose} devices={devices} updateTags={updateTags} />
+                      ? <DeviceJobTagsContainer t={t} onClose={onClose} devices={devices} updateTags={updateTags} />
                       : null
                   }
                   {
                     this.jobTypeLink.value === 'methods'
-                      ? <DeviceJobMethods t={t} onClose={onClose} devices={devices} />
+                      ? <DeviceJobMethodsContainer t={t} onClose={onClose} devices={devices} />
                       : null
                   }
                   {
                     this.jobTypeLink.value === 'properties'
-                      ? <DeviceJobProperties t={t} onClose={onClose} devices={devices} updateProperties={updateProperties} />
+                      ? <DeviceJobPropertiesContainer t={t} onClose={onClose} devices={devices} updateProperties={updateProperties} />
                       : null
                   }
                 </ComponentArray>
               }
             </div>
           </Protected>
-        </FlyoutContent>
       </Flyout>
     );
   }

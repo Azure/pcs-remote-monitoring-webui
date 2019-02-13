@@ -10,7 +10,7 @@ import { checkboxColumn } from 'components/shared/pcsGrid/pcsGridConfig';
 import { isFunc, translateColumnDefs, svgs } from 'utilities';
 import { EditRuleFlyout, RuleDetailsFlyout, RuleStatusContainer, DeleteRuleContainer } from '../flyouts'
 
-import './rulesGrid.css';
+import './rulesGrid.scss';
 
 const closedFlyoutState = {
   openFlyoutName: undefined,

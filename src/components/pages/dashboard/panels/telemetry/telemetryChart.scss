@@ -16,21 +16,8 @@
     flex-grow: 1;
   }
 
-  .options-container {
-    display: flex;
-    flex-flow: row wrap;
-
-    .telemetry-option {
-      display: block;
-      background: none;
-      text-transform: capitalize;
-      cursor: pointer;
-      border: none;
-      border-bottom: 2px solid transparent;
-      @include rem-font-size(14px);
-      @include rem-fallback(padding, 5px);
-      @include rem-fallback(margin, 0px, 5px, 5px, 10px);
-    }
+  .options-container > a {
+    cursor: pointer;
   }
 
   @include themify($themes) {
@@ -38,16 +25,5 @@
     text { fill: themed('colorContentText'); }
 
     .tsi-lineChart { background: transparent; }
-
-    .options-container .telemetry-option {
-      color: themed('colorContentTextDim');
-
-      &:hover { border-color: themed('colorContentTextDim'); }
-
-      &.active {
-        color: themed('colorContentText');
-        border-bottom: 2px solid themed('colorContentText');
-      }
-    }
   }
 }

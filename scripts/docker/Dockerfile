@@ -3,7 +3,9 @@
 FROM node:9.2.0-alpine as codebuilder
 COPY ./ /app/
 WORKDIR /app
-RUN echo "Installing node packages ..." && npm install
+RUN echo "Installing python2 (reqd for node pckgs)" && apk --update add python
+RUN echo "Install GCC for make command" && apk add --no-cache --virtual build-base
+RUN echo "Installing node packages ..." && npm --add-python-to-path='true' install
 RUN echo "Building app..."              && export CI=true && npm run build
 RUN echo "Removing temp files..."       && rm -rf node_modules src public package.json Dockerfile .dockerignore
 

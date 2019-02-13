@@ -1,44 +1,16 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import "~@microsoft/azure-iot-ux-fluent-css/src/constants";
+@import "~@microsoft/azure-iot-ux-fluent-css/src/typography";
+
 // The page base font applied to the HTML tag
 // Sets the relative REM font scaling across the app
-$baseFontSize: 16px;
-$baseContentPadding: 20px;
+$baseFontSize: $font-size-default;
+$baseContentPadding: $gutter-normal;
 
 // Variables for the selawik font family names
-$fontSelawik: 'Selawik';
-$fontSelawikBold: 'Selawik Bold';
-$fontSelawikLight: 'Selawik Light';
-$fontSelawikSemibold: 'Selawik Semibold';
-$fontSelawikSemilight: 'Selawik Semilight';
-
-// Color variables - for dark theme
-$colorAsh: #838d96;
-$colorCharcoal: #242628;
-$colorGraphite: #3e4145;
-$colorLead: #383b3e;
-$colorGunmetal: #454a4e;
-$colorMidnight: #1b1d1f;
-$colorNoir: #121416;
-$colorSmoke: #afb9c3;
-$colorStone: #6a737c;
-$colorWhite: #fff;
-
-$colorDarkLinkRest: #60AAFF;
-$colorDarkLinkHover: #2F7FDB;
-$colorDarkLinkFocus: #8DAACB;
-$colorDarkLinkBorder: #666666;
-$colorDarkLinkDisabled: #666666;
-
-$colorLightLinkRest: #136BFB;
-$colorLightLinkHover: #0053B3;
-$colorLightLinkFocus: #136BFB;
-$colorLightLinkBorder: #666666;
-$colorLightLinkDisabled: #A6A6A6;
-
-// Function color variables
-$colorAlert: #fc540a;
-$colorFailed: #FF2626;
-$colorWarning: #ffee91;
-$colorSystem: #7065fd;
-$colorError: #EA692D;
+$fontSelawik: $font-family-default;
+$fontSelawikBold: $font-family-default;
+$fontSelawikLight: $font-family-light;
+$fontSelawikSemibold: $font-family-default;
+$fontSelawikSemilight: $font-family-light;

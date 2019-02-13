@@ -5,7 +5,7 @@ import React from "react";
 import { Svg } from 'components/shared/svg/svg';
 import { svgs } from 'utilities';
 
-import '../cellRenderer.css';
+import '../cellRenderer.scss';
 
 export const ConnectionStatusRenderer = ({ value, context: { t } }) => {
   const cellClasses = `pcs-renderer-cell ${value ? 'highlight' : ''}`;

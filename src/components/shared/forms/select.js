@@ -2,17 +2,36 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactSelect from 'react-select';
+import { SelectInput } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Input/SelectInput';
 
-import { joinClasses } from 'utilities';
+const onChangeSelect = (onChange, name) => (value) => {
+  onChange({ target: { name, value: { value } } });
+}
 
-import './styles/select.css';
+export const Select = ({ className, onChange, name, options, placeholder, value, ariaLabel, ...props }) => {
+  if (!options) {
+    options = [];
+  }
 
-const onChangeSelect = (onChange, name) => (value) => onChange({ target: { name, value } });
+  if (!options.some(x => x.value === value)) {
+    // add a dummy placeholder option:
+    options = options.slice(0); // create a shallow copy of the input options array
+    options.push({
+      value,
+      label: placeholder || value,
+      hidden: true,
+      disabled: true
+    });
+  }
 
-export const Select = ({ className, onChange, name, ...props }) => {
-  return <ReactSelect
-    className={joinClasses('select-container', className)}
+  return <SelectInput
+    name={name}
+    className={className}
+    options={options}
+    value={value}
+    attr={{
+      select: { 'aria-label': ariaLabel }
+    }}
     {...props}
     onChange={onChangeSelect(onChange, name)} />;
 };

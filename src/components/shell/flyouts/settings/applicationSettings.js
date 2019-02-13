@@ -6,12 +6,13 @@ import { Btn, FormGroup, FormLabel, FormControl, Indicator, Svg, FileInput } fro
 import { svgs, isValidExtension } from 'utilities';
 import Flyout from 'components/shared/flyout';
 import Config from 'app.config';
+import { toDiagnosticsModel } from 'services/models';
 
-import './applicationSettings.css';
+import './applicationSettings.scss';
 
 const Section = Flyout.Section;
 
-class ApplicationSettings extends Component {
+export class ApplicationSettings extends Component {
 
   constructor(props) {
     super(props);
@@ -29,6 +30,10 @@ class ApplicationSettings extends Component {
   }
 
   renderSvgLogo = (logo) => <Svg path={logo} className="logo-svg" />;
+
+  onApplicationNameInputClick = () => {
+    this.props.logEvent(toDiagnosticsModel('Settings_NameUpdated', {}));
+  }
 
   renderUploadContainer = () => {
     const { t, applicationNameLink } = this.props;
@@ -69,7 +74,7 @@ class ApplicationSettings extends Component {
         <FormGroup className="name-input-container">
           <FormLabel className="section-subtitle">{t('applicationSettings.applicationName')}</FormLabel>
           <FormControl type="text" className="name-input long"
-            placeholder={t(currentApplicationName)} link={applicationNameLink} />
+            placeholder={t(currentApplicationName)} link={applicationNameLink} onClick={this.onApplicationNameInputClick} />
         </FormGroup>
       </div>
     );

@@ -12,7 +12,6 @@
   .edit-device-group-btn {
     background: none;
     border: none;
-    cursor: pointer;
   }
 
   .device-grops-grid-container { @include rem-fallback(margin-top, 24px); }
@@ -32,6 +31,5 @@
 
   @include themify($themes) {
     .property-grid-container .grid-header .cell { color: themed('colorContentTextDim'); }
-    .edit-device-group-btn  { color: themed('colorContentText'); }
   }
 }

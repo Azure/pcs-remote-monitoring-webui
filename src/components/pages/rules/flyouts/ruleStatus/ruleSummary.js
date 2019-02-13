@@ -11,7 +11,7 @@ import {
   Svg
 } from 'components/shared';
 import { svgs, joinClasses } from 'utilities';
-import './ruleSummary.css';
+import './ruleSummary.scss';
 
 export const RuleSummary = ({ rule, isPending, completedSuccessfully, t, className }) => (
   <SummarySection key={rule.id} className={joinClasses('padded-bottom', className)}>

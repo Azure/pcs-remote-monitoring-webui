@@ -2,7 +2,7 @@
 
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import {
   epics as appEpics,
   getTheme,
@@ -20,4 +20,4 @@ const mapDispatchToProps = dispatch => ({
   registerRouteEvent: pathname => dispatch(appEpics.actions.detectRouteChange(pathname))
 });
 
-export const AppContainer = withRouter(translate()(connect(mapStateToProps, mapDispatchToProps)(App)));
+export const AppContainer = withRouter(withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(App)));

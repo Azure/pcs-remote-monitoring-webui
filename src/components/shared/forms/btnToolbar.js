@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { joinClasses } from 'utilities';
 
-import './styles/btnToolbar.css';
+import './styles/btnToolbar.scss';
 
 export const BtnToolbar = (props) => (
   <div className={joinClasses('btn-toolbar', props.className)}>{props.children}</div>

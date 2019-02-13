@@ -4,7 +4,7 @@ import React from 'react';
 
 import { joinClasses } from 'utilities';
 
-import './panel.css';
+import './panel.scss';
 
 export const Panel = ({ className, children }) => (
   <div className={joinClasses('panel-container', className)}>

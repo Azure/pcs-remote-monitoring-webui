@@ -18,7 +18,7 @@ const DeviceGroups = ({ t, deviceGroups, onEditDeviceGroup }) => (
     </GridHeader>
     {
       deviceGroups.sort(compareByProperty('displayName', true)).map((deviceGroup, idx) =>
-        <button onClick={onEditDeviceGroup(deviceGroup)} className="row edit-device-group-btn" key={idx}>
+        <button onClick={onEditDeviceGroup(deviceGroup)} className="row link edit-device-group-btn" key={idx}>
           {deviceGroup.displayName}
         </button>
       )

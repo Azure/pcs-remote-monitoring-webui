@@ -7,7 +7,7 @@ import dot from 'dot-object';
 import { themedPaths } from 'utilities';
 import { ErrorMsg, Hyperlink, Indicator, ThemedSvgContainer } from 'components/shared';
 
-import './actionEmailSetup.css';
+import './actionEmailSetup.scss';
 
 export class ActionEmailSetup extends Component {
   constructor(props) {

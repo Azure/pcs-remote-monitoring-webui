@@ -7,7 +7,7 @@ import { Grid, Cell } from 'components/pages/dashboard/grid';
 import { ExamplePanel } from './panels';
 import { ContextMenu, PageContent } from 'components/shared';
 
-import './dashboard.css';
+import './dashboard.scss';
 
 const initialState = {};
 

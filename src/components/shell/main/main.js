@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import './main.css';
+import './main.scss';
 
 /**
  * A presentational component for rendering a page.

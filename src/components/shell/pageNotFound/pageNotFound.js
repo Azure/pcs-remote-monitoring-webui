@@ -4,7 +4,7 @@ import React from 'react';
 
 import { PageContent } from 'components/shared';
 
-import './pageNotFound.css';
+import './pageNotFound.scss';
 
 export const PageNotFound = ({ t }) => (
   <PageContent className="page-not-found-container">

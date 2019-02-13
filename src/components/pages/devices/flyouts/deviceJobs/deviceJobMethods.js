@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Observable } from 'rxjs';
 
 import { IoTHubManagerService } from 'services';
-import { toSubmitMethodJobRequestModel, methodJobConstants } from 'services/models';
+import { toSubmitMethodJobRequestModel, toDiagnosticsModel } from 'services/models';
 import { LinkedComponent } from 'utilities';
 import { svgs, Validator } from 'utilities';
 import {
@@ -81,9 +81,7 @@ export class DeviceJobMethods extends LinkedComponent {
           : deviceMethods
       )
       .subscribe(commonMethodSet => {
-        // TODO: Remove this once 'FirmwareUpdate' is removed from device simulation service
-        const filteredMethods = new Set([...commonMethodSet].filter(method => method !== 'FirmwareUpdate'));
-        const commonMethods = [...filteredMethods];
+        const commonMethods = [...commonMethodSet];
         this.setState({ commonMethods });
       });
   }
@@ -99,6 +97,7 @@ export class DeviceJobMethods extends LinkedComponent {
     event.preventDefault();
     if (this.formIsValid()) {
       this.setState({ isPending: true });
+      this.props.logEvent(toDiagnosticsModel('Devices_NewJobApply_Click', {}));
 
       const { devices } = this.props;
       const request = toSubmitMethodJobRequestModel(devices, this.state);
@@ -114,12 +113,6 @@ export class DeviceJobMethods extends LinkedComponent {
           }
         );
     }
-  }
-
-  isFirmwareUpdate() {
-    return this.methodNameLink.value
-      ? this.methodNameLink.value === methodJobConstants.firmwareUpdate
-      : undefined;
   }
 
   getSummaryMessage() {
@@ -162,7 +155,16 @@ export class DeviceJobMethods extends LinkedComponent {
 
           <FormGroup>
             <FormLabel>{t('devices.flyouts.jobs.methods.methodName')}</FormLabel>
-            <FormControl className="long" type="select" link={this.methodNameLink} options={methodOptions} placeholder={t('devices.flyouts.jobs.methods.methodNameHint')} clearable={false} searchable={true} errorState={!!error} />
+            <FormControl
+              className="long"
+              type="select"
+              ariaLabel={t('devices.flyouts.jobs.methods.methodName')}
+              link={this.methodNameLink}
+              options={methodOptions}
+              placeholder={t('devices.flyouts.jobs.methods.methodNameHint')}
+              clearable={false}
+              searchable={true}
+              errorState={!!error} />
           </FormGroup>
 
           <FormGroup>

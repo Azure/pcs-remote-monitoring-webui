@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import { Svg } from 'components/shared/svg/svg';
 import { joinClasses } from 'utilities';
 
-import './styles/btn.css';
+import '@microsoft/azure-iot-ux-fluent-controls/lib/components/Button';
+import './styles/btn.scss';
 
 export const Btn = (props) => {
   const { svg, children, className, primary, ...btnProps } = props;

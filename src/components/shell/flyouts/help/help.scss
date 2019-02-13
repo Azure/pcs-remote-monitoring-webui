@@ -1,0 +1,13 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.help-list {
+  list-style: none;
+  padding: 0;
+
+  li {
+    line-height: $gutter-bigger;
+  }
+}

@@ -30,11 +30,11 @@ import {
   TimeSeriesInsightsLinkContainer
 } from 'components/shared';
 import Flyout from 'components/shared/flyout';
-import { TelemetryChart, chartColorObjects } from 'components/pages/dashboard/panels/telemetry';
+import { TelemetryChartContainer as TelemetryChart, chartColorObjects } from 'components/pages/dashboard/panels/telemetry';
 import { transformTelemetryResponse } from 'components/pages/dashboard/panels';
 import { getEdgeAgentStatusCode } from 'utilities';
 
-import './deviceDetails.css';
+import './deviceDetails.scss';
 
 const Section = Flyout.Section;
 
@@ -245,12 +245,8 @@ export class DeviceDetails extends Component {
         : undefined;
 
     return (
-      <Flyout.Container>
-        <Flyout.Header>
-          <Flyout.Title>{t('devices.flyouts.details.title')}</Flyout.Title>
-          <Flyout.CloseBtn onClick={onClose} />
-        </Flyout.Header>
-        <Flyout.Content className="device-details-container">
+      <Flyout.Container header={t('devices.flyouts.details.title')} t={t} onClose={onClose}>
+        <div className="device-details-container">
           {
             !device &&
             <div className="device-details-container">
@@ -478,7 +474,7 @@ export class DeviceDetails extends Component {
           <BtnToolbar>
             <Btn svg={svgs.cancelX} onClick={onClose}>{t('devices.flyouts.details.close')}</Btn>
           </BtnToolbar>
-        </Flyout.Content>
+        </div>
       </Flyout.Container>
     );
   }

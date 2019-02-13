@@ -3,6 +3,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 import { Link } from "react-router-dom";
+import { Balloon, BalloonPosition, BalloonAlignment } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Balloon';
 
 import Config from 'app.config';
 import {
@@ -25,10 +26,6 @@ import {
   BtnToolbar,
   ComponentArray,
   Flyout,
-  FlyoutHeader,
-  FlyoutTitle,
-  FlyoutCloseBtn,
-  FlyoutContent,
   Hyperlink,
   Indicator,
   FormControl,
@@ -39,11 +36,10 @@ import {
   SummaryCount,
   SummarySection,
   Svg,
-  Tooltip,
   ThemedSvgContainer
 } from 'components/shared';
 
-import './deploymentNew.css';
+import './deploymentNew.scss';
 
 const isPositiveInteger = (str) => /^\+?(0|[1-9]\d*)$/.test(str) && str <= 2147483647;
 
@@ -272,12 +268,11 @@ export class DeploymentNew extends LinkedComponent {
     const configTypeEnabled = this.packageTypeLink.value === packagesEnum.deviceConfiguration;
 
     return (
-      <Flyout>
-        <FlyoutHeader>
-          <FlyoutTitle>{t('deployments.flyouts.new.title')}</FlyoutTitle>
-          <FlyoutCloseBtn onClick={() => this.genericCloseClick('NewDeployment_CloseClick')} />
-        </FlyoutHeader>
-        <FlyoutContent className="new-deployment-content">
+      <Flyout 
+        header={t('deployments.flyouts.new.title')} 
+        t={t} 
+        onClose={() => this.genericCloseClick('NewDeployment_CloseClick')}>
+        <div className="new-deployment-content">
           <form className="new-deployment-form" onSubmit={this.apply}>
             <FormGroup className="new-deployment-formGroup">
               <FormLabel isRequired="true">{t('deployments.flyouts.new.name')}</FormLabel>
@@ -298,6 +293,7 @@ export class DeploymentNew extends LinkedComponent {
                 !completedSuccessfully &&
                 <FormControl
                   type="select"
+                  ariaLabel={t('deployments.flyouts.new.packageType')}
                   className="long"
                   link={this.packageTypeLink}
                   onChange={this.onPackageTypeSelected}
@@ -316,7 +312,8 @@ export class DeploymentNew extends LinkedComponent {
                   !completedSuccessfully &&
                   <FormControl
                     type="select"
-                    className="long"
+                    ariaLabel={t('deployments.flyouts.new.configType')}
+                    className="config-type-select"
                     onChange={this.configTypeChange}
                     link={this.configTypeLink}
                     options={configTypeSelectOptions}
@@ -338,6 +335,7 @@ export class DeploymentNew extends LinkedComponent {
                 !packagesPending && !completedSuccessfully &&
                 <FormControl
                   type="select"
+                  ariaLabel={t('deployments.flyouts.new.package')}
                   className="long"
                   disabled={!isPackageTypeSelected}
                   link={this.packageIdLink}
@@ -360,6 +358,7 @@ export class DeploymentNew extends LinkedComponent {
                 !completedSuccessfully &&
                 <FormControl
                   type="select"
+                  ariaLabel={t('deployments.flyouts.new.deviceGroup')}
                   disabled={!isPackageTypeSelected}
                   className="long"
                   onChange={this.onDeviceGroupSelected}
@@ -374,14 +373,17 @@ export class DeploymentNew extends LinkedComponent {
             <FormGroup className="new-deployment-formGroup">
               <FormLabel isRequired="true">
                 {t('deployments.flyouts.new.priority')}
-                <Tooltip content={
+                <Balloon
+                  position={BalloonPosition.Top}
+                  align={BalloonAlignment.End}
+                  tooltip={
                   <Trans i18nKey={`deployments.flyouts.new.priorityToolTip`}>
                     Manual setup is required.
                       <Hyperlink href={Config.contextHelpUrls.deploymentPriority} target="_blank">{t('deployments.flyouts.new.priorityLearnMore')}</Hyperlink>
                   </Trans>
                 }>
                   <ThemedSvgContainer paths={themedPaths.questionBubble} />
-                </Tooltip>
+                </Balloon>
               </FormLabel>
               {
                 !completedSuccessfully &&
@@ -462,7 +464,7 @@ export class DeploymentNew extends LinkedComponent {
               }
             </SummarySection>
           </form>
-        </FlyoutContent>
+        </div>
       </Flyout>
     );
   }

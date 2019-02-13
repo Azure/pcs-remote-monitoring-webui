@@ -4,7 +4,7 @@ import React from 'react';
 
 import { joinClasses } from 'utilities';
 
-import './statSection.css';
+import './statSection.scss';
 
 /** A presentational component containing one or many StatGroup */
 export const StatSection = ({ children, className }) => (

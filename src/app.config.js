@@ -12,7 +12,7 @@ const Config = {
     diagnostics: `${baseUrl}/diagnostics/v1/`,
     privacy: 'https://privacy.microsoft.com/privacystatement',
     //TODO: Determine if should query java or dotnet
-    gitHubReleases: 'https://api.github.com/repos/Azure/azure-iot-pcs-remote-monitoring-dotnet/releases'
+    gitHubReleases: `https://api.github.com/repos/Azure/azure-iot-pcs-remote-monitoring-dotnet/releases/tags/2.1.3`
   },
   contextHelpUrls: {
     accessDenied: 'https://docs.microsoft.com/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac#add-or-remove-users',
@@ -61,6 +61,14 @@ const Config = {
   deviceType: {
     simulated: 'Simulated',
     physical: 'Real'
+  },
+  authenticationType: {
+    symmetricKey: 'Symmetric key',
+    x509: 'X.509'
+  },
+  authenticationKey: {
+    autoKey: 'Auto generate keys',
+    manualKey: 'Enter keys manually'
   }
 };
 

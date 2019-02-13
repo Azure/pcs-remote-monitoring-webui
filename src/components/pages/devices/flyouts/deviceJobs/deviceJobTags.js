@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import update from 'immutability-helper';
 
 import { IoTHubManagerService } from 'services';
-import { toSubmitTagsJobRequestModel } from 'services/models';
+import { toSubmitTagsJobRequestModel, toDiagnosticsModel } from 'services/models';
 import { LinkedComponent } from 'utilities';
 import { svgs, Validator } from 'utilities';
 import {
@@ -141,6 +141,8 @@ export class DeviceJobTags extends LinkedComponent {
         updatedTags: this.state.commonTags.filter(({ value }) => value !== tagJobConstants.multipleValues)
       });
 
+      this.props.logEvent(toDiagnosticsModel('Devices_NewJobApply_Click', {}));
+
       const { devices } = this.props;
       const { commonTags, deletedTags } = this.state;
       const updatedTags = commonTags.filter(({ value }) => value !== tagJobConstants.multipleValues);
@@ -271,7 +273,15 @@ export class DeviceJobTags extends LinkedComponent {
                       <Cell className="col-3">
                         <FormControl className="small" type="text" link={value} errorState={!!error} /></Cell>
                       <Cell className="col-3">
-                        <FormControl className="small" type="select" link={type} options={typeOptions} clearable={false} searchable={true} errorState={!!error} />
+                        <FormControl
+                          className="small"
+                          type="select"
+                          ariaLabel={t('devices.flyouts.jobs.tags.typeHeader')}
+                          link={type}
+                          options={typeOptions}
+                          clearable={false}
+                          searchable={true}
+                          errorState={!!error} />
                       </Cell>
                       <Cell className="col-1">
                         <Btn className="icon-only-btn" svg={svgs.trash} onClick={this.deleteTag(idx)} />

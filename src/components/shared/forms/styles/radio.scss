@@ -1,16 +1,21 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import 'src/styles/variables';
 @import 'src/styles/themes';
 @import 'src/styles/mixins';
 
 .radio-container {
   display: flex;
   flex-flow: row nowrap;
+  align-items: center;
+  @include rem-fallback(height, $input-height);
+  @include rem-fallback(line-height, $input-height);
 
   + .radio-container { @include rem-fallback(margin-top, 12px); }
 
   .radio-input-container {
     @include rem-fallback(margin-left, 16px);
+    @include rem-fallback(margin-bottom, $gutter-xsmall); // to align with form-group-label
 
     > input[type=radio] { display: none; }
 

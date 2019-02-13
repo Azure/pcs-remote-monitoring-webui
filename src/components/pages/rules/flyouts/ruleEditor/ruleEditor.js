@@ -3,6 +3,8 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 import update from 'immutability-helper';
+import { Balloon, BalloonAlignment, BalloonPosition } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Balloon/Balloon';
+import { Toggle } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle';
 
 import Config from 'app.config';
 import {
@@ -23,8 +25,6 @@ import {
   SummarySection,
   Svg,
   ThemedSvgContainer,
-  ToggleBtn,
-  Tooltip
 } from 'components/shared';
 import { ActionEmailSetupContainer } from './actionEmailSetup.container';
 import { SeverityRenderer } from 'components/shared/cellRenderers';
@@ -48,7 +48,7 @@ import {
 } from 'services/models';
 
 
-import './ruleEditor.css';
+import './ruleEditor.scss';
 
 const Section = Flyout.Section;
 
@@ -259,11 +259,20 @@ export class RuleEditor extends LinkedComponent {
       if (group.id === groupId) {
         if (this.subscription) this.subscription.unsubscribe();
         this.subscription = IoTHubManagerService.getDevices(group.conditions)
+          .flatMap(devices => {
+            const deviceIds = devices.map(dvc => `'${dvc.id}'`).join(",");
+            const modulesQuery = `deviceId IN [${deviceIds}]`;
+            return IoTHubManagerService.getModulesFields(modulesQuery);
+          }, (devices, modules) => {
+            return [devices, modules];
+          })
           .subscribe(
-            groupDevices => {
+            groupDevicesAndModules => {
+              var groupDevices = groupDevicesAndModules[0];
+              var modules = groupDevicesAndModules[1];
               this.setState({
                 fieldQueryPending: false,
-                fieldOptions: this.getConditionFields(groupDevices),
+                fieldOptions: this.getConditionFields(groupDevices, modules),
                 devicesAffected: groupDevices.length,
                 isPending: false
               });
@@ -276,7 +285,7 @@ export class RuleEditor extends LinkedComponent {
     });
   }
 
-  getConditionFields(devices) {
+  getConditionFields(devices, modules) {
     const conditions = new Set(); // Using a set to avoid searching the array multiple times in the every
     devices.forEach(({ telemetry = {} }) => {
       Object.values(telemetry).forEach(({ messageSchema: { fields } }) => {
@@ -285,11 +294,18 @@ export class RuleEditor extends LinkedComponent {
         })
       })
     })
+
+    modules.forEach(({ moduleFields = {} }) => {
+      Object.keys(moduleFields).forEach((field) => {
+        conditions.add(field);
+      })
+    })
+
     return [...conditions.values()].map(field => ({ label: field, value: field }));
   }
 
   //todo toggle button didn't support link
-  onStatusToggle = ({ target: { value } }) => {
+  onStatusToggle = (value) => {
     this.setState({ formData: { ...this.state.formData, enabled: value } });
     this.props.logEvent(toSinglePropertyDiagnosticsModel('Rule_StatusToggle', 'RuleStatus', value ? 'Enabled' : 'Disabled'));
     this.formControlChange();
@@ -335,7 +351,7 @@ export class RuleEditor extends LinkedComponent {
     this.formControlChange();
   }
 
-  onActionToggle = ({ target: { value } }) => {
+  onActionToggle = (value) => {
     this.setState({ formData: { ...this.state.formData, actionEnabled: value } });
     this.props.logEvent(toSinglePropertyDiagnosticsModel('Rule_ActionToggle', 'EmailActionStatus', value ? 'Enabled' : 'Disabled'));
     this.formControlChange();
@@ -437,6 +453,7 @@ export class RuleEditor extends LinkedComponent {
               <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.deviceGroup')}</FormLabel>
               <FormControl
                 type="select"
+                ariaLabel={t('rules.flyouts.ruleEditor.deviceGroup')}
                 className="long"
                 options={deviceGroupOptions}
                 onChange={this.onGroupIdChange}
@@ -449,6 +466,7 @@ export class RuleEditor extends LinkedComponent {
               <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.calculation')}</FormLabel>
               <FormControl
                 type="select"
+                ariaLabel={t('rules.flyouts.ruleEditor.calculation')}
                 className="long"
                 placeholder={t('rules.flyouts.ruleEditor.calculationPlaceholder')}
                 link={this.calculationLink}
@@ -463,6 +481,7 @@ export class RuleEditor extends LinkedComponent {
                 <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.timePeriod')}</FormLabel>
                 <FormControl
                   type="select"
+                  ariaLabel={t('rules.flyouts.ruleEditor.timePeriod')}
                   className="short"
                   onChange={this.formControlChange}
                   link={this.timePeriodLink}
@@ -484,6 +503,7 @@ export class RuleEditor extends LinkedComponent {
                       <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.field')}</FormLabel>
                       <FormControl
                         type="select"
+                        ariaLabel={t('rules.flyouts.ruleEditor.condition.field')}
                         className="long"
                         placeholder={t('rules.flyouts.ruleEditor.condition.fieldPlaceholder')}
                         onChange={(target) => this.onFieldChange(idx + 1, target)}
@@ -496,6 +516,7 @@ export class RuleEditor extends LinkedComponent {
                       <FormLabel isRequired="true">{t('rules.flyouts.ruleEditor.condition.operator')}</FormLabel>
                       <FormControl
                         type="select"
+                        ariaLabel={t('rules.flyouts.ruleEditor.condition.operator')}
                         className="long"
                         placeholder={t('rules.flyouts.ruleEditor.condition.operatorPlaceholder')}
                         onChange={(target) => this.onOperatorChange(idx + 1, target)}
@@ -559,19 +580,27 @@ export class RuleEditor extends LinkedComponent {
               <Section.Container collapsable={false}>
                 <Section.Header>{t('rules.flyouts.ruleEditor.actions.action')}</Section.Header>
                 <div className="email-toggle-container">
-                  <ToggleBtn
-                    value={formData.actionEnabled}
-                    onChange={this.onActionToggle} >
-                    {formData.actionEnabled ? t('rules.flyouts.ruleEditor.actions.on') : t('rules.flyouts.ruleEditor.actions.off')}
-                  </ToggleBtn>
-                  <Tooltip content={
-                    <Trans i18nKey={`rules.flyouts.ruleEditor.actions.emailSetupHelp`}>
-                      Manual setup is required.
-                      <Hyperlink href={Config.contextHelpUrls.ruleActionsEmail} target="_blank">{t('rules.flyouts.ruleEditor.actions.learnMore')}</Hyperlink>
-                    </Trans>
-                  }>
+                  <Toggle
+                    name="rules-flyouts-enable-action"
+                    attr={{
+                      button: { 'aria-label': t('rules.flyouts.ruleEditor.actions.action') }
+                    }}
+                    on={formData.actionEnabled}
+                    onChange={this.onActionToggle}
+                    onLabel={t('rules.flyouts.ruleEditor.actions.on')}
+                    offLabel={t('rules.flyouts.ruleEditor.actions.off')} />
+                  <Balloon
+                    position={BalloonPosition.Top}
+                    align={BalloonAlignment.End}
+                    tooltip={
+                      <Trans i18nKey={`rules.flyouts.ruleEditor.actions.emailSetupHelp`}>
+                        Manual setup is required.
+                        <Hyperlink href={Config.contextHelpUrls.ruleActionsEmail} target="_blank">{t('rules.flyouts.ruleEditor.actions.learnMore')}</Hyperlink>
+                      </Trans>
+                    }
+                  >
                     <ThemedSvgContainer paths={themedPaths.questionBubble} />
-                  </Tooltip>
+                  </Balloon>
                 </div>
                 {
                   formData.actionEnabled &&
@@ -620,11 +649,15 @@ export class RuleEditor extends LinkedComponent {
                 <Section.Header>{t('rules.flyouts.ruleEditor.ruleStatus')}</Section.Header>
                 <Section.Content>
                   <FormGroup>
-                    <ToggleBtn
-                      value={formData.enabled}
-                      onChange={this.onStatusToggle} >
-                      {formData.enabled ? t('rules.flyouts.ruleEditor.ruleEnabled') : t('rules.flyouts.ruleEditor.ruleDisabled')}
-                    </ToggleBtn>
+                    <Toggle
+                      name={t('rules.flyouts.ruleEditor.ruleStatus')}
+                      attr={{
+                        button: { 'aria-label': t('rules.flyouts.ruleEditor.ruleStatus') }
+                      }}
+                      on={formData.enabled}
+                      onChange={this.onStatusToggle}
+                      onLabel={t('rules.flyouts.ruleEditor.ruleEnabled')}
+                      offLabel={t('rules.flyouts.ruleEditor.ruleDisabled')} />
                   </FormGroup>
                 </Section.Content>
               </Section.Container>

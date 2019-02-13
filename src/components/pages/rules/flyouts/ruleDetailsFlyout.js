@@ -8,7 +8,7 @@ import { RuleEditorContainer } from './ruleEditor';
 import { RuleViewerContainer } from './ruleViewer';
 import Flyout from 'components/shared/flyout';
 
-import './ruleDetailsFlyout.css';
+import './ruleDetailsFlyout.scss';
 
 export class RuleDetailsFlyout extends Component {
   constructor(props) {
@@ -44,12 +44,8 @@ export class RuleDetailsFlyout extends Component {
     const { isEditable } = this.state;
 
     return (
-      <Flyout.Container>
-        <Flyout.Header>
-          <Flyout.Title>{isEditable ? t('rules.flyouts.editRule') : t('rules.flyouts.viewRule')}</Flyout.Title>
-          <Flyout.CloseBtn onClick={this.onTopXClose} />
-        </Flyout.Header>
-        <Flyout.Content className="rule-details">
+      <Flyout.Container header={isEditable ? t('rules.flyouts.editRule') : t('rules.flyouts.viewRule')} t={t} onClose={this.onTopXClose}>
+        <div className="rule-details">
           {!isEditable
             ?
             <ComponentArray>
@@ -69,7 +65,7 @@ export class RuleDetailsFlyout extends Component {
               }
             </Protected>
           }
-        </Flyout.Content>
+        </div>
       </Flyout.Container>
     );
   }

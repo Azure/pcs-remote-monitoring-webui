@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import update from 'immutability-helper';
 
 import { IoTHubManagerService } from 'services';
-import { toSubmitPropertiesJobRequestModel } from 'services/models';
+import { toSubmitPropertiesJobRequestModel, toDiagnosticsModel } from 'services/models';
 import { svgs, LinkedComponent, Validator } from 'utilities';
 import {
   AjaxError,
@@ -177,6 +177,7 @@ export class DeviceJobProperties extends LinkedComponent {
     event.preventDefault();
     if (this.formIsValid()) {
       this.setState({ isPending: true });
+      this.props.logEvent(toDiagnosticsModel('Devices_NewJobApply_Click', {}));
 
       const { devices } = this.props;
       const { commonProperties, deletedProperties } = this.state;

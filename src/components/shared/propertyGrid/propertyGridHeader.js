@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { joinClasses } from 'utilities';
 
-import './propertyGrid.css';
+import './propertyGrid.scss';
 
 export const PropertyGridHeader = (props) => (
   <div className={joinClasses('grid-header', props.className)}>{props.children}</div>

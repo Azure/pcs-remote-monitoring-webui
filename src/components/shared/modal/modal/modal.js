@@ -8,7 +8,7 @@ import {
 } from '..';
 import { joinClasses } from 'utilities';
 
-import './modal.css';
+import './modal.scss';
 
 export class Modal extends Component {
 

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import 'src/styles/variables';
 @import 'src/styles/mixins';
 @import 'src/styles/themes';
 
@@ -9,7 +10,7 @@ $iconSize: 14px;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-
+  height: 12*$grid-size; // fluent management-list-row-height
   .pcs-renderer-icon {
     margin-right: 10px;
 
@@ -35,12 +36,28 @@ $iconSize: 14px;
     > .icon-only { display: none !important; }
   }
 
-  .soft-select-link-cell {
-    display: inline;
-    color: inherit;
-    text-decoration: underline;
+  .soft-select-text,
+  .pcs-renderer-time-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-    &:hover { text-decoration: none; }
+  .soft-select-link {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    height: 100%; // center align vertically
+    font-family: inherit;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @include rem-fallback(margin, 4px, 0px);
+    @include rem-font-size(14px);
+
+    &:hover,
+    &:focus { text-decoration: none; }
   }
 
   .glimmer-icon {
@@ -82,6 +99,8 @@ $iconSize: 14px;
     }
 
     .glimmer-icon svg { fill: themed('colorGlimmerSvgFill'); }
+
+    .soft-select-text { color: themed('colorGridCellText'); }
   }
 }
 

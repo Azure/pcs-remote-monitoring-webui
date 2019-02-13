@@ -14,7 +14,7 @@ import {
   PanelMsg
 } from 'components/pages/dashboard/panel';
 
-import './analyticsPanel.css';
+import './analyticsPanel.scss';
 
 const barChartId = 'analytics-bar-chart-container';
 const pieChartId = 'analytics-pie-chart-container';
@@ -99,14 +99,9 @@ export class AnalyticsPanel extends Component {
       <Panel>
         <PanelHeader>
           <PanelHeaderLabel>{t('dashboard.panels.analytics.header')}</PanelHeaderLabel>
-          {!showOverlay && isPending && <Indicator size="small" />}
         </PanelHeader>
         <PanelContent className="analytics-panel-container">
-          {
-            timeSeriesExplorerUrl &&
-            <TimeSeriesInsightsLinkContainer href={timeSeriesExplorerUrl} />
-          }
-          <div className="analytics-cell full-width">
+          <div className="analytics-cell full-width read-more">
             <div className="analytics-header">{t('dashboard.panels.analytics.topRule')}</div>
             <div className="chart-container" id={barChartId} />
           </div>
@@ -129,6 +124,10 @@ export class AnalyticsPanel extends Component {
           {
             (!showOverlay && !topAlerts.length && !Object.keys(alertsPerDeviceId).length)
             && <PanelMsg>{t('dashboard.noData')}</PanelMsg>
+          }
+          {
+            timeSeriesExplorerUrl &&
+            <TimeSeriesInsightsLinkContainer href={timeSeriesExplorerUrl} />
           }
         </PanelContent>
         {showOverlay && <PanelOverlay><Indicator /></PanelOverlay>}

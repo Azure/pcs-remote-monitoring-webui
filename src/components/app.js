@@ -6,7 +6,7 @@ import { permissions } from 'services/models';
 import { svgs } from 'utilities';
 import { Protected } from 'components/shared';
 import Shell from "components/shell/shell";
-import { ManageDeviceGroupsContainer, SettingsContainer, ProfileContainer } from 'components/shell/flyouts';
+import { ManageDeviceGroupsContainer, SettingsContainer, HelpContainer, ProfileContainer } from 'components/shell/flyouts';
 import {
   DashboardContainer,
   DevicesContainer,
@@ -27,7 +27,7 @@ class App extends Component {
   closeFlyout = () => this.setState({ openFlyout: '' });
 
   openSystemSettings = () => this.setState({ openFlyout: 'settings' });
-
+  openHelpFlyout = () => this.setState({ openFlyout: 'help' });
   openUserProfile = () => this.setState({ openFlyout: 'profile' });
 
   render() {
@@ -148,7 +148,9 @@ class App extends Component {
       pagesConfig,
       crumbsConfig,
       openSystemSettings: this.openSystemSettings,
+      openHelpFlyout: this.openHelpFlyout,
       openUserProfile: this.openUserProfile,
+      openFlyout: this.state.openFlyout,
       ...this.props
     };
 
@@ -159,6 +161,7 @@ class App extends Component {
             <Shell denyAccess={!hasPermission} {...shellProps}>
               {deviceGroupFlyoutIsOpen && <ManageDeviceGroupsContainer />}
               {openFlyout === 'settings' && <SettingsContainer onClose={this.closeFlyout} />}
+              {openFlyout === 'help' && <HelpContainer onClose={this.closeFlyout} />}
               {openFlyout === 'profile' && <ProfileContainer onClose={this.closeFlyout} />}
             </Shell>
         }

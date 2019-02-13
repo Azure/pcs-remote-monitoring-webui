@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 import {
   redux as appRedux,
   getTheme,
@@ -53,7 +53,8 @@ const mapDispatchToProps = dispatch => ({
   updateDiagnosticsOptIn: diagnosticsOptIn => dispatch(appEpics.actions.updateDiagnosticsOptIn(diagnosticsOptIn)),
   updateLogo: (logo, headers) => dispatch(appEpics.actions.updateLogo({logo, headers})),
   getSimulationStatus: () => dispatch(simulationEpics.actions.fetchSimulationStatus()),
-  toggleSimulationStatus: (etag, enabled) => dispatch(simulationEpics.actions.toggleSimulationStatus({etag, enabled}))
+  toggleSimulationStatus: (etag, enabled) => dispatch(simulationEpics.actions.toggleSimulationStatus({etag, enabled})),
+  logEvent: diagnosticsModel => dispatch(appEpics.actions.logEvent(diagnosticsModel))
 });
 
-export const SettingsContainer = translate()(connect(mapStateToProps, mapDispatchToProps)(Settings));
+export const SettingsContainer = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(Settings));

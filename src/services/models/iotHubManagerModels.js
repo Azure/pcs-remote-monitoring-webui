@@ -30,13 +30,16 @@ export const toDeviceModel = (device = {}) => {
     'eTag': 'eTag',
     'authentication': 'authentication'
   });
+  // TODO: Remove this once device simulation has removed FirmwareUpdate from supportedMethods of devices
+  const methods = (modelData.methods ? modelData.methods.split(',') : [])
+    .filter((methodName) => methodName !== "FirmwareUpdate");
   return update(modelData, {
-    methods: { $set: modelData.methods ? modelData.methods.split(',') : [] },
+    methods: { $set: methods },
     tags: { $set: device.Tags || {} },
     // TODO: Rename properties to reportedProperties
     properties: {
       $set: update(dot.pick('Properties.Reported', device), {
-        $unset: ['Telemetry', 'SupportedMethods']
+        $unset: ['Telemetry', 'SupportedMethods', 'firmware']
       })
     },
     desiredProperties: {
@@ -47,6 +50,25 @@ export const toDeviceModel = (device = {}) => {
     }
   });
 }
+
+export const toModuleFieldsModel = (response = {}) => getItems(response)
+  .map(toModuleFieldModel);
+
+export const toModuleFieldModel = (module = {}) => camelCaseReshape(module, {
+  /* Expected schema for modules
+    "reported": {
+      "Telemetry": {
+        "MessageSchema": {
+          "Fields": {
+            "temperature": "Double",
+            ...
+          }
+        }
+      }
+    }
+    */
+  'reported.telemetry.messageSchema.fields': 'moduleFields',
+});
 
 export const toJobsModel = (response = []) => response.map(job => camelCaseReshape(job, {
   'jobId': 'jobId',
@@ -107,26 +129,16 @@ export const toSubmitPropertiesJobRequestModel = (devices, { jobName, updatedPro
   return request;
 };
 
-export const methodJobConstants = {
-  firmwareUpdate: 'FirmwareUpdate'
-};
-
-export const toSubmitMethodJobRequestModel = (devices, { jobName, methodName, firmwareVersion, firmwareUri }) => {
+export const toSubmitMethodJobRequestModel = (devices, { jobName, methodName }) => {
   const jobId = jobName ? jobName + '-' + uuid() : uuid();
   const deviceIds = devices.map(({ id }) => `'${id}'`).join(',');
-  const JsonPayload = (methodName === methodJobConstants.firmwareUpdate)
-    ? JSON.stringify({
-      Firmware: firmwareVersion,
-      FirmwareUri: firmwareUri
-    })
-    : '';
   const request = {
     JobId: jobId,
     QueryCondition: `deviceId in [${deviceIds}]`,
     MaxExecutionTimeInSeconds: 0,
     MethodParameter: {
       Name: methodName,
-      JsonPayload
+      JsonPayload: ''
     }
   };
   return request;
@@ -164,7 +176,7 @@ export const toNewDeviceRequestModel = ({
 
   return {
     Id: isGenerateId ? '' : deviceId,
-    isEdgeDevice: isEdgeDevice,
+    IsEdgeDevice: isEdgeDevice,
     IsSimulated: isSimulated,
     Enabled: true,
     Authentication:
@@ -198,8 +210,8 @@ export const toDeploymentModel = (deployment = {}) => {
     'configType': 'configType',
     'createdDateTimeUtc': 'createdDateTimeUtc',
     'metrics.systemMetrics.appliedCount': 'appliedCount',
-    'metrics.systemMetrics.failedCount': 'failedCount',
-    'metrics.systemMetrics.succeededCount': 'succeededCount',
+    'metrics.systemMetrics.reportedFailedCount': 'failedCount',
+    'metrics.systemMetrics.reportedSuccessfulCount': 'succeededCount',
     'metrics.systemMetrics.targetedCount': 'targetedCount',
     'metrics.systemMetrics.pendingCount': 'pendingCount'
   });

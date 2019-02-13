@@ -2,7 +2,7 @@
 
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
+import { withNamespaces } from 'react-i18next';
 
 import { AuthService } from 'services';
 import { getUser } from 'store/reducers/appReducer';
@@ -16,4 +16,4 @@ const mapDispatchToProps = () => ({
   logout: () => AuthService.logout()
 });
 
-export const ProfileContainer = withRouter(translate()(connect(mapStateToProps, mapDispatchToProps)(Profile)));
+export const ProfileContainer = withRouter(withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(Profile)));

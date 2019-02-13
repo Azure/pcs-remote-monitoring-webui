@@ -4,7 +4,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import 'polyfills';
 
-import { Maintenance } from './maintenance';
+import { MaintenanceContainer } from './maintenance.container';
 
 describe('Dashboard Component', () => {
   it('Renders without crashing', () => {
@@ -17,11 +17,12 @@ describe('Dashboard Component', () => {
       deviceEntities: {},
       fetchRules: () => {},
       t: () => {},
-      updateCurrentWindow: () => {}
+      updateCurrentWindow: () => {},
+      logEvent: () => {}
     };
 
     const wrapper = shallow(
-      <Maintenance {...fakeProps} />
+      <MaintenanceContainer {...fakeProps} />
     );
   });
 });

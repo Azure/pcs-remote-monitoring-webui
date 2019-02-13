@@ -21,7 +21,7 @@ import './i18n';
 import './polyfills';
 
 // Include base page css
-import './index.css';
+import './index.scss';
 
 // Initialize the user authentication
 AuthService.onLoad(() => {

@@ -4,7 +4,7 @@ import React from 'react';
 
 import { joinClasses } from 'utilities';
 
-import './modalContent.css';
+import './modalContent.scss';
 
 /** A presentational component containing the content of the modal */
 export const ModalContent = ({ children, className }) => (

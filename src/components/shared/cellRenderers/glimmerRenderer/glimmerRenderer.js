@@ -5,7 +5,7 @@ import React from "react";
 import { svgs } from 'utilities';
 import { Svg } from 'components/shared/svg/svg';
 
-import '../cellRenderer.css';
+import '../cellRenderer.scss';
 
 export const GlimmerRenderer = (props) => (
   props.value

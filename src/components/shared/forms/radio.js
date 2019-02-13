@@ -7,7 +7,7 @@ import { Svg } from 'components/shared/svg/svg';
 import { FormLabel } from './formLabel';
 import { isFunc, svgs, joinClasses } from 'utilities';
 
-import './styles/radio.css';
+import './styles/radio.scss';
 
 let radioInputCnt = 0;
 

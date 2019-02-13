@@ -14,9 +14,10 @@ import {
   PanelError
 } from 'components/pages/dashboard/panel';
 import { DeviceDetailsContainer } from 'components/pages/devices/flyouts/deviceDetails';
+import { toDiagnosticsModel } from 'services/models';
 import { AzureMap } from './azureMap';
 
-import './mapPanel.css';
+import './mapPanel.scss';
 
 const AzureMaps = window.atlas;
 const nominalDeviceLayer = 'devices-nominal-layer';
@@ -62,6 +63,7 @@ export class MapPanel extends Component {
           position: pin.geometry.coordinates,
           content: this.buildDevicePopup(pin.properties, classname)
         });
+        this.props.logEvent(toDiagnosticsModel('Map_DeviceClick', {}));
         this.popup.open(map);
       });
     });
@@ -89,7 +91,7 @@ export class MapPanel extends Component {
     popupContentBox.appendChild(name);
 
     popupContentBox.onclick = () => {
-      // Check this to void any potential attempts to refernce the component after unmount
+      // Check this to void any potential attempts to reference the component after unmount
       if (this) this.openDeviceDetails(properties.id);
     };
 
@@ -185,13 +187,12 @@ export class MapPanel extends Component {
   closeDeviceDetails = () => this.setState({ selectedDeviceId: undefined });
 
   render() {
-    const { t, isPending, devices, mapKeyIsPending, azureMapsKey, error } = this.props;
+    const { t, isPending, mapKeyIsPending, azureMapsKey, error } = this.props;
     const showOverlay = !error && isPending && mapKeyIsPending;
     return (
       <Panel className="map-panel-container">
         <PanelHeader>
           <PanelHeaderLabel>{t('dashboard.panels.map.header')}</PanelHeaderLabel>
-          { !showOverlay && isPending && <Indicator size="small" /> }
         </PanelHeader>
         <PanelContent className="map-panel-container">
           <AzureMap azureMapsKey={azureMapsKey} onMapReady={this.onMapReady} />
@@ -203,7 +204,7 @@ export class MapPanel extends Component {
         { error && <PanelError><AjaxError t={t} error={error} /></PanelError> }
         {
           this.state.selectedDeviceId
-          && <DeviceDetailsContainer onClose={this.closeDeviceDetails} device={devices[this.state.selectedDeviceId]} />
+          && <DeviceDetailsContainer onClose={this.closeDeviceDetails} deviceId={this.state.selectedDeviceId} />
         }
       </Panel>
     );

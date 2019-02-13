@@ -3,28 +3,35 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { Btn } from 'components/shared';
+import { toDiagnosticsModel } from 'services/models';
 import { svgs } from 'utilities';
 import { DEFAULT_TIME_FORMAT } from 'components/shared/pcsGrid/pcsGridConfig';
 
-import './refreshBar.css';
+import './refreshBar.scss';
 
 export class RefreshBar extends Component {
 
-  refresh = () => !this.props.isPending && this.props.refresh();
+  refresh = () => {
+    this.props.logEvent(toDiagnosticsModel('Refresh_Click', {}));
+    return !this.props.isPending && this.props.refresh();
+  }
 
   render () {
     const { t, isPending, time} = this.props;
     return (
       <div className="last-updated-container">
-        {
-          isPending || time
+        {isPending || time
             ? <span className="time">
-                <span className="refresh-text">{ isPending ? t('refreshBar.refreshing') : t('refreshBar.lastRefreshed')} | </span>
-                { !isPending ? moment(time).format(DEFAULT_TIME_FORMAT) : '' }
+                <span className="refresh-text">{t('refreshBar.lastRefreshed')} | </span>
+                { !isPending ? moment(time).format(DEFAULT_TIME_FORMAT) : <span className="empty-text"></span> }
               </span>
             : null
         }
-        <Btn svg={svgs.refresh} className={`refresh-btn ${isPending ? 'refreshing' : ''}`} onClick={this.refresh} />
+        <Btn
+        svg={svgs.refresh}
+        aria-label={t('refreshBar.ariaLabel')}
+        className={`refresh-btn ${isPending ? 'refreshing' : ''}`}
+        onClick={this.refresh} />
       </div>
     );
   }

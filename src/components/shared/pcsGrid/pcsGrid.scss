@@ -4,13 +4,15 @@
 
 // Variable overrides
 $selectedRowBorderWidth: 4px;
-$rowHeight: 48px;
+$rowBorderHeight: $grid-size;
+$rowLineHeight: 12*$grid-size; // fluent management-list-row-height
+$rowHeight: $rowLineHeight + 2*$rowBorderHeight;
 $headerResizeHeight: 18px;
 
 $pageTitleHeight: 85px;
 $refreshBarHeight: 16px;
-
-$icons-path: "~ag-grid/src/styles/icons/";
+$font-family: $font-family-default;
+$icons-path: "~ag-grid-community/src/styles/icons/";
 $row-height: $rowHeight;
 $header-height: $rowHeight;
 $background-color: transparent;
@@ -24,22 +26,21 @@ $cell-highlight-border: transparent;
 $cell-horizontal-border: transparent;
 $header-background-color: transparent;
 
-@import 'node_modules/ag-grid/src/styles/ag-grid.scss';
-@import 'node_modules/ag-grid/src/styles/ag-theme-dark.scss';
+@import 'node_modules/ag-grid-community/src/styles/ag-grid.scss';
+@import 'node_modules/ag-grid-community/src/styles/ag-theme-dark.scss';
 
 $doublePadding: $baseContentPadding * 2;
 .pcs-grid-container.ag-theme-dark {
   @include ag-theme-classic($params);
   height: calc(100% - #{$pageTitleHeight} - #{$refreshBarHeight});
   position: relative;
-  font-family: $fontSelawik;
   flex-shrink: 0;
 
   > .pcs-grid-loading-container {
     display: flex;
     align-content: center;
     justify-content: center;
-    padding: 20px 0px;
+    @include rem-fallback(padding, 20px 0px);
 
     // When the grid loader is visible, we don't want to show the
     // grid but we don't want to destroy the element either and
@@ -52,8 +53,7 @@ $doublePadding: $baseContentPadding * 2;
   }
 
   .ag-header-cell {
-    text-transform: uppercase;
-    @include rem-font-size(12px);
+    @include rem-font-size($font-size-small);
 
     .ag-icon { cursor: auto; }
   }
@@ -66,14 +66,12 @@ $doublePadding: $baseContentPadding * 2;
     .ag-cell {
       outline: none;
       border: none;
-      @include rem-font-size(14px);
-
-      &.capitalize-cell { text-transform: capitalize; }
+      @include rem-fallback(line-height, $rowLineHeight);
 
       &.first-child-column {
         // Correct alignment of the padding since the border will add width
-        padding-left: $cell-horizontal-padding - 1px - $selectedRowBorderWidth;
-        border-left: $selectedRowBorderWidth solid transparent;
+        @include rem-fallback(padding-left, $cell-horizontal-padding - 1px - $selectedRowBorderWidth);
+        @include rem-fallback(border-left, $selectedRowBorderWidth solid transparent);
       }
     }
 
@@ -86,8 +84,6 @@ $doublePadding: $baseContentPadding * 2;
       background-color: themed('colorGridRowSelectedBackground');
       color: themed('colorGridCellText');
     }
-
-    .ag-header { border-bottom: 1px solid themed('colorGridRowBorder'); }
 
     .ag-header-cell {
       color: themed('colorGridCellText');
@@ -108,8 +104,8 @@ $doublePadding: $baseContentPadding * 2;
         visibility: hidden;
         opacity: 0;
         transition: visibility 0s, opacity 0.1s linear;
-        width: 3px;
-        border-left: 1px solid transparent;
+        @include rem-fallback(width, 3px);
+        @include rem-fallback(border-left, 1px solid transparent);
         border-color: themed('colorGridRowBorder');
       }
 
@@ -123,21 +119,14 @@ $doublePadding: $baseContentPadding * 2;
     }
 
     .ag-row {
-      border-bottom: 1px solid themed('colorGridRowBorder');
+      background-color: themed('color-bg-table');
+
+      // ag-grid doesn't really support row separators, so to emulate the fluent styling,
+      // add a big vertical border with the page content background color:
+      border-top: $rowBorderHeight solid themed('color-bg-content');
+      border-bottom: $rowBorderHeight solid themed('color-bg-content');
 
       .ag-cell { color: themed('colorGridCellText'); }
-
-      &.ag-row-hover:not(.ag-row-selected) {
-        background-color: themed('colorGridRowHoverBackground');
-
-        .first-child-column { border-color: themed('colorGridSelectedRowBorder'); }
-      }
-
-      &.ag-row-selected {
-        background-color: themed('colorGridRowSelectedBackground');
-
-        .first-child-column { border-color: themed('colorGridSelectedRowBorder'); }
-      }
     }
 
     .ag-paging-panel {

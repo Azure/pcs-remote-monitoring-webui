@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Pill } from './pill';
-import './styles/pillGroup.css';
+import './styles/pillGroup.scss';
 
 export const PillGroup = ({ pills, onSvgClick, svg, altSvgText }) => (
   <div className="pill-group">

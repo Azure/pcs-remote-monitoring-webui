@@ -11,12 +11,12 @@
     display: grid;
     grid-template-columns: auto auto;
     justify-content: space-between;
-    @include rem-fallback(padding-bottom, 24px);
+    @include rem-fallback(padding-bottom, 20px);
   }
 
    .delete-info {
-    @include rem-fallback(padding-bottom, 24px);
-    @include rem-fallback(height, 60px);
+    @include rem-fallback(padding-bottom, 20px);
+    @include rem-fallback(height, 50px);
   }
 
   .delete-close-btn,

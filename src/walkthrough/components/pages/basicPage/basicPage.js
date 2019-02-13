@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 
 import { PageContent } from 'components/shared';
 
-import './basicPage.css';
+import './basicPage.scss';
 
 export class BasicPage extends Component {
   render() {

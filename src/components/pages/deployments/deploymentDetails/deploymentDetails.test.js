@@ -11,11 +11,13 @@ describe('Deployment details Component', () => {
 
     const fakeProps = {
       t: () => { },
+      currentDeployment: {},
       match: { params: { id: 'testId' } },
       fetchDeployment: () => { },
+      resetDeployedDevices:() => { },
       deleteItem: () => { },
-      currentDeployment: {},
-      updateCurrentWindow: () => { }
+      updateCurrentWindow: () => { },
+      logEvent: () => { }
     };
 
     const wrapper = shallow(

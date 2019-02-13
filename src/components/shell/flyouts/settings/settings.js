@@ -1,14 +1,16 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React from 'react';
+import { Toggle } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle';
 
 import Config from 'app.config';
 import Flyout from 'components/shared/flyout';
-import { Btn, Indicator, ToggleBtn } from 'components/shared';
+import { Btn, Indicator } from 'components/shared';
 import { svgs, LinkedComponent, isDef } from 'utilities';
-import ApplicationSettings from './applicationSettings';
+import { ApplicationSettingsContainer } from './applicationSettings.container';
+import { toDiagnosticsModel, toSinglePropertyDiagnosticsModel } from 'services/models';
 
-import './settings.css';
+import './settings.scss';
 
 const Section = Flyout.Section;
 
@@ -69,19 +71,37 @@ export class Settings extends LinkedComponent {
     }
   }
 
+  componentDidMount() {
+    this.props.logEvent(toDiagnosticsModel('SettingsFlyout_Open', {}));
+  }
+
   onChange = ({ target }) => {
     const { name, value } = target;
     this.setState({ [name]: value });
   };
 
   onSimulationChange = ({ target }) => {
+    const { toggledSimulation } = this.state;
     const { name, value } = target;
     const etag = this.props.simulationEtag;
     this.setState({
       toggledSimulation: true,
       [name]: value
-    });
+    },
+      () => {
+        this.props.logEvent(toSinglePropertyDiagnosticsModel('Settings_SimulationToggle', 'isEnabled', toggledSimulation));
+      });
     this.props.toggleSimulationStatus(etag, value);
+  }
+
+  onThemeChange = (nextTheme) => {
+    this.props.logEvent(toSinglePropertyDiagnosticsModel('Settings_ThemeChanged', 'nextTheme', nextTheme));
+    return this.props.changeTheme(nextTheme);
+  }
+
+  onFlyoutClose = (eventName) => {
+    this.props.logEvent(toDiagnosticsModel(eventName, {}));
+    return this.props.onClose();
   }
 
   toggleDiagnostics = () => {
@@ -116,14 +136,13 @@ export class Settings extends LinkedComponent {
     this.setState({
       logoFile: file
     });
+    this.props.logEvent(toDiagnosticsModel('Settings_LogoUpdated', {}));
   };
 
   render() {
     const {
       t,
-      onClose,
       theme,
-      changeTheme,
       version,
       releaseNotesUrl,
       isSimulationEnabled,
@@ -152,14 +171,9 @@ export class Settings extends LinkedComponent {
       : this.currSimulationLabel[isSimulationEnabled];
 
     return (
-
-      <form onSubmit={this.apply}>
-        <Flyout.Container>
-          <Flyout.Header>
-            <Flyout.Title>{t('settingsFlyout.title')}</Flyout.Title>
-            <Flyout.CloseBtn onClick={onClose} />
-          </Flyout.Header>
-          <Flyout.Content className="settings-workflow-container">
+      <Flyout.Container header={t('settingsFlyout.title')} t={t} onClose={this.onFlyoutClose.bind(this, 'Settings_TopXClose_Click')}>
+        <form onSubmit={this.apply}>
+          <div className="settings-workflow-container">
             <Section.Container collapsable={false}>
               <Section.Header>{t('settingsFlyout.sendDiagnosticsHeader')}</Section.Header>
               <Section.Content className="diagnostics-content">
@@ -175,12 +189,16 @@ export class Settings extends LinkedComponent {
                       {t('settingsFlyout.diagnosticsLoadError')}
                     </div>
                     : <div className="toggle">
-                      <ToggleBtn
-                        value={this.state.diagnosticsOptIn}
-                        onChange={this.toggleDiagnostics} />
-                      <div className="label">
-                        {getDiagnosticsPending ? t('settingsFlyout.loading') : t('settingsFlyout.sendDiagnosticsCheckbox')}
-                      </div>
+                      <Toggle
+                        name="settings-diagnostics-opt-in"
+                        attr={{
+                          button: { 'aria-label': t('settingsFlyout.optInButton') }
+                        }}
+                        on={this.state.diagnosticsOptIn}
+                        disabled={getDiagnosticsPending}
+                        onChange={this.toggleDiagnostics}
+                        onLabel={t(getDiagnosticsPending ? 'settingsFlyout.loading' : 'settingsFlyout.sendDiagnosticsCheckbox')}
+                        offLabel={t(getDiagnosticsPending ? 'settingsFlyout.loading' : 'settingsFlyout.dontSendDiagnosticsCheckbox')} />
                     </div>
                 }
               </Section.Content>
@@ -188,7 +206,7 @@ export class Settings extends LinkedComponent {
             <Section.Container collapsable={false} className="app-version">
               <Section.Header>{t('settingsFlyout.version', { version })}</Section.Header>
               <Section.Content className="release-notes">
-                <a href={releaseNotesUrl} target="_blank">{t('settingsFlyout.viewRelNotes')}</a>
+                <a href={releaseNotesUrl} target="_blank" rel="noopener noreferrer">{t('settingsFlyout.viewRelNotes')}</a>
               </Section.Content>
             </Section.Container>
             <Section.Container className="simulation-toggle-container">
@@ -201,15 +219,17 @@ export class Settings extends LinkedComponent {
                       {t('settingsFlyout.simulationLoadError')}
                     </div>
                     : <div className="simulation-toggle">
-                      <ToggleBtn
+                      <Toggle
                         className="simulation-toggle-button"
-                        name="desiredSimulationState"
-                        value={desiredSimulationState}
+                        name={t('settingsFlyout.simulationToggle')}
+                        attr={{
+                          button: { 'aria-label': t('settingsFlyout.simulationToggle') }
+                        }}
+                        on={desiredSimulationState}
                         disabled={getSimulationPending}
-                        onChange={this.onSimulationChange} />
-                      <div className="simulation-toggle-label">
-                        {getSimulationPending ? t('settingsFlyout.loading') : simulationLabel}
-                      </div>
+                        onChange={this.onSimulationChange}
+                        onLabel={getSimulationPending ? t('settingsFlyout.loading') : simulationLabel}
+                        offLabel={getSimulationPending ? t('settingsFlyout.loading') : simulationLabel} />
                     </div>
                 }
               </Section.Content>
@@ -218,12 +238,12 @@ export class Settings extends LinkedComponent {
               <Section.Header>{t('settingsFlyout.theme')}</Section.Header>
               <Section.Content>
                 {t('settingsFlyout.changeTheme')}
-                <button onClick={() => changeTheme(nextTheme)} className="toggle-theme-btn">
+                <button onClick={this.onThemeChange.bind(this, nextTheme)} className="toggle-theme-btn">
                   {t('settingsFlyout.switchTheme', { nextTheme })}
                 </button>
               </Section.Content>
             </Section.Container>
-            <ApplicationSettings
+            <ApplicationSettingsContainer
               onUpload={this.onUpload}
               applicationNameLink={this.applicationName}
               {...this.props} />
@@ -242,15 +262,15 @@ export class Settings extends LinkedComponent {
             <div className="btn-container">
               {
                 !loading && hasChanged &&
-                <Btn type="submit" className="apply-button">{t('settingsFlyout.apply')}</Btn>
+                <Btn type="submit" onClick={this.onFlyoutClose.bind(this, 'Settings_Apply_Click')} className="apply-button">{t('settingsFlyout.apply')}</Btn>
               }
-              <Btn svg={svgs.x} onClick={onClose} className="close-button">
+              <Btn svg={svgs.x} onClick={this.onFlyoutClose.bind(this, 'Settings_Close_Click')} className="close-button">
                 {hasChanged ? t('settingsFlyout.cancel') : t('settingsFlyout.close')}</Btn>
               {loading && <Indicator size='small' />}
             </div>
-          </Flyout.Content>
-        </Flyout.Container>
-      </form>
+          </div>
+        </form>
+      </Flyout.Container>
     );
   }
 }

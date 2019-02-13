@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { permissions } from 'services/models';
+import { permissions, toDiagnosticsModel } from 'services/models';
 import { svgs, LinkedComponent, Validator } from 'utilities';
 import {
   AjaxError,
@@ -108,6 +108,7 @@ class DeviceGroupForm extends LinkedComponent {
   };
 
   apply = (event) => {
+    this.props.logEvent(toDiagnosticsModel('DeviceGroup_Save', {}));
     event.preventDefault();
     this.setState({ error: undefined, isPending: true });
     this.subscriptions.push(
@@ -122,15 +123,22 @@ class DeviceGroupForm extends LinkedComponent {
     );
   };
 
-  addCondition = () => this.conditionsLink.set([
-    ...this.conditionsLink.value,
-    newCondition()
-  ]);
+  addCondition = () => {
+    this.props.logEvent(toDiagnosticsModel('DeviceGroup_AddCondition', {}));
+    return this.conditionsLink.set([
+      ...this.conditionsLink.value,
+      newCondition()
+    ]);
+  }
 
   deleteCondition = (index) =>
-    () => this.conditionsLink.set(this.conditionsLink.value.filter((_, idx) => index !== idx));
+    () => {
+      this.props.logEvent(toDiagnosticsModel('DeviceGroup_RemoveCondition', {}));
+      return this.conditionsLink.set(this.conditionsLink.value.filter((_, idx) => index !== idx));
+    }
 
   deleteDeviceGroup = () => {
+    this.props.logEvent(toDiagnosticsModel('DeviceGroup_Delete', {}));
     this.setState({ error: undefined, isPending: true });
     ConfigService.deleteDeviceGroup(this.state.id)
       .subscribe(
@@ -141,6 +149,11 @@ class DeviceGroupForm extends LinkedComponent {
         error => this.setState({ error, isPending: false }),
       );
   };
+
+  onCancel = () => {
+    this.props.logEvent(toDiagnosticsModel('DeviceGroup_Cancel', {}));
+    this.props.cancel();
+  }
 
   render () {
     const { t } = this.props;
@@ -216,6 +229,7 @@ class DeviceGroupForm extends LinkedComponent {
                           ? <AjaxError t={t} error={this.props.filtersError} />
                           : <FormControl
                               type="select"
+                              ariaLabel={t('deviceGroupsFlyout.conditions.field')}
                               className="long"
                               searchable={false}
                               clearable={false}
@@ -230,6 +244,7 @@ class DeviceGroupForm extends LinkedComponent {
                       </FormLabel>
                       <FormControl
                         type="select"
+                        ariaLabel={t('deviceGroupsFlyout.conditions.operator')}
                         className="long"
                         searchable={false}
                         clearable={false}
@@ -252,6 +267,7 @@ class DeviceGroupForm extends LinkedComponent {
                       </FormLabel>
                       <FormControl
                         type="select"
+                        ariaLabel={t('deviceGroupsFlyout.conditions.type')}
                         className="short"
                         clearable={false}
                         searchable={false}
@@ -276,7 +292,7 @@ class DeviceGroupForm extends LinkedComponent {
                   {t('deviceGroupsFlyout.save')}
                 </Btn>
               </Protected>
-              <Btn svg={svgs.cancelX} onClick={this.props.cancel}>{t('deviceGroupsFlyout.cancel')}</Btn>
+              <Btn svg={svgs.cancelX} onClick={this.onCancel}>{t('deviceGroupsFlyout.cancel')}</Btn>
               {
                 // Don't show delete btn if it is a new group or the group is currently active
                 this.state.isEdit &&

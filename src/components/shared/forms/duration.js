@@ -9,7 +9,7 @@ import { FormGroup } from './formGroup';
 import { FormControl } from './formControl';
 import { svgs, joinClasses, isFunc, int } from 'utilities';
 
-import './styles/duration.css';
+import './styles/duration.scss';
 
 export class Duration extends Component {
 

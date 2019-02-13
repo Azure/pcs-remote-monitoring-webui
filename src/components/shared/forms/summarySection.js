@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { joinClasses } from 'utilities';
 
-import './styles/summarySection.css';
+import './styles/summarySection.scss';
 
 export const SummarySection = (props) => (
   <div className={joinClasses('summary-section', props.className)}>{props.children}</div>

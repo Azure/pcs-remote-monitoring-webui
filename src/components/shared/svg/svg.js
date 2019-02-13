@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactSVG from 'react-svg';
 
-import './svg.css';
+import './svg.scss';
 
 /** Wraps an svg in a bounding box container for easier styling */
 export const Svg = ({ className, onClick, ...props } = {}) => {

@@ -3,9 +3,14 @@
   "header": {
     "appName": "Azure IoT Remote Monitoring",
     "profile": "Profile",
+    "more": "More",
     "getStarted": "Get started",
     "documentation": "Documentation",
     "sendSuggestion": "Send a suggestion"
+  },
+  "globalNav": {
+    "expand": "Expand Side Navigation",
+    "collapse": "Collapse Side Navigation"
   },
   "accessDenied": {
     "message": "Oops, you don't have permissions for the the page you requested. Please contact your administrator. <1><0>learnMore</0></1>",
@@ -17,7 +22,7 @@
   },
   "tabs": {
     "dashboard": "Dashboard",
-    "devices": "Devices",
+    "devices": "Device Explorer",
     "rules": "Rules",
     "maintenance": "Maintenance",
     "packages": "Packages",
@@ -65,6 +70,12 @@
   "protected": {
     "permissionDenied": "Permission {{permission}} is denied."
   },
+  "deviceGroupDropDown": {
+    "ariaLabel": "Device group"
+  },
+  "flyout": {
+    "closeTitle": "Close"
+  },
   "settingsFlyout": {
     "title": "System settings",
     "version": "Version {{version}}",
@@ -76,6 +87,8 @@
     "cancel": "Cancel",
     "close": "Close",
     "flowing": "Flowing",
+    "optInButton": "Diagnostics",
+    "simulationToggle": "Simulation",
     "start": "Start",
     "stop": "Stop",
     "stopped": "Stopped",
@@ -88,8 +101,12 @@
     "sendDiagnosticsHeader": "Help us improve",
     "sendDiagnosticsText": "Remote Monitoring can send anonymous information to Microsoft, such as error logs, configuration, and information about how you use the application. No personal information is collected.",
     "sendDiagnosticsCheckbox": "Yes, share information with Microsoft",
+    "dontSendDiagnosticsCheckbox": "No, don't share information with Microsoft",
     "sendDiagnosticsMicrosoftPrivacyUrl": "Privacy Statement",
     "diagnosticsLoadError": "Error updating diagnostics preference"
+  },
+  "helpFlyout": {
+    "title": "Documentation"
   },
   "profileFlyout": {
     "title": "User Profile",
@@ -151,7 +168,8 @@
     "noData": "No data available",
     "panels": {
       "alerts": {
-        "header": "Alerts"
+        "header": "Alerts",
+        "explore": "Explore"
       },
       "analytics": {
         "header": "Analytics",
@@ -182,10 +200,12 @@
   },
   "refreshBar": {
     "refreshing": "Refreshing",
-    "lastRefreshed": "Last refreshed"
+    "lastRefreshed": "Last refreshed",
+    "ariaLabel": "Refresh page"
   },
   "devices": {
-    "title": "Devices",
+    "title": "Device Explorer",
+    "ariaLabel": "Search devices",
     "searchPlaceholder": "Search devices...",
     "noneFound": "No devices found.",
     "refresh": "Refresh",
@@ -402,6 +422,7 @@
   "rules": {
     "title": "Rules",
     "searchPlaceholder": "Search rules...",
+    "ariaLabel": "Search rules",
     "severity": {
       "info": "Info",
       "warning": "Warning",
@@ -424,6 +445,7 @@
     },
     "flyouts": {
       "edit": "Edit",
+      "statusToggle": "Status",
       "enable": "Enable",
       "disable": "Disable",
       "changeStatus": "Change status",
@@ -599,7 +621,8 @@
     "PT1H": "Last hour",
     "P1D": "Last day",
     "P7D": "Last week",
-    "P1M": "Last month"
+    "P1M": "Last month",
+    "ariaLabel": "Time interval"
   },
   "timeSeriesInsights": {
     "explore": "Explore in Time Series Insights",
@@ -680,7 +703,9 @@
       "packageType": "Package Type",
       "configType": "Configuration Type",
       "targeted": "Targeted",
+      "targetedTooltip": "Number of device twins that match the target condition.",
       "applied": "Applied",
+      "appliedTooltip": "Number of device twins that have been modified by the configuration.",
       "failed": "Failed",
       "succeeded": "Succeeded",
       "dateCreated": "Created On"

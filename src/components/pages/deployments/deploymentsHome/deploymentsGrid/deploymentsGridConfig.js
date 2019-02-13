@@ -42,11 +42,13 @@ export const deploymentsColumnDefs = {
   },
   targeted: {
     headerName: 'deployments.grid.targeted',
+    headerTooltip: 'deployments.grid.targetedTooltip',
     field: 'targetedCount',
     valueFormatter: ({ value }) => checkForEmpty(value)
   },
   applied: {
     headerName: 'deployments.grid.applied',
+    headerTooltip: 'deployments.grid.appliedTooltip',
     field: 'appliedCount',
     valueFormatter: ({ value }) => checkForEmpty(value)
   },

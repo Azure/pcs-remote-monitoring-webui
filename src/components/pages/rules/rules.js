@@ -15,14 +15,14 @@ import {
   PageContent,
   PageTitle,
   Protected,
-  RefreshBar,
+  RefreshBarContainer as RefreshBar,
   SearchInput
 } from 'components/shared';
 import { NewRuleFlyout } from './flyouts';
 import { svgs } from 'utilities';
 import { toSinglePropertyDiagnosticsModel } from  'services/models';
 
-import './rules.css';
+import './rules.scss';
 
 const closedFlyoutState = {
   openFlyoutName: '',
@@ -43,6 +43,7 @@ export class Rules extends Component {
     }
 
     this.props.updateCurrentWindow('Rules');
+
     if (this.props.applicationPermissionsAssigned !== undefined) {
       this.logApplicationPermissions(this.props.applicationPermissionsAssigned);
     }
@@ -116,15 +117,18 @@ export class Rules extends Component {
             </Protected>
           </ContextMenuAlign>
           <ContextMenuAlign>
-            <SearchInput onChange={this.searchOnChange} placeholder={t('rules.searchPlaceholder')} />
+            <SearchInput
+            onChange={this.searchOnChange}
+            placeholder={t('rules.searchPlaceholder')}
+            aria-label={t('rules.ariaLabel')}/>
             {this.state.contextBtns}
             <Protected permission={permissions.createRules}>
               <Btn svg={svgs.plus} onClick={this.openNewRuleFlyout}>{t('rules.flyouts.newRule')}</Btn>
             </Protected>
+            <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} t={t} />
           </ContextMenuAlign>
         </ContextMenu>
         <PageContent className="rules-container">
-          <RefreshBar refresh={fetchRules} time={lastUpdated} isPending={isPending} t={t} />
           <PageTitle titleValue={t('rules.title')} />
           {!!error && <AjaxError t={t} error={error} />}
           {!error && <RulesGrid {...gridProps} />}

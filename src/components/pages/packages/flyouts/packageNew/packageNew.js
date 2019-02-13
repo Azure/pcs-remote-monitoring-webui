@@ -18,10 +18,6 @@ import {
   Btn,
   BtnToolbar,
   Flyout,
-  FlyoutHeader,
-  FlyoutTitle,
-  FlyoutCloseBtn,
-  FlyoutContent,
   Indicator,
   FormControl,
   FormGroup,
@@ -33,7 +29,7 @@ import {
   Svg
 } from 'components/shared';
 
-import './packageNew.css';
+import './packageNew.scss';
 
 const fileInputAccept = ".json,application/json";
 
@@ -179,12 +175,8 @@ export class PackageNew extends LinkedComponent {
     const customTextVisible = configTypeEnabled && this.configTypeLink.value === configsEnum.custom;
 
     return (
-      <Flyout>
-        <FlyoutHeader>
-          <FlyoutTitle>{t('packages.flyouts.new.title')}</FlyoutTitle>
-          <FlyoutCloseBtn onClick={() => this.genericCloseClick('NewPackage_CloseClick')} />
-        </FlyoutHeader>
-        <FlyoutContent className="new-package-content">
+      <Flyout header={t('packages.flyouts.new.title')} t={t} onClose={() => this.genericCloseClick('NewPackage_CloseClick')}>
+        <div className="new-package-content">
           <form className="new-package-form" onSubmit={this.apply}>
             <div className="new-package-header">{t('packages.flyouts.new.header')}</div>
             <div className="new-package-descr">{t('packages.flyouts.new.description')}</div>
@@ -195,6 +187,7 @@ export class PackageNew extends LinkedComponent {
                 !completedSuccessfully &&
                 <FormControl
                   type="select"
+                  ariaLabel={t('packages.flyouts.new.packageType')}
                   className="long"
                   onChange={this.packageTypeChange}
                   link={this.packageTypeLink}
@@ -214,6 +207,7 @@ export class PackageNew extends LinkedComponent {
                 {!completedSuccessfully &&
                   <FormControl
                     type="select"
+                    ariaLabel={t('packages.flyouts.new.configType')}
                     className="long"
                     onChange={this.configTypeChange}
                     link={this.configTypeLink}
@@ -321,7 +315,7 @@ export class PackageNew extends LinkedComponent {
               }
             </SummarySection>
           </form>
-        </FlyoutContent>
+        </div>
       </Flyout>
     );
   }

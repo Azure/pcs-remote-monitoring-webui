@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+import React from "react";
+
 import moment from 'moment';
 import { DEFAULT_TIME_FORMAT, EMPTY_FIELD_VAL, gridValueFormatters } from 'components/shared/pcsGrid/pcsGridConfig';
 
@@ -16,6 +18,12 @@ const formatTime = (value) => {
 export const TimeRenderer = ({ value }) => {
   const formattedTime = formatTime(value);
   return (
-    formattedTime ? formattedTime : EMPTY_FIELD_VAL
+    <div className="pcs-renderer-cell">
+      <div className="pcs-renderer-time-text">
+        {
+          formattedTime ? formattedTime : EMPTY_FIELD_VAL
+        }
+      </div>
+    </div>
   );
 }

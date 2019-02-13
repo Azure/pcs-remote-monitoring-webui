@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { isFunc, joinClasses } from 'utilities';
 
-import './styles/formGroup.css';
+import './styles/formGroup.scss';
 
 let idCounter = 0;
 

@@ -4,7 +4,7 @@ import React from 'react';
 
 import { joinClasses } from 'utilities';
 
-import './modalFadeBox.css';
+import './modalFadeBox.scss';
 
 /** A presentational component containing the content of the modal */
 export const ModalFadeBox = ({ children, className, onClick }) => (

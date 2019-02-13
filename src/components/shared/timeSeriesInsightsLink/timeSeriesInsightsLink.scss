@@ -5,5 +5,7 @@
 
 .time-series-explorer-container {
   display: block;
-  @include rem-fallback(padding, 0px, 0px, 10px, 0px);
+  padding: 0;
+  text-align: right;
+  width: 100%;
 }

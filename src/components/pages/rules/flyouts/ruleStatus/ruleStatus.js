@@ -2,20 +2,20 @@
 
 import React, { Component } from 'react';
 import { Observable } from 'rxjs';
+import { Toggle } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle';
 
 import {
   AjaxError,
   Btn,
   BtnToolbar,
   Protected,
-  ToggleBtn
 } from 'components/shared';
 import { svgs } from 'utilities';
 import { TelemetryService } from 'services';
 import { permissions, toEditRuleRequestModel } from 'services/models';
 import Flyout from 'components/shared/flyout';
 
-import './ruleStatus.css';
+import './ruleStatus.scss';
 import { RuleSummary } from './ruleSummary';
 
 export class RuleStatus extends Component {
@@ -42,7 +42,7 @@ export class RuleStatus extends Component {
     if (this.subscription) this.subscription.unsubscribe();
   }
 
-  onToggle = ({ target: { value } }) => {
+  onToggle = (value) => {
     if (this.state.changesApplied) {
       this.setState({ status: value, changesApplied: false });
     } else {
@@ -79,20 +79,19 @@ export class RuleStatus extends Component {
     const completedSuccessfully = changesApplied && !error;
 
     return (
-      <Flyout.Container>
-        <Flyout.Header>
-          <Flyout.Title>{t('rules.flyouts.statusTitle')}</Flyout.Title>
-          <Flyout.CloseBtn onClick={onClose} />
-        </Flyout.Header>
-        <Flyout.Content>
+      <Flyout.Container header={t('rules.flyouts.statusTitle')} t={t} onClose={onClose}>
           <Protected permission={permissions.updateRules}>
             <form onSubmit={this.changeRuleStatus} className="disable-rule-flyout-container">
               <div className="padded-top-bottom">
-                <ToggleBtn
-                  value={status}
-                  onChange={this.onToggle} >
-                  {status ? t('rules.flyouts.enable') : t('rules.flyouts.disable')}
-                </ToggleBtn>
+                <Toggle
+                  name="rules-flyouts-status-enable"
+                  attr={{
+                    button: { 'aria-label': t('rules.flyouts.statusToggle') }
+                  }}
+                  on={status}
+                  onChange={this.onToggle}
+                  onLabel={t('rules.flyouts.enable')}
+                  offLabel={t('rules.flyouts.disable')} />
               </div>
               {
                 rules.map((rule, idx) => (
@@ -109,7 +108,6 @@ export class RuleStatus extends Component {
               }
             </form>
           </Protected>
-        </Flyout.Content>
       </Flyout.Container>
     );
   }

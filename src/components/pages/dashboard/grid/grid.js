@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import './grid.css';
+import './grid.scss';
 
 export const Grid = ({ children }) => (
   <div className="grid-container">

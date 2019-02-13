@@ -1,18 +1,17 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from 'react';
-import { Route, Redirect, Switch } from 'react-router-dom';
+import { Route, Redirect, Switch, NavLink } from 'react-router-dom';
 import { Trans } from 'react-i18next';
+import { Shell as FluentShell } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Shell';
 
 // App Components
 import Config from 'app.config';
-import Header from './header/header';
-import NavigationContainer from './navigation/navigationContainer';
 import Main from './main/main';
 import { PageNotFoundContainer as PageNotFound } from './pageNotFound'
-import { Hyperlink } from 'components/shared';
+import { Hyperlink, Svg } from 'components/shared';
 
-import './shell.css';
+import './shell.scss';
 
 /** The base component for the app shell */
 class Shell extends Component {
@@ -20,7 +19,10 @@ class Shell extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { openFlyout: '' };
+    this.state = {
+      isNavExpanded: true,
+      isMastheadMoreExpanded: false
+    };
   }
 
   componentDidMount() {
@@ -30,15 +32,13 @@ class Shell extends Component {
   }
 
   render() {
-    const { pagesConfig, crumbsConfig, openSystemSettings, openUserProfile, t, theme, children, denyAccess } = this.props;
-
+    const { pagesConfig, t, theme, children, denyAccess } = this.props;
     return (
-      <div className={`shell-container theme-${theme}`}>
+      <FluentShell theme={theme} isRtl={false} navigation={this.getNavProps()} masthead={this.getMastheadProps()}>
         {
           denyAccess &&
-          <div className="shell">
+          <div className="app">
             <Main>
-              <Header crumbsConfig={crumbsConfig} t={t} />
               <div className="access-denied">
                 <Trans i18nKey={'accessDenied.message'}>
                   You don't have permissions.
@@ -50,10 +50,8 @@ class Shell extends Component {
         }
         {
           (!denyAccess && pagesConfig) &&
-          <div className="shell">
-            <NavigationContainer tabs={pagesConfig} t={t} />
+          <div className="app">
             <Main>
-              <Header crumbsConfig={crumbsConfig} openSystemSettings={openSystemSettings} openUserProfile={openUserProfile} t={t} />
               <Switch>
                 <Redirect exact from="/" to={pagesConfig[0].to} />
                 {
@@ -66,8 +64,89 @@ class Shell extends Component {
             </Main>
           </div>
         }
-      </div>
+      </FluentShell>
     );
+  }
+
+  getNavProps() {
+    const { pagesConfig, t, denyAccess } = this.props;
+    if (denyAccess || !pagesConfig) {
+      return null;
+    }
+
+    return {
+      isExpanded: this.state.isNavExpanded,
+      onClick: this.handleGlobalNavToggle,
+      attr: {
+        navButton: {
+          title: t(this.state.isNavExpanded ? 'globalNav.collapse' : 'globalNav.expand'),
+        },
+      },
+      children: pagesConfig.map((tabProps, i) => {
+        const label = t(tabProps.labelId);
+        return (
+          <NavLink key={i} to={tabProps.to} className="global-nav-item" activeClassName="global-nav-item-active" title={label}>
+            <Svg path={tabProps.svg} className="global-nav-item-icon" />
+            <div className="global-nav-item-text">{label}</div>
+          </NavLink>
+        );
+      })
+    };
+  }
+
+  getMastheadProps() {
+    const { pagesConfig, t, denyAccess, openSystemSettings, openUserProfile, openHelpFlyout, openFlyout } = this.props;
+    if (denyAccess) {
+      return {
+        branding: t('header.appName'),
+        more: {
+          title: t('header.more'),
+          selected: this.state.isMastheadMoreExpanded,
+          onClick: this.handleMastheadMoreToggle,
+        },
+      };
+    } else if (pagesConfig) {
+      return {
+        branding: t('header.appName'),
+        more: {
+          title: t('header.more'),
+          selected: this.state.isMastheadMoreExpanded,
+          onClick: this.handleMastheadMoreToggle,
+        },
+        toolbarItems: [{
+          icon: 'settings',
+          label: t('settingsFlyout.title'),
+          selected: openFlyout === 'settings',
+          onClick: openSystemSettings
+        },{
+          icon: 'help',
+          label: t('helpFlyout.title'),
+          selected: openFlyout === 'help',
+          onClick: openHelpFlyout
+        }, {
+          icon: 'contact',
+          label: t('profileFlyout.title'),
+          selected: openFlyout === 'profile',
+          onClick: openUserProfile
+        }]
+      };
+    } else {
+      return null; // no masthead
+    }
+  }
+
+  handleGlobalNavToggle = (e) => {
+    e && e.stopPropagation();
+    this.setState({
+        isNavExpanded: !this.state.isNavExpanded
+    });
+  }
+
+  handleMastheadMoreToggle = (e) => {
+    e && e.stopPropagation();
+    this.setState({
+        isMastheadMoreExpanded: !this.state.isMastheadMoreExpanded
+    });
   }
 }
 

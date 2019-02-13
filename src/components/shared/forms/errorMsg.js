@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Svg } from 'components/shared/svg/svg';
 import { joinClasses, svgs } from 'utilities';
 
-import './styles/errorMsg.css';
+import './styles/errorMsg.scss';
 
 export const ErrorMsg = (props) => {
   const { children, className } = props;

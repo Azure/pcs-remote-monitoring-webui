@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { Observable } from 'rxjs';
+import { Toggle } from '@microsoft/azure-iot-ux-fluent-controls/lib/components/Toggle';
 
 import { IoTHubManagerService } from 'services';
 import { svgs } from 'utilities';
@@ -11,10 +12,6 @@ import {
   Btn,
   BtnToolbar,
   Flyout,
-  FlyoutHeader,
-  FlyoutTitle,
-  FlyoutCloseBtn,
-  FlyoutContent,
   Indicator,
   Protected,
   SectionDesc,
@@ -23,10 +20,9 @@ import {
   SummaryCount,
   SummarySection,
   Svg,
-  ToggleBtn
 } from 'components/shared';
 
-import './deviceDelete.css';
+import './deviceDelete.scss';
 
 export class DeviceDelete extends Component {
   constructor(props) {
@@ -63,7 +59,7 @@ export class DeviceDelete extends Component {
     this.setState({ physicalDevices, containsSimulatedDevices: (physicalDevices.length !== devices.length) });
   }
 
-  toggleConfirm = ({ target: { value } }) => {
+  toggleConfirm = (value) => {
     if (this.state.changesApplied) {
       this.setState({ confirmStatus: value, changesApplied: false, successCount: 0 });
     } else {
@@ -120,21 +116,20 @@ export class DeviceDelete extends Component {
     const summaryMessage = this.getSummaryMessage();
 
     return (
-      <Flyout>
-        <FlyoutHeader>
-          <FlyoutTitle>{t('devices.flyouts.delete.title')}</FlyoutTitle>
-          <FlyoutCloseBtn onClick={onClose} />
-        </FlyoutHeader>
-        <FlyoutContent>
+      <Flyout header={t('devices.flyouts.delete.title')} t={t} onClose={onClose}>
           <Protected permission={permissions.deleteDevices}>
             <form className="device-delete-container" onSubmit={this.deleteDevices}>
               <div className="device-delete-header">{t('devices.flyouts.delete.header')}</div>
               <div className="device-delete-descr">{t('devices.flyouts.delete.description')}</div>
-              <ToggleBtn
-                value={confirmStatus}
-                onChange={this.toggleConfirm}>
-                {confirmStatus ? t('devices.flyouts.delete.confirmYes') : t('devices.flyouts.delete.confirmNo')}
-              </ToggleBtn>
+              <Toggle
+                name="device-flyouts-delete"
+                attr={{
+                  button: { 'aria-label': t('devices.flyouts.delete.header') }
+                }}
+                on={confirmStatus}
+                onChange={this.toggleConfirm}
+                onLabel={t('devices.flyouts.delete.confirmYes')}
+                offLabel={t('devices.flyouts.delete.confirmNo')} />
               {
                 containsSimulatedDevices &&
                 <div className="simulated-device-selected">
@@ -169,7 +164,6 @@ export class DeviceDelete extends Component {
               }
             </form>
           </Protected>
-        </FlyoutContent>
       </Flyout>
     );
   }

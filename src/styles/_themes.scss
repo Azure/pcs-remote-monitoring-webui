@@ -1,383 +1,255 @@
 // Copyright (c) Microsoft. All rights reserved.
 
+@import "~@microsoft/azure-iot-ux-fluent-css/src/color.palette";
 @import 'variables';
 
 // TODO: Replace all explicit HEX codes with variable names
 
-$themes: (
-  dark: (
-    // Functional colors
-    colorAlert: $colorAlert,
-    colorFailed: $colorFailed,
-    colorWarning: $colorWarning,
-    colorSystem: $colorSystem,
-    colorError: $colorError,
+$theme-dark: (
+  // Functional colors
+  colorAlert: $color-error-local-100,
+  colorFailed: $color-error-local-100,
 
-    // App - START
-    colorSelectionText: $colorWhite,
-    colorSelectionBg: #60AAFF,
-    // App - END
+  // Grid - START
 
-    // Grid - START
-    colorGridScrollBar: $colorCharcoal,
-    colorGridRowBackground: $colorMidnight,
-    colorGridCellText: $colorWhite,
-    colorGridRowBorder: #565454,
-    colorGridRowHoverBackground: #1a1c1f,
-    colorGridRowSelectedBackground: #232629,
-    colorGridSelectedRowBorder: #60aaff,
-    colorGridHeaderText: $colorSmoke,
+  colorGridRowBackground: $color-grey-1400,
+  colorGridRowHoverBackground: $color-grey-1400,
+  colorGridRowSelectedBackground: $color-grey-1100,
 
-    colorCellRendererSvgFill: $colorSmoke,
-    colorCellRendererSvgFillHighlight: $colorWhite,
-    colorCellRendererText: $colorSmoke,
-    colorCellRendererTextHighlight: $colorWhite,
+  gridSortIcon: '~assets/icons/sort_dark.svg',
+  gridAscIcon: '~assets/icons/sort_a2z_dark.svg',
+  gridDescIcon: '~assets/icons/sort_z2a_dark.svg',
+  // Grid - END
 
-    colorGlimmerSvgFill: #f4f4f4,
+  // Btn - START
 
-    gridSortIcon: '~assets/icons/sort_dark.svg',
-    gridAscIcon: '~assets/icons/sort_a2z_dark.svg',
-    gridDescIcon: '~assets/icons/sort_z2a_dark.svg',
-    // Grid - END
+  colorBtnBackground: transparent,
+  colorBtnBackgroundHover: transparent,
+  colorBtnBackgroundActive: transparent,
+  colorBtnBackgroundDisabled: transparent,
 
-    // Btn - START
-    colorBtnOutlineFocus: $colorSmoke,
+  // Btn - END
 
-    colorBtnText: $colorWhite,
-    colorBtnBackground: transparent,
-    colorBtnSvgFill: $colorSmoke,
+  // Pill - START
+  colorPillBackground: #3F3F3F,
+  colorPillBackgroundHover: #136BFB,
+  colorPillBackgroundSvg: #2D2F33,
+  colorPillBackgroundSvgHover: #005A9E,
+  // Pill - END
 
-    colorBtnTextHover: $colorWhite,
-    colorBtnBackgroundHover: transparent,
-    colorBtnSvgFillHover: $colorWhite,
+  // Page Content Colors - START
+  colorFlyoutDropShadow: $color-black-transparent-primary,
 
-    colorBtnTextActive: $colorWhite,
-    colorBtnBackgroundActive: transparent,
-    colorBtnSvgFillActive: $colorSmoke,
+  // Page Content Colors - END
 
-    colorBtnTextDisabled: $colorAsh,
-    colorBtnBackgroundDisabled: transparent,
-    colorBtnSvgFillDisabled: $colorAsh,
+  // Dashboard Panel Colors - START
+  colorDashboardMapPopupText: $color-lightgrey-1200,
+  colorDashboardPanelText: $color-white,
+  colorDashboardPanelHeaderBg: $color-grey-1500,
+  colorDashboardPanelContentBg: $color-grey-1500,
+  colorDashboardPanelOverlayBg: $color-black-transparent-half,
+  colorDashboardPanelErrorOverlayBg: $color-grey-1400,
+  // Dashboard Panel Colors - END
 
-    colorBtnPrimaryText: $colorNoir,
-    colorBtnPrimaryBackground: $colorSmoke,
-    colorBtnPrimarySvgFill: $colorNoir,
-
-    colorBtnPrimaryTextHover: $colorWhite,
-    colorBtnPrimaryBackgroundHover: $colorGraphite,
-    colorBtnPrimarySvgFillHover: $colorWhite,
-
-    colorBtnPrimaryTextActive: $colorSmoke,
-    colorBtnPrimaryBackgroundActive: $colorCharcoal,
-    colorBtnPrimarySvgFillActive: $colorSmoke,
-
-    colorBtnPrimaryTextDisabled: $colorSmoke,
-    colorBtnPrimaryBackgroundDisabled: transparent,
-    colorBtnPrimarySvgFillDisabled: $colorSmoke,
-    // Btn - END
-
-    // Hyperlink - START
-    colorHyperlinkText: $colorDarkLinkRest,
-    colorHyperlinkTextHover: $colorDarkLinkHover,
-    colorHyperlinkTextFocus: $colorDarkLinkFocus,
-    colorHyperlinkOutlineFocus: $colorDarkLinkBorder,
-    colorHyperlinkTextDisabled: $colorDarkLinkDisabled,
-    // Hyperlink - END
-
-    // Pill - START
-    colorPillBackground: #3F3F3F,
-    colorPillBackgroundHover: #136BFB,
-    colorPillText: $colorWhite,
-    colorPillTextHover: $colorWhite,
-    colorPillSvg: $colorWhite,
-    colorPillSvgHover: $colorWhite,
-    colorPillBackgroundSvg: #2D2F33,
-    colorPillBackgroundSvgHover: #005A9E,
-    // Pill - END
-
-    // Page Content Colors - START
-    colorContentBackground: $colorNoir,
-    colorPageContentBackground: $colorNoir,
-    colorContentText: $colorWhite,
-    colorContentTextDim: $colorSmoke,
-
-    colorFlyoutBackground: $colorNoir,
-    colorFlyoutText: $colorSmoke,
-    colorFlyoutSectionBorder: $colorLead,
-    colorFlyoutDropShadow: rgba(0, 0, 0, 0.6),
-    colorFlyoutConfirmationText: $colorWhite,
-
-    colorPropertyGridBorder: $colorLead,
-    colorPropertyGridBottomBorder: $colorCharcoal,
-    colorScrollBarBackground: $colorMidnight,
-    colorScrollBarButton: $colorLead,
-    // Page Content Colors - END
-
-    // Header Colors - START
-    colorHeaderDropdown: $colorNoir,
-    colorHeaderText: $colorSmoke,
-    colorHeaderIconHover: $colorWhite,
-    colorHeaderItemBgHover: $colorMidnight,
-    colorHeaderBorderColor: $colorLead,
-    colorHeaderItemContainerBorderColor: $colorLead,
-    // Header Colors - END
-
-    // Nav Colors - START
-    colorNavBg: $colorCharcoal,
-    colorNavText: $colorWhite,
-    colorNavItemBgHover: $colorMidnight,
-    colorNavItemIcon: $colorSmoke,
-    colorTabBorder: $colorWhite,
-    // Nav Colors - END
-
-    // Context Menu Colors - START
-    colorContextMenuBg: $colorNoir,
-    colorContextMenuBtnBgHover: $colorMidnight,
-    colorContextMenuBtnTextHover: $colorWhite,
-    colorContextMenuBorderColor: $colorLead,
-    colorContextMenuBtnSvgFill: $colorWhite,
-
-    colorContextSearchBg: $colorWhite,
-    colorContextSearchBorderColor: $colorWhite,
-    colorContextSearchTextColor: $colorNoir,
-    // Context Menu Colors - END
-
-    // Dashboard Panel Colors - START
-    colorDashboardMapPopupText: $colorNoir,
-    colorDashboardPanelText: $colorWhite,
-    colorDashboardPanelHeaderBg: $colorCharcoal,
-    colorDashboardPanelContentBg: $colorMidnight,
-    colorDashboardPanelOverlayBg: rgba(0, 0, 0, .5),
-    colorDashboardPanelErrorOverlayBg: $colorMidnight,
-    // Dashboard Panel Colors - END
-
-    // Toggle Btn Colors - START
-    colorEnableToggleBackground: $colorGunmetal,
-    colorToggle: $colorWhite,
-    colorDisableToggleBackground: $colorNoir,
-    colorDisabledLine: $colorSmoke,
-    // Toggle Btn Colors - END
-
-    // Forms - START
-    colorFileUploadText: $colorNoir,
-
-    colorSelectBackground: $colorNoir,
-    colorSelectOptionFocusedBg: $colorCharcoal,
-    colorSelectDisabledText: $colorAsh,
-    colorSelectBorderColor: $colorStone,
-    colorSelectText: $colorWhite,
-    colorSelectPlaceholderText: $colorStone,
-
-    colorInputText: $colorSmoke,
-    colorInputPlaceholderText: $colorStone,
-    colorInputBorderColor: $colorGraphite,
-    colorInputBorderHoverColor: $colorSmoke,
-    colorDisabledInputBg: $colorGraphite,
-    colorSelectedRadioBtnCenter: $colorWhite,
-
-    colorFormActionsBorderColor: $colorGraphite,
-    colorDurationLabelText: $colorSmoke,
-    // Forms - END
-
-    // Tooltip - START
-    colorTooltipText: $colorWhite,
-    colorTooltipBackground: $colorNoir,
-    colorTooltipBorder: #60AAFF,
-    colorTooltipDropShadow: rgba(0, 0, 0, 0.6),
-    // Tooltip - END
-
-    // Modal - START
-    colorModalText: $colorWhite,
-    colorModalBackground: $colorNoir,
-    colorModalBorder: #60AAFF,
-    colorModalDropShadow: rgba(0, 0, 0, 0.6),
-    // Modal -  END
-  ),
-  light: (
-    // Functional colors
-    colorAlert: $colorAlert,
-    colorWarning: #f4ca2c,
-    colorSystem: $colorSystem,
-    colorError: $colorError,
-
-    // App - START
-    colorSelectionText: #333,
-    colorSelectionBg: #136BFB,
-    // App - END
-
-    // Grid - START
-    colorGridScrollBar: $colorCharcoal,
-    colorGridRowBackground: $colorWhite,
-    colorGridCellText: #333,
-    colorGridRowBorder: #cacaca,
-    colorGridRowHoverBackground: #f2f2f2,
-    colorGridRowSelectedBackground: #dadada,
-    colorGridSelectedRowBorder: #136bfb,
-    colorGridHeaderText: #666,
-
-    colorCellRendererSvgFill: #333,
-    colorCellRendererSvgFillHighlight: #333,
-    colorCellRendererText: #333,
-    colorCellRendererTextHighlight: #333,
-
-    colorGlimmerSvgFill: #212121,
-
-    gridSortIcon: '~assets/icons/sort_light.svg',
-    gridAscIcon: '~assets/icons/sort_a2z_light.svg',
-    gridDescIcon: '~assets/icons/sort_z2a_light.svg',
-    // Grid - END
-
-    // Btn - START
-    colorBtnOutlineFocus: $colorSmoke,
-
-    colorBtnText: #333,
-    colorBtnBackground: transparent,
-    colorBtnSvgFill: #666,
-
-    colorBtnTextHover: #333,
-    colorBtnBackgroundHover: transparent,
-    colorBtnSvgFillHover: #333,
-
-    colorBtnTextActive: #333,
-    colorBtnBackgroundActive: transparent,
-    colorBtnSvgFillActive: #333,
-
-    colorBtnTextDisabled: $colorAsh,
-    colorBtnBackgroundDisabled: transparent,
-    colorBtnSvgFillDisabled: $colorAsh,
-
-    colorBtnPrimaryText: #333,
-    colorBtnPrimaryBackground: #f4f4f4,
-    colorBtnPrimarySvgFill: #666,
-
-    colorBtnPrimaryTextHover: #333,
-    colorBtnPrimaryBackgroundHover: #eaeaea,
-    colorBtnPrimarySvgFillHover: #666,
-
-    colorBtnPrimaryTextActive: #333,
-    colorBtnPrimaryBackgroundActive: #c8c8c8,
-    colorBtnPrimarySvgFillActive: #666,
-
-    colorBtnPrimaryTextDisabled: #a6a6a6,
-    colorBtnPrimaryBackgroundDisabled: #f4f4f4,
-    colorBtnPrimarySvgFillDisabled: #a6a6a6,
-    // Btn - END
-
-    // Hyperlink - START
-    colorHyperlinkText: $colorLightLinkRest,
-    colorHyperlinkTextHover: $colorLightLinkHover,
-    colorHyperlinkTextFocus: $colorLightLinkFocus,
-    colorHyperlinkOutlineFocus: $colorLightLinkBorder,
-    colorHyperlinkTextDisabled: $colorLightLinkDisabled,
-    // Hyperlink - END
-
-    // Pill - START
-    colorPillBackground: #DADADA,
-    colorPillBackgroundHover: #136BFB,
-    colorPillText: $colorNoir,
-    colorPillTextHover: $colorWhite,
-    colorPillSvg: $colorNoir,
-    colorPillSvgHover: $colorWhite,
-    colorPillBackgroundSvg: #C8C8C8,
-    colorPillBackgroundSvgHover: #005A9E,
-    // Pill - END
-
-    // Page Content Colors - START
-    colorContentBackground: #f2f2f2, // Grey100
-    colorPageContentBackground: $colorWhite,
-    colorContentText: #333,
-    colorContentTextDim: #666,
-
-    colorFlyoutBackground: #fff,
-    colorFlyoutText: #333,
-    colorFlyoutSectionBorder: #c8c8c8,
-    colorFlyoutDropShadow: rgba(0, 0, 0, 0.1),
-    colorFlyoutConfirmationText: $colorNoir,
-
-    colorPropertyGridBorder: #c8c8c8,
-    colorScrollBarBackground: #f2f2f2,
-    colorScrollBarButton: #ccc,
-    // Page Content Colors - END
-
-    // Header Colors - START
-    colorHeaderBg: $colorNoir,
-    colorHeaderDropdown: $colorNoir,
-    colorHeaderText: $colorSmoke,
-    colorHeaderIconHover: $colorWhite,
-    colorHeaderItemBgHover: $colorMidnight,
-    colorHeaderBorderColor: #c8c8c8,
-    colorHeaderItemContainerBorderColor: $colorLead,
-    // Header Colors - END
-
-    // Nav Colors - START
-    colorNavBg: $colorCharcoal,
-    colorNavText: $colorWhite,
-    colorNavItemBgHover: $colorMidnight,
-    colorNavItemIcon: $colorSmoke,
-    colorTabBorder: #333,
-    // Nav Colors - END
-
-    // Context Menu Colors - START
-    colorContextMenuBg: #f2f2f2,
-    colorContextMenuBtnBgHover: #eaeaea,
-    colorContextMenuBtnTextHover: #333,
-    colorContextMenuBtnSvgFill: #666,
-    colorContextMenuBorderColor: #c8c8c8,
-
-    colorContextSearchBg: $colorWhite,
-    colorContextSearchBorderColor: #c8c8c8,
-    colorContextSearchTextColor: $colorNoir,
-    // Context Menu Colors - END
-
-    // Dashboard Panel Colors - START
-    colorDashboardMapPopupText: $colorNoir,
-    colorDashboardPanelText: #333,
-    colorDashboardPanelHeaderBg: $colorWhite,
-    colorDashboardPanelContentBg: $colorWhite,
-    colorDashboardPanelOverlayBg: rgba(255, 255, 255, .5),
-    colorDashboardPanelErrorOverlayBg: $colorWhite,
-    // Dashboard Panel Colors - END
-
-    // Toggle Btn Colors - START
-    colorEnableToggleBackground: $colorGunmetal,
-    colorToggle: $colorWhite,
-    colorDisableToggleBackground: $colorNoir,
-    colorDisabledLine: $colorSmoke,
-    // Toggle Btn Colors - END
-
-    // Forms - START
-    colorFileUploadText: $colorNoir,
-
-    colorSelectBackground: $colorWhite,
-    colorSelectOptionFocusedBg: #dadada,
-    colorSelectDisabledText: $colorAsh,
-    colorSelectBorderColor: #c8c8c8,
-    colorSelectText: #333,
-    colorSelectPlaceholderText: #666,
-
-    colorInputText: #333,
-    colorInputPlaceholderText: $colorStone,
-    colorInputBorderColor: $colorGraphite,
-    colorInputBorderHoverColor: $colorSmoke,
-    colorDisabledInputBg: $colorGraphite,
-    colorSelectedRadioBtnCenter: $colorGraphite,
-
-    colorFormActionsBorderColor: $colorGraphite,
-    colorDurationLabelText: $colorSmoke,
-    // Forms - END
-
-    // Tooltip - START
-    colorTooltipText: #333,
-    colorTooltipBackground: $colorWhite,
-    colorTooltipBorder: #136BFB,
-    colorTooltipDropShadow: rgba(0, 0, 0, 0.1),
-    // Tooltip - END
-
-    // Modal - START
-    colorModalText: #333,
-    colorModalBackground: $colorWhite,
-    colorModalBorder: #136BFB,
-    colorModalDropShadow: rgba(0, 0, 0, 0.1),
-    // Modal -  END
-  )
+  // Modal - START
+  colorModalDropShadow: $color-black-transparent-half,
+  // Modal -  END
 );
+
+$theme-light: (
+  // Functional colors
+  colorAlert: $color-error-local-100,
+  colorFailed: $color-error-local-100,
+
+  // Grid - START
+  colorGridRowBackground: $color-white,
+  colorGridRowHoverBackground: $color-grey-100,
+  colorGridRowSelectedBackground: $color-grey-200,
+
+  gridSortIcon: '~assets/icons/sort_light.svg',
+  gridAscIcon: '~assets/icons/sort_a2z_light.svg',
+  gridDescIcon: '~assets/icons/sort_z2a_light.svg',
+  // Grid - END
+
+  // Btn - START
+  colorBtnBackground: transparent,
+  colorBtnBackgroundHover: transparent,
+  colorBtnBackgroundActive: transparent,
+  colorBtnBackgroundDisabled: transparent,
+  // Btn - END
+
+  // Pill - START
+  colorPillBackground: #DADADA,
+  colorPillBackgroundHover: #136BFB,
+  colorPillBackgroundSvg: #C8C8C8,
+  colorPillBackgroundSvgHover: #005A9E,
+  // Pill - END
+
+  // Page Content Colors - START
+  colorFlyoutDropShadow: $color-black-transparent-primary,
+
+  // Page Content Colors - END
+
+  // Dashboard Panel Colors - START
+  colorDashboardMapPopupText: $color-lightgrey-1200,
+  colorDashboardPanelText: #333,
+  colorDashboardPanelHeaderBg: $color-white,
+  colorDashboardPanelContentBg: $color-white,
+  colorDashboardPanelOverlayBg: rgba(255, 255, 255, .5),
+  colorDashboardPanelErrorOverlayBg: $color-white,
+  // Dashboard Panel Colors - END
+
+  // Modal - START
+  colorModalDropShadow: $color-black-transparent-tenth,
+  // Modal -  END
+);
+
+// now import the default fluent colors (this will preserve any overrides specified above):
+@import "~@microsoft/azure-iot-ux-fluent-css/src/colors";
+
+// TEMPORARY: in order to make the transition to fluent colors easier, create a
+// mapping of existing RM color variables to Fluent color variables. This way,
+// we don't need to change every css file in this repo:
+$rmToFluentColorVariables: (
+
+  // Functional colors
+  colorWarning: 'color-bg-alert-warning',
+  colorSystem: 'color-border-controls',
+  colorError: 'color-bg-alert-error',
+
+  // App - START
+  colorSelectionText: 'color-text-white',
+  colorSelectionBg: 'color-bg-item-selected',
+  // App - END
+
+  // Grid - START
+  colorGridCellText: 'color-text-rest',
+  colorGridRowBorder: 'color-border-grid',
+  colorGridSelectedRowBorder: 'color-border-selected',
+  colorGridHeaderText: 'color-text-chevron',
+
+  colorCellRendererSvgFill: 'color-text-rest',
+  colorCellRendererSvgFillHighlight: 'color-text-rest',
+  colorCellRendererText: 'color-text-rest',
+  colorCellRendererTextHighlight: 'color-text-rest',
+
+  colorGlimmerSvgFill: 'color-text-chevron',
+  // Grid - END
+
+  // Btn - START
+  colorBtnOutlineFocus: 'color-border-focus',
+  colorBtnText: 'color-text-rest',
+  colorBtnTextHover: 'color-text-rest',
+  colorBtnSvgFill: 'color-text-rest',
+  colorBtnSvgFillHover: 'color-text-rest',
+  colorBtnTextActive: 'color-text-rest',
+  colorBtnSvgFillActive: 'color-text-rest',
+  colorBtnTextDisabled: 'color-text-disabled',
+  colorBtnSvgFillDisabled: 'color-text-disabled',
+
+  colorBtnPrimaryText: 'color-text-white',
+  colorBtnPrimaryBackground: 'color-bg-btn-primary-hover',
+  colorBtnPrimarySvgFill: 'color-text-white',
+
+  colorBtnPrimaryTextHover: 'color-text-white',
+  colorBtnPrimaryBackgroundHover: 'color-bg-btn-primary-hover',
+  colorBtnPrimarySvgFillHover: 'color-text-white',
+
+  colorBtnPrimaryTextActive: 'color-text-white',
+  colorBtnPrimaryBackgroundActive: 'color-bg-btn-primary-pressed-selected',
+  colorBtnPrimarySvgFillActive: 'color-text-white',
+
+  colorBtnPrimaryTextDisabled: 'color-text-disabled',
+  colorBtnPrimaryBackgroundDisabled: 'color-bg-btn-primary-disabled',
+  colorBtnPrimarySvgFillDisabled: 'color-text-disabled',
+
+  // Btn - END
+
+  // Context Menu Colors - START
+  colorContextMenuBg: 'color-bg-input-rest',
+  colorContextMenuBtnBgHover: 'color-bg-input-rest',
+  colorContextMenuBtnTextHover: 'color-text-rest',
+  colorContextMenuBorderColor: 'color-border-rest',
+  colorContextMenuBtnSvgFill: 'color-text-rest',
+  colorContextSearchBg: 'color-bg-input-rest',
+  colorContextSearchBorderColor: 'color-border-rest',
+  colorContextSearchTextColor: 'color-text-rest',
+  // Context Menu Colors - END
+
+  // Forms - START
+  colorSelectBackground: 'color-bg-input-rest',
+  colorSelectOptionFocusedBg: 'color-bg-item-selected',
+  colorSelectDisabledText: 'color-text-disabled',
+  colorSelectBorderColor: 'color-border-rest',
+  colorSelectText: 'color-text-rest',
+  colorSelectPlaceholderText: 'color-text-chevron',
+
+  colorInputText: 'color-text-rest',
+  colorInputPlaceholderText: 'color-text-chevron',
+  colorInputBorderColor: 'color-border-rest',
+  colorInputBorderHoverColor: 'color-border-hover',
+  colorDisabledInputBg: 'color-bg-input-disabled',
+  colorSelectedRadioBtnCenter: 'color-center-radio-btn-selected',
+  colorFormActionsBorderColor: 'color-border-panel',
+  colorDurationLabelText: 'color-text-rest',
+  // Forms - END
+
+  // Header Colors - START
+  colorHeaderBg: 'color-bg-masthead',
+  colorHeaderDropdown: 'color-bg-panel-primary',
+  colorHeaderText: 'color-text-rest',
+  colorHeaderIconHover: 'color-text-rest',
+  colorHeaderItemBgHover: 'color-bg-item-hover',
+  colorHeaderBorderColor: 'color-border-masthead-item',
+  colorHeaderItemContainerBorderColor: 'color-border-masthead-item',
+  // Header Colors - END
+
+  // Modal - START
+  colorModalText: 'color-text-rest',
+  colorModalBackground: 'color-bg-content',
+  colorModalBorder: 'color-border-controls',
+  // Modal -  END
+
+  // Nav Colors - START
+  colorNavBg: 'color-bg-navbar',
+  colorNavText: 'color-text-white',
+  colorNavItemBgHover: 'color-bg-navbar-hover',
+  colorNavItemIcon: 'color-text-white',
+  // Nav Colors - END
+
+  // Pill - START
+  colorPillText: 'color-text-white',
+  colorPillTextHover: 'color-text-white',
+  colorPillSvg: 'color-text-white',
+  colorPillSvgHover: 'color-text-white',
+  // Pill - END
+
+  // Page Content Colors - START
+  colorFlyoutSectionBorder: 'color-border-panel',
+  colorPropertyGridBorder: 'color-border-panel',
+  colorPropertyGridBottomBorder: 'color-border-panel',
+  colorPageContentBackground: 'color-bg-content',
+  colorContentText: 'color-text-rest',
+  colorContentBackground: 'color-bg-content',
+  colorContentTextDim: 'color-text-rest',
+  colorFlyoutBackground: 'color-bg-panel-contextual',
+  colorFlyoutText: 'color-text-rest',
+  colorFlyoutConfirmationText: 'color-text-rest',
+  // Page Content Colors - END
+
+  // Toggle Btn Colors - START
+  colorEnableToggleBackground: 'color-bg-toggle-btn-rest-on',
+  colorDisableToggleBackground: 'color-bg-toggle-btn-rest-off',
+  colorDisabledLine: 'color-circle-toggle-btn-disabled-on',
+  // Toggle Btn Colors - END
+);
+
+// Add the RM mapping variables to $themes:
+@each $theme, $colors in $themes {
+  @each $key, $value in $rmToFluentColorVariables {
+      $mappedValue: map-get($colors, '#{$value}');
+      $colors: map-merge($colors, ($key: $mappedValue));
+  }
+
+  $themes: map-merge($themes, ($theme: $colors));
+}

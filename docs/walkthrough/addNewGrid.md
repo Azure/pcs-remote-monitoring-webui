@@ -45,7 +45,7 @@ Grids in remote monitoring are based on [ag-grid][ag-grid], with our own customi
 1. Open your page's file [pageWithGrid.js](/src/walkthrough/components/pages/pageWithGrid/pageWithGrid.js) so the grid and refresh bar can be added.
 1. Import your grid as well as other components like `AjaxError` and `RefreshBar`.
     ```js
-    import { AjaxError, RefreshBar } from 'components/shared';
+    import { AjaxError, RefreshBarContainer as RefreshBar } from 'components/shared';
     import { ExampleGrid } from './exampleGrid';
     ```
     - `AjaxError` is optional, but adding it provides a simple and consistent way to display errors resulting from loading data.

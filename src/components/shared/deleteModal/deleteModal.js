@@ -12,7 +12,7 @@ import {
 import { svgs } from 'utilities';
 import { toSinglePropertyDiagnosticsModel } from 'services/models';
 
-import './deleteModal.css';
+import './deleteModal.scss';
 
 export class DeleteModal extends Component {
 
@@ -60,7 +60,11 @@ export class DeleteModal extends Component {
       <Modal onClose={() => this.genericCloseClick('DeleteModal_ModalClose')} className="delete-modal-container">
         <div className="delete-header-container">
           <div className="delete-title">{title}</div>
-          <Btn className="delete-close-btn" onClick={() => this.genericCloseClick('DeleteModal_CloseClick')} svg={svgs.x} />
+          <Btn
+            className="delete-close-btn"
+            title={t('modal.cancel')}
+            onClick={() => this.genericCloseClick('DeleteModal_CloseClick')}
+            svg={svgs.x} />
         </div>
         <div className="delete-info">
           {deleteInfo}

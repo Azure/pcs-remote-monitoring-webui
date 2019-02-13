@@ -10,7 +10,7 @@ import {
   PanelContent,
 } from 'components/pages/dashboard/panel';
 
-import './examplePanel.css';
+import './examplePanel.scss';
 
 export class ExamplePanel extends Component {
   constructor(props) {

@@ -7,11 +7,11 @@ import {
   ComponentArray,
   ContextMenu,
   PageContent,
-  RefreshBar
+  RefreshBarContainer as RefreshBar
 } from 'components/shared';
 import { ExampleGrid } from './exampleGrid';
 
-import './pageWithGrid.css';
+import './pageWithGrid.scss';
 
 export class PageWithGrid extends Component {
   constructor(props) {

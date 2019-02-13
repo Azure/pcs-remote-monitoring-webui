@@ -17,7 +17,7 @@ import {
 
 import Flyout from 'components/shared/flyout';
 
-import './SIMManagement.css';
+import './SIMManagement.scss';
 
 const Section = Flyout.Section;
 
@@ -52,18 +52,15 @@ export class SIMManagement extends LinkedComponent {
     }));
 
     return (
-      <Flyout.Container>
-        <Flyout.Header>
-          <Flyout.Title>{t('devices.flyouts.SIMManagement.title')}</Flyout.Title>
-          <Flyout.CloseBtn onClick={onClose} />
-        </Flyout.Header>
-        <Flyout.Content className="sim-management-container">
+      <Flyout.Container header={t('devices.flyouts.SIMManagement.title')} t={t} onClose={onClose}>
+        <div className="sim-management-container">
           <Protected permission={permissions.updateSIMManagement}>
             <div className="sim-management-selector">
               <div className="sim-management-label-selector">{t(`devices.flyouts.SIMManagement.provider`)}</div>
               <div className="sim-management-dropdown">
                 <FormControl
                   type="select"
+                  ariaLabel={t(`devices.flyouts.SIMManagement.provider`)}
                   className="sim-management-dropdown"
                   options={options}
                   searchable={false}
@@ -91,7 +88,7 @@ export class SIMManagement extends LinkedComponent {
               <Btn svg={svgs.cancelX} onClick={onClose}>{isPending ? t('devices.flyouts.new.close') : t('devices.flyouts.new.cancel')}</Btn>
             </BtnToolbar>
           </Protected>
-        </Flyout.Content>
+        </div>
       </Flyout.Container>
     );
   }

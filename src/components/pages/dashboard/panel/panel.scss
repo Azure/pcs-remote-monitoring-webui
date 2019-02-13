@@ -77,7 +77,16 @@
     }
 
     .panel-content,
-    .panel-message { background-color: themed('colorDashboardPanelContentBg'); }
+    .panel-message {
+      color: themed('colorDashboardPanelText');
+      background-color: themed('colorDashboardPanelContentBg');
+
+      // since the background color has changed, the borders for grids looks weird. To match
+      // the fluent behavior, don't show row separators for grids in a tile:
+      :global(.ag-row) {
+        border-color: themed('colorDashboardPanelContentBg');
+      }
+    }
 
 
     .panel-overlay-container {

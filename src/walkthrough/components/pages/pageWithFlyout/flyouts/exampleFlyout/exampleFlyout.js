@@ -10,10 +10,6 @@ import {
   Btn,
   BtnToolbar,
   Flyout,
-  FlyoutHeader,
-  FlyoutTitle,
-  FlyoutCloseBtn,
-  FlyoutContent,
   Indicator,
   SectionDesc,
   SectionHeader,
@@ -23,7 +19,7 @@ import {
   Svg
 } from 'components/shared';
 
-import './exampleFlyout.css';
+import './exampleFlyout.scss';
 
 export class ExampleFlyout extends Component {
   constructor(props) {
@@ -85,12 +81,7 @@ export class ExampleFlyout extends Component {
     const summaryMessage = this.getSummaryMessage();
 
     return (
-      <Flyout>
-        <FlyoutHeader>
-          <FlyoutTitle>{t('walkthrough.pageWithFlyout.flyouts.example.header')}</FlyoutTitle>
-          <FlyoutCloseBtn onClick={onClose} />
-        </FlyoutHeader>
-        <FlyoutContent>
+      <Flyout header={t('walkthrough.pageWithFlyout.flyouts.example.header')} t={t} onClose={onClose}>
           {
             /**
              * Really, anything you need could go inside a flyout.
@@ -136,7 +127,6 @@ export class ExampleFlyout extends Component {
               </BtnToolbar>
             }
           </form>
-        </FlyoutContent>
       </Flyout>
     );
   }
