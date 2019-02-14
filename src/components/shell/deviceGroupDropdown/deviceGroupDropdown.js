@@ -9,7 +9,7 @@ import './deviceGroupDropdown.scss';
 
 export class DeviceGroupDropdown extends Component {
 
-  onChange = (deviceGroupIds) => ({ target: { value: { value } = {} } = {} }) => {
+  onChange = (deviceGroupIds) => (value) => {
     this.props.logEvent(toDiagnosticsModel('DeviceGroupFilter_Select', {}));
     // Don't try to update the device group if the device id doesn't exist
     if (deviceGroupIds.indexOf(value) > -1) {
