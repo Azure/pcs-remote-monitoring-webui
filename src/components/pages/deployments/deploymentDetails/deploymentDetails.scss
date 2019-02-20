@@ -30,9 +30,7 @@
     .summary-container-columns {
       justify-content: space-around;
       white-space: nowrap;
-      overflow: hidden;
       text-overflow: ellipsis;
-      @include rem-fallback(height, 50px);
       @include rem-fallback(width, 200px);
      }
 
