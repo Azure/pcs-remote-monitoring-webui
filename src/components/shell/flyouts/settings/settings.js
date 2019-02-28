@@ -113,6 +113,7 @@ export class Settings extends LinkedComponent {
   }
 
   apply = (event) => {
+    this.onFlyoutClose.bind(this, 'Settings_Apply_Click');
     const { logoFile, applicationName } = this.state;
     if (logoFile || applicationName) {
       var headers = {};
@@ -162,6 +163,7 @@ export class Settings extends LinkedComponent {
       toggledSimulation,
       madeLogoUpdate
     } = this.state;
+    this.applicationNameLink = this.linkTo('applicationName');
     const hasChanged = logoFile !== undefined || applicationName !== '';
     const hasSimulationChanged = !getSimulationPending
       && !getSimulationError
@@ -192,7 +194,10 @@ export class Settings extends LinkedComponent {
                       <Toggle
                         name="settings-diagnostics-opt-in"
                         attr={{
-                          button: { 'aria-label': t('settingsFlyout.optInButton') }
+                          button: {
+                            'aria-label': t('settingsFlyout.optInButton'),
+                            'type': 'button'
+                          }
                         }}
                         on={this.state.diagnosticsOptIn}
                         disabled={getDiagnosticsPending}
@@ -223,7 +228,10 @@ export class Settings extends LinkedComponent {
                         className="simulation-toggle-button"
                         name={t('settingsFlyout.simulationToggle')}
                         attr={{
-                          button: { 'aria-label': t('settingsFlyout.simulationToggle') }
+                          button: {
+                            'aria-label': t('settingsFlyout.simulationToggle'),
+                            'type': 'button'
+                          }
                         }}
                         on={desiredSimulationState}
                         disabled={getSimulationPending}
@@ -238,14 +246,14 @@ export class Settings extends LinkedComponent {
               <Section.Header>{t('settingsFlyout.theme')}</Section.Header>
               <Section.Content>
                 {t('settingsFlyout.changeTheme')}
-                <button onClick={this.onThemeChange.bind(this, nextTheme)} className="toggle-theme-btn">
+                <button type="button" onClick={this.onThemeChange.bind(this, nextTheme)} className="toggle-theme-btn">
                   {t('settingsFlyout.switchTheme', { nextTheme })}
                 </button>
               </Section.Content>
             </Section.Container>
             <ApplicationSettingsContainer
               onUpload={this.onUpload}
-              applicationNameLink={this.applicationName}
+              applicationNameLink={this.applicationNameLink}
               {...this.props} />
             {
               (toggledSimulation && simulationToggleError) &&
@@ -262,9 +270,9 @@ export class Settings extends LinkedComponent {
             <div className="btn-container">
               {
                 !loading && hasChanged &&
-                <Btn type="submit" onClick={this.onFlyoutClose.bind(this, 'Settings_Apply_Click')} className="apply-button">{t('settingsFlyout.apply')}</Btn>
+                <Btn type="submit" primary={true} className="apply-button">{t('settingsFlyout.apply')}</Btn>
               }
-              <Btn svg={svgs.x} onClick={this.onFlyoutClose.bind(this, 'Settings_Close_Click')} className="close-button">
+              <Btn type="button" svg={svgs.x} onClick={this.onFlyoutClose.bind(this, 'Settings_Close_Click')} className="close-button">
                 {hasChanged ? t('settingsFlyout.cancel') : t('settingsFlyout.close')}</Btn>
               {loading && <Indicator size='small' />}
             </div>

@@ -95,10 +95,10 @@ class Shell extends Component {
   }
 
   getMastheadProps() {
-    const { pagesConfig, t, denyAccess, openSystemSettings, openUserProfile, openHelpFlyout, openFlyout } = this.props;
+    const { appName, appLogo, logoPendingStatus, pagesConfig, t, denyAccess, openSystemSettings, openUserProfile, openHelpFlyout, openFlyout } = this.props;
     if (denyAccess) {
       return {
-        branding: t('header.appName'),
+        branding: logoPendingStatus ? t('header.appName') : this.getMastheadBranding(appName, appLogo),
         more: {
           title: t('header.more'),
           selected: this.state.isMastheadMoreExpanded,
@@ -107,7 +107,7 @@ class Shell extends Component {
       };
     } else if (pagesConfig) {
       return {
-        branding: t('header.appName'),
+        branding: logoPendingStatus ? t('header.appName') : this.getMastheadBranding(appName, appLogo),
         more: {
           title: t('header.more'),
           selected: this.state.isMastheadMoreExpanded,
@@ -118,7 +118,7 @@ class Shell extends Component {
           label: t('settingsFlyout.title'),
           selected: openFlyout === 'settings',
           onClick: openSystemSettings
-        },{
+        }, {
           icon: 'help',
           label: t('helpFlyout.title'),
           selected: openFlyout === 'help',
@@ -135,17 +135,28 @@ class Shell extends Component {
     }
   }
 
+  getMastheadBranding(appName, appLogo) {
+    return (
+      <div className="nav-item">
+        <div className="nav-item-icon">
+          <img src={appLogo} alt="Logo" />
+        </div>
+        <div className="nav-item-text">{appName}</div>
+      </div>
+    );
+  }
+
   handleGlobalNavToggle = (e) => {
     e && e.stopPropagation();
     this.setState({
-        isNavExpanded: !this.state.isNavExpanded
+      isNavExpanded: !this.state.isNavExpanded
     });
   }
 
   handleMastheadMoreToggle = (e) => {
     e && e.stopPropagation();
     this.setState({
-        isMastheadMoreExpanded: !this.state.isMastheadMoreExpanded
+      isMastheadMoreExpanded: !this.state.isMastheadMoreExpanded
     });
   }
 }

@@ -6,13 +6,19 @@ import { withNamespaces } from 'react-i18next';
 import {
   epics as appEpics,
   getTheme,
-  getDeviceGroupFlyoutStatus
+  getDeviceGroupFlyoutStatus,
+  getLogo,
+  getName,
+  getLogoPendingStatus
 } from 'store/reducers/appReducer';
 import App from './app';
 
 const mapStateToProps = state => ({
   theme: getTheme(state),
-  deviceGroupFlyoutIsOpen: getDeviceGroupFlyoutStatus(state)
+  deviceGroupFlyoutIsOpen: getDeviceGroupFlyoutStatus(state),
+  appLogo: getLogo(state),
+  appName: getName(state),
+  logoPendingStatus: getLogoPendingStatus(state)
 });
 
 // Wrap with the router and wrap the dispatch method

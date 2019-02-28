@@ -3,6 +3,38 @@
 @import 'src/styles/themes';
 @import 'src/styles/mixins';
 
+$navItemHeight: 48px;
+$leftNavExpandedWidth: 220px;
+$svgSize: 16px;
+$companySvgSize: 23px;
+
+.nav-item {
+  display: flex;
+  flex-flow: row nowrap;
+  flex-shrink: 0;
+  align-items: center;
+  text-decoration: none;
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+
+  @include rem-fallback(height, $navItemHeight);
+
+  .nav-item-icon {
+    @include square-px-rem($navItemHeight);
+
+    img {
+      @include square-px-rem($svgSize);
+      @include rem-fallback(margin, 10px);
+    }
+  }
+
+  .nav-item-icon img { @include square-px-rem($companySvgSize); }
+
+  .nav-item-text { text-transform: uppercase; }
+}
+
 .app {
   height: 100%;
   width: 100%;
