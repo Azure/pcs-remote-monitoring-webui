@@ -32,7 +32,14 @@ $companySvgSize: 23px;
 
   .nav-item-icon img { @include square-px-rem($companySvgSize); }
 
-  .nav-item-text { text-transform: uppercase; }
+  .nav-item-icon svg { @include square-px-rem($companySvgSize); }
+
+  .nav-item-text { text-transform: capitalize; }
+
+  @include themify($themes) {
+  .nav-item-icon svg { fill: themed('colorNavText'); }
+  }
+
 }
 
 .app {

@@ -9,7 +9,9 @@ import {
   getDeviceGroupFlyoutStatus,
   getLogo,
   getName,
-  getLogoPendingStatus
+  getLogoPendingStatus,
+  getLogoError,
+  isDefaultLogo
 } from 'store/reducers/appReducer';
 import App from './app';
 
@@ -18,7 +20,9 @@ const mapStateToProps = state => ({
   deviceGroupFlyoutIsOpen: getDeviceGroupFlyoutStatus(state),
   appLogo: getLogo(state),
   appName: getName(state),
-  logoPendingStatus: getLogoPendingStatus(state)
+  logoPendingStatus: getLogoPendingStatus(state),
+  getLogoError: getLogoError(state),
+  isDefaultLogo: isDefaultLogo(state)
 });
 
 // Wrap with the router and wrap the dispatch method

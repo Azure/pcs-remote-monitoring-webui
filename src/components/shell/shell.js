@@ -95,10 +95,19 @@ class Shell extends Component {
   }
 
   getMastheadProps() {
-    const { appName, appLogo, logoPendingStatus, pagesConfig, t, denyAccess, openSystemSettings, openUserProfile, openHelpFlyout, openFlyout } = this.props;
+    const {
+      pagesConfig,
+      t,
+      denyAccess,
+      openSystemSettings,
+      openUserProfile,
+      openHelpFlyout,
+      openFlyout
+    } = this.props;
+
     if (denyAccess) {
       return {
-        branding: logoPendingStatus ? t('header.appName') : this.getMastheadBranding(appName, appLogo),
+        branding: this.getMastheadBranding(),
         more: {
           title: t('header.more'),
           selected: this.state.isMastheadMoreExpanded,
@@ -107,7 +116,7 @@ class Shell extends Component {
       };
     } else if (pagesConfig) {
       return {
-        branding: logoPendingStatus ? t('header.appName') : this.getMastheadBranding(appName, appLogo),
+        branding: this.getMastheadBranding(),
         more: {
           title: t('header.more'),
           selected: this.state.isMastheadMoreExpanded,
@@ -135,14 +144,28 @@ class Shell extends Component {
     }
   }
 
-  getMastheadBranding(appName, appLogo) {
+  getMastheadBranding() {
+    const {
+      appName,
+      appLogo,
+      getLogoError,
+      isDefaultLogo,
+      t
+    } = this.props;
     return (
       <div className="nav-item">
-        <div className="nav-item-icon">
-          <img src={appLogo} alt="Logo" />
-        </div>
-        <div className="nav-item-text">{appName}</div>
-      </div>
+        {
+          (isDefaultLogo || getLogoError) &&
+          <Svg path={appLogo} className="nav-item-icon" />
+        }
+        {
+          !isDefaultLogo &&
+          < div className="nav-item-icon">
+            <img src={appLogo} alt="Logo" />
+          </div>
+        }
+        <div className="nav-item-text">{t(appName)}</div>
+      </div >
     );
   }
 

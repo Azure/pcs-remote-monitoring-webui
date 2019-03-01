@@ -223,7 +223,7 @@ const initialState = {
   releaseNotesUrl: undefined,
   timeSeriesExplorerUrl: undefined,
   logo: svgs.contoso,
-  name: 'companyName',
+  name: 'header.companyName',
   isDefaultLogo: true,
   deviceGroupFlyoutIsOpen: false,
   timeInterval: 'PT1H',
@@ -322,7 +322,7 @@ const updateTimeInterval = (state, { payload }) => update(state,
 
 const logoReducer = (state, { payload, fromAction }) => update(state, {
   logo: { $set: payload.logo ? payload.logo : svgs.contoso },
-  name: { $set: payload.name ? payload.name : 'companyName' },
+  name: { $set: payload.name ? payload.name : 'header.companyName' },
   isDefaultLogo: { $set: payload.logo ? false : true },
   ...setPending(fromAction.type, false)
 });

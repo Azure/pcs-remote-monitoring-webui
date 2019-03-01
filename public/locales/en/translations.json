@@ -1,7 +1,7 @@
 {
-  "companyName": "Contoso",
   "header": {
     "appName": "Azure IoT Remote Monitoring",
+    "companyName": "Contoso",
     "profile": "Profile",
     "more": "More",
     "getStarted": "Get started",
