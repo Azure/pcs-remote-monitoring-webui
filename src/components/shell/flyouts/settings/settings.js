@@ -80,13 +80,12 @@ export class Settings extends LinkedComponent {
     this.setState({ [name]: value });
   };
 
-  onSimulationChange = ({ target }) => {
+  onSimulationChange = ( value ) => {
     const { toggledSimulation } = this.state;
-    const { name, value } = target;
     const etag = this.props.simulationEtag;
     this.setState({
       toggledSimulation: true,
-      [name]: value
+      desiredSimulationState: value
     },
       () => {
         this.props.logEvent(toSinglePropertyDiagnosticsModel('Settings_SimulationToggle', 'isEnabled', toggledSimulation));
