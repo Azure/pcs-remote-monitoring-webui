@@ -12,7 +12,7 @@ const Config = {
     diagnostics: `${baseUrl}/diagnostics/v1/`,
     privacy: 'https://privacy.microsoft.com/privacystatement',
     //TODO: Determine if should query java or dotnet
-    gitHubReleases: `https://api.github.com/repos/Azure/azure-iot-pcs-remote-monitoring-dotnet/releases/tags/2.1.3`
+    gitHubReleases: `https://api.github.com/repos/Azure/azure-iot-pcs-remote-monitoring-dotnet/releases/tags/2.2.0`
   },
   contextHelpUrls: {
     accessDenied: 'https://docs.microsoft.com/azure/iot-accelerators/iot-accelerators-remote-monitoring-rbac#add-or-remove-users',

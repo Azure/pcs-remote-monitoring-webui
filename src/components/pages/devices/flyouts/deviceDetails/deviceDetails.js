@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
 import { Subject } from 'rxjs';
 import moment from 'moment';
-import { DEFAULT_TIME_FORMAT } from 'components/shared/pcsGrid/pcsGridConfig';
 
 import Config from 'app.config';
 import { TelemetryService } from 'services';
@@ -14,7 +13,8 @@ import {
   copyToClipboard,
   int,
   svgs,
-  translateColumnDefs
+  translateColumnDefs,
+  DEFAULT_TIME_FORMAT
 } from 'utilities';
 import {
   Btn,

@@ -17,7 +17,7 @@ const optionValues = [
 
 export class TimeIntervalDropdown extends Component {
 
-  onChange = (propOnChange) => ({ target: { value: { value } = {} } = {} }) => {
+  onChange = (propOnChange) => (value) => {
     this.props.logEvent(toDiagnosticsModel('TimeFilter_Select', {}));
     if (isFunc(propOnChange)) propOnChange(value);
   }

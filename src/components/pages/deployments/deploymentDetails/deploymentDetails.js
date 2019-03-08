@@ -23,8 +23,7 @@ import {
   StatProperty,
   StatPropertyPair
 } from 'components/shared';
-import { TimeRenderer } from 'components/shared/cellRenderers';
-import { getPackageTypeTranslation, getConfigTypeTranslation, svgs, renderUndefined } from 'utilities';
+import { getPackageTypeTranslation, getConfigTypeTranslation, svgs, renderUndefined, formatTime } from 'utilities';
 import { DeploymentDetailsGrid } from './deploymentDetailsGrid/deploymentDetailsGrid';
 import Config from 'app.config';
 
@@ -226,7 +225,7 @@ export class DeploymentDetails extends Component {
                     <StatGroup className="summary-container-columns">
                       <StatPropertyPair
                         label={t('deployments.details.start')}
-                        value={TimeRenderer({ value: createdDateTimeUtc })} />
+                        value={formatTime(createdDateTimeUtc)} />
                     </StatGroup>
                     <StatGroup className="summary-container-columns">
                       <StatPropertyPair label={t('deployments.details.package')} value={packageName} />

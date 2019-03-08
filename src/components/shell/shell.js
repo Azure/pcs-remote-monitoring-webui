@@ -95,10 +95,19 @@ class Shell extends Component {
   }
 
   getMastheadProps() {
-    const { pagesConfig, t, denyAccess, openSystemSettings, openUserProfile, openHelpFlyout, openFlyout } = this.props;
+    const {
+      pagesConfig,
+      t,
+      denyAccess,
+      openSystemSettings,
+      openUserProfile,
+      openHelpFlyout,
+      openFlyout
+    } = this.props;
+
     if (denyAccess) {
       return {
-        branding: t('header.appName'),
+        branding: this.getMastheadBranding(),
         more: {
           title: t('header.more'),
           selected: this.state.isMastheadMoreExpanded,
@@ -107,7 +116,7 @@ class Shell extends Component {
       };
     } else if (pagesConfig) {
       return {
-        branding: t('header.appName'),
+        branding: this.getMastheadBranding(),
         more: {
           title: t('header.more'),
           selected: this.state.isMastheadMoreExpanded,
@@ -118,7 +127,7 @@ class Shell extends Component {
           label: t('settingsFlyout.title'),
           selected: openFlyout === 'settings',
           onClick: openSystemSettings
-        },{
+        }, {
           icon: 'help',
           label: t('helpFlyout.title'),
           selected: openFlyout === 'help',
@@ -135,17 +144,42 @@ class Shell extends Component {
     }
   }
 
+  getMastheadBranding() {
+    const {
+      appName,
+      appLogo,
+      getLogoError,
+      isDefaultLogo,
+      t
+    } = this.props;
+    return (
+      <div className="nav-item">
+        {
+          (isDefaultLogo || getLogoError) &&
+          <Svg path={appLogo} className="nav-item-icon" />
+        }
+        {
+          !isDefaultLogo &&
+          < div className="nav-item-icon">
+            <img src={appLogo} alt="Logo" />
+          </div>
+        }
+        <div className="nav-item-text">{t(appName)}</div>
+      </div >
+    );
+  }
+
   handleGlobalNavToggle = (e) => {
     e && e.stopPropagation();
     this.setState({
-        isNavExpanded: !this.state.isNavExpanded
+      isNavExpanded: !this.state.isNavExpanded
     });
   }
 
   handleMastheadMoreToggle = (e) => {
     e && e.stopPropagation();
     this.setState({
-        isMastheadMoreExpanded: !this.state.isMastheadMoreExpanded
+      isMastheadMoreExpanded: !this.state.isMastheadMoreExpanded
     });
   }
 }

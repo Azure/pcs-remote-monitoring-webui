@@ -51,7 +51,7 @@ class DeviceGroupForm extends LinkedComponent {
       conditions: [newCondition()],
       isPending: false,
       error: undefined,
-      isEdit: !!this.props.selectedDeviceGroup
+      isEdit: this.props.selectedDeviceGroup
     };
 
     // State to input links
@@ -178,7 +178,6 @@ class DeviceGroupForm extends LinkedComponent {
 
     const editedConditions = conditionLinks.filter(({ edited }) => edited);
     const conditionHasErrors = editedConditions.some(({ error }) => !!error);
-    const conditionsHaveErrors = conditionHasErrors
 
     const operatorOptions = operators.map(value => ({
       label: t(`deviceGroupsFlyout.conditions.operatorOptions.${value}`),
@@ -233,7 +232,7 @@ class DeviceGroupForm extends LinkedComponent {
                               className="long"
                               searchable={false}
                               clearable={false}
-                              placeholder={t('deviceGroupsFlyout.conditions.field')}
+                              placeholder={t('deviceGroupsFlyout.conditions.fieldPlaceholder')}
                               options={this.props.filterOptions}
                               link={condition.field} />
                       }
@@ -287,7 +286,7 @@ class DeviceGroupForm extends LinkedComponent {
               <Protected permission={permissions.updateDeviceGroups}>
                 <Btn
                   primary
-                  disabled={!this.formIsValid() || conditionsHaveErrors || this.state.isPending}
+                  disabled={!this.formIsValid() || conditionHasErrors || this.state.isPending}
                   type="submit">
                   {t('deviceGroupsFlyout.save')}
                 </Btn>

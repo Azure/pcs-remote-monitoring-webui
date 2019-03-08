@@ -3,6 +3,7 @@
 import Config from 'app.config';
 import dot from 'dot-object';
 import toCamelcase from './camelcase';
+import moment from 'moment';
 
 /** Tests if a value is a function */
 export const isFunc = value => typeof value === 'function';
@@ -168,3 +169,15 @@ export const formatConditions = (rule) => {
   }
   return Config.emptyFieldValue;
 };
+
+/** The default formatting for dates */
+export const DEFAULT_TIME_FORMAT = 'hh:mm:ss A MM.DD.YYYY';
+
+// Helper to format time in displayable format
+export const formatTime = (value) => {
+  if (value) {
+    const time = moment.utc(value).local();
+    return (time.unix() > 0) ? time.format(DEFAULT_TIME_FORMAT) : '' || Config.emptyFieldValue;
+  }
+  return value;
+}

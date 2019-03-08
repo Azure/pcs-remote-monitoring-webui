@@ -108,7 +108,7 @@ export class ApplicationSettings extends Component {
                       <div className="name-container">{t(currentApplicationName)}</div>
                     </div>
                     <div className="edit-button-div">
-                      <Btn svg={svgs.edit} onClick={this.enableEdit} className="edit-button">{t('applicationSettings.edit')}</Btn>
+                      <Btn type="button" svg={svgs.edit} onClick={this.enableEdit} className="edit-button">{t('applicationSettings.edit')}</Btn>
                     </div>
                   </div>
                 </div>

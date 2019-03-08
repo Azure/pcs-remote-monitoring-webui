@@ -35,7 +35,8 @@ export class AzureMap extends Component {
     this.map = new AzureMaps.Map('map', {
       'subscription-key': azureMapsKey,
       center: Config.mapCenterPosition,
-      zoom: 11
+      zoom: 11,
+      enableAccessibility: true
     });
 
     this.map.addEventListener('load', () => {

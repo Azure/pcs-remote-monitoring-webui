@@ -8,12 +8,17 @@ $containerMargin: 10px;
 .context-menu-search-input {
   display: flex;
   flex-basis: 20%;
+  overflow: hidden;
   @include rem-fallback(margin, $containerMargin, 0px, $containerMargin, $containerMargin);
+  @include rem-fallback(padding-right, $inputPadding);
 
   .search-icon {
     @include rem-fallback(padding-left, $inputPadding);
 
     svg { @include square-px-rem(12px); }
+    .search-text-box {
+      @include rem-fallback(min-width, 50px);
+    }
   }
 
   input {

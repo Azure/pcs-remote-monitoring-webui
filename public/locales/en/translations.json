@@ -1,7 +1,7 @@
 {
-  "companyName": "Contoso",
   "header": {
     "appName": "Azure IoT Remote Monitoring",
+    "companyName": "Contoso",
     "profile": "Profile",
     "more": "More",
     "getStarted": "Get started",
@@ -144,8 +144,9 @@
       "condition": "Condition {{headerCount}}",
       "delete": "Delete",
       "field": "Field",
+      "fieldPlaceholder": "Select field",
       "operator": "Operator",
-      "operatorPlaceholder": ">=",
+      "operatorPlaceholder": "Select operator",
       "operatorOptions": {
         "EQ": "= Equals",
         "GT": "> Greater than",
@@ -472,7 +473,7 @@
           "field": "Field",
           "fieldPlaceholder": "Select field",
           "operator": "Operator",
-          "operatorPlaceholder": ">=",
+          "operatorPlaceholder": "Select operator",
           "operatorOptions": {
             "Equals": "= Equals",
             "GreaterThan": "> Greater than",

@@ -4,8 +4,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { Btn } from 'components/shared';
 import { toDiagnosticsModel } from 'services/models';
-import { svgs } from 'utilities';
-import { DEFAULT_TIME_FORMAT } from 'components/shared/pcsGrid/pcsGridConfig';
+import { svgs, DEFAULT_TIME_FORMAT } from 'utilities';
 
 import './refreshBar.scss';
 

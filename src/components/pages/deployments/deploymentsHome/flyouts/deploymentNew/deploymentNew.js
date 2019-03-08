@@ -268,9 +268,9 @@ export class DeploymentNew extends LinkedComponent {
     const configTypeEnabled = this.packageTypeLink.value === packagesEnum.deviceConfiguration;
 
     return (
-      <Flyout 
-        header={t('deployments.flyouts.new.title')} 
-        t={t} 
+      <Flyout
+        header={t('deployments.flyouts.new.title')}
+        t={t}
         onClose={() => this.genericCloseClick('NewDeployment_CloseClick')}>
         <div className="new-deployment-content">
           <form className="new-deployment-form" onSubmit={this.apply}>
@@ -431,7 +431,7 @@ export class DeploymentNew extends LinkedComponent {
                   <Trans i18nKey={"deployments.flyouts.new.successText"}>
                     View your deployment status detail for
                     <Link
-                      className="new-deployment-detail-page-link"
+                      className="link"
                       to={`/deployments/${createdDeploymentId}`}>
                       {{ deploymentName: name }}
                     </Link>
