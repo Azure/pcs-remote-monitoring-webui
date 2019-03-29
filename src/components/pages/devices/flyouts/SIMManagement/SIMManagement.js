@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Trans } from 'react-i18next';
-import { Link } from 'react-router-dom'
 
 import { permissions } from 'services/models';
 
@@ -12,7 +11,8 @@ import {
   FormControl,
   Btn,
   BtnToolbar,
-  Protected
+  Protected,
+  Hyperlink
 } from 'components/shared';
 
 import Flyout from 'components/shared/flyout';
@@ -77,7 +77,7 @@ export class SIMManagement extends LinkedComponent {
                   <div>{t(`devices.flyouts.SIMManagement.header.${provider}`)}</div>
                   <div className="sim-management-label-desctiption">
                     <Trans i18nKey={`devices.flyouts.SIMManagement.description.${provider}`}>
-                      Feature is... <Link to={simManagementUrl} target="_blank">{t(`devices.flyouts.SIMManagement.here`)}</Link> ...your account.
+                      Feature is... <Hyperlink href={simManagementUrl} target="_blank">{t(`devices.flyouts.SIMManagement.here`)}</Hyperlink> ...your account.
                     </Trans>
                   </div>
                 </Section.Content>

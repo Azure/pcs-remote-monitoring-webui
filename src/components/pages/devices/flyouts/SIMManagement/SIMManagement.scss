@@ -37,9 +37,6 @@
   .sim-management-dropdown { width: 100%; }
 
   @include themify($themes) {
-
-    a { color: themed('colorFlyoutText'); }
-
     .sim-management-label-title {
       color: themed('colorFlyoutText');
       @include rem-fallback(font-size, 16px);

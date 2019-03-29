@@ -275,7 +275,7 @@ export class PackageNew extends LinkedComponent {
                 <div className="new-package-deployment-text">
                   <Trans i18nKey={"packages.flyouts.new.deploymentText"}>
                     To deploy packages, go to the
-                    <Link className="new-package-deployment-page-link" to={'/deployments'}>{t('packages.flyouts.new.deploymentsPage')}</Link>
+                    <Link to={'/deployments'}>{t('packages.flyouts.new.deploymentsPage')}</Link>
                     , and then click
                       <strong>{t('packages.flyouts.new.newDeployment')}</strong>
                     .

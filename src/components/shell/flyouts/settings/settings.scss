@@ -68,6 +68,5 @@
   @include themify($themes) {
     .close-button .btn-icon svg { stroke: themed('colorFlyoutText'); }
     .toggle-theme-btn { color: themed('colorContentText'); }
-    .flyout-section-content a { color: themed('colorContentText');}
   }
 }
