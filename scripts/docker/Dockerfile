@@ -5,6 +5,8 @@ COPY ./ /app/
 WORKDIR /app
 RUN echo "Installing python2 (reqd for node pckgs)" && apk --update add python
 RUN echo "Install GCC for make command" && apk add --no-cache --virtual build-base
+RUN echo "Install Bash for scripts"     && apk add --no-cache --virtual bash
+RUN echo "Install Curl for scripts"     && apk add --no-cache --virtual curl
 RUN echo "Installing node packages ..." && npm --add-python-to-path='true' install
 RUN echo "Building app..."              && export CI=true && npm run build
 RUN echo "Removing temp files..."       && rm -rf node_modules src public package.json Dockerfile .dockerignore
@@ -34,6 +36,6 @@ RUN echo "Installing web server..." \
 EXPOSE 10080 10443
 VOLUME /app/logs
 
-ENTRYPOINT ["/bin/sh", "/app/run.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "/app/run.sh"]
 
 USER $user

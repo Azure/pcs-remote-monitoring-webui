@@ -37,6 +37,7 @@ cd %APP_HOME%
     copy scripts\docker\Dockerfile                  out\docker\
     copy scripts\docker\content\run.sh              out\docker\
     copy scripts\docker\content\nginx.conf          out\docker\
+    copy scripts\docker\content\set_env.sh          out\docker\
 
     cd out\docker\
 
