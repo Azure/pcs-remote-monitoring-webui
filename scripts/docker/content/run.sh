@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+# copying webui config
+cp /app/public/webui-config.js /app/webui-config.js
+
 # call in current shell.
 echo "Creating/Updating web config"
 . /app/set_env.sh AUTH authRequired TENANT aadTenantId INSTANCE_URL "-"
